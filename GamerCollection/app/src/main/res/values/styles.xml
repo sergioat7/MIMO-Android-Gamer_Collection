@@ -18,4 +18,8 @@
     <style name="RoundedButton.Action">
         <item name="android:background">@drawable/rounded_button_green</item>
     </style>
+
+    <style name="RoundedButton.Remove">
+        <item name="android:background">@drawable/rounded_button_red</item>
+    </style>
 </resources>
