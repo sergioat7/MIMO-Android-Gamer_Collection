@@ -9,10 +9,13 @@
     
     <style name="RoundedButton" parent="android:style/Widget.Button">
         <item name="android:textColor">@color/color2</item>
-        <item name="android:background">@drawable/rounded_button</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:maxLines">1</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="RoundedButton.Action">
+        <item name="android:background">@drawable/rounded_button_green</item>
     </style>
 </resources>

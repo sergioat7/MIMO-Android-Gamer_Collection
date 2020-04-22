@@ -18,7 +18,8 @@
     <string name="LOGIN_USERNAME">Usuario</string>
     <string name="LOGIN_PASSWORD">Contraseña</string>
     <string name="LOGIN_ACCESS">Acceder</string>
-    <string name="LOGIN_REGISTER">¿No tienes cuenta? ¡Regístrate!</string>
+    <string name="LOGIN_NOT_ACCOUNT">¿No tienes cuenta?</string>
+    <string name="LOGIN_REGISTER">¡Regístrate!</string>
 
     // Register
     <string name="REGISTRATION">Registro</string>
