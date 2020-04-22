@@ -1,9 +1,9 @@
-package es.upsa.mimo.gamercollection
+package es.upsa.mimo.gamercollection.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import es.upsa.mimo.gamercollection.R
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,9 +1,7 @@
 package es.upsa.mimo.gamercollection.activities
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import es.upsa.mimo.gamercollection.R
 
 
 open class BaseActivity : AppCompatActivity() {
