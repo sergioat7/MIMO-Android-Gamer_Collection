@@ -1,7 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     // General
-    <string name="app_name" translatable="false">Gamer Collection</string>
     <string name="ACCEPT">Accept</string>
     <string name="CANCEL">Cancel</string>
     <string name="RESET">Reset</string>
@@ -9,7 +9,6 @@
     <string name="EDIT">Edit</string>
     <string name="DELETE">Delete</string>
     <string name="REMOVE">Remove</string>
-    <string name="MIN" translatable="false">Min</string>
     <string name="MAX" translatable="false">Max</string>
     <string name="EMPTY_LIST">The list is empty</string>
     <string name="ASCENDING">Ascending</string>
