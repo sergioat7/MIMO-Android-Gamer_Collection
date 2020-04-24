@@ -23,6 +23,7 @@
 
         <EditText
             android:id="@+id/editTextEmail"
+            style="@style/WhiteEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -30,8 +31,7 @@
             android:layout_marginBottom="10dp"
             android:ems="10"
             android:hint="@string/LOGIN_USERNAME"
-            android:inputType="textEmailAddress"
-            style="@style/WhiteEditText"
+            android:inputType="text"
             app:layout_constraintBottom_toTopOf="@+id/editTextPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
