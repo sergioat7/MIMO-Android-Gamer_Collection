@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.network
+package es.upsa.mimo.gamercollection.network.apiClient
 
 import android.content.res.Resources
 import com.google.gson.Gson

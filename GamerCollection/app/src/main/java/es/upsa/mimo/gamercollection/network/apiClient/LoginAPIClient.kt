@@ -1,9 +1,10 @@
-package es.upsa.mimo.gamercollection.network
+package es.upsa.mimo.gamercollection.network.apiClient
 
 import android.content.res.Resources
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.LoginCredentials
 import es.upsa.mimo.gamercollection.models.LoginResponse
+import es.upsa.mimo.gamercollection.network.apiService.UserAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
 
 class LoginAPIClient {
