@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.network
+package es.upsa.mimo.gamercollection.network.apiService
 
 import es.upsa.mimo.gamercollection.models.LoginCredentials
 import es.upsa.mimo.gamercollection.models.LoginResponse
