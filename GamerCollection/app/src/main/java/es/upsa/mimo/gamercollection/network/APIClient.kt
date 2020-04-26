@@ -4,7 +4,7 @@ import android.content.res.Resources
 import com.google.gson.Gson
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.ErrorResponse
-import es.upsa.mimo.gamercollection.models.LoginResponse
+import es.upsa.mimo.gamercollection.models.EmptyResponse
 import retrofit2.Call
 
 class APIClient {
@@ -18,8 +18,7 @@ class APIClient {
 
             val statusCode = call.code()
 
-            //TODO change LoginResponse to EmptyResponse
-            if ( statusCode < 400 && (statusCode == 204 || T::class.java == LoginResponse::javaClass) ) {
+            if ( statusCode < 400 && (statusCode == 204 || T::class.java == EmptyResponse::javaClass) ) {
 
                 val objectData = gson.toJson("{}")
                 val arrayData = gson.toJson("[]")
