@@ -2,6 +2,7 @@ package es.upsa.mimo.gamercollection.utils
 
 import android.content.Context
 import com.google.gson.Gson
+import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.models.UserData
 
 class SharedPreferencesHandler(context: Context?) {
@@ -26,8 +27,18 @@ class SharedPreferencesHandler(context: Context?) {
     fun isLoggedIn(): Boolean {
 
         val userData = getUserData()
-        //TODO getCredentials
-        return userData.isLoggedIn
+        val authData = getCredentials()
+        return userData.isLoggedIn && !authData.token.isEmpty()
+    }
+
+    fun getUserData(): UserData {
+
+        val userDataJson = sharedPref?.getString(Constants.userDataPrefName,null)
+        return if (userDataJson != null) {
+            gson.fromJson(userDataJson, UserData::class.java)
+        } else {
+            UserData("", "", false)
+        }
     }
 
     fun storeUserData(userData: UserData) {
@@ -48,26 +59,8 @@ class SharedPreferencesHandler(context: Context?) {
         storeUserData(userData)
     }
 
-    fun storeCredentials() {
-        //TODO
-    }
-
-    fun getUserData(): UserData {
-
-        val userDataJson = sharedPref?.getString(Constants.userDataPrefName,null)
-        return if (userDataJson != null) {
-            gson.fromJson(userDataJson, UserData::class.java)
-        } else {
-            UserData("", "", false)
-        }
-    }
-
-    fun getCredentials() {
-        //TODO
-    }
-
     fun removeUserData() {
-        sharedPref?.edit()?.clear()?.apply()
+        sharedPref?.edit()?.remove(Constants.userDataPrefName)?.apply()
     }
 
     fun removePassword() {
@@ -78,7 +71,28 @@ class SharedPreferencesHandler(context: Context?) {
         storeUserData(userData)
     }
 
+    fun getCredentials(): AuthData {
+
+        val authDataJson = sharedPref?.getString(Constants.authDataPrefName,null)
+        return if (authDataJson != null) {
+            gson.fromJson(authDataJson, AuthData::class.java)
+        } else {
+            AuthData("")
+        }
+    }
+
+    fun storeCredentials(authData: AuthData) {
+
+        if (sharedPref != null) {
+            with (sharedPref.edit()) {
+                val authDataJson = gson.toJson(authData)
+                putString(Constants.authDataPrefName, authDataJson)
+                commit()
+            }
+        }
+    }
+
     fun removeCredentials() {
-        //TODO
+        sharedPref?.edit()?.remove(Constants.authDataPrefName)?.apply()
     }
 }
