@@ -39,6 +39,7 @@
 
         <EditText
             android:id="@+id/editTextPassword"
+            style="@style/WhiteEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -46,7 +47,6 @@
             android:ems="10"
             android:hint="@string/LOGIN_PASSWORD"
             android:inputType="textPassword"
-            style="@style/WhiteEditText"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -55,13 +55,13 @@
 
         <Button
             android:id="@+id/login_button"
+            style="@style/RoundedButton.Action"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
             android:layout_marginBottom="30dp"
             android:text="@string/LOGIN_ACCESS"
-            style="@style/RoundedButton.Action"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -99,5 +99,6 @@
                 android:textAllCaps="false"
                 android:textColor="@color/color5" />
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
