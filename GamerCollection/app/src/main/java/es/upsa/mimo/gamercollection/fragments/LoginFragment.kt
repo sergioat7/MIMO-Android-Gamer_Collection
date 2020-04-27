@@ -83,8 +83,7 @@ class LoginFragment : BaseFragment() {
         }, { errorResponse ->
 
             hideLoading()
-            //TODO show error dialog
-            Toast.makeText(context, errorResponse.error, Toast.LENGTH_SHORT).show()
+            showPopupDialog(errorResponse.error)
         })
     }
 
