@@ -6,8 +6,11 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.fragments.PopupDialogFragment
 
 
 open class BaseFragment : Fragment() {
@@ -36,5 +39,17 @@ open class BaseFragment : Fragment() {
         val view = progressBar.tag as View
         (view.parent as ViewGroup).removeView(progressBar.parent as View)
         view.visibility = View.VISIBLE
+    }
+
+    fun showPopupDialog(message: String) {
+
+        val ft: FragmentTransaction = fragmentManager?.beginTransaction() ?: return
+        val prev = fragmentManager?.findFragmentByTag("dialog")
+        if (prev != null) {
+            ft.remove(prev)
+        }
+        ft.addToBackStack(null)
+        val dialogFragment: DialogFragment = PopupDialogFragment(message)
+        dialogFragment.show(ft, "dialog")
     }
 }
