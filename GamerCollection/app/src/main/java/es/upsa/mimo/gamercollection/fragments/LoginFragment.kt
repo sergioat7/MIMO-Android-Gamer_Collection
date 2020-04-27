@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
+import es.upsa.mimo.gamercollection.activities.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.models.UserData
 import es.upsa.mimo.gamercollection.network.apiClient.LoginAPIClient
@@ -16,7 +16,7 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_login.*
 
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment() {
 
     private lateinit var sharedPrefHandler: SharedPreferencesHandler
 
@@ -70,17 +70,19 @@ class LoginFragment : Fragment() {
         val username = editTextEmail.text.toString()
         val password = editTextPassword.text.toString()
 
-        //TODO show loading
+        showLoading(view)
         LoginAPIClient.login(username, password, resources, { token ->
 
             val userData = UserData(username, password, true)
             val authData = AuthData(token)
-            sharedPrefHandler.storeUserData(userData)
-            sharedPrefHandler.storeCredentials(authData)
+            sharedPrefHandler.run {
+                storeUserData(userData)
+                storeCredentials(authData)
+            }
             syncApp()
         }, { errorResponse ->
 
-            //TODO hide loading
+            hideLoading()
             //TODO show error dialog
             Toast.makeText(context, errorResponse.error, Toast.LENGTH_SHORT).show()
         })
@@ -100,6 +102,6 @@ class LoginFragment : Fragment() {
         //TODO get sagas
         val intent = Intent(context, MainActivity::class.java).apply {}
         startActivity(intent)
-        //TODO hide loading
+        hideLoading()
     }
 }
