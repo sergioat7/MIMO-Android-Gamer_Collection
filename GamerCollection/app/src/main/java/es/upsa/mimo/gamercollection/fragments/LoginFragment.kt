@@ -81,9 +81,7 @@ class LoginFragment : BaseFragment() {
             }
             syncApp()
         }, { errorResponse ->
-
-            hideLoading()
-            showPopupDialog(errorResponse.error)
+            manageError(errorResponse)
         })
     }
 
@@ -99,8 +97,7 @@ class LoginFragment : BaseFragment() {
         //TODO get states
         //TODO get games
         //TODO get sagas
-        val intent = Intent(context, MainActivity::class.java).apply {}
-        startActivity(intent)
+        //TODO go to Game list
         hideLoading()
     }
 }
