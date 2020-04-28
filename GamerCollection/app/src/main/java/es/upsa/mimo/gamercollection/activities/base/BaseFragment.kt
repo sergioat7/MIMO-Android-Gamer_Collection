@@ -11,11 +11,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.fragments.PopupDialogFragment
+import es.upsa.mimo.gamercollection.models.ErrorResponse
 
 
 open class BaseFragment : Fragment() {
 
     private lateinit var progressBar: ProgressBar
+
+    fun manageError(errorResponse: ErrorResponse) {
+
+        hideLoading()
+        showPopupDialog(errorResponse.error)
+    }
 
     fun showLoading(view: View?) {
 
