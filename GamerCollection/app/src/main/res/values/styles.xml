@@ -1,10 +1,30 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/color1</item>
-        <item name="colorPrimaryDark">@color/color1</item>
+        <item name="colorPrimary">@color/color2</item>
     </style>
 
+    <style name="AppThemeNoActionBar" parent="Theme.AppCompat.NoActionBar">
+    </style>
+
+    <style name="WhiteEditText" parent="Widget.AppCompat.EditText">
+        <item name="backgroundTint">@color/color2</item>
+        <item name="android:textColor">@color/color2</item>
+    </style>
+    
+    <style name="RoundedButton" parent="android:style/Widget.Button">
+        <item name="android:textColor">@color/color2</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="RoundedButton.Action">
+        <item name="android:background">@drawable/rounded_button_green</item>
+    </style>
+
+    <style name="RoundedButton.Remove">
+        <item name="android:background">@drawable/rounded_button_red</item>
+    </style>
 </resources>
