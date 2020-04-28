@@ -19,7 +19,8 @@
     <string name="LOGIN_USERNAME">Username</string>
     <string name="LOGIN_PASSWORD">Password</string>
     <string name="LOGIN_ACCESS">Access</string>
-    <string name="LOGIN_REGISTER">Don\'t have an account yet? Register here!</string>
+    <string name="LOGIN_NOT_ACCOUNT">Don\'t have an account yet?</string>
+    <string name="LOGIN_REGISTER">Register here!</string>
 
     // Register
     <string name="REGISTRATION">Registration</string>
