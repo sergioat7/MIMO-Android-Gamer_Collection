@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_games"
+        android:icon="@drawable/games_on"
+        android:title="@string/GAMES" />
+
+    <item
+        android:id="@+id/navigation_sagas"
+        android:icon="@drawable/sagas_on"
+        android:title="@string/SAGAS" />
+
+    <item
+        android:id="@+id/navigation_ranking"
+        android:icon="@drawable/ranking_on"
+        android:title="@string/RANKING" />
+
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/profile_on"
+        android:title="@string/PROFILE" />
+
+</menu>
