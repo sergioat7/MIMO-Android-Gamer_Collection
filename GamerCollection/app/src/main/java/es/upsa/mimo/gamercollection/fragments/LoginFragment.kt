@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.activities.base.BaseFragment
@@ -49,8 +48,7 @@ class LoginFragment : BaseFragment() {
     private fun showMainView() {
 
         if (sharedPrefHandler.isLoggedIn()) {
-            val intent = Intent(context, MainActivity::class.java).apply {}
-            startActivity(intent)
+            goToMainView()
         } else {
             initializeUI()
         }
@@ -97,7 +95,13 @@ class LoginFragment : BaseFragment() {
         //TODO get states
         //TODO get games
         //TODO get sagas
-        //TODO go to Game list
+        goToMainView()
         hideLoading()
+    }
+
+    private fun goToMainView() {
+
+        val intent = Intent(context, MainActivity::class.java).apply {}
+        startActivity(intent)
     }
 }
