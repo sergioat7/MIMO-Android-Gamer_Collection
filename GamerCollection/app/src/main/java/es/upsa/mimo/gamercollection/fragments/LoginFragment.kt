@@ -48,8 +48,7 @@ class LoginFragment : BaseFragment() {
     private fun showMainView() {
 
         if (sharedPrefHandler.isLoggedIn()) {
-            val intent = Intent(context, MainActivity::class.java).apply {}
-            startActivity(intent)
+            goToMainView()
         } else {
             initializeUI()
         }
@@ -96,7 +95,13 @@ class LoginFragment : BaseFragment() {
         //TODO get states
         //TODO get games
         //TODO get sagas
-        //TODO go to Game list
+        goToMainView()
         hideLoading()
+    }
+
+    private fun goToMainView() {
+
+        val intent = Intent(context, MainActivity::class.java).apply {}
+        startActivity(intent)
     }
 }
