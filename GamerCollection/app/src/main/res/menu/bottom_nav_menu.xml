@@ -3,22 +3,22 @@
 
     <item
         android:id="@+id/navigation_games"
-        android:icon="@drawable/games_on"
+        android:icon="@drawable/bottom_navigation_games_images"
         android:title="@string/GAMES" />
 
     <item
         android:id="@+id/navigation_sagas"
-        android:icon="@drawable/sagas_on"
+        android:icon="@drawable/bottom_navigation_sagas_images"
         android:title="@string/SAGAS" />
 
     <item
         android:id="@+id/navigation_ranking"
-        android:icon="@drawable/ranking_on"
+        android:icon="@drawable/bottom_navigation_ranking_images"
         android:title="@string/RANKING" />
 
     <item
         android:id="@+id/navigation_profile"
-        android:icon="@drawable/profile_on"
+        android:icon="@drawable/bottom_navigation_profile_images"
         android:title="@string/PROFILE" />
 
 </menu>
