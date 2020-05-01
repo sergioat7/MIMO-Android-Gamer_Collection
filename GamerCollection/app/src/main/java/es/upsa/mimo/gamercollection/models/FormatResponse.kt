@@ -8,7 +8,6 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "Format")
 data class FormatResponse(
     @PrimaryKey
-    @NonNull
     @SerializedName("id")
     val id: String,
     @SerializedName("name")

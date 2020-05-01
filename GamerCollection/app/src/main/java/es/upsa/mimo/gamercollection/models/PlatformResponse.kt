@@ -8,7 +8,6 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "Platform")
 data class PlatformResponse(
     @PrimaryKey
-    @NonNull
     @SerializedName("id")
     val id: String,
     @SerializedName("name")
