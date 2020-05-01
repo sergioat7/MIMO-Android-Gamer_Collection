@@ -15,12 +15,7 @@ class Constants {
         const val acceptLanguageHeader = "Accept-Language"
 
         fun getLanguage(): String {
-
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                LocaleList.getDefault().toLanguageTags();
-            } else {
-                Locale.getDefault().language;
-            }
+            return Locale.getDefault().language
         }
     }
 }
