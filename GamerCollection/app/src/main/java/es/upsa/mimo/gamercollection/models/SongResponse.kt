@@ -1,14 +1,18 @@
 package es.upsa.mimo.gamercollection.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "Song")
 data class SongResponse(
+    @PrimaryKey
     @SerializedName("id")
     val id: Int,
     @SerializedName("name")
-    val name: String,
+    val name: String?,
     @SerializedName("singer")
-    val singer: String,
+    val singer: String?,
     @SerializedName("url")
-    val url: String
+    val url: String?
 )

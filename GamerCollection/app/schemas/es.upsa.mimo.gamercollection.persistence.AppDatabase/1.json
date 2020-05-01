@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "9f53bc575e25b7ee7a5a3d9a813b4fec",
+    "identityHash": "d7275bda918323f6a378e4873849e11f",
     "entities": [
       {
         "tableName": "Format",
@@ -110,7 +110,7 @@
       },
       {
         "tableName": "Game",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `platform` TEXT, `score` REAL NOT NULL, `pegi` TEXT, `distributor` TEXT, `developer` TEXT, `players` TEXT, `releaseDate` TEXT, `goty` INTEGER NOT NULL, `format` TEXT, `genre` TEXT, `state` TEXT, `purchaseDate` TEXT, `purchaseLocation` TEXT, `price` REAL NOT NULL, `imageUrl` TEXT, `videoUrl` TEXT, `loanedTo` TEXT, `observations` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `platform` TEXT, `score` REAL NOT NULL, `pegi` TEXT, `distributor` TEXT, `developer` TEXT, `players` TEXT, `releaseDate` TEXT, `goty` INTEGER NOT NULL, `format` TEXT, `genre` TEXT, `state` TEXT, `purchaseDate` TEXT, `purchaseLocation` TEXT, `price` REAL NOT NULL, `imageUrl` TEXT, `videoUrl` TEXT, `loanedTo` TEXT, `observations` TEXT, `songs` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -231,6 +231,50 @@
             "columnName": "observations",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "songs",
+            "columnName": "songs",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Song",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `singer` TEXT, `url` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "singer",
+            "columnName": "singer",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "url",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -246,7 +290,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9f53bc575e25b7ee7a5a3d9a813b4fec')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd7275bda918323f6a378e4873849e11f')"
     ]
   }
 }
