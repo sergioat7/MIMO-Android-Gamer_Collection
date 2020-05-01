@@ -5,11 +5,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import es.upsa.mimo.gamercollection.models.FormatResponse
+import es.upsa.mimo.gamercollection.models.GenreResponse
 import es.upsa.mimo.gamercollection.persistence.daos.FormatDao
+import es.upsa.mimo.gamercollection.persistence.daos.GenreDao
 
-@Database(entities = [FormatResponse::class], version = 1)
+@Database(entities = [FormatResponse::class, GenreResponse::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
+
     abstract fun formatDao(): FormatDao
+    abstract fun genreDao(): GenreDao
 
     companion object {
 

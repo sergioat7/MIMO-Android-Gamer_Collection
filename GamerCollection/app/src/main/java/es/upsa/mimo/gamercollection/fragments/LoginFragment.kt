@@ -12,6 +12,7 @@ import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.models.UserData
 import es.upsa.mimo.gamercollection.network.apiClient.*
 import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
+import es.upsa.mimo.gamercollection.persistence.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_login.*
 
@@ -102,7 +103,11 @@ class LoginFragment : BaseFragment() {
                                 for (format in formats) {
                                     formatRepository.insertFormat(format)
                                 }
-                                //TODO store genres
+                                //TODO do it in background
+                                val genreRepository = GenreRepository(requireContext())
+                                for (genre in genres) {
+                                    genreRepository.insertGenre(genre)
+                                }
                                 //TODO store platforms
                                 //TODO store states
                                 //TODO store games
