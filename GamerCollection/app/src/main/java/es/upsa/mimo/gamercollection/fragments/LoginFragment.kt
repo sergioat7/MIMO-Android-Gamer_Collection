@@ -10,10 +10,7 @@ import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.activities.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.models.UserData
-import es.upsa.mimo.gamercollection.network.apiClient.FormatAPIClient
-import es.upsa.mimo.gamercollection.network.apiClient.GenreAPIClient
-import es.upsa.mimo.gamercollection.network.apiClient.LoginAPIClient
-import es.upsa.mimo.gamercollection.network.apiClient.PlatformAPIClient
+import es.upsa.mimo.gamercollection.network.apiClient.*
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_login.*
 
@@ -91,19 +88,23 @@ class LoginFragment : BaseFragment() {
         FormatAPIClient.getFormats(resources, { formats ->
             GenreAPIClient.getGenres(resources, { genres ->
                 PlatformAPIClient.getPlatforms(resources, { platforms ->
+                    StateAPIClient.getStates(resources, { states ->
 
-                    //TODO store formats
-                    //TODO store genres
-                    //TODO store platforms
-                    //TODO get states
-                    //TODO get games
-                    //TODO get sagas
-                    sharedPrefHandler.run {
-                        storeUserData(userData)
-                        storeCredentials(authData)
-                    }
-                    goToMainView()
-                    hideLoading()
+                        //TODO store formats
+                        //TODO store genres
+                        //TODO store platforms
+                        //TODO store states
+                        //TODO get games
+                        //TODO get sagas
+                        sharedPrefHandler.run {
+                            storeUserData(userData)
+                            storeCredentials(authData)
+                        }
+                        goToMainView()
+                        hideLoading()
+                    }, { errorResponse ->
+                        manageError(errorResponse)
+                    })
                 }, { errorResponse ->
                     manageError(errorResponse)
                 })
