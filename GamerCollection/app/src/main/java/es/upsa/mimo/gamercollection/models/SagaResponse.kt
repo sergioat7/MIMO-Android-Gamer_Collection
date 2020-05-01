@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class SagaResponse(
     @SerializedName("id")
-    val id: String,
+    val id: Int,
     @SerializedName("name")
     val name: String,
     @SerializedName("games")
