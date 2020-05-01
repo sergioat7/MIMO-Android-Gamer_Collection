@@ -42,9 +42,9 @@ class GameResponse(
     @SerializedName("loanedTo")
     val loanedTo: String,
     @SerializedName("observations")
-    val observations: String
+    val observations: String,
 //    @SerializedName("saga")
 //    val saga: SagaResponse,
-//    @SerializedName("songs")
-//    val songs: List<SongResponse>
+    @SerializedName("songs")
+    val songs: List<SongResponse>
 )
