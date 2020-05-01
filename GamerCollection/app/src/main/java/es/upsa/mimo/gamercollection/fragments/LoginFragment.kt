@@ -11,6 +11,7 @@ import es.upsa.mimo.gamercollection.activities.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.models.UserData
 import es.upsa.mimo.gamercollection.network.apiClient.*
+import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_login.*
 
@@ -96,12 +97,17 @@ class LoginFragment : BaseFragment() {
                         SagaAPIClient.getSagas(sharedPrefHandler, resources, { sagas ->
                             GameAPIClient.getGames(sharedPrefHandler, resources, { games ->
 
-                                //TODO store formats
+                                //TODO do it in background
+                                val formatRepository = FormatRepository(requireContext())
+                                for (format in formats) {
+                                    formatRepository.insertFormat(format)
+                                }
                                 //TODO store genres
                                 //TODO store platforms
                                 //TODO store states
                                 //TODO store games
                                 //TODO store sagas
+
                                 userData.isLoggedIn = true
                                 sharedPrefHandler.storeUserData(userData)
                                 goToMainView()
