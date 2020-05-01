@@ -7,16 +7,23 @@ import androidx.room.RoomDatabase
 import es.upsa.mimo.gamercollection.models.FormatResponse
 import es.upsa.mimo.gamercollection.models.GenreResponse
 import es.upsa.mimo.gamercollection.models.PlatformResponse
+import es.upsa.mimo.gamercollection.models.StateResponse
 import es.upsa.mimo.gamercollection.persistence.daos.FormatDao
 import es.upsa.mimo.gamercollection.persistence.daos.GenreDao
 import es.upsa.mimo.gamercollection.persistence.daos.PlatformDao
+import es.upsa.mimo.gamercollection.persistence.daos.StateDao
 
-@Database(entities = [FormatResponse::class, GenreResponse::class, PlatformResponse::class], version = 1)
+@Database(entities = [
+    FormatResponse::class,
+    GenreResponse::class,
+    PlatformResponse::class,
+    StateResponse::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun formatDao(): FormatDao
     abstract fun genreDao(): GenreDao
     abstract fun platformDao(): PlatformDao
+    abstract fun stateDao(): StateDao
 
     companion object {
 

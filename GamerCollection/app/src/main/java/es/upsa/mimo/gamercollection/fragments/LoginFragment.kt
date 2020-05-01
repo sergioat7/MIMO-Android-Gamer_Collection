@@ -14,6 +14,7 @@ import es.upsa.mimo.gamercollection.network.apiClient.*
 import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
+import es.upsa.mimo.gamercollection.persistence.repositories.StateRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_login.*
 
@@ -114,7 +115,11 @@ class LoginFragment : BaseFragment() {
                                 for (platform in platforms) {
                                     platformRepository.insertPlatform(platform)
                                 }
-                                //TODO store states
+                                //TODO do it in background
+                                val stateRepository = StateRepository(requireContext())
+                                for (state in states) {
+                                    stateRepository.insertState(state)
+                                }
                                 //TODO store games
                                 //TODO store sagas
 
