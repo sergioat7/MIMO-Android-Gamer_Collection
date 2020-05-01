@@ -93,18 +93,22 @@ class LoginFragment : BaseFragment() {
             GenreAPIClient.getGenres(resources, { genres ->
                 PlatformAPIClient.getPlatforms(resources, { platforms ->
                     StateAPIClient.getStates(resources, { states ->
-                        GameAPIClient.getGames(sharedPrefHandler, resources, { games ->
+                        SagaAPIClient.getSagas(sharedPrefHandler, resources, { sagas ->
+                            GameAPIClient.getGames(sharedPrefHandler, resources, { games ->
 
-                            //TODO store formats
-                            //TODO store genres
-                            //TODO store platforms
-                            //TODO store states
-                            //TODO store games
-                            //TODO get sagas
-                            userData.isLoggedIn = true
-                            sharedPrefHandler.storeUserData(userData)
-                            goToMainView()
-                            hideLoading()
+                                //TODO store formats
+                                //TODO store genres
+                                //TODO store platforms
+                                //TODO store states
+                                //TODO store games
+                                //TODO store sagas
+                                userData.isLoggedIn = true
+                                sharedPrefHandler.storeUserData(userData)
+                                goToMainView()
+                                hideLoading()
+                            }, { errorResponse ->
+                                manageError(errorResponse)
+                            })
                         }, { errorResponse ->
                             manageError(errorResponse)
                         })
