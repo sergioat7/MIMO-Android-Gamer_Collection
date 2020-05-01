@@ -94,8 +94,8 @@ class LoginFragment : BaseFragment() {
             GenreAPIClient.getGenres(resources, { genres ->
                 PlatformAPIClient.getPlatforms(resources, { platforms ->
                     StateAPIClient.getStates(resources, { states ->
-                        SagaAPIClient.getSagas(sharedPrefHandler, resources, { sagas ->
-                            GameAPIClient.getGames(sharedPrefHandler, resources, { games ->
+                        GameAPIClient.getGames(sharedPrefHandler, resources, { games ->
+                            SagaAPIClient.getSagas(sharedPrefHandler, resources, { sagas ->
 
                                 //TODO do it in background
                                 val formatRepository = FormatRepository(requireContext())
@@ -117,11 +117,15 @@ class LoginFragment : BaseFragment() {
                                 for (state in states) {
                                     stateRepository.insertState(state)
                                 }
-                                //TODO store sagas
                                 //TODO do it in background
                                 val gameRepository = GameRepository(requireContext())
                                 for (game in games) {
                                     gameRepository.insertGame(game)
+                                }
+                                //TODO do it in background
+                                val sagaRepository = SagaRepository(requireContext())
+                                for (saga in sagas) {
+                                    sagaRepository.insertSaga(saga)
                                 }
                                 userData.isLoggedIn = true
                                 sharedPrefHandler.storeUserData(userData)

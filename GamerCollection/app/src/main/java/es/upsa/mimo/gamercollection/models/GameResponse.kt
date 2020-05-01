@@ -46,8 +46,9 @@ data class GameResponse(
     val loanedTo: String?,
     @SerializedName("observations")
     val observations: String?,
+    @Embedded(prefix = "saga_")
     @SerializedName("saga")
-    val saga: SagaResponse,
+    val saga: SagaResponse?,
     @SerializedName("songs")
     val songs: List<SongResponse>
 )

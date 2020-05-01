@@ -14,8 +14,9 @@ import es.upsa.mimo.gamercollection.persistence.daos.*
     PlatformResponse::class,
     StateResponse::class,
     GameResponse::class,
-    SongResponse::class], version = 1)
-@TypeConverters(SongListConverter::class)
+    SongResponse::class,
+    SagaResponse::class], version = 1)
+@TypeConverters(ListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun formatDao(): FormatDao
@@ -23,6 +24,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun platformDao(): PlatformDao
     abstract fun stateDao(): StateDao
     abstract fun gameDao(): GameDao
+    abstract fun sagaDao(): SagaDao
 
     companion object {
 
