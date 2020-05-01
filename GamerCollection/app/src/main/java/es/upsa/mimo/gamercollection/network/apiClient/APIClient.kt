@@ -11,6 +11,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.Exception
 
 class APIClient {
     companion object {
@@ -28,22 +29,19 @@ class APIClient {
 
                     if ( response.isSuccessful && (response.code() == 204 || T::class.java == EmptyResponse::javaClass) ) {
 
-                        val objectData = gson.toJson("{}")
-                        val arrayData = gson.toJson("[]")
-
-                        var result = gson.fromJson(objectData, T::class.java)
-                        if (result != null) {
+                        try {
+                            val result = gson.fromJson("{}", T::class.java)
                             success(result)
                             return
-                        }
+                        } catch (e: Exception){}
 
-                        result = gson.fromJson(arrayData, T::class.java)
-                        if (result != null) {
+                        try {
+                            val result = gson.fromJson("[]", T::class.java)
                             success(result)
                             return
-                        }
+                        } catch (e: Exception){}
 
-                        val error = ErrorResponse(Resources.getSystem().getString(R.string.ERROR_SERVER)) as U
+                        val error = ErrorResponse(resources.getString(R.string.ERROR_SERVER)) as U
                         failure(error)
                     } else if (response.isSuccessful && response.body() != null) {
 
@@ -56,7 +54,8 @@ class APIClient {
                         )
                         failure(errorResponse)
                     } else {
-                        val error = ErrorResponse(Resources.getSystem().getString(R.string.ERROR_SERVER)) as U
+
+                        val error = ErrorResponse(resources.getString(R.string.ERROR_SERVER)) as U
                         failure(error)
                     }
                 }
