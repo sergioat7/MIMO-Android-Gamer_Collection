@@ -2,7 +2,7 @@ package es.upsa.mimo.gamercollection.models
 
 import com.google.gson.annotations.SerializedName
 
-class GameResponse(
+data class GameResponse(
     @SerializedName("id")
     val id: Int,
     @SerializedName("name")
