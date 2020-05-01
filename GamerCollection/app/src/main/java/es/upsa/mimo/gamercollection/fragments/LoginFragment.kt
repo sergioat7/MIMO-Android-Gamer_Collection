@@ -10,6 +10,7 @@ import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.activities.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.models.UserData
+import es.upsa.mimo.gamercollection.network.apiClient.FormatAPIClient
 import es.upsa.mimo.gamercollection.network.apiClient.LoginAPIClient
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -73,11 +74,7 @@ class LoginFragment : BaseFragment() {
 
             val userData = UserData(username, password, true)
             val authData = AuthData(token)
-            sharedPrefHandler.run {
-                storeUserData(userData)
-                storeCredentials(authData)
-            }
-            syncApp()
+            syncApp(userData, authData)
         }, { errorResponse ->
             manageError(errorResponse)
         })
@@ -87,16 +84,25 @@ class LoginFragment : BaseFragment() {
         //TODO go to register view
     }
 
-    private fun syncApp() {
+    private fun syncApp(userData: UserData, authData: AuthData) {
 
-        //TODO get formats
-        //TODO get genres
-        //TODO get platforms
-        //TODO get states
-        //TODO get games
-        //TODO get sagas
-        goToMainView()
-        hideLoading()
+        FormatAPIClient.getFormats(resources, { formats ->
+
+            //TODO store formats
+            //TODO get genres
+            //TODO get platforms
+            //TODO get states
+            //TODO get games
+            //TODO get sagas
+            sharedPrefHandler.run {
+                storeUserData(userData)
+                storeCredentials(authData)
+            }
+            goToMainView()
+            hideLoading()
+        }, { errorResponse ->
+            manageError(errorResponse)
+        })
     }
 
     private fun goToMainView() {
