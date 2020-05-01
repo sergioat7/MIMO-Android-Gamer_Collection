@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import es.upsa.mimo.gamercollection.models.*
 import es.upsa.mimo.gamercollection.persistence.daos.*
 
@@ -12,7 +13,9 @@ import es.upsa.mimo.gamercollection.persistence.daos.*
     GenreResponse::class,
     PlatformResponse::class,
     StateResponse::class,
-    GameResponse::class], version = 1)
+    GameResponse::class,
+    SongResponse::class], version = 1)
+@TypeConverters(SongListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun formatDao(): FormatDao
