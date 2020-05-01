@@ -71,9 +71,13 @@ class LoginFragment : BaseFragment() {
         showLoading(view)
         LoginAPIClient.login(username, password, resources, { token ->
 
-            val userData = UserData(username, password, true)
+            val userData = UserData(username, password, false)
             val authData = AuthData(token)
-            syncApp(userData, authData)
+            sharedPrefHandler.run {
+                storeUserData(userData)
+                storeCredentials(authData)
+            }
+            syncApp(userData)
         }, { errorResponse ->
             manageError(errorResponse)
         })
@@ -83,25 +87,27 @@ class LoginFragment : BaseFragment() {
         //TODO go to register view
     }
 
-    private fun syncApp(userData: UserData, authData: AuthData) {
+    private fun syncApp(userData: UserData) {
 
         FormatAPIClient.getFormats(resources, { formats ->
             GenreAPIClient.getGenres(resources, { genres ->
                 PlatformAPIClient.getPlatforms(resources, { platforms ->
                     StateAPIClient.getStates(resources, { states ->
+                        GameAPIClient.getGames(sharedPrefHandler, resources, { games ->
 
-                        //TODO store formats
-                        //TODO store genres
-                        //TODO store platforms
-                        //TODO store states
-                        //TODO get games
-                        //TODO get sagas
-                        sharedPrefHandler.run {
-                            storeUserData(userData)
-                            storeCredentials(authData)
-                        }
-                        goToMainView()
-                        hideLoading()
+                            //TODO store formats
+                            //TODO store genres
+                            //TODO store platforms
+                            //TODO store states
+                            //TODO store games
+                            //TODO get sagas
+                            userData.isLoggedIn = true
+                            sharedPrefHandler.storeUserData(userData)
+                            goToMainView()
+                            hideLoading()
+                        }, { errorResponse ->
+                            manageError(errorResponse)
+                        })
                     }, { errorResponse ->
                         manageError(errorResponse)
                     })

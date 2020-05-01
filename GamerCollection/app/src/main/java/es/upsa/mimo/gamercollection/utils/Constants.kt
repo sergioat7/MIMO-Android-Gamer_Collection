@@ -9,5 +9,6 @@ class Constants {
         const val authDataPrefName = "authData"
         const val baseEndpoint = "https://videogames-collection-services.herokuapp.com/"
         const val acceptLanguageHeader = "Accept-Language"
+        const val authorizationHeader = "Authorization"
     }
 }
