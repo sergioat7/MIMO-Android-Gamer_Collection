@@ -6,6 +6,8 @@ import es.upsa.mimo.gamercollection.models.LoginCredentials
 import es.upsa.mimo.gamercollection.models.LoginResponse
 import es.upsa.mimo.gamercollection.network.apiService.UserAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
+import java.util.*
+import kotlin.collections.HashMap
 
 class LoginAPIClient {
     companion object{
@@ -15,7 +17,7 @@ class LoginAPIClient {
             val loginCredentials = LoginCredentials(username, password)
 
             val headers: MutableMap<String, String> = HashMap()
-            headers[Constants.acceptLanguageHeader] = java.lang.String.valueOf(Constants.getLanguage())
+            headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
             val api = APIClient.getRetrofit().create(UserAPIService::class.java)
             val request = api.login(headers, loginCredentials)
 
