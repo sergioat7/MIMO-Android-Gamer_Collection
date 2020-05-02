@@ -7,17 +7,17 @@ import es.upsa.mimo.gamercollection.models.PlatformResponse
 interface PlatformDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertPlatform(platform: PlatformResponse)
+    suspend fun insertPlatform(platform: PlatformResponse)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updatePlatform(platform: PlatformResponse)
+    suspend fun updatePlatform(platform: PlatformResponse)
 
     @Delete
-    fun deletePlatform(platform: PlatformResponse)
+    suspend fun deletePlatform(platform: PlatformResponse)
 
     @Query("SELECT * FROM Platform WHERE id == :platformId")
-    fun getPlatform(platformId: String): PlatformResponse
+    suspend fun getPlatform(platformId: String): PlatformResponse
 
     @Query("SELECT * FROM Platform")
-    fun getPlatforms(): List<PlatformResponse>
+    suspend fun getPlatforms(): List<PlatformResponse>
 }

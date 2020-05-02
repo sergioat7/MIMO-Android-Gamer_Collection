@@ -34,9 +34,7 @@ abstract class AppDatabase : RoomDatabase() {
 
             if (instance == null) {
                 synchronized(AppDatabase::class) {
-                    //TODO ejecutar las consultas en background
-//                    instance = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "GamerCollection").build()
-                    instance = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "GamerCollection").allowMainThreadQueries().build()
+                    instance = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "GamerCollection").build()
                 }
             }
             return instance!!

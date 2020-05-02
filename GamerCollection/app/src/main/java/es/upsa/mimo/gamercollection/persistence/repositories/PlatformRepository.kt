@@ -3,6 +3,10 @@ package es.upsa.mimo.gamercollection.persistence.repositories
 import android.content.Context
 import es.upsa.mimo.gamercollection.models.PlatformResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class PlatformRepository(context: Context) {
 
@@ -10,15 +14,27 @@ class PlatformRepository(context: Context) {
     private val platformDao = database.platformDao()
 
     fun getPlatforms(): List<PlatformResponse> {
-        return platformDao.getPlatforms()
+
+        var platforms: List<PlatformResponse> = arrayListOf()
+        runBlocking {
+            val result = GlobalScope.async { platformDao.getPlatforms() }
+            platforms = result.await()
+        }
+        return platforms
     }
 
     fun insertPlatform(platform: PlatformResponse) {
-        platformDao.insertPlatform(platform)
+
+        GlobalScope.launch {
+            platformDao.insertPlatform(platform)
+        }
     }
 
     fun deletePlatform(platform: PlatformResponse) {
-        platformDao.deletePlatform(platform)
+
+        GlobalScope.launch {
+            platformDao.deletePlatform(platform)
+        }
     }
 
     fun removeDisableContent(newPlatforms: List<PlatformResponse>) {

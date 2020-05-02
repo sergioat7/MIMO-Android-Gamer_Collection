@@ -7,17 +7,17 @@ import es.upsa.mimo.gamercollection.models.StateResponse
 interface StateDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertState(state: StateResponse)
+    suspend fun insertState(state: StateResponse)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateState(state: StateResponse)
+    suspend fun updateState(state: StateResponse)
 
     @Delete
-    fun deleteState(state: StateResponse)
+    suspend fun deleteState(state: StateResponse)
 
     @Query("SELECT * FROM State WHERE id == :stateId")
-    fun getState(stateId: String): StateResponse
+    suspend fun getState(stateId: String): StateResponse
 
     @Query("SELECT * FROM State")
-    fun getStates(): List<StateResponse>
+    suspend fun getStates(): List<StateResponse>
 }

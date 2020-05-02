@@ -3,6 +3,10 @@ package es.upsa.mimo.gamercollection.persistence.repositories
 import android.content.Context
 import es.upsa.mimo.gamercollection.models.StateResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class StateRepository(context: Context) {
 
@@ -10,15 +14,27 @@ class StateRepository(context: Context) {
     private val stateDao = database.stateDao()
 
     fun getStates(): List<StateResponse> {
-        return stateDao.getStates()
+
+        var states: List<StateResponse> = arrayListOf()
+        runBlocking {
+            val result = GlobalScope.async { stateDao.getStates() }
+            states = result.await()
+        }
+        return states
     }
 
     fun insertState(state: StateResponse) {
-        stateDao.insertState(state)
+
+        GlobalScope.launch {
+            stateDao.insertState(state)
+        }
     }
 
     fun deleteState(state: StateResponse) {
-        stateDao.deleteState(state)
+
+        GlobalScope.launch {
+            stateDao.deleteState(state)
+        }
     }
 
     fun removeDisableContent(newStates: List<StateResponse>) {

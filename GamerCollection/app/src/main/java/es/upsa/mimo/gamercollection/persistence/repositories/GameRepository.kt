@@ -3,6 +3,10 @@ package es.upsa.mimo.gamercollection.persistence.repositories
 import android.content.Context
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class GameRepository(context: Context) {
 
@@ -10,15 +14,27 @@ class GameRepository(context: Context) {
     private val gameDao = database.gameDao()
 
     fun getGames(): List<GameResponse> {
-        return gameDao.getGames()
+
+        var games: List<GameResponse> = arrayListOf()
+        runBlocking {
+            val result = GlobalScope.async { gameDao.getGames() }
+            games = result.await()
+        }
+        return games
     }
 
     fun insertGame(game: GameResponse) {
-        gameDao.insertGame(game)
+
+        GlobalScope.launch {
+            gameDao.insertGame(game)
+        }
     }
 
     fun deleteGame(game: GameResponse) {
-        gameDao.deleteGame(game)
+
+        GlobalScope.launch {
+            gameDao.deleteGame(game)
+        }
     }
 
     fun removeDisableContent(newGames: List<GameResponse>) {
