@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
+import es.upsa.mimo.gamercollection.activities.RegisterActivity
 import es.upsa.mimo.gamercollection.activities.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.*
 import es.upsa.mimo.gamercollection.network.apiClient.*
 import es.upsa.mimo.gamercollection.persistence.repositories.*
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_login.*
-
 
 class LoginFragment : BaseFragment() {
 
@@ -98,7 +98,9 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun register() {
-        //TODO go to register view
+
+        val intent = Intent(context, RegisterActivity::class.java).apply {}
+        startActivity(intent)
     }
 
     private fun syncApp(userData: UserData) {
@@ -149,7 +151,6 @@ class LoginFragment : BaseFragment() {
 
     private fun manageFormats(formats: List<FormatResponse>) {
 
-        //TODO do it in background
         for (format in formats) {
             formatRepository.insertFormat(format)
         }
@@ -158,7 +159,6 @@ class LoginFragment : BaseFragment() {
 
     private fun manageGenres(genres: List<GenreResponse>) {
 
-        //TODO do it in background
         for (genre in genres) {
             genreRepository.insertGenre(genre)
         }
@@ -167,7 +167,6 @@ class LoginFragment : BaseFragment() {
 
     private fun managePlatforms(platforms: List<PlatformResponse>) {
 
-        //TODO do it in background
         for (platform in platforms) {
             platformRepository.insertPlatform(platform)
         }
@@ -176,7 +175,6 @@ class LoginFragment : BaseFragment() {
 
     private fun manageStates(states: List<StateResponse>) {
 
-        //TODO do it in background
         for (state in states) {
             stateRepository.insertState(state)
         }
@@ -185,7 +183,6 @@ class LoginFragment : BaseFragment() {
 
     private fun manageGames(games: List<GameResponse>) {
 
-        //TODO do it in background
         for (game in games) {
             gameRepository.insertGame(game)
         }
@@ -194,7 +191,6 @@ class LoginFragment : BaseFragment() {
 
     private fun manageSagas(sagas: List<SagaResponse>) {
 
-        //TODO do it in background
         for (saga in sagas) {
             sagaRepository.insertSaga(saga)
         }
