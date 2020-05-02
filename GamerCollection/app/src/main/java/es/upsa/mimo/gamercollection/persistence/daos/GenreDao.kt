@@ -7,17 +7,17 @@ import es.upsa.mimo.gamercollection.models.GenreResponse
 interface GenreDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertGenre(genre: GenreResponse)
+    suspend fun insertGenre(genre: GenreResponse)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateGenre(genre: GenreResponse)
+    suspend fun updateGenre(genre: GenreResponse)
 
     @Delete
-    fun deleteGenre(genre: GenreResponse)
+    suspend fun deleteGenre(genre: GenreResponse)
 
     @Query("SELECT * FROM Genre WHERE id == :genreId")
-    fun getGenre(genreId: String): GenreResponse
+    suspend fun getGenre(genreId: String): GenreResponse
 
     @Query("SELECT * FROM Genre")
-    fun getGenres(): List<GenreResponse>
+    suspend fun getGenres(): List<GenreResponse>
 }

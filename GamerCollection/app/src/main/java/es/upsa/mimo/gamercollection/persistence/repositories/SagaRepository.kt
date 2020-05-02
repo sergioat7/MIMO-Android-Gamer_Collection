@@ -3,6 +3,10 @@ package es.upsa.mimo.gamercollection.persistence.repositories
 import android.content.Context
 import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class SagaRepository(context: Context) {
 
@@ -10,15 +14,27 @@ class SagaRepository(context: Context) {
     private val sagaDao = database.sagaDao()
 
     fun getSagas(): List<SagaResponse> {
-        return sagaDao.getSagas()
+
+        var sagas: List<SagaResponse> = arrayListOf()
+        runBlocking {
+            val result = GlobalScope.async { sagaDao.getSagas() }
+            sagas = result.await()
+        }
+        return sagas
     }
 
     fun insertSaga(saga: SagaResponse) {
-        sagaDao.insertSaga(saga)
+
+        GlobalScope.launch {
+            sagaDao.insertSaga(saga)
+        }
     }
 
     fun deleteSaga(saga: SagaResponse) {
-        sagaDao.deleteSaga(saga)
+
+        GlobalScope.launch {
+            sagaDao.deleteSaga(saga)
+        }
     }
 
     fun removeDisableContent(newSagas: List<SagaResponse>) {

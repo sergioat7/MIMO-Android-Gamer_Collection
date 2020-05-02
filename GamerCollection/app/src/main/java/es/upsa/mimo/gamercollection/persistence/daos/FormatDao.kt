@@ -7,17 +7,17 @@ import es.upsa.mimo.gamercollection.models.FormatResponse
 interface FormatDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertFormat(format: FormatResponse)
+    suspend fun insertFormat(format: FormatResponse)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateFormat(format: FormatResponse)
+    suspend fun updateFormat(format: FormatResponse)
 
     @Delete
-    fun deleteFormat(format: FormatResponse)
+    suspend fun deleteFormat(format: FormatResponse)
 
     @Query("SELECT * FROM Format WHERE id == :formatId")
-    fun getFormat(formatId: String): FormatResponse
+    suspend fun getFormat(formatId: String): FormatResponse
 
     @Query("SELECT * FROM Format")
-    fun getFormats(): List<FormatResponse>
+    suspend fun getFormats(): List<FormatResponse>
 }

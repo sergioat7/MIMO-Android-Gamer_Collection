@@ -3,6 +3,10 @@ package es.upsa.mimo.gamercollection.persistence.repositories
 import android.content.Context
 import es.upsa.mimo.gamercollection.models.GenreResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class GenreRepository(context: Context) {
 
@@ -10,15 +14,27 @@ class GenreRepository(context: Context) {
     private val genreDao = database.genreDao()
 
     fun getGenres(): List<GenreResponse> {
-        return genreDao.getGenres()
+
+        var genres: List<GenreResponse> = arrayListOf()
+        runBlocking {
+            val result = GlobalScope.async { genreDao.getGenres() }
+            genres = result.await()
+        }
+        return genres
     }
 
     fun insertGenre(genre: GenreResponse) {
-        genreDao.insertGenre(genre)
+
+        GlobalScope.launch {
+            genreDao.insertGenre(genre)
+        }
     }
 
     fun deleteGenre(genre: GenreResponse) {
-        genreDao.deleteGenre(genre)
+
+        GlobalScope.launch {
+            genreDao.deleteGenre(genre)
+        }
     }
 
     fun removeDisableContent(newGenres: List<GenreResponse>) {

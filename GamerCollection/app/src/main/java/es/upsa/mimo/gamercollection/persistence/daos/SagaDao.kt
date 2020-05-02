@@ -7,17 +7,17 @@ import es.upsa.mimo.gamercollection.models.SagaResponse
 interface SagaDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertSaga(saga: SagaResponse)
+    suspend fun insertSaga(saga: SagaResponse)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateSaga(saga: SagaResponse)
+    suspend fun updateSaga(saga: SagaResponse)
 
     @Delete
-    fun deleteSaga(saga: SagaResponse)
+    suspend fun deleteSaga(saga: SagaResponse)
 
     @Query("SELECT * FROM Saga WHERE id == :sagaId")
-    fun getSaga(sagaId: String): SagaResponse
+    suspend fun getSaga(sagaId: String): SagaResponse
 
     @Query("SELECT * FROM Saga")
-    fun getSagas(): List<SagaResponse>
+    suspend fun getSagas(): List<SagaResponse>
 }
