@@ -16,4 +16,17 @@ class GameRepository(context: Context) {
     fun insertGame(game: GameResponse) {
         gameDao.insertGame(game)
     }
+
+    fun deleteGame(game: GameResponse) {
+        gameDao.deleteGame(game)
+    }
+
+    fun removeDisableContent(newGames: List<GameResponse>) {
+
+        val currentGames = getGames()
+        val games = AppDatabase.getDisabledContent(currentGames, newGames)
+        for (game in games) {
+            deleteGame(game)
+        }
+    }
 }

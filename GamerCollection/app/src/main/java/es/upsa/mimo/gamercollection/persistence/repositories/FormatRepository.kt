@@ -16,4 +16,17 @@ class FormatRepository(context: Context) {
     fun insertFormat(format: FormatResponse) {
         formatDao.insertFormat(format)
     }
+
+    fun deleteFormat(format: FormatResponse) {
+        formatDao.deleteFormat(format)
+    }
+
+    fun removeDisableContent(newFormats: List<FormatResponse>) {
+
+        val currentFormats = getFormats()
+        val formats = AppDatabase.getDisabledContent(currentFormats, newFormats)
+        for (format in formats) {
+            deleteFormat(format)
+        }
+    }
 }

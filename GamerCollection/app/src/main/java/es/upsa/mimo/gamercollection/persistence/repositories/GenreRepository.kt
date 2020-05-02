@@ -16,4 +16,17 @@ class GenreRepository(context: Context) {
     fun insertGenre(genre: GenreResponse) {
         genreDao.insertGenre(genre)
     }
+
+    fun deleteGenre(genre: GenreResponse) {
+        genreDao.deleteGenre(genre)
+    }
+
+    fun removeDisableContent(newGenres: List<GenreResponse>) {
+
+        val currentGenres = getGenres()
+        val genres = AppDatabase.getDisabledContent(currentGenres, newGenres)
+        for (genre in genres) {
+            deleteGenre(genre)
+        }
+    }
 }
