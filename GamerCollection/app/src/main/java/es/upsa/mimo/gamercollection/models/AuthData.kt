@@ -1,3 +1,3 @@
 package es.upsa.mimo.gamercollection.models
 
-class AuthData(var token: String)
+data class AuthData(var token: String)
