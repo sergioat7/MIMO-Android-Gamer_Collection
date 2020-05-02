@@ -16,4 +16,17 @@ class PlatformRepository(context: Context) {
     fun insertPlatform(platform: PlatformResponse) {
         platformDao.insertPlatform(platform)
     }
+
+    fun deletePlatform(platform: PlatformResponse) {
+        platformDao.deletePlatform(platform)
+    }
+
+    fun removeDisableContent(newPlatforms: List<PlatformResponse>) {
+
+        val currentPlatforms = getPlatforms()
+        val platforms = AppDatabase.getDisabledContent(currentPlatforms, newPlatforms)
+        for (platform in platforms) {
+            deletePlatform(platform)
+        }
+    }
 }

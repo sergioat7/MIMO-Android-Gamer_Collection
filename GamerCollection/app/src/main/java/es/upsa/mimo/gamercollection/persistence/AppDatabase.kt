@@ -45,5 +45,16 @@ abstract class AppDatabase : RoomDatabase() {
         fun destroyDatabase() {
             instance = null
         }
+
+        fun <T> getDisabledContent(currentValues: List<T>, newValues: List<T>): List<T> {
+
+            val disabledContent = arrayListOf<T>()
+            for (currentValue in currentValues) {
+                if (!newValues.contains(currentValue)) {
+                    disabledContent.add(currentValue)
+                }
+            }
+            return disabledContent
+        }
     }
 }

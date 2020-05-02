@@ -16,4 +16,17 @@ class SagaRepository(context: Context) {
     fun insertSaga(saga: SagaResponse) {
         sagaDao.insertSaga(saga)
     }
+
+    fun deleteSaga(saga: SagaResponse) {
+        sagaDao.deleteSaga(saga)
+    }
+
+    fun removeDisableContent(newSagas: List<SagaResponse>) {
+
+        val currentSagas = getSagas()
+        val sagas = AppDatabase.getDisabledContent(currentSagas, newSagas)
+        for (saga in sagas) {
+            deleteSaga(saga)
+        }
+    }
 }

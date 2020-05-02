@@ -16,4 +16,17 @@ class StateRepository(context: Context) {
     fun insertState(state: StateResponse) {
         stateDao.insertState(state)
     }
+
+    fun deleteState(state: StateResponse) {
+        stateDao.deleteState(state)
+    }
+
+    fun removeDisableContent(newStates: List<StateResponse>) {
+
+        val currentStates = getStates()
+        val states = AppDatabase.getDisabledContent(currentStates, newStates)
+        for (state in states) {
+            deleteState(state)
+        }
+    }
 }

@@ -8,8 +8,7 @@ import android.view.ViewGroup
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.activities.base.BaseFragment
-import es.upsa.mimo.gamercollection.models.AuthData
-import es.upsa.mimo.gamercollection.models.UserData
+import es.upsa.mimo.gamercollection.models.*
 import es.upsa.mimo.gamercollection.network.apiClient.*
 import es.upsa.mimo.gamercollection.persistence.repositories.*
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
@@ -19,6 +18,12 @@ import kotlinx.android.synthetic.main.fragment_login.*
 class LoginFragment : BaseFragment() {
 
     private lateinit var sharedPrefHandler: SharedPreferencesHandler
+    private lateinit var formatRepository: FormatRepository
+    private lateinit var genreRepository: GenreRepository
+    private lateinit var platformRepository: PlatformRepository
+    private lateinit var stateRepository: StateRepository
+    private lateinit var gameRepository: GameRepository
+    private lateinit var sagaRepository: SagaRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,12 +36,20 @@ class LoginFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         sharedPrefHandler = SharedPreferencesHandler(context)
+        formatRepository = FormatRepository(requireContext())
+        genreRepository = GenreRepository(requireContext())
+        platformRepository = PlatformRepository(requireContext())
+        stateRepository = StateRepository(requireContext())
+        gameRepository = GameRepository(requireContext())
+        sagaRepository = SagaRepository(requireContext())
+
         checkIsNewInstallation()
         showMainView()
     }
 
     //MARK: - Private functions
 
+    //TODO remove all about isNewInstallation, it's unnecessary
     private fun checkIsNewInstallation() {
 
         if (sharedPrefHandler.isNewInstallation()) {
@@ -97,36 +110,13 @@ class LoginFragment : BaseFragment() {
                         GameAPIClient.getGames(sharedPrefHandler, resources, { games ->
                             SagaAPIClient.getSagas(sharedPrefHandler, resources, { sagas ->
 
-                                //TODO do it in background
-                                val formatRepository = FormatRepository(requireContext())
-                                for (format in formats) {
-                                    formatRepository.insertFormat(format)
-                                }
-                                //TODO do it in background
-                                val genreRepository = GenreRepository(requireContext())
-                                for (genre in genres) {
-                                    genreRepository.insertGenre(genre)
-                                }
-                                //TODO do it in background
-                                val platformRepository = PlatformRepository(requireContext())
-                                for (platform in platforms) {
-                                    platformRepository.insertPlatform(platform)
-                                }
-                                //TODO do it in background
-                                val stateRepository = StateRepository(requireContext())
-                                for (state in states) {
-                                    stateRepository.insertState(state)
-                                }
-                                //TODO do it in background
-                                val gameRepository = GameRepository(requireContext())
-                                for (game in games) {
-                                    gameRepository.insertGame(game)
-                                }
-                                //TODO do it in background
-                                val sagaRepository = SagaRepository(requireContext())
-                                for (saga in sagas) {
-                                    sagaRepository.insertSaga(saga)
-                                }
+                                manageFormats(formats)
+                                manageGenres(genres)
+                                managePlatforms(platforms)
+                                manageStates(states)
+                                manageGames(games)
+                                manageSagas(sagas)
+
                                 userData.isLoggedIn = true
                                 sharedPrefHandler.storeUserData(userData)
                                 goToMainView()
@@ -155,5 +145,59 @@ class LoginFragment : BaseFragment() {
 
         val intent = Intent(context, MainActivity::class.java).apply {}
         startActivity(intent)
+    }
+
+    private fun manageFormats(formats: List<FormatResponse>) {
+
+        //TODO do it in background
+        for (format in formats) {
+            formatRepository.insertFormat(format)
+        }
+        formatRepository.removeDisableContent(formats)
+    }
+
+    private fun manageGenres(genres: List<GenreResponse>) {
+
+        //TODO do it in background
+        for (genre in genres) {
+            genreRepository.insertGenre(genre)
+        }
+        genreRepository.removeDisableContent(genres)
+    }
+
+    private fun managePlatforms(platforms: List<PlatformResponse>) {
+
+        //TODO do it in background
+        for (platform in platforms) {
+            platformRepository.insertPlatform(platform)
+        }
+        platformRepository.removeDisableContent(platforms)
+    }
+
+    private fun manageStates(states: List<StateResponse>) {
+
+        //TODO do it in background
+        for (state in states) {
+            stateRepository.insertState(state)
+        }
+        stateRepository.removeDisableContent(states)
+    }
+
+    private fun manageGames(games: List<GameResponse>) {
+
+        //TODO do it in background
+        for (game in games) {
+            gameRepository.insertGame(game)
+        }
+        gameRepository.removeDisableContent(games)
+    }
+
+    private fun manageSagas(sagas: List<SagaResponse>) {
+
+        //TODO do it in background
+        for (saga in sagas) {
+            sagaRepository.insertSaga(saga)
+        }
+        sagaRepository.removeDisableContent(sagas)
     }
 }
