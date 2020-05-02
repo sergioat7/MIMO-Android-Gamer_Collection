@@ -71,7 +71,7 @@ class LoginFragment : BaseFragment() {
     private fun initializeUI() {
 
         val username = sharedPrefHandler.getUserData().username
-        editTextEmail.setText(username)
+        editTextUser.setText(username)
 
         login_button.setOnClickListener {login()}
         register_button.setOnClickListener {register()}
@@ -79,7 +79,7 @@ class LoginFragment : BaseFragment() {
 
     private fun login() {
 
-        val username = editTextEmail.text.toString()
+        val username = editTextUser.text.toString()
         val password = editTextPassword.text.toString()
 
         showLoading(view)
