@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.network.apiClient.UserAPIClient
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -26,7 +27,7 @@ class ProfileFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         sharedPrefHandler = SharedPreferencesHandler(context)
-        userAPIClient = UserAPIClient(resources)
+        userAPIClient = UserAPIClient(resources, sharedPrefHandler)
 
         initializeUI()
     }
@@ -44,6 +45,24 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun updatePassword() {
+
+        val newPassword = edit_text_password.text.toString()
+
+        showLoading(view?.parent as View)
+        userAPIClient.updatePassword(newPassword, {
+            sharedPrefHandler.storePassword(newPassword)
+            val userData = sharedPrefHandler.getUserData()
+            userAPIClient.login(userData.username, userData.password, {
+
+                val authData = AuthData(it)
+                sharedPrefHandler.storeCredentials(authData)
+                hideLoading()
+            }, {
+                manageError(it)
+            })
+        }, {
+            manageError(it)
+        })
     }
 
     private fun deleteUser() {
