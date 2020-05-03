@@ -6,11 +6,13 @@ import es.upsa.mimo.gamercollection.models.LoginCredentials
 import es.upsa.mimo.gamercollection.models.LoginResponse
 import es.upsa.mimo.gamercollection.network.apiService.UserAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import java.util.*
 import kotlin.collections.HashMap
 
 class UserAPIClient(
-    private val resources: Resources
+    private val resources: Resources,
+    private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
     fun login(username: String, password: String, success: (String) -> Unit, failure: (ErrorResponse) -> Unit) {
