@@ -1,4 +1,5 @@
 package es.upsa.mimo.gamercollection.models
 
-class NewPassword {
-}
+data class NewPassword(
+    val password: String
+)
