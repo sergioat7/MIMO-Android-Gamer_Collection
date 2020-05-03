@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.fragments.base
 
+import android.content.Intent
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,12 @@ open class BaseFragment : Fragment() {
 
         hideLoading()
         showPopupDialog(errorResponse.error)
+    }
+
+    fun <T> launchActivity(activity: Class<T>) {
+
+        val intent = Intent(context, activity).apply {}
+        startActivity(intent)
     }
 
     fun showLoading(view: View?) {
