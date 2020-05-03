@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.fragments.PopupDialogFragment
+import es.upsa.mimo.gamercollection.fragments.PopupSyncAppDialogFragment
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 
 
@@ -87,7 +88,22 @@ open class BaseFragment : Fragment() {
     fun openSyncPopup() {
 
         showPopupConfirmationDialog(resources.getString(R.string.SYNC_CONFIRMATION)) {
-            //TODO show sync popup
+            showSyncPopup()
         }
+    }
+
+    //MARK - Private functions
+
+    private fun showSyncPopup() {
+
+        val ft: FragmentTransaction = fragmentManager?.beginTransaction() ?: return
+        val prev = fragmentManager?.findFragmentByTag("dialog")
+        if (prev != null) {
+            ft.remove(prev)
+        }
+        ft.addToBackStack(null)
+        val dialogFragment: DialogFragment = PopupSyncAppDialogFragment()
+        dialogFragment.isCancelable = false
+        dialogFragment.show(ft, "dialog")
     }
 }
