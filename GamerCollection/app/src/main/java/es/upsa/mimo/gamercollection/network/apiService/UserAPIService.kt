@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.network.apiService
 
+import androidx.room.Delete
 import es.upsa.mimo.gamercollection.models.LoginCredentials
 import es.upsa.mimo.gamercollection.models.LoginResponse
 import es.upsa.mimo.gamercollection.models.NewPassword
@@ -25,4 +26,7 @@ interface UserAPIService {
     )
     @PUT("users/updatePassword")
     fun updatePassword(@HeaderMap headers: Map<String, String>, @Body body: NewPassword): Call<Void>
+
+    @DELETE("users/user")
+    fun deleteUser(@HeaderMap headers: Map<String, String>): Call<Void>
 }
