@@ -49,7 +49,7 @@ class LoginFragment : BaseFragment() {
         stateAPIClient = StateAPIClient(resources)
         gameAPIClient = GameAPIClient(resources, sharedPrefHandler)
         sagaAPIClient = SagaAPIClient(resources, sharedPrefHandler)
-        userAPIClient = UserAPIClient(resources)
+        userAPIClient = UserAPIClient(resources, sharedPrefHandler)
         formatRepository = FormatRepository(requireContext())
         genreRepository = GenreRepository(requireContext())
         platformRepository = PlatformRepository(requireContext())
@@ -111,8 +111,8 @@ class LoginFragment : BaseFragment() {
                 storeCredentials(authData)
             }
             syncApp(userData)
-        }, { errorResponse ->
-            manageError(errorResponse)
+        }, {
+            manageError(it)
         })
     }
 
@@ -142,23 +142,23 @@ class LoginFragment : BaseFragment() {
                                 sharedPrefHandler.storeUserData(userData)
                                 goToMainView()
                                 hideLoading()
-                            }, { errorResponse ->
-                                manageError(errorResponse)
+                            }, {
+                                manageError(it)
                             })
-                        }, { errorResponse ->
-                            manageError(errorResponse)
+                        }, {
+                            manageError(it)
                         })
-                    }, { errorResponse ->
-                        manageError(errorResponse)
+                    }, {
+                        manageError(it)
                     })
-                }, { errorResponse ->
-                    manageError(errorResponse)
+                }, {
+                    manageError(it)
                 })
-            }, { errorResponse ->
-                manageError(errorResponse)
+            }, {
+                manageError(it)
             })
-        }, { errorResponse ->
-            manageError(errorResponse)
+        }, {
+            manageError(it)
         })
     }
 
