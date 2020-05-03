@@ -1,9 +1,7 @@
 package es.upsa.mimo.gamercollection.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.LoginActivity
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
@@ -25,6 +23,7 @@ class ProfileFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
@@ -37,6 +36,27 @@ class ProfileFragment : BaseFragment() {
         sagaRepository = SagaRepository(requireContext())
 
         initializeUI()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.clear()
+        inflater.inflate(R.menu.profile_toolbar_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when(item.itemId) {
+            R.id.action_synchronize -> {
+                openSyncPopup()
+                return true
+            }
+            R.id.action_logout -> {
+                logout()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     //MARK: - Private functions

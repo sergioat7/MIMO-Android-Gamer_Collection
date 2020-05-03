@@ -83,4 +83,11 @@ open class BaseFragment : Fragment() {
             }
             .show()
     }
+
+    fun openSyncPopup() {
+
+        showPopupConfirmationDialog(resources.getString(R.string.SYNC_CONFIRMATION)) {
+            //TODO show sync popup
+        }
+    }
 }
