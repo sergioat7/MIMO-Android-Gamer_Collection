@@ -123,9 +123,7 @@ class RegisterFragment : BaseFragment() {
     }
 
     private fun goToMainView() {
-
-        val intent = Intent(context, MainActivity::class.java).apply {}
-        startActivity(intent)
+        launchActivity(MainActivity::class.java)
     }
 
     private fun manageFormats(formats: List<FormatResponse>) {

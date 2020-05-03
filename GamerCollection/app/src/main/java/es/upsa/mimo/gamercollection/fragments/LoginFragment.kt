@@ -117,9 +117,7 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun register() {
-
-        val intent = Intent(context, RegisterActivity::class.java).apply {}
-        startActivity(intent)
+        launchActivity(RegisterActivity::class.java)
     }
 
     private fun syncApp(userData: UserData) {
@@ -163,9 +161,7 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun goToMainView() {
-
-        val intent = Intent(context, MainActivity::class.java).apply {}
-        startActivity(intent)
+        launchActivity(MainActivity::class.java)
     }
 
     private fun manageFormats(formats: List<FormatResponse>) {
