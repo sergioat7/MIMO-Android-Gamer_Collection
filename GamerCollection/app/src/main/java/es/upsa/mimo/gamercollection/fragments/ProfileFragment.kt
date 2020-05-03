@@ -74,16 +74,19 @@ class ProfileFragment : BaseFragment() {
 
     private fun deleteUser() {
 
-        showLoading(view?.parent as View)
-        userAPIClient.deleteUser({
+        showPopupConfirmationDialog(resources.getString(R.string.PROFILE_DELETE_CONFIRMATION)) {
 
-            sharedPrefHandler.removeUserData()
-            removeData()
-            hideLoading()
-            launchActivity(LoginActivity::class.java)
-        }, {
-            manageError(it)
-        })
+            showLoading(view?.parent as View)
+            userAPIClient.deleteUser({
+
+                sharedPrefHandler.removeUserData()
+                removeData()
+                hideLoading()
+                launchActivity(LoginActivity::class.java)
+            }, {
+                manageError(it)
+            })
+        }
     }
 
     private fun removeData() {
