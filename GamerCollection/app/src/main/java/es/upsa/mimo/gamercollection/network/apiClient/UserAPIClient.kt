@@ -1,7 +1,6 @@
 package es.upsa.mimo.gamercollection.network.apiClient
 
 import android.content.res.Resources
-import es.upsa.mimo.gamercollection.models.EmptyResponse
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.LoginCredentials
 import es.upsa.mimo.gamercollection.models.LoginResponse
@@ -33,10 +32,12 @@ class UserAPIClient {
 
             val loginCredentials = LoginCredentials(username, password)
 
+            val headers: MutableMap<String, String> = HashMap()
+            headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
             val api = APIClient.getRetrofit().create(UserAPIService::class.java)
-            val request = api.register(loginCredentials)
+            val request = api.register(headers, loginCredentials)
 
-            APIClient.sendServer<EmptyResponse, ErrorResponse>(resources, request, {
+            APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
                 success()
             }, { errorResponse ->
                 failure(errorResponse)
