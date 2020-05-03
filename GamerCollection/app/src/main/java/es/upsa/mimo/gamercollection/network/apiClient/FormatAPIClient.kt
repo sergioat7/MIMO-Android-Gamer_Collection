@@ -8,21 +8,21 @@ import es.upsa.mimo.gamercollection.utils.Constants
 import java.util.*
 import kotlin.collections.HashMap
 
-class FormatAPIClient {
-    companion object {
+class FormatAPIClient(
+    private val resources: Resources
+) {
 
-        fun getFormats(resources: Resources, success: (List<FormatResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
+    fun getFormats(success: (List<FormatResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
-            val headers: MutableMap<String, String> = HashMap()
-            headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
-            val api = APIClient.getRetrofit().create(FormatAPIService::class.java)
-            val request = api.getFormats(headers)
+        val headers: MutableMap<String, String> = HashMap()
+        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        val api = APIClient.getRetrofit().create(FormatAPIService::class.java)
+        val request = api.getFormats(headers)
 
-            APIClient.sendServer<List<FormatResponse>, ErrorResponse>(resources, request, { formats ->
-                success(formats)
-            }, { errorResponse ->
-                failure(errorResponse)
-            })
-        }
+        APIClient.sendServer<List<FormatResponse>, ErrorResponse>(resources, request, { formats ->
+            success(formats)
+        }, { errorResponse ->
+            failure(errorResponse)
+        })
     }
 }

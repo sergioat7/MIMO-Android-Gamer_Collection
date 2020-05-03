@@ -3,7 +3,6 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/color2</item>
         <item name="android:colorBackground">@color/color1</item>
-        <item name="backgroundTint">@color/color2</item>
         <item name="titleTextColor">@color/color1</item>
     </style>
 
@@ -13,6 +12,7 @@
     <style name="WhiteEditText" parent="Widget.AppCompat.EditText">
         <item name="backgroundTint">@color/color2</item>
         <item name="android:textColor">@color/color2</item>
+        <item name="android:textColorHint">@color/color2Light</item>
     </style>
     
     <style name="RoundedButton" parent="android:style/Widget.Button">

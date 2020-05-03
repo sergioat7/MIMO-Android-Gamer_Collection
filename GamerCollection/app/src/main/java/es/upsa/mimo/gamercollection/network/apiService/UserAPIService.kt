@@ -15,4 +15,10 @@ interface UserAPIService {
     )
     @POST("users/login")
     fun login(@HeaderMap headers: Map<String, String>, @Body body: LoginCredentials): Call<LoginResponse>
+
+    @Headers(
+        "Content-Type:application/json"
+    )
+    @POST("users/register")
+    fun register(@HeaderMap headers: Map<String, String>, @Body body: LoginCredentials): Call<Void>
 }

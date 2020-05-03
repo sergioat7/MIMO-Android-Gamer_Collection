@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.LoginActivity">
+    tools:context=".activities.RegisterActivity">
 
     <fragment
-        android:id="@+id/fragment_login"
-        android:name="es.upsa.mimo.gamercollection.fragments.LoginFragment"
+        android:id="@+id/fragment_register"
+        android:name="es.upsa.mimo.gamercollection.fragments.RegisterFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_register" />
 </androidx.constraintlayout.widget.ConstraintLayout>
