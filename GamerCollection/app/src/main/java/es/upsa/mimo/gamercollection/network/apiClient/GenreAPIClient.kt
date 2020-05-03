@@ -8,21 +8,21 @@ import es.upsa.mimo.gamercollection.utils.Constants
 import java.util.*
 import kotlin.collections.HashMap
 
-class GenreAPIClient {
-    companion object {
+class GenreAPIClient(
+    private val resources: Resources
+) {
 
-        fun getGenres(resources: Resources, success: (List<GenreResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
+    fun getGenres(success: (List<GenreResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
-            val headers: MutableMap<String, String> = HashMap()
-            headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
-            val api = APIClient.getRetrofit().create(GenreAPIService::class.java)
-            val request = api.getGenres(headers)
+        val headers: MutableMap<String, String> = HashMap()
+        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        val api = APIClient.getRetrofit().create(GenreAPIService::class.java)
+        val request = api.getGenres(headers)
 
-            APIClient.sendServer<List<GenreResponse>, ErrorResponse>(resources, request, { genres ->
-                success(genres)
-            }, { errorResponse ->
-                failure(errorResponse)
-            })
-        }
+        APIClient.sendServer<List<GenreResponse>, ErrorResponse>(resources, request, { genres ->
+            success(genres)
+        }, { errorResponse ->
+            failure(errorResponse)
+        })
     }
 }

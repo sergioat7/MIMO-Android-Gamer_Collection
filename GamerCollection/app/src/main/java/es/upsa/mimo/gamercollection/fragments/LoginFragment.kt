@@ -18,6 +18,13 @@ import kotlinx.android.synthetic.main.fragment_login.*
 class LoginFragment : BaseFragment() {
 
     private lateinit var sharedPrefHandler: SharedPreferencesHandler
+    private lateinit var formatAPIClient: FormatAPIClient
+    private lateinit var genreAPIClient: GenreAPIClient
+    private lateinit var platformAPIClient: PlatformAPIClient
+    private lateinit var stateAPIClient: StateAPIClient
+    private lateinit var gameAPIClient: GameAPIClient
+    private lateinit var sagaAPIClient: SagaAPIClient
+    private lateinit var userAPIClient: UserAPIClient
     private lateinit var formatRepository: FormatRepository
     private lateinit var genreRepository: GenreRepository
     private lateinit var platformRepository: PlatformRepository
@@ -36,6 +43,13 @@ class LoginFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         sharedPrefHandler = SharedPreferencesHandler(context)
+        formatAPIClient = FormatAPIClient(resources)
+        genreAPIClient = GenreAPIClient(resources)
+        platformAPIClient = PlatformAPIClient(resources)
+        stateAPIClient = StateAPIClient(resources)
+        gameAPIClient = GameAPIClient(resources, sharedPrefHandler)
+        sagaAPIClient = SagaAPIClient(resources, sharedPrefHandler)
+        userAPIClient = UserAPIClient(resources)
         formatRepository = FormatRepository(requireContext())
         genreRepository = GenreRepository(requireContext())
         platformRepository = PlatformRepository(requireContext())
@@ -88,7 +102,7 @@ class LoginFragment : BaseFragment() {
         }
 
         showLoading(view)
-        UserAPIClient.login(username, password, resources, { token ->
+        userAPIClient.login(username, password, { token ->
 
             val userData = UserData(username, password, false)
             val authData = AuthData(token)
@@ -110,12 +124,12 @@ class LoginFragment : BaseFragment() {
 
     private fun syncApp(userData: UserData) {
 
-        FormatAPIClient.getFormats(resources, { formats ->
-            GenreAPIClient.getGenres(resources, { genres ->
-                PlatformAPIClient.getPlatforms(resources, { platforms ->
-                    StateAPIClient.getStates(resources, { states ->
-                        GameAPIClient.getGames(sharedPrefHandler, resources, { games ->
-                            SagaAPIClient.getSagas(sharedPrefHandler, resources, { sagas ->
+        formatAPIClient.getFormats({ formats ->
+            genreAPIClient.getGenres({ genres ->
+                platformAPIClient.getPlatforms({ platforms ->
+                    stateAPIClient.getStates({ states ->
+                        gameAPIClient.getGames({ games ->
+                            sagaAPIClient.getSagas({ sagas ->
 
                                 manageFormats(formats)
                                 manageGenres(genres)
