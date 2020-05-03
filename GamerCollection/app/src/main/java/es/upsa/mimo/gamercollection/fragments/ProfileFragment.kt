@@ -51,6 +51,23 @@ class ProfileFragment : BaseFragment() {
         delete_user_button.setOnClickListener {deleteUser()}
     }
 
+    private fun logout() {
+
+        showPopupConfirmationDialog(resources.getString(R.string.PROFILE_LOGOUT_CONFIRMATION)) {
+
+            showLoading(view?.parent as View)
+            userAPIClient.logout({
+
+                sharedPrefHandler.removePassword()
+                removeData()
+                hideLoading()
+                launchActivity(LoginActivity::class.java)
+            }, {
+                manageError(it)
+            })
+        }
+    }
+
     private fun updatePassword() {
 
         val newPassword = edit_text_password.text.toString()
