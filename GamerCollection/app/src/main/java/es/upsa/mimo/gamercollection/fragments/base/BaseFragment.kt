@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.activities.base
+package es.upsa.mimo.gamercollection.fragments.base
 
 import android.view.Gravity
 import android.view.View
