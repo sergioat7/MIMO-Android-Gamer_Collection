@@ -21,6 +21,9 @@ interface UserAPIService {
     @POST("users/register")
     fun register(@HeaderMap headers: Map<String, String>, @Body body: LoginCredentials): Call<Void>
 
+    @DELETE("users/logout")
+    fun logout(@HeaderMap headers: Map<String, String>): Call<Void>
+
     @Headers(
         "Content-Type:application/json"
     )

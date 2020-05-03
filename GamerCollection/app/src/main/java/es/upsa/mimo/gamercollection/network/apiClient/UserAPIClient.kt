@@ -48,6 +48,21 @@ class UserAPIClient(
         })
     }
 
+    fun logout(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        val headers: MutableMap<String, String> = HashMap()
+        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        val api = APIClient.getRetrofit().create(UserAPIService::class.java)
+        val request = api.logout(headers)
+
+        APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
+            success()
+        }, { errorResponse ->
+            failure(errorResponse)
+        })
+    }
+
     fun updatePassword(password: String, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val newPasword = NewPassword(password)
