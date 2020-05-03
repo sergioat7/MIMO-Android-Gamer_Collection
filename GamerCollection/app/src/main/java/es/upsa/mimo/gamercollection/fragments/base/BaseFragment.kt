@@ -1,5 +1,7 @@
 package es.upsa.mimo.gamercollection.fragments.base
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.view.Gravity
 import android.view.View
@@ -65,5 +67,20 @@ open class BaseFragment : Fragment() {
         ft.addToBackStack(null)
         val dialogFragment: DialogFragment = PopupDialogFragment(message)
         dialogFragment.show(ft, "dialog")
+    }
+
+    fun showPopupConfirmationDialog(message: String, acceptHandler: () -> Unit) {
+
+        AlertDialog.Builder(context)
+            .setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton(resources.getString(R.string.ACCEPT)) { dialog, _ ->
+                acceptHandler()
+                dialog.dismiss()
+            }
+            .setNegativeButton(resources.getString(R.string.CANCEL)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 }
