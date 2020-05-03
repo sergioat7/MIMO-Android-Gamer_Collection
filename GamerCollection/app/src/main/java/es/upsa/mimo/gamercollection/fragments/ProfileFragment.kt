@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.activities.LoginActivity
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.network.apiClient.UserAPIClient
+import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
+import es.upsa.mimo.gamercollection.persistence.repositories.SagaRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_profile.*
 
@@ -15,6 +18,8 @@ class ProfileFragment : BaseFragment() {
 
     private lateinit var sharedPrefHandler: SharedPreferencesHandler
     private lateinit var userAPIClient: UserAPIClient
+    private lateinit var gameRepository: GameRepository
+    private lateinit var sagaRepository: SagaRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +33,8 @@ class ProfileFragment : BaseFragment() {
 
         sharedPrefHandler = SharedPreferencesHandler(context)
         userAPIClient = UserAPIClient(resources, sharedPrefHandler)
+        gameRepository = GameRepository(requireContext())
+        sagaRepository = SagaRepository(requireContext())
 
         initializeUI()
     }
@@ -66,5 +73,29 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun deleteUser() {
+
+        showLoading(view?.parent as View)
+        userAPIClient.deleteUser({
+
+            sharedPrefHandler.removeUserData()
+            removeData()
+            hideLoading()
+            launchActivity(LoginActivity::class.java)
+        }, {
+            manageError(it)
+        })
+    }
+
+    private fun removeData() {
+
+        sharedPrefHandler.removeCredentials()
+        val games = gameRepository.getGames()
+        for (game in games) {
+            gameRepository.deleteGame(game)
+        }
+        val sagas = sagaRepository.getSagas()
+        for (saga in sagas) {
+            sagaRepository.deleteSaga(saga)
+        }
     }
 }
