@@ -4,7 +4,6 @@ import android.content.res.Resources
 import com.google.gson.Gson
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.ErrorResponse
-import es.upsa.mimo.gamercollection.models.EmptyResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,7 +26,7 @@ class APIClient {
             request.enqueue(object : Callback<T> {
                 override fun onResponse(call: Call<T>?, response: Response<T>) {
 
-                    if ( response.isSuccessful && (response.code() == 204 || T::class.java == EmptyResponse::javaClass) ) {
+                    if ( response.isSuccessful && response.code() == 204 ) {
 
                         try {
                             val result = gson.fromJson("{}", T::class.java)
@@ -61,6 +60,34 @@ class APIClient {
                 }
 
                 override fun onFailure(call: Call<T>?, t: Throwable) {
+
+                    val error = ErrorResponse(resources.getString(R.string.ERROR_SERVER)) as U
+                    failure(error)
+                }
+            })
+        }
+
+        inline fun <reified U> sendServerWithVoidResponse(resources: Resources, request: Call<Void>, crossinline success: () -> Unit, crossinline failure: (U) -> Unit) {
+
+            request.enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>?, response: Response<Void>) {
+
+                    if ( response.isSuccessful ) {
+                        success()
+                    } else if (!response.isSuccessful && response.errorBody() != null) {
+
+                        val errorResponse: U = gson.fromJson(
+                            response.errorBody()!!.charStream(), U::class.java
+                        )
+                        failure(errorResponse)
+                    } else {
+
+                        val error = ErrorResponse(resources.getString(R.string.ERROR_SERVER)) as U
+                        failure(error)
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>?, t: Throwable) {
 
                     val error = ErrorResponse(resources.getString(R.string.ERROR_SERVER)) as U
                     failure(error)
