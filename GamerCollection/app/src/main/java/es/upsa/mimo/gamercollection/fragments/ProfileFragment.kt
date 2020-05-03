@@ -7,17 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 
-/**
- * A simple [Fragment] subclass.
- */
-class ProfileFragment : Fragment() {
+class ProfileFragment : BaseFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
