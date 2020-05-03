@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
-import es.upsa.mimo.gamercollection.activities.base.BaseFragment
+import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.*
 import es.upsa.mimo.gamercollection.network.apiClient.*
 import es.upsa.mimo.gamercollection.persistence.repositories.*
@@ -42,7 +42,7 @@ class RegisterFragment : BaseFragment() {
         genreAPIClient = GenreAPIClient(resources)
         platformAPIClient = PlatformAPIClient(resources)
         stateAPIClient = StateAPIClient(resources)
-        userAPIClient = UserAPIClient(resources)
+        userAPIClient = UserAPIClient(resources, sharedPrefHandler)
         formatRepository = FormatRepository(requireContext())
         genreRepository = GenreRepository(requireContext())
         platformRepository = PlatformRepository(requireContext())
@@ -59,9 +59,9 @@ class RegisterFragment : BaseFragment() {
 
     private fun register() {
 
-        val username = editTextUser.text.toString()
-        val password = editTextPassword.text.toString()
-        val repeatPassword = editTextRepeatPassword.text.toString()
+        val username = edit_text_user.text.toString()
+        val password = edit_text_password.text.toString()
+        val repeatPassword = edit_text_repeatPassword.text.toString()
 
         if (username.isEmpty() || password.isEmpty() || repeatPassword.isEmpty()) {
             showPopupDialog(resources.getString(R.string.ERROR_REGISTRATION_EMPTY_DATA))
@@ -84,11 +84,11 @@ class RegisterFragment : BaseFragment() {
                     storeCredentials(authData)
                 }
                 syncApp(userData)
-            }, { errorResponse ->
-                manageError(errorResponse)
+            }, {
+                manageError(it)
             })
-        }, { errorResponse ->
-            manageError(errorResponse)
+        }, {
+            manageError(it)
         })
     }
 
@@ -108,24 +108,22 @@ class RegisterFragment : BaseFragment() {
                         sharedPrefHandler.storeUserData(userData)
                         goToMainView()
                         hideLoading()
-                    }, { errorResponse ->
-                        manageError(errorResponse)
+                    }, {
+                        manageError(it)
                     })
-                }, { errorResponse ->
-                    manageError(errorResponse)
+                }, {
+                    manageError(it)
                 })
-            }, { errorResponse ->
-                manageError(errorResponse)
+            }, {
+                manageError(it)
             })
-        }, { errorResponse ->
-            manageError(errorResponse)
+        }, {
+            manageError(it)
         })
     }
 
     private fun goToMainView() {
-
-        val intent = Intent(context, MainActivity::class.java).apply {}
-        startActivity(intent)
+        launchActivity(MainActivity::class.java)
     }
 
     private fun manageFormats(formats: List<FormatResponse>) {

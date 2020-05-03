@@ -1,24 +1,141 @@
 package es.upsa.mimo.gamercollection.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-
+import android.view.*
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.activities.LoginActivity
+import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.models.AuthData
+import es.upsa.mimo.gamercollection.network.apiClient.UserAPIClient
+import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
+import es.upsa.mimo.gamercollection.persistence.repositories.SagaRepository
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
+import kotlinx.android.synthetic.main.fragment_profile.*
 
-/**
- * A simple [Fragment] subclass.
- */
-class ProfileFragment : Fragment() {
+class ProfileFragment : BaseFragment() {
+
+    private lateinit var sharedPrefHandler: SharedPreferencesHandler
+    private lateinit var userAPIClient: UserAPIClient
+    private lateinit var gameRepository: GameRepository
+    private lateinit var sagaRepository: SagaRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        sharedPrefHandler = SharedPreferencesHandler(context)
+        userAPIClient = UserAPIClient(resources, sharedPrefHandler)
+        gameRepository = GameRepository(requireContext())
+        sagaRepository = SagaRepository(requireContext())
+
+        initializeUI()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.clear()
+        inflater.inflate(R.menu.profile_toolbar_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when(item.itemId) {
+            R.id.action_synchronize -> {
+                openSyncPopup()
+                return true
+            }
+            R.id.action_logout -> {
+                logout()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    //MARK: - Private functions
+
+    private fun initializeUI() {
+
+        val userData = sharedPrefHandler.getUserData()
+        edit_text_user.setText(userData.username)
+        edit_text_password.setText(userData.password)
+
+        change_password_button.setOnClickListener {updatePassword()}
+        delete_user_button.setOnClickListener {deleteUser()}
+    }
+
+    private fun logout() {
+
+        showPopupConfirmationDialog(resources.getString(R.string.PROFILE_LOGOUT_CONFIRMATION)) {
+
+            showLoading(view?.parent as View)
+            userAPIClient.logout({
+
+                sharedPrefHandler.removePassword()
+                removeData()
+                hideLoading()
+                launchActivity(LoginActivity::class.java)
+            }, {
+                manageError(it)
+            })
+        }
+    }
+
+    private fun updatePassword() {
+
+        val newPassword = edit_text_password.text.toString()
+
+        showLoading(view?.parent as View)
+        userAPIClient.updatePassword(newPassword, {
+            sharedPrefHandler.storePassword(newPassword)
+            val userData = sharedPrefHandler.getUserData()
+            userAPIClient.login(userData.username, userData.password, {
+
+                val authData = AuthData(it)
+                sharedPrefHandler.storeCredentials(authData)
+                hideLoading()
+            }, {
+                manageError(it)
+            })
+        }, {
+            manageError(it)
+        })
+    }
+
+    private fun deleteUser() {
+
+        showPopupConfirmationDialog(resources.getString(R.string.PROFILE_DELETE_CONFIRMATION)) {
+
+            showLoading(view?.parent as View)
+            userAPIClient.deleteUser({
+
+                sharedPrefHandler.removeUserData()
+                removeData()
+                hideLoading()
+                launchActivity(LoginActivity::class.java)
+            }, {
+                manageError(it)
+            })
+        }
+    }
+
+    private fun removeData() {
+
+        sharedPrefHandler.removeCredentials()
+        val games = gameRepository.getGames()
+        for (game in games) {
+            gameRepository.deleteGame(game)
+        }
+        val sagas = sagaRepository.getSagas()
+        for (saga in sagas) {
+            sagaRepository.deleteSaga(saga)
+        }
+    }
 }

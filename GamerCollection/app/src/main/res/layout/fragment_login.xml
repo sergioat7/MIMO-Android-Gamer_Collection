@@ -12,17 +12,17 @@
 
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/app_name_image_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/app_name_white"
-            app:layout_constraintBottom_toTopOf="@+id/editTextUser"
+            app:layout_constraintBottom_toTopOf="@+id/edit_text_user"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/editTextUser"
+            android:id="@+id/edit_text_user"
             style="@style/WhiteEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,13 +32,13 @@
             android:ems="10"
             android:hint="@string/LOGIN_USERNAME"
             android:inputType="text"
-            app:layout_constraintBottom_toTopOf="@+id/editTextPassword"
+            app:layout_constraintBottom_toTopOf="@+id/edit_text_password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
-            android:id="@+id/editTextPassword"
+            android:id="@+id/edit_text_password"
             style="@style/WhiteEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
