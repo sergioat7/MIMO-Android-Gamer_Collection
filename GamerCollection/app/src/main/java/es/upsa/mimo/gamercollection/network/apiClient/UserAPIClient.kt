@@ -63,4 +63,19 @@ class UserAPIClient(
             failure(errorResponse)
         })
     }
+
+    fun deleteUser(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        val headers: MutableMap<String, String> = HashMap()
+        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        val api = APIClient.getRetrofit().create(UserAPIService::class.java)
+        val request = api.deleteUser(headers)
+
+        APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
+            success()
+        }, { errorResponse ->
+            failure(errorResponse)
+        })
+    }
 }
