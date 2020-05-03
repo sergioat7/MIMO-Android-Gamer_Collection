@@ -82,8 +82,13 @@ class LoginFragment : BaseFragment() {
         val username = editTextUser.text.toString()
         val password = editTextPassword.text.toString()
 
+        if (username.isEmpty() || password.isEmpty()) {
+            showPopupDialog(resources.getString(R.string.ERROR_REGISTRATION_EMPTY_DATA))
+            return
+        }
+
         showLoading(view)
-        LoginAPIClient.login(username, password, resources, { token ->
+        UserAPIClient.login(username, password, resources, { token ->
 
             val userData = UserData(username, password, false)
             val authData = AuthData(token)
