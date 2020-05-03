@@ -1,5 +1,8 @@
-package es.upsa.mimo.gamercollection.activities.base
+package es.upsa.mimo.gamercollection.fragments.base
 
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.Intent
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +19,7 @@ import es.upsa.mimo.gamercollection.models.ErrorResponse
 
 open class BaseFragment : Fragment() {
 
-    private lateinit var progressBar: ProgressBar
+    private var progressBar: ProgressBar? = null
 
     fun manageError(errorResponse: ErrorResponse) {
 
@@ -24,18 +27,24 @@ open class BaseFragment : Fragment() {
         showPopupDialog(errorResponse.error)
     }
 
+    fun <T> launchActivity(activity: Class<T>) {
+
+        val intent = Intent(context, activity).apply {}
+        startActivity(intent)
+    }
+
     fun showLoading(view: View?) {
 
         if (view == null) return
         val context = view.context
         progressBar = ProgressBar(context)
-        progressBar.indeterminateDrawable.setColorFilter(ContextCompat.getColor(context, R.color.color3), android.graphics.PorterDuff.Mode.MULTIPLY)
+        progressBar!!.indeterminateDrawable.setColorFilter(ContextCompat.getColor(context, R.color.color3), android.graphics.PorterDuff.Mode.MULTIPLY)
         val parentLayout = LinearLayout(context)
         parentLayout.layoutParams = view.layoutParams
         parentLayout.gravity = Gravity.CENTER
         if (view.parent != null) (view.parent as ViewGroup).addView(parentLayout)
-        progressBar.isIndeterminate = true
-        progressBar.tag = view
+        progressBar!!.isIndeterminate = true
+        progressBar!!.tag = view
         parentLayout.addView(progressBar)
         view.visibility = View.GONE
     }
@@ -43,8 +52,8 @@ open class BaseFragment : Fragment() {
     fun hideLoading() {
 
         if (progressBar == null) return
-        val view = progressBar.tag as View
-        (view.parent as ViewGroup).removeView(progressBar.parent as View)
+        val view = progressBar!!.tag as View
+        (view.parent as ViewGroup).removeView(progressBar!!.parent as View)
         view.visibility = View.VISIBLE
     }
 
@@ -58,5 +67,27 @@ open class BaseFragment : Fragment() {
         ft.addToBackStack(null)
         val dialogFragment: DialogFragment = PopupDialogFragment(message)
         dialogFragment.show(ft, "dialog")
+    }
+
+    fun showPopupConfirmationDialog(message: String, acceptHandler: () -> Unit) {
+
+        AlertDialog.Builder(context)
+            .setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton(resources.getString(R.string.ACCEPT)) { dialog, _ ->
+                acceptHandler()
+                dialog.dismiss()
+            }
+            .setNegativeButton(resources.getString(R.string.CANCEL)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    fun openSyncPopup() {
+
+        showPopupConfirmationDialog(resources.getString(R.string.SYNC_CONFIRMATION)) {
+            //TODO show sync popup
+        }
     }
 }
