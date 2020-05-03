@@ -9,22 +9,23 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import java.util.*
 import kotlin.collections.HashMap
 
-class GameAPIClient {
-    companion object {
+class GameAPIClient(
+    private val resources: Resources,
+    private val sharedPrefHandler: SharedPreferencesHandler
+) {
 
-        fun getGames(sharedPrefHandler: SharedPreferencesHandler, resources: Resources, success: (List<GameResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
+    fun getGames(success: (List<GameResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
-            val headers: MutableMap<String, String> = HashMap()
-            headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
-            headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
-            val api = APIClient.getRetrofit().create(GameAPIService::class.java)
-            val request = api.getGames(headers)
+        val headers: MutableMap<String, String> = HashMap()
+        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        val api = APIClient.getRetrofit().create(GameAPIService::class.java)
+        val request = api.getGames(headers)
 
-            APIClient.sendServer<List<GameResponse>, ErrorResponse>(resources, request, { games ->
-                success(games)
-            }, { errorResponse ->
-                failure(errorResponse)
-            })
-        }
+        APIClient.sendServer<List<GameResponse>, ErrorResponse>(resources, request, { games ->
+            success(games)
+        }, { errorResponse ->
+            failure(errorResponse)
+        })
     }
 }

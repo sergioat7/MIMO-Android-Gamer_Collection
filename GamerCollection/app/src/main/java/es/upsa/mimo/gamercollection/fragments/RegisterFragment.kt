@@ -17,6 +17,11 @@ import kotlinx.android.synthetic.main.fragment_register.*
 class RegisterFragment : BaseFragment() {
 
     private lateinit var sharedPrefHandler: SharedPreferencesHandler
+    private lateinit var formatAPIClient: FormatAPIClient
+    private lateinit var genreAPIClient: GenreAPIClient
+    private lateinit var platformAPIClient: PlatformAPIClient
+    private lateinit var stateAPIClient: StateAPIClient
+    private lateinit var userAPIClient: UserAPIClient
     private lateinit var formatRepository: FormatRepository
     private lateinit var genreRepository: GenreRepository
     private lateinit var platformRepository: PlatformRepository
@@ -33,6 +38,11 @@ class RegisterFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         sharedPrefHandler = SharedPreferencesHandler(context)
+        formatAPIClient = FormatAPIClient(resources)
+        genreAPIClient = GenreAPIClient(resources)
+        platformAPIClient = PlatformAPIClient(resources)
+        stateAPIClient = StateAPIClient(resources)
+        userAPIClient = UserAPIClient(resources)
         formatRepository = FormatRepository(requireContext())
         genreRepository = GenreRepository(requireContext())
         platformRepository = PlatformRepository(requireContext())
@@ -64,8 +74,8 @@ class RegisterFragment : BaseFragment() {
         }
 
         showLoading(view)
-        UserAPIClient.register(username, password, resources, {
-            UserAPIClient.login(username, password, resources, { token ->
+        userAPIClient.register(username, password, {
+            userAPIClient.login(username, password, { token ->
 
                 val userData = UserData(username, password, false)
                 val authData = AuthData(token)
@@ -84,10 +94,10 @@ class RegisterFragment : BaseFragment() {
 
     private fun syncApp(userData: UserData) {
 
-        FormatAPIClient.getFormats(resources, { formats ->
-            GenreAPIClient.getGenres(resources, { genres ->
-                PlatformAPIClient.getPlatforms(resources, { platforms ->
-                    StateAPIClient.getStates(resources, { states ->
+        formatAPIClient.getFormats({ formats ->
+            genreAPIClient.getGenres({ genres ->
+                platformAPIClient.getPlatforms({ platforms ->
+                    stateAPIClient.getStates({ states ->
 
                         manageFormats(formats)
                         manageGenres(genres)
