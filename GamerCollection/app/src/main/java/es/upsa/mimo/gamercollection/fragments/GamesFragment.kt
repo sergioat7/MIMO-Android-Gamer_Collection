@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 
 class GamesFragment : BaseFragment() {
@@ -57,5 +58,6 @@ class GamesFragment : BaseFragment() {
     }
 
     private fun add(){
+        launchActivity(GameDetailActivity::class.java)
     }
 }
