@@ -1,5 +1,7 @@
 package es.upsa.mimo.gamercollection.fragments
 
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
 import android.text.InputType
 import android.view.LayoutInflater
@@ -9,8 +11,11 @@ import android.widget.RatingBar
 import androidx.core.content.ContextCompat
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
+import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_game_detail.*
+import java.util.*
+
 
 class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
 
@@ -32,24 +37,27 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     private fun initializeUI() {
 
         game_image_view.setOnClickListener { setImage() }
-
         pending_button.setOnClickListener {
+
             it.isSelected = !it.isSelected
             in_progress_button.isSelected = false
             finished_button.isSelected = false
         }
         in_progress_button.setOnClickListener {
+
             pending_button.isSelected = false
             it.isSelected = !it.isSelected
             finished_button.isSelected = false
         }
         finished_button.setOnClickListener {
+
             pending_button.isSelected = false
             in_progress_button.isSelected = false
             it.isSelected = !it.isSelected
         }
-
+        edit_text_release_date.showDatePicker(requireContext())
         rating_bar.onRatingBarChangeListener = this
+        edit_text_purchase_date.showDatePicker(requireContext())
         edit_text_saga.setReadOnly(true, InputType.TYPE_NULL, 0)
         button_add_song.setOnClickListener { addSong() }
         button_delete_game.setOnClickListener { deleteGame() }
@@ -67,7 +75,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         //TODO enable/disable platforms spinner
         //TODO enable/disable genres spinner
         //TODO enable/disable formats spinner
-        //TODO enable/disable release date spinner
+        edit_text_release_date.setReadOnly(!enable, InputType.TYPE_NULL, editTextBackgroundColor)
         rating_bar.setIsIndicator(!enable)
         pending_button.isEnabled = enable
         in_progress_button.isEnabled = enable
@@ -77,7 +85,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         //TODO enable/disable pegi spinner
         edit_text_players.setReadOnly(!enable, inputTypeText, editTextBackgroundColor)
         edit_text_price.setReadOnly(!enable, if (enable) InputType.TYPE_CLASS_NUMBER else InputType.TYPE_NULL, editTextBackgroundColor)
-        //TODO enable/disable purchase date spinner
+        edit_text_purchase_date.setReadOnly(!enable, InputType.TYPE_NULL, editTextBackgroundColor)
         edit_text_purchase_location.setReadOnly(!enable, inputTypeText, editTextBackgroundColor)
         radio_button_no.isClickable = enable
         radio_button_yes.isClickable = enable
