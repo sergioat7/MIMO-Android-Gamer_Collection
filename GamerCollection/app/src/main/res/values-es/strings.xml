@@ -9,7 +9,6 @@
     <string name="EDIT">Editar</string>
     <string name="DELETE">Borrar</string>
     <string name="REMOVE">Eliminar</string>
-    <string name="MAX" translatable="false">Max</string>
     <string name="EMPTY_LIST">La lista está vacía</string>
     <string name="ASCENDING">Ascendente</string>
     <string name="DESCENDING">Descendente</string>
@@ -130,4 +129,6 @@
     <string name="ERROR_REGISTRATION_EMPTY_DATA">El usuario y la contraseña no pueden estar vacíos</string>
     <string name="ERROR_REGISTRATION_DIFFERENT_PASSWORDS">Las contraseñas no coinciden</string>
     <string name="ERROR_DATABASE">Error en la base de datos. Por favor, inténtalo otra vez</string>
+    <string name="YES">Sí</string>
+    <string name="NO">No</string>
 </resources>

@@ -14,11 +14,38 @@
         <item name="android:textColor">@color/color2</item>
         <item name="android:textColorHint">@color/color2Light</item>
     </style>
+
+    <style name="WhiteEditText.GameDetails" parent="WhiteEditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:minHeight">50dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="WhiteTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/color2</item>
+    </style>
+
+    <style name="WhiteTextView.Bold" parent="WhiteTextView">
+        <item name="fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="WhiteTextView.Regular" parent="WhiteTextView">
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="WhiteTextView.Regular.GameDetails" parent="WhiteTextView">
+        <item name="android:layout_width">150dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">16sp</item>
+    </style>
     
     <style name="RoundedButton" parent="android:style/Widget.Button">
         <item name="android:textColor">@color/color2</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:maxLines">1</item>
         <item name="android:gravity">center</item>
@@ -28,7 +55,42 @@
         <item name="android:background">@drawable/rounded_button_green</item>
     </style>
 
-    <style name="RoundedButton.Remove">
+    <style name="RoundedButton.Delete">
         <item name="android:background">@drawable/rounded_button_red</item>
+    </style>
+
+    <style name="CustomRatingBar" parent="Widget.AppCompat.RatingBar.Indicator">
+        <item name="android:progressTint">@color/color3</item>
+    </style>
+
+    <style name="CustomRatingBar.LightBackground" parent="CustomRatingBar">
+        <item name="android:progressBackgroundTint">@color/color1Light</item>
+    </style>
+
+    <style name="CustomRatingBar.DarkBackground" parent="CustomRatingBar">
+        <item name="android:progressBackgroundTint">@color/color2Light</item>
+    </style>
+
+    <style name="CustomSpinner" parent="Widget.AppCompat.Spinner.Underlined">
+        <item name="android:spinnerMode">dropdown</item>
+        <item name="android:backgroundTint">@color/color2</item>
+        <item name="android:minHeight">40dp</item>
+    </style>
+
+    <style name="StateButton" parent="android:style/Widget.Button">
+        <item name="android:textColor">@drawable/state_button_text_color</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="PendingButton.Bordered" parent="StateButton">
+        <item name="android:background">@drawable/bordered_pending_state_button</item>
+    </style>
+
+    <style name="InProgressButton.Bordered" parent="StateButton">
+        <item name="android:background">@drawable/bordered_in_progress_state_button</item>
+    </style>
+
+    <style name="FinishedButton.Bordered" parent="StateButton">
+        <item name="android:background">@drawable/bordered_finished_state_button</item>
     </style>
 </resources>
