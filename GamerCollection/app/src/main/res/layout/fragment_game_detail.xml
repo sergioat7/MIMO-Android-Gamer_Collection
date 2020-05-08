@@ -141,11 +141,13 @@
                             android:layout_marginBottom="20dp"
                             android:text="@string/GAME_DETAIL_RELEASE_DATE" />
 
-                        <Spinner
-                            android:id="@+id/spinner_release_date"
-                            style="@style/CustomSpinner"
+                        <EditText
+                            android:id="@+id/edit_text_release_date"
+                            style="@style/WhiteEditText"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:hint="@string/GAME_DETAIL_SELECT_DATE" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -346,14 +348,10 @@
                             style="@style/WhiteTextView.Regular.GameDetails"
                             android:text="@string/GAME_DETAIL_PURCHASE_DATE" />
 
-                        <Spinner
-                            android:id="@+id/spinner_purchase_date"
-                            style="@style/CustomSpinner"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:minHeight="40dp"
-                            android:spinnerMode="dropdown" />
+                        <EditText
+                            android:id="@+id/edit_text_purchase_date"
+                            style="@style/WhiteEditText.GameDetails"
+                            android:hint="@string/GAME_DETAIL_SELECT_DATE" />
 
                     </LinearLayout>
 
