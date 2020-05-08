@@ -1,23 +1,28 @@
 package es.upsa.mimo.gamercollection.fragments
 
-import android.app.DatePickerDialog
-import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.RatingBar
 import androidx.core.content.ContextCompat
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
+import es.upsa.mimo.gamercollection.persistence.repositories.GenreRepository
+import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
 import kotlinx.android.synthetic.main.fragment_game_detail.*
 import java.util.*
 
-
 class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
+
+    private lateinit var formatRepository: FormatRepository
+    private lateinit var genreRepository: GenreRepository
+    private lateinit var platformRepository: PlatformRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +34,15 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        formatRepository = FormatRepository(requireContext())
+        genreRepository = GenreRepository(requireContext())
+        platformRepository = PlatformRepository(requireContext())
+
         initializeUI()
+    }
+
+    override fun onRatingChanged(ratingBar: RatingBar?, rating: Float, fromUser: Boolean) {
+        text_view_rating.text = rating.toString()
     }
 
     //MARK: - Private functions
@@ -37,8 +50,25 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     private fun initializeUI() {
 
         game_image_view.setOnClickListener { setImage() }
+        val platforms = ArrayList<String>()
+        platforms.run {
+            this.add(resources.getString((R.string.GAME_DETAIL_SELECT_PLATFORM)))
+            this.addAll(platformRepository.getPlatforms().mapNotNull { it.name })
+        }
+        spinner_platforms.adapter = getAdapter(platforms)
+        val genres = ArrayList<String>()
+        genres.run {
+            this.add(resources.getString((R.string.GAME_DETAIL_SELECT_GENRE)))
+            this.addAll(genreRepository.getGenres().mapNotNull { it.name })
+        }
+        spinner_genres.adapter = getAdapter(genres)
+        val formats = ArrayList<String>()
+        formats.run {
+            this.add(resources.getString((R.string.GAME_DETAIL_SELECT_GENRE)))
+            this.addAll(formatRepository.getFormats().mapNotNull { it.name })
+        }
+        spinner_formats.adapter = getAdapter(formats)
         pending_button.setOnClickListener {
-
             it.isSelected = !it.isSelected
             in_progress_button.isSelected = false
             finished_button.isSelected = false
@@ -55,6 +85,8 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
             in_progress_button.isSelected = false
             it.isSelected = !it.isSelected
         }
+        val pegis = resources.getStringArray(R.array.pegis).toList()
+        spinner_pegis.adapter = getAdapter(pegis)
         edit_text_release_date.showDatePicker(requireContext())
         rating_bar.onRatingBarChangeListener = this
         edit_text_purchase_date.showDatePicker(requireContext())
@@ -102,9 +134,13 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     }
 
     private fun deleteGame() {
+        enableEdition(false)//TODO borrar
     }
 
-    override fun onRatingChanged(ratingBar: RatingBar?, rating: Float, fromUser: Boolean) {
-        text_view_rating.text = rating.toString()
+    private fun getAdapter(data: List<String>): ArrayAdapter<String> {
+
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item, data)
+        arrayAdapter.setDropDownViewResource(R.layout.spinner_item)
+        return arrayAdapter
     }
 }
