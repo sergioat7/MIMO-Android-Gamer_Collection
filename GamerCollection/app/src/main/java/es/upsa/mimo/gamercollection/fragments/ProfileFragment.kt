@@ -67,8 +67,8 @@ class ProfileFragment : BaseFragment() {
         edit_text_user.setText(userData.username)
         edit_text_password.setText(userData.password)
 
-        change_password_button.setOnClickListener {updatePassword()}
-        delete_user_button.setOnClickListener {deleteUser()}
+        button_change_password.setOnClickListener { updatePassword() }
+        button_delete_user.setOnClickListener { deleteUser() }
     }
 
     private fun logout() {
