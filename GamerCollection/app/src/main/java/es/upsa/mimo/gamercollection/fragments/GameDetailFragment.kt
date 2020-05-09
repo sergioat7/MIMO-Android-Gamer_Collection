@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.fragments
 
+import android.app.AlertDialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -18,6 +19,7 @@ import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
 import kotlinx.android.synthetic.main.fragment_game_detail.*
+import kotlinx.android.synthetic.main.set_image_dialog.view.*
 import java.util.*
 
 class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
@@ -25,6 +27,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     private lateinit var formatRepository: FormatRepository
     private lateinit var genreRepository: GenreRepository
     private lateinit var platformRepository: PlatformRepository
+    private var imageUrl: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -134,6 +137,17 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     }
 
     private fun setImage() {
+
+        val dialogBuilder = AlertDialog.Builder(requireContext()).create()
+        val dialogView = this.layoutInflater.inflate(R.layout.set_image_dialog, null)
+
+        dialogView.button_accept.setOnClickListener {
+            imageUrl = dialogView.edit_text_url.text.toString()
+            dialogBuilder.dismiss()
+        }
+
+        dialogBuilder.setView(dialogView)
+        dialogBuilder.show()
     }
 
     private fun addSong() {
