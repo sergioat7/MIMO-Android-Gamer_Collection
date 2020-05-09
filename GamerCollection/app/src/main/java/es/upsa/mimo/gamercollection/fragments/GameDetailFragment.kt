@@ -145,7 +145,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     private fun getAdapter(data: List<String>): ArrayAdapter<String> {
 
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item, data)
-        arrayAdapter.setDropDownViewResource(R.layout.spinner_item)
+        arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         return arrayAdapter
     }
 }
