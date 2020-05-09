@@ -1,5 +1,7 @@
 package es.upsa.mimo.gamercollection.fragments
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
 import android.view.LayoutInflater
@@ -100,30 +102,34 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     private fun enableEdition(enable: Boolean) {
 
         val inputTypeText = if (enable) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
-        val editTextBackgroundColor = ContextCompat.getColor(requireContext(), R.color.color2)
+        val backgroundColor = ContextCompat.getColor(requireContext(), R.color.color2)
 
-        edit_text_name.setReadOnly(!enable, inputTypeText, editTextBackgroundColor)
+        edit_text_name.setReadOnly(!enable, inputTypeText, backgroundColor)
         game_image_view.isEnabled = enable
-        //TODO enable/disable platforms spinner
-        //TODO enable/disable genres spinner
-        //TODO enable/disable formats spinner
-        edit_text_release_date.setReadOnly(!enable, InputType.TYPE_NULL, editTextBackgroundColor)
+        spinner_platforms.backgroundTintList = if (!enable) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
+        spinner_platforms.isEnabled = enable
+        spinner_genres.backgroundTintList = if (!enable) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
+        spinner_genres.isEnabled = enable
+        spinner_formats.backgroundTintList = if (!enable) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
+        spinner_formats.isEnabled = enable
+        edit_text_release_date.setReadOnly(!enable, InputType.TYPE_NULL, backgroundColor)
         rating_bar.setIsIndicator(!enable)
         pending_button.isEnabled = enable
         in_progress_button.isEnabled = enable
         finished_button.isEnabled = enable
-        edit_text_distributor.setReadOnly(!enable, inputTypeText, editTextBackgroundColor)
-        edit_text_developer.setReadOnly(!enable, inputTypeText, editTextBackgroundColor)
-        //TODO enable/disable pegi spinner
-        edit_text_players.setReadOnly(!enable, inputTypeText, editTextBackgroundColor)
-        edit_text_price.setReadOnly(!enable, if (enable) InputType.TYPE_CLASS_NUMBER else InputType.TYPE_NULL, editTextBackgroundColor)
-        edit_text_purchase_date.setReadOnly(!enable, InputType.TYPE_NULL, editTextBackgroundColor)
-        edit_text_purchase_location.setReadOnly(!enable, inputTypeText, editTextBackgroundColor)
+        edit_text_distributor.setReadOnly(!enable, inputTypeText, backgroundColor)
+        edit_text_developer.setReadOnly(!enable, inputTypeText, backgroundColor)
+        spinner_pegis.backgroundTintList = if (!enable) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
+        spinner_pegis.isEnabled = enable
+        edit_text_players.setReadOnly(!enable, inputTypeText, backgroundColor)
+        edit_text_price.setReadOnly(!enable, if (enable) InputType.TYPE_CLASS_NUMBER else InputType.TYPE_NULL, backgroundColor)
+        edit_text_purchase_date.setReadOnly(!enable, InputType.TYPE_NULL, backgroundColor)
+        edit_text_purchase_location.setReadOnly(!enable, inputTypeText, backgroundColor)
         radio_button_no.isClickable = enable
         radio_button_yes.isClickable = enable
-        edit_text_loaned.setReadOnly(!enable, inputTypeText, editTextBackgroundColor)
-        edit_text_video_url.setReadOnly(!enable, inputTypeText, editTextBackgroundColor)
-        edit_text_observations.setReadOnly(!enable, inputTypeText, editTextBackgroundColor)
+        edit_text_loaned.setReadOnly(!enable, inputTypeText, backgroundColor)
+        edit_text_video_url.setReadOnly(!enable, inputTypeText, backgroundColor)
+        edit_text_observations.setReadOnly(!enable, inputTypeText, backgroundColor)
         button_add_song.visibility = if (enable) View.VISIBLE else View.GONE
     }
 
@@ -134,7 +140,6 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     }
 
     private fun deleteGame() {
-        enableEdition(false)//TODO borrar
     }
 
     private fun getAdapter(data: List<String>): ArrayAdapter<String> {
