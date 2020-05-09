@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.RatingBar
 import androidx.core.content.ContextCompat
+import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
@@ -131,7 +132,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         radio_button_no.isClickable = enable
         radio_button_yes.isClickable = enable
         edit_text_loaned.setReadOnly(!enable, inputTypeText, backgroundColor)
-        edit_text_video_url.setReadOnly(!enable, inputTypeText, backgroundColor)
+        edit_text_video_url.setReadOnly(!enable, if (enable) InputType.TYPE_TEXT_VARIATION_URI else InputType.TYPE_NULL, backgroundColor)
         edit_text_observations.setReadOnly(!enable, inputTypeText, backgroundColor)
         button_add_song.visibility = if (enable) View.VISIBLE else View.GONE
     }
@@ -143,6 +144,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
 
         dialogView.button_accept.setOnClickListener {
             imageUrl = dialogView.edit_text_url.text.toString()
+            Picasso.with(requireContext()).load(imageUrl).error(R.drawable.add_photo).into(game_image_view)
             dialogBuilder.dismiss()
         }
 
