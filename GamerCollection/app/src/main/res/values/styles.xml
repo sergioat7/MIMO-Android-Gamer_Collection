@@ -73,10 +73,12 @@
 
     <style name="CustomRatingBar.LightBackground" parent="CustomRatingBar">
         <item name="android:progressBackgroundTint">@color/color1Light</item>
+        <item name="android:secondaryProgressTint">@android:color/transparent</item>
     </style>
 
     <style name="CustomRatingBar.DarkBackground" parent="CustomRatingBar">
         <item name="android:progressBackgroundTint">@color/color2Light</item>
+        <item name="android:secondaryProgressTint">@android:color/transparent</item>
     </style>
 
     <style name="CustomSpinner" parent="Widget.AppCompat.Spinner.Underlined">
