@@ -1,22 +1,21 @@
 package es.upsa.mimo.gamercollection.fragments.base
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.view.Gravity
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.fragments.PopupDialogFragment
-import es.upsa.mimo.gamercollection.fragments.PopupSyncAppDialogFragment
+import es.upsa.mimo.gamercollection.fragments.popups.PopupErrorDialogFragment
+import es.upsa.mimo.gamercollection.fragments.popups.PopupSyncAppDialogFragment
 import es.upsa.mimo.gamercollection.models.ErrorResponse
-
 
 open class BaseFragment : Fragment() {
 
@@ -47,7 +46,7 @@ open class BaseFragment : Fragment() {
         progressBar!!.isIndeterminate = true
         progressBar!!.tag = view
         parentLayout.addView(progressBar)
-        view.visibility = View.GONE
+        view.visibility = GONE
     }
 
     fun hideLoading() {
@@ -55,18 +54,19 @@ open class BaseFragment : Fragment() {
         if (progressBar == null) return
         val view = progressBar!!.tag as View
         (view.parent as ViewGroup).removeView(progressBar!!.parent as View)
-        view.visibility = View.VISIBLE
+        view.visibility = VISIBLE
     }
 
     fun showPopupDialog(message: String) {
 
-        val ft: FragmentTransaction = fragmentManager?.beginTransaction() ?: return
-        val prev = fragmentManager?.findFragmentByTag("dialog")
+
+        val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
+        val prev = activity?.supportFragmentManager?.findFragmentByTag("dialog")
         if (prev != null) {
             ft.remove(prev)
         }
         ft.addToBackStack(null)
-        val dialogFragment: DialogFragment = PopupDialogFragment(message)
+        val dialogFragment = PopupErrorDialogFragment(message)
         dialogFragment.show(ft, "dialog")
     }
 
@@ -96,13 +96,13 @@ open class BaseFragment : Fragment() {
 
     private fun showSyncPopup() {
 
-        val ft: FragmentTransaction = fragmentManager?.beginTransaction() ?: return
-        val prev = fragmentManager?.findFragmentByTag("dialog")
+        val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
+        val prev = activity?.supportFragmentManager?.findFragmentByTag("dialog")
         if (prev != null) {
             ft.remove(prev)
         }
         ft.addToBackStack(null)
-        val dialogFragment: DialogFragment = PopupSyncAppDialogFragment()
+        val dialogFragment = PopupSyncAppDialogFragment()
         dialogFragment.isCancelable = false
         dialogFragment.show(ft, "dialog")
     }

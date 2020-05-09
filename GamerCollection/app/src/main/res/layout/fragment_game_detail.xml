@@ -92,6 +92,7 @@
                             style="@style/WhiteTextView.Regular"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textSize="12sp"
                             android:text="@string/GAME_DETAIL_PLATFORM" />
 
                         <Spinner
@@ -99,13 +100,14 @@
                             style="@style/CustomSpinner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="20dp" />
+                            android:layout_marginBottom="10dp"/>
 
                         <TextView
                             android:id="@+id/text_view_genre_title"
                             style="@style/WhiteTextView.Regular"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textSize="12sp"
                             android:text="@string/GAME_DETAIL_GENRE" />
 
                         <Spinner
@@ -113,13 +115,14 @@
                             style="@style/CustomSpinner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="20dp" />
+                            android:layout_marginBottom="10dp" />
 
                         <TextView
                             android:id="@+id/text_view_format_title"
                             style="@style/WhiteTextView.Regular"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textSize="12sp"
                             android:text="@string/GAME_DETAIL_FORMAT" />
 
                         <Spinner
@@ -127,15 +130,15 @@
                             style="@style/CustomSpinner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="20dp" />
+                            android:layout_marginBottom="10dp" />
 
                         <TextView
                             android:id="@+id/text_view_release_date_title"
                             style="@style/WhiteTextView.Regular"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/GAME_DETAIL_RELEASE_DATE"
-                            android:layout_marginBottom="10dp" />
+                            android:textSize="12sp"
+                            android:text="@string/GAME_DETAIL_RELEASE_DATE" />
 
                         <EditText
                             android:id="@+id/edit_text_release_date"

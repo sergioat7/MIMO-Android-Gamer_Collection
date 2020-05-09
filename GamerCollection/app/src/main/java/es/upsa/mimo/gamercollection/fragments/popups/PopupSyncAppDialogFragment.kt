@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.fragments
+package es.upsa.mimo.gamercollection.fragments.popups
 
 import android.content.Intent
 import android.os.Bundle
@@ -159,13 +159,13 @@ class PopupSyncAppDialogFragment : DialogFragment() {
 
     private fun showPopupDialog(message: String) {
 
-        val ft: FragmentTransaction = fragmentManager?.beginTransaction() ?: return
-        val prev = fragmentManager?.findFragmentByTag("dialog")
+        val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
+        val prev = activity?.supportFragmentManager?.findFragmentByTag("dialog")
         if (prev != null) {
             ft.remove(prev)
         }
         ft.addToBackStack(null)
-        val dialogFragment: DialogFragment = PopupDialogFragment(message)
+        val dialogFragment = PopupErrorDialogFragment(message)
         dialogFragment.show(ft, "dialog")
     }
 }
