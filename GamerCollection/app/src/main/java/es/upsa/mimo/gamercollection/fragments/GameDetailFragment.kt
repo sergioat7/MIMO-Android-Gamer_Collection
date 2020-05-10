@@ -5,9 +5,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.RatingBar
 import androidx.core.content.ContextCompat
@@ -17,6 +15,7 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
@@ -29,12 +28,15 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     private lateinit var formatRepository: FormatRepository
     private lateinit var genreRepository: GenreRepository
     private lateinit var platformRepository: PlatformRepository
+    private lateinit var menu: Menu
+    private var currentGame: GameResponse? = null
     private var imageUrl: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_game_detail, container, false)
     }
 
@@ -46,6 +48,35 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         platformRepository = PlatformRepository(requireContext())
 
         initializeUI()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        this.menu = menu
+        menu.clear()
+        inflater.inflate(R.menu.game_details_toolbar_menu, menu)
+        menu.findItem(R.id.action_save_game).isVisible = false
+        menu.findItem(R.id.action_cancel_game).isVisible = false
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when(item.itemId) {
+            R.id.action_edit_game -> {
+                editGame()
+                return true
+            }
+            R.id.action_save_game -> {
+                saveGame()
+                return true
+            }
+            R.id.action_cancel_game -> {
+                cancelEdition()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onRatingChanged(ratingBar: RatingBar?, rating: Float, fromUser: Boolean) {
@@ -102,6 +133,11 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         button_delete_game.setOnClickListener { deleteGame() }
 
         enableEdition(true)
+    }
+
+    private fun showData(game: GameResponse?) {
+
+        currentGame = game
     }
 
     private fun enableEdition(enable: Boolean) {
@@ -171,6 +207,26 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     }
 
     private fun deleteGame() {
+    }
+
+    private fun editGame(){
+
+        menu.findItem(R.id.action_edit_game).isVisible = false
+        menu.findItem(R.id.action_save_game).isVisible = true
+        menu.findItem(R.id.action_cancel_game).isVisible = true
+        enableEdition(true)
+    }
+
+    private fun saveGame() {
+    }
+
+    private fun cancelEdition(){
+
+        menu.findItem(R.id.action_edit_game).isVisible = true
+        menu.findItem(R.id.action_save_game).isVisible = false
+        menu.findItem(R.id.action_cancel_game).isVisible = false
+        showData(currentGame)
+        enableEdition(false)
     }
 
     private fun getAdapter(data: List<String>): ArrayAdapter<String> {
