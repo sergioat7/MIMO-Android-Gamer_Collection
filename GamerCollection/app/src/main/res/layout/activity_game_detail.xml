@@ -6,13 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".activities.GameDetailActivity">
 
-    <fragment
-        android:id="@+id/fragment"
-        android:name="es.upsa.mimo.gamercollection.fragments.GameDetailFragment"
+    <FrameLayout
+        android:id="@+id/game_detail_fragment_placeholder"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,6 +25,7 @@ import java.util.*
 
 class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
 
+    private var gameId: Int? = null
     private lateinit var formatRepository: FormatRepository
     private lateinit var genreRepository: GenreRepository
     private lateinit var platformRepository: PlatformRepository
@@ -36,6 +37,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        gameId = this.arguments?.getInt("gameId")
         setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_game_detail, container, false)
     }
@@ -56,7 +58,8 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         this.menu = menu
         menu.clear()
         inflater.inflate(R.menu.game_details_toolbar_menu, menu)
-        menu.findItem(R.id.action_save_game).isVisible = false
+        menu.findItem(R.id.action_edit_game).isVisible = currentGame != null
+        menu.findItem(R.id.action_save_game).isVisible = currentGame == null
         menu.findItem(R.id.action_cancel_game).isVisible = false
     }
 
