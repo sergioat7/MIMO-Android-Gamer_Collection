@@ -203,8 +203,8 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
             edit_text_price.setText(game.price.toString())
             edit_text_purchase_date.setText(game.purchaseDate)
             edit_text_purchase_location.setText(game.purchaseLocation)
-            radio_button_yes.isSelected = game.goty
-            radio_button_no.isSelected = !game.goty
+            radio_button_yes.isChecked = game.goty
+            radio_button_no.isChecked = !game.goty
             edit_text_loaned.setText(game.loanedTo)
             edit_text_video_url.setText(game.videoUrl)
             edit_text_observations.setText(game.observations)
@@ -279,6 +279,10 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     }
 
     private fun deleteGame() {
+
+        showPopupConfirmationDialog(resources.getString(R.string.GAME_DETAIL_DELETE_CONFIRMATION)) {
+            //TODO delete
+        }
     }
 
     private fun editGame(){
