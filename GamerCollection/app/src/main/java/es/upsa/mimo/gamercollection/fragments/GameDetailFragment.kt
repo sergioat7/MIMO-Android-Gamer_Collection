@@ -15,10 +15,15 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.models.FormatResponse
 import es.upsa.mimo.gamercollection.models.GameResponse
+import es.upsa.mimo.gamercollection.models.GenreResponse
+import es.upsa.mimo.gamercollection.models.PlatformResponse
 import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
+import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
+import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.android.synthetic.main.fragment_game_detail.*
 import kotlinx.android.synthetic.main.set_image_dialog.view.*
 import java.util.*
@@ -29,7 +34,11 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     private lateinit var formatRepository: FormatRepository
     private lateinit var genreRepository: GenreRepository
     private lateinit var platformRepository: PlatformRepository
+    private lateinit var gameRepository: GameRepository
     private lateinit var menu: Menu
+    private var platforms = ArrayList<String>()
+    private var genres = ArrayList<String>()
+    private var formats = ArrayList<String>()
     private var currentGame: GameResponse? = null
     private var imageUrl: String? = null
 
@@ -48,8 +57,10 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         formatRepository = FormatRepository(requireContext())
         genreRepository = GenreRepository(requireContext())
         platformRepository = PlatformRepository(requireContext())
+        gameRepository = GameRepository(requireContext())
 
         initializeUI()
+        loadData()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -91,19 +102,19 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     private fun initializeUI() {
 
         game_image_view.setOnClickListener { setImage() }
-        val platforms = ArrayList<String>()
+        platforms = ArrayList<String>()
         platforms.run {
             this.add(resources.getString((R.string.GAME_DETAIL_SELECT_PLATFORM)))
             this.addAll(platformRepository.getPlatforms().mapNotNull { it.name })
         }
         spinner_platforms.adapter = getAdapter(platforms)
-        val genres = ArrayList<String>()
+        genres = ArrayList<String>()
         genres.run {
             this.add(resources.getString((R.string.GAME_DETAIL_SELECT_GENRE)))
             this.addAll(genreRepository.getGenres().mapNotNull { it.name })
         }
         spinner_genres.adapter = getAdapter(genres)
-        val formats = ArrayList<String>()
+        formats = ArrayList<String>()
         formats.run {
             this.add(resources.getString((R.string.GAME_DETAIL_SELECT_GENRE)))
             this.addAll(formatRepository.getFormats().mapNotNull { it.name })
@@ -134,13 +145,71 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         edit_text_saga.setReadOnly(true, InputType.TYPE_NULL, 0)
         button_add_song.setOnClickListener { addSong() }
         button_delete_game.setOnClickListener { deleteGame() }
+    }
 
-        enableEdition(true)
+    private fun loadData() {
+
+        gameId?.let {
+
+            showLoading(view)
+            currentGame = gameRepository.getGame(it)
+            hideLoading()
+        }
+        showData(currentGame)
+
+        enableEdition(currentGame == null)
     }
 
     private fun showData(game: GameResponse?) {
 
         currentGame = game
+        game?.let { game ->
+
+            edit_text_name.setText(game.name)
+            imageUrl = game.imageUrl
+            imageUrl?.let { url ->
+                Picasso.with(requireContext()).load(url).error(R.drawable.add_photo).into(game_image_view)
+            }
+            goty_image_view.visibility = if(game.goty) View.VISIBLE else View.GONE
+            game.platform?.let { platformId ->
+                val platform = platformRepository.getPlatforms().first { it.id == platformId }
+                val pos = platforms.indexOf(platform.name)
+                spinner_platforms.setSelection(pos)
+            }
+            game.genre?.let { genreId ->
+                val genre = genreRepository.getGenres().first { it.id == genreId }
+                val pos = genres.indexOf(genre.name)
+                spinner_genres.setSelection(pos)
+            }
+            game.format?.let { formatId ->
+                val format = formatRepository.getFormats().first { it.id == formatId }
+                val pos = formats.indexOf(format.name)
+                spinner_formats.setSelection(pos)
+            }
+            edit_text_release_date.setText(game.releaseDate)
+            rating_bar.rating = game.score.toFloat()
+            game.state?.let {
+                pending_button.isSelected = it == Constants.pending
+                in_progress_button.isSelected = it == Constants.inProgress
+                finished_button.isSelected = it == Constants.finished
+            }
+            edit_text_distributor.setText(game.distributor)
+            edit_text_developer.setText(game.developer)
+            game.pegi?.let { pegi ->
+                val pos = resources.getStringArray(R.array.pegis).indexOf(pegi)
+                spinner_pegis.setSelection(pos)
+            }
+            edit_text_players.setText(game.players)
+            edit_text_price.setText(game.price.toString())
+            edit_text_purchase_date.setText(game.purchaseDate)
+            edit_text_purchase_location.setText(game.purchaseLocation)
+            radio_button_yes.isSelected = game.goty
+            radio_button_no.isSelected = !game.goty
+            edit_text_loaned.setText(game.loanedTo)
+            edit_text_video_url.setText(game.videoUrl)
+            edit_text_observations.setText(game.observations)
+            edit_text_saga.setText(game.saga?.name)
+        }
     }
 
     private fun enableEdition(enable: Boolean) {
