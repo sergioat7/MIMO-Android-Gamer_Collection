@@ -23,6 +23,16 @@ class GameRepository(context: Context) {
         return games
     }
 
+    fun getGame(gameId: Int): GameResponse? {
+
+        var game: GameResponse? = null
+        runBlocking {
+            val result = GlobalScope.async { gameDao.getGame(gameId) }
+            game = result.await()
+        }
+        return game
+    }
+
     fun insertGame(game: GameResponse) {
 
         GlobalScope.launch {
