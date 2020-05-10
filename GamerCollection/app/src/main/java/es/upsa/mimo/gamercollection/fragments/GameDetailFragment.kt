@@ -15,10 +15,7 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
-import es.upsa.mimo.gamercollection.models.FormatResponse
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.models.GenreResponse
-import es.upsa.mimo.gamercollection.models.PlatformResponse
+import es.upsa.mimo.gamercollection.models.*
 import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.GenreRepository
@@ -26,7 +23,7 @@ import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.android.synthetic.main.fragment_game_detail.*
 import kotlinx.android.synthetic.main.set_image_dialog.view.*
-import java.util.*
+import kotlin.collections.ArrayList
 
 class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
 
@@ -36,9 +33,12 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     private lateinit var platformRepository: PlatformRepository
     private lateinit var gameRepository: GameRepository
     private lateinit var menu: Menu
-    private var platforms = ArrayList<String>()
-    private var genres = ArrayList<String>()
-    private var formats = ArrayList<String>()
+    private lateinit var platforms: List<PlatformResponse>
+    private lateinit var genres: List<GenreResponse>
+    private lateinit var formats: List<FormatResponse>
+    private var platformValues = ArrayList<String>()
+    private var genreValues = ArrayList<String>()
+    private var formatValues = ArrayList<String>()
     private var currentGame: GameResponse? = null
     private var imageUrl: String? = null
 
@@ -102,24 +102,27 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     private fun initializeUI() {
 
         game_image_view.setOnClickListener { setImage() }
-        platforms = ArrayList<String>()
-        platforms.run {
+        platforms = platformRepository.getPlatforms()
+        platformValues = ArrayList<String>()
+        platformValues.run {
             this.add(resources.getString((R.string.GAME_DETAIL_SELECT_PLATFORM)))
-            this.addAll(platformRepository.getPlatforms().mapNotNull { it.name })
+            this.addAll(platforms.mapNotNull { it.name })
         }
-        spinner_platforms.adapter = getAdapter(platforms)
-        genres = ArrayList<String>()
-        genres.run {
+        spinner_platforms.adapter = getAdapter(platformValues)
+        genres = genreRepository.getGenres()
+        genreValues = ArrayList<String>()
+        genreValues.run {
             this.add(resources.getString((R.string.GAME_DETAIL_SELECT_GENRE)))
-            this.addAll(genreRepository.getGenres().mapNotNull { it.name })
+            this.addAll(genres.mapNotNull { it.name })
         }
-        spinner_genres.adapter = getAdapter(genres)
-        formats = ArrayList<String>()
-        formats.run {
+        spinner_genres.adapter = getAdapter(genreValues)
+        formats = formatRepository.getFormats()
+        formatValues = ArrayList<String>()
+        formatValues.run {
             this.add(resources.getString((R.string.GAME_DETAIL_SELECT_GENRE)))
-            this.addAll(formatRepository.getFormats().mapNotNull { it.name })
+            this.addAll(formats.mapNotNull { it.name })
         }
-        spinner_formats.adapter = getAdapter(formats)
+        spinner_formats.adapter = getAdapter(formatValues)
         pending_button.setOnClickListener {
             it.isSelected = !it.isSelected
             in_progress_button.isSelected = false
@@ -172,19 +175,19 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
             }
             goty_image_view.visibility = if(game.goty) View.VISIBLE else View.GONE
             game.platform?.let { platformId ->
-                val platform = platformRepository.getPlatforms().first { it.id == platformId }
-                val pos = platforms.indexOf(platform.name)
-                spinner_platforms.setSelection(pos)
+                val platformName = platformRepository.getPlatforms().firstOrNull { it.id == platformId }?.name
+                val pos = platformValues.indexOf(platformName)
+                spinner_platforms.setSelection( if(pos > 0) pos else 0 )
             }
             game.genre?.let { genreId ->
-                val genre = genreRepository.getGenres().first { it.id == genreId }
-                val pos = genres.indexOf(genre.name)
-                spinner_genres.setSelection(pos)
+                val genreName = genreRepository.getGenres().firstOrNull { it.id == genreId }?.name
+                val pos = genreValues.indexOf(genreName)
+                spinner_genres.setSelection( if(pos > 0) pos else 0 )
             }
             game.format?.let { formatId ->
-                val format = formatRepository.getFormats().first { it.id == formatId }
-                val pos = formats.indexOf(format.name)
-                spinner_formats.setSelection(pos)
+                val formatName = formatRepository.getFormats().firstOrNull { it.id == formatId }?.name
+                val pos = formatValues.indexOf(formatName)
+                spinner_formats.setSelection( if(pos > 0) pos else 0 )
             }
             edit_text_release_date.setText(game.releaseDate)
             rating_bar.rating = game.score.toFloat()
@@ -246,6 +249,33 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         button_add_song.visibility = if (enable) View.VISIBLE else View.GONE
     }
 
+    private fun getGameData(): GameResponse {
+
+        return GameResponse(
+            currentGame?.id ?: 0,
+            edit_text_name.text.toString(),
+            platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id,
+            rating_bar.rating.toDouble(),
+            resources.getStringArray(R.array.pegis).firstOrNull { it == spinner_pegis.selectedItem.toString() },
+            edit_text_distributor.text.toString(),
+            edit_text_developer.text.toString(),
+            edit_text_players.text.toString(),
+            edit_text_release_date.text.toString(),
+            radio_button_yes.isChecked,
+            formats.firstOrNull { it.name == spinner_formats.selectedItem.toString() }?.id,
+            genres.firstOrNull { it.name == spinner_genres.selectedItem.toString() }?.id,
+            if(pending_button.isSelected) Constants.pending else if (in_progress_button.isSelected) Constants.inProgress else Constants.finished,
+            edit_text_purchase_date.text.toString(),
+            edit_text_purchase_location.text.toString(),
+            edit_text_price.text.toString().toDouble(),
+            imageUrl,
+            edit_text_video_url.text.toString(),
+            edit_text_loaned.text.toString(),
+            edit_text_observations.text.toString(),
+            currentGame?.saga,
+            currentGame?.songs ?: ArrayList())
+    }
+
     private fun setImage() {
 
         val dialogBuilder = AlertDialog.Builder(requireContext()).create()
@@ -264,6 +294,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
                             imageUrl = url
                         }
                         override fun onError() {
+                            imageUrl = null
                             showPopupDialog(resources.getString(R.string.ERROR_IMAGE_URL))
                         }
                     })
