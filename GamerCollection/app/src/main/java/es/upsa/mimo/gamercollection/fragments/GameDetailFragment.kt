@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.RatingBar
 import androidx.core.content.ContextCompat
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
@@ -143,8 +144,22 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         val dialogView = this.layoutInflater.inflate(R.layout.set_image_dialog, null)
 
         dialogView.button_accept.setOnClickListener {
-            imageUrl = dialogView.edit_text_url.text.toString()
-            Picasso.with(requireContext()).load(imageUrl).error(R.drawable.add_photo).into(game_image_view)
+
+            val url = dialogView.edit_text_url.text.toString()
+            if (!url.isEmpty()) {
+
+                Picasso.with(requireContext())
+                    .load(url)
+                    .error(R.drawable.add_photo)
+                    .into(game_image_view, object : Callback {
+                        override fun onSuccess() {
+                            imageUrl = url
+                        }
+                        override fun onError() {
+                            showPopupDialog(resources.getString(R.string.ERROR_IMAGE_URL))
+                        }
+                    })
+            }
             dialogBuilder.dismiss()
         }
 

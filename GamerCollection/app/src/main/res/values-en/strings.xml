@@ -131,4 +131,5 @@
     <string name="ERROR_DATABASE">Database error. Please try again</string>
     <string name="YES">Yes</string>
     <string name="NO">No</string>
+    <string name="ERROR_IMAGE_URL">The image could not be loaded</string>
 </resources>
