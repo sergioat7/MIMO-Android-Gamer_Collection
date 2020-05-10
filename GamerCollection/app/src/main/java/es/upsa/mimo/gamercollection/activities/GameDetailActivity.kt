@@ -8,6 +8,7 @@ class GameDetailActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTitle(R.string.GAME_DETAIL)
         setContentView(R.layout.activity_game_detail)
     }
 }
