@@ -49,7 +49,7 @@ class GameAPIClient(
         val headers: MutableMap<String, String> = HashMap()
         headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
-        val request = api.deleteUser(headers, gameId)
+        val request = api.deleteGame(headers, gameId)
 
         APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
             success()

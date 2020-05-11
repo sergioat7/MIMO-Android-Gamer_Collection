@@ -1,7 +1,6 @@
 package es.upsa.mimo.gamercollection.network.apiService
 
 import es.upsa.mimo.gamercollection.models.GameResponse
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -20,5 +19,5 @@ interface GameAPIService {
     fun setGame(@HeaderMap headers: Map<String, String>, @Path(value = "gameId") gameId: Int, @Body body: GameResponse): Call<GameResponse>
 
     @DELETE("game/{gameId}")
-    fun deleteUser(@HeaderMap headers: Map<String, String>, @Path(value = "gameId") gameId: Int): Call<Void>
+    fun deleteGame(@HeaderMap headers: Map<String, String>, @Path(value = "gameId") gameId: Int): Call<Void>
 }

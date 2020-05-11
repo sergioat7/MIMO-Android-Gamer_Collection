@@ -12,11 +12,12 @@ class PlatformAPIClient(
     private val resources: Resources
 ) {
 
+    private val api = APIClient.getRetrofit().create(PlatformAPIService::class.java)
+
     fun getPlatforms(success: (List<PlatformResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
         headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
-        val api = APIClient.getRetrofit().create(PlatformAPIService::class.java)
         val request = api.getPlatforms(headers)
 
         APIClient.sendServer<List<PlatformResponse>, ErrorResponse>(resources, request, { platforms ->

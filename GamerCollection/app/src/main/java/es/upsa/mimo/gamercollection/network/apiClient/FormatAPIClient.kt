@@ -12,11 +12,12 @@ class FormatAPIClient(
     private val resources: Resources
 ) {
 
+    private val api = APIClient.getRetrofit().create(FormatAPIService::class.java)
+
     fun getFormats(success: (List<FormatResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
         headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
-        val api = APIClient.getRetrofit().create(FormatAPIService::class.java)
         val request = api.getFormats(headers)
 
         APIClient.sendServer<List<FormatResponse>, ErrorResponse>(resources, request, { formats ->
