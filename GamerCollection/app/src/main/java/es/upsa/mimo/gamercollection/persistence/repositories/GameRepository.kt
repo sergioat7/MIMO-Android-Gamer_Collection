@@ -40,6 +40,13 @@ class GameRepository(context: Context) {
         }
     }
 
+    fun updateGame(game: GameResponse) {
+
+        GlobalScope.launch {
+            gameDao.updateGame(game)
+        }
+    }
+
     fun deleteGame(game: GameResponse) {
 
         GlobalScope.launch {
