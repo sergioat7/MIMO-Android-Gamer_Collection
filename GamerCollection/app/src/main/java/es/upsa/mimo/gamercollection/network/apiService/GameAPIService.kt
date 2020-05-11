@@ -18,4 +18,7 @@ interface GameAPIService {
     )
     @PATCH("game/{gameId}")
     fun setGame(@HeaderMap headers: Map<String, String>, @Path(value = "gameId") gameId: Int, @Body body: GameResponse): Call<GameResponse>
+
+    @DELETE("game/{gameId}")
+    fun deleteUser(@HeaderMap headers: Map<String, String>, @Path(value = "gameId") gameId: Int): Call<Void>
 }
