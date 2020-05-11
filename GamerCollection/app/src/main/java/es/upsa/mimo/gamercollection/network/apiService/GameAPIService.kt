@@ -15,6 +15,12 @@ interface GameAPIService {
     @Headers(
         "Content-Type:application/json"
     )
+    @POST("game")
+    fun createGame(@HeaderMap headers: Map<String, String>, @Body body: GameResponse): Call<Void>
+
+    @Headers(
+        "Content-Type:application/json"
+    )
     @PATCH("game/{gameId}")
     fun setGame(@HeaderMap headers: Map<String, String>, @Path(value = "gameId") gameId: Int, @Body body: GameResponse): Call<GameResponse>
 
