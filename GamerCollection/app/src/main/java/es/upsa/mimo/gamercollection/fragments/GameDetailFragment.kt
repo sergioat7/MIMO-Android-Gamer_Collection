@@ -146,7 +146,9 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
             in_progress_button.isSelected = false
             it.isSelected = !it.isSelected
         }
-        val pegis = resources.getStringArray(R.array.pegis).toList()
+        val pegis = ArrayList<String>()
+        pegis.add(resources.getString(R.string.GAME_DETAIL_SELECT_PEGI))
+        pegis.addAll(resources.getStringArray(R.array.pegis).toList())
         spinner_pegis.adapter = getAdapter(pegis)
         edit_text_release_date.showDatePicker(requireContext())
         rating_bar.onRatingBarChangeListener = this
@@ -257,6 +259,8 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
 
     private fun getGameData(): GameResponse {
 
+        val price = try { edit_text_price.text.toString().toDouble() } catch (e: NumberFormatException) { 0.0 }
+
         return GameResponse(
             currentGame?.id ?: 0,
             edit_text_name.text.toString(),
@@ -270,10 +274,10 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
             radio_button_yes.isChecked,
             formats.firstOrNull { it.name == spinner_formats.selectedItem.toString() }?.id,
             genres.firstOrNull { it.name == spinner_genres.selectedItem.toString() }?.id,
-            if(pending_button.isSelected) Constants.pending else if (in_progress_button.isSelected) Constants.inProgress else Constants.finished,
+            if(pending_button.isSelected) Constants.pending else if (in_progress_button.isSelected) Constants.inProgress else if (finished_button.isSelected) Constants.finished else null,
             edit_text_purchase_date.text.toString(),
             edit_text_purchase_location.text.toString(),
-            edit_text_price.text.toString().toDouble(),
+            price,
             imageUrl,
             edit_text_video_url.text.toString(),
             edit_text_loaned.text.toString(),
@@ -357,7 +361,20 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
             })
         } else {
 
-            //TODO create
+            gameAPIClient.createGame(game, {
+                gameAPIClient.getGames({ games ->
+
+                    for (game in games) {
+                        gameRepository.insertGame(game)
+                    }
+                    hideLoading()
+                    activity?.finish()
+                }, {
+                    manageError(it)
+                })
+            }, {
+                manageError(it)
+            })
         }
     }
 
