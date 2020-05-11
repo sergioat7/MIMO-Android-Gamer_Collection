@@ -317,8 +317,19 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
 
     private fun deleteGame() {
 
-        showPopupConfirmationDialog(resources.getString(R.string.GAME_DETAIL_DELETE_CONFIRMATION)) {
-            //TODO delete
+        currentGame?.let {
+            showPopupConfirmationDialog(resources.getString(R.string.GAME_DETAIL_DELETE_CONFIRMATION)) {
+
+                showLoading(view)
+                gameAPIClient.deleteGame(it.id, {
+                    gameRepository.deleteGame(it)
+
+                    hideLoading()
+                    activity?.finish()
+                }, {
+                    manageError(it)
+                })
+            }
         }
     }
 
@@ -333,10 +344,11 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         val game = getGameData()
 
         showLoading(view)
-        if (gameId!=null) {
-            gameAPIClient.setGame(game, {
+        if (currentGame != null) {
 
-                //TODO updtae in database
+            gameAPIClient.setGame(game, {
+                gameRepository.updateGame(it)
+
                 currentGame = it
                 cancelEdition()
                 hideLoading()
@@ -344,6 +356,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
                 manageError(it)
             })
         } else {
+
             //TODO create
         }
     }
