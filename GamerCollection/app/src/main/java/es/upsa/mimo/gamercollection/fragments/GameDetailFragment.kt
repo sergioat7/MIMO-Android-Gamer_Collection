@@ -16,11 +16,13 @@ import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.*
+import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
 import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_game_detail.*
 import kotlinx.android.synthetic.main.set_image_dialog.view.*
 import kotlin.collections.ArrayList
@@ -28,10 +30,12 @@ import kotlin.collections.ArrayList
 class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
 
     private var gameId: Int? = null
+    private lateinit var sharedPrefHandler: SharedPreferencesHandler
     private lateinit var formatRepository: FormatRepository
     private lateinit var genreRepository: GenreRepository
     private lateinit var platformRepository: PlatformRepository
     private lateinit var gameRepository: GameRepository
+    private lateinit var gameAPIClient: GameAPIClient
     private lateinit var menu: Menu
     private lateinit var platforms: List<PlatformResponse>
     private lateinit var genres: List<GenreResponse>
@@ -54,10 +58,12 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        sharedPrefHandler = SharedPreferencesHandler(context)
         formatRepository = FormatRepository(requireContext())
         genreRepository = GenreRepository(requireContext())
         platformRepository = PlatformRepository(requireContext())
         gameRepository = GameRepository(requireContext())
+        gameAPIClient = GameAPIClient(resources, sharedPrefHandler)
 
         initializeUI()
         loadData()
@@ -318,22 +324,41 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
 
     private fun editGame(){
 
-        menu.findItem(R.id.action_edit_game).isVisible = false
-        menu.findItem(R.id.action_save_game).isVisible = true
-        menu.findItem(R.id.action_cancel_game).isVisible = true
+        showEditButton(true)
         enableEdition(true)
     }
 
     private fun saveGame() {
+
+        val game = getGameData()
+
+        showLoading(view)
+        if (gameId!=null) {
+            gameAPIClient.setGame(game, {
+
+                //TODO updtae in database
+                currentGame = it
+                cancelEdition()
+                hideLoading()
+            }, {
+                manageError(it)
+            })
+        } else {
+            //TODO create
+        }
     }
 
     private fun cancelEdition(){
 
-        menu.findItem(R.id.action_edit_game).isVisible = true
-        menu.findItem(R.id.action_save_game).isVisible = false
-        menu.findItem(R.id.action_cancel_game).isVisible = false
+        showEditButton(false)
         showData(currentGame)
         enableEdition(false)
+    }
+    private fun showEditButton(hidden: Boolean) {
+
+        menu.findItem(R.id.action_edit_game).isVisible = !hidden
+        menu.findItem(R.id.action_save_game).isVisible = hidden
+        menu.findItem(R.id.action_cancel_game).isVisible = hidden
     }
 
     private fun getAdapter(data: List<String>): ArrayAdapter<String> {
