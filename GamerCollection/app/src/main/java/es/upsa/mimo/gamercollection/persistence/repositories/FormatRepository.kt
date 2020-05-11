@@ -40,7 +40,7 @@ class FormatRepository(context: Context) {
     fun removeDisableContent(newFormats: List<FormatResponse>) {
 
         val currentFormats = getFormats()
-        val formats = AppDatabase.getDisabledContent(currentFormats, newFormats)
+        val formats = AppDatabase.getDisabledContent(currentFormats, newFormats) as List<FormatResponse>
         for (format in formats) {
             deleteFormat(format)
         }

@@ -40,7 +40,7 @@ class StateRepository(context: Context) {
     fun removeDisableContent(newStates: List<StateResponse>) {
 
         val currentStates = getStates()
-        val states = AppDatabase.getDisabledContent(currentStates, newStates)
+        val states = AppDatabase.getDisabledContent(currentStates, newStates) as List<StateResponse>
         for (state in states) {
             deleteState(state)
         }

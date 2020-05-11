@@ -40,7 +40,7 @@ class PlatformRepository(context: Context) {
     fun removeDisableContent(newPlatforms: List<PlatformResponse>) {
 
         val currentPlatforms = getPlatforms()
-        val platforms = AppDatabase.getDisabledContent(currentPlatforms, newPlatforms)
+        val platforms = AppDatabase.getDisabledContent(currentPlatforms, newPlatforms) as List<PlatformResponse>
         for (platform in platforms) {
             deletePlatform(platform)
         }

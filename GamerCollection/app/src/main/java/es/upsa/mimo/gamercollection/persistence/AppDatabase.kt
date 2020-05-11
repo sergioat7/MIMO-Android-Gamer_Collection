@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import es.upsa.mimo.gamercollection.models.*
+import es.upsa.mimo.gamercollection.models.base.BaseModel
 import es.upsa.mimo.gamercollection.persistence.daos.*
 
 @Database(entities = [
@@ -44,11 +45,12 @@ abstract class AppDatabase : RoomDatabase() {
             instance = null
         }
 
-        fun <T> getDisabledContent(currentValues: List<T>, newValues: List<T>): List<T> {
+        fun <T> getDisabledContent(currentValues: List<BaseModel<T>>, newValues: List<BaseModel<T>>): List<BaseModel<T>> {
 
-            val disabledContent = arrayListOf<T>()
+            val disabledContent = arrayListOf<BaseModel<T>>()
             for (currentValue in currentValues) {
-                if (!newValues.contains(currentValue)) {
+
+                if (newValues.firstOrNull { it.id == currentValue.id } == null) {
                     disabledContent.add(currentValue)
                 }
             }

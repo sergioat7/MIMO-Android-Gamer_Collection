@@ -50,7 +50,7 @@ class GameRepository(context: Context) {
     fun removeDisableContent(newGames: List<GameResponse>) {
 
         val currentGames = getGames()
-        val games = AppDatabase.getDisabledContent(currentGames, newGames)
+        val games = AppDatabase.getDisabledContent(currentGames, newGames) as List<GameResponse>
         for (game in games) {
             deleteGame(game)
         }
