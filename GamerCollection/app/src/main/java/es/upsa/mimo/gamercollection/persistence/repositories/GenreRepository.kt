@@ -40,7 +40,7 @@ class GenreRepository(context: Context) {
     fun removeDisableContent(newGenres: List<GenreResponse>) {
 
         val currentGenres = getGenres()
-        val genres = AppDatabase.getDisabledContent(currentGenres, newGenres)
+        val genres = AppDatabase.getDisabledContent(currentGenres, newGenres) as List<GenreResponse>
         for (genre in genres) {
             deleteGenre(genre)
         }

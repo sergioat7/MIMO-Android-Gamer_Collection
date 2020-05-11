@@ -2,12 +2,13 @@ package es.upsa.mimo.gamercollection.models
 
 import androidx.room.*
 import com.google.gson.annotations.SerializedName
+import es.upsa.mimo.gamercollection.models.base.BaseModel
 
 @Entity(tableName = "Game")
 data class GameResponse(
     @PrimaryKey
     @SerializedName("id")
-    val id: Int,
+    override val id: Int,
     @SerializedName("name")
     val name: String?,
     @SerializedName("platform")
@@ -51,4 +52,4 @@ data class GameResponse(
     val saga: SagaResponse?,
     @SerializedName("songs")
     val songs: List<SongResponse>
-)
+): BaseModel<Int>
