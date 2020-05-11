@@ -43,4 +43,18 @@ class GameAPIClient(
             failure(errorResponse)
         })
     }
+
+    fun deleteGame(gameId: Int, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        val headers: MutableMap<String, String> = HashMap()
+        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        val request = api.deleteUser(headers, gameId)
+
+        APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
+            success()
+        }, { errorResponse ->
+            failure(errorResponse)
+        })
+    }
 }
