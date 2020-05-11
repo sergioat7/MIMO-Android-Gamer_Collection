@@ -259,31 +259,51 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
 
     private fun getGameData(): GameResponse {
 
+        val id = currentGame?.id ?: 0
+        val name = edit_text_name.text.toString()
+        val platform = platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
+        val score = rating_bar.rating.toDouble()
+        val pegi = resources.getStringArray(R.array.pegis).firstOrNull { it == spinner_pegis.selectedItem.toString() }
+        val distributor = edit_text_distributor.text.toString()
+        val developer = edit_text_developer.text.toString()
+        val players = edit_text_players.text.toString()
+        val releaseDate = edit_text_release_date.text.toString()
+        val goty = radio_button_yes.isChecked
+        val format = formats.firstOrNull { it.name == spinner_formats.selectedItem.toString() }?.id
+        val genre = genres.firstOrNull { it.name == spinner_genres.selectedItem.toString() }?.id
+        val state = if(pending_button.isSelected) Constants.pending else if (in_progress_button.isSelected) Constants.inProgress else if (finished_button.isSelected) Constants.finished else null
+        val purchaseDate = edit_text_purchase_date.text.toString()
+        val purchaseLocation = edit_text_purchase_location.text.toString()
         val price = try { edit_text_price.text.toString().toDouble() } catch (e: NumberFormatException) { 0.0 }
+        val videoUrl = edit_text_video_url.text.toString()
+        val loanedTo = edit_text_loaned.text.toString()
+        val observations = edit_text_observations.text.toString()
+        val saga = currentGame?.saga
+        val songs = currentGame?.songs ?: ArrayList()
 
         return GameResponse(
-            currentGame?.id ?: 0,
-            edit_text_name.text.toString(),
-            platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id,
-            rating_bar.rating.toDouble(),
-            resources.getStringArray(R.array.pegis).firstOrNull { it == spinner_pegis.selectedItem.toString() },
-            edit_text_distributor.text.toString(),
-            edit_text_developer.text.toString(),
-            edit_text_players.text.toString(),
-            edit_text_release_date.text.toString(),
-            radio_button_yes.isChecked,
-            formats.firstOrNull { it.name == spinner_formats.selectedItem.toString() }?.id,
-            genres.firstOrNull { it.name == spinner_genres.selectedItem.toString() }?.id,
-            if(pending_button.isSelected) Constants.pending else if (in_progress_button.isSelected) Constants.inProgress else if (finished_button.isSelected) Constants.finished else null,
-            edit_text_purchase_date.text.toString(),
-            edit_text_purchase_location.text.toString(),
+            id,
+            name,
+            platform,
+            score,
+            pegi,
+            distributor,
+            developer,
+            players,
+            releaseDate,
+            goty,
+            format,
+            genre,
+            state,
+            purchaseDate,
+            purchaseLocation,
             price,
             imageUrl,
-            edit_text_video_url.text.toString(),
-            edit_text_loaned.text.toString(),
-            edit_text_observations.text.toString(),
-            currentGame?.saga,
-            currentGame?.songs ?: ArrayList())
+            videoUrl,
+            loanedTo,
+            observations,
+            saga,
+            songs)
     }
 
     private fun setImage() {
