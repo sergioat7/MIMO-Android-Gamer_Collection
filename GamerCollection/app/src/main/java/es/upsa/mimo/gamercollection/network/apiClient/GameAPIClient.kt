@@ -14,16 +14,31 @@ class GameAPIClient(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
+    private val api = APIClient.getRetrofit().create(GameAPIService::class.java)
+
     fun getGames(success: (List<GameResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
         headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
-        val api = APIClient.getRetrofit().create(GameAPIService::class.java)
         val request = api.getGames(headers)
 
         APIClient.sendServer<List<GameResponse>, ErrorResponse>(resources, request, { games ->
             success(games)
+        }, { errorResponse ->
+            failure(errorResponse)
+        })
+    }
+
+    fun setGame(game: GameResponse, success: (GameResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        val headers: MutableMap<String, String> = HashMap()
+        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        val request = api.setGame(headers, game.id, game)
+
+        APIClient.sendServer<GameResponse, ErrorResponse>(resources, request, { game ->
+            success(game)
         }, { errorResponse ->
             failure(errorResponse)
         })
