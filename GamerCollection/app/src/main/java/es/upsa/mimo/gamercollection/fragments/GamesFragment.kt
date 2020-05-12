@@ -2,9 +2,8 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.Fragment
-
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 
 class GamesFragment : BaseFragment() {
@@ -51,11 +50,14 @@ class GamesFragment : BaseFragment() {
     //MARK: - Private functions
 
     private fun initializeUI() {
+        //TODO
     }
 
     private fun filter(){
+        //TODO
     }
 
     private fun add(){
+        launchActivity(GameDetailActivity::class.java)
     }
 }

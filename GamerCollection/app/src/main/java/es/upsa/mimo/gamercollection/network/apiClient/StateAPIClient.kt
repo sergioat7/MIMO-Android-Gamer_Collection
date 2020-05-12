@@ -12,11 +12,12 @@ class StateAPIClient(
     private val resources: Resources
 ) {
 
+    private val api = APIClient.getRetrofit().create(StateAPIService::class.java)
+
     fun getStates(success: (List<StateResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
         headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
-        val api = APIClient.getRetrofit().create(StateAPIService::class.java)
         val request = api.getStates(headers)
 
         APIClient.sendServer<List<StateResponse>, ErrorResponse>(resources, request, { states ->
