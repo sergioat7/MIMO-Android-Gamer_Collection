@@ -1,9 +1,11 @@
 package es.upsa.mimo.gamercollection.fragments
 
 import android.os.Bundle
+import android.text.InputType
 import android.view.*
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.LoginActivity
+import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.network.apiClient.UserAPIClient
@@ -66,6 +68,8 @@ class ProfileFragment : BaseFragment() {
         val userData = sharedPrefHandler.getUserData()
         edit_text_user.setText(userData.username)
         edit_text_password.setText(userData.password)
+
+        edit_text_user.setReadOnly(true, InputType.TYPE_NULL, 0)
 
         button_change_password.setOnClickListener { updatePassword() }
         button_delete_user.setOnClickListener { deleteUser() }
