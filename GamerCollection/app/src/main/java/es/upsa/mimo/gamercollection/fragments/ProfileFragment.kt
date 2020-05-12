@@ -80,13 +80,14 @@ class ProfileFragment : BaseFragment() {
 
                 sharedPrefHandler.removePassword()
                 removeData()
-                hideLoading()
-                launchActivity(LoginActivity::class.java)
             }, {
-                manageError(it)
+
+                sharedPrefHandler.removePassword()
+                removeData()
             })
         }
     }
+
 
     private fun updatePassword() {
 
@@ -118,8 +119,6 @@ class ProfileFragment : BaseFragment() {
 
                 sharedPrefHandler.removeUserData()
                 removeData()
-                hideLoading()
-                launchActivity(LoginActivity::class.java)
             }, {
                 manageError(it)
             })
@@ -137,5 +136,8 @@ class ProfileFragment : BaseFragment() {
         for (saga in sagas) {
             sagaRepository.deleteSaga(saga)
         }
+
+        hideLoading()
+        launchActivity(LoginActivity::class.java)
     }
 }
