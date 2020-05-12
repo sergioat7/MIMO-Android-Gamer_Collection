@@ -166,8 +166,8 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
             currentGame = gameRepository.getGame(it)
             hideLoading()
         }
-        showData(currentGame)
 
+        showData(currentGame)
         enableEdition(currentGame == null)
     }
 
