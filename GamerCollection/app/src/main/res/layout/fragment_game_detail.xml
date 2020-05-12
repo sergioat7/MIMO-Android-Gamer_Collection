@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.GameDetailFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/edit_text_name"
+            style="@style/WhiteEditText.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="50dp"
+            android:hint="@string/GAME_DETAIL_PLACEHOLDER_NAME"
+            android:inputType="textMultiLine"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_name">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/first_linear_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" >
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.2"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="10dp">
+
+                        <ImageView
+                            android:id="@+id/game_image_view"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/add_photo"
+                            app:layout_constraintBottom_toTopOf="@+id/goty_image_view"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/goty_image_view"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/goty_label"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/text_view_platform_title"
+                            style="@style/WhiteTextView.Regular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/GAME_DETAIL_PLATFORM"
+                            android:textSize="12sp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_platforms"
+                            style="@style/CustomSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-5dp" />
+
+                        <TextView
+                            android:id="@+id/text_view_genre_title"
+                            style="@style/WhiteTextView.Regular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/GAME_DETAIL_GENRE"
+                            android:textSize="12sp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_genres"
+                            style="@style/CustomSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-5dp" />
+
+                        <TextView
+                            android:id="@+id/text_view_format_title"
+                            style="@style/WhiteTextView.Regular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/GAME_DETAIL_FORMAT"
+                            android:textSize="12sp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_formats"
+                            style="@style/CustomSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-5dp" />
+
+                        <TextView
+                            android:id="@+id/text_view_release_date_title"
+                            style="@style/WhiteTextView.Regular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/GAME_DETAIL_RELEASE_DATE"
+                            android:textSize="12sp" />
+
+                        <EditText
+                            android:id="@+id/edit_text_release_date"
+                            style="@style/WhiteEditText.Regular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-5dp"
+                            android:hint="@string/GAME_DETAIL_SELECT_DATE"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                    android:id="@+id/rating_bar"
+                    style="@style/CustomRatingBar.DarkBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:isIndicator="false"
+                    android:numStars="10"
+                    android:stepSize="0.5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/first_linear_layout" />
+
+                <TextView
+                    android:id="@+id/text_view_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="0.0"
+                    android:textColor="@color/color2"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rating_bar" />
+
+                <LinearLayout
+                    android:id="@+id/state_buttons_linear_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_rating">
+
+                    <Button
+                        android:id="@+id/pending_button"
+                        style="@style/PendingButton.Bordered"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/GAME_DETAIL_BUTTON_TITLE_PENDING" />
+
+                    <Button
+                        android:id="@+id/in_progress_button"
+                        style="@style/InProgressButton.Bordered"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/GAME_DETAIL_BUTTON_TITLE_IN_PROGRESS" />
+
+                    <Button
+                        android:id="@+id/finished_button"
+                        style="@style/FinishedButton.Bordered"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/GAME_DETAIL_BUTTON_TITLE_FINISHED" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_view_details_title"
+                    style="@style/WhiteTextView.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="@string/GAME_DETAIL_TITLE"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/state_buttons_linear_layout" />
+
+                <View
+                    android:id="@+id/details_view_line_separator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/color2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_details_title" />
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/details_view_line_separator">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/text_view_distributor"
+                            style="@style/WhiteTextView.Regular.GameDetails"
+                            android:text="@string/GAME_DETAIL_DISTRIBUTOR" />
+
+                        <EditText
+                            android:id="@+id/edit_text_distributor"
+                            style="@style/WhiteEditText.GameDetails"
+                            android:hint="@string/GAME_DETAIL_PLACEHOLDER_DISTRIBUTOR" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/text_view_developer"
+                            style="@style/WhiteTextView.Regular.GameDetails"
+                            android:text="@string/GAME_DETAIL_DEVELOPER" />
+
+                        <EditText
+                            android:id="@+id/edit_text_developer"
+                            style="@style/WhiteEditText.GameDetails"
+                            android:hint="@string/GAME_DETAIL_PLACEHOLDER_DEVELOPER" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/text_view_pegi"
+                            style="@style/WhiteTextView.Regular.GameDetails"
+                            android:text="@string/GAME_DETAIL_PEGI" />
+
+                        <Spinner
+                            android:id="@+id/spinner_pegis"
+                            style="@style/CustomSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:minHeight="40dp"
+                            android:spinnerMode="dropdown" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/text_view_players"
+                            style="@style/WhiteTextView.Regular.GameDetails"
+                            android:text="@string/GAME_DETAIL_PLAYERS" />
+
+                        <EditText
+                            android:id="@+id/edit_text_players"
+                            style="@style/WhiteEditText.GameDetails"
+                            android:hint="@string/GAME_DETAIL_PLACEHOLDER_PLAYERS" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/text_view_price"
+                            style="@style/WhiteTextView.Regular.GameDetails"
+                            android:text="@string/GAME_DETAIL_PRICE" />
+
+                        <EditText
+                            android:id="@+id/edit_text_price"
+                            style="@style/WhiteEditText.GameDetails"
+                            android:hint="@string/GAME_DETAIL_PLACEHOLDER_PRICE" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/text_view_purchase_date"
+                            style="@style/WhiteTextView.Regular.GameDetails"
+                            android:text="@string/GAME_DETAIL_PURCHASE_DATE" />
+
+                        <EditText
+                            android:id="@+id/edit_text_purchase_date"
+                            style="@style/WhiteEditText.GameDetails"
+                            android:hint="@string/GAME_DETAIL_SELECT_DATE" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/text_view_purchase_location"
+                            style="@style/WhiteTextView.Regular.GameDetails"
+                            android:text="@string/GAME_DETAIL_PURCHASE_LOCATION" />
+
+                        <EditText
+                            android:id="@+id/edit_text_purchase_location"
+                            style="@style/WhiteEditText.GameDetails"
+                            android:hint="@string/GAME_DETAIL_PLACEHOLDER_PURCHASE_LOCATION" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/text_view_goty"
+                            style="@style/WhiteTextView.Regular.GameDetails"
+                            android:text="@string/GAME_DETAIL_GOTY" />
+
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radio_button_no"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@color/color2"
+                                android:buttonTint="@color/color2"
+                                android:checked="true"
+                                android:text="@string/NO" />
+
+                            <RadioButton
+                                android:id="@+id/radio_button_yes"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@color/color2"
+                                android:buttonTint="@color/color2"
+                                android:text="@string/YES" />
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/text_view_loaned"
+                            style="@style/WhiteTextView.Regular.GameDetails"
+                            android:text="@string/GAME_DETAIL_LOANED_TO" />
+
+                        <EditText
+                            android:id="@+id/edit_text_loaned"
+                            style="@style/WhiteEditText.GameDetails"
+                            android:hint="@string/GAME_DETAIL_PLACEHOLDER_LOANED_TO" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/text_view_video_url"
+                            style="@style/WhiteTextView.Regular.GameDetails"
+                            android:text="@string/GAME_DETAIL_VIDEO_URL" />
+
+                        <EditText
+                            android:id="@+id/edit_text_video_url"
+                            style="@style/WhiteEditText.GameDetails"
+                            android:hint="@string/GAME_DETAIL_PLACEHOLDER_VIDEO_URL" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/text_view_observations"
+                            style="@style/WhiteTextView.Regular.GameDetails"
+                            android:text="@string/GAME_DETAIL_OBSERVATIONS" />
+
+                        <EditText
+                            android:id="@+id/edit_text_observations"
+                            style="@style/WhiteEditText.GameDetails"
+                            android:hint="@string/GAME_DETAIL_PLACEHOLDER_OBSERVATIONS" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/text_view_saga"
+                            style="@style/WhiteTextView.Regular.GameDetails"
+                            android:text="@string/GAME_DETAIL_SAGA" />
+
+                        <EditText
+                            android:id="@+id/edit_text_saga"
+                            style="@style/WhiteEditText.GameDetails"
+                            android:background="@android:color/transparent"
+                            android:inputType="none" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_view_songs_title"
+                    style="@style/WhiteTextView.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/GAME_DETAIL_SONGS_TITLE"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_layout_details" />
+
+                <Button
+                    android:id="@+id/button_add_song"
+                    style="@style/Widget.AppCompat.ImageButton"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/ic_add_circle_outline_white_24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_view_songs_title"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <View
+                    android:id="@+id/songs_view_line_separator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/color2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_songs_title" />
+
+                <Button
+                    android:id="@+id/button_delete_game"
+                    style="@style/RoundedButton.Delete"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="@string/DELETE"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/songs_view_line_separator" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

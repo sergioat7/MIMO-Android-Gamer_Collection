@@ -16,13 +16,14 @@ class UserAPIClient(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
+    private val api = APIClient.getRetrofit().create(UserAPIService::class.java)
+
     fun login(username: String, password: String, success: (String) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val loginCredentials = LoginCredentials(username, password)
 
         val headers: MutableMap<String, String> = HashMap()
         headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
-        val api = APIClient.getRetrofit().create(UserAPIService::class.java)
         val request = api.login(headers, loginCredentials)
 
         APIClient.sendServer<LoginResponse, ErrorResponse>(resources, request, {
@@ -38,7 +39,6 @@ class UserAPIClient(
 
         val headers: MutableMap<String, String> = HashMap()
         headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
-        val api = APIClient.getRetrofit().create(UserAPIService::class.java)
         val request = api.register(headers, loginCredentials)
 
         APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
@@ -53,7 +53,6 @@ class UserAPIClient(
         val headers: MutableMap<String, String> = HashMap()
         headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
-        val api = APIClient.getRetrofit().create(UserAPIService::class.java)
         val request = api.logout(headers)
 
         APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
@@ -69,7 +68,6 @@ class UserAPIClient(
         val headers: MutableMap<String, String> = HashMap()
         headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
-        val api = APIClient.getRetrofit().create(UserAPIService::class.java)
         val request = api.updatePassword(headers, newPasword)
 
         APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
@@ -84,7 +82,6 @@ class UserAPIClient(
         val headers: MutableMap<String, String> = HashMap()
         headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
-        val api = APIClient.getRetrofit().create(UserAPIService::class.java)
         val request = api.deleteUser(headers)
 
         APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {

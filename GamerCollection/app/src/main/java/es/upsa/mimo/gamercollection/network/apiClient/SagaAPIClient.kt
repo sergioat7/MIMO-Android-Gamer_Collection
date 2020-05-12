@@ -14,12 +14,13 @@ class SagaAPIClient(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
+    private val api = APIClient.getRetrofit().create(SagaAPIService::class.java)
+
     fun getSagas(success: (List<SagaResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
         headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
-        val api = APIClient.getRetrofit().create(SagaAPIService::class.java)
         val request = api.getSagas(headers)
 
         APIClient.sendServer<List<SagaResponse>, ErrorResponse>(resources, request, { sagas ->

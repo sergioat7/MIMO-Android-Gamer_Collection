@@ -23,10 +23,27 @@ class GameRepository(context: Context) {
         return games
     }
 
+    fun getGame(gameId: Int): GameResponse? {
+
+        var game: GameResponse? = null
+        runBlocking {
+            val result = GlobalScope.async { gameDao.getGame(gameId) }
+            game = result.await()
+        }
+        return game
+    }
+
     fun insertGame(game: GameResponse) {
 
         GlobalScope.launch {
             gameDao.insertGame(game)
+        }
+    }
+
+    fun updateGame(game: GameResponse) {
+
+        GlobalScope.launch {
+            gameDao.updateGame(game)
         }
     }
 
@@ -40,7 +57,7 @@ class GameRepository(context: Context) {
     fun removeDisableContent(newGames: List<GameResponse>) {
 
         val currentGames = getGames()
-        val games = AppDatabase.getDisabledContent(currentGames, newGames)
+        val games = AppDatabase.getDisabledContent(currentGames, newGames) as List<GameResponse>
         for (game in games) {
             deleteGame(game)
         }

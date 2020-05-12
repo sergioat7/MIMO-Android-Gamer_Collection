@@ -12,11 +12,12 @@ class GenreAPIClient(
     private val resources: Resources
 ) {
 
+    private val api = APIClient.getRetrofit().create(GenreAPIService::class.java)
+
     fun getGenres(success: (List<GenreResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
         headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
-        val api = APIClient.getRetrofit().create(GenreAPIService::class.java)
         val request = api.getGenres(headers)
 
         APIClient.sendServer<List<GenreResponse>, ErrorResponse>(resources, request, { genres ->
