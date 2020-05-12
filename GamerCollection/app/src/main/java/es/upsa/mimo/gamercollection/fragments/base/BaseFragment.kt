@@ -14,13 +14,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.fragments.popups.PopupErrorDialogFragment
+import es.upsa.mimo.gamercollection.fragments.popups.PopupLoadingDialogFragment
 import es.upsa.mimo.gamercollection.fragments.popups.PopupSyncAppDialogFragment
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import java.io.Serializable
 
 open class BaseFragment : Fragment() {
 
-    private var progressBar: ProgressBar? = null
+    private val loadingFragment = PopupLoadingDialogFragment()
 
     fun manageError(errorResponse: ErrorResponse) {
 
@@ -43,28 +44,20 @@ open class BaseFragment : Fragment() {
         startActivity(intent)
     }
 
-    fun showLoading(view: View?) {
+    fun showLoading() {
 
-        if (view == null) return
-        val context = view.context
-        progressBar = ProgressBar(context)
-        progressBar!!.indeterminateDrawable.setColorFilter(ContextCompat.getColor(context, R.color.color3), android.graphics.PorterDuff.Mode.MULTIPLY)
-        val parentLayout = LinearLayout(context)
-        parentLayout.layoutParams = view.layoutParams
-        parentLayout.gravity = Gravity.CENTER
-        if (view.parent != null) (view.parent as ViewGroup).addView(parentLayout)
-        progressBar!!.isIndeterminate = true
-        progressBar!!.tag = view
-        parentLayout.addView(progressBar)
-        view.visibility = GONE
+        val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
+        val prev = activity?.supportFragmentManager?.findFragmentByTag("dialog")
+        if (prev != null) {
+            ft.remove(prev)
+        }
+        ft.addToBackStack(null)
+        loadingFragment.isCancelable = false
+        loadingFragment.show(ft, "dialog")
     }
 
     fun hideLoading() {
-
-        if (progressBar == null) return
-        val view = progressBar!!.tag as View
-        (view.parent as ViewGroup).removeView(progressBar!!.parent as View)
-        view.visibility = VISIBLE
+        loadingFragment.dismiss()
     }
 
     fun showPopupDialog(message: String) {

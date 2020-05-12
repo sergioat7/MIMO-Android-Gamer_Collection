@@ -162,7 +162,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
 
         gameId?.let {
 
-            showLoading(view)
+            showLoading()
             currentGame = gameRepository.getGame(it)
             hideLoading()
         }
@@ -344,7 +344,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         currentGame?.let {
             showPopupConfirmationDialog(resources.getString(R.string.GAME_DETAIL_DELETE_CONFIRMATION)) {
 
-                showLoading(view)
+                showLoading()
                 gameAPIClient.deleteGame(it.id, {
                     gameRepository.deleteGame(it)
 
@@ -367,7 +367,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
 
         val game = getGameData()
 
-        showLoading(view)
+        showLoading()
         if (currentGame != null) {
 
             gameAPIClient.setGame(game, {

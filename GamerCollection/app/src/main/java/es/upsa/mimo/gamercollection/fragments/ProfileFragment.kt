@@ -1,9 +1,11 @@
 package es.upsa.mimo.gamercollection.fragments
 
 import android.os.Bundle
+import android.text.InputType
 import android.view.*
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.LoginActivity
+import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.network.apiClient.UserAPIClient
@@ -67,6 +69,8 @@ class ProfileFragment : BaseFragment() {
         edit_text_user.setText(userData.username)
         edit_text_password.setText(userData.password)
 
+        edit_text_user.setReadOnly(true, InputType.TYPE_NULL, 0)
+
         button_change_password.setOnClickListener { updatePassword() }
         button_delete_user.setOnClickListener { deleteUser() }
     }
@@ -75,24 +79,28 @@ class ProfileFragment : BaseFragment() {
 
         showPopupConfirmationDialog(resources.getString(R.string.PROFILE_LOGOUT_CONFIRMATION)) {
 
-            showLoading(view?.parent as View)
+            showLoading()
             userAPIClient.logout({
 
                 sharedPrefHandler.removePassword()
                 removeData()
-                hideLoading()
-                launchActivity(LoginActivity::class.java)
             }, {
-                manageError(it)
+
+                sharedPrefHandler.removePassword()
+                removeData()
             })
         }
     }
 
+
     private fun updatePassword() {
 
+        val currentPassword = sharedPrefHandler.getUserData().password
         val newPassword = edit_text_password.text.toString()
 
-        showLoading(view?.parent as View)
+        if (currentPassword == newPassword) return
+
+        showLoading()
         userAPIClient.updatePassword(newPassword, {
             sharedPrefHandler.storePassword(newPassword)
             val userData = sharedPrefHandler.getUserData()
@@ -113,13 +121,11 @@ class ProfileFragment : BaseFragment() {
 
         showPopupConfirmationDialog(resources.getString(R.string.PROFILE_DELETE_CONFIRMATION)) {
 
-            showLoading(view?.parent as View)
+            showLoading()
             userAPIClient.deleteUser({
 
                 sharedPrefHandler.removeUserData()
                 removeData()
-                hideLoading()
-                launchActivity(LoginActivity::class.java)
             }, {
                 manageError(it)
             })
@@ -137,5 +143,8 @@ class ProfileFragment : BaseFragment() {
         for (saga in sagas) {
             sagaRepository.deleteSaga(saga)
         }
+
+        hideLoading()
+        launchActivity(LoginActivity::class.java)
     }
 }
