@@ -95,7 +95,10 @@ class ProfileFragment : BaseFragment() {
 
     private fun updatePassword() {
 
+        val currentPassword = sharedPrefHandler.getUserData().password
         val newPassword = edit_text_password.text.toString()
+
+        if (currentPassword == newPassword) return
 
         showLoading(view?.parent as View)
         userAPIClient.updatePassword(newPassword, {
