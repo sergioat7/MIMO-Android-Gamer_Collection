@@ -79,7 +79,7 @@ class ProfileFragment : BaseFragment() {
 
         showPopupConfirmationDialog(resources.getString(R.string.PROFILE_LOGOUT_CONFIRMATION)) {
 
-            showLoading(view?.parent as View)
+            showLoading()
             userAPIClient.logout({
 
                 sharedPrefHandler.removePassword()
@@ -100,7 +100,7 @@ class ProfileFragment : BaseFragment() {
 
         if (currentPassword == newPassword) return
 
-        showLoading(view?.parent as View)
+        showLoading()
         userAPIClient.updatePassword(newPassword, {
             sharedPrefHandler.storePassword(newPassword)
             val userData = sharedPrefHandler.getUserData()
@@ -121,7 +121,7 @@ class ProfileFragment : BaseFragment() {
 
         showPopupConfirmationDialog(resources.getString(R.string.PROFILE_DELETE_CONFIRMATION)) {
 
-            showLoading(view?.parent as View)
+            showLoading()
             userAPIClient.deleteUser({
 
                 sharedPrefHandler.removeUserData()

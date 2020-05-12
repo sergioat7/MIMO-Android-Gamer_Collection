@@ -101,7 +101,7 @@ class LoginFragment : BaseFragment() {
             return
         }
 
-        showLoading(view)
+        showLoading()
         userAPIClient.login(username, password, { token ->
 
             val userData = UserData(username, password, false)

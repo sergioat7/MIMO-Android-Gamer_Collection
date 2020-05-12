@@ -73,7 +73,7 @@ class RegisterFragment : BaseFragment() {
             return
         }
 
-        showLoading(view)
+        showLoading()
         userAPIClient.register(username, password, {
             userAPIClient.login(username, password, { token ->
 
