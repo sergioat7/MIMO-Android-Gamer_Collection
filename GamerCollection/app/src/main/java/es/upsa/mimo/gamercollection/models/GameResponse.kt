@@ -51,5 +51,5 @@ data class GameResponse(
     @SerializedName("saga")
     val saga: SagaResponse?,
     @SerializedName("songs")
-    val songs: List<SongResponse>
+    var songs: List<SongResponse>
 ): BaseModel<Int>
