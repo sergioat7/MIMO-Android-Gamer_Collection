@@ -19,10 +19,8 @@ import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.*
 import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
-import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.GenreRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
+import es.upsa.mimo.gamercollection.network.apiClient.SongAPIClient
+import es.upsa.mimo.gamercollection.persistence.repositories.*
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_game_detail.*
@@ -38,6 +36,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     private lateinit var platformRepository: PlatformRepository
     private lateinit var gameRepository: GameRepository
     private lateinit var gameAPIClient: GameAPIClient
+    private lateinit var songAPIClient: SongAPIClient
     private lateinit var menu: Menu
     private lateinit var platforms: List<PlatformResponse>
     private lateinit var genres: List<GenreResponse>
@@ -66,6 +65,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         platformRepository = PlatformRepository(requireContext())
         gameRepository = GameRepository(requireContext())
         gameAPIClient = GameAPIClient(resources, sharedPrefHandler)
+        songAPIClient = SongAPIClient(resources, sharedPrefHandler)
 
         initializeUI()
         loadData()
@@ -263,6 +263,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
             val adapter = recycler_view_songs.adapter as? SongsAdapter
             if (adapter != null) {
                 adapter.editable = enable
+                adapter.notifyDataSetChanged()
             }
         }
     }
@@ -350,6 +351,21 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     }
 
     private val deleteSong = fun(songId: Int) {
+
+        currentGame?.let { game ->
+
+            showLoading()
+            songAPIClient.deleteSong(game.id, songId, {
+
+                game.songs = game.songs.dropWhile { it.id == songId }
+                gameRepository.updateGame(game)
+                currentGame = game
+                cancelEdition()
+                hideLoading()
+            }, {
+                manageError(it)
+            })
+        }
     }
 
     private fun deleteGame() {
