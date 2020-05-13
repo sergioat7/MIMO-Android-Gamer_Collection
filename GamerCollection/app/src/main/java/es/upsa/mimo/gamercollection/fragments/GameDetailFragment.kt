@@ -9,9 +9,11 @@ import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.RatingBar
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.adapters.SongsAdapter
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
@@ -155,6 +157,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         edit_text_purchase_date.showDatePicker(requireContext())
         edit_text_saga.setReadOnly(true, InputType.TYPE_NULL, 0)
         button_add_song.setOnClickListener { addSong() }
+        recycler_view_songs.layoutManager = LinearLayoutManager(requireContext())
         button_delete_game.setOnClickListener { deleteGame() }
     }
 
@@ -220,6 +223,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
             edit_text_video_url.setText(game.videoUrl)
             edit_text_observations.setText(game.observations)
             edit_text_saga.setText(game.saga?.name)
+            recycler_view_songs.adapter = SongsAdapter(game.songs, false)
         }
     }
 
@@ -255,6 +259,9 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         edit_text_video_url.setReadOnly(!enable, if (enable) InputType.TYPE_TEXT_VARIATION_URI else InputType.TYPE_NULL, backgroundColor)
         edit_text_observations.setReadOnly(!enable, inputTypeText, backgroundColor)
         button_add_song.visibility = if (enable) View.VISIBLE else View.GONE
+        currentGame?.let {
+            recycler_view_songs.adapter = SongsAdapter(it.songs, enable)
+        }
     }
 
     private fun getGameData(): GameResponse {
