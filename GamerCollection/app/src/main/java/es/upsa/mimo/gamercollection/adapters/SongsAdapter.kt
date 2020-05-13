@@ -10,15 +10,13 @@ import kotlinx.android.synthetic.main.song_item.view.*
 
 class SongsAdapter(
     private val songs: List<SongResponse>,
-    private val editable: Boolean
-): RecyclerView.Adapter<SongsAdapter.SongsViewHolder?>(), View.OnClickListener {
-
-    private var listener: View.OnClickListener? = null
+    var editable: Boolean,
+    private val removeHandler: (Int) -> Unit
+): RecyclerView.Adapter<SongsAdapter.SongsViewHolder?>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongsViewHolder {
 
         val itemView: View = LayoutInflater.from(parent.context).inflate(R.layout.song_item, parent, false)
-        itemView.setOnClickListener(this)
         return SongsViewHolder(itemView)
     }
 
@@ -33,15 +31,8 @@ class SongsAdapter(
         holder.itemView.text_view_singer.text = song.singer
         holder.itemView.text_view_url.text = song.url
         holder.itemView.button_remove.visibility = if (editable) View.VISIBLE else View.GONE
-    }
-
-    fun setOnClickListener(listener: View.OnClickListener?) {
-        this.listener = listener
-    }
-
-    override fun onClick(v: View?) {
-        if (listener != null) {
-            listener!!.onClick(v)
+        holder.itemView.button_remove.setOnClickListener {
+            removeHandler(song.id)
         }
     }
 

@@ -223,7 +223,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
             edit_text_video_url.setText(game.videoUrl)
             edit_text_observations.setText(game.observations)
             edit_text_saga.setText(game.saga?.name)
-            recycler_view_songs.adapter = SongsAdapter(game.songs, false)
+            recycler_view_songs.adapter = SongsAdapter(game.songs, false, deleteSong)
         }
     }
 
@@ -260,7 +260,10 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         edit_text_observations.setReadOnly(!enable, inputTypeText, backgroundColor)
         button_add_song.visibility = if (enable) View.VISIBLE else View.GONE
         currentGame?.let {
-            recycler_view_songs.adapter = SongsAdapter(it.songs, enable)
+            val adapter = recycler_view_songs.adapter as? SongsAdapter
+            if (adapter != null) {
+                adapter.editable = enable
+            }
         }
     }
 
@@ -344,6 +347,9 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     }
 
     private fun addSong() {
+    }
+
+    private val deleteSong = fun(songId: Int) {
     }
 
     private fun deleteGame() {
