@@ -156,7 +156,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         rating_bar.onRatingBarChangeListener = this
         edit_text_purchase_date.showDatePicker(requireContext())
         edit_text_saga.setReadOnly(true, InputType.TYPE_NULL, 0)
-        button_add_song.setOnClickListener { addSong() }
+        button_add_song.setOnClickListener { showNewSongPopup() }
         recycler_view_songs.layoutManager = LinearLayoutManager(requireContext())
         button_delete_game.setOnClickListener { deleteGame() }
     }
@@ -347,7 +347,37 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         dialogBuilder.show()
     }
 
-    private fun addSong() {
+    private fun showNewSongPopup() {
+
+        val dialogBuilder = AlertDialog.Builder(requireContext()).create()
+        val dialogView = this.layoutInflater.inflate(R.layout.new_song_dialog, null)
+
+        dialogView.button_accept.setOnClickListener {
+
+            val name = dialogView.edit_text_name.text.toString()
+            val singer = dialogView.edit_text_singer.text.toString()
+            val url = dialogView.edit_text_url.text.toString()
+            val song = SongResponse(0, name, singer, url)
+            addSong(song)
+            dialogBuilder.dismiss()
+        }
+
+        dialogBuilder.setView(dialogView)
+        dialogBuilder.show()
+    }
+
+    private fun addSong(song: SongResponse) {
+
+        currentGame?.let { game ->
+
+            showLoading()
+            songAPIClient.createSong(game.id, song, {
+                //TODO update game
+                hideLoading()
+            }, {
+                manageError(it)
+            })
+        }
     }
 
     private val deleteSong = fun(songId: Int) {
