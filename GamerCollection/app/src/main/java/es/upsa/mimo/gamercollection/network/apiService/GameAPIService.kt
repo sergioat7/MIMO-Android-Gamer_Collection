@@ -13,6 +13,12 @@ interface GameAPIService {
     fun getGames(@HeaderMap headers: Map<String, String>): Call<List<GameResponse>>
 
     @Headers(
+        "Accept:application/json"
+    )
+    @GET("game/{gameId}")
+    fun getGame(@HeaderMap headers: Map<String, String>, @Path(value = "gameId") gameId: Int): Call<GameResponse>
+
+    @Headers(
         "Content-Type:application/json"
     )
     @POST("game")

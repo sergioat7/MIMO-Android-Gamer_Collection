@@ -35,7 +35,7 @@ open class BaseFragment : Fragment() {
         startActivity(intent)
     }
 
-    fun <T, U> launchActivityWithExtras(activity: Class<T>, params: Map<String, Serializable>) {
+    fun <T> launchActivityWithExtras(activity: Class<T>, params: Map<String, Serializable>) {
 
         val intent = Intent(context, activity).apply {}
         for (param in params) {

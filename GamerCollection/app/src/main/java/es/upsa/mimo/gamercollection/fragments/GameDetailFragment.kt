@@ -9,22 +9,22 @@ import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.RatingBar
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.adapters.SongsAdapter
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.*
 import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
-import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.GenreRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
+import es.upsa.mimo.gamercollection.network.apiClient.SongAPIClient
+import es.upsa.mimo.gamercollection.persistence.repositories.*
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_game_detail.*
-import kotlinx.android.synthetic.main.set_image_dialog.view.*
+import kotlinx.android.synthetic.main.new_song_dialog.view.*
 import kotlin.collections.ArrayList
 
 class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
@@ -36,7 +36,8 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     private lateinit var platformRepository: PlatformRepository
     private lateinit var gameRepository: GameRepository
     private lateinit var gameAPIClient: GameAPIClient
-    private lateinit var menu: Menu
+    private lateinit var songAPIClient: SongAPIClient
+    private var menu: Menu? = null
     private lateinit var platforms: List<PlatformResponse>
     private lateinit var genres: List<GenreResponse>
     private lateinit var formats: List<FormatResponse>
@@ -64,6 +65,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         platformRepository = PlatformRepository(requireContext())
         gameRepository = GameRepository(requireContext())
         gameAPIClient = GameAPIClient(resources, sharedPrefHandler)
+        songAPIClient = SongAPIClient(resources, sharedPrefHandler)
 
         initializeUI()
         loadData()
@@ -154,7 +156,8 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         rating_bar.onRatingBarChangeListener = this
         edit_text_purchase_date.showDatePicker(requireContext())
         edit_text_saga.setReadOnly(true, InputType.TYPE_NULL, 0)
-        button_add_song.setOnClickListener { addSong() }
+        button_add_song.setOnClickListener { showNewSongPopup() }
+        recycler_view_songs.layoutManager = LinearLayoutManager(requireContext())
         button_delete_game.setOnClickListener { deleteGame() }
     }
 
@@ -220,6 +223,11 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
             edit_text_video_url.setText(game.videoUrl)
             edit_text_observations.setText(game.observations)
             edit_text_saga.setText(game.saga?.name)
+            var editable = false
+            menu?.let {
+                editable = it.findItem(R.id.action_save_game).isVisible
+            }
+            recycler_view_songs.adapter = SongsAdapter(game.songs, editable, deleteSong)
         }
     }
 
@@ -254,7 +262,14 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         edit_text_loaned.setReadOnly(!enable, inputTypeText, backgroundColor)
         edit_text_video_url.setReadOnly(!enable, if (enable) InputType.TYPE_TEXT_VARIATION_URI else InputType.TYPE_NULL, backgroundColor)
         edit_text_observations.setReadOnly(!enable, inputTypeText, backgroundColor)
-        button_add_song.visibility = if (enable) View.VISIBLE else View.GONE
+        button_add_song.visibility = if (enable && currentGame != null) View.VISIBLE else View.GONE
+        currentGame?.let {
+            val adapter = recycler_view_songs.adapter as? SongsAdapter
+            if (adapter != null) {
+                adapter.editable = enable
+                adapter.notifyDataSetChanged()
+            }
+        }
     }
 
     private fun getGameData(): GameResponse {
@@ -336,7 +351,49 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         dialogBuilder.show()
     }
 
-    private fun addSong() {
+    private fun showNewSongPopup() {
+
+        val dialogBuilder = AlertDialog.Builder(requireContext()).create()
+        val dialogView = this.layoutInflater.inflate(R.layout.new_song_dialog, null)
+
+        dialogView.button_accept.setOnClickListener {
+
+            val name = dialogView.edit_text_name.text.toString()
+            val singer = dialogView.edit_text_singer.text.toString()
+            val url = dialogView.edit_text_url.text.toString()
+            val song = SongResponse(0, name, singer, url)
+            addSong(song)
+            dialogBuilder.dismiss()
+        }
+
+        dialogBuilder.setView(dialogView)
+        dialogBuilder.show()
+    }
+
+    private fun addSong(song: SongResponse) {
+
+        currentGame?.let { game ->
+
+            showLoading()
+            songAPIClient.createSong(game.id, song, {
+                updateData()
+            }, {
+                manageError(it)
+            })
+        }
+    }
+
+    private val deleteSong = fun(songId: Int) {
+
+        currentGame?.let { game ->
+
+            showLoading()
+            songAPIClient.deleteSong(game.id, songId, {
+                updateData()
+            }, {
+                manageError(it)
+            })
+        }
     }
 
     private fun deleteGame() {
@@ -406,9 +463,11 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     }
     private fun showEditButton(hidden: Boolean) {
 
-        menu.findItem(R.id.action_edit_game).isVisible = !hidden
-        menu.findItem(R.id.action_save_game).isVisible = hidden
-        menu.findItem(R.id.action_cancel_game).isVisible = hidden
+        menu?.let {
+            it.findItem(R.id.action_edit_game).isVisible = !hidden
+            it.findItem(R.id.action_save_game).isVisible = hidden
+            it.findItem(R.id.action_cancel_game).isVisible = hidden
+        }
     }
 
     private fun getAdapter(data: List<String>): ArrayAdapter<String> {
@@ -416,5 +475,20 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item, data)
         arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         return arrayAdapter
+    }
+
+    private fun updateData() {
+
+        currentGame?.let { game ->
+            gameAPIClient.getGame(game.id, {
+                gameRepository.updateGame(it)
+
+                currentGame = it
+                showData(currentGame)
+                hideLoading()
+            }, {
+                manageError(it)
+            })
+        }
     }
 }
