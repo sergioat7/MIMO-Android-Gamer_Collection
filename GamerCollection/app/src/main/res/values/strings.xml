@@ -33,12 +33,12 @@
 
     // Games
     <string name="GAMES">My Games</string>
-    <string name="GAMES_FILTER_BUTTON_TITLE_PENDING">Pending</string>
-    <string name="GAMES_FILTER_BUTTON_TITLE_IN_PROGRESS">In Progress</string>
-    <string name="GAMES_FILTER_BUTTON_TITLE_FINISHED">Finished</string>
+    <string name="GAMES_FILTER_BUTTON_TITLE_PENDING">Pending\n%d</string>
+    <string name="GAMES_FILTER_BUTTON_TITLE_IN_PROGRESS">In Progress\n%d</string>
+    <string name="GAMES_FILTER_BUTTON_TITLE_FINISHED">Finished\n%d</string>
     <string name="GAMES_RELEASED">Released</string>
     <string name="GAMES_UNRELEASED">Unreleased</string>
-    <string name="GAMES_NUMBER_TITLE">games</string>
+    <string name="GAMES_NUMBER_TITLE">#%d games</string>
 
     // Game detail
     <string name="GAME_DETAIL">Detail</string>

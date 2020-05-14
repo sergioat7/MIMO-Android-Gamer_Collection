@@ -93,6 +93,7 @@
     <style name="StateButton" parent="android:style/Widget.Button">
         <item name="android:textColor">@drawable/state_button_text_color</item>
         <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:background">@drawable/state_button</item>
     </style>
 
     <style name="PendingButton.Bordered" parent="StateButton">
