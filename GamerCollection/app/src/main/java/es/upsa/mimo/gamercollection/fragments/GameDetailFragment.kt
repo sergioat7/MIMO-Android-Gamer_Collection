@@ -37,7 +37,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     private lateinit var gameRepository: GameRepository
     private lateinit var gameAPIClient: GameAPIClient
     private lateinit var songAPIClient: SongAPIClient
-    private lateinit var menu: Menu
+    private var menu: Menu? = null
     private lateinit var platforms: List<PlatformResponse>
     private lateinit var genres: List<GenreResponse>
     private lateinit var formats: List<FormatResponse>
@@ -223,7 +223,11 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
             edit_text_video_url.setText(game.videoUrl)
             edit_text_observations.setText(game.observations)
             edit_text_saga.setText(game.saga?.name)
-            recycler_view_songs.adapter = SongsAdapter(game.songs, false, deleteSong)
+            var editable = false
+            menu?.let {
+                editable = it.findItem(R.id.action_save_game).isVisible
+            }
+            recycler_view_songs.adapter = SongsAdapter(game.songs, editable, deleteSong)
         }
     }
 
@@ -459,9 +463,11 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     }
     private fun showEditButton(hidden: Boolean) {
 
-        menu.findItem(R.id.action_edit_game).isVisible = !hidden
-        menu.findItem(R.id.action_save_game).isVisible = hidden
-        menu.findItem(R.id.action_cancel_game).isVisible = hidden
+        menu?.let {
+            it.findItem(R.id.action_edit_game).isVisible = !hidden
+            it.findItem(R.id.action_save_game).isVisible = hidden
+            it.findItem(R.id.action_cancel_game).isVisible = hidden
+        }
     }
 
     private fun getAdapter(data: List<String>): ArrayAdapter<String> {
@@ -478,7 +484,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
                 gameRepository.updateGame(it)
 
                 currentGame = it
-                cancelEdition()
+                showData(currentGame)
                 hideLoading()
             }, {
                 manageError(it)
