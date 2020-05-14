@@ -24,7 +24,7 @@ import es.upsa.mimo.gamercollection.persistence.repositories.*
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_game_detail.*
-import kotlinx.android.synthetic.main.set_image_dialog.view.*
+import kotlinx.android.synthetic.main.new_song_dialog.view.*
 import kotlin.collections.ArrayList
 
 class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
@@ -372,8 +372,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
 
             showLoading()
             songAPIClient.createSong(game.id, song, {
-                //TODO update game
-                hideLoading()
+                updateData()
             }, {
                 manageError(it)
             })
@@ -386,12 +385,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
 
             showLoading()
             songAPIClient.deleteSong(game.id, songId, {
-
-                game.songs = game.songs.dropWhile { it.id == songId }
-                gameRepository.updateGame(game)
-                currentGame = game
-                cancelEdition()
-                hideLoading()
+                updateData()
             }, {
                 manageError(it)
             })
@@ -475,5 +469,20 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item, data)
         arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         return arrayAdapter
+    }
+
+    private fun updateData() {
+
+        currentGame?.let { game ->
+            gameAPIClient.getGame(game.id, {
+                gameRepository.updateGame(it)
+
+                currentGame = it
+                cancelEdition()
+                hideLoading()
+            }, {
+                manageError(it)
+            })
+        }
     }
 }

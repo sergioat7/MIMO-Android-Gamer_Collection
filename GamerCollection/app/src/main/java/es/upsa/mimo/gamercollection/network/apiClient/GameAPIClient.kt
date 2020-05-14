@@ -30,6 +30,20 @@ class GameAPIClient(
         })
     }
 
+    fun getGame(gameId: Int, success: (GameResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        val headers: MutableMap<String, String> = HashMap()
+        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        val request = api.getGame(headers, gameId)
+
+        APIClient.sendServer<GameResponse, ErrorResponse>(resources, request, { game ->
+            success(game)
+        }, { errorResponse ->
+            failure(errorResponse)
+        })
+    }
+
     fun createGame(game: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
