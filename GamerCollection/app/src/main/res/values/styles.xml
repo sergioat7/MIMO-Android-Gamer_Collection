@@ -13,6 +13,7 @@
         <item name="backgroundTint">@color/color2</item>
         <item name="android:textColor">@color/color2</item>
         <item name="android:textColorHint">@color/color2Light</item>
+        <item name="android:textIsSelectable">true</item>
     </style>
 
     <style name="WhiteEditText.Regular" parent="WhiteEditText">
@@ -33,6 +34,7 @@
 
     <style name="WhiteTextView" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/color2</item>
+        <item name="android:textIsSelectable">true</item>
     </style>
 
     <style name="WhiteTextView.Bold" parent="WhiteTextView">
