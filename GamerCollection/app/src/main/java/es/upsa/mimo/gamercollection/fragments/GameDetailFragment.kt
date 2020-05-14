@@ -262,7 +262,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         edit_text_loaned.setReadOnly(!enable, inputTypeText, backgroundColor)
         edit_text_video_url.setReadOnly(!enable, if (enable) InputType.TYPE_TEXT_VARIATION_URI else InputType.TYPE_NULL, backgroundColor)
         edit_text_observations.setReadOnly(!enable, inputTypeText, backgroundColor)
-        button_add_song.visibility = if (enable) View.VISIBLE else View.GONE
+        button_add_song.visibility = if (enable && currentGame != null) View.VISIBLE else View.GONE
         currentGame?.let {
             val adapter = recycler_view_songs.adapter as? SongsAdapter
             if (adapter != null) {
