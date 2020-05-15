@@ -6,6 +6,10 @@
         <item name="titleTextColor">@color/color1</item>
     </style>
 
+    <style name="AppThemeDialogTransparent" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
     <style name="AppThemeNoActionBar" parent="Theme.AppCompat.NoActionBar">
     </style>
 
