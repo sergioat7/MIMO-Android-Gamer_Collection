@@ -58,11 +58,6 @@ class GamesAdapter(
         } ?: run {
             item.image_view_game.setImageDrawable(null)
         }
-//        if (game.imageUrl != null) {
-//            Picasso.with(context).load(game.imageUrl).into(item.image_view_game)
-//        } else {
-//            item.image_view_game.setImageDrawable(null)
-//        }
 
         item.image_view_goty.visibility = if (game.goty) View.VISIBLE else View.GONE
 
