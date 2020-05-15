@@ -6,7 +6,6 @@ class Constants {
         // MARK: - SharedPref constants
 
         const val preferencesName = "preferences"
-        const val newInstallationPrefName = "newInstallation"
         const val userDataPrefName = "userData"
         const val authDataPrefName = "authData"
 
