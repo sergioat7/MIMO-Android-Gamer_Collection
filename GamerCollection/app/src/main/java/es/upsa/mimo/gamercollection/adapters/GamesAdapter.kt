@@ -23,7 +23,8 @@ class GamesAdapter(
     private val resources: Resources,
     private val games: List<GameResponse>,
     private val platforms: List<PlatformResponse>,
-    private val states: List<StateResponse>
+    private val states: List<StateResponse>,
+    private var onItemClickListener: OnItemClickListener
 ): RecyclerView.Adapter<GamesAdapter.GamesViewHolder?>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GamesViewHolder {
@@ -68,7 +69,7 @@ class GamesAdapter(
             item.text_view_name.visibility = View.GONE
         }
 
-        val platform = platforms.firstOrNull { it.id == game.platform}
+        val platform = platforms.firstOrNull { it.id == game.platform }
         platform?.let {
             item.text_view_platform.text = it.name
             item.text_view_platform.visibility = View.VISIBLE
@@ -76,7 +77,7 @@ class GamesAdapter(
             item.text_view_platform.visibility = View.GONE
         }
 
-        if (game.releaseDate != null && !game.releaseDate.isEmpty() && game.state == Constants.pending) {
+        if (game.releaseDate != null && game.releaseDate.isNotEmpty() && game.state == Constants.pending) {
 
             val format = if (Locale.getDefault().language == "es") "d-M-y" else "M-d-y"
             val releaseDate = SimpleDateFormat(format).parse(game.releaseDate)
@@ -95,6 +96,18 @@ class GamesAdapter(
         item.rating_bar.rating = (game.score / 2).toFloat()
     }
 
-    class GamesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    interface OnItemClickListener {
+        fun onItemClick(gameId: Int)
+    }
+
+    inner class GamesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+        override fun onClick(view: View?) {
+            val gameId = games[ this.adapterPosition].id
+            onItemClickListener.onItemClick(gameId)
+        }
     }
 }

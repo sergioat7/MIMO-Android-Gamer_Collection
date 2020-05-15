@@ -3,6 +3,7 @@ package es.upsa.mimo.gamercollection.fragments
 import android.os.Bundle
 import android.view.*
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
@@ -14,7 +15,7 @@ import es.upsa.mimo.gamercollection.persistence.repositories.StateRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.android.synthetic.main.fragment_games.*
 
-class GamesFragment : BaseFragment() {
+class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
 
     private lateinit var gameRepository: GameRepository
     private lateinit var platformRepository: PlatformRepository
@@ -63,6 +64,12 @@ class GamesFragment : BaseFragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onItemClick(gameId: Int) {
+        
+        val params = mapOf("gameId" to gameId)
+        launchActivityWithExtras(GameDetailActivity::class.java, params)
+    }
+
     //MARK: - Private functions
 
     private fun initializeUI() {
@@ -96,7 +103,7 @@ class GamesFragment : BaseFragment() {
         recycler_view_games.layoutManager = LinearLayoutManager(requireContext())
         val platforms = platformRepository.getPlatforms()
         val states = stateRepository.getStates()
-        recycler_view_games.adapter = GamesAdapter(requireContext(), resources, games, platforms, states)
+        recycler_view_games.adapter = GamesAdapter(requireContext(), resources, games, platforms, states, this)
     }
 
     private fun setGamesCount(games: List<GameResponse>) {
