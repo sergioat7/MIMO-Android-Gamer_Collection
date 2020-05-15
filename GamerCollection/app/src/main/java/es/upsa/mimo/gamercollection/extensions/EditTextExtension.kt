@@ -43,7 +43,8 @@ private fun getPicker(editText: EditText, context: Context): DatePickerDialog {
 
         val currentDay = if (day < 10) "0${day}" else day.toString()
         val currentMonth = if (month < 9) "0${month+1}" else (month+1).toString()
-        editText.setText("${currentDay}-${currentMonth}-${year}")
+        val date = if (Locale.getDefault().language == "es") "${currentDay}-${currentMonth}-${year}" else "${currentMonth}-${currentDay}-${year}"
+        editText.setText(date)
     }, year, month, day)
     return picker
 }

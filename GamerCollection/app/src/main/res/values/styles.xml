@@ -70,7 +70,7 @@
     </style>
 
     <style name="CustomRatingBar" parent="Widget.AppCompat.RatingBar.Indicator">
-        <item name="android:progressTint">@color/color3</item>
+        <item name="android:progressTint">@color/color5</item>
     </style>
 
     <style name="CustomRatingBar.LightBackground" parent="CustomRatingBar">

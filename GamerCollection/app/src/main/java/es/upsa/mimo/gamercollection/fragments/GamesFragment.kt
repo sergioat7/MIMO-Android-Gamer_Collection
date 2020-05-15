@@ -2,12 +2,23 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.os.Bundle
 import android.view.*
+import androidx.recyclerview.widget.LinearLayoutManager
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
+import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.models.GameResponse
+import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
+import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
+import es.upsa.mimo.gamercollection.persistence.repositories.StateRepository
+import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.android.synthetic.main.fragment_games.*
 
 class GamesFragment : BaseFragment() {
+
+    private lateinit var gameRepository: GameRepository
+    private lateinit var platformRepository: PlatformRepository
+    private lateinit var stateRepository: StateRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,6 +30,10 @@ class GamesFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        gameRepository = GameRepository(requireContext())
+        platformRepository = PlatformRepository(requireContext())
+        stateRepository = StateRepository(requireContext())
 
         initializeUI()
     }
@@ -52,18 +67,17 @@ class GamesFragment : BaseFragment() {
 
     private fun initializeUI() {
 
-        text_view_games_number.text = resources.getString(R.string.GAMES_NUMBER_TITLE, 0)
+        val games = gameRepository.getGames()
 
+        setGamesCount(games)
         button_sort.setOnClickListener { sort() }
 
-        button_pending.text = resources.getString(R.string.GAMES_FILTER_BUTTON_TITLE_PENDING, 0)
         button_pending.setOnClickListener {
             it.isSelected = !it.isSelected
             button_in_progress.isSelected = false
             button_finished.isSelected = false
             showPendingGames()
         }
-        button_in_progress.text = resources.getString(R.string.GAMES_FILTER_BUTTON_TITLE_IN_PROGRESS, 0)
         button_in_progress.setOnClickListener {
 
             button_pending.isSelected = false
@@ -71,7 +85,6 @@ class GamesFragment : BaseFragment() {
             button_finished.isSelected = false
             showInProgressGames()
         }
-        button_finished.text = resources.getString(R.string.GAMES_FILTER_BUTTON_TITLE_FINISHED, 0)
         button_finished.setOnClickListener {
 
             button_pending.isSelected = false
@@ -79,6 +92,24 @@ class GamesFragment : BaseFragment() {
             it.isSelected = !it.isSelected
             showFinishedGames()
         }
+
+        recycler_view_games.layoutManager = LinearLayoutManager(requireContext())
+        val platforms = platformRepository.getPlatforms()
+        val states = stateRepository.getStates()
+        recycler_view_games.adapter = GamesAdapter(requireContext(), resources, games, platforms, states)
+    }
+
+    private fun setGamesCount(games: List<GameResponse>) {
+
+        val filteredGames = games.mapNotNull { it.state }
+        val pendingGamesCount = filteredGames.filter { it == Constants.pending }.size
+        val inProgressGamesCount = filteredGames.filter { it == Constants.inProgress }.size
+        val finishedGamesCount = filteredGames.filter { it == Constants.finished }.size
+
+        text_view_games_number.text = resources.getString(R.string.GAMES_NUMBER_TITLE, games.size)
+        button_pending.text = resources.getString(R.string.GAMES_FILTER_BUTTON_TITLE_PENDING, pendingGamesCount)
+        button_in_progress.text = resources.getString(R.string.GAMES_FILTER_BUTTON_TITLE_IN_PROGRESS, inProgressGamesCount)
+        button_finished.text = resources.getString(R.string.GAMES_FILTER_BUTTON_TITLE_FINISHED, finishedGamesCount)
     }
 
     private fun filter() {
