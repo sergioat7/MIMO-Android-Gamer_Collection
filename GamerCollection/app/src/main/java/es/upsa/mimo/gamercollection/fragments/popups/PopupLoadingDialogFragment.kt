@@ -10,6 +10,11 @@ import es.upsa.mimo.gamercollection.R
 
 class PopupLoadingDialogFragment : DialogFragment() {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_TITLE, R.style.AppThemeDialogTransparent)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
