@@ -91,7 +91,12 @@ class GamesAdapter(
             item.image_view_calendar.visibility = View.GONE
         }
 
-        item.rating_bar.rating = (game.score / 2).toFloat()
+        if (game.score > 0) {
+            item.rating_bar.rating = (game.score / 2).toFloat()
+            item.rating_bar.visibility = View.VISIBLE
+        } else {
+            item.rating_bar.visibility = View.GONE
+        }
     }
 
     interface OnItemClickListener {
