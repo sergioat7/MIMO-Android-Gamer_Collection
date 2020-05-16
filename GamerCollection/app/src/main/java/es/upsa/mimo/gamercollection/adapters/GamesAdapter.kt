@@ -82,15 +82,13 @@ class GamesAdapter(
             val format = if (Locale.getDefault().language == "es") "d-M-y" else "M-d-y"
             val releaseDate = SimpleDateFormat(format).parse(game.releaseDate)
             if (Date().before(releaseDate)) {
-                item.text_view_released.text = resources.getString(R.string.GAMES_UNRELEASED)
-                item.text_view_released.setTextColor(ContextCompat.getColor(context, R.color.color4))
+                item.image_view_calendar.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.unreleased))
             } else {
-                item.text_view_released.text = resources.getString(R.string.GAMES_RELEASED)
-                item.text_view_released.setTextColor(ContextCompat.getColor(context, R.color.color3))
+                item.image_view_calendar.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.released))
             }
-            item.text_view_released.visibility = View.VISIBLE
+            item.image_view_calendar.visibility = View.VISIBLE
         } else {
-            item.text_view_released.visibility = View.GONE
+            item.image_view_calendar.visibility = View.GONE
         }
 
         item.rating_bar.rating = (game.score / 2).toFloat()
