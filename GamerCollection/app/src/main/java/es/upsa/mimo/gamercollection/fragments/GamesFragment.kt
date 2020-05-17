@@ -46,6 +46,13 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         initializeUI()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val games = getContent(null)
+        setGamesCount(games)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         menu.clear()
@@ -117,9 +124,6 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         val platforms = platformRepository.getPlatforms()
         val states = stateRepository.getStates()
         recycler_view_games.adapter = GamesAdapter(requireContext(), ArrayList(), platforms, states, this)
-
-        val games = getContent(null)
-        setGamesCount(games)
     }
 
     private fun getContent(state: String?): List<GameResponse> {
