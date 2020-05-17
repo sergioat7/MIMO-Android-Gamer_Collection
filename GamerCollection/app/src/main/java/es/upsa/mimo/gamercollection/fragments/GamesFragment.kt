@@ -104,6 +104,9 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         val states = stateRepository.getStates()
         recycler_view_games.adapter = GamesAdapter(requireContext(), games, platforms, states, this)
 
+        layout_empty_list.visibility = if (games.isNotEmpty()) View.GONE else View.VISIBLE
+        recycler_view_games.visibility = if (games.isNotEmpty()) View.VISIBLE else View.GONE
+
         setGamesCount(games)
     }
 
@@ -120,11 +123,16 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         val query = SimpleSQLiteQuery(queryString)
         val games = gameRepository.getGames(query)
 
-        val adapter = recycler_view_games.adapter as? GamesAdapter
-        if (adapter != null) {
-            adapter.games = games
-            adapter.notifyDataSetChanged()
+        if (games.isNotEmpty()) {
+
+            val adapter = recycler_view_games.adapter as? GamesAdapter
+            if (adapter != null) {
+                adapter.games = games
+                adapter.notifyDataSetChanged()
+            }
         }
+        layout_empty_list.visibility = if (games.isNotEmpty()) View.GONE else View.VISIBLE
+        recycler_view_games.visibility = if (games.isNotEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun setGamesCount(games: List<GameResponse>) {
