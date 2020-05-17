@@ -10,20 +10,6 @@ class SharedPreferencesHandler(context: Context?) {
     private val sharedPref = context?.getSharedPreferences(Constants.preferencesName, Context.MODE_PRIVATE)
     private val gson = Gson()
 
-    fun isNewInstallation(): Boolean {
-        return sharedPref?.getBoolean(Constants.newInstallationPrefName, false) ?: false
-    }
-
-    fun setIsNewInstallation() {
-
-        if (sharedPref != null) {
-            with (sharedPref.edit()) {
-                putBoolean(Constants.newInstallationPrefName, true)
-                commit()
-            }
-        }
-    }
-
     fun isLoggedIn(): Boolean {
 
         val userData = getUserData()

@@ -1,6 +1,7 @@
 package es.upsa.mimo.gamercollection.persistence.daos
 
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
 import es.upsa.mimo.gamercollection.models.GameResponse
 
 @Dao
@@ -15,9 +16,6 @@ interface GameDao {
     @Delete
     suspend fun deleteGame(game: GameResponse)
 
-    @Query("SELECT * FROM Game WHERE id == :gameId")
-    suspend fun getGame(gameId: Int): GameResponse
-
-    @Query("SELECT * FROM Game")
-    suspend fun getGames(): List<GameResponse>
+    @RawQuery
+    suspend fun getGames(query: SupportSQLiteQuery): List<GameResponse>
 }

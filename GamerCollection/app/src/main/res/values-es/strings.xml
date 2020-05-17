@@ -34,7 +34,7 @@
     <string name="GAMES_FILTER_BUTTON_TITLE_FINISHED">Terminados</string>
     <string name="GAMES_RELEASED">Lanzado</string>
     <string name="GAMES_UNRELEASED">No lanzado</string>
-    <string name="GAMES_NUMBER_TITLE">juegos</string>
+    <string name="GAMES_NUMBER_TITLE">#%d juegos</string>
 
     // Game detail
     <string name="GAME_DETAIL">Detalle</string>

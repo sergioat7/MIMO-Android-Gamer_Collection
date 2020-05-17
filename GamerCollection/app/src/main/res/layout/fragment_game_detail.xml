@@ -194,31 +194,34 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_rating">
 
-                    <Button
+                    <es.upsa.mimo.gamercollection.customViews.StateButton
                         android:id="@+id/pending_button"
-                        style="@style/PendingButton.Bordered"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/GAME_DETAIL_BUTTON_TITLE_PENDING" />
+                        app:stateButton_background="@drawable/bordered_pending_state_button"
+                        app:stateButton_color="@drawable/pending_state_button_bottom_line"
+                        app:stateButton_title="@string/GAMES_FILTER_BUTTON_TITLE_PENDING" />
 
-                    <Button
+                    <es.upsa.mimo.gamercollection.customViews.StateButton
                         android:id="@+id/in_progress_button"
-                        style="@style/InProgressButton.Bordered"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_weight="1"
-                        android:text="@string/GAME_DETAIL_BUTTON_TITLE_IN_PROGRESS" />
+                        app:stateButton_background="@drawable/bordered_in_progress_state_button"
+                        app:stateButton_color="@drawable/in_progress_state_button_bottom_line"
+                        app:stateButton_title="@string/GAME_DETAIL_BUTTON_TITLE_IN_PROGRESS" />
 
-                    <Button
+                    <es.upsa.mimo.gamercollection.customViews.StateButton
                         android:id="@+id/finished_button"
-                        style="@style/FinishedButton.Bordered"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/GAME_DETAIL_BUTTON_TITLE_FINISHED" />
+                        app:stateButton_background="@drawable/bordered_finished_state_button"
+                        app:stateButton_color="@drawable/finished_state_button_bottom_line"
+                        app:stateButton_title="@string/GAME_DETAIL_BUTTON_TITLE_FINISHED" />
                 </LinearLayout>
 
                 <TextView
