@@ -3,7 +3,6 @@
 
     <item android:state_selected="true">
         <shape android:shape="rectangle">
-            <padding android:top="15dp" android:bottom="15dp" android:left="15dp" android:right="15dp" />
             <corners android:radius="5dp" />
             <stroke android:width="5px" android:color="@color/color4" />
             <solid android:color="@color/color2" />
@@ -12,7 +11,6 @@
 
     <item>
         <shape android:shape="rectangle">
-            <padding android:top="15dp" android:bottom="15dp" android:left="15dp" android:right="15dp" />
             <corners android:radius="5dp" />
             <stroke android:width="5px" android:color="@color/color4" />
             <solid android:color="@color/color1" />
