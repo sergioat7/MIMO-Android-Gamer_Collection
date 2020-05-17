@@ -3,6 +3,7 @@ package es.upsa.mimo.gamercollection.fragments
 import android.os.Bundle
 import android.view.*
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.sqlite.db.SimpleSQLiteQuery
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
@@ -74,36 +75,56 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
 
     private fun initializeUI() {
 
-        val games = gameRepository.getGames()
-
-        setGamesCount(games)
         button_sort.setOnClickListener { sort() }
 
         button_pending.setOnClickListener {
             it.isSelected = !it.isSelected
             button_in_progress.isSelected = false
             button_finished.isSelected = false
-            showPendingGames()
+            getContent(if (it.isSelected) Constants.pending else null)
         }
         button_in_progress.setOnClickListener {
 
             button_pending.isSelected = false
             it.isSelected = !it.isSelected
             button_finished.isSelected = false
-            showInProgressGames()
+            getContent(if (it.isSelected) Constants.inProgress else null)
         }
         button_finished.setOnClickListener {
 
             button_pending.isSelected = false
             button_in_progress.isSelected = false
             it.isSelected = !it.isSelected
-            showFinishedGames()
+            getContent(if (it.isSelected) Constants.finished else null)
         }
 
         recycler_view_games.layoutManager = LinearLayoutManager(requireContext())
+        val games = gameRepository.getGames()
         val platforms = platformRepository.getPlatforms()
         val states = stateRepository.getStates()
-        recycler_view_games.adapter = GamesAdapter(requireContext(), resources, games, platforms, states, this)
+        recycler_view_games.adapter = GamesAdapter(requireContext(), games, platforms, states, this)
+
+        setGamesCount(games)
+    }
+
+    private fun getContent(state: String?) {
+
+        var queryString = "SELECT * FROM Game"
+        queryString += when(state) {
+            Constants.pending -> " WHERE state == '${Constants.pending}'"
+            Constants.inProgress -> " WHERE state == '${Constants.inProgress}'"
+            Constants.finished -> " WHERE state == '${Constants.finished}'"
+            else -> ""
+        }
+
+        val query = SimpleSQLiteQuery(queryString)
+        val games = gameRepository.getGames(query)
+
+        val adapter = recycler_view_games.adapter as? GamesAdapter
+        if (adapter != null) {
+            adapter.games = games
+            adapter.notifyDataSetChanged()
+        }
     }
 
     private fun setGamesCount(games: List<GameResponse>) {
@@ -128,18 +149,6 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
     }
 
     private fun sort() {
-        //TODO
-    }
-
-    private fun showPendingGames() {
-        //TODO
-    }
-
-    private fun showInProgressGames() {
-        //TODO
-    }
-
-    private fun showFinishedGames() {
         //TODO
     }
 }

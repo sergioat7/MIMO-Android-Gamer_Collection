@@ -20,8 +20,7 @@ import java.util.*
 
 class GamesAdapter(
     private val context: Context,
-    private val resources: Resources,
-    private val games: List<GameResponse>,
+    var games: List<GameResponse>,
     private val platforms: List<PlatformResponse>,
     private val states: List<StateResponse>,
     private var onItemClickListener: OnItemClickListener
