@@ -3,7 +3,6 @@ package es.upsa.mimo.gamercollection.fragments
 import android.os.Bundle
 import android.view.*
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
@@ -14,6 +13,7 @@ import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.StateRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.android.synthetic.main.fragment_games.*
+import kotlinx.android.synthetic.main.state_button.view.*
 
 class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
 
@@ -114,9 +114,9 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         val finishedGamesCount = filteredGames.filter { it == Constants.finished }.size
 
         text_view_games_number.text = resources.getString(R.string.GAMES_NUMBER_TITLE, games.size)
-        button_pending.text = resources.getString(R.string.GAMES_FILTER_BUTTON_TITLE_PENDING, pendingGamesCount)
-        button_in_progress.text = resources.getString(R.string.GAMES_FILTER_BUTTON_TITLE_IN_PROGRESS, inProgressGamesCount)
-        button_finished.text = resources.getString(R.string.GAMES_FILTER_BUTTON_TITLE_FINISHED, finishedGamesCount)
+        button_pending.text_view_subtitle.text = "$pendingGamesCount"
+        button_in_progress.text_view_subtitle.text = "$inProgressGamesCount"
+        button_finished.text_view_subtitle.text = "$finishedGamesCount"
     }
 
     private fun filter() {

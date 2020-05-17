@@ -93,22 +93,4 @@
         <item name="android:minHeight">30dp</item>
         <item name="fontFamily">@font/roboto_regular</item>
     </style>
-
-    <style name="StateButton" parent="android:style/Widget.Button">
-        <item name="android:textColor">@drawable/state_button_text_color</item>
-        <item name="fontFamily">@font/roboto_bold</item>
-        <item name="android:background">@drawable/state_button</item>
-    </style>
-
-    <style name="PendingButton.Bordered" parent="StateButton">
-        <item name="android:background">@drawable/bordered_pending_state_button</item>
-    </style>
-
-    <style name="InProgressButton.Bordered" parent="StateButton">
-        <item name="android:background">@drawable/bordered_in_progress_state_button</item>
-    </style>
-
-    <style name="FinishedButton.Bordered" parent="StateButton">
-        <item name="android:background">@drawable/bordered_finished_state_button</item>
-    </style>
 </resources>

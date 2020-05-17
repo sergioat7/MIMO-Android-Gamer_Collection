@@ -61,31 +61,37 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-            <Button
+            <es.upsa.mimo.gamercollection.customViews.StateButton
                 android:id="@+id/button_pending"
-                style="@style/StateButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/GAMES_FILTER_BUTTON_TITLE_PENDING" />
+                app:stateButton_background="@drawable/state_button"
+                app:stateButton_color="@drawable/pending_state_button_bottom_line"
+                app:stateButton_subtitle="0"
+                app:stateButton_title="@string/GAMES_FILTER_BUTTON_TITLE_PENDING" />
 
-            <Button
+            <es.upsa.mimo.gamercollection.customViews.StateButton
                 android:id="@+id/button_in_progress"
-                style="@style/StateButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:text="@string/GAMES_FILTER_BUTTON_TITLE_IN_PROGRESS" />
+                app:stateButton_background="@drawable/state_button"
+                app:stateButton_color="@drawable/in_progress_state_button_bottom_line"
+                app:stateButton_subtitle="0"
+                app:stateButton_title="@string/GAMES_FILTER_BUTTON_TITLE_IN_PROGRESS" />
 
-            <Button
+            <es.upsa.mimo.gamercollection.customViews.StateButton
                 android:id="@+id/button_finished"
-                style="@style/StateButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/GAMES_FILTER_BUTTON_TITLE_FINISHED" />
+                app:stateButton_background="@drawable/state_button"
+                app:stateButton_color="@drawable/finished_state_button_bottom_line"
+                app:stateButton_subtitle="0"
+                app:stateButton_title="@string/GAMES_FILTER_BUTTON_TITLE_FINISHED" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
