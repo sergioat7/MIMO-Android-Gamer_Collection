@@ -21,7 +21,7 @@ import java.io.Serializable
 
 open class BaseFragment : Fragment() {
 
-    private val loadingFragment = PopupLoadingDialogFragment()
+    private var loadingFragment: PopupLoadingDialogFragment? = null
 
     fun manageError(errorResponse: ErrorResponse) {
 
@@ -52,12 +52,17 @@ open class BaseFragment : Fragment() {
             ft.remove(prev)
         }
         ft.addToBackStack(null)
-        loadingFragment.isCancelable = false
-        loadingFragment.show(ft, "loadingDialog")
+        loadingFragment = PopupLoadingDialogFragment()
+        loadingFragment?.let {
+            it.isCancelable = false
+            it.show(ft, "loadingDialog")
+        }
     }
 
     fun hideLoading() {
-        loadingFragment.dismiss()
+
+        loadingFragment?.dismiss()
+        loadingFragment = null
     }
 
     fun showPopupDialog(message: String) {
