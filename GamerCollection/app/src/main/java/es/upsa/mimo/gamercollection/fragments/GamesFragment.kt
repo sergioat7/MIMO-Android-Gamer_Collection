@@ -9,15 +9,19 @@ import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.GameResponse
+import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
 import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.StateRepository
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_games.*
 import kotlinx.android.synthetic.main.state_button.view.*
 
 class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
 
+    private lateinit var sharedPrefHandler: SharedPreferencesHandler
+    private lateinit var gameAPIClient: GameAPIClient
     private lateinit var gameRepository: GameRepository
     private lateinit var platformRepository: PlatformRepository
     private lateinit var stateRepository: StateRepository
@@ -33,6 +37,8 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        sharedPrefHandler = SharedPreferencesHandler(context)
+        gameAPIClient = GameAPIClient(resources, sharedPrefHandler)
         gameRepository = GameRepository(requireContext())
         platformRepository = PlatformRepository(requireContext())
         stateRepository = StateRepository(requireContext())
@@ -81,6 +87,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
             it.isSelected = !it.isSelected
             button_in_progress.isSelected = false
             button_finished.isSelected = false
+            swipe_refresh_layout.isEnabled = !it.isSelected
             getContent(if (it.isSelected) Constants.pending else null)
         }
         button_in_progress.setOnClickListener {
@@ -88,6 +95,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
             button_pending.isSelected = false
             it.isSelected = !it.isSelected
             button_finished.isSelected = false
+            swipe_refresh_layout.isEnabled = !it.isSelected
             getContent(if (it.isSelected) Constants.inProgress else null)
         }
         button_finished.setOnClickListener {
@@ -95,22 +103,26 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
             button_pending.isSelected = false
             button_in_progress.isSelected = false
             it.isSelected = !it.isSelected
+            swipe_refresh_layout.isEnabled = !it.isSelected
             getContent(if (it.isSelected) Constants.finished else null)
         }
 
+        swipe_refresh_layout.setColorSchemeResources(R.color.color3)
+        swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.color2)
+        swipe_refresh_layout.setOnRefreshListener {
+            loadGames()
+        }
+
         recycler_view_games.layoutManager = LinearLayoutManager(requireContext())
-        val games = gameRepository.getGames()
         val platforms = platformRepository.getPlatforms()
         val states = stateRepository.getStates()
-        recycler_view_games.adapter = GamesAdapter(requireContext(), games, platforms, states, this)
+        recycler_view_games.adapter = GamesAdapter(requireContext(), ArrayList(), platforms, states, this)
 
-        layout_empty_list.visibility = if (games.isNotEmpty()) View.GONE else View.VISIBLE
-        recycler_view_games.visibility = if (games.isNotEmpty()) View.VISIBLE else View.GONE
-
+        val games = getContent(null)
         setGamesCount(games)
     }
 
-    private fun getContent(state: String?) {
+    private fun getContent(state: String?): List<GameResponse> {
 
         var queryString = "SELECT * FROM Game"
         queryString += when(state) {
@@ -123,16 +135,15 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         val query = SimpleSQLiteQuery(queryString)
         val games = gameRepository.getGames(query)
 
-        if (games.isNotEmpty()) {
-
-            val adapter = recycler_view_games.adapter as? GamesAdapter
-            if (adapter != null) {
-                adapter.games = games
-                adapter.notifyDataSetChanged()
-            }
+        val adapter = recycler_view_games.adapter
+        if (adapter is GamesAdapter) {
+            adapter.games = games
+            adapter.notifyDataSetChanged()
         }
         layout_empty_list.visibility = if (games.isNotEmpty()) View.GONE else View.VISIBLE
-        recycler_view_games.visibility = if (games.isNotEmpty()) View.VISIBLE else View.GONE
+        swipe_refresh_layout.visibility = if (games.isNotEmpty()) View.VISIBLE else View.GONE
+
+        return games
     }
 
     private fun setGamesCount(games: List<GameResponse>) {
@@ -158,5 +169,26 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
 
     private fun sort() {
         //TODO
+    }
+
+    private fun loadGames() {
+
+        gameAPIClient.getGames({
+
+            for (game in it) {
+                gameRepository.insertGame(game)
+            }
+            gameRepository.removeDisableContent(it)
+            val games = getContent(null)
+            setGamesCount(games)
+            button_pending.isSelected = false
+            button_in_progress.isSelected = false
+            button_finished.isSelected = false
+            swipe_refresh_layout.isRefreshing = false
+        }, {
+
+            manageError(it)
+            swipe_refresh_layout.isRefreshing = false
+        })
     }
 }
