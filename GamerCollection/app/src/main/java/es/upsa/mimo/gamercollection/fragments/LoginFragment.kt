@@ -57,21 +57,10 @@ class LoginFragment : BaseFragment() {
         gameRepository = GameRepository(requireContext())
         sagaRepository = SagaRepository(requireContext())
 
-        checkIsNewInstallation()
         showMainView()
     }
 
     //MARK: - Private functions
-
-    //TODO remove all about isNewInstallation, it's unnecessary
-    private fun checkIsNewInstallation() {
-
-        if (sharedPrefHandler.isNewInstallation()) {
-            sharedPrefHandler.removeUserData()
-            sharedPrefHandler.removeCredentials()
-            sharedPrefHandler.setIsNewInstallation()
-        }
-    }
 
     private fun showMainView() {
 
