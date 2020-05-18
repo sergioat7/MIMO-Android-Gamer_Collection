@@ -16,6 +16,7 @@
     <string name="DESCENDING">Descending</string>
     <string name="YES">Yes</string>
     <string name="NO">No</string>
+    <string name="LOADING">Loading...</string>
 
     // Login
     <string name="LOGIN_USERNAME">Username</string>

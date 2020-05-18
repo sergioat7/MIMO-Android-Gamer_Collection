@@ -57,19 +57,10 @@ class LoginFragment : BaseFragment() {
         gameRepository = GameRepository(requireContext())
         sagaRepository = SagaRepository(requireContext())
 
-        showMainView()
+        initializeUI()
     }
 
     //MARK: - Private functions
-
-    private fun showMainView() {
-
-        if (sharedPrefHandler.isLoggedIn()) {
-            goToMainView()
-        } else {
-            initializeUI()
-        }
-    }
 
     private fun initializeUI() {
 
@@ -127,7 +118,7 @@ class LoginFragment : BaseFragment() {
 
                                 userData.isLoggedIn = true
                                 sharedPrefHandler.storeUserData(userData)
-                                goToMainView()
+                                launchActivity(MainActivity::class.java)
                                 hideLoading()
                             }, {
                                 manageError(it)
@@ -147,10 +138,6 @@ class LoginFragment : BaseFragment() {
         }, {
             manageError(it)
         })
-    }
-
-    private fun goToMainView() {
-        launchActivity(MainActivity::class.java)
     }
 
     private fun manageFormats(formats: List<FormatResponse>) {

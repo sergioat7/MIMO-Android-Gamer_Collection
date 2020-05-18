@@ -129,12 +129,15 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
     private fun getContent(state: String?): List<GameResponse> {
 
         var queryString = "SELECT * FROM Game"
+
         queryString += when(state) {
             Constants.pending -> " WHERE state == '${Constants.pending}'"
             Constants.inProgress -> " WHERE state == '${Constants.inProgress}'"
             Constants.finished -> " WHERE state == '${Constants.finished}'"
             else -> ""
         }
+
+        queryString += " ORDER BY name ASC"
 
         val query = SimpleSQLiteQuery(queryString)
         val games = gameRepository.getGames(query)
@@ -177,6 +180,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
 
     private fun loadGames() {
 
+        enableStateButtons(false)
         gameAPIClient.getGames({
 
             for (game in it) {
@@ -185,14 +189,19 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
             gameRepository.removeDisableContent(it)
             val games = getContent(null)
             setGamesCount(games)
-            button_pending.isSelected = false
-            button_in_progress.isSelected = false
-            button_finished.isSelected = false
-            swipe_refresh_layout.isRefreshing = false
+            enableStateButtons(true)
         }, {
 
             manageError(it)
-            swipe_refresh_layout.isRefreshing = false
+            enableStateButtons(true)
         })
+    }
+
+    private fun enableStateButtons(enable: Boolean) {
+
+        swipe_refresh_layout.isRefreshing = !enable
+        button_pending.isEnabled = enable
+        button_in_progress.isEnabled = enable
+        button_finished.isEnabled = enable
     }
 }
