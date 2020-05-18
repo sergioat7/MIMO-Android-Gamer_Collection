@@ -129,12 +129,15 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
     private fun getContent(state: String?): List<GameResponse> {
 
         var queryString = "SELECT * FROM Game"
+
         queryString += when(state) {
             Constants.pending -> " WHERE state == '${Constants.pending}'"
             Constants.inProgress -> " WHERE state == '${Constants.inProgress}'"
             Constants.finished -> " WHERE state == '${Constants.finished}'"
             else -> ""
         }
+
+        queryString += " ORDER BY name ASC"
 
         val query = SimpleSQLiteQuery(queryString)
         val games = gameRepository.getGames(query)
@@ -176,7 +179,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
     }
 
     private fun loadGames() {
-        
+
         enableStateButtons(false)
         gameAPIClient.getGames({
 
