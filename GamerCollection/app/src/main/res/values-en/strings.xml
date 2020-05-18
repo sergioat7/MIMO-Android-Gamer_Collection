@@ -12,6 +12,9 @@
     <string name="EMPTY_LIST">The list is empty</string>
     <string name="ASCENDING">Ascending</string>
     <string name="DESCENDING">Descending</string>
+    <string name="YES">Yes</string>
+    <string name="NO">No</string>
+    <string name="LOADING">Loading...</string>
 
     // Login
     <string name="LOGIN_USERNAME">Username</string>
@@ -129,7 +132,5 @@
     <string name="ERROR_REGISTRATION_EMPTY_DATA">Username and password can\'t be empty</string>
     <string name="ERROR_REGISTRATION_DIFFERENT_PASSWORDS">Password and repeat don\'t match</string>
     <string name="ERROR_DATABASE">Database error. Please try again</string>
-    <string name="YES">Yes</string>
-    <string name="NO">No</string>
     <string name="ERROR_IMAGE_URL">The image could not be loaded</string>
 </resources>
