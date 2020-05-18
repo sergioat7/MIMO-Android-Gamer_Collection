@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
 import android.view.*
-import android.widget.ArrayAdapter
 import android.widget.RatingBar
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,18 +13,21 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.SongsAdapter
+import es.upsa.mimo.gamercollection.adapters.SpinnerAdapter
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.*
 import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
 import es.upsa.mimo.gamercollection.network.apiClient.SongAPIClient
-import es.upsa.mimo.gamercollection.persistence.repositories.*
+import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
+import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
+import es.upsa.mimo.gamercollection.persistence.repositories.GenreRepository
+import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_game_detail.*
 import kotlinx.android.synthetic.main.new_song_dialog.view.*
-import kotlin.collections.ArrayList
 
 class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
 
@@ -470,9 +472,9 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         }
     }
 
-    private fun getAdapter(data: List<String>): ArrayAdapter<String> {
+    private fun getAdapter(data: List<String>): SpinnerAdapter {
 
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item, data)
+        val arrayAdapter = SpinnerAdapter(requireContext(), data)
         arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         return arrayAdapter
     }
