@@ -1,7 +1,10 @@
 package es.upsa.mimo.gamercollection.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
+import android.widget.LinearLayout
+import android.widget.NumberPicker
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.sqlite.db.SimpleSQLiteQuery
 import es.upsa.mimo.gamercollection.R
@@ -25,6 +28,11 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
     private lateinit var gameRepository: GameRepository
     private lateinit var platformRepository: PlatformRepository
     private lateinit var stateRepository: StateRepository
+    private val sortingKeys = arrayOf("name", "platform", "releaseDate", "purchaseDate", "price")
+    private var sortingValues = arrayOf("")
+    private var state: String? = null
+    private var sortKey = "name"
+    private var sortAscending = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +50,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         gameRepository = GameRepository(requireContext())
         platformRepository = PlatformRepository(requireContext())
         stateRepository = StateRepository(requireContext())
+        sortingValues = arrayOf(resources.getString(R.string.SORT_NAME), resources.getString(R.string.SORT_PLATFORM), resources.getString(R.string.SORT_RELEASE_DATE), resources.getString(R.string.SORT_PURCHASE_DATE), resources.getString(R.string.SORT_PRICE))
 
         initializeUI()
     }
@@ -49,7 +58,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
     override fun onResume() {
         super.onResume()
 
-        val games = getContent(null)
+        val games = getContent(state, sortKey, sortAscending)
         setGamesCount(games)
     }
 
@@ -95,7 +104,8 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
             button_in_progress.isSelected = false
             button_finished.isSelected = false
             swipe_refresh_layout.isEnabled = !it.isSelected
-            getContent(if (it.isSelected) Constants.pending else null)
+            state = if (it.isSelected) Constants.pending else null
+            getContent(state, sortKey, sortAscending)
         }
         button_in_progress.setOnClickListener {
 
@@ -103,7 +113,8 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
             it.isSelected = !it.isSelected
             button_finished.isSelected = false
             swipe_refresh_layout.isEnabled = !it.isSelected
-            getContent(if (it.isSelected) Constants.inProgress else null)
+            state = if (it.isSelected) Constants.inProgress else null
+            getContent(state, sortKey, sortAscending)
         }
         button_finished.setOnClickListener {
 
@@ -111,7 +122,8 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
             button_in_progress.isSelected = false
             it.isSelected = !it.isSelected
             swipe_refresh_layout.isEnabled = !it.isSelected
-            getContent(if (it.isSelected) Constants.finished else null)
+            state = if (it.isSelected) Constants.finished else null
+            getContent(state, sortKey, sortAscending)
         }
 
         swipe_refresh_layout.setColorSchemeResources(R.color.color3)
@@ -126,7 +138,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         recycler_view_games.adapter = GamesAdapter(requireContext(), ArrayList(), platforms, states, this)
     }
 
-    private fun getContent(state: String?): List<GameResponse> {
+    private fun getContent(state: String?, sortKey: String?, sortAscending: Boolean): List<GameResponse> {
 
         var queryString = "SELECT * FROM Game"
 
@@ -137,7 +149,9 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
             else -> ""
         }
 
-        queryString += " ORDER BY name ASC"
+        val sortParam = sortKey ?: "name"
+        val sortOrder = if(sortAscending) "ASC"  else "DESC"
+        queryString += " ORDER BY $sortParam $sortOrder"
 
         val query = SimpleSQLiteQuery(queryString)
         val games = gameRepository.getGames(query)
@@ -175,7 +189,45 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
     }
 
     private fun sort() {
-        //TODO
+
+        val dialogView = LinearLayout(requireContext())
+        dialogView.orientation = LinearLayout.HORIZONTAL
+
+        val ascendingPicker = getPicker(arrayOf(resources.getString(R.string.ASCENDING), resources.getString(R.string.DESCENDING)))
+        val ascendingPickerParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        ascendingPickerParams.weight = 1f
+
+        val sortKeysPicker = getPicker(sortingValues)
+        val sortKeysPickerParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        sortKeysPickerParams.weight = 1f
+
+        val params = LinearLayout.LayoutParams(50, 50)
+        params.gravity = Gravity.CENTER
+
+        dialogView.layoutParams = params
+        dialogView.addView(sortKeysPicker, sortKeysPickerParams)
+        dialogView.addView(ascendingPicker, ascendingPickerParams)
+
+        AlertDialog.Builder(context)
+            .setTitle(resources.getString(R.string.SORT_TITLE))
+            .setView(dialogView)
+            .setCancelable(false)
+            .setPositiveButton(resources.getString(R.string.ACCEPT)) { dialog, _ ->
+                sortKey = sortingKeys[sortKeysPicker.value]
+                sortAscending = ascendingPicker.value == 0
+                getContent(state, sortKey, sortAscending)
+                dialog.dismiss()
+            }
+            .setNegativeButton(resources.getString(R.string.CANCEL)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun loadGames() {
@@ -187,7 +239,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
                 gameRepository.insertGame(game)
             }
             gameRepository.removeDisableContent(it)
-            val games = getContent(null)
+            val games = getContent(null, null, true)
             setGamesCount(games)
             enableStateButtons(true)
         }, {
@@ -203,5 +255,16 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         button_pending.isEnabled = enable
         button_in_progress.isEnabled = enable
         button_finished.isEnabled = enable
+    }
+
+    private fun getPicker(values: Array<String>): NumberPicker {
+
+        val picker = NumberPicker(requireContext())
+        picker.minValue = 0
+        picker.maxValue = values.size - 1
+        picker.wrapSelectorWheel = true
+        picker.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+        picker.displayedValues = values
+        return picker
     }
 }

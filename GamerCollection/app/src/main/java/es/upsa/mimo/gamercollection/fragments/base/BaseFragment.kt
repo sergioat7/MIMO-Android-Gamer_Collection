@@ -2,14 +2,6 @@ package es.upsa.mimo.gamercollection.fragments.base
 
 import android.app.AlertDialog
 import android.content.Intent
-import android.view.Gravity
-import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import es.upsa.mimo.gamercollection.R
