@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5fcca45ff8c7d966e9fd704f739fd04b",
+    "identityHash": "e3692340474f01f826c7bd3a33b2af07",
     "entities": [
       {
         "tableName": "Format",
@@ -110,7 +110,7 @@
       },
       {
         "tableName": "Game",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `platform` TEXT, `score` REAL NOT NULL, `pegi` TEXT, `distributor` TEXT, `developer` TEXT, `players` TEXT, `releaseDate` TEXT, `goty` INTEGER NOT NULL, `format` TEXT, `genre` TEXT, `state` TEXT, `purchaseDate` TEXT, `purchaseLocation` TEXT, `price` REAL NOT NULL, `imageUrl` TEXT, `videoUrl` TEXT, `loanedTo` TEXT, `observations` TEXT, `songs` TEXT NOT NULL, `saga_id` INTEGER, `saga_name` TEXT, `saga_games` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `platform` TEXT, `score` REAL NOT NULL, `pegi` TEXT, `distributor` TEXT, `developer` TEXT, `players` TEXT, `releaseDate` INTEGER, `goty` INTEGER NOT NULL, `format` TEXT, `genre` TEXT, `state` TEXT, `purchaseDate` INTEGER, `purchaseLocation` TEXT, `price` REAL NOT NULL, `imageUrl` TEXT, `videoUrl` TEXT, `loanedTo` TEXT, `observations` TEXT, `songs` TEXT NOT NULL, `saga_id` INTEGER, `saga_name` TEXT, `saga_games` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -163,7 +163,7 @@
           {
             "fieldPath": "releaseDate",
             "columnName": "releaseDate",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": false
           },
           {
@@ -193,7 +193,7 @@
           {
             "fieldPath": "purchaseDate",
             "columnName": "purchaseDate",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": false
           },
           {
@@ -340,7 +340,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5fcca45ff8c7d966e9fd704f739fd04b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e3692340474f01f826c7bd3a33b2af07')"
     ]
   }
 }
