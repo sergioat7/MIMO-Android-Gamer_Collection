@@ -1,7 +1,6 @@
 package es.upsa.mimo.gamercollection.adapters
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,6 @@ import es.upsa.mimo.gamercollection.models.PlatformResponse
 import es.upsa.mimo.gamercollection.models.StateResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.android.synthetic.main.game_item.view.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 class GamesAdapter(
@@ -76,11 +74,9 @@ class GamesAdapter(
             item.text_view_platform.visibility = View.GONE
         }
 
-        if (game.releaseDate != null && game.releaseDate.isNotEmpty() && game.state == Constants.pending) {
+        if (game.releaseDate != null && game.state == Constants.pending) {
 
-            val format = if (Locale.getDefault().language == "es") "d-M-y" else "M-d-y"
-            val releaseDate = SimpleDateFormat(format).parse(game.releaseDate)
-            if (Date().before(releaseDate)) {
+            if (Date().before(game.releaseDate)) {
                 item.image_view_calendar.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.unreleased))
             } else {
                 item.image_view_calendar.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.released))

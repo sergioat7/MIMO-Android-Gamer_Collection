@@ -3,6 +3,7 @@ package es.upsa.mimo.gamercollection.models
 import androidx.room.*
 import com.google.gson.annotations.SerializedName
 import es.upsa.mimo.gamercollection.models.base.BaseModel
+import java.util.*
 
 @Entity(tableName = "Game")
 data class GameResponse(
@@ -24,7 +25,7 @@ data class GameResponse(
     @SerializedName("players")
     val players: String?,
     @SerializedName("releaseDate")
-    val releaseDate: String?,
+    val releaseDate: Date?,
     @SerializedName("goty")
     val goty: Boolean,
     @SerializedName("format")
@@ -34,7 +35,7 @@ data class GameResponse(
     @SerializedName("state")
     val state: String?,
     @SerializedName("purchaseDate")
-    val purchaseDate: String?,
+    val purchaseDate: Date?,
     @SerializedName("purchaseLocation")
     val purchaseLocation: String?,
     @SerializedName("price")

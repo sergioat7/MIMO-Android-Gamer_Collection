@@ -17,7 +17,7 @@ import es.upsa.mimo.gamercollection.persistence.daos.*
     GameResponse::class,
     SongResponse::class,
     SagaResponse::class], version = 1)
-@TypeConverters(ListConverter::class)
+@TypeConverters(ListConverter::class, DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun formatDao(): FormatDao
