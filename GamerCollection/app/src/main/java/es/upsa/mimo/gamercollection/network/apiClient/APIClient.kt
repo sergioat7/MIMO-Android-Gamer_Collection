@@ -1,7 +1,7 @@
 package es.upsa.mimo.gamercollection.network.apiClient
 
 import android.content.res.Resources
-import com.google.gson.Gson
+import com.google.gson.*
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.utils.Constants
@@ -11,13 +11,26 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.reflect.Type
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
 class APIClient {
     companion object {
 
-        val gson = Gson()
+        var gson = GsonBuilder()
+            .registerTypeAdapter(Date::class.java, object : JsonDeserializer<Date?> {
+                @Throws(JsonParseException::class)
+                override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext?): Date? {
+                    return Constants.stringToDate(json.asString)
+                }
+            })
+            .setDateFormat(Constants.getDateFormat())
+            .serializeNulls()
+            .create()
+
+
 
         private val okHttpClient: OkHttpClient = OkHttpClient.Builder()
             .connectTimeout(1, TimeUnit.MINUTES)
@@ -30,7 +43,7 @@ class APIClient {
             return Retrofit.Builder()
                 .baseUrl(Constants.baseEndpoint)
                 .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
         }
 
