@@ -2,6 +2,7 @@ package es.upsa.mimo.gamercollection.persistence.repositories
 
 import android.content.Context
 import es.upsa.mimo.gamercollection.models.SagaResponse
+import es.upsa.mimo.gamercollection.models.SagaWithGames
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -15,12 +16,16 @@ class SagaRepository(context: Context) {
 
     fun getSagas(): List<SagaResponse> {
 
-        var sagas: List<SagaResponse> = arrayListOf()
+        var sagas: List<SagaWithGames> = arrayListOf()
         runBlocking {
             val result = GlobalScope.async { sagaDao.getSagas() }
             sagas = result.await()
         }
-        return sagas
+        val result = ArrayList<SagaResponse>()
+        for (saga in sagas) {
+            result.add(saga.transform())
+        }
+        return result
     }
 
     fun insertSaga(saga: SagaResponse) {
