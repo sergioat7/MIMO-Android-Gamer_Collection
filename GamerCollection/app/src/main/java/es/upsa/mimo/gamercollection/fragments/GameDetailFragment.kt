@@ -29,7 +29,7 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_game_detail.*
 import kotlinx.android.synthetic.main.new_song_dialog.view.*
 
-class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
+class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener, SongsAdapter.OnItemClickListener {
 
     private var gameId: Int? = null
     private lateinit var sharedPrefHandler: SharedPreferencesHandler
@@ -105,6 +105,19 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
 
     override fun onRatingChanged(ratingBar: RatingBar?, rating: Float, fromUser: Boolean) {
         text_view_rating.text = rating.toString()
+    }
+
+    override fun onItemClick(songId: Int) {
+
+        currentGame?.let { game ->
+
+            showLoading()
+            songAPIClient.deleteSong(game.id, songId, {
+                updateData()
+            }, {
+                manageError(it)
+            })
+        }
     }
 
     //MARK: - Private functions
@@ -229,7 +242,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
             menu?.let {
                 editable = it.findItem(R.id.action_save_game).isVisible
             }
-            recycler_view_songs.adapter = SongsAdapter(game.songs, editable, deleteSong)
+            recycler_view_songs.adapter = SongsAdapter(game.songs, editable, this)
         }
     }
 
@@ -378,19 +391,6 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
 
             showLoading()
             songAPIClient.createSong(game.id, song, {
-                updateData()
-            }, {
-                manageError(it)
-            })
-        }
-    }
-
-    private val deleteSong = fun(songId: Int) {
-
-        currentGame?.let { game ->
-
-            showLoading()
-            songAPIClient.deleteSong(game.id, songId, {
                 updateData()
             }, {
                 manageError(it)
