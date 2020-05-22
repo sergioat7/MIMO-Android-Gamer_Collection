@@ -5,6 +5,7 @@ import android.view.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
+import es.upsa.mimo.gamercollection.activities.SagaDetailActivity
 import es.upsa.mimo.gamercollection.adapters.SagasAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.network.apiClient.SagaAPIClient
@@ -69,7 +70,9 @@ class SagasFragment : BaseFragment(), SagasAdapter.OnItemClickListener {
     }
 
     override fun onItemClick(sagaId: Int) {
-        //TODO
+
+        val params = mapOf("sagaId" to sagaId)
+        launchActivityWithExtras(SagaDetailActivity::class.java, params)
     }
 
     override fun onGameItemClick(gameId: Int) {
@@ -108,7 +111,7 @@ class SagasFragment : BaseFragment(), SagasAdapter.OnItemClickListener {
     }
 
     private fun add(){
-        //TODO
+        launchActivity(SagaDetailActivity::class.java)
     }
 
     private fun loadSagas() {
