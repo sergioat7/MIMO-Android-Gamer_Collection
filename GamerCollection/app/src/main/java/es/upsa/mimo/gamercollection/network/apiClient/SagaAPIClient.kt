@@ -55,6 +55,19 @@ class SagaAPIClient(
             success(game)
         }, { errorResponse ->
             failure(errorResponse)
+    }
+
+    fun deleteSaga(sagaId: Int, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        val headers: MutableMap<String, String> = HashMap()
+        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        val request = api.deleteSaga(headers, sagaId)
+
+        APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
+            success()
+        }, {
+            failure(it)
         })
     }
 }
