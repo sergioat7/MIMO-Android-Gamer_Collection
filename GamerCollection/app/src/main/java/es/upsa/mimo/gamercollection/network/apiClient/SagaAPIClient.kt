@@ -23,10 +23,10 @@ class SagaAPIClient(
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.getSagas(headers)
 
-        APIClient.sendServer<List<SagaResponse>, ErrorResponse>(resources, request, { sagas ->
-            success(sagas)
-        }, { errorResponse ->
-            failure(errorResponse)
+        APIClient.sendServer<List<SagaResponse>, ErrorResponse>(resources, request, {
+            success(it)
+        }, {
+            failure(it)
         })
     }
 
@@ -39,8 +39,8 @@ class SagaAPIClient(
 
         APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
             success()
-        }, { errorResponse ->
-            failure(errorResponse)
+        }, {
+            failure(it)
         })
     }
 
@@ -51,10 +51,11 @@ class SagaAPIClient(
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.setSaga(headers, saga.id, saga)
 
-        APIClient.sendServer<SagaResponse, ErrorResponse>(resources, request, { game ->
-            success(game)
-        }, { errorResponse ->
-            failure(errorResponse)
+        APIClient.sendServer<SagaResponse, ErrorResponse>(resources, request, {
+            success(it)
+        }, {
+            failure(it)
+        })
     }
 
     fun deleteSaga(sagaId: Int, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
