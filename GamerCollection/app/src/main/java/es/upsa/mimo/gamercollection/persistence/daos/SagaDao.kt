@@ -2,6 +2,7 @@ package es.upsa.mimo.gamercollection.persistence.daos
 
 import androidx.room.*
 import es.upsa.mimo.gamercollection.models.SagaResponse
+import es.upsa.mimo.gamercollection.models.SagaWithGames
 
 @Dao
 interface SagaDao {
@@ -16,8 +17,8 @@ interface SagaDao {
     suspend fun deleteSaga(saga: SagaResponse)
 
     @Query("SELECT * FROM Saga WHERE id == :sagaId")
-    suspend fun getSaga(sagaId: String): SagaResponse
+    suspend fun getSaga(sagaId: String): SagaWithGames
 
     @Query("SELECT * FROM Saga")
-    suspend fun getSagas(): List<SagaResponse>
+    suspend fun getSagas(): List<SagaWithGames>
 }

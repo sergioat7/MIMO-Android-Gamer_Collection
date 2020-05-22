@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
 import es.upsa.mimo.gamercollection.models.GameResponse
+import es.upsa.mimo.gamercollection.models.GameWithSaga
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -17,22 +18,26 @@ class GameRepository(context: Context) {
 
     fun getGames(query: SupportSQLiteQuery? = null): List<GameResponse> {
 
-        var games: List<GameResponse> = arrayListOf()
+        var games: List<GameWithSaga> = arrayListOf()
         runBlocking {
             val result = GlobalScope.async { gameDao.getGames(query ?: SimpleSQLiteQuery("SELECT * FROM Game")) }
             games = result.await()
         }
-        return games
+        val result = ArrayList<GameResponse>()
+        for (game in games) {
+            result.add(game.transform())
+        }
+        return result
     }
 
     fun getGame(gameId: Int): GameResponse? {
 
-        var game: GameResponse? = null
+        var game: GameWithSaga? = null
         runBlocking {
             val result = GlobalScope.async { gameDao.getGames(SimpleSQLiteQuery("SELECT * FROM Game WHERE id == '${gameId}'")).firstOrNull() }
             game = result.await()
         }
-        return game
+        return game?.transform()
     }
 
     fun insertGame(game: GameResponse) {
