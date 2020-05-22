@@ -41,7 +41,7 @@ class SagasAdapter(
         item.edit_text_name.setReadOnly(true, InputType.TYPE_NULL, 0)
         item.edit_text_name.setOnClickListener { holder.onClick(it) }
 
-        item.button_edit.setOnClickListener {
+        item.image_view_edit.setOnClickListener {
             val sagaId = saga.id
             onItemClickListener.onItemClick(sagaId)
         }
