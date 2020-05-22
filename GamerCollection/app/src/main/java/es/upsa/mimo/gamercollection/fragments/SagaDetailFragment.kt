@@ -1,8 +1,12 @@
 package es.upsa.mimo.gamercollection.fragments
 
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType
+import android.util.TypedValue
 import android.view.*
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
@@ -101,10 +105,30 @@ class SagaDetailFragment : BaseFragment() {
     private fun showData(saga: SagaResponse?) {
 
         currentSaga = saga
+        linear_layout_games.removeAllViews()
         saga?.let { saga ->
 
             edit_text_name.setText(saga.name)
-            //TODO show games
+
+            val layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            layoutParams.setMargins(0, 15, 0, 15)
+
+
+            for (game in saga.games) {
+
+                val tvGame = TextView(requireContext())
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    tvGame.setTextAppearance(R.style.WhiteEditText_Regular)
+                } else {
+                    tvGame.setTextAppearance(requireContext(), R.style.WhiteEditText_Regular);
+                }
+                tvGame.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18F)
+
+                tvGame.text = "- ${game.name}"
+                linear_layout_games.addView(tvGame, layoutParams)
+            }
         }
     }
 
