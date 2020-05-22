@@ -29,4 +29,18 @@ class SagaAPIClient(
             failure(errorResponse)
         })
     }
+
+    fun createSaga(saga: SagaResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        val headers: MutableMap<String, String> = HashMap()
+        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        val request = api.createSaga(headers, saga)
+
+        APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
+            success()
+        }, { errorResponse ->
+            failure(errorResponse)
+        })
+    }
 }
