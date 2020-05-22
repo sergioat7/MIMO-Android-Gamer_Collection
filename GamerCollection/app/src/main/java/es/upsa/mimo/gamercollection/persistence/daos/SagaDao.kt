@@ -17,7 +17,7 @@ interface SagaDao {
     suspend fun deleteSaga(saga: SagaResponse)
 
     @Query("SELECT * FROM Saga WHERE id == :sagaId")
-    suspend fun getSaga(sagaId: String): SagaWithGames
+    suspend fun getSaga(sagaId: Int): SagaWithGames
 
     @Query("SELECT * FROM Saga")
     suspend fun getSagas(): List<SagaWithGames>
