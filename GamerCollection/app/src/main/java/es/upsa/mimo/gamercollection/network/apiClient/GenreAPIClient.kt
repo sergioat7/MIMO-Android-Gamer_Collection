@@ -20,10 +20,10 @@ class GenreAPIClient(
         headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
         val request = api.getGenres(headers)
 
-        APIClient.sendServer<List<GenreResponse>, ErrorResponse>(resources, request, { genres ->
-            success(genres)
-        }, { errorResponse ->
-            failure(errorResponse)
+        APIClient.sendServer<List<GenreResponse>, ErrorResponse>(resources, request, {
+            success(it)
+        }, {
+            failure(it)
         })
     }
 }
