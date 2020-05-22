@@ -45,6 +45,13 @@ class SagaRepository(context: Context) {
         }
     }
 
+    fun updateSaga(saga: SagaResponse) {
+
+        GlobalScope.launch {
+            sagaDao.updateSaga(saga)
+        }
+    }
+
     fun deleteSaga(saga: SagaResponse) {
 
         GlobalScope.launch {

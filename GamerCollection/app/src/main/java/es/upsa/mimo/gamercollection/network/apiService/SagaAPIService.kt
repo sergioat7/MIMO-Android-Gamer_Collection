@@ -17,4 +17,10 @@ interface SagaAPIService {
     )
     @POST("saga")
     fun createSaga(@HeaderMap headers: Map<String, String>, @Body body: SagaResponse): Call<Void>
+
+    @Headers(
+        "Content-Type:application/json"
+    )
+    @PATCH("saga/{sagaId}")
+    fun setSaga(@HeaderMap headers: Map<String, String>, @Path(value = "sagaId") sagaId: Int, @Body body: SagaResponse): Call<SagaResponse>
 }

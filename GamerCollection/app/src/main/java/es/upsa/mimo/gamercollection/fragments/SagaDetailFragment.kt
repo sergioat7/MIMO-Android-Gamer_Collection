@@ -156,15 +156,15 @@ class SagaDetailFragment : BaseFragment() {
         showLoading()
         if (currentSaga != null) {
 
-//            gameAPIClient.setGame(game, {
-//                gameRepository.updateGame(it)
-//
-//                currentGame = it
+            sagaAPIClient.setSaga(saga, {
+                sagaRepository.updateSaga(it)
+
+                currentSaga = it
                 cancelEdition()
                 hideLoading()
-//            }, {
-//                manageError(it)
-//            })
+            }, {
+                manageError(it)
+            })
         } else {
 
             sagaAPIClient.createSaga(saga, {
