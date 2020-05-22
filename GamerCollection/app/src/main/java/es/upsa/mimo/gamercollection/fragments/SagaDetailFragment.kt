@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.network.apiClient.SagaAPIClient
 import es.upsa.mimo.gamercollection.persistence.repositories.SagaRepository
@@ -21,6 +22,7 @@ class SagaDetailFragment : BaseFragment() {
     private lateinit var sagaAPIClient: SagaAPIClient
     private var menu: Menu? = null
     private var currentSaga: SagaResponse? = null
+    private var newGames: List<GameResponse> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,6 +88,9 @@ class SagaDetailFragment : BaseFragment() {
 
             showLoading()
             currentSaga = sagaRepository.getSaga(it)
+            currentSaga?.let { saga ->
+                newGames = saga.games
+            }
             hideLoading()
         }
 
@@ -142,7 +147,11 @@ class SagaDetailFragment : BaseFragment() {
 
     private fun saveSaga() {
 
-        //TODO get data
+        val saga = SagaResponse(
+            sagaId ?: 0,
+            edit_text_name.text.toString(),
+            newGames
+        )
 
         showLoading()
         if (currentSaga != null) {
@@ -158,20 +167,20 @@ class SagaDetailFragment : BaseFragment() {
 //            })
         } else {
 
-//            gameAPIClient.createGame(game, {
-//                gameAPIClient.getGames({ games ->
-//
-//                    for (game in games) {
-//                        gameRepository.insertGame(game)
-//                    }
+            sagaAPIClient.createSaga(saga, {
+                sagaAPIClient.getSagas({ sagas ->
+
+                    for (saga in sagas) {
+                        sagaRepository.insertSaga(saga)
+                    }
                     hideLoading()
                     activity?.finish()
-//                }, {
-//                    manageError(it)
-//                })
-//            }, {
-//                manageError(it)
-//            })
+                }, {
+                    manageError(it)
+                })
+            }, {
+                manageError(it)
+            })
         }
     }
 
