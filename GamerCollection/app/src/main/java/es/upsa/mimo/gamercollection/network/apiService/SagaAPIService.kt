@@ -23,4 +23,7 @@ interface SagaAPIService {
     )
     @PATCH("saga/{sagaId}")
     fun setSaga(@HeaderMap headers: Map<String, String>, @Path(value = "sagaId") sagaId: Int, @Body body: SagaResponse): Call<SagaResponse>
+
+    @DELETE("saga/{sagaId}")
+    fun deleteSaga(@HeaderMap headers: Map<String, String>, @Path(value = "sagaId") sagaId: Int): Call<Void>
 }

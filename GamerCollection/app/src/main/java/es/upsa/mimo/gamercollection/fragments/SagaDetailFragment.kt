@@ -126,15 +126,15 @@ class SagaDetailFragment : BaseFragment() {
         currentSaga?.let {
             showPopupConfirmationDialog(resources.getString(R.string.SAGA_DETAIL_DELETE_CONFIRMATION)) {
 
-//                showLoading()
-//                sagaAPIClient.deleteSaga(it.id, {
-//                    sagaRepository.deleteSaga(it)
-//
-//                    hideLoading()
-//                    activity?.finish()
-//                }, {
-//                    manageError(it)
-//                })
+                showLoading()
+                sagaAPIClient.deleteSaga(it.id, {
+                    sagaRepository.deleteSaga(it)
+
+                    hideLoading()
+                    activity?.finish()
+                }, {
+                    manageError(it)
+                })
             }
         }
     }
