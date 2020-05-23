@@ -20,10 +20,10 @@ class FormatAPIClient(
         headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
         val request = api.getFormats(headers)
 
-        APIClient.sendServer<List<FormatResponse>, ErrorResponse>(resources, request, { formats ->
-            success(formats)
-        }, { errorResponse ->
-            failure(errorResponse)
+        APIClient.sendServer<List<FormatResponse>, ErrorResponse>(resources, request, {
+            success(it)
+        }, {
+            failure(it)
         })
     }
 }

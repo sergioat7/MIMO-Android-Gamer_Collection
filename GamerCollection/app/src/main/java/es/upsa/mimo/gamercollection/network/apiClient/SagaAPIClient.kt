@@ -23,10 +23,52 @@ class SagaAPIClient(
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.getSagas(headers)
 
-        APIClient.sendServer<List<SagaResponse>, ErrorResponse>(resources, request, { sagas ->
-            success(sagas)
-        }, { errorResponse ->
-            failure(errorResponse)
+        APIClient.sendServer<List<SagaResponse>, ErrorResponse>(resources, request, {
+            success(it)
+        }, {
+            failure(it)
+        })
+    }
+
+    fun createSaga(saga: SagaResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        val headers: MutableMap<String, String> = HashMap()
+        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        val request = api.createSaga(headers, saga)
+
+        APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
+            success()
+        }, {
+            failure(it)
+        })
+    }
+
+    fun setSaga(saga: SagaResponse, success: (SagaResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        val headers: MutableMap<String, String> = HashMap()
+        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        val request = api.setSaga(headers, saga.id, saga)
+
+        APIClient.sendServer<SagaResponse, ErrorResponse>(resources, request, {
+            success(it)
+        }, {
+            failure(it)
+        })
+    }
+
+    fun deleteSaga(sagaId: Int, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        val headers: MutableMap<String, String> = HashMap()
+        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        val request = api.deleteSaga(headers, sagaId)
+
+        APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
+            success()
+        }, {
+            failure(it)
         })
     }
 }

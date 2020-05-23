@@ -25,8 +25,8 @@ class SongAPIClient(
 
         APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
             success()
-        }, { errorResponse ->
-            failure(errorResponse)
+        }, {
+            failure(it)
         })
     }
 
@@ -39,8 +39,8 @@ class SongAPIClient(
 
         APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
             success()
-        }, { errorResponse ->
-            failure(errorResponse)
+        }, {
+            failure(it)
         })
     }
 }

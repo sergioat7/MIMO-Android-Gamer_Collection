@@ -12,16 +12,8 @@
 
         <EditText
             android:id="@+id/edit_text_name"
-            style="@style/WhiteEditText.Bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="50dp"
+            style="@style/WhiteEditText.GameDetailsTitle"
             android:hint="@string/GAME_DETAIL_PLACEHOLDER_NAME"
-            android:inputType="textMultiLine"
-            android:textAlignment="center"
-            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -509,6 +501,7 @@
                     android:id="@+id/songs_view_line_separator"
                     android:layout_width="wrap_content"
                     android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
                     android:background="@color/color2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -527,7 +520,6 @@
                 <Button
                     android:id="@+id/button_delete_game"
                     style="@style/RoundedButton.Delete"
-                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
                     android:text="@string/DELETE"

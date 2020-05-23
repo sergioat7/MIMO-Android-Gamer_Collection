@@ -28,10 +28,27 @@ class SagaRepository(context: Context) {
         return result
     }
 
+    fun getSaga(sagaId: Int): SagaResponse? {
+
+        var saga: SagaWithGames? = null
+        runBlocking {
+            val result = GlobalScope.async { sagaDao.getSaga(sagaId) }
+            saga = result.await()
+        }
+        return saga?.transform()
+    }
+
     fun insertSaga(saga: SagaResponse) {
 
         GlobalScope.launch {
             sagaDao.insertSaga(saga)
+        }
+    }
+
+    fun updateSaga(saga: SagaResponse) {
+
+        GlobalScope.launch {
+            sagaDao.updateSaga(saga)
         }
     }
 

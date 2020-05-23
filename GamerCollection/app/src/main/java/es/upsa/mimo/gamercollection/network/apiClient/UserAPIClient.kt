@@ -28,8 +28,8 @@ class UserAPIClient(
 
         APIClient.sendServer<LoginResponse, ErrorResponse>(resources, request, {
             success(it.token)
-        }, { errorResponse ->
-            failure(errorResponse)
+        }, {
+            failure(it)
         })
     }
 
@@ -43,8 +43,8 @@ class UserAPIClient(
 
         APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
             success()
-        }, { errorResponse ->
-            failure(errorResponse)
+        }, {
+            failure(it)
         })
     }
 
@@ -57,8 +57,8 @@ class UserAPIClient(
 
         APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
             success()
-        }, { errorResponse ->
-            failure(errorResponse)
+        }, {
+            failure(it)
         })
     }
 
@@ -72,8 +72,8 @@ class UserAPIClient(
 
         APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
             success()
-        }, { errorResponse ->
-            failure(errorResponse)
+        }, {
+            failure(it)
         })
     }
 
@@ -86,8 +86,8 @@ class UserAPIClient(
 
         APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
             success()
-        }, { errorResponse ->
-            failure(errorResponse)
+        }, {
+            failure(it)
         })
     }
 }
