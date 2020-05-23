@@ -50,7 +50,7 @@ data class GameResponse(
     val observations: String?,
     @Embedded(prefix = "saga_")
     @SerializedName("saga")
-    val saga: SagaResponse?,
+    var saga: SagaResponse?,
     @SerializedName("songs")
     var songs: List<SongResponse>
 ): BaseModel<Int>

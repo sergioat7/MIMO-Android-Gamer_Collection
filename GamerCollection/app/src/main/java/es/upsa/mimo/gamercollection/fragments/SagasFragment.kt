@@ -99,7 +99,7 @@ class SagasFragment : BaseFragment(), SagasAdapter.OnItemClickListener {
 
     private fun getContent() {
 
-        val sagas = sagaRepository.getSagas()
+        val sagas = sagaRepository.getSagas().sortedBy { it.name }
 
         val adapter = recycler_view_sagas.adapter
         if (adapter is SagasAdapter) {
