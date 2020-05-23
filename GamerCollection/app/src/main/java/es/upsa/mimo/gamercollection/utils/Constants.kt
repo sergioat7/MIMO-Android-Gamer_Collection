@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.utils
 
+import es.upsa.mimo.gamercollection.models.GameResponse
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -59,5 +60,16 @@ class Constants {
         // MARK: Game ordering
 
         const val defaultSortingKey = "name"
+
+        fun orderGamesBy(games: List<GameResponse>, sortingKey: String): List<GameResponse> {
+
+            return when(sortingKey) {
+                "platform" -> games.sortedBy { it.platform }
+                "releaseDate" -> games.sortedBy { it.releaseDate }
+                "purchaseDate" -> games.sortedBy { it.purchaseDate }
+                "price" -> games.sortedBy { it.price }
+                else -> games.sortedBy { it.name }
+            }
+        }
     }
 }

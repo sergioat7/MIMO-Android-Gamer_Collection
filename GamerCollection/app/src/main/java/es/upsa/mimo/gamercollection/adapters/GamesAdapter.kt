@@ -97,7 +97,7 @@ class GamesAdapter(
         item.image_view_arrow.visibility = if(sagaId != null) View.GONE else View.VISIBLE
         item.check_box.visibility = if(sagaId != null) View.VISIBLE else View.GONE
         item.check_box.isChecked = game.saga?.id  == sagaId
-        item.check_box.setOnCheckedChangeListener { _, _ -> onItemClickListener.onItemClick(game.id) }
+        item.check_box.setOnClickListener { onItemClickListener.onItemClick(game.id) }
     }
 
     interface OnItemClickListener {
