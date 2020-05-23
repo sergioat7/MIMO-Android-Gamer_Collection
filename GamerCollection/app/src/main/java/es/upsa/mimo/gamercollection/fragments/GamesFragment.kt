@@ -31,7 +31,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
     private val sortingKeys = arrayOf("name", "platform", "releaseDate", "purchaseDate", "price")
     private var sortingValues = arrayOf("")
     private var state: String? = null
-    private var sortKey = "name"
+    private var sortKey = Constants.defaultSortingKey
     private var sortAscending = true
 
     override fun onCreateView(
@@ -149,7 +149,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
             else -> ""
         }
 
-        val sortParam = sortKey ?: "name"
+        val sortParam = sortKey ?: Constants.defaultSortingKey
         val sortOrder = if(sortAscending) "ASC"  else "DESC"
         queryString += " ORDER BY $sortParam $sortOrder"
 

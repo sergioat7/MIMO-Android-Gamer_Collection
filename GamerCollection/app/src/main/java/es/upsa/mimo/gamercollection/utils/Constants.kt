@@ -55,5 +55,9 @@ class Constants {
                 return null
             }
         }
+
+        // MARK: Game ordering
+
+        const val defaultSortingKey = "name"
     }
 }
