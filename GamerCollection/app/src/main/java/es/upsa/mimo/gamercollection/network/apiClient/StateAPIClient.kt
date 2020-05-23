@@ -20,10 +20,10 @@ class StateAPIClient(
         headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
         val request = api.getStates(headers)
 
-        APIClient.sendServer<List<StateResponse>, ErrorResponse>(resources, request, { states ->
-            success(states)
-        }, { errorResponse ->
-            failure(errorResponse)
+        APIClient.sendServer<List<StateResponse>, ErrorResponse>(resources, request, {
+            success(it)
+        }, {
+            failure(it)
         })
     }
 }

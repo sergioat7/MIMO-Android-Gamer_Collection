@@ -88,7 +88,7 @@ class RankingFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         recycler_view_games.layoutManager = LinearLayoutManager(requireContext())
         val platforms = platformRepository.getPlatforms()
         val states = stateRepository.getStates()
-        recycler_view_games.adapter = GamesAdapter(requireContext(), ArrayList(), platforms, states, this)
+        recycler_view_games.adapter = GamesAdapter(requireContext(), ArrayList(), platforms, states, null, this)
     }
 
     private fun getContent() {

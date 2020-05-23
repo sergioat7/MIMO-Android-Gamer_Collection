@@ -21,6 +21,7 @@ class GamesAdapter(
     var games: List<GameResponse>,
     private val platforms: List<PlatformResponse>,
     private val states: List<StateResponse>,
+    private val sagaId: Int?,
     private var onItemClickListener: OnItemClickListener
 ): RecyclerView.Adapter<GamesAdapter.GamesViewHolder?>() {
 
@@ -92,6 +93,11 @@ class GamesAdapter(
         } else {
             item.rating_bar.visibility = View.GONE
         }
+
+        item.image_view_arrow.visibility = if(sagaId != null) View.GONE else View.VISIBLE
+        item.check_box.visibility = if(sagaId != null) View.VISIBLE else View.GONE
+        item.check_box.isChecked = game.saga?.id  == sagaId
+        item.check_box.setOnClickListener { onItemClickListener.onItemClick(game.id) }
     }
 
     interface OnItemClickListener {
@@ -104,6 +110,8 @@ class GamesAdapter(
             itemView.setOnClickListener(this)
         }
         override fun onClick(view: View?) {
+
+            itemView.check_box.isChecked = !itemView.check_box.isChecked
             val gameId = games[ this.adapterPosition].id
             onItemClickListener.onItemClick(gameId)
         }

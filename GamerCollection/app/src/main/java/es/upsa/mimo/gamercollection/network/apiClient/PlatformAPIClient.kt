@@ -20,10 +20,10 @@ class PlatformAPIClient(
         headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
         val request = api.getPlatforms(headers)
 
-        APIClient.sendServer<List<PlatformResponse>, ErrorResponse>(resources, request, { platforms ->
-            success(platforms)
-        }, { errorResponse ->
-            failure(errorResponse)
+        APIClient.sendServer<List<PlatformResponse>, ErrorResponse>(resources, request, {
+            success(it)
+        }, {
+            failure(it)
         })
     }
 }

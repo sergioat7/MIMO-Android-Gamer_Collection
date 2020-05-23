@@ -23,10 +23,10 @@ class GameAPIClient(
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.getGames(headers)
 
-        APIClient.sendServer<List<GameResponse>, ErrorResponse>(resources, request, { games ->
-            success(games)
-        }, { errorResponse ->
-            failure(errorResponse)
+        APIClient.sendServer<List<GameResponse>, ErrorResponse>(resources, request, {
+            success(it)
+        }, {
+            failure(it)
         })
     }
 
@@ -37,10 +37,10 @@ class GameAPIClient(
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.getGame(headers, gameId)
 
-        APIClient.sendServer<GameResponse, ErrorResponse>(resources, request, { game ->
-            success(game)
-        }, { errorResponse ->
-            failure(errorResponse)
+        APIClient.sendServer<GameResponse, ErrorResponse>(resources, request, {
+            success(it)
+        }, {
+            failure(it)
         })
     }
 
@@ -53,8 +53,8 @@ class GameAPIClient(
 
         APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
             success()
-        }, { errorResponse ->
-            failure(errorResponse)
+        }, {
+            failure(it)
         })
     }
 
@@ -65,10 +65,10 @@ class GameAPIClient(
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.setGame(headers, game.id, game)
 
-        APIClient.sendServer<GameResponse, ErrorResponse>(resources, request, { game ->
-            success(game)
-        }, { errorResponse ->
-            failure(errorResponse)
+        APIClient.sendServer<GameResponse, ErrorResponse>(resources, request, {
+            success(it)
+        }, {
+            failure(it)
         })
     }
 
@@ -81,8 +81,8 @@ class GameAPIClient(
 
         APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
             success()
-        }, { errorResponse ->
-            failure(errorResponse)
+        }, {
+            failure(it)
         })
     }
 }

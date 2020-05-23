@@ -78,24 +78,24 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener, 
 
         this.menu = menu
         menu.clear()
-        inflater.inflate(R.menu.game_details_toolbar_menu, menu)
-        menu.findItem(R.id.action_edit_game).isVisible = currentGame != null
-        menu.findItem(R.id.action_save_game).isVisible = currentGame == null
-        menu.findItem(R.id.action_cancel_game).isVisible = false
+        inflater.inflate(R.menu.edit_details_toolbar_menu, menu)
+        menu.findItem(R.id.action_edit).isVisible = currentGame != null
+        menu.findItem(R.id.action_save).isVisible = currentGame == null
+        menu.findItem(R.id.action_cancel).isVisible = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when(item.itemId) {
-            R.id.action_edit_game -> {
+            R.id.action_edit -> {
                 editGame()
                 return true
             }
-            R.id.action_save_game -> {
+            R.id.action_save -> {
                 saveGame()
                 return true
             }
-            R.id.action_cancel_game -> {
+            R.id.action_cancel -> {
                 cancelEdition()
                 return true
             }
@@ -240,7 +240,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener, 
             edit_text_saga.setText(game.saga?.name)
             var editable = false
             menu?.let {
-                editable = it.findItem(R.id.action_save_game).isVisible
+                editable = it.findItem(R.id.action_save).isVisible
             }
             recycler_view_songs.adapter = SongsAdapter(game.songs, editable, this)
         }
@@ -463,12 +463,13 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener, 
         showData(currentGame)
         enableEdition(false)
     }
+
     private fun showEditButton(hidden: Boolean) {
 
         menu?.let {
-            it.findItem(R.id.action_edit_game).isVisible = !hidden
-            it.findItem(R.id.action_save_game).isVisible = hidden
-            it.findItem(R.id.action_cancel_game).isVisible = hidden
+            it.findItem(R.id.action_edit).isVisible = !hidden
+            it.findItem(R.id.action_save).isVisible = hidden
+            it.findItem(R.id.action_cancel).isVisible = hidden
         }
     }
 
