@@ -44,9 +44,9 @@ class SagasAdapter(
         item.image_view_arrow.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_keyboard_arrow_down_white_24dp))
         item.image_view_arrow.setOnClickListener {
 
-            val recyclerView = item.recycler_view_games
-            recyclerView.visibility = if (recyclerView.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-            val image = if (recyclerView.visibility == View.VISIBLE) R.drawable.ic_keyboard_arrow_down_white_24dp else R.drawable.ic_keyboard_arrow_up_white_24dp
+            val container = item.layout_container
+            container.visibility = if (container.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+            val image = if (container.visibility == View.VISIBLE) R.drawable.ic_keyboard_arrow_down_white_24dp else R.drawable.ic_keyboard_arrow_up_white_24dp
             item.image_view_arrow.setImageDrawable(ContextCompat.getDrawable(context, image))
         }
 
