@@ -5,6 +5,7 @@ import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
@@ -39,7 +40,15 @@ class SagasAdapter(
 
         item.edit_text_name.setText(saga.name)
         item.edit_text_name.setReadOnly(true, InputType.TYPE_NULL, 0)
-        item.edit_text_name.setOnClickListener { holder.onClick(it) }
+
+        item.image_view_arrow.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_keyboard_arrow_down_white_24dp))
+        item.image_view_arrow.setOnClickListener {
+
+            val recyclerView = item.recycler_view_games
+            recyclerView.visibility = if (recyclerView.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+            val image = if (recyclerView.visibility == View.VISIBLE) R.drawable.ic_keyboard_arrow_down_white_24dp else R.drawable.ic_keyboard_arrow_up_white_24dp
+            item.image_view_arrow.setImageDrawable(ContextCompat.getDrawable(context, image))
+        }
 
         item.image_view_edit.setOnClickListener {
             val sagaId = saga.id
@@ -57,15 +66,7 @@ class SagasAdapter(
         fun onGameItemClick(gameId: Int)
     }
 
-    inner class SagasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-
-        init {
-            itemView.setOnClickListener(this)
-        }
-        override fun onClick(view: View?) {
-            val recyclerView = itemView.recycler_view_games
-            recyclerView.visibility = if (recyclerView.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-        }
+    inner class SagasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     override fun onItemClick(gameId: Int) {
