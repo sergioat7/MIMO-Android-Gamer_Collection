@@ -58,7 +58,8 @@ class SagasAdapter(
         item.recycler_view_games.layoutManager = LinearLayoutManager(context)
         val games = saga.games.sortedBy { it.releaseDate }
         item.recycler_view_games.adapter = GamesAdapter(context, games, platforms, states, null, this)
-        item.recycler_view_games.visibility = if(saga.games.isEmpty()) View.GONE else View.VISIBLE
+        item.recycler_view_games.visibility = if(saga.games.isNotEmpty()) View.VISIBLE else View.GONE
+        item.text_view_no_games.visibility = if(saga.games.isNotEmpty()) View.GONE else View.VISIBLE
     }
 
     interface OnItemClickListener {
