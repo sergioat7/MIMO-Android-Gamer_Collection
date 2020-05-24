@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.NumberPicker
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.sqlite.db.SimpleSQLiteQuery
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.fragments.popups.PopupFilterDialogFragment
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
 import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
@@ -181,7 +183,16 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
     }
 
     private fun filter() {
-        //TODO
+
+        val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
+        val prev = activity?.supportFragmentManager?.findFragmentByTag("filterPopup")
+        if (prev != null) {
+            ft.remove(prev)
+        }
+        ft.addToBackStack(null)
+        val dialogFragment = PopupFilterDialogFragment()
+        dialogFragment.isCancelable = false
+        dialogFragment.show(ft, "filterPopup")
     }
 
     private fun add() {
