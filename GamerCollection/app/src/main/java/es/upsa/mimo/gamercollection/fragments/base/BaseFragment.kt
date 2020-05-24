@@ -59,7 +59,6 @@ open class BaseFragment : Fragment() {
 
     fun showPopupDialog(message: String) {
 
-
         val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
         val prev = activity?.supportFragmentManager?.findFragmentByTag("popupDialog")
         if (prev != null) {
