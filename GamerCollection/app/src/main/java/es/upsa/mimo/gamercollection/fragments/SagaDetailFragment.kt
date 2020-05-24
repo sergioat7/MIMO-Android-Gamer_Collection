@@ -190,7 +190,11 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         val orderedGames = Constants.orderGamesBy(allGames, Constants.defaultSortingKey)
         val platforms = platformRepository.getPlatforms()
         val states = stateRepository.getStates()
-        dialogView.recycler_view_games.adapter = GamesAdapter(requireContext(), orderedGames, platforms, states, sagaId ?: 0, this)
+        if (orderedGames.isNotEmpty()) {
+            dialogView.recycler_view_games.adapter = GamesAdapter(requireContext(), orderedGames, platforms, states, sagaId ?: 0, this)
+        }
+        dialogView.recycler_view_games.visibility = if (orderedGames.isNotEmpty()) View.VISIBLE else View.GONE
+        dialogView.layout_empty_list.visibility = if (orderedGames.isNotEmpty()) View.GONE else View.VISIBLE
 
         dialogView.button_accept.setOnClickListener {
             showGames(newGames)
