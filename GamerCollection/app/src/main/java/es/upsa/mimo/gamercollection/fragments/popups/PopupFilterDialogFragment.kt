@@ -10,13 +10,17 @@ import androidx.core.view.children
 import androidx.fragment.app.DialogFragment
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
+import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.android.synthetic.main.fragment_popup_filter_dialog.*
 
-class PopupFilterDialogFragment : DialogFragment() {
+class PopupFilterDialogFragment(
+    private val filters: FilterModel?,
+    private val onFiltersSelected: OnFiltersSelected
+) : DialogFragment() {
 
     private lateinit var formatRepository: FormatRepository
     private lateinit var genreRepository: GenreRepository
@@ -37,6 +41,7 @@ class PopupFilterDialogFragment : DialogFragment() {
         platformRepository = PlatformRepository(requireContext())
 
         initializeUI()
+        configFilters(filters)
     }
 
     //MARK: - Private functions
@@ -60,6 +65,53 @@ class PopupFilterDialogFragment : DialogFragment() {
         button_cancel.setOnClickListener { cancel() }
         button_reset.setOnClickListener { reset() }
         button_save.setOnClickListener { save() }
+    }
+
+    private fun configFilters(filters: FilterModel?) {
+
+        filters?.let { filters ->
+
+            val platforms = filters.platforms
+            if (platforms.isNotEmpty()) {
+                for (child in linear_layout_platforms.children) {
+                    child.isSelected = platforms.firstOrNull { it == child.tag } != null
+                }
+            }
+
+            val genres = filters.genres
+            if (genres.isNotEmpty()) {
+                for (child in linear_layout_genres.children) {
+                    child.isSelected = genres.firstOrNull { it == child.tag } != null
+                }
+            }
+
+            val formats = filters.formats
+            if (formats.isNotEmpty()) {
+                for (child in linear_layout_formats.children) {
+                    child.isSelected = formats.firstOrNull { it == child.tag } != null
+                }
+            }
+
+            rating_bar_min.rating = (filters.minScore / 2).toFloat()
+            rating_bar_max.rating = (filters.maxScore / 2).toFloat()
+
+            edit_text_release_date_min.setText(Constants.dateToString(filters.minReleaseDate))
+            edit_text_release_date_max.setText(Constants.dateToString(filters.maxReleaseDate))
+
+            edit_text_purchase_date_min.setText(Constants.dateToString(filters.minPurchaseDate))
+            edit_text_purchase_date_max.setText(Constants.dateToString(filters.maxPurchaseDate))
+
+            if (filters.minPrice > 0) edit_text_price_min.setText(filters.minPrice.toString())
+            if (filters.maxPrice > 0) edit_text_price_max.setText(filters.maxPrice.toString())
+
+            radio_button_goty_yes.isChecked = filters.isGoty
+
+            radio_button_loaned_yes.isChecked = filters.isLoaned
+
+            radio_button_saga_yes.isChecked = filters.hasSaga
+
+            radio_button_songs_yes.isChecked = filters.hasSongs
+        }
     }
 
     private fun fillPlatforms() {
@@ -178,8 +230,8 @@ class PopupFilterDialogFragment : DialogFragment() {
             if (child.isSelected) formats += "${child.tag}"
         }
 
-        val minScore = rating_bar_min.rating * 2
-        val maxScore = rating_bar_max.rating * 2
+        val minScore = (rating_bar_min.rating * 2).toDouble()
+        val maxScore = (rating_bar_max.rating * 2).toDouble()
 
         val minReleaseDate = Constants.stringToDate(edit_text_release_date_min.text.toString())
         val maxReleaseDate = Constants.stringToDate(edit_text_release_date_max.text.toString())
@@ -187,16 +239,42 @@ class PopupFilterDialogFragment : DialogFragment() {
         val minPurchaseDate = Constants.stringToDate(edit_text_purchase_date_min.text.toString())
         val maxPurchaseDate = Constants.stringToDate(edit_text_purchase_date_max.text.toString())
 
-        val minPrice = edit_text_price_min.text.toString().toDouble()
-        val maxPrice = edit_text_price_max.text.toString().toDouble()
+        var minPrice = 0.0
+        try {
+            minPrice = edit_text_price_min.text.toString().toDouble()
+        } catch (e: Exception){}
+        var maxPrice = 0.0
+        try {
+            maxPrice = edit_text_price_max.text.toString().toDouble()
+        } catch (e: Exception){}
 
         val isGoty = radio_button_goty_yes.isChecked
 
         val isLoaned = radio_button_loaned_yes.isChecked
 
         val hasSaga = radio_button_saga_yes.isChecked
+
         val hasSongs = radio_button_songs_yes.isChecked
 
+        val filters = FilterModel(
+            platforms,
+            genres,
+            formats,
+            minScore,
+            maxScore,
+            minReleaseDate,
+            maxReleaseDate,
+            minPurchaseDate,
+            maxPurchaseDate,
+            minPrice,
+            maxPrice,
+            isGoty,
+            isLoaned,
+            hasSaga,
+            hasSongs
+        )
+
+        onFiltersSelected.filter(filters)
         dismiss()
     }
 
@@ -216,4 +294,8 @@ class PopupFilterDialogFragment : DialogFragment() {
     private fun selectButton(button: View) {
         button.isSelected = !button.isSelected
     }
+}
+
+interface OnFiltersSelected {
+    fun filter(filters: FilterModel)
 }

@@ -12,7 +12,9 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.fragments.popups.OnFiltersSelected
 import es.upsa.mimo.gamercollection.fragments.popups.PopupFilterDialogFragment
+import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
 import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
@@ -23,7 +25,7 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_games.*
 import kotlinx.android.synthetic.main.state_button.view.*
 
-class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
+class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFiltersSelected {
 
     private lateinit var sharedPrefHandler: SharedPreferencesHandler
     private lateinit var gameAPIClient: GameAPIClient
@@ -35,6 +37,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
     private var state: String? = null
     private var sortKey = Constants.defaultSortingKey
     private var sortAscending = true
+    private var currentFilters: FilterModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,7 +63,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
     override fun onResume() {
         super.onResume()
 
-        val games = getContent(state, sortKey, sortAscending)
+        val games = getContent(state, sortKey, sortAscending, currentFilters)
         setGamesCount(games)
     }
 
@@ -95,6 +98,12 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         launchActivityWithExtras(GameDetailActivity::class.java, params)
     }
 
+    override fun filter(filters: FilterModel) {
+
+        currentFilters = filters
+        getContent(state, sortKey, sortAscending, currentFilters)
+    }
+
     //MARK: - Private functions
 
     private fun initializeUI() {
@@ -107,7 +116,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
             button_finished.isSelected = false
             swipe_refresh_layout.isEnabled = !it.isSelected
             state = if (it.isSelected) Constants.pending else null
-            getContent(state, sortKey, sortAscending)
+            getContent(state, sortKey, sortAscending, currentFilters)
         }
         button_in_progress.setOnClickListener {
 
@@ -116,7 +125,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
             button_finished.isSelected = false
             swipe_refresh_layout.isEnabled = !it.isSelected
             state = if (it.isSelected) Constants.inProgress else null
-            getContent(state, sortKey, sortAscending)
+            getContent(state, sortKey, sortAscending, currentFilters)
         }
         button_finished.setOnClickListener {
 
@@ -125,7 +134,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
             it.isSelected = !it.isSelected
             swipe_refresh_layout.isEnabled = !it.isSelected
             state = if (it.isSelected) Constants.finished else null
-            getContent(state, sortKey, sortAscending)
+            getContent(state, sortKey, sortAscending, currentFilters)
         }
 
         swipe_refresh_layout.setColorSchemeResources(R.color.color3)
@@ -140,7 +149,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         recycler_view_games.adapter = GamesAdapter(requireContext(), ArrayList(), platforms, states, null, this)
     }
 
-    private fun getContent(state: String?, sortKey: String?, sortAscending: Boolean): List<GameResponse> {
+    private fun getContent(state: String?, sortKey: String?, sortAscending: Boolean, filters: FilterModel?): List<GameResponse> {
 
         var queryString = "SELECT * FROM Game"
 
@@ -149,6 +158,11 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
             Constants.inProgress -> " WHERE state == '${Constants.inProgress}'"
             Constants.finished -> " WHERE state == '${Constants.finished}'"
             else -> ""
+        }
+
+        filters?.let { filters ->
+
+            //TODO add filters to query
         }
 
         val sortParam = sortKey ?: Constants.defaultSortingKey
@@ -190,7 +204,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
             ft.remove(prev)
         }
         ft.addToBackStack(null)
-        val dialogFragment = PopupFilterDialogFragment()
+        val dialogFragment = PopupFilterDialogFragment(currentFilters, this)
         dialogFragment.isCancelable = false
         dialogFragment.show(ft, "filterPopup")
     }
@@ -232,7 +246,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
             .setPositiveButton(resources.getString(R.string.ACCEPT)) { dialog, _ ->
                 sortKey = sortingKeys[sortKeysPicker.value]
                 sortAscending = ascendingPicker.value == 0
-                getContent(state, sortKey, sortAscending)
+                getContent(state, sortKey, sortAscending, currentFilters)
                 dialog.dismiss()
             }
             .setNegativeButton(resources.getString(R.string.CANCEL)) { dialog, _ ->
@@ -250,7 +264,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
                 gameRepository.insertGame(game)
             }
             gameRepository.removeDisableContent(it)
-            val games = getContent(null, null, true)
+            val games = getContent(null, null, true, currentFilters)
             setGamesCount(games)
             enableStateButtons(true)
         }, {
