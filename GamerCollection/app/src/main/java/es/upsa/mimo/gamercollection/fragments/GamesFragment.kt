@@ -101,7 +101,8 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
     override fun filter(filters: FilterModel) {
 
         currentFilters = filters
-        getContent(state, sortKey, sortAscending, currentFilters)
+        val games = getContent(state, sortKey, sortAscending, currentFilters)
+        setGamesCount(games)
     }
 
     //MARK: - Private functions
@@ -153,17 +154,87 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
 
         var queryString = "SELECT * FROM Game"
 
-        queryString += when(state) {
-            Constants.pending -> " WHERE state == '${Constants.pending}'"
-            Constants.inProgress -> " WHERE state == '${Constants.inProgress}'"
-            Constants.finished -> " WHERE state == '${Constants.finished}'"
+        var queryConditions = when(state) {
+            Constants.pending -> " WHERE state == '${Constants.pending}' AND "
+            Constants.inProgress -> " WHERE state == '${Constants.inProgress}' AND "
+            Constants.finished -> " WHERE state == '${Constants.finished}' AND "
             else -> ""
         }
 
         filters?.let { filters ->
 
-            //TODO add filters to query
+            if (queryConditions.isEmpty()) queryConditions += " WHERE "
+
+            var queryPlatforms = ""
+            val platforms = filters.platforms
+            if (platforms.isNotEmpty()) {
+                queryPlatforms += ""
+                for (platform in platforms) {
+                    queryPlatforms += "platform == '${platform}' OR "
+                }
+                queryPlatforms = queryPlatforms.dropLast(4) + " AND "
+            }
+
+            var queryGenres = ""
+            val genres = filters.genres
+            if (genres.isNotEmpty()){
+                for (genre in genres) {
+                    queryGenres += "genre == '${genre}' OR "
+                }
+                queryGenres = queryGenres.dropLast(4) + " AND "
+            }
+
+            var queryFormats = ""
+            val formats = filters.formats
+            if (formats.isNotEmpty()){
+                for (format in formats) {
+                    queryFormats += "format == '${format}' OR "
+                }
+
+                queryFormats = queryFormats.dropLast(4) + " AND "
+            }
+
+            queryConditions += queryPlatforms + queryGenres + queryFormats
+
+            queryConditions += "score >= ${filters.minScore} AND score <= ${filters.maxScore} AND "
+
+            if (filters.minReleaseDate != null) {
+                queryConditions += "releaseDate >= '${filters.minReleaseDate}' AND "
+            }
+            if (filters.maxReleaseDate != null) {
+                queryConditions += "releaseDate <= '${filters.maxReleaseDate}' AND "
+            }
+
+            if (filters.minPurchaseDate != null) {
+                queryConditions += "purchaseDate >= '${filters.minPurchaseDate}' AND "
+            }
+            if (filters.maxPurchaseDate != null) {
+                queryConditions += "purchaseDate <= '${filters.maxPurchaseDate}' AND "
+            }
+
+            queryConditions += "price >= ${filters.minPrice} AND "
+            if (filters.maxPrice > 0) {
+                queryConditions += "price <= ${filters.maxPrice} AND "
+            }
+
+            if (filters.isGoty) {
+                queryConditions += "goty == 1 AND "
+            }
+
+            if (filters.isLoaned) {
+                queryConditions += "loanedTo != null AND "
+            }
+
+            if (filters.hasSaga) {
+                queryConditions += "saga_id != -1 AND "
+            }
+
+            if (filters.hasSongs) {
+                queryConditions += "songs != '[]' AND "
+            }
         }
+        queryConditions = queryConditions.dropLast(5)
+        queryString += queryConditions
 
         val sortParam = sortKey ?: Constants.defaultSortingKey
         val sortOrder = if(sortAscending) "ASC"  else "DESC"
