@@ -104,4 +104,25 @@
         <item name="android:minHeight">30dp</item>
         <item name="fontFamily">@font/roboto_regular</item>
     </style>
+
+    <style name="FilterButton" parent="android:style/Widget.Button">
+        <item name="android:textColor">@color/color1</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="WhiteTextView.Bold.ModalFilterTitle" parent="WhiteTextView.Bold">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20dp</item>
+    </style>
+
+    <style name="RoundedSelectorButton" parent="android:style/Widget.Button">
+        <item name="android:background">@drawable/rounded_filter_selector_button</item>
+        <item name="android:textColor">@drawable/state_button_text_color</item>
+        <item name="android:maxLines">1</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
 </resources>
