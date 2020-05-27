@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.widget.EditText
+import androidx.preference.PreferenceManager
 import java.util.*
 
 fun EditText.setReadOnly(value: Boolean, inputType: Int, lineColor: Int) {
@@ -43,7 +44,8 @@ private fun getPicker(editText: EditText, context: Context): DatePickerDialog {
 
         val currentDay = if (day < 10) "0${day}" else day.toString()
         val currentMonth = if (month < 9) "0${month+1}" else (month+1).toString()
-        val date = if (Locale.getDefault().language == "es") "${currentDay}-${currentMonth}-${year}" else "${currentMonth}-${currentDay}-${year}"
+        val language = PreferenceManager.getDefaultSharedPreferences(context).getString("language", Locale.getDefault().language) ?: Locale.getDefault().language
+        val date = if (language == "es") "${currentDay}-${currentMonth}-${year}" else "${currentMonth}-${currentDay}-${year}"
         editText.setText(date)
     }, year, month, day)
     return picker

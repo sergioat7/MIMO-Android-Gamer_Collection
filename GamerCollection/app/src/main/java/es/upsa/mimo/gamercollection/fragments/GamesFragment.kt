@@ -36,7 +36,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
     private val sortingKeys = arrayOf("name", "platform", "releaseDate", "purchaseDate", "price")
     private var sortingValues = arrayOf("")
     private var state: String? = null
-    private var sortKey = Constants.defaultSortingKey
+    private lateinit var sortKey: String
     private var sortAscending = true
     private var currentFilters: FilterModel? = null
 
@@ -57,6 +57,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
         platformRepository = PlatformRepository(requireContext())
         stateRepository = StateRepository(requireContext())
         sortingValues = arrayOf(resources.getString(R.string.SORT_NAME), resources.getString(R.string.SORT_PLATFORM), resources.getString(R.string.SORT_RELEASE_DATE), resources.getString(R.string.SORT_PURCHASE_DATE), resources.getString(R.string.SORT_PRICE))
+        sortKey = sharedPrefHandler.getSortingKey()
 
         initializeUI()
     }
@@ -241,7 +242,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
         queryConditions = queryConditions.dropLast(5)
         queryString += queryConditions
 
-        val sortParam = sortKey ?: Constants.defaultSortingKey
+        val sortParam = sortKey ?: sharedPrefHandler.getSortingKey()
         val sortOrder = if(sortAscending) "ASC"  else "DESC"
         queryString += " ORDER BY $sortParam $sortOrder"
 
@@ -344,7 +345,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
                 gameRepository.insertGame(game)
             }
             gameRepository.removeDisableContent(it)
-            val games = getContent(null, null, true, currentFilters)
+            val games = getContent(null, sortKey, sortAscending, currentFilters)
             setGamesCount(games)
             enableStateButtons(true)
         }, {

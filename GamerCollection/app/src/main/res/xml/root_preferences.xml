@@ -4,7 +4,6 @@
     <PreferenceCategory>
 
         <ListPreference
-            app:defaultValue="en"
             app:entries="@array/languages_entries"
             app:entryValues="@array/languages_values"
             app:key="language"
