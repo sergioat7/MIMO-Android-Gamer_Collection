@@ -215,7 +215,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener, 
                 val pos = formatValues.indexOf(formatName)
                 spinner_formats.setSelection( if(pos > 0) pos else 0 )
             }
-            edit_text_release_date.setText(Constants.dateToString(game.releaseDate))
+            edit_text_release_date.setText(Constants.dateToString(game.releaseDate, sharedPrefHandler))
             rating_bar.rating = game.score.toFloat()
             game.state?.let {
                 pending_button.isSelected = it == Constants.pending
@@ -230,7 +230,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener, 
             }
             edit_text_players.setText(game.players)
             edit_text_price.setText(game.price.toString())
-            edit_text_purchase_date.setText(Constants.dateToString(game.purchaseDate))
+            edit_text_purchase_date.setText(Constants.dateToString(game.purchaseDate, sharedPrefHandler))
             edit_text_purchase_location.setText(game.purchaseLocation)
             radio_button_yes.isChecked = game.goty
             radio_button_no.isChecked = !game.goty
@@ -297,12 +297,12 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener, 
         val distributor = edit_text_distributor.text.toString()
         val developer = edit_text_developer.text.toString()
         val players = edit_text_players.text.toString()
-        val releaseDate = Constants.stringToDate(edit_text_release_date.text.toString())
+        val releaseDate = Constants.stringToDate(edit_text_release_date.text.toString(), sharedPrefHandler)
         val goty = radio_button_yes.isChecked
         val format = formats.firstOrNull { it.name == spinner_formats.selectedItem.toString() }?.id
         val genre = genres.firstOrNull { it.name == spinner_genres.selectedItem.toString() }?.id
         val state = if(pending_button.isSelected) Constants.pending else if (in_progress_button.isSelected) Constants.inProgress else if (finished_button.isSelected) Constants.finished else null
-        val purchaseDate = Constants.stringToDate(edit_text_purchase_date.text.toString())
+        val purchaseDate = Constants.stringToDate(edit_text_purchase_date.text.toString(), sharedPrefHandler)
         val purchaseLocation = edit_text_purchase_location.text.toString()
         val price = try { edit_text_price.text.toString().toDouble() } catch (e: NumberFormatException) { 0.0 }
         val videoUrl = edit_text_video_url.text.toString()

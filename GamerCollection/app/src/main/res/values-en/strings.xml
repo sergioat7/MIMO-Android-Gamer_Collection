@@ -13,6 +13,7 @@
     <string name="YES">Yes</string>
     <string name="NO">No</string>
     <string name="LOADING">Loading...</string>
+    <string name="SETTINGS">Settings</string>
 
     // Login
     <string name="LOGIN_USERNAME">Username</string>
@@ -124,6 +125,18 @@
     <string name="SORT_RELEASE_DATE">Release date</string>
     <string name="SORT_PURCHASE_DATE">Purchase date</string>
     <string name="SORT_PRICE">Price</string>
+
+    // Settings
+    <string name="APP_LANGUAGE">App language</string>
+    <string name="ENGLISH">English</string>
+    <string name="SPANISH">Spanish</string>
+    <string name="GAMES_SORTING_PARAMETER">Games sorting parameter</string>
+    <string name="NAME">Name</string>
+    <string name="PLATFORM">Platform</string>
+    <string name="RELEASE_DATE">Release date</string>
+    <string name="PURCHASE_DATE">Purchase date</string>
+    <string name="PRICE">Price</string>
+    <string name="SWIPE_REFRESH_ENABLED_TITLE">Enable list refresh</string>
 
     // Errors
     <string name="ERROR_BUTTON_ACCEPT">Accept</string>

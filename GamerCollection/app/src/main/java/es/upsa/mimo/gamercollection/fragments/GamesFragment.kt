@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.sqlite.db.SimpleSQLiteQuery
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
+import es.upsa.mimo.gamercollection.activities.SettingsActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.fragments.popups.OnFiltersSelected
@@ -35,7 +36,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
     private val sortingKeys = arrayOf("name", "platform", "releaseDate", "purchaseDate", "price")
     private var sortingValues = arrayOf("")
     private var state: String? = null
-    private var sortKey = Constants.defaultSortingKey
+    private lateinit var sortKey: String
     private var sortAscending = true
     private var currentFilters: FilterModel? = null
 
@@ -56,6 +57,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
         platformRepository = PlatformRepository(requireContext())
         stateRepository = StateRepository(requireContext())
         sortingValues = arrayOf(resources.getString(R.string.SORT_NAME), resources.getString(R.string.SORT_PLATFORM), resources.getString(R.string.SORT_RELEASE_DATE), resources.getString(R.string.SORT_PURCHASE_DATE), resources.getString(R.string.SORT_PRICE))
+        sortKey = sharedPrefHandler.getSortingKey()
 
         initializeUI()
     }
@@ -88,6 +90,10 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
                 add()
                 return true
             }
+            R.id.action_settings -> {
+                settings()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -115,7 +121,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             it.isSelected = !it.isSelected
             button_in_progress.isSelected = false
             button_finished.isSelected = false
-            swipe_refresh_layout.isEnabled = !it.isSelected
+            swipe_refresh_layout.isEnabled = !it.isSelected && sharedPrefHandler.getSwipeRefresh()
             state = if (it.isSelected) Constants.pending else null
             getContent(state, sortKey, sortAscending, currentFilters)
         }
@@ -124,7 +130,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             button_pending.isSelected = false
             it.isSelected = !it.isSelected
             button_finished.isSelected = false
-            swipe_refresh_layout.isEnabled = !it.isSelected
+            swipe_refresh_layout.isEnabled = !it.isSelected && sharedPrefHandler.getSwipeRefresh()
             state = if (it.isSelected) Constants.inProgress else null
             getContent(state, sortKey, sortAscending, currentFilters)
         }
@@ -133,11 +139,12 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             button_pending.isSelected = false
             button_in_progress.isSelected = false
             it.isSelected = !it.isSelected
-            swipe_refresh_layout.isEnabled = !it.isSelected
+            swipe_refresh_layout.isEnabled = !it.isSelected && sharedPrefHandler.getSwipeRefresh()
             state = if (it.isSelected) Constants.finished else null
             getContent(state, sortKey, sortAscending, currentFilters)
         }
 
+        swipe_refresh_layout.isEnabled = sharedPrefHandler.getSwipeRefresh()
         swipe_refresh_layout.setColorSchemeResources(R.color.color3)
         swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.color2)
         swipe_refresh_layout.setOnRefreshListener {
@@ -236,7 +243,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
         queryConditions = queryConditions.dropLast(5)
         queryString += queryConditions
 
-        val sortParam = sortKey ?: Constants.defaultSortingKey
+        val sortParam = sortKey ?: sharedPrefHandler.getSortingKey()
         val sortOrder = if(sortAscending) "ASC"  else "DESC"
         queryString += " ORDER BY $sortParam $sortOrder"
 
@@ -244,7 +251,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
         val games = gameRepository.getGames(query)
 
         val adapter = recycler_view_games.adapter
-        if (adapter is GamesAdapter) {
+        if (adapter != null && adapter is GamesAdapter) {
             adapter.games = games
             adapter.notifyDataSetChanged()
         }
@@ -282,6 +289,10 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
 
     private fun add() {
         launchActivity(GameDetailActivity::class.java)
+    }
+
+    private fun settings() {
+        launchActivity(SettingsActivity::class.java)
     }
 
     private fun sort() {
@@ -335,7 +346,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
                 gameRepository.insertGame(game)
             }
             gameRepository.removeDisableContent(it)
-            val games = getContent(null, null, true, currentFilters)
+            val games = getContent(null, sortKey, sortAscending, currentFilters)
             setGamesCount(games)
             enableStateButtons(true)
         }, {

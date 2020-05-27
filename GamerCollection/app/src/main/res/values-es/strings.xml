@@ -13,6 +13,7 @@
     <string name="YES">Sí</string>
     <string name="NO">No</string>
     <string name="LOADING">Cargando...</string>
+    <string name="SETTINGS">Configuración</string>
 
     // Login
     <string name="LOGIN_USERNAME">Usuario</string>
@@ -124,6 +125,18 @@
     <string name="SORT_RELEASE_DATE">Fecha de publicación</string>
     <string name="SORT_PURCHASE_DATE">Fecha de compra</string>
     <string name="SORT_PRICE">Precio</string>
+
+    // Settings
+    <string name="APP_LANGUAGE">Idioma de la aplicación</string>
+    <string name="ENGLISH">Inglés</string>
+    <string name="SPANISH">Español</string>
+    <string name="GAMES_SORTING_PARAMETER">Parámetro de ordenación de los juegos</string>
+    <string name="NAME">Nombre</string>
+    <string name="PLATFORM">Plataforma</string>
+    <string name="RELEASE_DATE">Fecha de publicación</string>
+    <string name="PURCHASE_DATE">Fecha de compra</string>
+    <string name="PRICE">Precio</string>
+    <string name="SWIPE_REFRESH_ENABLED_TITLE">Habilitar actualización de lista</string>
 
     // Errors
     <string name="ERROR_BUTTON_ACCEPT">Aceptar</string>

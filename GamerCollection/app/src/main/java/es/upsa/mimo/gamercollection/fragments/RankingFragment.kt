@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.sqlite.db.SimpleSQLiteQuery
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
+import es.upsa.mimo.gamercollection.activities.SettingsActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.fragments.popups.OnFiltersSelected
@@ -70,6 +71,10 @@ class RankingFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilt
                 filter()
                 return true
             }
+            R.id.action_settings -> {
+                settings()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -90,6 +95,7 @@ class RankingFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilt
 
     private fun initializeUI() {
 
+        swipe_refresh_layout.isEnabled = sharedPrefHandler.getSwipeRefresh()
         swipe_refresh_layout.setColorSchemeResources(R.color.color3)
         swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.color2)
         swipe_refresh_layout.setOnRefreshListener {
@@ -190,7 +196,7 @@ class RankingFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilt
         val games = gameRepository.getGames(query)
 
         val adapter = recycler_view_games.adapter
-        if (adapter is GamesAdapter) {
+        if (adapter != null && adapter is GamesAdapter) {
             adapter.games = games
             adapter.notifyDataSetChanged()
         }
@@ -224,5 +230,9 @@ class RankingFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilt
         val dialogFragment = PopupFilterDialogFragment(currentFilters, this)
         dialogFragment.isCancelable = false
         dialogFragment.show(ft, "filterPopup")
+    }
+
+    private fun settings() {
+        launchActivity(SettingsActivity::class.java)
     }
 }

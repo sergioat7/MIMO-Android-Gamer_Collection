@@ -27,15 +27,15 @@ class Constants {
 
         // MARK: Date format
 
-        fun getDateFormat(): String {
-            return if (Locale.getDefault().language == "es") "dd-MM-yyyy" else "MM-dd-yyyy"
+        fun getDateFormat(sharedPrefHandler: SharedPreferencesHandler): String {
+            return if (sharedPrefHandler.getLanguage() == "es") "dd-MM-yyyy" else "MM-dd-yyyy"
         }
 
-        fun dateToString(date: Date?): String? {
+        fun dateToString(date: Date?, sharedPrefHandler: SharedPreferencesHandler): String? {
 
             date?.let {
                 return try {
-                    SimpleDateFormat(getDateFormat()).format(it)
+                    SimpleDateFormat(getDateFormat(sharedPrefHandler)).format(it)
                 } catch (e: Exception) {
                     null
                 }
@@ -44,11 +44,11 @@ class Constants {
             }
         }
 
-        fun stringToDate(dateString: String?): Date? {
+        fun stringToDate(dateString: String?, sharedPrefHandler: SharedPreferencesHandler): Date? {
 
             dateString?.let {
                 return try {
-                    SimpleDateFormat(getDateFormat()).parse(it)
+                    SimpleDateFormat(getDateFormat(sharedPrefHandler)).parse(it)
                 } catch (e: Exception) {
                     null
                 }
@@ -58,8 +58,6 @@ class Constants {
         }
 
         // MARK: Game ordering
-
-        const val defaultSortingKey = "name"
 
         fun orderGamesBy(games: List<GameResponse>, sortingKey: String): List<GameResponse> {
 
