@@ -1,20 +1,23 @@
 package es.upsa.mimo.gamercollection.utils
 
 import android.content.Context
+import androidx.preference.PreferenceManager
 import com.google.gson.Gson
 import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.models.UserData
+import java.util.*
 
 class SharedPreferencesHandler(context: Context?) {
 
     private val sharedPref = context?.getSharedPreferences(Constants.preferencesName, Context.MODE_PRIVATE)
+    private val prefs = PreferenceManager.getDefaultSharedPreferences(context)
     private val gson = Gson()
 
     fun isLoggedIn(): Boolean {
 
         val userData = getUserData()
         val authData = getCredentials()
-        return userData.isLoggedIn && !authData.token.isEmpty()
+        return userData.isLoggedIn && authData.token.isNotEmpty()
     }
 
     fun getUserData(): UserData {
@@ -80,5 +83,33 @@ class SharedPreferencesHandler(context: Context?) {
 
     fun removeCredentials() {
         sharedPref?.edit()?.remove(Constants.authDataPrefName)?.apply()
+    }
+
+    fun getLanguage(): String {
+
+        prefs.getString("language", null)?.let {
+            return it
+        } ?: run {
+
+            val locale = Locale.getDefault().language
+            setLanguage(locale)
+            return locale
+        }
+    }
+
+    private fun setLanguage(language: String) {
+
+        with(prefs.edit()) {
+            putString("language", language)
+            commit()
+        }
+    }
+
+    fun getSortingKey(): String {
+        return prefs.getString("sorting_key", null)  ?: "name"
+    }
+
+    fun getSwipeRefresh(): Boolean {
+        return prefs.getBoolean("swipe_refresh_enabled", true)
     }
 }

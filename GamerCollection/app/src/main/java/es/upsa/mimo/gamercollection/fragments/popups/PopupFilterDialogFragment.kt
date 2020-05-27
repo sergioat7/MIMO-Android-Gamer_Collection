@@ -15,6 +15,7 @@ import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_popup_filter_dialog.*
 
 class PopupFilterDialogFragment(
@@ -22,6 +23,7 @@ class PopupFilterDialogFragment(
     private val onFiltersSelected: OnFiltersSelected
 ) : DialogFragment() {
 
+    private lateinit var sharedPrefHandler: SharedPreferencesHandler
     private lateinit var formatRepository: FormatRepository
     private lateinit var genreRepository: GenreRepository
     private lateinit var platformRepository: PlatformRepository
@@ -36,6 +38,7 @@ class PopupFilterDialogFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        sharedPrefHandler = SharedPreferencesHandler(context)
         formatRepository = FormatRepository(requireContext())
         genreRepository = GenreRepository(requireContext())
         platformRepository = PlatformRepository(requireContext())
@@ -95,11 +98,11 @@ class PopupFilterDialogFragment(
             rating_bar_min.rating = (filters.minScore / 2).toFloat()
             rating_bar_max.rating = (filters.maxScore / 2).toFloat()
 
-            edit_text_release_date_min.setText(Constants.dateToString(filters.minReleaseDate))
-            edit_text_release_date_max.setText(Constants.dateToString(filters.maxReleaseDate))
+            edit_text_release_date_min.setText(Constants.dateToString(filters.minReleaseDate, sharedPrefHandler))
+            edit_text_release_date_max.setText(Constants.dateToString(filters.maxReleaseDate, sharedPrefHandler))
 
-            edit_text_purchase_date_min.setText(Constants.dateToString(filters.minPurchaseDate))
-            edit_text_purchase_date_max.setText(Constants.dateToString(filters.maxPurchaseDate))
+            edit_text_purchase_date_min.setText(Constants.dateToString(filters.minPurchaseDate, sharedPrefHandler))
+            edit_text_purchase_date_max.setText(Constants.dateToString(filters.maxPurchaseDate, sharedPrefHandler))
 
             if (filters.minPrice > 0) edit_text_price_min.setText(filters.minPrice.toString())
             if (filters.maxPrice > 0) edit_text_price_max.setText(filters.maxPrice.toString())
@@ -233,11 +236,11 @@ class PopupFilterDialogFragment(
         val minScore = (rating_bar_min.rating * 2).toDouble()
         val maxScore = (rating_bar_max.rating * 2).toDouble()
 
-        val minReleaseDate = Constants.stringToDate(edit_text_release_date_min.text.toString())
-        val maxReleaseDate = Constants.stringToDate(edit_text_release_date_max.text.toString())
+        val minReleaseDate = Constants.stringToDate(edit_text_release_date_min.text.toString(), sharedPrefHandler)
+        val maxReleaseDate = Constants.stringToDate(edit_text_release_date_max.text.toString(), sharedPrefHandler)
 
-        val minPurchaseDate = Constants.stringToDate(edit_text_purchase_date_min.text.toString())
-        val maxPurchaseDate = Constants.stringToDate(edit_text_purchase_date_max.text.toString())
+        val minPurchaseDate = Constants.stringToDate(edit_text_purchase_date_min.text.toString(), sharedPrefHandler)
+        val maxPurchaseDate = Constants.stringToDate(edit_text_purchase_date_max.text.toString(), sharedPrefHandler)
 
         var minPrice = 0.0
         try {

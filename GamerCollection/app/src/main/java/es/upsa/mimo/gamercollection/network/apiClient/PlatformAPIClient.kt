@@ -5,22 +5,23 @@ import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.PlatformResponse
 import es.upsa.mimo.gamercollection.network.apiService.PlatformAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
-import java.util.*
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlin.collections.HashMap
 
 class PlatformAPIClient(
-    private val resources: Resources
+    private val resources: Resources,
+    private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    private val api = APIClient.getRetrofit().create(PlatformAPIService::class.java)
+    private val api = APIClient.getRetrofit(sharedPrefHandler).create(PlatformAPIService::class.java)
 
     fun getPlatforms(success: (List<PlatformResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
         val request = api.getPlatforms(headers)
 
-        APIClient.sendServer<List<PlatformResponse>, ErrorResponse>(resources, request, {
+        APIClient.sendServer<List<PlatformResponse>, ErrorResponse>(sharedPrefHandler, resources, request, {
             success(it)
         }, {
             failure(it)

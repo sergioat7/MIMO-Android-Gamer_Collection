@@ -156,7 +156,7 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         )
         layoutParams.setMargins(0, 15, 0, 15)
 
-        val orderedGames = Constants.orderGamesBy(games, Constants.defaultSortingKey)
+        val orderedGames = Constants.orderGamesBy(games, sharedPrefHandler.getSortingKey())
         for (game in orderedGames) {
 
             val tvGame = TextView(requireContext())
@@ -187,7 +187,7 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         val dialogView = this.layoutInflater.inflate(R.layout.games_dialog, null)
 
         dialogView.recycler_view_games.layoutManager = LinearLayoutManager(requireContext())
-        val orderedGames = Constants.orderGamesBy(allGames, Constants.defaultSortingKey)
+        val orderedGames = Constants.orderGamesBy(allGames, sharedPrefHandler.getSortingKey())
         val platforms = platformRepository.getPlatforms()
         val states = stateRepository.getStates()
         if (orderedGames.isNotEmpty()) {

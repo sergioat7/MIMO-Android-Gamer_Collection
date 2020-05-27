@@ -6,7 +6,6 @@ import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.network.apiService.GameAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
-import java.util.*
 import kotlin.collections.HashMap
 
 class GameAPIClient(
@@ -14,16 +13,16 @@ class GameAPIClient(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    private val api = APIClient.getRetrofit().create(GameAPIService::class.java)
+    private val api = APIClient.getRetrofit(sharedPrefHandler).create(GameAPIService::class.java)
 
     fun getGames(success: (List<GameResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.getGames(headers)
 
-        APIClient.sendServer<List<GameResponse>, ErrorResponse>(resources, request, {
+        APIClient.sendServer<List<GameResponse>, ErrorResponse>(sharedPrefHandler, resources, request, {
             success(it)
         }, {
             failure(it)
@@ -33,11 +32,11 @@ class GameAPIClient(
     fun getGame(gameId: Int, success: (GameResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.getGame(headers, gameId)
 
-        APIClient.sendServer<GameResponse, ErrorResponse>(resources, request, {
+        APIClient.sendServer<GameResponse, ErrorResponse>(sharedPrefHandler, resources, request, {
             success(it)
         }, {
             failure(it)
@@ -47,11 +46,11 @@ class GameAPIClient(
     fun createGame(game: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.createGame(headers, game)
 
-        APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
+        APIClient.sendServerWithVoidResponse<ErrorResponse>(sharedPrefHandler, resources, request, {
             success()
         }, {
             failure(it)
@@ -61,11 +60,11 @@ class GameAPIClient(
     fun setGame(game: GameResponse, success: (GameResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.setGame(headers, game.id, game)
 
-        APIClient.sendServer<GameResponse, ErrorResponse>(resources, request, {
+        APIClient.sendServer<GameResponse, ErrorResponse>(sharedPrefHandler, resources, request, {
             success(it)
         }, {
             failure(it)
@@ -75,11 +74,11 @@ class GameAPIClient(
     fun deleteGame(gameId: Int, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.deleteGame(headers, gameId)
 
-        APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
+        APIClient.sendServerWithVoidResponse<ErrorResponse>(sharedPrefHandler, resources, request, {
             success()
         }, {
             failure(it)

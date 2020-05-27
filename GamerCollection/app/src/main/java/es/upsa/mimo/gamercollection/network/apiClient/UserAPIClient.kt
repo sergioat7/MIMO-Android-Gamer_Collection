@@ -8,7 +8,6 @@ import es.upsa.mimo.gamercollection.models.NewPassword
 import es.upsa.mimo.gamercollection.network.apiService.UserAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
-import java.util.*
 import kotlin.collections.HashMap
 
 class UserAPIClient(
@@ -16,17 +15,17 @@ class UserAPIClient(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    private val api = APIClient.getRetrofit().create(UserAPIService::class.java)
+    private val api = APIClient.getRetrofit(sharedPrefHandler).create(UserAPIService::class.java)
 
     fun login(username: String, password: String, success: (String) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val loginCredentials = LoginCredentials(username, password)
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
         val request = api.login(headers, loginCredentials)
 
-        APIClient.sendServer<LoginResponse, ErrorResponse>(resources, request, {
+        APIClient.sendServer<LoginResponse, ErrorResponse>(sharedPrefHandler, resources, request, {
             success(it.token)
         }, {
             failure(it)
@@ -38,10 +37,10 @@ class UserAPIClient(
         val loginCredentials = LoginCredentials(username, password)
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
         val request = api.register(headers, loginCredentials)
 
-        APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
+        APIClient.sendServerWithVoidResponse<ErrorResponse>(sharedPrefHandler, resources, request, {
             success()
         }, {
             failure(it)
@@ -51,11 +50,11 @@ class UserAPIClient(
     fun logout(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.logout(headers)
 
-        APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
+        APIClient.sendServerWithVoidResponse<ErrorResponse>(sharedPrefHandler, resources, request, {
             success()
         }, {
             failure(it)
@@ -66,11 +65,11 @@ class UserAPIClient(
 
         val newPasword = NewPassword(password)
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.updatePassword(headers, newPasword)
 
-        APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
+        APIClient.sendServerWithVoidResponse<ErrorResponse>(sharedPrefHandler, resources, request, {
             success()
         }, {
             failure(it)
@@ -80,11 +79,11 @@ class UserAPIClient(
     fun deleteUser(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.deleteUser(headers)
 
-        APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
+        APIClient.sendServerWithVoidResponse<ErrorResponse>(sharedPrefHandler, resources, request, {
             success()
         }, {
             failure(it)
