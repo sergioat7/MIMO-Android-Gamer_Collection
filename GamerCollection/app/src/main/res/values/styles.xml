@@ -4,10 +4,15 @@
         <item name="colorPrimary">@color/color2</item>
         <item name="android:colorBackground">@color/color1</item>
         <item name="titleTextColor">@color/color1</item>
+        <item name="dialogCornerRadius">5dp</item>
     </style>
 
     <style name="AppThemeDialogTransparent" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="AppThemeSettings" parent="AppTheme">
+        <item name="android:colorBackground">@color/color2</item>
     </style>
 
     <style name="AppThemeNoActionBar" parent="Theme.AppCompat.NoActionBar">
