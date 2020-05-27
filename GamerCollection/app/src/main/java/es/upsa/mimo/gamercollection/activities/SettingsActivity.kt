@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.activities
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
@@ -16,6 +17,13 @@ class SettingsActivity : AppCompatActivity() {
             .beginTransaction()
             .replace(R.id.settings, SettingsFragment())
             .commit()
+    }
+
+    override fun onBackPressed() {
+
+        val landing = Intent(this, LandingActivity::class.java)
+        startActivity(landing)
+        finish()
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {

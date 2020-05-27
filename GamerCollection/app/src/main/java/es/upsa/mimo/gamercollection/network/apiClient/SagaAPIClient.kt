@@ -6,7 +6,6 @@ import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.network.apiService.SagaAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
-import java.util.*
 import kotlin.collections.HashMap
 
 class SagaAPIClient(
@@ -14,16 +13,16 @@ class SagaAPIClient(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    private val api = APIClient.getRetrofit().create(SagaAPIService::class.java)
+    private val api = APIClient.getRetrofit(sharedPrefHandler).create(SagaAPIService::class.java)
 
     fun getSagas(success: (List<SagaResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.getSagas(headers)
 
-        APIClient.sendServer<List<SagaResponse>, ErrorResponse>(resources, request, {
+        APIClient.sendServer<List<SagaResponse>, ErrorResponse>(sharedPrefHandler, resources, request, {
             success(it)
         }, {
             failure(it)
@@ -33,11 +32,11 @@ class SagaAPIClient(
     fun createSaga(saga: SagaResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.createSaga(headers, saga)
 
-        APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
+        APIClient.sendServerWithVoidResponse<ErrorResponse>(sharedPrefHandler, resources, request, {
             success()
         }, {
             failure(it)
@@ -47,11 +46,11 @@ class SagaAPIClient(
     fun setSaga(saga: SagaResponse, success: (SagaResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.setSaga(headers, saga.id, saga)
 
-        APIClient.sendServer<SagaResponse, ErrorResponse>(resources, request, {
+        APIClient.sendServer<SagaResponse, ErrorResponse>(sharedPrefHandler, resources, request, {
             success(it)
         }, {
             failure(it)
@@ -61,11 +60,11 @@ class SagaAPIClient(
     fun deleteSaga(sagaId: Int, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.deleteSaga(headers, sagaId)
 
-        APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
+        APIClient.sendServerWithVoidResponse<ErrorResponse>(sharedPrefHandler, resources, request, {
             success()
         }, {
             failure(it)

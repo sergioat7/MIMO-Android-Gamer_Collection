@@ -6,7 +6,6 @@ import es.upsa.mimo.gamercollection.models.SongResponse
 import es.upsa.mimo.gamercollection.network.apiService.SongAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
-import java.util.*
 import kotlin.collections.HashMap
 
 class SongAPIClient(
@@ -14,16 +13,16 @@ class SongAPIClient(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    private val api = APIClient.getRetrofit().create(SongAPIService::class.java)
+    private val api = APIClient.getRetrofit(sharedPrefHandler).create(SongAPIService::class.java)
 
     fun createSong(gameId: Int, song: SongResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.createSong(headers, gameId, song)
 
-        APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
+        APIClient.sendServerWithVoidResponse<ErrorResponse>(sharedPrefHandler, resources, request, {
             success()
         }, {
             failure(it)
@@ -33,11 +32,11 @@ class SongAPIClient(
     fun deleteSong(gameId: Int, songId: Int, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = Locale.getDefault().language
+        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.deleteSong(headers, gameId, songId)
 
-        APIClient.sendServerWithVoidResponse<ErrorResponse>(resources, request, {
+        APIClient.sendServerWithVoidResponse<ErrorResponse>(sharedPrefHandler, resources, request, {
             success()
         }, {
             failure(it)
