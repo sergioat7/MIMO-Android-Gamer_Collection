@@ -18,6 +18,11 @@
             app:title="@string/GAMES_SORTING_PARAMETER"
             app:useSimpleSummaryProvider="true" />
 
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="swipe_refresh_enabled"
+            android:title="@string/SWIPE_REFRESH_ENABLED_TITLE" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

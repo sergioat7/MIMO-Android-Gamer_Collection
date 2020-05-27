@@ -106,6 +106,10 @@ class SharedPreferencesHandler(context: Context?) {
     }
 
     fun getSortingKey(): String {
-        return prefs.getString("sorting_key", "name")  ?: "name"
+        return prefs.getString("sorting_key", null)  ?: "name"
+    }
+
+    fun getSwipeRefresh(): Boolean {
+        return prefs.getBoolean("swipe_refresh_enabled", true)
     }
 }

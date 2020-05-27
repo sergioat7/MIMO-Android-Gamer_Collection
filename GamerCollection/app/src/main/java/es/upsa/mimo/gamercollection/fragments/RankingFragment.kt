@@ -95,6 +95,7 @@ class RankingFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilt
 
     private fun initializeUI() {
 
+        swipe_refresh_layout.isEnabled = sharedPrefHandler.getSwipeRefresh()
         swipe_refresh_layout.setColorSchemeResources(R.color.color3)
         swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.color2)
         swipe_refresh_layout.setOnRefreshListener {
