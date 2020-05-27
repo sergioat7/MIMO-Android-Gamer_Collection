@@ -136,6 +136,7 @@
     <string name="RELEASE_DATE">Fecha de publicación</string>
     <string name="PURCHASE_DATE">Fecha de compra</string>
     <string name="PRICE">Precio</string>
+    <string name="SWIPE_REFRESH_ENABLED_TITLE">Habilitar actualización de lista</string>
 
     // Errors
     <string name="ERROR_BUTTON_ACCEPT">Aceptar</string>

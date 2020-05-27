@@ -121,7 +121,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             it.isSelected = !it.isSelected
             button_in_progress.isSelected = false
             button_finished.isSelected = false
-            swipe_refresh_layout.isEnabled = !it.isSelected
+            swipe_refresh_layout.isEnabled = !it.isSelected && sharedPrefHandler.getSwipeRefresh()
             state = if (it.isSelected) Constants.pending else null
             getContent(state, sortKey, sortAscending, currentFilters)
         }
@@ -130,7 +130,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             button_pending.isSelected = false
             it.isSelected = !it.isSelected
             button_finished.isSelected = false
-            swipe_refresh_layout.isEnabled = !it.isSelected
+            swipe_refresh_layout.isEnabled = !it.isSelected && sharedPrefHandler.getSwipeRefresh()
             state = if (it.isSelected) Constants.inProgress else null
             getContent(state, sortKey, sortAscending, currentFilters)
         }
@@ -139,11 +139,12 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             button_pending.isSelected = false
             button_in_progress.isSelected = false
             it.isSelected = !it.isSelected
-            swipe_refresh_layout.isEnabled = !it.isSelected
+            swipe_refresh_layout.isEnabled = !it.isSelected && sharedPrefHandler.getSwipeRefresh()
             state = if (it.isSelected) Constants.finished else null
             getContent(state, sortKey, sortAscending, currentFilters)
         }
 
+        swipe_refresh_layout.isEnabled = sharedPrefHandler.getSwipeRefresh()
         swipe_refresh_layout.setColorSchemeResources(R.color.color3)
         swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.color2)
         swipe_refresh_layout.setOnRefreshListener {
