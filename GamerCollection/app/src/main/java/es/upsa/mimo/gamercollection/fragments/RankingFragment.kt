@@ -27,6 +27,7 @@ class RankingFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilt
     private lateinit var gameRepository: GameRepository
     private lateinit var platformRepository: PlatformRepository
     private lateinit var stateRepository: StateRepository
+    private var menu: Menu? = null
     private var currentFilters: FilterModel? = null
 
     override fun onCreateView(
@@ -56,6 +57,8 @@ class RankingFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilt
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
+
+        this.menu = menu
         menu.clear()
         inflater.inflate(R.menu.ranking_toolbar_menu, menu)
     }
@@ -68,6 +71,10 @@ class RankingFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilt
                 return true
             }
             R.id.action_filter -> {
+                filter()
+                return true
+            }
+            R.id.action_filter_on -> {
                 filter()
                 return true
             }
@@ -85,7 +92,7 @@ class RankingFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilt
         launchActivityWithExtras(GameDetailActivity::class.java, params)
     }
 
-    override fun filter(filters: FilterModel) {
+    override fun filter(filters: FilterModel?) {
 
         currentFilters = filters
         getContent(currentFilters)
@@ -113,6 +120,11 @@ class RankingFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilt
         var queryString = "SELECT * FROM Game"
 
         var queryConditions = " WHERE "
+
+        menu?.let{
+            it.findItem(R.id.action_filter).isVisible = filters == null
+            it.findItem(R.id.action_filter_on).isVisible = filters != null
+        }
 
         filters?.let { filters ->
 
