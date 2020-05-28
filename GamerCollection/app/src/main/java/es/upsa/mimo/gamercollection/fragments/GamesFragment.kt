@@ -33,6 +33,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
     private lateinit var gameRepository: GameRepository
     private lateinit var platformRepository: PlatformRepository
     private lateinit var stateRepository: StateRepository
+    private var menu: Menu? = null
     private val sortingKeys = arrayOf("name", "platform", "releaseDate", "purchaseDate", "price")
     private var sortingValues = arrayOf("")
     private var state: String? = null
@@ -71,6 +72,8 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
+
+        this.menu = menu
         menu.clear()
         inflater.inflate(R.menu.games_toolbar_menu, menu)
     }
@@ -83,6 +86,10 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
                 return true
             }
             R.id.action_filter -> {
+                filter()
+                return true
+            }
+            R.id.action_filter_on -> {
                 filter()
                 return true
             }
@@ -104,7 +111,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
         launchActivityWithExtras(GameDetailActivity::class.java, params)
     }
 
-    override fun filter(filters: FilterModel) {
+    override fun filter(filters: FilterModel?) {
 
         currentFilters = filters
         val games = getContent(state, sortKey, sortAscending, currentFilters)
@@ -166,6 +173,11 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             Constants.inProgress -> " WHERE state == '${Constants.inProgress}' AND "
             Constants.finished -> " WHERE state == '${Constants.finished}' AND "
             else -> ""
+        }
+
+        menu?.let{
+            it.findItem(R.id.action_filter).isVisible = filters == null
+            it.findItem(R.id.action_filter_on).isVisible = filters != null
         }
 
         filters?.let { filters ->
