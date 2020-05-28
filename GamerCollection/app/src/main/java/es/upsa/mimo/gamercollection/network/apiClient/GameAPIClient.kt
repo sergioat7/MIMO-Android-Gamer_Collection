@@ -50,7 +50,7 @@ class GameAPIClient(
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.createGame(headers, game)
 
-        APIClient.sendServerWithVoidResponse<ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
             success()
         }, {
             failure(it)
@@ -78,7 +78,7 @@ class GameAPIClient(
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.deleteGame(headers, gameId)
 
-        APIClient.sendServerWithVoidResponse<ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
             success()
         }, {
             failure(it)
