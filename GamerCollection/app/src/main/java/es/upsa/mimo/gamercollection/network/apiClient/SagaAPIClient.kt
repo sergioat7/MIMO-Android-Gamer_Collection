@@ -36,7 +36,7 @@ class SagaAPIClient(
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.createSaga(headers, saga)
 
-        APIClient.sendServerWithVoidResponse<ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
             success()
         }, {
             failure(it)
@@ -64,7 +64,7 @@ class SagaAPIClient(
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.deleteSaga(headers, sagaId)
 
-        APIClient.sendServerWithVoidResponse<ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
             success()
         }, {
             failure(it)

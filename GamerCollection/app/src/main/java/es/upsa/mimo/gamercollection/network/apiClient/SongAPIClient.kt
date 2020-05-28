@@ -22,7 +22,7 @@ class SongAPIClient(
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.createSong(headers, gameId, song)
 
-        APIClient.sendServerWithVoidResponse<ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
             success()
         }, {
             failure(it)
@@ -36,7 +36,7 @@ class SongAPIClient(
         headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
         val request = api.deleteSong(headers, gameId, songId)
 
-        APIClient.sendServerWithVoidResponse<ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
             success()
         }, {
             failure(it)
