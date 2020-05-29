@@ -9,7 +9,12 @@
         app:showAsAction="always"/>
 
     <item android:id="@+id/action_filter"
-        android:icon="@drawable/ic_filter_list_black_24dp"
+        android:icon="@drawable/ic_filter"
+        android:title=""
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/action_filter_on"
+        android:icon="@drawable/ic_filter_on"
         android:title=""
         app:showAsAction="always"/>
 
