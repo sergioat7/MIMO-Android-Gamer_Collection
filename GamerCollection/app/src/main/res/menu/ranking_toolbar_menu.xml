@@ -9,14 +9,13 @@
         app:showAsAction="always"/>
 
     <item android:id="@+id/action_filter"
-        android:icon="@drawable/ic_filter_24dp"
+        android:icon="@drawable/ic_filter"
         android:title=""
         app:showAsAction="always"/>
 
     <item android:id="@+id/action_filter_on"
-        android:icon="@drawable/ic_filter_on_24dp"
+        android:icon="@drawable/ic_filter_on"
         android:title=""
-        android:visible="false"
         app:showAsAction="always"/>
 
     <item android:id="@+id/action_settings"
