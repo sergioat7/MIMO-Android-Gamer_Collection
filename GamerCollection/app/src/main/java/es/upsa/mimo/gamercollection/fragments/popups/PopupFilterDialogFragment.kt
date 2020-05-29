@@ -23,6 +23,7 @@ class PopupFilterDialogFragment(
     private val onFiltersSelected: OnFiltersSelected
 ) : DialogFragment() {
 
+    private var currentFilters = filters
     private lateinit var sharedPrefHandler: SharedPreferencesHandler
     private lateinit var formatRepository: FormatRepository
     private lateinit var genreRepository: GenreRepository
@@ -44,7 +45,7 @@ class PopupFilterDialogFragment(
         platformRepository = PlatformRepository(requireContext())
 
         initializeUI()
-        configFilters(filters)
+        configFilters(currentFilters)
     }
 
     //MARK: - Private functions
@@ -214,6 +215,8 @@ class PopupFilterDialogFragment(
         radio_button_saga_no.isChecked = true
 
         radio_button_songs_no.isChecked = true
+
+        currentFilters = null
     }
 
     private fun save() {
@@ -277,7 +280,28 @@ class PopupFilterDialogFragment(
             hasSongs
         )
 
-        onFiltersSelected.filter(filters)
+        if (
+            platforms.isEmpty() &&
+            genres.isEmpty() &&
+            formats.isEmpty() &&
+            minScore == 0.0 &&
+            maxScore == 10.0 &&
+            minReleaseDate == null &&
+            maxReleaseDate == null &&
+            minPurchaseDate == null &&
+            maxPurchaseDate == null &&
+            minPrice == 0.0 &&
+            maxPrice == 0.0 &&
+            !isGoty &&
+            !isLoaned &&
+            !hasSaga &&
+            !hasSongs) {
+            currentFilters = null
+        } else {
+            currentFilters = filters
+        }
+
+        onFiltersSelected.filter(currentFilters)
         dismiss()
     }
 
@@ -300,5 +324,5 @@ class PopupFilterDialogFragment(
 }
 
 interface OnFiltersSelected {
-    fun filter(filters: FilterModel)
+    fun filter(filters: FilterModel?)
 }
