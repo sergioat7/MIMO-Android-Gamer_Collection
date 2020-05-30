@@ -80,7 +80,6 @@
 
     // Sagas
     <string name="SAGAS">Mis Sagas</string>
-    <string name="SAGA_NO_GAMES">Todavía no has agregado ningún juego a esta saga</string>
 
     // Saga detail
     <string name="SAGA_DETAIL">Detalle</string>
