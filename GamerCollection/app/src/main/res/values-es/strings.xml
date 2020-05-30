@@ -138,6 +138,11 @@
     <string name="PRICE">Precio</string>
     <string name="SWIPE_REFRESH_ENABLED_TITLE">Habilitar actualización de lista</string>
 
+    // Notifications
+    <string name="NOTIFICATION_TITLE">%s ya a la venta</string>
+    <string name="NOTIFICATION_DESCRIPTION">Hoy, %s, se ha puesto a la venta el juego %s</string>
+    <string name="SUMMARY_NOTIFICATIONS_TITLE">%d nuevos juegos lanzados</string>
+
     // Errors
     <string name="ERROR_BUTTON_ACCEPT">Aceptar</string>
     <string name="ERROR_SERVER">Hubo un error al recuperar los datos. Por favor, inténtalo otra vez</string>
