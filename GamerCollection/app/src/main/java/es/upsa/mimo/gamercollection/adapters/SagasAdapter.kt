@@ -69,7 +69,8 @@ class SagasAdapter(
                     holder.itemView.image_view_arrow.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_keyboard_arrow_up_white_24dp))
                     expandedIds.remove(saga.id)
                     items.removeAll(saga.games)
-                    notifyItemRangeRemoved(position+1, saga.games.size)
+                    notifyDataSetChanged()
+//                    notifyItemRangeRemoved(position+1, saga.games.size)
                 } else {
 
                     holder.itemView.image_view_arrow.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_keyboard_arrow_down_white_24dp))
@@ -80,7 +81,8 @@ class SagasAdapter(
                     } else {
                         items.addAll(saga.games.sortedBy { it.releaseDate })
                     }
-                    notifyItemRangeInserted(position+1, saga.games.size)
+                    notifyDataSetChanged()
+//                    notifyItemRangeInserted(position+1, saga.games.size)
                 }
             }
 
