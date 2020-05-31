@@ -313,7 +313,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
 
             notifications[game.id] =
                 NotificationCompat.Builder(requireContext(), Constants.channelId)
-                    .setSmallIcon(R.drawable.released)
+                    .setSmallIcon(R.drawable.app_icon)
                     .setContentTitle(resources.getString(R.string.NOTIFICATION_TITLE, game.name))
                     .setContentText(resources.getString(R.string.NOTIFICATION_DESCRIPTION, Constants.dateToString(Date(), sharedPrefHandler), game.name))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -330,7 +330,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
         val summaryNotification = NotificationCompat.Builder(requireContext(), Constants.channelId)
             .setContentTitle(resources.getString(R.string.SUMMARY_NOTIFICATIONS_TITLE, games.size))
             .setContentText(gameNames)
-            .setSmallIcon(R.drawable.released)
+            .setSmallIcon(R.drawable.app_icon)
             .setStyle(
                 NotificationCompat.InboxStyle()
                     .setBigContentTitle(resources.getString(R.string.SUMMARY_NOTIFICATIONS_TITLE, games.size))
