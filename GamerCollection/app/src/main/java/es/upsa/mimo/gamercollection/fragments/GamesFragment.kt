@@ -311,18 +311,21 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             }
             val pendingIntent = PendingIntent.getActivity(requireContext(), 0, intent, 0)
 
-            notifications[game.id] =
-                NotificationCompat.Builder(requireContext(), Constants.channelId)
-                    .setSmallIcon(R.drawable.app_icon)
-                    .setContentTitle(resources.getString(R.string.NOTIFICATION_TITLE, game.name))
-                    .setContentText(resources.getString(R.string.NOTIFICATION_DESCRIPTION, Constants.dateToString(Date(), sharedPrefHandler), game.name))
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setContentIntent(pendingIntent)
-                    .setAutoCancel(true)
-                    .setCategory(NotificationCompat.CATEGORY_REMINDER)
-                    .setGroup(Constants.channelGroup)
-                    .build()
-            gameNames += game.name + ", "
+            if (!sharedPrefHandler.notificationLaunched(game.id)) {
+
+                notifications[game.id] =
+                    NotificationCompat.Builder(requireContext(), Constants.channelId)
+                        .setSmallIcon(R.drawable.app_icon)
+                        .setContentTitle(resources.getString(R.string.NOTIFICATION_TITLE, game.name))
+                        .setContentText(resources.getString(R.string.NOTIFICATION_DESCRIPTION, Constants.dateToString(Date(), sharedPrefHandler), game.name))
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true)
+                        .setCategory(NotificationCompat.CATEGORY_REMINDER)
+                        .setGroup(Constants.channelGroup)
+                        .build()
+                gameNames += game.name + ", "
+            }
         }
         gameNames = gameNames.dropLast(2)
 
@@ -343,8 +346,9 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
         with(NotificationManagerCompat.from(requireContext())) {
             for (notification in notifications) {
                 notify(notification.key, notification.value)
+                sharedPrefHandler.setNotificationLaunched(notification.key, true)
             }
-            notify(0, summaryNotification)
+            if (notifications.size > 0) notify(0, summaryNotification)
         }
     }
 

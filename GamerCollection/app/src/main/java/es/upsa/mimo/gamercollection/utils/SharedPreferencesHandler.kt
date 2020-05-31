@@ -97,19 +97,35 @@ class SharedPreferencesHandler(context: Context?) {
         }
     }
 
-    private fun setLanguage(language: String) {
-
-        with(prefs.edit()) {
-            putString("language", language)
-            commit()
-        }
-    }
-
     fun getSortingKey(): String {
         return prefs.getString("sorting_key", null)  ?: "name"
     }
 
     fun getSwipeRefresh(): Boolean {
         return prefs.getBoolean("swipe_refresh_enabled", true)
+    }
+
+    fun notificationLaunched(gameId: Int): Boolean {
+        return sharedPref?.getBoolean("game_notification_launched_${gameId}", false) ?: false
+    }
+
+    fun setNotificationLaunched(gameId: Int, value: Boolean) {
+
+        if (sharedPref != null) {
+            with (sharedPref.edit()) {
+                putBoolean("game_notification_launched_$gameId", value)
+                commit()
+            }
+        }
+    }
+
+    // MARK: Private functions
+
+    private fun setLanguage(language: String) {
+
+        with(prefs.edit()) {
+            putString("language", language)
+            commit()
+        }
     }
 }
