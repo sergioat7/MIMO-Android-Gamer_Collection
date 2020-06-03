@@ -11,9 +11,9 @@ data class GameResponse(
     @SerializedName("id")
     override val id: Int,
     @SerializedName("name")
-    val name: String?,
+    var name: String?,
     @SerializedName("platform")
-    val platform: String?,
+    var platform: String?,
     @SerializedName("score")
     val score: Double,
     @SerializedName("pegi")
