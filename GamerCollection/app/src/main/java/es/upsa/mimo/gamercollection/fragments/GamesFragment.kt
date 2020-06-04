@@ -309,7 +309,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             val intent = Intent(requireContext(), GameDetailActivity::class.java).apply {
                 putExtra("gameId", game.id)
             }
-            val pendingIntent = PendingIntent.getActivity(requireContext(), 0, intent, 0)
+            val pendingIntent = PendingIntent.getActivity(requireContext(), game.id, intent, PendingIntent.FLAG_ONE_SHOT)
 
             if (!sharedPrefHandler.notificationLaunched(game.id)) {
 
