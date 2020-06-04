@@ -23,7 +23,6 @@ public class LandingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         createNotificationChannel();
-        requestPermissions();
 
         SharedPreferencesHandler sharedPrefHandler = new SharedPreferencesHandler(this);
 
@@ -65,24 +64,6 @@ public class LandingActivity extends BaseActivity {
             channel.setDescription(description);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             if (notificationManager != null) notificationManager.createNotificationChannel(channel);
-        }
-    }
-
-    private void requestPermissions() {
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NOTIFICATION_POLICY) != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_NOTIFICATION_POLICY)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-            } else {
-                // No explanation needed; request the permission
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_NOTIFICATION_POLICY}, 0);
-                }
-            }
         }
     }
 }
