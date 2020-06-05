@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Callback
@@ -47,7 +48,11 @@ class GameDetailActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_game_detail)
+        title = ""
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val gameId = intent.getIntExtra("gameId", 0)
         if (gameId > 0) this.gameId = gameId
@@ -74,14 +79,16 @@ class GameDetailActivity : BaseActivity() {
             it.findItem(R.id.action_save).isVisible = currentGame == null
             it.findItem(R.id.action_cancel).isVisible = false
         }
-
-//        return super.onCreateOptionsMenu(menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when(item.itemId) {
+            android.R.id.home -> {
+                NavUtils.navigateUpFromSameTask(this)
+                return true
+            }
             R.id.action_edit -> {
                 editGame()
                 return true
