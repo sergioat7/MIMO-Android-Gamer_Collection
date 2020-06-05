@@ -12,8 +12,8 @@ import es.upsa.mimo.gamercollection.models.PlatformResponse
 import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.models.StateResponse
 import es.upsa.mimo.gamercollection.models.base.BaseModel
-import es.upsa.mimo.gamercollection.viewHolders.GamesViewHolder
-import es.upsa.mimo.gamercollection.viewHolders.SagasViewHolder
+import es.upsa.mimo.gamercollection.viewholders.GamesViewHolder
+import es.upsa.mimo.gamercollection.viewholders.SagasViewHolder
 import kotlinx.android.synthetic.main.game_item.view.*
 import kotlinx.android.synthetic.main.saga_item.view.*
 import kotlinx.android.synthetic.main.saga_item.view.image_view_arrow

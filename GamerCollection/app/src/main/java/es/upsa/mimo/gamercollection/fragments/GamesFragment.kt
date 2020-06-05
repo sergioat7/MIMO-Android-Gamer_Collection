@@ -1,10 +1,15 @@
 package es.upsa.mimo.gamercollection.fragments
 
 import android.app.AlertDialog
+import android.app.Notification
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.NumberPicker
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.sqlite.db.SimpleSQLiteQuery
@@ -25,6 +30,8 @@ import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_games.*
 import kotlinx.android.synthetic.main.state_button.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFiltersSelected {
 
@@ -68,6 +75,13 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
 
         val games = getContent(state, sortKey, sortAscending, currentFilters)
         setGamesCount(games)
+        val today = Constants.stringToDate(Constants.dateToString(Date(), sharedPrefHandler), sharedPrefHandler)
+        var gamesToNotify = ArrayList<GameResponse>()
+        for (game in games) {
+            if (game.releaseDate == today)
+                gamesToNotify.add(game)
+        }
+        if (gamesToNotify.isNotEmpty()) launchNotification(gamesToNotify)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -284,6 +298,58 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
         button_pending.text_view_subtitle.text = "$pendingGamesCount"
         button_in_progress.text_view_subtitle.text = "$inProgressGamesCount"
         button_finished.text_view_subtitle.text = "$finishedGamesCount"
+    }
+
+    private fun launchNotification(games: List<GameResponse>) {
+
+        val notifications = mutableMapOf<Int, Notification>()
+        var gameNames = ""
+        for (game in games) {
+
+            val intent = Intent(requireContext(), GameDetailActivity::class.java).apply {
+                putExtra("gameId", game.id)
+            }
+            val pendingIntent = PendingIntent.getActivity(requireContext(), game.id, intent, PendingIntent.FLAG_ONE_SHOT)
+
+            if (!sharedPrefHandler.notificationLaunched(game.id)) {
+
+                notifications[game.id] =
+                    NotificationCompat.Builder(requireContext(), Constants.channelId)
+                        .setSmallIcon(R.drawable.app_icon)
+                        .setContentTitle(resources.getString(R.string.NOTIFICATION_TITLE, game.name))
+                        .setContentText(resources.getString(R.string.NOTIFICATION_DESCRIPTION, Constants.dateToString(Date(), sharedPrefHandler), game.name))
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true)
+                        .setCategory(NotificationCompat.CATEGORY_REMINDER)
+                        .setGroup(Constants.channelGroup)
+                        .build()
+                gameNames += game.name + ", "
+            }
+        }
+        gameNames = gameNames.dropLast(2)
+
+
+        val summaryNotification = NotificationCompat.Builder(requireContext(), Constants.channelId)
+            .setContentTitle(resources.getString(R.string.SUMMARY_NOTIFICATIONS_TITLE, games.size))
+            .setContentText(gameNames)
+            .setSmallIcon(R.drawable.app_icon)
+            .setStyle(
+                NotificationCompat.InboxStyle()
+                    .setBigContentTitle(resources.getString(R.string.SUMMARY_NOTIFICATIONS_TITLE, games.size))
+                    .setSummaryText(gameNames)
+            )
+            .setGroup(Constants.channelGroup)
+            .setGroupSummary(true)
+            .build()
+
+        with(NotificationManagerCompat.from(requireContext())) {
+            for (notification in notifications) {
+                notify(notification.key, notification.value)
+                sharedPrefHandler.setNotificationLaunched(notification.key, true)
+            }
+            if (notifications.size > 0) notify(0, summaryNotification)
+        }
     }
 
     private fun filter() {

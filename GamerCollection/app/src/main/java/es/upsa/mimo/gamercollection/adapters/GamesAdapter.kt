@@ -9,7 +9,7 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.PlatformResponse
 import es.upsa.mimo.gamercollection.models.StateResponse
-import es.upsa.mimo.gamercollection.viewHolders.GamesViewHolder
+import es.upsa.mimo.gamercollection.viewholders.GamesViewHolder
 import kotlinx.android.synthetic.main.game_item.view.*
 
 class GamesAdapter(

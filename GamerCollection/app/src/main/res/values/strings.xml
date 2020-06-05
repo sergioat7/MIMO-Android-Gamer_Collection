@@ -139,6 +139,13 @@
     <string name="PRICE">Price</string>
     <string name="SWIPE_REFRESH_ENABLED_TITLE">Enable list refresh</string>
 
+    // Notifications
+    <string name="CHANNEL_NAME" translatable="false">GAMER_COLLECTION_CHANNEL_NAME</string>
+    <string name="CHANNEL_DESCRIPTION" translatable="false">GAMER_COLLECTION_CHANNEL_DESCRIPTION</string>
+    <string name="NOTIFICATION_TITLE">%s already on sale</string>
+    <string name="NOTIFICATION_DESCRIPTION">Today, %s, game %s has been released</string>
+    <string name="SUMMARY_NOTIFICATIONS_TITLE">%d new games released</string>
+
     // Errors
     <string name="ERROR_BUTTON_ACCEPT">Accept</string>
     <string name="ERROR_SERVER">There was an error on getting data. Please, try again</string>

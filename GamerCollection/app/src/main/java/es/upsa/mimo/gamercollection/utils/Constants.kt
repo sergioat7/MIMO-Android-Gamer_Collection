@@ -69,5 +69,11 @@ class Constants {
                 else -> games.sortedBy { it.name }
             }
         }
+
+        // MARK: Notifications
+
+        const val channelId = "GAMER_COLLECTION_NOTIFICATIONS_CHANNEL_ID"
+
+        const val channelGroup = "GAMER_COLLECTION_NOTIFICATIONS_CHANNEL_GROUP"
     }
 }
