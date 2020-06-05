@@ -1,24 +1,30 @@
 package es.upsa.mimo.gamercollection.activities;
 
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
-
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import java.util.Locale;
-
 import es.upsa.mimo.gamercollection.R;
 import es.upsa.mimo.gamercollection.activities.base.BaseActivity;
+import es.upsa.mimo.gamercollection.utils.Constants;
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler;
 
 public class LandingActivity extends BaseActivity {
-
-    private SharedPreferencesHandler sharedPrefHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        sharedPrefHandler = new SharedPreferencesHandler(this);
+        createNotificationChannel();
+
+        SharedPreferencesHandler sharedPrefHandler = new SharedPreferencesHandler(this);
 
         String language = sharedPrefHandler.getLanguage();
         Configuration conf = getResources().getConfiguration();
@@ -44,5 +50,20 @@ public class LandingActivity extends BaseActivity {
 
         Intent intent = new Intent(this, cls);
         startActivity(intent);
+    }
+
+    //MARK: - Private functions
+
+    private void createNotificationChannel() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String name = getString(R.string.CHANNEL_NAME);
+            String description = getString(R.string.CHANNEL_DESCRIPTION);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(Constants.channelId, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null) notificationManager.createNotificationChannel(channel);
+        }
     }
 }

@@ -287,7 +287,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener, 
         }
     }
 
-    private fun getGameData(): GameResponse {
+    private fun getGameData(): GameResponse? {
 
         val id = currentGame?.id ?: 0
         val name = edit_text_name.text.toString()
@@ -311,29 +311,52 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener, 
         val saga = currentGame?.saga
         val songs = currentGame?.songs ?: ArrayList()
 
-        return GameResponse(
-            id,
-            name,
-            platform,
-            score,
-            pegi,
-            distributor,
-            developer,
-            players,
-            releaseDate,
-            goty,
-            format,
-            genre,
-            state,
-            purchaseDate,
-            purchaseLocation,
-            price,
-            imageUrl,
-            videoUrl,
-            loanedTo,
-            observations,
-            saga,
-            songs)
+        if (name.isEmpty() &&
+            platform == null &&
+            score == 0.0 &&
+            pegi == null &&
+            distributor.isEmpty() &&
+            developer.isEmpty() &&
+            players.isEmpty() &&
+            releaseDate == null &&
+            !goty &&
+            format == null &&
+            genre == null &&
+            state == null &&
+            purchaseDate == null &&
+            purchaseLocation.isEmpty() &&
+            price == 0.0 &&
+            videoUrl.isEmpty() &&
+            loanedTo.isEmpty() &&
+            observations.isEmpty() &&
+            saga == null &&
+            songs.isEmpty()) {
+            return null
+        } else {
+            return GameResponse(
+                id,
+                name,
+                platform,
+                score,
+                pegi,
+                distributor,
+                developer,
+                players,
+                releaseDate,
+                goty,
+                format,
+                genre,
+                state,
+                purchaseDate,
+                purchaseLocation,
+                price,
+                imageUrl,
+                videoUrl,
+                loanedTo,
+                observations,
+                saga,
+                songs)
+        }
     }
 
     private fun setImage() {
@@ -424,36 +447,36 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener, 
 
     private fun saveGame() {
 
-        val game = getGameData()
+        getGameData()?.let { game ->
+            showLoading()
+            if (currentGame != null) {
 
-        showLoading()
-        if (currentGame != null) {
+                gameAPIClient.setGame(game, {
+                    gameRepository.updateGame(it)
 
-            gameAPIClient.setGame(game, {
-                gameRepository.updateGame(it)
-
-                currentGame = it
-                cancelEdition()
-                hideLoading()
-            }, {
-                manageError(it)
-            })
-        } else {
-
-            gameAPIClient.createGame(game, {
-                gameAPIClient.getGames({ games ->
-
-                    for (game in games) {
-                        gameRepository.insertGame(game)
-                    }
+                    currentGame = it
+                    cancelEdition()
                     hideLoading()
-                    activity?.finish()
                 }, {
                     manageError(it)
                 })
-            }, {
-                manageError(it)
-            })
+            } else {
+
+                gameAPIClient.createGame(game, {
+                    gameAPIClient.getGames({ games ->
+
+                        for (game in games) {
+                            gameRepository.insertGame(game)
+                        }
+                        hideLoading()
+                        activity?.finish()
+                    }, {
+                        manageError(it)
+                    })
+                }, {
+                    manageError(it)
+                })
+            }
         }
     }
 
