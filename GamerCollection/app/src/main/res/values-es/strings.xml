@@ -80,7 +80,6 @@
 
     // Sagas
     <string name="SAGAS">Mis Sagas</string>
-    <string name="SAGA_NO_GAMES">Todavía no has agregado ningún juego a esta saga</string>
 
     // Saga detail
     <string name="SAGA_DETAIL">Detalle</string>
@@ -137,6 +136,11 @@
     <string name="PURCHASE_DATE">Fecha de compra</string>
     <string name="PRICE">Precio</string>
     <string name="SWIPE_REFRESH_ENABLED_TITLE">Habilitar actualización de lista</string>
+
+    // Notifications
+    <string name="NOTIFICATION_TITLE">%s ya a la venta</string>
+    <string name="NOTIFICATION_DESCRIPTION">Hoy, %s, se ha puesto a la venta el juego %s</string>
+    <string name="SUMMARY_NOTIFICATIONS_TITLE">%d nuevos juegos lanzados</string>
 
     // Errors
     <string name="ERROR_BUTTON_ACCEPT">Aceptar</string>
