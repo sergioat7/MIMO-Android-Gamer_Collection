@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.viewHolders
+package es.upsa.mimo.gamercollection.viewholders
 
 import android.content.Context
 import android.graphics.Color
