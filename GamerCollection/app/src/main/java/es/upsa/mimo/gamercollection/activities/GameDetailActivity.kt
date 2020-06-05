@@ -74,7 +74,7 @@ class GameDetailActivity : BaseActivity() {
         this.menu = menu
         menu?.let{
             it.clear()
-            menuInflater.inflate(R.menu.edit_details_toolbar_menu, menu)
+            menuInflater.inflate(R.menu.game_toolbar_menu, menu)
             it.findItem(R.id.action_edit).isVisible = currentGame != null
             it.findItem(R.id.action_save).isVisible = currentGame == null
             it.findItem(R.id.action_cancel).isVisible = false
