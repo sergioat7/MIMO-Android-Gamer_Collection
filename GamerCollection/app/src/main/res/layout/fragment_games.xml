@@ -61,7 +61,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-            <es.upsa.mimo.gamercollection.customViews.StateButton
+            <es.upsa.mimo.gamercollection.customviews.StateButton
                 android:id="@+id/button_pending"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                 app:stateButton_subtitle="0"
                 app:stateButton_title="@string/GAMES_FILTER_BUTTON_TITLE_PENDING" />
 
-            <es.upsa.mimo.gamercollection.customViews.StateButton
+            <es.upsa.mimo.gamercollection.customviews.StateButton
                 android:id="@+id/button_in_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
                 app:stateButton_subtitle="0"
                 app:stateButton_title="@string/GAMES_FILTER_BUTTON_TITLE_IN_PROGRESS" />
 
-            <es.upsa.mimo.gamercollection.customViews.StateButton
+            <es.upsa.mimo.gamercollection.customviews.StateButton
                 android:id="@+id/button_finished"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
