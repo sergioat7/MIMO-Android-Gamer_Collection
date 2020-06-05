@@ -9,6 +9,7 @@ import es.upsa.mimo.gamercollection.activities.SagaDetailActivity
 import es.upsa.mimo.gamercollection.activities.SettingsActivity
 import es.upsa.mimo.gamercollection.adapters.SagasAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.models.base.BaseModel
 import es.upsa.mimo.gamercollection.network.apiClient.SagaAPIClient
 import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.SagaRepository
@@ -100,7 +101,7 @@ class SagasFragment : BaseFragment(), SagasAdapter.OnItemClickListener {
         recycler_view_sagas.layoutManager = LinearLayoutManager(requireContext())
         val platforms = platformRepository.getPlatforms()
         val states = stateRepository.getStates()
-        recycler_view_sagas.adapter = SagasAdapter(requireContext(), ArrayList(), platforms, states, this)
+        recycler_view_sagas.adapter = SagasAdapter(requireContext(), ArrayList(), ArrayList(), platforms, states, this)
     }
 
     private fun getContent() {
@@ -109,7 +110,15 @@ class SagasFragment : BaseFragment(), SagasAdapter.OnItemClickListener {
 
         val adapter = recycler_view_sagas.adapter
         if (adapter != null && adapter is SagasAdapter) {
-            adapter.sagas = sagas
+            var items = ArrayList<BaseModel<Int>>()
+            var expandedIds = ArrayList<Int>()
+            for (saga in sagas) {
+                items.add(saga)
+                items.addAll(saga.games.sortedBy { it.releaseDate })
+                expandedIds.add(saga.id)
+            }
+            adapter.items = items
+            adapter.expandedIds = expandedIds
             adapter.notifyDataSetChanged()
         }
         layout_empty_list.visibility = if (sagas.isNotEmpty()) View.GONE else View.VISIBLE
