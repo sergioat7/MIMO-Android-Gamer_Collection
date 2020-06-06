@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayoutMediator
@@ -117,6 +118,8 @@ class GameDetailActivity : BaseActivity() {
             this.addAll(platforms.mapNotNull { it.name })
         }
         spinner_platforms.adapter = getAdapter(platformValues)
+
+//        rating_bar.onRatingBarChangeListener = this
     }
 
     private fun loadData() {
@@ -143,18 +146,37 @@ class GameDetailActivity : BaseActivity() {
         currentGame = game
         game?.let { game ->
 
-            edit_text_name.setText(game.name)
             imageUrl = game.imageUrl
             imageUrl?.let { url ->
                 Picasso.with(this).load(url).error(R.drawable.add_photo).into(image_view_game)
-                Picasso.with(this).load(url).error(R.drawable.add_photo).into(image_view_blurred)
+                Picasso.with(this).load(url).into(image_view_blurred, object : Callback {
+                        override fun onSuccess() {
+                            image_view_blurred.setBlur(5)
+                        }
+                        override fun onError() {}
+                    })
             }
-//            image_view_goty.visibility = if(game.goty) View.VISIBLE else View.GONE
+
+            edit_text_name.setText(game.name)
             game.platform?.let { platformId ->
                 val platformName = platformRepository.getPlatforms().firstOrNull { it.id == platformId }?.name
                 val pos = platformValues.indexOf(platformName)
                 spinner_platforms.setSelection( if(pos > 0) pos else 0 )
             }
+            rating_button.setText(game.score.toString())
+            when(game.pegi) {
+                "+3" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi3))
+                "+4" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi4))
+                "+6" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi6))
+                "+7" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi7))
+                "+12" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi12))
+                "+16" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi16))
+                "+18" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi18))
+                else -> image_view_pegi.setImageDrawable(null)
+            }
+
+            image_view_goty.visibility = if(game.goty) View.VISIBLE else View.GONE
+
         }
     }
 
@@ -212,6 +234,7 @@ class GameDetailActivity : BaseActivity() {
         val game = pagerAdapter.getGameData()
         game.name = edit_text_name.text.toString()
         game.platform = platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
+        game.imageUrl = imageUrl
 
 //        showLoading()
 //        if (currentGame != null) {
@@ -248,6 +271,7 @@ class GameDetailActivity : BaseActivity() {
 
         showEditButton(false)
         showData(currentGame)
+        pagerAdapter.showData(currentGame)
         enableEdition(false)
         pagerAdapter.enableEdition(false)
     }

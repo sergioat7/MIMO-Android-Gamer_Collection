@@ -41,7 +41,7 @@ data class GameResponse(
     @SerializedName("price")
     val price: Double,
     @SerializedName("imageUrl")
-    val imageUrl: String?,
+    var imageUrl: String?,
     @SerializedName("videoUrl")
     val videoUrl: String?,
     @SerializedName("loanedTo")
