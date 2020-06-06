@@ -235,36 +235,38 @@ class GameDetailActivity : BaseActivity() {
         game.name = edit_text_name.text.toString()
         game.platform = platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
         game.imageUrl = imageUrl
+        game.score = rating_button.text.toString().toDouble()
+        game.songs = currentGame?.songs ?: ArrayList()
 
-//        showLoading()
-//        if (currentGame != null) {
-//
-//            gameAPIClient.setGame(game, {
-//                gameRepository.updateGame(it)
-//
-//                currentGame = it
+        showLoading()
+        if (currentGame != null) {
+
+            gameAPIClient.setGame(game, {
+                gameRepository.updateGame(it)
+
+                currentGame = it
                 cancelEdition()
-//                hideLoading()
-//            }, {
-//                manageError(it)
-//            })
-//        } else {
-//
-//            gameAPIClient.createGame(game, {
-//                gameAPIClient.getGames({ games ->
-//
-//                    for (game in games) {
-//                        gameRepository.insertGame(game)
-//                    }
-//                    hideLoading()
-//                    activity?.finish()
-//                }, {
-//                    manageError(it)
-//                })
-//            }, {
-//                manageError(it)
-//            })
-//        }
+                hideLoading()
+            }, {
+                manageError(it)
+            })
+        } else {
+
+            gameAPIClient.createGame(game, {
+                gameAPIClient.getGames({ games ->
+
+                    for (game in games) {
+                        gameRepository.insertGame(game)
+                    }
+                    hideLoading()
+                    finish()
+                }, {
+                    manageError(it)
+                })
+            }, {
+                manageError(it)
+            })
+        }
     }
 
     private fun cancelEdition(){
