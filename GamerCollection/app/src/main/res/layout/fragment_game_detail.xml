@@ -10,27 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/edit_text_name"
-            style="@style/WhiteEditText.GameDetailsTitle"
-            android:hint="@string/GAME_DETAIL_PLACEHOLDER_NAME"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="10dp"
             android:scrollbars="none"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_name">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -40,28 +31,18 @@
                     android:id="@+id/first_linear_layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" >
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.2"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="10dp">
-
-                        <ImageView
-                            android:id="@+id/game_image_view"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:adjustViewBounds="true"
-                            android:src="@drawable/add_photo"
-                            app:layout_constraintBottom_toTopOf="@+id/goty_image_view"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1.2">
 
                         <ImageView
                             android:id="@+id/goty_image_view"
@@ -80,21 +61,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/text_view_platform_title"
-                            style="@style/WhiteTextView.Regular"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/GAME_DETAIL_PLATFORM"
-                            android:textSize="12sp" />
-
-                        <Spinner
-                            android:id="@+id/spinner_platforms"
-                            style="@style/CustomSpinner"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="-5dp" />
 
                         <TextView
                             android:id="@+id/text_view_genre_title"
@@ -146,45 +112,29 @@
 
                 </LinearLayout>
 
-                <me.zhanghai.android.materialratingbar.MaterialRatingBar
-                    android:id="@+id/rating_bar"
-                    style="@style/CustomRatingBar.DarkBackground"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:isIndicator="false"
-                    android:numStars="10"
-                    android:stepSize="0.5"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/first_linear_layout" />
-
-                <TextView
-                    android:id="@+id/text_view_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="20dp"
-                    android:fontFamily="@font/roboto_bold"
-                    android:text="0.0"
-                    android:textColor="@color/color2"
-                    android:textSize="16sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rating_bar" />
+                <!--                <me.zhanghai.android.materialratingbar.MaterialRatingBar-->
+                <!--                    android:id="@+id/rating_bar"-->
+                <!--                    style="@style/CustomRatingBar.DarkBackground"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginTop="40dp"-->
+                <!--                    android:isIndicator="false"-->
+                <!--                    android:numStars="10"-->
+                <!--                    android:stepSize="0.5"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@id/first_linear_layout" />-->
 
                 <LinearLayout
                     android:id="@+id/state_buttons_linear_layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="20dp"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_view_rating">
+                    app:layout_constraintTop_toBottomOf="@+id/first_linear_layout">
 
                     <es.upsa.mimo.gamercollection.customviews.StateButton
                         android:id="@+id/pending_button"
@@ -216,40 +166,20 @@
                         app:stateButton_title="@string/GAME_DETAIL_BUTTON_TITLE_FINISHED" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/text_view_details_title"
-                    style="@style/WhiteTextView.Bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:text="@string/GAME_DETAIL_TITLE"
-                    android:textSize="18sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/state_buttons_linear_layout" />
-
-                <View
-                    android:id="@+id/details_view_line_separator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:background="@color/color2"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_view_details_title" />
-
                 <LinearLayout
                     android:id="@+id/linear_layout_details"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="15dp"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/details_view_line_separator">
+                    app:layout_constraintTop_toBottomOf="@+id/state_buttons_linear_layout">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/text_view_distributor"
@@ -266,7 +196,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/text_view_developer"
@@ -283,7 +213,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/text_view_pegi"
@@ -304,7 +234,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/text_view_players"
@@ -321,7 +251,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/text_view_price"
@@ -338,7 +268,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/text_view_purchase_date"
@@ -355,7 +285,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/text_view_purchase_location"
@@ -372,7 +302,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/text_view_goty"
@@ -389,19 +319,19 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:textColor="@color/color2"
                                 android:buttonTint="@color/color2"
                                 android:checked="true"
-                                android:text="@string/NO" />
+                                android:text="@string/NO"
+                                android:textColor="@color/color2" />
 
                             <RadioButton
                                 android:id="@+id/radio_button_yes"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:textColor="@color/color2"
                                 android:buttonTint="@color/color2"
-                                android:text="@string/YES" />
+                                android:text="@string/YES"
+                                android:textColor="@color/color2" />
                         </RadioGroup>
 
                     </LinearLayout>
@@ -409,7 +339,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/text_view_loaned"
@@ -426,7 +356,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/text_view_video_url"
@@ -443,7 +373,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/text_view_observations"
@@ -460,7 +390,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/text_view_saga"
@@ -476,46 +406,6 @@
                     </LinearLayout>
 
                 </LinearLayout>
-
-<!--                <TextView-->
-<!--                    android:id="@+id/text_view_songs_title"-->
-<!--                    style="@style/WhiteTextView.Bold"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="20dp"-->
-<!--                    android:text="@string/GAME_DETAIL_SONGS_TITLE"-->
-<!--                    android:textSize="18sp"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/linear_layout_details" />-->
-<!---->
-<!--                <Button-->
-<!--                    android:id="@+id/button_add_song"-->
-<!--                    style="@style/Widget.AppCompat.ImageButton"-->
-<!--                    android:layout_width="20dp"-->
-<!--                    android:layout_height="20dp"-->
-<!--                    android:background="@drawable/ic_add_circle_outline_white_24dp"-->
-<!--                    app:layout_constraintBottom_toBottomOf="@+id/text_view_songs_title"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent" />-->
-<!---->
-<!--                <View-->
-<!--                    android:id="@+id/songs_view_line_separator"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="5dp"-->
-<!--                    android:background="@color/color2"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/text_view_songs_title" />-->
-<!---->
-<!--                <androidx.recyclerview.widget.RecyclerView-->
-<!--                    android:id="@+id/recycler_view_songs"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="5dp"-->
-<!--                    android:nestedScrollingEnabled="false"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/songs_view_line_separator" />-->
 
                 <Button
                     android:id="@+id/button_delete_game"

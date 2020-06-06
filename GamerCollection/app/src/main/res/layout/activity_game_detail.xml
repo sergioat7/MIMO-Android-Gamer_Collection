@@ -6,27 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".activities.GameDetailActivity">
 
-    <FrameLayout
-        android:id="@+id/game_detail_fragment_placeholder"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-    </FrameLayout>
-
-    <ImageView
+    <com.jgabrielfreitas.core.BlurImageView
         android:id="@+id/image_view_blurred"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/tabLayout"
+        app:layout_constraintBottom_toTopOf="@+id/tab_layout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/zelda" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view_mask"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/color1Light"
+        app:layout_constraintBottom_toBottomOf="@+id/image_view_blurred"
+        app:layout_constraintEnd_toEndOf="@+id/image_view_blurred"
+        app:layout_constraintStart_toStartOf="@+id/image_view_blurred"
+        app:layout_constraintTop_toTopOf="@+id/image_view_blurred" />
 
     <ImageView
         android:id="@+id/image_view_game"
@@ -34,12 +32,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:adjustViewBounds="true"
-        app:layout_constraintBottom_toBottomOf="@+id/tab_layout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:layout_constraintWidth_percent="0.25"
-        app:srcCompat="@drawable/zelda" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintWidth_percent="0.35"
+        app:srcCompat="@drawable/add_photo" />
 
     <EditText
         android:id="@+id/edit_text_name"
@@ -47,11 +43,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:ems="10"
+        android:layout_marginEnd="20dp"
         android:hint="@string/GAME_DETAIL_PLACEHOLDER_NAME"
-        android:inputType="textPersonName"
-        android:text="Name"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/image_view_game"
         app:layout_constraintTop_toTopOf="@+id/image_view_game" />
@@ -61,43 +55,73 @@
         style="@style/CustomSpinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toStartOf="@+id/imageView4"
+        app:layout_constraintBottom_toTopOf="@+id/rating_button"
+        app:layout_constraintEnd_toStartOf="@+id/image_view_pegi"
         app:layout_constraintStart_toStartOf="@+id/edit_text_name"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_name" />
 
-    <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+    <Button
+        android:id="@+id/rating_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:drawableStart="@drawable/ic_star_white_24dp"
+        android:drawablePadding="-30dp"
+        android:drawableTint="@color/color5"
+        android:text="0"
+        android:textColor="@color/color2"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/spinner_platforms"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/edit_text_name"
         app:layout_constraintTop_toBottomOf="@+id/spinner_platforms" />
 
     <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="50dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:id="@+id/image_view_pegi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:adjustViewBounds="true"
+        android:maxWidth="40dp"
+        app:layout_constraintBottom_toBottomOf="@id/rating_button"
+        app:layout_constraintEnd_toEndOf="@+id/edit_text_name" />
+
+    <ImageView
+        android:id="@+id/image_view_goty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:adjustViewBounds="true"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/tab_layout"
         app:layout_constraintEnd_toEndOf="@+id/edit_text_name"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_name"
-        app:srcCompat="@drawable/add_photo" />
+        app:layout_constraintStart_toStartOf="@+id/edit_text_name"
+        app:layout_constraintTop_toBottomOf="@+id/rating_button"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/goty_label" />
+
+    <View
+        android:id="@+id/view_background_tabs"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#282828"
+        app:layout_constraintBottom_toBottomOf="@+id/tab_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tab_layout" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:tabSelectedTextColor="@color/color2"
-        app:tabIndicatorColor="@color/color3"
-        app:tabTextColor="@color/color2SuperLight"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_view_blurred"
-        app:layout_constraintWidth_percent="0.7" >
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_view_game"
+        app:tabIndicatorColor="@color/color3"
+        app:tabSelectedTextColor="@color/color2"
+        app:tabTextColor="@color/color2SuperLight">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tab_item_details"
@@ -116,11 +140,23 @@
         android:id="@+id/viewPager2"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tab_layout">
 
     </androidx.viewpager2.widget.ViewPager2>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

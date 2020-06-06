@@ -41,6 +41,11 @@ class GameDetailPagerAdapter(
         gameSongsFragment.enableEdition(enable)
     }
 
+    fun showData(game: GameResponse?) {
+
+        gameDetailFragment.showData(game)
+    }
+
     fun getGameData(): GameResponse {
         return gameDetailFragment.getGameData()
     }

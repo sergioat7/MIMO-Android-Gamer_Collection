@@ -32,7 +32,7 @@ import kotlinx.android.synthetic.main.new_song_dialog.view.*
 
 class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
 
-//    private var gameId: Int? = null
+    private var currentGame: GameResponse? = null
     private lateinit var sharedPrefHandler: SharedPreferencesHandler
     private lateinit var formatRepository: FormatRepository
     private lateinit var genreRepository: GenreRepository
@@ -40,23 +40,16 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
     private lateinit var gameRepository: GameRepository
     private lateinit var gameAPIClient: GameAPIClient
     private lateinit var songAPIClient: SongAPIClient
-    private var menu: Menu? = null
-//    private lateinit var platforms: List<PlatformResponse>
     private lateinit var genres: List<GenreResponse>
     private lateinit var formats: List<FormatResponse>
-//    private var platformValues = ArrayList<String>()
     private var genreValues = ArrayList<String>()
     private var formatValues = ArrayList<String>()
-    private var currentGame: GameResponse? = null
-    private var imageUrl: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        gameId = this.arguments?.getInt("gameId")
         currentGame = Gson().fromJson(arguments?.getString("game"), GameResponse::class.java)
-//        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_game_detail, container, false)
     }
 
@@ -75,68 +68,20 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         loadData()
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        super.onCreateOptionsMenu(menu, inflater)
-//
-//        this.menu = menu
-//        menu.clear()
-//        inflater.inflate(R.menu.edit_details_toolbar_menu, menu)
-//        menu.findItem(R.id.action_edit).isVisible = currentGame != null
-//        menu.findItem(R.id.action_save).isVisible = currentGame == null
-//        menu.findItem(R.id.action_cancel).isVisible = false
-//    }
-
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//
-//        when(item.itemId) {
-//            R.id.action_edit -> {
-//                editGame()
-//                return true
-//            }
-//            R.id.action_save -> {
-//                saveGame()
-//                return true
-//            }
-//            R.id.action_cancel -> {
-//                cancelEdition()
-//                return true
-//            }
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
-
     override fun onRatingChanged(ratingBar: RatingBar?, rating: Float, fromUser: Boolean) {
-        text_view_rating.text = rating.toString()
+//        text_view_rating.text = rating.toString()
     }
-
-//    override fun onItemClick(songId: Int) {
-//
-//        currentGame?.let { game ->
-//
-//            showLoading()
-//            songAPIClient.deleteSong(game.id, songId, {
-//                updateData()
-//            }, {
-//                manageError(it)
-//            })
-//        }
-//    }
 
     fun enableEdition(enable: Boolean) {
 
         val inputTypeText = if (enable) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
         val backgroundColor = ContextCompat.getColor(requireContext(), R.color.color2)
 
-//        edit_text_name.setReadOnly(!enable, inputTypeText, backgroundColor)
-//        game_image_view.isEnabled = enable
-//        spinner_platforms.backgroundTintList = if (!enable) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
-//        spinner_platforms.isEnabled = enable
         spinner_genres.backgroundTintList = if (!enable) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
         spinner_genres.isEnabled = enable
         spinner_formats.backgroundTintList = if (!enable) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
         spinner_formats.isEnabled = enable
         edit_text_release_date.setReadOnly(!enable, InputType.TYPE_NULL, backgroundColor)
-//        rating_bar.setIsIndicator(!enable)
         pending_button.isEnabled = enable
         in_progress_button.isEnabled = enable
         finished_button.isEnabled = enable
@@ -153,21 +98,54 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
         edit_text_loaned.setReadOnly(!enable, inputTypeText, backgroundColor)
         edit_text_video_url.setReadOnly(!enable, if (enable) InputType.TYPE_TEXT_VARIATION_URI else InputType.TYPE_NULL, backgroundColor)
         edit_text_observations.setReadOnly(!enable, inputTypeText, backgroundColor)
-//        button_add_song.visibility = if (enable && currentGame != null) View.VISIBLE else View.GONE
-//        currentGame?.let {
-//            val adapter = recycler_view_songs.adapter as? SongsAdapter
-//            if (adapter != null) {
-//                adapter.editable = enable
-//                adapter.notifyDataSetChanged()
+
+        button_delete_game.visibility = if(enable) View.VISIBLE else View.GONE
+    }
+
+    fun showData(game: GameResponse?) {
+
+        currentGame = game
+        game?.let { game ->
+
+            game.genre?.let { genreId ->
+                val genreName = genreRepository.getGenres().firstOrNull { it.id == genreId }?.name
+                val pos = genreValues.indexOf(genreName)
+                spinner_genres.setSelection( if(pos > 0) pos else 0 )
+            }
+            game.format?.let { formatId ->
+                val formatName = formatRepository.getFormats().firstOrNull { it.id == formatId }?.name
+                val pos = formatValues.indexOf(formatName)
+                spinner_formats.setSelection( if(pos > 0) pos else 0 )
+            }
+            edit_text_release_date.setText(Constants.dateToString(game.releaseDate, sharedPrefHandler))
+//            rating_bar.rating = game.score.toFloat()
+            game.state?.let {
+                pending_button.isSelected = it == Constants.pending
+                in_progress_button.isSelected = it == Constants.inProgress
+                finished_button.isSelected = it == Constants.finished
+            }
+            edit_text_distributor.setText(game.distributor)
+            edit_text_developer.setText(game.developer)
+//            game.pegi?.let { pegi ->
+//                val pos = resources.getStringArray(R.array.pegis).indexOf(pegi)
+//                spinner_pegis.setSelection(pos)
 //            }
-//        }
+            edit_text_players.setText(game.players)
+            edit_text_price.setText(game.price.toString())
+            edit_text_purchase_date.setText(Constants.dateToString(game.purchaseDate, sharedPrefHandler))
+            edit_text_purchase_location.setText(game.purchaseLocation)
+            radio_button_yes.isChecked = game.goty
+            radio_button_no.isChecked = !game.goty
+            edit_text_loaned.setText(game.loanedTo)
+            edit_text_video_url.setText(game.videoUrl)
+            edit_text_observations.setText(game.observations)
+            edit_text_saga.setText(game.saga?.name)
+        }
     }
 
     fun getGameData(): GameResponse {
 
         val id = currentGame?.id ?: 0
-//        val name = edit_text_name.text.toString()
-//        val platform = platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
 //        val score = rating_bar.rating.toDouble()
 //        val pegi = resources.getStringArray(R.array.pegis).firstOrNull { it == spinner_pegis.selectedItem.toString() }
         val distributor = edit_text_distributor.text.toString()
@@ -204,7 +182,7 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
             purchaseDate,
             purchaseLocation,
             price,
-            imageUrl,
+            null,
             videoUrl,
             loanedTo,
             observations,
@@ -216,14 +194,6 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
 
     private fun initializeUI() {
 
-//        game_image_view.setOnClickListener { setImage() }
-//        platforms = platformRepository.getPlatforms()
-//        platformValues = ArrayList<String>()
-//        platformValues.run {
-//            this.add(resources.getString((R.string.GAME_DETAIL_SELECT_PLATFORM)))
-//            this.addAll(platforms.mapNotNull { it.name })
-//        }
-//        spinner_platforms.adapter = getAdapter(platformValues)
         genres = genreRepository.getGenres()
         genreValues = ArrayList<String>()
         genreValues.run {
@@ -255,117 +225,17 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
             in_progress_button.isSelected = false
             it.isSelected = !it.isSelected
         }
-//        val pegis = ArrayList<String>()
-//        pegis.add(resources.getString(R.string.GAME_DETAIL_SELECT_PEGI))
-//        pegis.addAll(resources.getStringArray(R.array.pegis).toList())
-//        spinner_pegis.adapter = getAdapter(pegis)
         edit_text_release_date.showDatePicker(requireContext())
-        rating_bar.onRatingBarChangeListener = this
         edit_text_purchase_date.showDatePicker(requireContext())
         edit_text_saga.setReadOnly(true, InputType.TYPE_NULL, 0)
-//        button_add_song.setOnClickListener { showNewSongPopup() }
-//        recycler_view_songs.layoutManager = LinearLayoutManager(requireContext())
         button_delete_game.setOnClickListener { deleteGame() }
     }
 
     private fun loadData() {
 
-//        gameId?.let {
-//
-//            showLoading()
-//            currentGame = gameRepository.getGame(it)
-//            hideLoading()
-//        }
-
         showData(currentGame)
         enableEdition(currentGame == null)
     }
-
-    private fun showData(game: GameResponse?) {
-
-        currentGame = game
-        game?.let { game ->
-
-//            edit_text_name.setText(game.name)
-//            imageUrl = game.imageUrl
-//            imageUrl?.let { url ->
-//                Picasso.with(requireContext()).load(url).error(R.drawable.add_photo).into(game_image_view)
-//            }
-//            goty_image_view.visibility = if(game.goty) View.VISIBLE else View.GONE
-//            game.platform?.let { platformId ->
-//                val platformName = platformRepository.getPlatforms().firstOrNull { it.id == platformId }?.name
-//                val pos = platformValues.indexOf(platformName)
-//                spinner_platforms.setSelection( if(pos > 0) pos else 0 )
-//            }
-            game.genre?.let { genreId ->
-                val genreName = genreRepository.getGenres().firstOrNull { it.id == genreId }?.name
-                val pos = genreValues.indexOf(genreName)
-                spinner_genres.setSelection( if(pos > 0) pos else 0 )
-            }
-            game.format?.let { formatId ->
-                val formatName = formatRepository.getFormats().firstOrNull { it.id == formatId }?.name
-                val pos = formatValues.indexOf(formatName)
-                spinner_formats.setSelection( if(pos > 0) pos else 0 )
-            }
-            edit_text_release_date.setText(Constants.dateToString(game.releaseDate, sharedPrefHandler))
-//            rating_bar.rating = game.score.toFloat()
-            game.state?.let {
-                pending_button.isSelected = it == Constants.pending
-                in_progress_button.isSelected = it == Constants.inProgress
-                finished_button.isSelected = it == Constants.finished
-            }
-            edit_text_distributor.setText(game.distributor)
-            edit_text_developer.setText(game.developer)
-//            game.pegi?.let { pegi ->
-//                val pos = resources.getStringArray(R.array.pegis).indexOf(pegi)
-//                spinner_pegis.setSelection(pos)
-//            }
-            edit_text_players.setText(game.players)
-            edit_text_price.setText(game.price.toString())
-            edit_text_purchase_date.setText(Constants.dateToString(game.purchaseDate, sharedPrefHandler))
-            edit_text_purchase_location.setText(game.purchaseLocation)
-            radio_button_yes.isChecked = game.goty
-            radio_button_no.isChecked = !game.goty
-            edit_text_loaned.setText(game.loanedTo)
-            edit_text_video_url.setText(game.videoUrl)
-            edit_text_observations.setText(game.observations)
-            edit_text_saga.setText(game.saga?.name)
-            var editable = false
-            menu?.let {
-                editable = it.findItem(R.id.action_save).isVisible
-            }
-        }
-    }
-
-//    private fun setImage() {
-//
-//        val dialogBuilder = AlertDialog.Builder(requireContext()).create()
-//        val dialogView = this.layoutInflater.inflate(R.layout.set_image_dialog, null)
-//
-//        dialogView.button_accept.setOnClickListener {
-//
-//            val url = dialogView.edit_text_url.text.toString()
-//            if (!url.isEmpty()) {
-//
-//                Picasso.with(requireContext())
-//                    .load(url)
-//                    .error(R.drawable.add_photo)
-//                    .into(game_image_view, object : Callback {
-//                        override fun onSuccess() {
-//                            imageUrl = url
-//                        }
-//                        override fun onError() {
-//                            imageUrl = null
-//                            showPopupDialog(resources.getString(R.string.ERROR_IMAGE_URL))
-//                        }
-//                    })
-//            }
-//            dialogBuilder.dismiss()
-//        }
-//
-//        dialogBuilder.setView(dialogView)
-//        dialogBuilder.show()
-//    }
 
 //    private fun showNewSongPopup() {
 //
@@ -416,63 +286,6 @@ class GameDetailFragment : BaseFragment(), RatingBar.OnRatingBarChangeListener {
             }
         }
     }
-
-//    private fun editGame(){
-//
-//        showEditButton(true)
-//        enableEdition(true)
-//    }
-//
-//    private fun saveGame() {
-//
-//        val game = getGameData()
-//
-//        showLoading()
-//        if (currentGame != null) {
-//
-//            gameAPIClient.setGame(game, {
-//                gameRepository.updateGame(it)
-//
-//                currentGame = it
-//                cancelEdition()
-//                hideLoading()
-//            }, {
-//                manageError(it)
-//            })
-//        } else {
-//
-//            gameAPIClient.createGame(game, {
-//                gameAPIClient.getGames({ games ->
-//
-//                    for (game in games) {
-//                        gameRepository.insertGame(game)
-//                    }
-//                    hideLoading()
-//                    activity?.finish()
-//                }, {
-//                    manageError(it)
-//                })
-//            }, {
-//                manageError(it)
-//            })
-//        }
-//    }
-//
-//    private fun cancelEdition(){
-//
-//        showEditButton(false)
-//        showData(currentGame)
-//        enableEdition(false)
-//    }
-//
-//    private fun showEditButton(hidden: Boolean) {
-//
-//        menu?.let {
-//            it.findItem(R.id.action_edit).isVisible = !hidden
-//            it.findItem(R.id.action_save).isVisible = hidden
-//            it.findItem(R.id.action_cancel).isVisible = hidden
-//        }
-//    }
 
     private fun getAdapter(data: List<String>): SpinnerAdapter {
 
