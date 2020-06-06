@@ -15,7 +15,7 @@ data class GameResponse(
     @SerializedName("platform")
     var platform: String?,
     @SerializedName("score")
-    val score: Double,
+    var score: Double,
     @SerializedName("pegi")
     val pegi: String?,
     @SerializedName("distributor")
