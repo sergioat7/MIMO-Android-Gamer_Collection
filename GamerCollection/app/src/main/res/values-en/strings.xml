@@ -6,6 +6,7 @@
     <string name="CANCEL">Cancel</string>
     <string name="RESET">Reset</string>
     <string name="SAVE">Save</string>
+    <string name="ADD">Add</string>
     <string name="DELETE">Delete</string>
     <string name="EMPTY_LIST">The list is empty</string>
     <string name="ASCENDING">Ascending</string>
