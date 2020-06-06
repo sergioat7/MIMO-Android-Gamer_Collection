@@ -52,6 +52,7 @@ class GameSongsFragment : BaseFragment(), SongsAdapter.OnItemClickListener {
             adapter.editable = enable
             adapter.notifyDataSetChanged()
         }
+        button_add_song?.visibility = if(enable) View.VISIBLE else View.GONE
     }
 
     // MARK: Private functions
