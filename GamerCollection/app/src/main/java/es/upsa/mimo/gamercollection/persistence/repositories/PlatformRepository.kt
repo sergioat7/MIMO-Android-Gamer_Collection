@@ -20,7 +20,7 @@ class PlatformRepository(context: Context) {
             val result = GlobalScope.async { platformDao.getPlatforms() }
             platforms = result.await()
         }
-        return platforms
+        return platforms.sortedBy { it.name }
     }
 
     fun insertPlatform(platform: PlatformResponse) {
@@ -30,7 +30,7 @@ class PlatformRepository(context: Context) {
         }
     }
 
-    fun deletePlatform(platform: PlatformResponse) {
+    private fun deletePlatform(platform: PlatformResponse) {
 
         GlobalScope.launch {
             platformDao.deletePlatform(platform)

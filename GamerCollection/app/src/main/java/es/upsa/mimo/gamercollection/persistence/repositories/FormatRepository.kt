@@ -20,7 +20,7 @@ class FormatRepository(context: Context) {
             val result = GlobalScope.async { formatDao.getFormats() }
             formats = result.await()
         }
-        return formats
+        return formats.sortedBy { it.name }
     }
 
     fun insertFormat(format: FormatResponse) {
@@ -30,7 +30,7 @@ class FormatRepository(context: Context) {
         }
     }
 
-    fun deleteFormat(format: FormatResponse) {
+    private fun deleteFormat(format: FormatResponse) {
 
         GlobalScope.launch {
             formatDao.deleteFormat(format)

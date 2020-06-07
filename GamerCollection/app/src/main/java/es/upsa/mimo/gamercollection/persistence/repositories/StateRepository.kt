@@ -20,7 +20,7 @@ class StateRepository(context: Context) {
             val result = GlobalScope.async { stateDao.getStates() }
             states = result.await()
         }
-        return states
+        return states.sortedBy { it.name }
     }
 
     fun insertState(state: StateResponse) {
@@ -30,7 +30,7 @@ class StateRepository(context: Context) {
         }
     }
 
-    fun deleteState(state: StateResponse) {
+    private fun deleteState(state: StateResponse) {
 
         GlobalScope.launch {
             stateDao.deleteState(state)
