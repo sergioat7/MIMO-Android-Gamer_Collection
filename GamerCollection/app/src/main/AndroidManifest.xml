@@ -18,14 +18,17 @@
         <activity
             android:name=".activities.SagaDetailActivity"
             android:screenOrientation="portrait"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.GameDetailActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppThemeGame" />
         <activity
             android:name=".activities.MainActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.RegisterActivity"

@@ -5,6 +5,7 @@
         <item name="android:colorBackground">@color/color1</item>
         <item name="titleTextColor">@color/color1</item>
         <item name="dialogCornerRadius">5dp</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_keyboard_backspace_black_24dp</item>
     </style>
 
     <style name="AppThemeDialogTransparent" parent="Theme.AppCompat.Light.Dialog">
@@ -15,7 +16,19 @@
         <item name="android:colorBackground">@color/color2</item>
     </style>
 
+    <style name="AppThemeGame" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/color2</item>
+        <item name="android:colorBackground">@color/color1</item>
+        <item name="titleTextColor">@color/color1</item>
+        <item name="dialogCornerRadius">5dp</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_keyboard_backspace_white_24dp</item>
+    </style>
+
     <style name="AppThemeNoActionBar" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/color2</item>
+        <item name="android:colorBackground">@color/color1</item>
+        <item name="titleTextColor">@color/color1</item>
+        <item name="dialogCornerRadius">5dp</item>
     </style>
 
     <style name="WhiteEditText" parent="Widget.AppCompat.EditText">
@@ -33,7 +46,7 @@
         <item name="fontFamily">@font/roboto_bold</item>
     </style>
 
-    <style name="WhiteEditText.GameDetails" parent="WhiteEditText">
+    <style name="WhiteEditText.GameDetails" parent="WhiteEditText.Regular">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
@@ -64,10 +77,11 @@
         <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
-    <style name="WhiteTextView.Regular.GameDetails" parent="WhiteTextView">
-        <item name="android:layout_width">150dp</item>
+    <style name="WhiteTextView.GameDetails" parent="WhiteTextView.Bold">
+        <item name="android:layout_width">125dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_gravity">center_vertical|start</item>
+        <item name="android:layout_marginEnd">10dp</item>
         <item name="android:textSize">16sp</item>
     </style>
     

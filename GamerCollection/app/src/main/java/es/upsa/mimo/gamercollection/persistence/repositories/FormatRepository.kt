@@ -2,6 +2,7 @@ package es.upsa.mimo.gamercollection.persistence.repositories
 
 import android.content.Context
 import es.upsa.mimo.gamercollection.models.FormatResponse
+import es.upsa.mimo.gamercollection.models.PlatformResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -15,10 +16,16 @@ class FormatRepository(context: Context) {
 
     fun getFormats(): List<FormatResponse> {
 
-        var formats: List<FormatResponse> = arrayListOf()
+        var formats = mutableListOf<FormatResponse>()
         runBlocking {
             val result = GlobalScope.async { formatDao.getFormats() }
-            formats = result.await()
+            formats = result.await().toMutableList()
+            formats.sortBy { it.name }
+            val other = formats.firstOrNull { it.id == "OTHER" }
+            formats.remove(other)
+            other?.let {
+                formats.add(it)
+            }
         }
         return formats
     }
@@ -30,7 +37,7 @@ class FormatRepository(context: Context) {
         }
     }
 
-    fun deleteFormat(format: FormatResponse) {
+    private fun deleteFormat(format: FormatResponse) {
 
         GlobalScope.launch {
             formatDao.deleteFormat(format)
