@@ -20,7 +20,7 @@ class GenreRepository(context: Context) {
             val result = GlobalScope.async { genreDao.getGenres() }
             genres = result.await()
         }
-        return genres
+        return genres.sortedBy { it.name }
     }
 
     fun insertGenre(genre: GenreResponse) {
@@ -30,7 +30,7 @@ class GenreRepository(context: Context) {
         }
     }
 
-    fun deleteGenre(genre: GenreResponse) {
+    private fun deleteGenre(genre: GenreResponse) {
 
         GlobalScope.launch {
             genreDao.deleteGenre(genre)
