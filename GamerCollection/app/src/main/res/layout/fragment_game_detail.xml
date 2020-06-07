@@ -10,12 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
             android:layout_marginBottom="10dp"
             android:scrollbars="none"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -28,89 +26,247 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:id="@+id/first_linear_layout"
+                    android:id="@+id/linear_layout_state_buttons"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="10dp"
-                        android:layout_weight="1.2">
-
-                        <ImageView
-                            android:id="@+id/goty_image_view"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:adjustViewBounds="true"
-                            android:src="@drawable/goty_label"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <es.upsa.mimo.gamercollection.customviews.StateButton
+                        android:id="@+id/button_pending"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        app:stateButton_background="@drawable/bordered_pending_state_button"
+                        app:stateButton_color="@drawable/pending_state_button_bottom_line"
+                        app:stateButton_title="@string/GAMES_FILTER_BUTTON_TITLE_PENDING" />
+
+                    <es.upsa.mimo.gamercollection.customviews.StateButton
+                        android:id="@+id/button_in_progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        app:stateButton_background="@drawable/bordered_in_progress_state_button"
+                        app:stateButton_color="@drawable/in_progress_state_button_bottom_line"
+                        app:stateButton_title="@string/GAME_DETAIL_BUTTON_TITLE_IN_PROGRESS" />
+
+                    <es.upsa.mimo.gamercollection.customviews.StateButton
+                        android:id="@+id/button_finished"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:stateButton_background="@drawable/bordered_finished_state_button"
+                        app:stateButton_color="@drawable/finished_state_button_bottom_line"
+                        app:stateButton_title="@string/GAME_DETAIL_BUTTON_TITLE_FINISHED" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_first"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_layout_state_buttons">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
 
                         <TextView
-                            android:id="@+id/text_view_genre_title"
-                            style="@style/WhiteTextView.Regular"
-                            android:layout_width="match_parent"
+                            style="@style/WhiteTextView.Bold"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/GAME_DETAIL_GENRE"
-                            android:textSize="12sp" />
+                            android:layout_weight="1"
+                            android:text="@string/GAME_DETAIL_RELEASE_DATE"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toTopOf="@+id/edit_text_release_date"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0" />
 
-                        <Spinner
-                            android:id="@+id/spinner_genres"
-                            style="@style/CustomSpinner"
-                            android:layout_width="match_parent"
+                        <EditText
+                            android:id="@+id/edit_text_release_date"
+                            style="@style/WhiteEditText.GameDetails"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="-5dp" />
+                            android:paddingBottom="0dp"
+                            android:hint="@string/GAME_DETAIL_SELECT_DATE"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1">
 
                         <TextView
-                            android:id="@+id/text_view_format_title"
-                            style="@style/WhiteTextView.Regular"
-                            android:layout_width="match_parent"
+                            style="@style/WhiteTextView.Bold"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="@string/GAME_DETAIL_FORMAT"
-                            android:textSize="12sp" />
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toTopOf="@+id/spinner_formats"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0" />
 
                         <Spinner
                             android:id="@+id/spinner_formats"
                             style="@style/CustomSpinner"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="-5dp" />
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
 
                         <TextView
-                            android:id="@+id/text_view_release_date_title"
-                            style="@style/WhiteTextView.Regular"
-                            android:layout_width="match_parent"
+                            style="@style/WhiteTextView.Bold"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/GAME_DETAIL_RELEASE_DATE"
-                            android:textSize="12sp" />
+                            android:layout_weight="1"
+                            android:text="@string/GAME_DETAIL_GENRE"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toTopOf="@+id/spinner_genres"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0" />
 
-                        <EditText
-                            android:id="@+id/edit_text_release_date"
-                            style="@style/WhiteEditText.Regular"
-                            android:layout_width="match_parent"
+                        <Spinner
+                            android:id="@+id/spinner_genres"
+                            style="@style/CustomSpinner"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="-5dp"
-                            android:hint="@string/GAME_DETAIL_SELECT_DATE"
-                            android:textSize="16sp" />
-                    </LinearLayout>
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_second"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:animateLayoutChanges="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_layout_first">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <TextView
+                            style="@style/WhiteTextView.Bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/GAME_DETAIL_PEGI"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toTopOf="@+id/spinner_pegis"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                        <Spinner
+                            android:id="@+id/spinner_pegis"
+                            style="@style/CustomSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            style="@style/WhiteTextView.Bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/GAME_DETAIL_GOTY"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toTopOf="@+id/radio_group_goty"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                        <RadioGroup
+                            android:id="@+id/radio_group_goty"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent">
+
+                            <RadioButton
+                                android:id="@+id/radio_button_no"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:buttonTint="@color/color2"
+                                android:checked="true"
+                                android:text="@string/NO"
+                                android:textColor="@color/color2" />
+
+                            <RadioButton
+                                android:id="@+id/radio_button_yes"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:buttonTint="@color/color2"
+                                android:text="@string/YES"
+                                android:textColor="@color/color2" />
+                        </RadioGroup>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+
 
                 <!--                <me.zhanghai.android.materialratingbar.MaterialRatingBar-->
                 <!--                    android:id="@+id/rating_bar"-->
@@ -126,55 +282,14 @@
                 <!--                    app:layout_constraintTop_toBottomOf="@id/first_linear_layout" />-->
 
                 <LinearLayout
-                    android:id="@+id/state_buttons_linear_layout"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/first_linear_layout">
-
-                    <es.upsa.mimo.gamercollection.customviews.StateButton
-                        android:id="@+id/pending_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:stateButton_background="@drawable/bordered_pending_state_button"
-                        app:stateButton_color="@drawable/pending_state_button_bottom_line"
-                        app:stateButton_title="@string/GAMES_FILTER_BUTTON_TITLE_PENDING" />
-
-                    <es.upsa.mimo.gamercollection.customviews.StateButton
-                        android:id="@+id/in_progress_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_weight="1"
-                        app:stateButton_background="@drawable/bordered_in_progress_state_button"
-                        app:stateButton_color="@drawable/in_progress_state_button_bottom_line"
-                        app:stateButton_title="@string/GAME_DETAIL_BUTTON_TITLE_IN_PROGRESS" />
-
-                    <es.upsa.mimo.gamercollection.customviews.StateButton
-                        android:id="@+id/finished_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:stateButton_background="@drawable/bordered_finished_state_button"
-                        app:stateButton_color="@drawable/finished_state_button_bottom_line"
-                        app:stateButton_title="@string/GAME_DETAIL_BUTTON_TITLE_FINISHED" />
-                </LinearLayout>
-
-                <LinearLayout
                     android:id="@+id/linear_layout_details"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/state_buttons_linear_layout">
+                    app:layout_constraintTop_toBottomOf="@+id/linear_layout_second">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -182,7 +297,6 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/text_view_distributor"
                             style="@style/WhiteTextView.Regular.GameDetails"
                             android:text="@string/GAME_DETAIL_DISTRIBUTOR" />
 
@@ -199,7 +313,6 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/text_view_developer"
                             style="@style/WhiteTextView.Regular.GameDetails"
                             android:text="@string/GAME_DETAIL_DEVELOPER" />
 
@@ -216,28 +329,6 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/text_view_pegi"
-                            style="@style/WhiteTextView.Regular.GameDetails"
-                            android:text="@string/GAME_DETAIL_PEGI" />
-
-                        <Spinner
-                            android:id="@+id/spinner_pegis"
-                            style="@style/CustomSpinner"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:minHeight="40dp"
-                            android:spinnerMode="dropdown" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/text_view_players"
                             style="@style/WhiteTextView.Regular.GameDetails"
                             android:text="@string/GAME_DETAIL_PLAYERS" />
 
@@ -296,43 +387,6 @@
                             android:id="@+id/edit_text_purchase_location"
                             style="@style/WhiteEditText.GameDetails"
                             android:hint="@string/GAME_DETAIL_PLACEHOLDER_PURCHASE_LOCATION" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/text_view_goty"
-                            style="@style/WhiteTextView.Regular.GameDetails"
-                            android:text="@string/GAME_DETAIL_GOTY" />
-
-                        <RadioGroup
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <RadioButton
-                                android:id="@+id/radio_button_no"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:buttonTint="@color/color2"
-                                android:checked="true"
-                                android:text="@string/NO"
-                                android:textColor="@color/color2" />
-
-                            <RadioButton
-                                android:id="@+id/radio_button_yes"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:buttonTint="@color/color2"
-                                android:text="@string/YES"
-                                android:textColor="@color/color2" />
-                        </RadioGroup>
 
                     </LinearLayout>
 
@@ -419,7 +473,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/linear_layout_details" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
