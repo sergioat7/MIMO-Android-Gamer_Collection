@@ -15,8 +15,8 @@ class GameDetailPagerAdapter(
     private val currentGame: GameResponse?
 ): FragmentStateAdapter(activity) {
 
-    private var gameDetailFragment = GameDetailFragment()
-    private val gameSongsFragment = GameSongsFragment()
+    private var gameDetailFragment: GameDetailFragment? = null
+    private var gameSongsFragment: GameSongsFragment? = null
 
     override fun getItemCount(): Int {
         return itemsCount
@@ -26,27 +26,34 @@ class GameDetailPagerAdapter(
 
         val args = Bundle()
         args.putString("game", Gson().toJson(currentGame))
-        gameDetailFragment.arguments = args
-        gameSongsFragment.arguments = args
         return if (position == 0) {
-            gameDetailFragment
+            gameDetailFragment = GameDetailFragment()
+            gameDetailFragment!!.arguments = args
+            gameDetailFragment!!
         } else {
-            gameSongsFragment
+            gameSongsFragment = GameSongsFragment()
+            gameSongsFragment!!.arguments = args
+            gameSongsFragment!!
         }
     }
 
     fun enableEdition(enable: Boolean) {
 
-        gameDetailFragment.enableEdition(enable)
-        gameSongsFragment.enableEdition(enable)
+        gameDetailFragment?.enableEdition(enable)
+        gameSongsFragment?.enableEdition(enable)
     }
 
     fun showData(game: GameResponse?) {
 
-        gameDetailFragment.showData(game)
+        gameDetailFragment?.showData(game)
     }
 
-    fun getGameData(): GameResponse {
-        return gameDetailFragment.getGameData()
+    fun getGameData(): GameResponse? {
+
+        val game = gameDetailFragment?.getGameData()
+        if (game != null) {
+            game.songs = gameSongsFragment?.getSongs() ?: currentGame?.songs ?: ArrayList()
+        }
+        return game
     }
 }

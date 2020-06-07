@@ -119,7 +119,7 @@ class GameDetailActivity : BaseActivity() {
         }
         spinner_platforms.adapter = getAdapter(platformValues)
 
-//        rating_bar.onRatingBarChangeListener = this
+//        rating_bar.onRatingBarChangeListener = this TODO
     }
 
     private fun loadData() {
@@ -189,7 +189,7 @@ class GameDetailActivity : BaseActivity() {
         image_view_game.isEnabled = enable
         spinner_platforms.backgroundTintList = if (!enable) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
         spinner_platforms.isEnabled = enable
-//        rating_bar.setIsIndicator(!enable)
+//        rating_bar.setIsIndicator(!enable) TODO
     }
 
     private fun setImage() {
@@ -231,41 +231,42 @@ class GameDetailActivity : BaseActivity() {
 
     private fun saveGame() {
 
-        val game = pagerAdapter.getGameData()
-        game.name = edit_text_name.text.toString()
-        game.platform = platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
-        game.imageUrl = imageUrl
-        game.score = rating_button.text.toString().toDouble()
-        game.songs = currentGame?.songs ?: ArrayList()
+        pagerAdapter.getGameData()?.let { game ->
 
-        showLoading()
-        if (currentGame != null) {
+            game.name = edit_text_name.text.toString()
+            game.platform = platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
+            game.imageUrl = imageUrl
+            game.score = rating_button.text.toString().toDouble()
 
-            gameAPIClient.setGame(game, {
-                gameRepository.updateGame(it)
+            showLoading()
+            if (currentGame != null) {
 
-                currentGame = it
-                cancelEdition()
-                hideLoading()
-            }, {
-                manageError(it)
-            })
-        } else {
+                gameAPIClient.setGame(game, {
+                    gameRepository.updateGame(it)
 
-            gameAPIClient.createGame(game, {
-                gameAPIClient.getGames({ games ->
-
-                    for (game in games) {
-                        gameRepository.insertGame(game)
-                    }
+                    currentGame = it
+                    cancelEdition()
                     hideLoading()
-                    finish()
                 }, {
                     manageError(it)
                 })
-            }, {
-                manageError(it)
-            })
+            } else {
+
+                gameAPIClient.createGame(game, {
+                    gameAPIClient.getGames({ games ->
+
+                        for (game in games) {
+                            gameRepository.insertGame(game)
+                        }
+                        hideLoading()
+                        finish()
+                    }, {
+                        manageError(it)
+                    })
+                }, {
+                    manageError(it)
+                })
+            }
         }
     }
 
