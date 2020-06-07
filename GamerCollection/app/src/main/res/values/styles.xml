@@ -46,7 +46,7 @@
         <item name="fontFamily">@font/roboto_bold</item>
     </style>
 
-    <style name="WhiteEditText.GameDetails" parent="WhiteEditText">
+    <style name="WhiteEditText.GameDetails" parent="WhiteEditText.Regular">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
@@ -77,10 +77,11 @@
         <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
-    <style name="WhiteTextView.Regular.GameDetails" parent="WhiteTextView">
-        <item name="android:layout_width">150dp</item>
+    <style name="WhiteTextView.GameDetails" parent="WhiteTextView.Bold">
+        <item name="android:layout_width">125dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_gravity">center_vertical|start</item>
+        <item name="android:layout_marginEnd">10dp</item>
         <item name="android:textSize">16sp</item>
     </style>
     

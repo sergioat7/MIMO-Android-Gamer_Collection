@@ -77,7 +77,7 @@ class GameDetailFragment : BaseFragment() {
         spinner_genres.backgroundTintList = if (!enable) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
         spinner_genres.isEnabled = enable
 
-        linear_layout_second.visibility = if(enable) View.VISIBLE else View.GONE
+        linear_layout_hidden.visibility = if(enable) View.VISIBLE else View.GONE
 
         edit_text_distributor.setReadOnly(!enable, inputTypeText, backgroundColor)
         edit_text_developer.setReadOnly(!enable, inputTypeText, backgroundColor)
