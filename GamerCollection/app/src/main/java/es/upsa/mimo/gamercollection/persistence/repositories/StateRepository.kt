@@ -1,6 +1,7 @@
 package es.upsa.mimo.gamercollection.persistence.repositories
 
 import android.content.Context
+import es.upsa.mimo.gamercollection.models.PlatformResponse
 import es.upsa.mimo.gamercollection.models.StateResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import kotlinx.coroutines.GlobalScope
@@ -15,12 +16,18 @@ class StateRepository(context: Context) {
 
     fun getStates(): List<StateResponse> {
 
-        var states: List<StateResponse> = arrayListOf()
+        var states = mutableListOf<StateResponse>()
         runBlocking {
             val result = GlobalScope.async { stateDao.getStates() }
-            states = result.await()
+            states = result.await().toMutableList()
+            states.sortBy { it.name }
+            val other = states.firstOrNull { it.id == "OTHER" }
+            states.remove(other)
+            other?.let {
+                states.add(it)
+            }
         }
-        return states.sortedBy { it.name }
+        return states
     }
 
     fun insertState(state: StateResponse) {
