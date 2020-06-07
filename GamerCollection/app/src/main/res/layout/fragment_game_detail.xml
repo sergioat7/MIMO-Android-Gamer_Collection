@@ -66,11 +66,12 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/linear_layout_first"
+                    android:id="@+id/linear_layout_hidden"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:orientation="horizontal"
+                    android:animateLayoutChanges="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linear_layout_state_buttons">
@@ -81,119 +82,11 @@
                         android:layout_weight="1">
 
                         <TextView
-                            style="@style/WhiteTextView.Bold"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/GAME_DETAIL_RELEASE_DATE"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toTopOf="@+id/edit_text_release_date"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0" />
-
-                        <EditText
-                            android:id="@+id/edit_text_release_date"
-                            style="@style/WhiteEditText.GameDetails"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingBottom="0dp"
-                            android:hint="@string/GAME_DETAIL_SELECT_DATE"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            style="@style/WhiteTextView.Bold"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/GAME_DETAIL_FORMAT"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toTopOf="@+id/spinner_formats"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0" />
-
-                        <Spinner
-                            android:id="@+id/spinner_formats"
-                            style="@style/CustomSpinner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <TextView
-                            style="@style/WhiteTextView.Bold"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/GAME_DETAIL_GENRE"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toTopOf="@+id/spinner_genres"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0" />
-
-                        <Spinner
-                            android:id="@+id/spinner_genres"
-                            style="@style/CustomSpinner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linear_layout_second"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal"
-                    android:animateLayoutChanges="true"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linear_layout_first">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <TextView
-                            style="@style/WhiteTextView.Bold"
+                            style="@style/WhiteTextView.GameDetails"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/GAME_DETAIL_PEGI"
-                            android:textSize="18sp"
                             app:layout_constraintBottom_toTopOf="@+id/spinner_pegis"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
@@ -220,12 +113,11 @@
                         android:layout_weight="1">
 
                         <TextView
-                            style="@style/WhiteTextView.Bold"
+                            style="@style/WhiteTextView.GameDetails"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/GAME_DETAIL_GOTY"
-                            android:textSize="18sp"
                             app:layout_constraintBottom_toTopOf="@+id/radio_group_goty"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
@@ -266,30 +158,15 @@
 
                 </LinearLayout>
 
-
-
-                <!--                <me.zhanghai.android.materialratingbar.MaterialRatingBar-->
-                <!--                    android:id="@+id/rating_bar"-->
-                <!--                    style="@style/CustomRatingBar.DarkBackground"-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_marginTop="40dp"-->
-                <!--                    android:isIndicator="false"-->
-                <!--                    android:numStars="10"-->
-                <!--                    android:stepSize="0.5"-->
-                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                    app:layout_constraintStart_toStartOf="parent"-->
-                <!--                    app:layout_constraintTop_toBottomOf="@id/first_linear_layout" />-->
-
                 <LinearLayout
                     android:id="@+id/linear_layout_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:orientation="vertical"
+                    android:layout_marginTop="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linear_layout_second">
+                    app:layout_constraintTop_toBottomOf="@+id/linear_layout_hidden">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -297,7 +174,57 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            style="@style/WhiteTextView.Regular.GameDetails"
+                            style="@style/WhiteTextView.GameDetails"
+                            android:text="@string/GAME_DETAIL_GENRE" />
+
+                        <Spinner
+                            android:id="@+id/spinner_genres"
+                            style="@style/CustomSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/WhiteTextView.GameDetails"
+                            android:text="@string/GAME_DETAIL_RELEASE_DATE" />
+
+                        <EditText
+                            android:id="@+id/edit_text_release_date"
+                            style="@style/WhiteEditText.GameDetails"
+                            android:hint="@string/GAME_DETAIL_SELECT_DATE" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/WhiteTextView.GameDetails"
+                            android:text="@string/GAME_DETAIL_FORMAT" />
+
+                        <Spinner
+                            android:id="@+id/spinner_formats"
+                            style="@style/CustomSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/WhiteTextView.GameDetails"
                             android:text="@string/GAME_DETAIL_DISTRIBUTOR" />
 
                         <EditText
@@ -313,7 +240,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            style="@style/WhiteTextView.Regular.GameDetails"
+                            style="@style/WhiteTextView.GameDetails"
                             android:text="@string/GAME_DETAIL_DEVELOPER" />
 
                         <EditText
@@ -329,7 +256,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            style="@style/WhiteTextView.Regular.GameDetails"
+                            style="@style/WhiteTextView.GameDetails"
                             android:text="@string/GAME_DETAIL_PLAYERS" />
 
                         <EditText
@@ -346,7 +273,7 @@
 
                         <TextView
                             android:id="@+id/text_view_price"
-                            style="@style/WhiteTextView.Regular.GameDetails"
+                            style="@style/WhiteTextView.GameDetails"
                             android:text="@string/GAME_DETAIL_PRICE" />
 
                         <EditText
@@ -363,7 +290,7 @@
 
                         <TextView
                             android:id="@+id/text_view_purchase_date"
-                            style="@style/WhiteTextView.Regular.GameDetails"
+                            style="@style/WhiteTextView.GameDetails"
                             android:text="@string/GAME_DETAIL_PURCHASE_DATE" />
 
                         <EditText
@@ -380,7 +307,7 @@
 
                         <TextView
                             android:id="@+id/text_view_purchase_location"
-                            style="@style/WhiteTextView.Regular.GameDetails"
+                            style="@style/WhiteTextView.GameDetails"
                             android:text="@string/GAME_DETAIL_PURCHASE_LOCATION" />
 
                         <EditText
@@ -397,7 +324,7 @@
 
                         <TextView
                             android:id="@+id/text_view_loaned"
-                            style="@style/WhiteTextView.Regular.GameDetails"
+                            style="@style/WhiteTextView.GameDetails"
                             android:text="@string/GAME_DETAIL_LOANED_TO" />
 
                         <EditText
@@ -414,7 +341,7 @@
 
                         <TextView
                             android:id="@+id/text_view_video_url"
-                            style="@style/WhiteTextView.Regular.GameDetails"
+                            style="@style/WhiteTextView.GameDetails"
                             android:text="@string/GAME_DETAIL_VIDEO_URL" />
 
                         <EditText
@@ -431,7 +358,7 @@
 
                         <TextView
                             android:id="@+id/text_view_observations"
-                            style="@style/WhiteTextView.Regular.GameDetails"
+                            style="@style/WhiteTextView.GameDetails"
                             android:text="@string/GAME_DETAIL_OBSERVATIONS" />
 
                         <EditText
@@ -448,7 +375,7 @@
 
                         <TextView
                             android:id="@+id/text_view_saga"
-                            style="@style/WhiteTextView.Regular.GameDetails"
+                            style="@style/WhiteTextView.GameDetails"
                             android:text="@string/GAME_DETAIL_SAGA" />
 
                         <EditText
