@@ -15,10 +15,16 @@ class GenreRepository(context: Context) {
 
     fun getGenres(): List<GenreResponse> {
 
-        var genres: List<GenreResponse> = arrayListOf()
+        var genres = mutableListOf<GenreResponse>()
         runBlocking {
             val result = GlobalScope.async { genreDao.getGenres() }
-            genres = result.await()
+            genres = result.await().toMutableList()
+            genres.sortBy { it.name }
+            val other = genres.firstOrNull { it.id == "OTHER" }
+            genres.remove(other)
+            other?.let {
+                genres.add(it)
+            }
         }
         return genres
     }
@@ -30,7 +36,7 @@ class GenreRepository(context: Context) {
         }
     }
 
-    fun deleteGenre(genre: GenreResponse) {
+    private fun deleteGenre(genre: GenreResponse) {
 
         GlobalScope.launch {
             genreDao.deleteGenre(genre)

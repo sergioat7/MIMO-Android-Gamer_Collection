@@ -69,7 +69,7 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
 
         this.menu = menu
         menu.clear()
-        inflater.inflate(R.menu.edit_details_toolbar_menu, menu)
+        inflater.inflate(R.menu.saga_toolbar_menu, menu)
         menu.findItem(R.id.action_edit).isVisible = currentSaga != null
         menu.findItem(R.id.action_save).isVisible = currentSaga == null
         menu.findItem(R.id.action_cancel).isVisible = false

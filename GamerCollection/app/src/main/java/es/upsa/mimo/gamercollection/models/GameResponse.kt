@@ -11,11 +11,11 @@ data class GameResponse(
     @SerializedName("id")
     override val id: Int,
     @SerializedName("name")
-    val name: String?,
+    var name: String?,
     @SerializedName("platform")
-    val platform: String?,
+    var platform: String?,
     @SerializedName("score")
-    val score: Double,
+    var score: Double,
     @SerializedName("pegi")
     val pegi: String?,
     @SerializedName("distributor")
@@ -41,7 +41,7 @@ data class GameResponse(
     @SerializedName("price")
     val price: Double,
     @SerializedName("imageUrl")
-    val imageUrl: String?,
+    var imageUrl: String?,
     @SerializedName("videoUrl")
     val videoUrl: String?,
     @SerializedName("loanedTo")

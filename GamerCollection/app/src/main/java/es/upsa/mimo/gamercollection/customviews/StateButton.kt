@@ -44,5 +44,4 @@ class StateButton: ConstraintLayout {
             layout_state_button.background = background
         }
     }
-
 }

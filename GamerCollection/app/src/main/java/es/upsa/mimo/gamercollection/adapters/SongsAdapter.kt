@@ -9,7 +9,7 @@ import es.upsa.mimo.gamercollection.models.SongResponse
 import kotlinx.android.synthetic.main.song_item.view.*
 
 class SongsAdapter(
-    private val songs: List<SongResponse>,
+    var songs: List<SongResponse>,
     var editable: Boolean,
     private var onItemClickListener: OnItemClickListener
 ): RecyclerView.Adapter<SongsAdapter.SongsViewHolder?>() {
