@@ -34,9 +34,9 @@ class Constants {
 
         // MARK: - Spinner adapter
 
-        fun getAdapter(context: Context, data: List<String>): SpinnerAdapter {
+        fun getAdapter(context: Context, data: List<String>, firstOptionEnabled: Boolean = false): SpinnerAdapter {
 
-            val arrayAdapter = SpinnerAdapter(context, data)
+            val arrayAdapter = SpinnerAdapter(context, data, firstOptionEnabled)
             arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
             return arrayAdapter
         }
