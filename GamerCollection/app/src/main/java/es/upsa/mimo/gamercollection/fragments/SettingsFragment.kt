@@ -38,9 +38,9 @@ class SettingsFragment : BaseFragment() {
     private fun initializeUI() {
 
         spinner_languages.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.color2))
-        spinner_languages.adapter = Constants.getAdapter(requireContext(), resources.getStringArray(R.array.languages).toList())
+        spinner_languages.adapter = Constants.getAdapter(requireContext(), resources.getStringArray(R.array.languages).toList(), true)
         spinner_sorting_keys.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.color2))
-        spinner_sorting_keys.adapter = Constants.getAdapter(requireContext(), resources.getStringArray(R.array.sorting_keys).toList())
+        spinner_sorting_keys.adapter = Constants.getAdapter(requireContext(), resources.getStringArray(R.array.sorting_keys).toList(), true)
 
         val languageIds = resources.getStringArray(R.array.languages_ids)
         languageIds.firstOrNull { it == sharedPrefHandler.getLanguage() }?.let {
