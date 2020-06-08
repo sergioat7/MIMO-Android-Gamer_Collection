@@ -42,10 +42,44 @@ class SettingsFragment : BaseFragment() {
         spinner_sorting_keys.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.color2))
         spinner_sorting_keys.adapter = Constants.getAdapter(requireContext(), resources.getStringArray(R.array.sorting_keys).toList())
 
+        val languageIds = resources.getStringArray(R.array.languages_ids)
+        languageIds.firstOrNull { it == sharedPrefHandler.getLanguage() }?.let {
+            spinner_languages.setSelection(languageIds.indexOf(it))
+        } ?: run {
+            spinner_languages.setSelection(0)
+        }
+
+        val sortingKeyIds = resources.getStringArray(R.array.sorting_keys_ids)
+        sortingKeyIds.firstOrNull { it == sharedPrefHandler.getSortingKey() }?.let {
+            spinner_sorting_keys.setSelection(sortingKeyIds.indexOf(it))
+        } ?: run {
+            spinner_sorting_keys.setSelection(0)
+        }
+
+        switch_swipe_refresh.isChecked = sharedPrefHandler.getSwipeRefresh()
+
         button_save.setOnClickListener { save() }
     }
 
     private fun save() {
+
+        val languages = resources.getStringArray(R.array.languages)
+        languages.firstOrNull { it == spinner_languages.selectedItem.toString() }?.let {
+            val languageId = resources.getStringArray(R.array.languages_ids)[languages.indexOf(it)]
+            sharedPrefHandler.setLanguage(languageId)
+        } ?: run {
+            sharedPrefHandler.setLanguage(languages[0])
+        }
+
+        val sortingKeys = resources.getStringArray(R.array.sorting_keys)
+        sortingKeys.firstOrNull { it == spinner_sorting_keys.selectedItem.toString() }?.let {
+            val sortingKeyId = resources.getStringArray(R.array.sorting_keys_ids)[sortingKeys.indexOf(it)]
+            sharedPrefHandler.setSortingKey(sortingKeyId)
+        } ?: run {
+            sharedPrefHandler.setSortingKey(sortingKeys[0])
+        }
+
+        sharedPrefHandler.setSwipeRefresh(switch_swipe_refresh.isChecked)
 
         val landing = Intent(requireContext(), LandingActivity::class.java)
         startActivity(landing)
