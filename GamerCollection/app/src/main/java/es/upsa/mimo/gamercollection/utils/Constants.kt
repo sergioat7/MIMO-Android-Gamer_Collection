@@ -1,5 +1,8 @@
 package es.upsa.mimo.gamercollection.utils
 
+import android.content.Context
+import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.adapters.SpinnerAdapter
 import es.upsa.mimo.gamercollection.models.GameResponse
 import java.text.SimpleDateFormat
 import java.util.*
@@ -12,6 +15,10 @@ class Constants {
         const val preferencesName = "preferences"
         const val userDataPrefName = "userData"
         const val authDataPrefName = "authData"
+        const val languagePrefName = "language"
+        const val sortingKeyPrefName = "sorting_key"
+        const val swipeRefreshPrefName = "swipe_refresh_enabled"
+        const val gameNotificationPrefName = "game_notification_launched_"
 
         // MARK: - Retrofit constants
 
@@ -24,6 +31,15 @@ class Constants {
         const val pending = "PENDING"
         const val inProgress = "IN_PROGRESS"
         const val finished = "FINISHED"
+
+        // MARK: - Spinner adapter
+
+        fun getAdapter(context: Context, data: List<String>, firstOptionEnabled: Boolean = false): SpinnerAdapter {
+
+            val arrayAdapter = SpinnerAdapter(context, data, firstOptionEnabled)
+            arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+            return arrayAdapter
+        }
 
         // MARK: Date format
 

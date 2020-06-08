@@ -18,9 +18,4 @@
         android:title=""
         android:visible="false"
         app:showAsAction="always"/>
-
-    <item android:id="@+id/action_settings"
-        android:icon="@drawable/ic_settings_black_24dp"
-        android:title="@string/SETTINGS"
-        app:showAsAction="always"/>
 </menu>

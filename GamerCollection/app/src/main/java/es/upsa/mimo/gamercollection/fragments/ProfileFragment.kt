@@ -5,7 +5,6 @@ import android.text.InputType
 import android.view.*
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.LoginActivity
-import es.upsa.mimo.gamercollection.activities.SettingsActivity
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.AuthData
@@ -58,10 +57,6 @@ class ProfileFragment : BaseFragment() {
                 logout()
                 return true
             }
-            R.id.action_settings -> {
-                settings()
-                return true
-            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -95,10 +90,6 @@ class ProfileFragment : BaseFragment() {
                 removeData()
             })
         }
-    }
-
-    private fun settings() {
-        launchActivity(SettingsActivity::class.java)
     }
 
     private fun updatePassword() {

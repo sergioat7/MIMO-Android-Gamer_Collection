@@ -28,4 +28,10 @@
         android:name="es.upsa.mimo.gamercollection.fragments.ProfileFragment"
         android:label="@string/PROFILE"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="es.upsa.mimo.gamercollection.fragments.SettingsFragment"
+        android:label="@string/SETTINGS"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

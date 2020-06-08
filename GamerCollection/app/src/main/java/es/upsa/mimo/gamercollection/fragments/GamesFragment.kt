@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.sqlite.db.SimpleSQLiteQuery
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
-import es.upsa.mimo.gamercollection.activities.SettingsActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.fragments.popups.OnFiltersSelected
@@ -41,7 +40,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
     private lateinit var platformRepository: PlatformRepository
     private lateinit var stateRepository: StateRepository
     private var menu: Menu? = null
-    private val sortingKeys = arrayOf("name", "platform", "releaseDate", "purchaseDate", "price")
+    private lateinit var sortingKeys: Array<String>
     private var sortingValues = arrayOf("")
     private var state: String? = null
     private lateinit var sortKey: String
@@ -64,7 +63,8 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
         gameRepository = GameRepository(requireContext())
         platformRepository = PlatformRepository(requireContext())
         stateRepository = StateRepository(requireContext())
-        sortingValues = arrayOf(resources.getString(R.string.SORT_NAME), resources.getString(R.string.SORT_PLATFORM), resources.getString(R.string.SORT_RELEASE_DATE), resources.getString(R.string.SORT_PURCHASE_DATE), resources.getString(R.string.SORT_PRICE))
+        sortingKeys = resources.getStringArray(R.array.sorting_keys_ids)
+        sortingValues = resources.getStringArray(R.array.sorting_keys)
         sortKey = sharedPrefHandler.getSortingKey()
 
         initializeUI()
@@ -76,7 +76,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
         val games = getContent(state, sortKey, sortAscending, currentFilters)
         setGamesCount(games)
         val today = Constants.stringToDate(Constants.dateToString(Date(), sharedPrefHandler), sharedPrefHandler)
-        var gamesToNotify = ArrayList<GameResponse>()
+        val gamesToNotify = ArrayList<GameResponse>()
         for (game in games) {
             if (game.releaseDate == today)
                 gamesToNotify.add(game)
@@ -109,10 +109,6 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             }
             R.id.action_add -> {
                 add()
-                return true
-            }
-            R.id.action_settings -> {
-                settings()
                 return true
             }
         }
@@ -194,7 +190,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             it.findItem(R.id.action_filter_on).isVisible = filters != null
         }
 
-        filters?.let { filters ->
+        filters?.let {
 
             if (queryConditions.isEmpty()) queryConditions += " WHERE "
 
@@ -348,7 +344,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
                 notify(notification.key, notification.value)
                 sharedPrefHandler.setNotificationLaunched(notification.key, true)
             }
-            if (notifications.size > 0) notify(0, summaryNotification)
+            if (notifications.isNotEmpty()) notify(0, summaryNotification)
         }
     }
 
@@ -367,10 +363,6 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
 
     private fun add() {
         launchActivity(GameDetailActivity::class.java)
-    }
-
-    private fun settings() {
-        launchActivity(SettingsActivity::class.java)
     }
 
     private fun sort() {
