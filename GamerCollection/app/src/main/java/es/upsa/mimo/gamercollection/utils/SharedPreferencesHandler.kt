@@ -10,7 +10,6 @@ import java.util.*
 class SharedPreferencesHandler(context: Context?) {
 
     private val sharedPref = context?.getSharedPreferences(Constants.preferencesName, Context.MODE_PRIVATE)
-    private val prefs = PreferenceManager.getDefaultSharedPreferences(context)
     private val gson = Gson()
 
     fun isLoggedIn(): Boolean {
@@ -87,45 +86,64 @@ class SharedPreferencesHandler(context: Context?) {
 
     fun getLanguage(): String {
 
-        prefs.getString("language", null)?.let {
+        sharedPref?.getString(Constants.languagePrefName, null)?.let {
             return it
         } ?: run {
-
             val locale = Locale.getDefault().language
             setLanguage(locale)
             return locale
         }
     }
 
+    fun setLanguage(language: String) {
+
+        if (sharedPref != null) {
+            with (sharedPref.edit()) {
+                putString(Constants.languagePrefName, language)
+                commit()
+            }
+        }
+    }
+
     fun getSortingKey(): String {
-        return prefs.getString("sorting_key", null)  ?: "name"
+        return sharedPref?.getString(Constants.sortingKeyPrefName, null) ?: "name"
+    }
+
+    fun setSortingKey(sortingKey: String) {
+
+        if (sharedPref != null) {
+            with (sharedPref.edit()) {
+                putString(Constants.sortingKeyPrefName, sortingKey)
+                commit()
+            }
+        }
     }
 
     fun getSwipeRefresh(): Boolean {
-        return prefs.getBoolean("swipe_refresh_enabled", true)
+        return sharedPref?.getBoolean(Constants.swipeRefreshPrefName, true) ?: true
+    }
+
+    fun setSwipeRefresh(swipeRefresh: Boolean) {
+
+        if (sharedPref != null) {
+            with (sharedPref.edit()) {
+                putBoolean(Constants.swipeRefreshPrefName, swipeRefresh)
+                commit()
+            }
+        }
     }
 
     fun notificationLaunched(gameId: Int): Boolean {
-        return sharedPref?.getBoolean("game_notification_launched_${gameId}", false) ?: false
+        return sharedPref?.getBoolean("${Constants.gameNotificationPrefName}${gameId}", false) ?: false
     }
 
     fun setNotificationLaunched(gameId: Int, value: Boolean) {
 
         if (sharedPref != null) {
             with (sharedPref.edit()) {
-                putBoolean("game_notification_launched_$gameId", value)
+                putBoolean("${Constants.gameNotificationPrefName}$gameId", value)
                 commit()
             }
-        }
-    }
-
-    // MARK: Private functions
-
-    private fun setLanguage(language: String) {
-
-        with(prefs.edit()) {
-            putString("language", language)
-            commit()
         }
     }
 }

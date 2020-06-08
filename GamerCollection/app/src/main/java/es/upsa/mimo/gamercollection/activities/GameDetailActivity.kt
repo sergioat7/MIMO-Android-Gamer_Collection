@@ -26,6 +26,7 @@ import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
+import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.activity_game_detail.*
 import kotlinx.android.synthetic.main.set_image_dialog.view.*
@@ -117,7 +118,7 @@ class GameDetailActivity : BaseActivity() {
             this.add(resources.getString((R.string.GAME_DETAIL_SELECT_PLATFORM)))
             this.addAll(platforms.mapNotNull { it.name })
         }
-        spinner_platforms.adapter = getAdapter(platformValues)
+        spinner_platforms.adapter = Constants.getAdapter(this, platformValues)
 
 //        rating_bar.onRatingBarChangeListener = this TODO
     }
@@ -286,12 +287,5 @@ class GameDetailActivity : BaseActivity() {
             it.findItem(R.id.action_save).isVisible = hidden
             it.findItem(R.id.action_cancel).isVisible = hidden
         }
-    }
-
-    private fun getAdapter(data: List<String>): SpinnerAdapter {
-
-        val arrayAdapter = SpinnerAdapter(this, data)
-        arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        return arrayAdapter
     }
 }

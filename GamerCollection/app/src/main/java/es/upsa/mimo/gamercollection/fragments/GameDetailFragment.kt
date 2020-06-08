@@ -206,20 +206,20 @@ class GameDetailFragment : BaseFragment() {
             this.add(resources.getString((R.string.GAME_DETAIL_SELECT_GENRE)))
             this.addAll(formats.mapNotNull { it.name })
         }
-        spinner_formats.adapter = getAdapter(formatValues)
+        spinner_formats.adapter = Constants.getAdapter(requireContext(), formatValues)
         genres = genreRepository.getGenres()
         genreValues = ArrayList<String>()
         genreValues.run {
             this.add(resources.getString((R.string.GAME_DETAIL_SELECT_GENRE)))
             this.addAll(genres.mapNotNull { it.name })
         }
-        spinner_genres.adapter = getAdapter(genreValues)
+        spinner_genres.adapter = Constants.getAdapter(requireContext(), genreValues)
 
         spinner_pegis.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.color2))
         val pegis = ArrayList<String>()
         pegis.add(resources.getString(R.string.GAME_DETAIL_SELECT_PEGI))
         pegis.addAll(resources.getStringArray(R.array.pegis).toList())
-        spinner_pegis.adapter = getAdapter(pegis)
+        spinner_pegis.adapter = Constants.getAdapter(requireContext(), pegis)
         edit_text_purchase_date.showDatePicker(requireContext())
         edit_text_saga.setReadOnly(true, InputType.TYPE_NULL, 0)
         button_delete_game.setOnClickListener { deleteGame() }
@@ -247,12 +247,5 @@ class GameDetailFragment : BaseFragment() {
                 })
             }
         }
-    }
-
-    private fun getAdapter(data: List<String>): SpinnerAdapter {
-
-        val arrayAdapter = SpinnerAdapter(requireContext(), data)
-        arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        return arrayAdapter
     }
 }
