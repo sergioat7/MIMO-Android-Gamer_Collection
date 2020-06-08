@@ -15,7 +15,7 @@
         <item>@string/SPANISH</item>
     </string-array>
 
-    <string-array name="languages_values">
+    <string-array name="languages_ids">
         <item>en</item>
         <item>es</item>
     </string-array>
@@ -28,7 +28,7 @@
         <item>@string/PRICE</item>
     </string-array>
 
-    <string-array name="sorting_keys_values">
+    <string-array name="sorting_keys_ids">
         <item>name</item>
         <item>platform</item>
         <item>releaseDate</item>
