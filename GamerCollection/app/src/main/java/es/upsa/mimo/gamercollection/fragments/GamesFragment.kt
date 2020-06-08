@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.sqlite.db.SimpleSQLiteQuery
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
-import es.upsa.mimo.gamercollection.activities.SettingsActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.fragments.popups.OnFiltersSelected
@@ -109,10 +108,6 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             }
             R.id.action_add -> {
                 add()
-                return true
-            }
-            R.id.action_settings -> {
-                settings()
                 return true
             }
         }
@@ -367,10 +362,6 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
 
     private fun add() {
         launchActivity(GameDetailActivity::class.java)
-    }
-
-    private fun settings() {
-        launchActivity(SettingsActivity::class.java)
     }
 
     private fun sort() {
