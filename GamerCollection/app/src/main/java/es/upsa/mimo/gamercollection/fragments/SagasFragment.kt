@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.activities.SagaDetailActivity
-import es.upsa.mimo.gamercollection.activities.SettingsActivity
 import es.upsa.mimo.gamercollection.adapters.SagasAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.base.BaseModel
@@ -67,10 +66,6 @@ class SagasFragment : BaseFragment(), SagasAdapter.OnItemClickListener {
                 add()
                 return true
             }
-            R.id.action_settings -> {
-                settings()
-                return true
-            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -127,10 +122,6 @@ class SagasFragment : BaseFragment(), SagasAdapter.OnItemClickListener {
 
     private fun add(){
         launchActivity(SagaDetailActivity::class.java)
-    }
-
-    private fun settings() {
-        launchActivity(SettingsActivity::class.java)
     }
 
     private fun loadSagas() {

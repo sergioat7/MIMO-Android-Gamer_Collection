@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.sqlite.db.SimpleSQLiteQuery
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
-import es.upsa.mimo.gamercollection.activities.SettingsActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.fragments.popups.OnFiltersSelected
@@ -76,10 +75,6 @@ class RankingFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilt
             }
             R.id.action_filter_on -> {
                 filter()
-                return true
-            }
-            R.id.action_settings -> {
-                settings()
                 return true
             }
         }
@@ -242,9 +237,5 @@ class RankingFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilt
         val dialogFragment = PopupFilterDialogFragment(currentFilters, this)
         dialogFragment.isCancelable = false
         dialogFragment.show(ft, "filterPopup")
-    }
-
-    private fun settings() {
-        launchActivity(SettingsActivity::class.java)
     }
 }
