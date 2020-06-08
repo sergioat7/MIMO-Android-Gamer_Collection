@@ -1,5 +1,8 @@
 package es.upsa.mimo.gamercollection.utils
 
+import android.content.Context
+import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.adapters.SpinnerAdapter
 import es.upsa.mimo.gamercollection.models.GameResponse
 import java.text.SimpleDateFormat
 import java.util.*
@@ -24,6 +27,15 @@ class Constants {
         const val pending = "PENDING"
         const val inProgress = "IN_PROGRESS"
         const val finished = "FINISHED"
+
+        // MARK: - Spinner adapter
+
+        fun getAdapter(context: Context, data: List<String>): SpinnerAdapter {
+
+            val arrayAdapter = SpinnerAdapter(context, data)
+            arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+            return arrayAdapter
+        }
 
         // MARK: Date format
 

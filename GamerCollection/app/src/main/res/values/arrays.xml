@@ -10,7 +10,7 @@
         <item>+18</item>
     </string-array>
 
-    <string-array name="languages_entries">
+    <string-array name="languages">
         <item>@string/ENGLISH</item>
         <item>@string/SPANISH</item>
     </string-array>
@@ -20,7 +20,7 @@
         <item>es</item>
     </string-array>
 
-    <string-array name="sorting_keys_entries">
+    <string-array name="sorting_keys">
         <item>@string/NAME</item>
         <item>@string/PLATFORM</item>
         <item>@string/RELEASE_DATE</item>

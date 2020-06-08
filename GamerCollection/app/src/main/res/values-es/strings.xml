@@ -120,11 +120,6 @@
 
     // Sort picker
     <string name="SORT_TITLE">Ordenar por</string>
-    <string name="SORT_NAME">Nombre</string>
-    <string name="SORT_PLATFORM">Plataforma</string>
-    <string name="SORT_RELEASE_DATE">Fecha de publicación</string>
-    <string name="SORT_PURCHASE_DATE">Fecha de compra</string>
-    <string name="SORT_PRICE">Precio</string>
 
     // Settings
     <string name="APP_LANGUAGE">Idioma de la aplicación</string>
