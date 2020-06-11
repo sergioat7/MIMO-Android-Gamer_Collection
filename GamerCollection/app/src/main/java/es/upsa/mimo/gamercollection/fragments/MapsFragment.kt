@@ -1,46 +1,67 @@
 package es.upsa.mimo.gamercollection.fragments
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
+import android.os.Looper
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.DialogFragment
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.activities.GameDetailActivity
+import kotlinx.android.synthetic.main.fragment_maps.*
 
-class MapsFragment : DialogFragment() {
+class MapsFragment : DialogFragment(), OnMapReadyCallback {
 
-    private val callback = OnMapReadyCallback { googleMap ->
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        val madrid = LatLng(-40.4378698, -3.8196207)
-        googleMap.addMarker(MarkerOptions().position(madrid).title("Marker in Madrid"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(madrid))
-    }
+    private val madrid = LatLng(40.4169019, -3.7056721)
+    private lateinit var googleMap: GoogleMap
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity as GameDetailActivity)
+
         initializeUI()
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+
+        this.googleMap = googleMap
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
+                getUserLocation()
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                locateUser()
+            }
+        }
     }
 
     // MARK: - Private functions
@@ -48,6 +69,77 @@ class MapsFragment : DialogFragment() {
     private fun initializeUI() {
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(callback)
+        mapFragment?.getMapAsync(this)
+
+        button_location.setOnClickListener { locateUser() }
+    }
+
+    private fun checkPermissions(): Boolean {
+
+        return ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(activity as GameDetailActivity, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), 1)
+    }
+
+    private fun isLocationEnabled(): Boolean {
+
+        val locationManager = getSystemService(requireContext(), LocationManager::class.java)
+        if (locationManager != null) {
+            return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                    locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        }
+        return false
+    }
+
+    private fun locateUser() {
+
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
+                getUserLocation()
+            } else {
+                Toast.makeText(requireContext(), "Turn on location", Toast.LENGTH_LONG).show()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
+        } else {
+            requestPermissions()
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getUserLocation() {
+
+        fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
+
+            location?.let {
+                googleMap.addMarker(MarkerOptions().position(LatLng(it.latitude, it.longitude)))
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(it.latitude, it.longitude)))
+            } ?: run {
+                requestNewLocationData()
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission", "RestrictedApi")
+    private fun requestNewLocationData() {
+
+        val mLocationRequest = LocationRequest()
+        mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        mLocationRequest.interval = 0
+        mLocationRequest.fastestInterval = 0
+        mLocationRequest.numUpdates = 1
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        fusedLocationClient.requestLocationUpdates(mLocationRequest, object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+
+                val lastLocation: Location = locationResult.lastLocation
+                val location = LatLng(lastLocation.latitude, lastLocation.longitude)
+                googleMap.addMarker(MarkerOptions().position(location))
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(location))
+            }
+        }, Looper.myLooper())
     }
 }

@@ -13,16 +13,23 @@
         <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            app:cameraTargetLat="40.4502821"
-            app:cameraTargetLng="-3.6946887"
-            app:cameraZoom="5"
+            android:layout_width="300dp"
+            android:layout_height="400dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageButton
+            android:id="@+id/button_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_my_location_black_24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/map"
+            app:layout_constraintEnd_toEndOf="@+id/map" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
