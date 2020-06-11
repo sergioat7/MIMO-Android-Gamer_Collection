@@ -4,16 +4,20 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
-import android.view.*
-import android.widget.RatingBar
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentTransaction
+import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.adapters.SpinnerAdapter
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
-import es.upsa.mimo.gamercollection.models.*
+import es.upsa.mimo.gamercollection.models.FormatResponse
+import es.upsa.mimo.gamercollection.models.GameResponse
+import es.upsa.mimo.gamercollection.models.GenreResponse
 import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
 import es.upsa.mimo.gamercollection.network.apiClient.SongAPIClient
 import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
@@ -24,7 +28,7 @@ import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_game_detail.*
 
-class GameDetailFragment : BaseFragment() {
+class GameDetailFragment : BaseFragment(), OnLocationSelected {
 
     private var currentGame: GameResponse? = null
     private lateinit var sharedPrefHandler: SharedPreferencesHandler
@@ -62,6 +66,13 @@ class GameDetailFragment : BaseFragment() {
         loadData()
     }
 
+    override fun setLocation(location: LatLng?) {
+
+        location?.let {
+            edit_text_purchase_location.setText("${it.latitude},${it.longitude}")
+        }
+    }
+
     fun enableEdition(enable: Boolean) {
 
         val inputTypeText = if (enable) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
@@ -84,7 +95,7 @@ class GameDetailFragment : BaseFragment() {
         edit_text_players.setReadOnly(!enable, inputTypeText, backgroundColor)
         edit_text_price.setReadOnly(!enable, if (enable) InputType.TYPE_CLASS_NUMBER else InputType.TYPE_NULL, backgroundColor)
         edit_text_purchase_date.setReadOnly(!enable, InputType.TYPE_NULL, backgroundColor)
-        edit_text_purchase_location.setReadOnly(!enable, inputTypeText, backgroundColor)
+        edit_text_purchase_location.setReadOnly(!enable, InputType.TYPE_NULL, backgroundColor)
         edit_text_loaned.setReadOnly(!enable, inputTypeText, backgroundColor)
         edit_text_video_url.setReadOnly(!enable, if (enable) InputType.TYPE_TEXT_VARIATION_URI else InputType.TYPE_NULL, backgroundColor)
         edit_text_observations.setReadOnly(!enable, inputTypeText, backgroundColor)
@@ -204,14 +215,14 @@ class GameDetailFragment : BaseFragment() {
         formatValues = ArrayList<String>()
         formatValues.run {
             this.add(resources.getString((R.string.GAME_DETAIL_SELECT_GENRE)))
-            this.addAll(formats.mapNotNull { it.name })
+            this.addAll(formats.map { it.name })
         }
         spinner_formats.adapter = Constants.getAdapter(requireContext(), formatValues)
         genres = genreRepository.getGenres()
         genreValues = ArrayList<String>()
         genreValues.run {
             this.add(resources.getString((R.string.GAME_DETAIL_SELECT_GENRE)))
-            this.addAll(genres.mapNotNull { it.name })
+            this.addAll(genres.map { it.name })
         }
         spinner_genres.adapter = Constants.getAdapter(requireContext(), genreValues)
 
@@ -221,6 +232,7 @@ class GameDetailFragment : BaseFragment() {
         pegis.addAll(resources.getStringArray(R.array.pegis).toList())
         spinner_pegis.adapter = Constants.getAdapter(requireContext(), pegis)
         edit_text_purchase_date.showDatePicker(requireContext())
+        edit_text_purchase_location.setOnClickListener { showMap() }
         edit_text_saga.setReadOnly(true, InputType.TYPE_NULL, 0)
         button_delete_game.setOnClickListener { deleteGame() }
     }
@@ -229,6 +241,18 @@ class GameDetailFragment : BaseFragment() {
 
         showData(currentGame)
         enableEdition(currentGame == null)
+    }
+
+    private fun showMap() {
+
+        val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
+        val prev = activity?.supportFragmentManager?.findFragmentByTag("mapDialog")
+        if (prev != null) {
+            ft.remove(prev)
+        }
+        ft.addToBackStack(null)
+        val dialogFragment = MapsFragment(this)
+        dialogFragment.show(ft, "mapDialog")
     }
 
     private fun deleteGame() {
