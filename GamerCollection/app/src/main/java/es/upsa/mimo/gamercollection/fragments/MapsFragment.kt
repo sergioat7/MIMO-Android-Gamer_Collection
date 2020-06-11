@@ -167,6 +167,7 @@ class MapsFragment(
             .draggable(true)
         )
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(position))
+        onLocationSelected.setLocation(position)
     }
 }
 interface OnLocationSelected {
