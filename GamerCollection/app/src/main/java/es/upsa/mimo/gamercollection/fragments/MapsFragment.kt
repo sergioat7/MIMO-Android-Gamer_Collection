@@ -22,12 +22,15 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import kotlinx.android.synthetic.main.fragment_maps.*
 
-class MapsFragment : DialogFragment(), OnMapReadyCallback {
+class MapsFragment(
+    private val onLocationSelected: OnLocationSelected
+) : DialogFragment(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener {
 
     private val madrid = LatLng(40.4169019, -3.7056721)
     private lateinit var googleMap: GoogleMap
@@ -48,12 +51,26 @@ class MapsFragment : DialogFragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
 
         this.googleMap = googleMap
+        addMarker(madrid)
         if (checkPermissions()) {
             if (isLocationEnabled()) {
                 getUserLocation()
             }
         }
+        googleMap.setOnMarkerDragListener(this)
     }
+
+    override fun onMarkerDragEnd(p0: Marker?) {
+
+        p0?.let {
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(it.position))
+            onLocationSelected.setLocation(it.position)
+        }
+    }
+
+    override fun onMarkerDragStart(p0: Marker?) {}
+
+    override fun onMarkerDrag(p0: Marker?) {}
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -115,8 +132,7 @@ class MapsFragment : DialogFragment(), OnMapReadyCallback {
         fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
 
             location?.let {
-                googleMap.addMarker(MarkerOptions().position(LatLng(it.latitude, it.longitude)))
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(it.latitude, it.longitude)))
+                addMarker(LatLng(it.latitude, it.longitude))
             } ?: run {
                 requestNewLocationData()
             }
@@ -136,10 +152,23 @@ class MapsFragment : DialogFragment(), OnMapReadyCallback {
             override fun onLocationResult(locationResult: LocationResult) {
 
                 val lastLocation: Location = locationResult.lastLocation
-                val location = LatLng(lastLocation.latitude, lastLocation.longitude)
-                googleMap.addMarker(MarkerOptions().position(location))
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(location))
+                val position = LatLng(lastLocation.latitude, lastLocation.longitude)
+                addMarker(position)
             }
         }, Looper.myLooper())
     }
+
+    private fun addMarker(position: LatLng){
+
+        googleMap.clear()
+        googleMap.addMarker(
+            MarkerOptions()
+            .position(position)
+            .draggable(true)
+        )
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(position))
+    }
+}
+interface OnLocationSelected {
+    fun setLocation(location: LatLng?)
 }

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentTransaction
+import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
@@ -27,7 +28,7 @@ import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_game_detail.*
 
-class GameDetailFragment : BaseFragment() {
+class GameDetailFragment : BaseFragment(), OnLocationSelected {
 
     private var currentGame: GameResponse? = null
     private lateinit var sharedPrefHandler: SharedPreferencesHandler
@@ -63,6 +64,13 @@ class GameDetailFragment : BaseFragment() {
 
         initializeUI()
         loadData()
+    }
+
+    override fun setLocation(location: LatLng?) {
+
+        location?.let {
+            edit_text_purchase_location.setText("${it.latitude},${it.longitude}")
+        }
     }
 
     fun enableEdition(enable: Boolean) {
@@ -207,14 +215,14 @@ class GameDetailFragment : BaseFragment() {
         formatValues = ArrayList<String>()
         formatValues.run {
             this.add(resources.getString((R.string.GAME_DETAIL_SELECT_GENRE)))
-            this.addAll(formats.mapNotNull { it.name })
+            this.addAll(formats.map { it.name })
         }
         spinner_formats.adapter = Constants.getAdapter(requireContext(), formatValues)
         genres = genreRepository.getGenres()
         genreValues = ArrayList<String>()
         genreValues.run {
             this.add(resources.getString((R.string.GAME_DETAIL_SELECT_GENRE)))
-            this.addAll(genres.mapNotNull { it.name })
+            this.addAll(genres.map { it.name })
         }
         spinner_genres.adapter = Constants.getAdapter(requireContext(), genreValues)
 
@@ -243,7 +251,7 @@ class GameDetailFragment : BaseFragment() {
             ft.remove(prev)
         }
         ft.addToBackStack(null)
-        val dialogFragment = MapsFragment()
+        val dialogFragment = MapsFragment(this)
         dialogFragment.show(ft, "mapDialog")
     }
 
