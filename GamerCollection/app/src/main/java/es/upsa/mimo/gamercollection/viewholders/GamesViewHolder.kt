@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.GameResponse
@@ -35,7 +36,15 @@ class GamesViewHolder(
         }
 
         game.imageUrl?.let { url ->
-            Picasso.with(context).load(url).into(itemView.image_view_game)
+            itemView.progress_bar_loading.visibility = View.VISIBLE
+            Picasso.with(context).load(url).into(itemView.image_view_game, object : Callback {
+                override fun onSuccess() {
+                    itemView.progress_bar_loading.visibility = View.GONE
+                }
+                override fun onError() {
+                    itemView.progress_bar_loading.visibility = View.GONE
+                }
+            })
         } ?: run {
             itemView.image_view_game.setImageDrawable(null)
         }
