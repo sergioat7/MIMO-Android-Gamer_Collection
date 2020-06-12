@@ -1,12 +1,10 @@
 package es.upsa.mimo.gamercollection.activities.base
 
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import es.upsa.mimo.gamercollection.fragments.popups.PopupErrorDialogFragment
 import es.upsa.mimo.gamercollection.fragments.popups.PopupLoadingDialogFragment
 import es.upsa.mimo.gamercollection.models.ErrorResponse
-
 
 open class BaseActivity : AppCompatActivity() {
 
@@ -20,8 +18,8 @@ open class BaseActivity : AppCompatActivity() {
 
     fun showPopupDialog(message: String) {
 
-        val ft: FragmentTransaction = supportFragmentManager?.beginTransaction()
-        val prev = supportFragmentManager?.findFragmentByTag("popupDialog")
+        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+        val prev = supportFragmentManager.findFragmentByTag("popupDialog")
         if (prev != null) {
             ft.remove(prev)
         }
@@ -32,8 +30,8 @@ open class BaseActivity : AppCompatActivity() {
 
     fun showLoading() {
 
-        val ft: FragmentTransaction = supportFragmentManager?.beginTransaction() ?: return
-        val prev = supportFragmentManager?.findFragmentByTag("loadingDialog")
+        val ft: FragmentTransaction = supportFragmentManager.beginTransaction() ?: return
+        val prev = supportFragmentManager.findFragmentByTag("loadingDialog")
         if (prev != null) {
             ft.remove(prev)
         }

@@ -37,16 +37,15 @@ fun EditText.showDatePicker(context: Context) {
 private fun getPicker(editText: EditText, context: Context): DatePickerDialog {
 
     val calendar = Calendar.getInstance()
-    val day: Int = calendar.get(Calendar.DAY_OF_MONTH)
-    val month: Int = calendar.get(Calendar.MONTH)
-    val year: Int = calendar.get(Calendar.YEAR)
-    val picker = DatePickerDialog(context, OnDateSetListener { _, year, month, day ->
+    val currentDay: Int = calendar.get(Calendar.DAY_OF_MONTH)
+    val currentMonth: Int = calendar.get(Calendar.MONTH)
+    val currentYear: Int = calendar.get(Calendar.YEAR)
+    return DatePickerDialog(context, OnDateSetListener { _, year, month, day ->
 
-        val currentDay = if (day < 10) "0${day}" else day.toString()
-        val currentMonth = if (month < 9) "0${month+1}" else (month+1).toString()
+        val newDay = if (day < 10) "0${day}" else day.toString()
+        val newMonth = if (month < 9) "0${month+1}" else (month+1).toString()
         val language = PreferenceManager.getDefaultSharedPreferences(context).getString("language", Locale.getDefault().language) ?: Locale.getDefault().language
-        val date = if (language == "es") "${currentDay}-${currentMonth}-${year}" else "${currentMonth}-${currentDay}-${year}"
+        val date = if (language == "es") "${newDay}-${newMonth}-${year}" else "${newMonth}-${newDay}-${year}"
         editText.setText(date)
-    }, year, month, day)
-    return picker
+    }, currentYear, currentMonth, currentDay)
 }

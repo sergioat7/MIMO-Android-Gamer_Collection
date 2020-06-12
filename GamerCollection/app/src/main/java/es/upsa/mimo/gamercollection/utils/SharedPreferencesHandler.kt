@@ -1,7 +1,6 @@
 package es.upsa.mimo.gamercollection.utils
 
 import android.content.Context
-import androidx.preference.PreferenceManager
 import com.google.gson.Gson
 import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.models.UserData

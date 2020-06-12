@@ -80,9 +80,12 @@ class GameSongsFragment : BaseFragment(), SongsAdapter.OnItemClickListener {
     private fun initializeUI() {
 
         recycler_view_songs.layoutManager = LinearLayoutManager(requireContext())
-        currentGame?.let {
-            recycler_view_songs.adapter = SongsAdapter(it.songs, enable, this)
+        val songs = currentGame?.songs ?: ArrayList()
+        if (songs.isNotEmpty()) {
+            recycler_view_songs.adapter = SongsAdapter(songs, enable, this)
         }
+        recycler_view_songs.visibility = if (songs.isNotEmpty()) View.VISIBLE else View.GONE
+        layout_empty_list.visibility = if (songs.isNotEmpty()) View.GONE else View.VISIBLE
         button_add_song.setOnClickListener { showNewSongPopup() }
     }
 
@@ -125,15 +128,23 @@ class GameSongsFragment : BaseFragment(), SongsAdapter.OnItemClickListener {
                 gameRepository.updateGame(it)
 
                 currentGame = it
-                val adapter = recycler_view_songs?.adapter as? SongsAdapter
-                if (adapter != null) {
-                    adapter.songs = it.songs
-                    adapter.notifyDataSetChanged()
-                }
+                showSongs(it)
                 hideLoading()
             }, {
                 manageError(it)
             })
         }
+    }
+
+    private fun showSongs(game: GameResponse?) {
+
+        val songs = game?.songs ?: ArrayList()
+        val adapter = recycler_view_songs?.adapter as? SongsAdapter
+        if (adapter != null) {
+            adapter.songs = songs
+            adapter.notifyDataSetChanged()
+        }
+        recycler_view_songs.visibility = if (songs.isNotEmpty()) View.VISIBLE else View.GONE
+        layout_empty_list.visibility = if (songs.isNotEmpty()) View.GONE else View.VISIBLE
     }
 }

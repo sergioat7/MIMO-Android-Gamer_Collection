@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.customviews
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -26,6 +27,7 @@ class StateButton: ConstraintLayout {
         setAttributes(attrs)
     }
 
+    @SuppressLint("Recycle")
     private fun setAttributes(attrs: AttributeSet?) {
 
         attrs?.let {

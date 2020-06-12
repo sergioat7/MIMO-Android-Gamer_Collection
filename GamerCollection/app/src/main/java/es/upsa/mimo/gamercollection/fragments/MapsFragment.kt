@@ -29,6 +29,7 @@ import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import kotlinx.android.synthetic.main.fragment_maps.*
 
 class MapsFragment(
+    private var location: LatLng?,
     private val onLocationSelected: OnLocationSelected
 ) : DialogFragment(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener {
 
@@ -51,10 +52,14 @@ class MapsFragment(
     override fun onMapReady(googleMap: GoogleMap) {
 
         this.googleMap = googleMap
-        addMarker(madrid)
-        if (checkPermissions()) {
-            if (isLocationEnabled()) {
-                getUserLocation()
+        location?.let {
+            addMarker(it)
+        } ?: run {
+            addMarker(madrid)
+            if (checkPermissions()) {
+                if (isLocationEnabled()) {
+                    getUserLocation()
+                }
             }
         }
         googleMap.setOnMarkerDragListener(this)
@@ -62,10 +67,8 @@ class MapsFragment(
 
     override fun onMarkerDragEnd(p0: Marker?) {
 
-        p0?.let {
-            googleMap.animateCamera(CameraUpdateFactory.newLatLng(it.position))
-            onLocationSelected.setLocation(it.position)
-        }
+        googleMap.animateCamera(CameraUpdateFactory.newLatLng(p0?.position))
+        location = p0?.position
     }
 
     override fun onMarkerDragStart(p0: Marker?) {}
@@ -89,6 +92,15 @@ class MapsFragment(
         mapFragment?.getMapAsync(this)
 
         button_location.setOnClickListener { locateUser() }
+
+        button_save.setOnClickListener {
+            onLocationSelected.setLocation(location)
+            dismiss()
+        }
+        button_remove.setOnClickListener {
+            onLocationSelected.setLocation(null)
+            dismiss()
+        }
     }
 
     private fun checkPermissions(): Boolean {
@@ -167,7 +179,7 @@ class MapsFragment(
             .draggable(true)
         )
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(position))
-        onLocationSelected.setLocation(position)
+        location = position
     }
 }
 interface OnLocationSelected {

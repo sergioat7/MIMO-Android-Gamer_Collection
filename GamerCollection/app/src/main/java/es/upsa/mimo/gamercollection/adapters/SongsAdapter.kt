@@ -40,6 +40,5 @@ class SongsAdapter(
         fun onItemClick(songId: Int)
     }
 
-    class SongsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-    }
+    class SongsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 }

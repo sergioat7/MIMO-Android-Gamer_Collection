@@ -1,7 +1,6 @@
 package es.upsa.mimo.gamercollection.persistence.repositories
 
 import android.content.Context
-import es.upsa.mimo.gamercollection.models.GenreResponse
 import es.upsa.mimo.gamercollection.models.PlatformResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import kotlinx.coroutines.GlobalScope
@@ -47,9 +46,9 @@ class PlatformRepository(context: Context) {
     fun removeDisableContent(newPlatforms: List<PlatformResponse>) {
 
         val currentPlatforms = getPlatforms()
-        val platforms = AppDatabase.getDisabledContent(currentPlatforms, newPlatforms) as List<PlatformResponse>
+        val platforms = AppDatabase.getDisabledContent(currentPlatforms, newPlatforms) as List<*>
         for (platform in platforms) {
-            deletePlatform(platform)
+            deletePlatform(platform as PlatformResponse)
         }
     }
 }
