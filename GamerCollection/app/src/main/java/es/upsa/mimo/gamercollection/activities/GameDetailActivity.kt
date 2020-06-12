@@ -29,6 +29,7 @@ import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.activity_game_detail.*
 import kotlinx.android.synthetic.main.set_image_dialog.view.*
+import kotlinx.android.synthetic.main.set_rating_dialog.view.*
 
 class GameDetailActivity : BaseActivity() {
 
@@ -119,7 +120,7 @@ class GameDetailActivity : BaseActivity() {
         }
         spinner_platforms.adapter = Constants.getAdapter(this, platformValues)
 
-//        rating_bar.onRatingBarChangeListener = this TODO
+        rating_button.setOnClickListener { setRating() }
     }
 
     private fun loadData() {
@@ -193,7 +194,7 @@ class GameDetailActivity : BaseActivity() {
         image_view_game.isEnabled = enable
         spinner_platforms.backgroundTintList = if (!enable) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
         spinner_platforms.isEnabled = enable
-//        rating_bar.setIsIndicator(!enable) TODO
+        rating_button.isEnabled = enable
     }
 
     private fun setImage() {
@@ -219,6 +220,22 @@ class GameDetailActivity : BaseActivity() {
                         }
                     })
             }
+            dialogBuilder.dismiss()
+        }
+
+        dialogBuilder.setView(dialogView)
+        dialogBuilder.show()
+    }
+
+    private fun setRating() {
+
+        val dialogBuilder = AlertDialog.Builder(this).create()
+        val dialogView = this.layoutInflater.inflate(R.layout.set_rating_dialog, null)
+
+        dialogView.rating_bar.rating = rating_button.text.toString().toFloat()
+        dialogView.button_rate.setOnClickListener {
+
+            rating_button.text = dialogView.rating_bar.rating.toString()
             dialogBuilder.dismiss()
         }
 
