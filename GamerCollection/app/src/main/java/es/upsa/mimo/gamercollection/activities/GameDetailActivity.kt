@@ -16,7 +16,6 @@ import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.base.BaseActivity
 import es.upsa.mimo.gamercollection.adapters.GameDetailPagerAdapter
-import es.upsa.mimo.gamercollection.adapters.SpinnerAdapter
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.PlatformResponse
@@ -113,10 +112,10 @@ class GameDetailActivity : BaseActivity() {
 
         image_view_game.setOnClickListener { setImage() }
         platforms = platformRepository.getPlatforms()
-        platformValues = ArrayList<String>()
+        platformValues = ArrayList()
         platformValues.run {
             this.add(resources.getString((R.string.GAME_DETAIL_SELECT_PLATFORM)))
-            this.addAll(platforms.mapNotNull { it.name })
+            this.addAll(platforms.map { it.name })
         }
         spinner_platforms.adapter = Constants.getAdapter(this, platformValues)
 
@@ -145,16 +144,20 @@ class GameDetailActivity : BaseActivity() {
     private fun showData(game: GameResponse?) {
 
         currentGame = game
-        game?.let { game ->
+        game?.let {
 
+            progress_bar_loading.visibility = View.VISIBLE
             imageUrl = game.imageUrl
             imageUrl?.let { url ->
                 Picasso.with(this).load(url).error(R.drawable.add_photo).into(image_view_game)
                 Picasso.with(this).load(url).into(image_view_blurred, object : Callback {
                         override fun onSuccess() {
                             image_view_blurred.setBlur(5)
+                            progress_bar_loading.visibility = View.GONE
                         }
-                        override fun onError() {}
+                        override fun onError() {
+                            progress_bar_loading.visibility = View.GONE
+                        }
                     })
             }
 
@@ -164,7 +167,7 @@ class GameDetailActivity : BaseActivity() {
                 val pos = platformValues.indexOf(platformName)
                 spinner_platforms.setSelection( if(pos > 0) pos else 0 )
             }
-            rating_button.setText(game.score.toString())
+            rating_button.text = game.score.toString()
             when(game.pegi) {
                 "+3" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi3))
                 "+4" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi4))
@@ -201,7 +204,7 @@ class GameDetailActivity : BaseActivity() {
         dialogView.button_accept.setOnClickListener {
 
             val url = dialogView.edit_text_url.text.toString()
-            if (!url.isEmpty()) {
+            if (url.isNotEmpty()) {
 
                 Picasso.with(this)
                     .load(url)
