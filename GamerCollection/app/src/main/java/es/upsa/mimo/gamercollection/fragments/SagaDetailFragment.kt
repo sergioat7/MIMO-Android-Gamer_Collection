@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.fragments
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
@@ -38,7 +39,7 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
     private var menu: Menu? = null
     private var currentSaga: SagaResponse? = null
     private var sagaGames: List<GameResponse> = arrayListOf()
-    private var newGames: List<GameResponse> = arrayListOf()
+    private var newGames: ArrayList<GameResponse> = arrayListOf()
     private var allGames: List<GameResponse> = arrayListOf()
 
     override fun onCreateView(
@@ -99,12 +100,12 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         val selectedGame = allGames.firstOrNull { it.id == gameId }
         newGames.firstOrNull { it.id == gameId }?.let {
 
-            newGames -= it
+            newGames.remove(it)
             selectedGame?.saga = null
         } ?: run {
             selectedGame?.let {
 
-                newGames += it
+                newGames.add(it)
                 it.saga = currentSaga
             }
         }
@@ -126,7 +127,8 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
             currentSaga = sagaRepository.getSaga(it)
             currentSaga?.let { saga ->
                 sagaGames = saga.games
-                newGames = sagaGames
+                newGames.clear()
+                newGames.addAll(sagaGames)
             }
             hideLoading()
         }
@@ -139,14 +141,16 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
 
         allGames = gameRepository.getGames()
         currentSaga = saga
-        saga?.let { saga ->
+        saga?.let {
 
             edit_text_name.setText(saga.name)
-            newGames = saga.games
+            newGames.clear()
+            newGames.addAll(saga.games)
             showGames(newGames)
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showGames(games: List<GameResponse>) {
 
         linear_layout_games.removeAllViews()
@@ -160,11 +164,8 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         for (game in orderedGames) {
 
             val tvGame = TextView(requireContext())
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                tvGame.setTextAppearance(R.style.WhiteEditText_Regular)
-            } else {
-                tvGame.setTextAppearance(requireContext(), R.style.WhiteEditText_Regular);
-            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) tvGame.setTextAppearance(R.style.WhiteEditText_Regular)
+            else tvGame.setTextAppearance(requireContext(), R.style.WhiteEditText_Regular)
             tvGame.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18F)
 
             tvGame.text = "- ${game.name}"
@@ -231,7 +232,7 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
 
     private fun saveSaga() {
 
-        val saga = SagaResponse(
+        val newSaga = SagaResponse(
             sagaId ?: 0,
             edit_text_name.text.toString(),
             newGames
@@ -240,10 +241,10 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         showLoading()
         if (currentSaga != null) {
 
-            sagaAPIClient.setSaga(saga, {
+            sagaAPIClient.setSaga(newSaga, {
                 sagaRepository.updateSaga(it)
-                removeSagaFromGames(saga)
-                updateGames(saga)
+                removeSagaFromGames(newSaga)
+                updateGames(newSaga)
 
                 currentSaga = it
                 cancelEdition()
@@ -253,13 +254,19 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
             })
         } else {
 
-            sagaAPIClient.createSaga(saga, {
+            sagaAPIClient.createSaga(newSaga, {
                 sagaAPIClient.getSagas({ sagas ->
 
                     for (saga in sagas) {
                         sagaRepository.insertSaga(saga)
                     }
-                    sagas.firstOrNull { it.games.firstOrNull { it.id == newGames.firstOrNull()?.id } != null }?.let {
+                    val gameSaga = sagas.firstOrNull { saga ->
+                        val game = saga.games.firstOrNull { game ->
+                            game.id == newGames.firstOrNull()?.id
+                        }
+                        game != null
+                    }
+                    gameSaga?.let {
                         updateGames(it)
                     }
                     hideLoading()

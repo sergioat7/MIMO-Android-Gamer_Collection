@@ -62,9 +62,9 @@ class SagaRepository(context: Context) {
     fun removeDisableContent(newSagas: List<SagaResponse>) {
 
         val currentSagas = getSagas()
-        val sagas = AppDatabase.getDisabledContent(currentSagas, newSagas) as List<SagaResponse>
+        val sagas = AppDatabase.getDisabledContent(currentSagas, newSagas) as List<*>
         for (saga in sagas) {
-            deleteSaga(saga)
+            deleteSaga(saga as SagaResponse)
         }
     }
 }

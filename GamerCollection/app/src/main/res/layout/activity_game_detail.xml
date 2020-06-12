@@ -44,11 +44,11 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         android:indeterminateTint="@color/color3"
-        android:visibility="visible"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/constraint_layout_main_details"
         app:layout_constraintEnd_toEndOf="@+id/image_view_game"
         app:layout_constraintStart_toStartOf="@+id/image_view_game"
-        app:layout_constraintTop_toTopOf="@+id/constraint_layout_main_details"
-        app:layout_constraintBottom_toBottomOf="@+id/constraint_layout_main_details"/>
+        app:layout_constraintTop_toTopOf="@+id/constraint_layout_main_details" />
 
     <ImageView
         android:id="@+id/image_view_goty"

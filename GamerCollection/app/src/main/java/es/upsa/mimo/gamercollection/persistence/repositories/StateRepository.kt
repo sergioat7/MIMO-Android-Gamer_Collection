@@ -1,7 +1,6 @@
 package es.upsa.mimo.gamercollection.persistence.repositories
 
 import android.content.Context
-import es.upsa.mimo.gamercollection.models.PlatformResponse
 import es.upsa.mimo.gamercollection.models.StateResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import kotlinx.coroutines.GlobalScope
@@ -47,9 +46,9 @@ class StateRepository(context: Context) {
     fun removeDisableContent(newStates: List<StateResponse>) {
 
         val currentStates = getStates()
-        val states = AppDatabase.getDisabledContent(currentStates, newStates) as List<StateResponse>
+        val states = AppDatabase.getDisabledContent(currentStates, newStates) as List<*>
         for (state in states) {
-            deleteState(state)
+            deleteState(state as StateResponse)
         }
     }
 }

@@ -221,19 +221,19 @@ class PopupFilterDialogFragment(
 
     private fun save() {
 
-        var platforms: List<String> = arrayListOf()
+        val platforms: ArrayList<String> = arrayListOf()
         for (child in linear_layout_platforms.children) {
-            if (child.isSelected) platforms += "${child.tag}"
+            if (child.isSelected) platforms.add("${child.tag}")
         }
 
-        var genres: List<String> = arrayListOf()
+        val genres: ArrayList<String> = arrayListOf()
         for (child in linear_layout_genres.children) {
-            if (child.isSelected) genres += "${child.tag}"
+            if (child.isSelected) genres.add("${child.tag}")
         }
 
-        var formats: List<String> = arrayListOf()
+        val formats: ArrayList<String> = arrayListOf()
         for (child in linear_layout_formats.children) {
-            if (child.isSelected) formats += "${child.tag}"
+            if (child.isSelected) formats.add("${child.tag}")
         }
 
         val minScore = (rating_bar_min.rating * 2).toDouble()
