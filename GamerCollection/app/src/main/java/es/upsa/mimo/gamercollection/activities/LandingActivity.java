@@ -1,15 +1,11 @@
 package es.upsa.mimo.gamercollection.activities;
 
-import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import java.util.Locale;
 import es.upsa.mimo.gamercollection.R;
 import es.upsa.mimo.gamercollection.activities.base.BaseActivity;

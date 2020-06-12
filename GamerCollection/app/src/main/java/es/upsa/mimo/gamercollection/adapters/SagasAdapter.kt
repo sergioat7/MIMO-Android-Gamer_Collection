@@ -75,14 +75,14 @@ class SagasAdapter(
 
                     holder.itemView.image_view_arrow.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_keyboard_arrow_down_white_24dp))
                     expandedIds.add(saga.id)
-                    val position = items.indexOf(saga)
-                    if (position+1 < items.size) {
-                        items.addAll(position+1, saga.games.sortedBy { it.releaseDate })
+                    val currentPosition = items.indexOf(saga)
+                    if (currentPosition+1 < items.size) {
+                        items.addAll(currentPosition+1, saga.games.sortedBy { it.releaseDate })
                     } else {
                         items.addAll(saga.games.sortedBy { it.releaseDate })
                     }
                     notifyDataSetChanged()
-//                    notifyItemRangeInserted(position+1, saga.games.size)
+//                    notifyItemRangeInserted(currentPosition+1, saga.games.size)
                 }
             }
 

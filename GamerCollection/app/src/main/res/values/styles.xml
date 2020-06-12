@@ -144,4 +144,10 @@
         <item name="android:textSize">14dp</item>
     </style>
 
+    <style name="MapButton" parent="android:style/Widget.Button">
+        <item name="android:textColor">@color/color1</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
 </resources>

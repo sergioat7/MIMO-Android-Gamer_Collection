@@ -197,30 +197,32 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             var queryPlatforms = ""
             val platforms = filters.platforms
             if (platforms.isNotEmpty()) {
-                queryPlatforms += ""
+                queryPlatforms += "("
                 for (platform in platforms) {
                     queryPlatforms += "platform == '${platform}' OR "
                 }
-                queryPlatforms = queryPlatforms.dropLast(4) + " AND "
+                queryPlatforms = queryPlatforms.dropLast(4) + ") AND "
             }
 
             var queryGenres = ""
             val genres = filters.genres
             if (genres.isNotEmpty()){
+                queryGenres += "("
                 for (genre in genres) {
                     queryGenres += "genre == '${genre}' OR "
                 }
-                queryGenres = queryGenres.dropLast(4) + " AND "
+                queryGenres = queryGenres.dropLast(4) + ") AND "
             }
 
             var queryFormats = ""
             val formats = filters.formats
             if (formats.isNotEmpty()){
+                queryFormats += "("
                 for (format in formats) {
                     queryFormats += "format == '${format}' OR "
                 }
 
-                queryFormats = queryFormats.dropLast(4) + " AND "
+                queryFormats = queryFormats.dropLast(4) + ") AND "
             }
 
             queryConditions += queryPlatforms + queryGenres + queryFormats

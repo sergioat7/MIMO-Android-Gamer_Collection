@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.SpinnerAdapter
@@ -9,6 +10,10 @@ import java.util.*
 
 class Constants {
     companion object {
+
+        // MARK: - Database constants
+
+        const val databaseName = "GamerCollection"
 
         // MARK: - SharedPref constants
 
@@ -47,6 +52,7 @@ class Constants {
             return if (sharedPrefHandler.getLanguage() == "es") "dd-MM-yyyy" else "MM-dd-yyyy"
         }
 
+        @SuppressLint("SimpleDateFormat")
         fun dateToString(date: Date?, sharedPrefHandler: SharedPreferencesHandler): String? {
 
             date?.let {
@@ -60,6 +66,7 @@ class Constants {
             }
         }
 
+        @SuppressLint("SimpleDateFormat")
         fun stringToDate(dateString: String?, sharedPrefHandler: SharedPreferencesHandler): Date? {
 
             dateString?.let {

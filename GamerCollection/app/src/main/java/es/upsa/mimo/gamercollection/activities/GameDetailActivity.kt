@@ -16,7 +16,6 @@ import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.base.BaseActivity
 import es.upsa.mimo.gamercollection.adapters.GameDetailPagerAdapter
-import es.upsa.mimo.gamercollection.adapters.SpinnerAdapter
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.PlatformResponse
@@ -30,6 +29,7 @@ import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.activity_game_detail.*
 import kotlinx.android.synthetic.main.set_image_dialog.view.*
+import kotlinx.android.synthetic.main.set_rating_dialog.view.*
 
 class GameDetailActivity : BaseActivity() {
 
@@ -113,14 +113,14 @@ class GameDetailActivity : BaseActivity() {
 
         image_view_game.setOnClickListener { setImage() }
         platforms = platformRepository.getPlatforms()
-        platformValues = ArrayList<String>()
+        platformValues = ArrayList()
         platformValues.run {
             this.add(resources.getString((R.string.GAME_DETAIL_SELECT_PLATFORM)))
-            this.addAll(platforms.mapNotNull { it.name })
+            this.addAll(platforms.map { it.name })
         }
         spinner_platforms.adapter = Constants.getAdapter(this, platformValues)
 
-//        rating_bar.onRatingBarChangeListener = this TODO
+        rating_button.setOnClickListener { setRating() }
     }
 
     private fun loadData() {
@@ -145,16 +145,20 @@ class GameDetailActivity : BaseActivity() {
     private fun showData(game: GameResponse?) {
 
         currentGame = game
-        game?.let { game ->
+        game?.let {
 
+            progress_bar_loading.visibility = View.VISIBLE
             imageUrl = game.imageUrl
             imageUrl?.let { url ->
                 Picasso.with(this).load(url).error(R.drawable.add_photo).into(image_view_game)
                 Picasso.with(this).load(url).into(image_view_blurred, object : Callback {
                         override fun onSuccess() {
                             image_view_blurred.setBlur(5)
+                            progress_bar_loading.visibility = View.GONE
                         }
-                        override fun onError() {}
+                        override fun onError() {
+                            progress_bar_loading.visibility = View.GONE
+                        }
                     })
             }
 
@@ -164,7 +168,7 @@ class GameDetailActivity : BaseActivity() {
                 val pos = platformValues.indexOf(platformName)
                 spinner_platforms.setSelection( if(pos > 0) pos else 0 )
             }
-            rating_button.setText(game.score.toString())
+            rating_button.text = game.score.toString()
             when(game.pegi) {
                 "+3" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi3))
                 "+4" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi4))
@@ -190,7 +194,7 @@ class GameDetailActivity : BaseActivity() {
         image_view_game.isEnabled = enable
         spinner_platforms.backgroundTintList = if (!enable) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
         spinner_platforms.isEnabled = enable
-//        rating_bar.setIsIndicator(!enable) TODO
+        rating_button.isEnabled = enable
     }
 
     private fun setImage() {
@@ -201,7 +205,7 @@ class GameDetailActivity : BaseActivity() {
         dialogView.button_accept.setOnClickListener {
 
             val url = dialogView.edit_text_url.text.toString()
-            if (!url.isEmpty()) {
+            if (url.isNotEmpty()) {
 
                 Picasso.with(this)
                     .load(url)
@@ -223,6 +227,22 @@ class GameDetailActivity : BaseActivity() {
         dialogBuilder.show()
     }
 
+    private fun setRating() {
+
+        val dialogBuilder = AlertDialog.Builder(this).create()
+        val dialogView = this.layoutInflater.inflate(R.layout.set_rating_dialog, null)
+
+        dialogView.rating_bar.rating = rating_button.text.toString().toFloat()
+        dialogView.button_rate.setOnClickListener {
+
+            rating_button.text = dialogView.rating_bar.rating.toString()
+            dialogBuilder.dismiss()
+        }
+
+        dialogBuilder.setView(dialogView)
+        dialogBuilder.show()
+    }
+
     private fun editGame(){
 
         showEditButton(true)
@@ -232,17 +252,17 @@ class GameDetailActivity : BaseActivity() {
 
     private fun saveGame() {
 
-        pagerAdapter.getGameData()?.let { game ->
+        pagerAdapter.getGameData()?.let { newGame ->
 
-            game.name = edit_text_name.text.toString()
-            game.platform = platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
-            game.imageUrl = imageUrl
-            game.score = rating_button.text.toString().toDouble()
+            newGame.name = edit_text_name.text.toString()
+            newGame.platform = platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
+            newGame.imageUrl = imageUrl
+            newGame.score = rating_button.text.toString().toDouble()
 
             showLoading()
             if (currentGame != null) {
 
-                gameAPIClient.setGame(game, {
+                gameAPIClient.setGame(newGame, {
                     gameRepository.updateGame(it)
 
                     currentGame = it
@@ -253,7 +273,7 @@ class GameDetailActivity : BaseActivity() {
                 })
             } else {
 
-                gameAPIClient.createGame(game, {
+                gameAPIClient.createGame(newGame, {
                     gameAPIClient.getGames({ games ->
 
                         for (game in games) {

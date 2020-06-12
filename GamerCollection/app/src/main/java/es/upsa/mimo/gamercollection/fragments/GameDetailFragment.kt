@@ -68,9 +68,11 @@ class GameDetailFragment : BaseFragment(), OnLocationSelected {
 
     override fun setLocation(location: LatLng?) {
 
+        var locationText = ""
         location?.let {
-            edit_text_purchase_location.setText("${it.latitude},${it.longitude}")
+            locationText = "${it.latitude},${it.longitude}"
         }
+        edit_text_purchase_location.setText(locationText)
     }
 
     fun enableEdition(enable: Boolean) {
@@ -251,7 +253,15 @@ class GameDetailFragment : BaseFragment(), OnLocationSelected {
             ft.remove(prev)
         }
         ft.addToBackStack(null)
-        val dialogFragment = MapsFragment(this)
+
+        var location: LatLng? = null
+        val purchaseLocation = currentGame?.purchaseLocation
+        if (purchaseLocation != null && purchaseLocation.isNotEmpty()) {
+            val latLng = purchaseLocation.split(",")
+            location = LatLng(latLng[0].toDouble(), latLng[1].toDouble())
+        }
+
+        val dialogFragment = MapsFragment(location, this)
         dialogFragment.show(ft, "mapDialog")
     }
 

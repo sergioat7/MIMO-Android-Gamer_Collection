@@ -1,6 +1,5 @@
 package es.upsa.mimo.gamercollection.network.apiService
 
-import androidx.room.Delete
 import es.upsa.mimo.gamercollection.models.LoginCredentials
 import es.upsa.mimo.gamercollection.models.LoginResponse
 import es.upsa.mimo.gamercollection.models.NewPassword

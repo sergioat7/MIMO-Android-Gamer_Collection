@@ -105,8 +105,8 @@ class SagasFragment : BaseFragment(), SagasAdapter.OnItemClickListener {
 
         val adapter = recycler_view_sagas.adapter
         if (adapter != null && adapter is SagasAdapter) {
-            var items = ArrayList<BaseModel<Int>>()
-            var expandedIds = ArrayList<Int>()
+            val items = ArrayList<BaseModel<Int>>()
+            val expandedIds = ArrayList<Int>()
             for (saga in sagas) {
                 items.add(saga)
                 items.addAll(saga.games.sortedBy { it.releaseDate })
