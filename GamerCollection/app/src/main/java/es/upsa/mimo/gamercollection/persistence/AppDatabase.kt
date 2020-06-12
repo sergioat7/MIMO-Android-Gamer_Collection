@@ -8,6 +8,7 @@ import androidx.room.TypeConverters
 import es.upsa.mimo.gamercollection.models.*
 import es.upsa.mimo.gamercollection.models.base.BaseModel
 import es.upsa.mimo.gamercollection.persistence.daos.*
+import es.upsa.mimo.gamercollection.utils.Constants
 
 @Database(entities = [
     FormatResponse::class,
@@ -29,20 +30,16 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
 
-        var instance: AppDatabase? = null
+        private var instance: AppDatabase? = null
 
         fun getAppDatabase(context: Context): AppDatabase {
 
             if (instance == null) {
                 synchronized(AppDatabase::class) {
-                    instance = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "GamerCollection").build()
+                    instance = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, Constants.databaseName).build()
                 }
             }
             return instance!!
-        }
-
-        fun destroyDatabase() {
-            instance = null
         }
 
         fun <T> getDisabledContent(currentValues: List<BaseModel<T>>, newValues: List<BaseModel<T>>): List<BaseModel<T>> {

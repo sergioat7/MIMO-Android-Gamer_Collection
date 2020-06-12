@@ -235,17 +235,17 @@ class GameDetailActivity : BaseActivity() {
 
     private fun saveGame() {
 
-        pagerAdapter.getGameData()?.let { game ->
+        pagerAdapter.getGameData()?.let { newGame ->
 
-            game.name = edit_text_name.text.toString()
-            game.platform = platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
-            game.imageUrl = imageUrl
-            game.score = rating_button.text.toString().toDouble()
+            newGame.name = edit_text_name.text.toString()
+            newGame.platform = platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
+            newGame.imageUrl = imageUrl
+            newGame.score = rating_button.text.toString().toDouble()
 
             showLoading()
             if (currentGame != null) {
 
-                gameAPIClient.setGame(game, {
+                gameAPIClient.setGame(newGame, {
                     gameRepository.updateGame(it)
 
                     currentGame = it
@@ -256,7 +256,7 @@ class GameDetailActivity : BaseActivity() {
                 })
             } else {
 
-                gameAPIClient.createGame(game, {
+                gameAPIClient.createGame(newGame, {
                     gameAPIClient.getGames({ games ->
 
                         for (game in games) {

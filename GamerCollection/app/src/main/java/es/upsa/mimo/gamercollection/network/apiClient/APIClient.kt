@@ -16,7 +16,7 @@ import java.lang.reflect.Type
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class APIClient() {
+class APIClient {
     companion object {
 
         val gson = fun (sharedPrefHandler: SharedPreferencesHandler): Gson {

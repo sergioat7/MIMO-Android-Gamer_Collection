@@ -23,5 +23,4 @@ class PopupErrorDialogFragment(private val message: String) : DialogFragment() {
         error_text_view.text = message
         accept_button.setOnClickListener { dismiss() }
     }
-
 }
