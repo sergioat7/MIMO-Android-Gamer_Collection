@@ -138,37 +138,52 @@ class GameDetailActivity : BaseActivity() {
             tab.text = if(position == 0) resources.getString(R.string.GAME_DETAIL_TITLE) else resources.getString(R.string.GAME_DETAIL_SONGS_TITLE)
         }.attach()
 
-        showData(currentGame)
-        enableEdition(currentGame == null)
+        showData(currentGame, currentGame == null)
     }
 
-    private fun showData(game: GameResponse?) {
+    private fun showData(game: GameResponse?, enabled: Boolean) {
+
+        val inputTypeText = if (enabled) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
+        val backgroundColor = ContextCompat.getColor(this, R.color.color2)
+
+        var name: String? = null
+        var platformPosition = 0
 
         currentGame = game
         game?.let {
 
-            progress_bar_loading.visibility = View.VISIBLE
             imageUrl = game.imageUrl
             imageUrl?.let { url ->
-                Picasso.with(this).load(url).error(R.drawable.add_photo).into(image_view_game)
+
+                progress_bar_loading.visibility = View.VISIBLE
+                Picasso.with(this).load(url).error(R.drawable.add_photo).into(image_view_game, object : Callback {
+                    override fun onSuccess() {
+                        progress_bar_loading.visibility = View.GONE
+                    }
+                    override fun onError() {
+                        progress_bar_loading.visibility = View.GONE
+                    }
+                })
                 Picasso.with(this).load(url).into(image_view_blurred, object : Callback {
                         override fun onSuccess() {
                             image_view_blurred.setBlur(5)
-                            progress_bar_loading.visibility = View.GONE
                         }
-                        override fun onError() {
-                            progress_bar_loading.visibility = View.GONE
-                        }
+                        override fun onError() {}
                     })
             }
 
-            edit_text_name.setText(game.name)
+            image_view_goty.visibility = if(game.goty) View.VISIBLE else View.GONE
+
+            name = if (game.name != null && game.name!!.isNotEmpty()) game.name else if (enabled) "" else "-"
+
             game.platform?.let { platformId ->
                 val platformName = platformRepository.getPlatforms().firstOrNull { it.id == platformId }?.name
                 val pos = platformValues.indexOf(platformName)
-                spinner_platforms.setSelection( if(pos > 0) pos else 0 )
+                platformPosition = if(pos > 0) pos else 0
             }
+
             rating_button.text = game.score.toString()
+
             when(game.pegi) {
                 "+3" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi3))
                 "+4" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi4))
@@ -179,22 +194,20 @@ class GameDetailActivity : BaseActivity() {
                 "+18" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi18))
                 else -> image_view_pegi.setImageDrawable(null)
             }
+        } ?: run {
 
-            image_view_goty.visibility = if(game.goty) View.VISIBLE else View.GONE
-
+            name = if (enabled) "" else "-"
         }
-    }
 
-    private fun enableEdition(enable: Boolean) {
+        edit_text_name.setText(name)
+        spinner_platforms.setSelection(platformPosition)
+        spinner_platforms.visibility = if (enabled || platformPosition > 0) View.VISIBLE else View.GONE
 
-        val inputTypeText = if (enable) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
-        val backgroundColor = ContextCompat.getColor(this, R.color.color2)
-
-        edit_text_name.setReadOnly(!enable, inputTypeText, backgroundColor)
-        image_view_game.isEnabled = enable
-        spinner_platforms.backgroundTintList = if (!enable) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
-        spinner_platforms.isEnabled = enable
-        rating_button.isEnabled = enable
+        image_view_game.isEnabled = enabled
+        edit_text_name.setReadOnly(!enabled, inputTypeText, backgroundColor)
+        spinner_platforms.backgroundTintList = if (!enabled) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
+        spinner_platforms.isEnabled = enabled
+        rating_button.isEnabled = enabled
     }
 
     private fun setImage() {
@@ -246,7 +259,8 @@ class GameDetailActivity : BaseActivity() {
     private fun editGame(){
 
         showEditButton(true)
-        enableEdition(true)
+        showData(currentGame, true)
+        pagerAdapter.showData(currentGame, true)
         pagerAdapter.enableEdition(true)
     }
 
@@ -294,9 +308,8 @@ class GameDetailActivity : BaseActivity() {
     private fun cancelEdition(){
 
         showEditButton(false)
-        showData(currentGame)
-        pagerAdapter.showData(currentGame)
-        enableEdition(false)
+        showData(currentGame, false)
+        pagerAdapter.showData(currentGame, false)
         pagerAdapter.enableEdition(false)
     }
 
