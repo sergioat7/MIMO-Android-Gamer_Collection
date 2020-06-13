@@ -1,10 +1,8 @@
 package es.upsa.mimo.gamercollection.adapters
 
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.google.gson.Gson
 import es.upsa.mimo.gamercollection.fragments.GameDetailFragment
 import es.upsa.mimo.gamercollection.fragments.GameSongsFragment
 import es.upsa.mimo.gamercollection.models.GameResponse
@@ -17,6 +15,7 @@ class GameDetailPagerAdapter(
 
     private var gameDetailFragment: GameDetailFragment? = null
     private var gameSongsFragment: GameSongsFragment? = null
+    private var enabled = false
 
     override fun getItemCount(): Int {
         return itemsCount
@@ -24,28 +23,22 @@ class GameDetailPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
 
-        val args = Bundle()
-        args.putString("game", Gson().toJson(currentGame))
         return if (position == 0) {
-            gameDetailFragment = GameDetailFragment()
-            gameDetailFragment!!.arguments = args
+            gameDetailFragment = GameDetailFragment(currentGame)
             gameDetailFragment!!
         } else {
-            gameSongsFragment = GameSongsFragment()
-            gameSongsFragment!!.arguments = args
+            gameSongsFragment = GameSongsFragment(currentGame, enabled)
             gameSongsFragment!!
         }
     }
 
     fun enableEdition(enable: Boolean) {
-
-        gameDetailFragment?.enableEdition(enable)
+        this.enabled = enable
         gameSongsFragment?.enableEdition(enable)
     }
 
-    fun showData(game: GameResponse?) {
-
-        gameDetailFragment?.showData(game)
+    fun showData(game: GameResponse?, enabled: Boolean) {
+        gameDetailFragment?.showData(game, enabled)
     }
 
     fun getGameData(): GameResponse? {

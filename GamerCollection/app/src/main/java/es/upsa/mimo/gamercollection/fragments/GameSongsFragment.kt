@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.SongsAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
@@ -19,10 +18,11 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_game_songs.*
 import kotlinx.android.synthetic.main.new_song_dialog.view.*
 
-class GameSongsFragment : BaseFragment(), SongsAdapter.OnItemClickListener {
+class GameSongsFragment(
+    private var currentGame: GameResponse?,
+    private var enabled: Boolean
+) : BaseFragment(), SongsAdapter.OnItemClickListener {
 
-    private var currentGame: GameResponse? = null
-    private var enable = false
     private lateinit var sharedPrefHandler: SharedPreferencesHandler
     private lateinit var gameRepository: GameRepository
     private lateinit var gameAPIClient: GameAPIClient
@@ -32,7 +32,6 @@ class GameSongsFragment : BaseFragment(), SongsAdapter.OnItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        currentGame = Gson().fromJson(arguments?.getString("game"), GameResponse::class.java)
         return inflater.inflate(R.layout.fragment_game_songs, container, false)
     }
 
@@ -62,7 +61,6 @@ class GameSongsFragment : BaseFragment(), SongsAdapter.OnItemClickListener {
 
     fun enableEdition(enable: Boolean) {
 
-        this.enable = enable
         val adapter = recycler_view_songs?.adapter as? SongsAdapter
         if (adapter != null) {
             adapter.editable = enable
@@ -82,11 +80,12 @@ class GameSongsFragment : BaseFragment(), SongsAdapter.OnItemClickListener {
         recycler_view_songs.layoutManager = LinearLayoutManager(requireContext())
         val songs = currentGame?.songs ?: ArrayList()
         if (songs.isNotEmpty()) {
-            recycler_view_songs.adapter = SongsAdapter(songs, enable, this)
+            recycler_view_songs.adapter = SongsAdapter(songs, enabled, this)
         }
         recycler_view_songs.visibility = if (songs.isNotEmpty()) View.VISIBLE else View.GONE
         layout_empty_list.visibility = if (songs.isNotEmpty()) View.GONE else View.VISIBLE
         button_add_song.setOnClickListener { showNewSongPopup() }
+        button_add_song?.visibility = if(enabled) View.VISIBLE else View.GONE
     }
 
     private fun showNewSongPopup() {
