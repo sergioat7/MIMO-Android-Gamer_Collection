@@ -13,7 +13,7 @@
     <string name="DESCENDING">Descending</string>
     <string name="YES">Yes</string>
     <string name="NO">No</string>
-    <string name="LOADING">Loading...</string>
+    <string name="LOADING">Loading…</string>
     <string name="SETTINGS">Settings</string>
 
     // Login
@@ -97,7 +97,7 @@
     <string name="PROFILE_DELETE_CONFIRMATION">Are you sure you want to delete your user? You will lose all your stored information about the videogames</string>
 
     // Synchronization
-    <string name="SYNC_TITLE">Synchronizing...</string>
+    <string name="SYNC_TITLE">Synchronizing…</string>
     <string name="SYNC_CONFIRMATION">Are you sure you want to sync the app? This process could take a while</string>
 
     // Modal filter
@@ -145,4 +145,6 @@
     <string name="ERROR_REGISTRATION_DIFFERENT_PASSWORDS">Password and repeat don\'t match</string>
     <string name="ERROR_DATABASE">Database error. Please try again</string>
     <string name="ERROR_IMAGE_URL">The image could not be loaded</string>
+    <string name="CHANNEL_NAME">Release notice</string>
+    <string name="CHANNEL_DESCRIPTION">Notice the release day of a pending game</string>
 </resources>

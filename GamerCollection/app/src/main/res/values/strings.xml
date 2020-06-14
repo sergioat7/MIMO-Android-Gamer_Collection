@@ -15,7 +15,7 @@
     <string name="DESCENDING">Descending</string>
     <string name="YES">Yes</string>
     <string name="NO">No</string>
-    <string name="LOADING">Loading...</string>
+    <string name="LOADING">Loading…</string>
     <string name="SETTINGS">Settings</string>
 
     // Login
@@ -99,7 +99,7 @@
     <string name="PROFILE_DELETE_CONFIRMATION">Are you sure you want to delete your user? You will lose all your stored information about the videogames</string>
 
     // Synchronization
-    <string name="SYNC_TITLE">Synchronizing...</string>
+    <string name="SYNC_TITLE">Synchronizing…</string>
     <string name="SYNC_CONFIRMATION">Are you sure you want to sync the app? This process could take a while</string>
 
     // Modal filter
@@ -136,8 +136,8 @@
     <string name="SWIPE_REFRESH_ENABLED_TITLE">Enable list refresh</string>
 
     // Notifications
-    <string name="CHANNEL_NAME" translatable="false">GAMER_COLLECTION_CHANNEL_NAME</string>
-    <string name="CHANNEL_DESCRIPTION" translatable="false">GAMER_COLLECTION_CHANNEL_DESCRIPTION</string>
+    <string name="CHANNEL_NAME">Release notice</string>
+    <string name="CHANNEL_DESCRIPTION">Notice the release day of a pending game</string>
     <string name="NOTIFICATION_TITLE">%s already on sale</string>
     <string name="NOTIFICATION_DESCRIPTION">Today, %s, game %s has been released</string>
     <string name="SUMMARY_NOTIFICATIONS_TITLE">%d new games released</string>
