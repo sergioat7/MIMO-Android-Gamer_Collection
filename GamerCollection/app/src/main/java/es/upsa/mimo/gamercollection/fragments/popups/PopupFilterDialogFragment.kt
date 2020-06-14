@@ -19,7 +19,7 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_popup_filter_dialog.*
 
 class PopupFilterDialogFragment(
-    private val filters: FilterModel?,
+    filters: FilterModel?,
     private val onFiltersSelected: OnFiltersSelected
 ) : DialogFragment() {
 
@@ -73,7 +73,7 @@ class PopupFilterDialogFragment(
 
     private fun configFilters(filters: FilterModel?) {
 
-        filters?.let { filters ->
+        filters?.let {
 
             val platforms = filters.platforms
             if (platforms.isNotEmpty()) {
