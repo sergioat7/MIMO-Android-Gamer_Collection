@@ -266,42 +266,73 @@ class GameDetailActivity : BaseActivity() {
 
     private fun saveGame() {
 
-        pagerAdapter.getGameData()?.let { newGame ->
+        val name = edit_text_name.text.toString()
+        val platform = platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
+        val score = rating_button.text.toString().toDouble()
+        val gameData = pagerAdapter.getGameData()
 
-            newGame.name = edit_text_name.text.toString()
-            newGame.platform = platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
-            newGame.imageUrl = imageUrl
-            newGame.score = rating_button.text.toString().toDouble()
+        if (name.isEmpty() && platform == null && score == 0.0 && imageUrl == null && gameData == null) return
 
-            showLoading()
-            if (currentGame != null) {
+        val newGame = gameData?.let {
+            it.name = name
+            it.platform = platform
+            it.imageUrl = imageUrl
+            it.score = score
+            it
+        } ?: run {
+            GameResponse(
+                currentGame?.id ?: 0,
+                name,
+                platform,
+                score,
+                null,
+                null,
+                null,
+                null,
+                null,
+                false,
+                null,
+                null,
+                null,
+                null,
+                null,
+                0.0,
+                imageUrl,
+                null,
+                null,
+                null,
+                null,
+                ArrayList())
+        }
 
-                gameAPIClient.setGame(newGame, {
-                    gameRepository.updateGame(it)
+        showLoading()
+        if (currentGame != null) {
 
-                    currentGame = it
-                    cancelEdition()
+            gameAPIClient.setGame(newGame, {
+                gameRepository.updateGame(it)
+
+                currentGame = it
+                cancelEdition()
+                hideLoading()
+            }, {
+                manageError(it)
+            })
+        } else {
+
+            gameAPIClient.createGame(newGame, {
+                gameAPIClient.getGames({ games ->
+
+                    for (game in games) {
+                        gameRepository.insertGame(game)
+                    }
                     hideLoading()
+                    finish()
                 }, {
                     manageError(it)
                 })
-            } else {
-
-                gameAPIClient.createGame(newGame, {
-                    gameAPIClient.getGames({ games ->
-
-                        for (game in games) {
-                            gameRepository.insertGame(game)
-                        }
-                        hideLoading()
-                        finish()
-                    }, {
-                        manageError(it)
-                    })
-                }, {
-                    manageError(it)
-                })
-            }
+            }, {
+                manageError(it)
+            })
         }
     }
 
