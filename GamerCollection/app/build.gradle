@@ -61,9 +61,11 @@ android {
             dimension 'version'
             applicationIdSuffix '.free'
             versionNameSuffix '-free'
+            buildConfigField("boolean", "IS_EDITABLE", "false")
         }
         pro {
             dimension 'version'
+            buildConfigField("boolean", "IS_EDITABLE", "true")
         }
     }
 

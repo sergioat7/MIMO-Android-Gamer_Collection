@@ -147,4 +147,5 @@
     <string name="ERROR_IMAGE_URL">La imagen no se ha podido cargar</string>
     <string name="CHANNEL_NAME">Aviso de lanzamiento</string>
     <string name="CHANNEL_DESCRIPTION">Aviso el día del lanzamiento de un juego pendiente</string>
+    <string name="ERROR_EDITION_FREE_VERSION">La edición no está disponible en la versión gratuita</string>
 </resources>
