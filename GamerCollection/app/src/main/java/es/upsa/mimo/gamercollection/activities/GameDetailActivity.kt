@@ -31,6 +31,7 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.activity_game_detail.*
 import kotlinx.android.synthetic.main.set_image_dialog.view.*
 import kotlinx.android.synthetic.main.set_rating_dialog.view.*
+import java.lang.Exception
 
 class GameDetailActivity : BaseActivity() {
 
@@ -157,19 +158,24 @@ class GameDetailActivity : BaseActivity() {
             imageUrl?.let { url ->
 
                 progress_bar_loading.visibility = View.VISIBLE
-                Picasso.with(this).load(url).error(R.drawable.add_photo).into(image_view_game, object : Callback {
-                    override fun onSuccess() {
-                        progress_bar_loading.visibility = View.GONE
-                    }
-                    override fun onError() {
-                        progress_bar_loading.visibility = View.GONE
-                    }
+                Picasso.get()
+                    .load(url)
+                    .error(R.drawable.add_photo)
+                    .into(image_view_game, object : Callback {
+                        override fun onSuccess() {
+                            progress_bar_loading.visibility = View.GONE
+                        }
+                        override fun onError(e: Exception?) {
+                            progress_bar_loading.visibility = View.GONE
+                        }
                 })
-                Picasso.with(this).load(url).into(image_view_blurred, object : Callback {
+                Picasso.get()
+                    .load(url)
+                    .into(image_view_blurred, object : Callback {
                         override fun onSuccess() {
                             image_view_blurred.setBlur(5)
                         }
-                        override fun onError() {}
+                        override fun onError(e: Exception?) {}
                     })
             }
 
@@ -221,14 +227,14 @@ class GameDetailActivity : BaseActivity() {
             val url = dialogView.edit_text_url.text.toString()
             if (url.isNotEmpty()) {
 
-                Picasso.with(this)
+                Picasso.get()
                     .load(url)
                     .error(R.drawable.add_photo)
                     .into(image_view_game, object : Callback {
                         override fun onSuccess() {
                             imageUrl = url
                         }
-                        override fun onError() {
+                        override fun onError(e: Exception?) {
                             imageUrl = null
                             showPopupDialog(resources.getString(R.string.ERROR_IMAGE_URL))
                         }

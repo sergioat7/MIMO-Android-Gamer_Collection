@@ -13,6 +13,7 @@ import es.upsa.mimo.gamercollection.models.PlatformResponse
 import es.upsa.mimo.gamercollection.models.StateResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.android.synthetic.main.game_item.view.*
+import java.lang.Exception
 import java.util.*
 
 class GamesViewHolder(
@@ -37,11 +38,13 @@ class GamesViewHolder(
 
         game.imageUrl?.let { url ->
             itemView.progress_bar_loading.visibility = View.VISIBLE
-            Picasso.with(context).load(url).into(itemView.image_view_game, object : Callback {
+            Picasso.get()
+                .load(url)
+                .into(itemView.image_view_game, object : Callback {
                 override fun onSuccess() {
                     itemView.progress_bar_loading.visibility = View.GONE
                 }
-                override fun onError() {
+                override fun onError(e: Exception?) {
                     itemView.progress_bar_loading.visibility = View.GONE
                 }
             })
