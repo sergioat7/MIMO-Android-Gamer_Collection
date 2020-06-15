@@ -180,6 +180,7 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
 
         edit_text_name.setReadOnly(!enable, inputTypeText, backgroundColor)
         button_add_game.visibility = if(enable) View.VISIBLE else View.GONE
+        button_delete_saga.visibility = if (enable && currentSaga != null) View.VISIBLE else View.GONE
     }
 
     private fun addGame() {

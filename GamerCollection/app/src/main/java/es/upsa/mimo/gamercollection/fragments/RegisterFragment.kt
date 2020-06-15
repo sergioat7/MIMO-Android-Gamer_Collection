@@ -9,7 +9,7 @@ import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.*
 import es.upsa.mimo.gamercollection.network.apiClient.*
-import es.upsa.mimo.gamercollection.persistence.repositories.*
+import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_register.*
 
@@ -21,10 +21,6 @@ class RegisterFragment : BaseFragment() {
     private lateinit var platformAPIClient: PlatformAPIClient
     private lateinit var stateAPIClient: StateAPIClient
     private lateinit var userAPIClient: UserAPIClient
-    private lateinit var formatRepository: FormatRepository
-    private lateinit var genreRepository: GenreRepository
-    private lateinit var platformRepository: PlatformRepository
-    private lateinit var stateRepository: StateRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,10 +38,6 @@ class RegisterFragment : BaseFragment() {
         platformAPIClient = PlatformAPIClient(resources, sharedPrefHandler)
         stateAPIClient = StateAPIClient(resources, sharedPrefHandler)
         userAPIClient = UserAPIClient(resources, sharedPrefHandler)
-        formatRepository = FormatRepository(requireContext())
-        genreRepository = GenreRepository(requireContext())
-        platformRepository = PlatformRepository(requireContext())
-        stateRepository = StateRepository(requireContext())
 
         initializeUI()
     }
@@ -98,10 +90,10 @@ class RegisterFragment : BaseFragment() {
                 platformAPIClient.getPlatforms({ platforms ->
                     stateAPIClient.getStates({ states ->
 
-                        manageFormats(formats)
-                        manageGenres(genres)
-                        managePlatforms(platforms)
-                        manageStates(states)
+                        Constants.manageFormats(requireContext(), formats)
+                        Constants.manageGenres(requireContext(), genres)
+                        Constants.managePlatforms(requireContext(), platforms)
+                        Constants.manageStates(requireContext(), states)
 
                         userData.isLoggedIn = true
                         sharedPrefHandler.storeUserData(userData)
@@ -123,37 +115,5 @@ class RegisterFragment : BaseFragment() {
 
     private fun goToMainView() {
         launchActivity(MainActivity::class.java)
-    }
-
-    private fun manageFormats(formats: List<FormatResponse>) {
-
-        for (format in formats) {
-            formatRepository.insertFormat(format)
-        }
-        formatRepository.removeDisableContent(formats)
-    }
-
-    private fun manageGenres(genres: List<GenreResponse>) {
-
-        for (genre in genres) {
-            genreRepository.insertGenre(genre)
-        }
-        genreRepository.removeDisableContent(genres)
-    }
-
-    private fun managePlatforms(platforms: List<PlatformResponse>) {
-
-        for (platform in platforms) {
-            platformRepository.insertPlatform(platform)
-        }
-        platformRepository.removeDisableContent(platforms)
-    }
-
-    private fun manageStates(states: List<StateResponse>) {
-
-        for (state in states) {
-            stateRepository.insertState(state)
-        }
-        stateRepository.removeDisableContent(states)
     }
 }
