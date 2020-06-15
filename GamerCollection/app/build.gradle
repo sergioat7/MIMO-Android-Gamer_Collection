@@ -67,6 +67,20 @@ android {
         }
     }
 
+    sourceSets {
+        free {
+            java {
+                srcDirs = ['src/free/java']
+            }
+        }
+
+        pro {
+            java {
+                srcDirs = ['src/pro/java']
+            }
+        }
+    }
+
 }
 
 apply plugin: 'kotlin-kapt'
