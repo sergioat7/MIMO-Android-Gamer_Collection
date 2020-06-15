@@ -3,6 +3,7 @@ package es.upsa.mimo.gamercollection.fragments
 import android.os.Bundle
 import android.view.*
 import androidx.recyclerview.widget.LinearLayoutManager
+import es.upsa.mimo.gamercollection.BuildConfig
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.activities.SagaDetailActivity
@@ -72,8 +73,12 @@ class SagasFragment : BaseFragment(), SagasAdapter.OnItemClickListener {
 
     override fun onItemClick(sagaId: Int) {
 
-        val params = mapOf("sagaId" to sagaId)
-        launchActivityWithExtras(SagaDetailActivity::class.java, params)
+        if (BuildConfig.IS_EDITABLE) {
+            val params = mapOf("sagaId" to sagaId)
+            launchActivityWithExtras(SagaDetailActivity::class.java, params)
+        } else {
+            showPopupDialog(resources.getString(R.string.ERROR_EDITION_FREE_VERSION))
+        }
     }
 
     override fun onGameItemClick(gameId: Int) {

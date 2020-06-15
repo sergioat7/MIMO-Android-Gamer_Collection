@@ -147,4 +147,5 @@
     <string name="ERROR_IMAGE_URL">The image could not be loaded</string>
     <string name="CHANNEL_NAME">Release notice</string>
     <string name="CHANNEL_DESCRIPTION">Notice the release day of a pending game</string>
+    <string name="ERROR_EDITION_FREE_VERSION">Edition is not available in free version</string>
 </resources>
