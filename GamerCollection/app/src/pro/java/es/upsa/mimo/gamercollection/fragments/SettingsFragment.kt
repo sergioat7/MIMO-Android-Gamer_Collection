@@ -10,6 +10,10 @@ import androidx.core.content.ContextCompat
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.LandingActivity
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.network.apiClient.FormatAPIClient
+import es.upsa.mimo.gamercollection.network.apiClient.GenreAPIClient
+import es.upsa.mimo.gamercollection.network.apiClient.PlatformAPIClient
+import es.upsa.mimo.gamercollection.network.apiClient.StateAPIClient
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -17,6 +21,10 @@ import kotlinx.android.synthetic.main.fragment_settings.*
 class SettingsFragment : BaseFragment() {
 
     private lateinit var sharedPrefHandler: SharedPreferencesHandler
+    private lateinit var formatAPIClient: FormatAPIClient
+    private lateinit var genreAPIClient: GenreAPIClient
+    private lateinit var platformAPIClient: PlatformAPIClient
+    private lateinit var stateAPIClient: StateAPIClient
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +37,10 @@ class SettingsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         sharedPrefHandler = SharedPreferencesHandler(context)
+        formatAPIClient = FormatAPIClient(resources, sharedPrefHandler)
+        genreAPIClient = GenreAPIClient(resources, sharedPrefHandler)
+        platformAPIClient = PlatformAPIClient(resources, sharedPrefHandler)
+        stateAPIClient = StateAPIClient(resources, sharedPrefHandler)
 
         initializeUI()
     }
@@ -63,6 +75,8 @@ class SettingsFragment : BaseFragment() {
 
     private fun save() {
 
+        showLoading()
+
         val languages = resources.getStringArray(R.array.languages)
         languages.firstOrNull { it == spinner_languages.selectedItem.toString() }?.let {
             val languageId = resources.getStringArray(R.array.languages_ids)[languages.indexOf(it)]
@@ -81,8 +95,31 @@ class SettingsFragment : BaseFragment() {
 
         sharedPrefHandler.setSwipeRefresh(switch_swipe_refresh.isChecked)
 
-        val landing = Intent(requireContext(), LandingActivity::class.java)
-        startActivity(landing)
-        activity?.finish()
+        formatAPIClient.getFormats({ formats ->
+            genreAPIClient.getGenres({ genres ->
+                platformAPIClient.getPlatforms({ platforms ->
+                    stateAPIClient.getStates({ states ->
+
+                        Constants.manageFormats(requireContext(), formats)
+                        Constants.manageGenres(requireContext(), genres)
+                        Constants.managePlatforms(requireContext(), platforms)
+                        Constants.manageStates(requireContext(), states)
+
+                        val landing = Intent(requireContext(), LandingActivity::class.java)
+                        startActivity(landing)
+                        activity?.finish()
+                        hideLoading()
+                    }, {
+                        manageError(it)
+                    })
+                }, {
+                    manageError(it)
+                })
+            }, {
+                manageError(it)
+            })
+        }, {
+            manageError(it)
+        })
     }
 }
