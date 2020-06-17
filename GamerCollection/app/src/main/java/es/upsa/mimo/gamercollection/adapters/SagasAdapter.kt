@@ -3,7 +3,6 @@ package es.upsa.mimo.gamercollection.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import es.upsa.mimo.gamercollection.R
@@ -43,10 +42,10 @@ class SagasAdapter(
 
         val currentItem = items[position]
 
-        if (currentItem is SagaResponse) {
-            return R.layout.saga_item
+        return if (currentItem is SagaResponse) {
+            R.layout.saga_item
         } else if (currentItem is GameResponse) {
-            return R.layout.game_item
+            R.layout.game_item
         } else {
             throw Throwable("Unsupported type")
         }
@@ -61,19 +60,22 @@ class SagasAdapter(
         if (holder is SagasViewHolder) {
 
             val saga = items[position] as SagaResponse
-            holder.fillData(saga, context, expandedIds.contains(saga.id))
+            holder.fillData(saga, context)
+
+            val rotation = if (expandedIds.contains(saga.id)) 0f else 180f
+            holder.rotateArrow(rotation)
 
             holder.itemView.image_view_arrow.setOnClickListener {
                 if (expandedIds.contains(saga.id)) {
 
-                    holder.itemView.image_view_arrow.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_keyboard_arrow_up_white_24dp))
+                    holder.rotateArrow(180f)
                     expandedIds.remove(saga.id)
                     items.removeAll(saga.games)
                     notifyDataSetChanged()
 //                    notifyItemRangeRemoved(position+1, saga.games.size)
                 } else {
 
-                    holder.itemView.image_view_arrow.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_keyboard_arrow_down_white_24dp))
+                    holder.rotateArrow(0f)
                     expandedIds.add(saga.id)
                     val currentPosition = items.indexOf(saga)
                     if (currentPosition+1 < items.size) {
