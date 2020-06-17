@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_games"
+        android:icon="@drawable/bottom_navigation_games_images"
+        android:title="@string/GAMES" />
+
+    <item
+        android:id="@+id/navigation_sagas"
+        android:icon="@drawable/bottom_navigation_sagas_images"
+        android:title="@string/SAGAS" />
+
+    <item
+        android:id="@+id/navigation_ranking"
+        android:icon="@drawable/bottom_navigation_ranking_images"
+        android:title="@string/RANKING" />
+
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/bottom_navigation_profile_images"
+        android:title="@string/PROFILE" />
+
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/bottom_navigation_settings_images"
+        android:title="@string/SETTINGS" />
+
+</menu>
