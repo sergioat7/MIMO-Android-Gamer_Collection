@@ -62,14 +62,14 @@ class SagasAdapter(
             val saga = items[position] as SagaResponse
             holder.fillData(saga, context)
 
-            val rotation = if (expandedIds.contains(saga.id)) 0f else 180f
+            val rotation = if (expandedIds.contains(saga.id)) 0f else -180f
             holder.rotateArrow(rotation)
 
             holder.itemView.image_view_arrow.setOnClickListener {
                 if (expandedIds.contains(saga.id)) {
 
                     val currentPosition = holder.layoutPosition
-                    holder.rotateArrow(180f)
+                    holder.rotateArrow(-180f)
                     expandedIds.remove(saga.id)
                     items.removeAll(saga.games)
                     notifyItemRangeRemoved(currentPosition+1, saga.games.size)
