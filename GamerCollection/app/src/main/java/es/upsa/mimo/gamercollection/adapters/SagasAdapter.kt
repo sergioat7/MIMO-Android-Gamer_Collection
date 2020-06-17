@@ -68,23 +68,22 @@ class SagasAdapter(
             holder.itemView.image_view_arrow.setOnClickListener {
                 if (expandedIds.contains(saga.id)) {
 
+                    val currentPosition = holder.layoutPosition
                     holder.rotateArrow(180f)
                     expandedIds.remove(saga.id)
                     items.removeAll(saga.games)
-                    notifyDataSetChanged()
-//                    notifyItemRangeRemoved(position+1, saga.games.size)
+                    notifyItemRangeRemoved(currentPosition+1, saga.games.size)
                 } else {
 
+                    val currentPosition = holder.layoutPosition
                     holder.rotateArrow(0f)
                     expandedIds.add(saga.id)
-                    val currentPosition = items.indexOf(saga)
                     if (currentPosition+1 < items.size) {
                         items.addAll(currentPosition+1, saga.games.sortedBy { it.releaseDate })
                     } else {
                         items.addAll(saga.games.sortedBy { it.releaseDate })
                     }
-                    notifyDataSetChanged()
-//                    notifyItemRangeInserted(currentPosition+1, saga.games.size)
+                    notifyItemRangeInserted(currentPosition+1, saga.games.size)
                 }
             }
 
