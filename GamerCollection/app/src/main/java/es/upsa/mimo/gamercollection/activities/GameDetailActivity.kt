@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import es.upsa.mimo.gamercollection.BuildConfig
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.base.BaseActivity
 import es.upsa.mimo.gamercollection.adapters.GameDetailPagerAdapter
@@ -30,6 +31,7 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.activity_game_detail.*
 import kotlinx.android.synthetic.main.set_image_dialog.view.*
 import kotlinx.android.synthetic.main.set_rating_dialog.view.*
+import java.lang.Exception
 
 class GameDetailActivity : BaseActivity() {
 
@@ -156,19 +158,24 @@ class GameDetailActivity : BaseActivity() {
             imageUrl?.let { url ->
 
                 progress_bar_loading.visibility = View.VISIBLE
-                Picasso.with(this).load(url).error(R.drawable.add_photo).into(image_view_game, object : Callback {
-                    override fun onSuccess() {
-                        progress_bar_loading.visibility = View.GONE
-                    }
-                    override fun onError() {
-                        progress_bar_loading.visibility = View.GONE
-                    }
+                Picasso.get()
+                    .load(url)
+                    .error(R.drawable.add_photo)
+                    .into(image_view_game, object : Callback {
+                        override fun onSuccess() {
+                            progress_bar_loading.visibility = View.GONE
+                        }
+                        override fun onError(e: Exception?) {
+                            progress_bar_loading.visibility = View.GONE
+                        }
                 })
-                Picasso.with(this).load(url).into(image_view_blurred, object : Callback {
+                Picasso.get()
+                    .load(url)
+                    .into(image_view_blurred, object : Callback {
                         override fun onSuccess() {
                             image_view_blurred.setBlur(5)
                         }
-                        override fun onError() {}
+                        override fun onError(e: Exception?) {}
                     })
             }
 
@@ -220,14 +227,14 @@ class GameDetailActivity : BaseActivity() {
             val url = dialogView.edit_text_url.text.toString()
             if (url.isNotEmpty()) {
 
-                Picasso.with(this)
+                Picasso.get()
                     .load(url)
                     .error(R.drawable.add_photo)
                     .into(image_view_game, object : Callback {
                         override fun onSuccess() {
                             imageUrl = url
                         }
-                        override fun onError() {
+                        override fun onError(e: Exception?) {
                             imageUrl = null
                             showPopupDialog(resources.getString(R.string.ERROR_IMAGE_URL))
                         }
@@ -258,50 +265,85 @@ class GameDetailActivity : BaseActivity() {
 
     private fun editGame(){
 
-        showEditButton(true)
-        showData(currentGame, true)
-        pagerAdapter.showData(currentGame, true)
-        pagerAdapter.enableEdition(true)
+        if (BuildConfig.IS_EDITABLE) {
+            showEditButton(true)
+            showData(currentGame, true)
+            pagerAdapter.showData(currentGame, true)
+            pagerAdapter.enableEdition(true)
+        } else {
+            showPopupDialog(resources.getString(R.string.ERROR_EDITION_FREE_VERSION))
+        }
     }
 
     private fun saveGame() {
 
-        pagerAdapter.getGameData()?.let { newGame ->
+        val name = edit_text_name.text.toString()
+        val platform = platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
+        val score = rating_button.text.toString().toDouble()
+        val gameData = pagerAdapter.getGameData()
 
-            newGame.name = edit_text_name.text.toString()
-            newGame.platform = platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
-            newGame.imageUrl = imageUrl
-            newGame.score = rating_button.text.toString().toDouble()
+        if (name.isEmpty() && platform == null && score == 0.0 && imageUrl == null && gameData == null) return
 
-            showLoading()
-            if (currentGame != null) {
+        val newGame = gameData?.let {
+            it.name = name
+            it.platform = platform
+            it.imageUrl = imageUrl
+            it.score = score
+            it
+        } ?: run {
+            GameResponse(
+                currentGame?.id ?: 0,
+                name,
+                platform,
+                score,
+                null,
+                null,
+                null,
+                null,
+                null,
+                false,
+                null,
+                null,
+                null,
+                null,
+                null,
+                0.0,
+                imageUrl,
+                null,
+                null,
+                null,
+                null,
+                ArrayList())
+        }
 
-                gameAPIClient.setGame(newGame, {
-                    gameRepository.updateGame(it)
+        showLoading()
+        if (currentGame != null) {
 
-                    currentGame = it
-                    cancelEdition()
+            gameAPIClient.setGame(newGame, {
+                gameRepository.updateGame(it)
+
+                currentGame = it
+                cancelEdition()
+                hideLoading()
+            }, {
+                manageError(it)
+            })
+        } else {
+
+            gameAPIClient.createGame(newGame, {
+                gameAPIClient.getGames({ games ->
+
+                    for (game in games) {
+                        gameRepository.insertGame(game)
+                    }
                     hideLoading()
+                    finish()
                 }, {
                     manageError(it)
                 })
-            } else {
-
-                gameAPIClient.createGame(newGame, {
-                    gameAPIClient.getGames({ games ->
-
-                        for (game in games) {
-                            gameRepository.insertGame(game)
-                        }
-                        hideLoading()
-                        finish()
-                    }, {
-                        manageError(it)
-                    })
-                }, {
-                    manageError(it)
-                })
-            }
+            }, {
+                manageError(it)
+            })
         }
     }
 

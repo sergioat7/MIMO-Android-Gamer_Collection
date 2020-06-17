@@ -13,7 +13,7 @@
     <string name="DESCENDING">Descendente</string>
     <string name="YES">Sí</string>
     <string name="NO">No</string>
-    <string name="LOADING">Cargando...</string>
+    <string name="LOADING">Cargando…</string>
     <string name="SETTINGS">Configuración</string>
 
     // Login
@@ -97,7 +97,7 @@
     <string name="PROFILE_DELETE_CONFIRMATION">¿Estás seguro de que quieres borrar tu usuario? Perderás toda la información almacenada sobre los juegos</string>
 
     // Synchronization
-    <string name="SYNC_TITLE">Sincronizando...</string>
+    <string name="SYNC_TITLE">Sincronizando…</string>
     <string name="SYNC_CONFIRMATION">¿Estás seguro de que quieres sincronizar la app? Este proceso puede llevar un tiempo</string>
 
     // Modal filter
@@ -145,4 +145,7 @@
     <string name="ERROR_REGISTRATION_DIFFERENT_PASSWORDS">Las contraseñas no coinciden</string>
     <string name="ERROR_DATABASE">Error en la base de datos. Por favor, inténtalo otra vez</string>
     <string name="ERROR_IMAGE_URL">La imagen no se ha podido cargar</string>
+    <string name="CHANNEL_NAME">Aviso de lanzamiento</string>
+    <string name="CHANNEL_DESCRIPTION">Aviso el día del lanzamiento de un juego pendiente</string>
+    <string name="ERROR_EDITION_FREE_VERSION">La edición no está disponible en la versión gratuita</string>
 </resources>

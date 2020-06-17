@@ -190,7 +190,7 @@ class GameDetailFragment(
         edit_text_video_url.setReadOnly(!enabled, if (enabled) InputType.TYPE_TEXT_VARIATION_URI else InputType.TYPE_NULL, backgroundColor)
         edit_text_observations.setReadOnly(!enabled, inputTypeText, backgroundColor)
 
-        button_delete_game.visibility = if(enabled) View.VISIBLE else View.GONE
+        button_delete_game.visibility = if(enabled && currentGame != null) View.VISIBLE else View.GONE
     }
 
     fun getGameData(): GameResponse? {
