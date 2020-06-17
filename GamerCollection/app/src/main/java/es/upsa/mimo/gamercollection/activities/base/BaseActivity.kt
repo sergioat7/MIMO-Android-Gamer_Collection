@@ -30,7 +30,7 @@ open class BaseActivity : AppCompatActivity() {
 
     fun showLoading() {
 
-        val ft: FragmentTransaction = supportFragmentManager.beginTransaction() ?: return
+        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
         val prev = supportFragmentManager.findFragmentByTag("loadingDialog")
         if (prev != null) {
             ft.remove(prev)

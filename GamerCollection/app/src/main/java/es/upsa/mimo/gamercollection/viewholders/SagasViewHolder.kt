@@ -12,12 +12,15 @@ import kotlinx.android.synthetic.main.saga_item.view.*
 
 class SagasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    fun fillData(saga: SagaResponse, context: Context, expanded: Boolean) {
+    fun fillData(saga: SagaResponse, context: Context) {
 
         itemView.edit_text_name.setText(saga.name)
         itemView.edit_text_name.setReadOnly(true, InputType.TYPE_NULL, 0)
-        val image = if (expanded) R.drawable.ic_keyboard_arrow_down_white_24dp else R.drawable.ic_keyboard_arrow_up_white_24dp
-        itemView.image_view_arrow.setImageDrawable(ContextCompat.getDrawable(context, image))
+        itemView.image_view_arrow.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_keyboard_arrow_down_white_24dp))
         itemView.image_view_arrow.visibility = if (saga.games.isNotEmpty()) View.VISIBLE else View.GONE
+    }
+
+    fun rotateArrow(value: Float) {
+        itemView.image_view_arrow.animate().setDuration(500).rotation(value).start()
     }
 }
