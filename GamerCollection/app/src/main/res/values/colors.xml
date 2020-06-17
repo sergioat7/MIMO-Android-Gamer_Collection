@@ -4,21 +4,17 @@
     <color name="color1Light">#75363636</color>
     <color name="color1SuperLight">#50363636</color>
 
-
     <color name="color2">#FFFFFF</color>
     <color name="color2Light">#75FFFFFF</color>
     <color name="color2SuperLight">#50FFFFFF</color>
-
 
     <color name="color3">#1ABC9C</color>
     <color name="color3Light">#751ABC9C</color>
     <color name="color3SuperLight">#501ABC9C</color>
 
-
     <color name="color4">#EC5565</color>
     <color name="color4Light">#75EC5565</color>
     <color name="color4SuperLight">#50EC5565</color>
-
 
     <color name="color5">#FECD54</color>
     <color name="color5Light">#75FECD54</color>

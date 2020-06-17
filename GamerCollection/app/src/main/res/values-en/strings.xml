@@ -6,19 +6,22 @@
     <string name="CANCEL">Cancel</string>
     <string name="RESET">Reset</string>
     <string name="SAVE">Save</string>
-    <string name="EDIT">Edit</string>
+    <string name="ADD">Add</string>
     <string name="DELETE">Delete</string>
-    <string name="REMOVE">Remove</string>
-    <string name="MAX" translatable="false">Max</string>
     <string name="EMPTY_LIST">The list is empty</string>
     <string name="ASCENDING">Ascending</string>
     <string name="DESCENDING">Descending</string>
+    <string name="YES">Yes</string>
+    <string name="NO">No</string>
+    <string name="LOADING">Loading…</string>
+    <string name="SETTINGS">Settings</string>
 
     // Login
     <string name="LOGIN_USERNAME">Username</string>
     <string name="LOGIN_PASSWORD">Password</string>
     <string name="LOGIN_ACCESS">Access</string>
-    <string name="LOGIN_REGISTER">Don\'t have an account yet? Register here!</string>
+    <string name="LOGIN_NOT_ACCOUNT">Don\'t have an account yet?</string>
+    <string name="LOGIN_REGISTER">Register here!</string>
 
     // Register
     <string name="REGISTRATION">Registration</string>
@@ -34,7 +37,7 @@
     <string name="GAMES_FILTER_BUTTON_TITLE_FINISHED">Finished</string>
     <string name="GAMES_RELEASED">Released</string>
     <string name="GAMES_UNRELEASED">Unreleased</string>
-    <string name="GAMES_NUMBER_TITLE">games</string>
+    <string name="GAMES_NUMBER_TITLE">#%d games</string>
 
     // Game detail
     <string name="GAME_DETAIL">Detail</string>
@@ -94,7 +97,7 @@
     <string name="PROFILE_DELETE_CONFIRMATION">Are you sure you want to delete your user? You will lose all your stored information about the videogames</string>
 
     // Synchronization
-    <string name="SYNC_TITLE">Synchronizing...</string>
+    <string name="SYNC_TITLE">Synchronizing…</string>
     <string name="SYNC_CONFIRMATION">Are you sure you want to sync the app? This process could take a while</string>
 
     // Modal filter
@@ -117,11 +120,23 @@
 
     // Sort picker
     <string name="SORT_TITLE">Order by</string>
-    <string name="SORT_NAME">Name</string>
-    <string name="SORT_PLATFORM">Platform</string>
-    <string name="SORT_RELEASE_DATE">Release date</string>
-    <string name="SORT_PURCHASE_DATE">Purchase date</string>
-    <string name="SORT_PRICE">Price</string>
+
+    // Settings
+    <string name="APP_LANGUAGE">App language</string>
+    <string name="ENGLISH">English</string>
+    <string name="SPANISH">Spanish</string>
+    <string name="GAMES_SORTING_PARAMETER">Games sorting parameter</string>
+    <string name="NAME">Name</string>
+    <string name="PLATFORM">Platform</string>
+    <string name="RELEASE_DATE">Release date</string>
+    <string name="PURCHASE_DATE">Purchase date</string>
+    <string name="PRICE">Price</string>
+    <string name="SWIPE_REFRESH_ENABLED_TITLE">Enable list refresh</string>
+
+    // Notifications
+    <string name="NOTIFICATION_TITLE">%s already on sale</string>
+    <string name="NOTIFICATION_DESCRIPTION">Today, %s, game %s has been released</string>
+    <string name="SUMMARY_NOTIFICATIONS_TITLE">%d new games released</string>
 
     // Errors
     <string name="ERROR_BUTTON_ACCEPT">Accept</string>
@@ -129,4 +144,8 @@
     <string name="ERROR_REGISTRATION_EMPTY_DATA">Username and password can\'t be empty</string>
     <string name="ERROR_REGISTRATION_DIFFERENT_PASSWORDS">Password and repeat don\'t match</string>
     <string name="ERROR_DATABASE">Database error. Please try again</string>
+    <string name="ERROR_IMAGE_URL">The image could not be loaded</string>
+    <string name="CHANNEL_NAME">Release notice</string>
+    <string name="CHANNEL_DESCRIPTION">Notice the release day of a pending game</string>
+    <string name="ERROR_EDITION_FREE_VERSION">Edition is not available in free version</string>
 </resources>

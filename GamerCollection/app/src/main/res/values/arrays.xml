@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pegis">
+        <item>+3</item>
+        <item>+4</item>
+        <item>+6</item>
+        <item>+7</item>
+        <item>+12</item>
+        <item>+16</item>
+        <item>+18</item>
+    </string-array>
+
+    <string-array name="languages">
+        <item>@string/ENGLISH</item>
+        <item>@string/SPANISH</item>
+    </string-array>
+
+    <string-array name="languages_ids">
+        <item>en</item>
+        <item>es</item>
+    </string-array>
+
+    <string-array name="sorting_keys">
+        <item>@string/NAME</item>
+        <item>@string/PLATFORM</item>
+        <item>@string/RELEASE_DATE</item>
+        <item>@string/PURCHASE_DATE</item>
+        <item>@string/PRICE</item>
+    </string-array>
+
+    <string-array name="sorting_keys_ids">
+        <item>name</item>
+        <item>platform</item>
+        <item>releaseDate</item>
+        <item>purchaseDate</item>
+        <item>price</item>
+    </string-array>
+</resources>

@@ -6,19 +6,22 @@
     <string name="CANCEL">Cancelar</string>
     <string name="RESET">Reiniciar</string>
     <string name="SAVE">Guardar</string>
-    <string name="EDIT">Editar</string>
+    <string name="ADD">Añadir</string>
     <string name="DELETE">Borrar</string>
-    <string name="REMOVE">Eliminar</string>
-    <string name="MAX" translatable="false">Max</string>
     <string name="EMPTY_LIST">La lista está vacía</string>
     <string name="ASCENDING">Ascendente</string>
     <string name="DESCENDING">Descendente</string>
+    <string name="YES">Sí</string>
+    <string name="NO">No</string>
+    <string name="LOADING">Cargando…</string>
+    <string name="SETTINGS">Configuración</string>
 
     // Login
     <string name="LOGIN_USERNAME">Usuario</string>
     <string name="LOGIN_PASSWORD">Contraseña</string>
     <string name="LOGIN_ACCESS">Acceder</string>
-    <string name="LOGIN_REGISTER">¿No tienes cuenta? ¡Regístrate!</string>
+    <string name="LOGIN_NOT_ACCOUNT">¿No tienes cuenta?</string>
+    <string name="LOGIN_REGISTER">¡Regístrate!</string>
 
     // Register
     <string name="REGISTRATION">Registro</string>
@@ -34,7 +37,7 @@
     <string name="GAMES_FILTER_BUTTON_TITLE_FINISHED">Terminados</string>
     <string name="GAMES_RELEASED">Lanzado</string>
     <string name="GAMES_UNRELEASED">No lanzado</string>
-    <string name="GAMES_NUMBER_TITLE">juegos</string>
+    <string name="GAMES_NUMBER_TITLE">#%d juegos</string>
 
     // Game detail
     <string name="GAME_DETAIL">Detalle</string>
@@ -94,7 +97,7 @@
     <string name="PROFILE_DELETE_CONFIRMATION">¿Estás seguro de que quieres borrar tu usuario? Perderás toda la información almacenada sobre los juegos</string>
 
     // Synchronization
-    <string name="SYNC_TITLE">Sincronizando...</string>
+    <string name="SYNC_TITLE">Sincronizando…</string>
     <string name="SYNC_CONFIRMATION">¿Estás seguro de que quieres sincronizar la app? Este proceso puede llevar un tiempo</string>
 
     // Modal filter
@@ -117,11 +120,23 @@
 
     // Sort picker
     <string name="SORT_TITLE">Ordenar por</string>
-    <string name="SORT_NAME">Nombre</string>
-    <string name="SORT_PLATFORM">Plataforma</string>
-    <string name="SORT_RELEASE_DATE">Fecha de publicación</string>
-    <string name="SORT_PURCHASE_DATE">Fecha de compra</string>
-    <string name="SORT_PRICE">Precio</string>
+
+    // Settings
+    <string name="APP_LANGUAGE">Idioma de la aplicación</string>
+    <string name="ENGLISH">Inglés</string>
+    <string name="SPANISH">Español</string>
+    <string name="GAMES_SORTING_PARAMETER">Parámetro de ordenación de los juegos</string>
+    <string name="NAME">Nombre</string>
+    <string name="PLATFORM">Plataforma</string>
+    <string name="RELEASE_DATE">Fecha de publicación</string>
+    <string name="PURCHASE_DATE">Fecha de compra</string>
+    <string name="PRICE">Precio</string>
+    <string name="SWIPE_REFRESH_ENABLED_TITLE">Habilitar actualización de lista</string>
+
+    // Notifications
+    <string name="NOTIFICATION_TITLE">%s ya a la venta</string>
+    <string name="NOTIFICATION_DESCRIPTION">Hoy, %s, se ha puesto a la venta el juego %s</string>
+    <string name="SUMMARY_NOTIFICATIONS_TITLE">%d nuevos juegos lanzados</string>
 
     // Errors
     <string name="ERROR_BUTTON_ACCEPT">Aceptar</string>
@@ -129,4 +144,8 @@
     <string name="ERROR_REGISTRATION_EMPTY_DATA">El usuario y la contraseña no pueden estar vacíos</string>
     <string name="ERROR_REGISTRATION_DIFFERENT_PASSWORDS">Las contraseñas no coinciden</string>
     <string name="ERROR_DATABASE">Error en la base de datos. Por favor, inténtalo otra vez</string>
+    <string name="ERROR_IMAGE_URL">La imagen no se ha podido cargar</string>
+    <string name="CHANNEL_NAME">Aviso de lanzamiento</string>
+    <string name="CHANNEL_DESCRIPTION">Aviso el día del lanzamiento de un juego pendiente</string>
+    <string name="ERROR_EDITION_FREE_VERSION">La edición no está disponible en la versión gratuita</string>
 </resources>
