@@ -138,7 +138,7 @@ class GameDetailFragment(
 
             videoUrl = if (game.videoUrl != null && game.videoUrl.isNotEmpty()) game.videoUrl else if (enabled) "" else "-"
 
-            observations = if (game.observations != null && game.observations.isNotEmpty()) game.distributor else if (enabled) "" else "-"
+            observations = if (game.observations != null && game.observations.isNotEmpty()) game.observations else if (enabled) "" else "-"
 
             edit_text_saga.setText(game.saga?.name)
         } ?: run {
