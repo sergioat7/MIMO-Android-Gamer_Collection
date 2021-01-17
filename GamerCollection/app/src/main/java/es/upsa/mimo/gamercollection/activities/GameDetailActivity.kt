@@ -13,7 +13,6 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import es.upsa.mimo.gamercollection.BuildConfig
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.base.BaseActivity
 import es.upsa.mimo.gamercollection.adapters.GameDetailPagerAdapter
@@ -31,7 +30,6 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.activity_game_detail.*
 import kotlinx.android.synthetic.main.set_image_dialog.view.*
 import kotlinx.android.synthetic.main.set_rating_dialog.view.*
-import java.lang.Exception
 
 class GameDetailActivity : BaseActivity() {
 
@@ -265,14 +263,10 @@ class GameDetailActivity : BaseActivity() {
 
     private fun editGame(){
 
-        if (BuildConfig.IS_EDITABLE) {
-            showEditButton(true)
-            showData(currentGame, true)
-            pagerAdapter.showData(currentGame, true)
-            pagerAdapter.enableEdition(true)
-        } else {
-            showPopupDialog(resources.getString(R.string.ERROR_EDITION_FREE_VERSION))
-        }
+        showEditButton(true)
+        showData(currentGame, true)
+        pagerAdapter.showData(currentGame, true)
+        pagerAdapter.enableEdition(true)
     }
 
     private fun saveGame() {

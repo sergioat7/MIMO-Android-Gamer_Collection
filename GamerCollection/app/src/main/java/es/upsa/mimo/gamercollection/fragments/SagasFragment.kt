@@ -73,12 +73,8 @@ class SagasFragment : BaseFragment(), SagasAdapter.OnItemClickListener {
 
     override fun onItemClick(sagaId: Int) {
 
-        if (BuildConfig.IS_EDITABLE) {
-            val params = mapOf("sagaId" to sagaId)
-            launchActivityWithExtras(SagaDetailActivity::class.java, params)
-        } else {
-            showPopupDialog(resources.getString(R.string.ERROR_EDITION_FREE_VERSION))
-        }
+        val params = mapOf("sagaId" to sagaId)
+        launchActivityWithExtras(SagaDetailActivity::class.java, params)
     }
 
     override fun onGameItemClick(gameId: Int) {
