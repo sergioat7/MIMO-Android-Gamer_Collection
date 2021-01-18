@@ -12,11 +12,6 @@
         android:title="@string/SAGAS" />
 
     <item
-        android:id="@+id/navigation_ranking"
-        android:icon="@drawable/bottom_navigation_ranking_images"
-        android:title="@string/RANKING" />
-
-    <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/bottom_navigation_profile_images"
         android:title="@string/PROFILE" />

@@ -88,9 +88,6 @@
     <string name="SAGA_DETAIL_GAMES_TITLE">Juegos</string>
     <string name="SAGA_DETAIL_DELETE_CONFIRMATION">¿Estás seguro de que quieres borrar esta saga? Esta acción no se puede deshacer</string>
 
-    // Ranking
-    <string name="RANKING">Mi Ranking</string>
-
     // Profile
     <string name="PROFILE">Mi Perfil</string>
     <string name="PROFILE_LOGOUT_CONFIRMATION">¿Estás seguro de que quieres salir?</string>

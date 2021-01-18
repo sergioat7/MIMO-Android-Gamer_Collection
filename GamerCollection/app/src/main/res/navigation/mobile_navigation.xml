@@ -18,12 +18,6 @@
         tools:layout="@layout/fragment_sagas" />
 
     <fragment
-        android:id="@+id/navigation_ranking"
-        android:name="es.upsa.mimo.gamercollection.fragments.RankingFragment"
-        android:label="@string/RANKING"
-        tools:layout="@layout/fragment_ranking" />
-
-    <fragment
         android:id="@+id/navigation_profile"
         android:name="es.upsa.mimo.gamercollection.fragments.ProfileFragment"
         android:label="@string/PROFILE"
