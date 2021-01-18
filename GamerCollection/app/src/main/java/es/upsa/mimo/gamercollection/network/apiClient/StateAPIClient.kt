@@ -18,7 +18,7 @@ class StateAPIClient(
     fun getStates(success: (List<StateResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.getStates(headers)
 
         APIClient.sendServer<List<StateResponse>, ErrorResponse>(sharedPrefHandler, resources, request, {

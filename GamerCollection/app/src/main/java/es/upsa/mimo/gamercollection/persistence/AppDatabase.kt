@@ -36,7 +36,7 @@ abstract class AppDatabase : RoomDatabase() {
 
             if (instance == null) {
                 synchronized(AppDatabase::class) {
-                    instance = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, Constants.databaseName).build()
+                    instance = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, Constants.DATABASE_NAME).build()
                 }
             }
             return instance!!

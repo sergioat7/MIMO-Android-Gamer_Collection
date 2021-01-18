@@ -18,7 +18,7 @@ class GenreAPIClient(
     fun getGenres(success: (List<GenreResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.getGenres(headers)
 
         APIClient.sendServer<List<GenreResponse>, ErrorResponse>(sharedPrefHandler, resources, request, {

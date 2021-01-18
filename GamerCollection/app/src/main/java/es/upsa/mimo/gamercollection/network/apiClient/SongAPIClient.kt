@@ -18,8 +18,8 @@ class SongAPIClient(
     fun createSong(gameId: Int, song: SongResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
-        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
+        headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.createSong(headers, gameId, song)
 
         APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
@@ -32,8 +32,8 @@ class SongAPIClient(
     fun deleteSong(gameId: Int, songId: Int, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
-        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
+        headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.deleteSong(headers, gameId, songId)
 
         APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {

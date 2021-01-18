@@ -27,9 +27,9 @@ class GamesViewHolder(
         val state = states.firstOrNull { it.id == game.state }
         state?.let {
             when (it.id) {
-                Constants.pending -> itemView.view_state.setBackgroundColor(ContextCompat.getColor(context, R.color.color4))
-                Constants.inProgress -> itemView.view_state.setBackgroundColor(ContextCompat.getColor(context, R.color.color5))
-                Constants.finished -> itemView.view_state.setBackgroundColor(ContextCompat.getColor(context, R.color.color3))
+                Constants.PENDING_STATE -> itemView.view_state.setBackgroundColor(ContextCompat.getColor(context, R.color.color4))
+                Constants.IN_PROGRESS_STATE -> itemView.view_state.setBackgroundColor(ContextCompat.getColor(context, R.color.color5))
+                Constants.FINISHED_STATE -> itemView.view_state.setBackgroundColor(ContextCompat.getColor(context, R.color.color3))
                 else -> itemView.view_state.setBackgroundColor(Color.TRANSPARENT)
             }
         } ?: run {
@@ -69,7 +69,7 @@ class GamesViewHolder(
             itemView.text_view_platform.visibility = View.GONE
         }
 
-        if (game.releaseDate != null && game.state == Constants.pending) {
+        if (game.releaseDate != null && game.state == Constants.PENDING_STATE) {
 
             if (Date().before(game.releaseDate)) {
                 itemView.image_view_calendar.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.unreleased))

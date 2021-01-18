@@ -22,7 +22,7 @@ class UserAPIClient(
         val loginCredentials = LoginCredentials(username, password)
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.login(headers, loginCredentials)
 
         APIClient.sendServer<LoginResponse, ErrorResponse>(sharedPrefHandler, resources, request, {
@@ -37,7 +37,7 @@ class UserAPIClient(
         val loginCredentials = LoginCredentials(username, password)
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.register(headers, loginCredentials)
 
         APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
@@ -50,8 +50,8 @@ class UserAPIClient(
     fun logout(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
-        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
+        headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.logout(headers)
 
         APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
@@ -65,8 +65,8 @@ class UserAPIClient(
 
         val newPasword = NewPassword(password)
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
-        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
+        headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.updatePassword(headers, newPasword)
 
         APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
@@ -79,8 +79,8 @@ class UserAPIClient(
     fun deleteUser(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
-        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
+        headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.deleteUser(headers)
 
         APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
