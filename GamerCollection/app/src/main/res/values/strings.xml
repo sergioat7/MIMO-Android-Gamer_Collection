@@ -133,6 +133,7 @@
     <string name="RELEASE_DATE">Release date</string>
     <string name="PURCHASE_DATE">Purchase date</string>
     <string name="PRICE">Price</string>
+    <string name="SCORE">Score</string>
     <string name="SWIPE_REFRESH_ENABLED_TITLE">Enable list refresh</string>
 
     // Notifications
