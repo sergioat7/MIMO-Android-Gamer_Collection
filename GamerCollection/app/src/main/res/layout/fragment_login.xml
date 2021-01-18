@@ -30,7 +30,7 @@
             android:layout_marginEnd="40dp"
             android:layout_marginBottom="10dp"
             android:ems="10"
-            android:hint="@string/LOGIN_USERNAME"
+            android:hint="@string/login_username"
             android:inputType="text"
             app:layout_constraintBottom_toTopOf="@+id/edit_text_password"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,7 +45,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
             android:ems="10"
-            android:hint="@string/LOGIN_PASSWORD"
+            android:hint="@string/login_password"
             android:inputType="textPassword"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +60,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
             android:layout_marginBottom="30dp"
-            android:text="@string/LOGIN_ACCESS"
+            android:text="@string/login_access"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -85,7 +85,7 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="5dp"
                 android:fontFamily="@font/roboto_regular"
-                android:text="@string/LOGIN_NOT_ACCOUNT" />
+                android:text="@string/login_not_account" />
 
             <Button
                 android:id="@+id/register_button"
@@ -94,7 +94,7 @@
                 android:layout_gravity="center"
                 android:background="#00000000"
                 android:fontFamily="@font/roboto_regular"
-                android:text="@string/LOGIN_REGISTER"
+                android:text="@string/login_register"
                 android:textAllCaps="false"
                 android:textColor="@color/color5" />
         </LinearLayout>

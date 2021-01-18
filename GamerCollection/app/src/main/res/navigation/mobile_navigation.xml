@@ -8,24 +8,24 @@
     <fragment
         android:id="@+id/navigation_games"
         android:name="es.upsa.mimo.gamercollection.fragments.GamesFragment"
-        android:label="@string/GAMES"
+        android:label="@string/games"
         tools:layout="@layout/fragment_games" />
 
     <fragment
         android:id="@+id/navigation_sagas"
         android:name="es.upsa.mimo.gamercollection.fragments.SagasFragment"
-        android:label="@string/SAGAS"
+        android:label="@string/sagas"
         tools:layout="@layout/fragment_sagas" />
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="es.upsa.mimo.gamercollection.fragments.ProfileFragment"
-        android:label="@string/PROFILE"
+        android:label="@string/profile"
         tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/navigation_settings"
         android:name="es.upsa.mimo.gamercollection.fragments.SettingsFragment"
-        android:label="@string/SETTINGS"
+        android:label="@string/settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>

@@ -77,7 +77,7 @@ class ProfileFragment : BaseFragment() {
 
     private fun logout() {
 
-        showPopupConfirmationDialog(resources.getString(R.string.PROFILE_LOGOUT_CONFIRMATION)) {
+        showPopupConfirmationDialog(resources.getString(R.string.profile_logout_confirmation)) {
 
             showLoading()
             userAPIClient.logout({
@@ -118,7 +118,7 @@ class ProfileFragment : BaseFragment() {
 
     private fun deleteUser() {
 
-        showPopupConfirmationDialog(resources.getString(R.string.PROFILE_DELETE_CONFIRMATION)) {
+        showPopupConfirmationDialog(resources.getString(R.string.profile_delete_confirmation)) {
 
             showLoading()
             userAPIClient.deleteUser({
