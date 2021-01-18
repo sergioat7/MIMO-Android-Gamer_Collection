@@ -76,7 +76,7 @@
             style="@style/WhiteEditText.Bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="@string/GAME_DETAIL_PLACEHOLDER_NAME"
+            android:hint="@string/game_detail_placeholder_name"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -159,13 +159,13 @@
             android:id="@+id/tab_item_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/GAME_DETAIL_TITLE" />
+            android:text="@string/game_detail_title" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tab_item_songs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/GAME_DETAIL_SONGS_TITLE" />
+            android:text="@string/game_detail_songs_title" />
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2

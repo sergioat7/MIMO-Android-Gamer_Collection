@@ -115,7 +115,7 @@ class GameDetailActivity : BaseActivity() {
         platforms = platformRepository.getPlatforms()
         platformValues = ArrayList()
         platformValues.run {
-            this.add(resources.getString((R.string.GAME_DETAIL_SELECT_PLATFORM)))
+            this.add(resources.getString((R.string.game_detail_select_platform)))
             this.addAll(platforms.map { it.name })
         }
         spinner_platforms.adapter = Constants.getAdapter(this, platformValues)
@@ -135,7 +135,7 @@ class GameDetailActivity : BaseActivity() {
         pagerAdapter = GameDetailPagerAdapter(this, 2, currentGame)
         viewPager2.adapter = pagerAdapter
         TabLayoutMediator(tab_layout, viewPager2) { tab, position ->
-            tab.text = if(position == 0) resources.getString(R.string.GAME_DETAIL_TITLE) else resources.getString(R.string.GAME_DETAIL_SONGS_TITLE)
+            tab.text = if(position == 0) resources.getString(R.string.game_detail_title) else resources.getString(R.string.game_detail_songs_title)
         }.attach()
 
         showData(currentGame, currentGame == null)
@@ -234,7 +234,7 @@ class GameDetailActivity : BaseActivity() {
                         }
                         override fun onError(e: Exception?) {
                             imageUrl = null
-                            showPopupDialog(resources.getString(R.string.ERROR_IMAGE_URL))
+                            showPopupDialog(resources.getString(R.string.error_image_url))
                         }
                     })
             }

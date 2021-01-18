@@ -55,12 +55,12 @@ class RegisterFragment : BaseFragment() {
         val repeatPassword = edit_text_repeatPassword.text.toString()
 
         if (username.isEmpty() || password.isEmpty() || repeatPassword.isEmpty()) {
-            showPopupDialog(resources.getString(R.string.ERROR_REGISTRATION_EMPTY_DATA))
+            showPopupDialog(resources.getString(R.string.error_registration_empty_data))
             return
         }
 
         if (password != repeatPassword) {
-            showPopupDialog(resources.getString(R.string.ERROR_REGISTRATION_DIFFERENT_PASSWORDS))
+            showPopupDialog(resources.getString(R.string.error_registration_different_passwords))
             return
         }
 

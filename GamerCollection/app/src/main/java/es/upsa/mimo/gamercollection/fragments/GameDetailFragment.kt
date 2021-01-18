@@ -283,21 +283,21 @@ class GameDetailFragment(
         formats = formatRepository.getFormats()
         formatValues = ArrayList()
         formatValues.run {
-            this.add(resources.getString((R.string.GAME_DETAIL_SELECT_GENRE)))
+            this.add(resources.getString((R.string.game_detail_select_format)))
             this.addAll(formats.map { it.name })
         }
         spinner_formats.adapter = Constants.getAdapter(requireContext(), formatValues)
         genres = genreRepository.getGenres()
         genreValues = ArrayList()
         genreValues.run {
-            this.add(resources.getString((R.string.GAME_DETAIL_SELECT_GENRE)))
+            this.add(resources.getString((R.string.game_detail_select_genre)))
             this.addAll(genres.map { it.name })
         }
         spinner_genres.adapter = Constants.getAdapter(requireContext(), genreValues)
 
         spinner_pegis.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.color2))
         val pegis = ArrayList<String>()
-        pegis.add(resources.getString(R.string.GAME_DETAIL_SELECT_PEGI))
+        pegis.add(resources.getString(R.string.game_detail_select_pegi))
         pegis.addAll(resources.getStringArray(R.array.pegis).toList())
         spinner_pegis.adapter = Constants.getAdapter(requireContext(), pegis)
         edit_text_purchase_date.showDatePicker(requireContext())
@@ -333,7 +333,7 @@ class GameDetailFragment(
     private fun deleteGame() {
 
         currentGame?.let {
-            showPopupConfirmationDialog(resources.getString(R.string.GAME_DETAIL_DELETE_CONFIRMATION)) {
+            showPopupConfirmationDialog(resources.getString(R.string.game_detail_delete_confirmation)) {
 
                 showLoading()
                 gameAPIClient.deleteGame(it.id, {
