@@ -109,9 +109,9 @@ class GameDetailFragment(
             }
 
             game.state?.let {
-                button_pending.isSelected = it == Constants.pending
-                button_in_progress.isSelected = it == Constants.inProgress
-                button_finished.isSelected = it == Constants.finished
+                button_pending.isSelected = it == Constants.PENDING_STATE
+                button_in_progress.isSelected = it == Constants.IN_PROGRESS_STATE
+                button_finished.isSelected = it == Constants.FINISHED_STATE
             }
 
             distributor = if (game.distributor != null && game.distributor.isNotEmpty()) game.distributor else if (enabled) "" else "-"
@@ -204,7 +204,7 @@ class GameDetailFragment(
         val goty = radio_button_yes.isChecked
         val format = formats.firstOrNull { it.name == spinner_formats.selectedItem.toString() }?.id
         val genre = genres.firstOrNull { it.name == spinner_genres.selectedItem.toString() }?.id
-        val state = if(button_pending.isSelected) Constants.pending else if (button_in_progress.isSelected) Constants.inProgress else if (button_finished.isSelected) Constants.finished else null
+        val state = if(button_pending.isSelected) Constants.PENDING_STATE else if (button_in_progress.isSelected) Constants.IN_PROGRESS_STATE else if (button_finished.isSelected) Constants.FINISHED_STATE else null
         val purchaseDate = Constants.stringToDate(edit_text_purchase_date.text.toString(), sharedPrefHandler)
         val purchaseLocation = edit_text_purchase_location.text.toString()
         val price = try { edit_text_price.text.toString().toDouble() } catch (e: NumberFormatException) { 0.0 }

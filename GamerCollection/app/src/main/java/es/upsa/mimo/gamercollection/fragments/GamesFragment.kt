@@ -139,7 +139,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             button_in_progress.isSelected = false
             button_finished.isSelected = false
             swipe_refresh_layout.isEnabled = !it.isSelected && sharedPrefHandler.getSwipeRefresh()
-            state = if (it.isSelected) Constants.pending else null
+            state = if (it.isSelected) Constants.PENDING_STATE else null
             getContent(state, sortKey, sortAscending, currentFilters)
         }
         button_in_progress.setOnClickListener {
@@ -148,7 +148,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             it.isSelected = !it.isSelected
             button_finished.isSelected = false
             swipe_refresh_layout.isEnabled = !it.isSelected && sharedPrefHandler.getSwipeRefresh()
-            state = if (it.isSelected) Constants.inProgress else null
+            state = if (it.isSelected) Constants.IN_PROGRESS_STATE else null
             getContent(state, sortKey, sortAscending, currentFilters)
         }
         button_finished.setOnClickListener {
@@ -157,7 +157,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             button_in_progress.isSelected = false
             it.isSelected = !it.isSelected
             swipe_refresh_layout.isEnabled = !it.isSelected && sharedPrefHandler.getSwipeRefresh()
-            state = if (it.isSelected) Constants.finished else null
+            state = if (it.isSelected) Constants.FINISHED_STATE else null
             getContent(state, sortKey, sortAscending, currentFilters)
         }
 
@@ -179,9 +179,9 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
         var queryString = "SELECT * FROM Game"
 
         var queryConditions = when(state) {
-            Constants.pending -> " WHERE state == '${Constants.pending}' AND "
-            Constants.inProgress -> " WHERE state == '${Constants.inProgress}' AND "
-            Constants.finished -> " WHERE state == '${Constants.finished}' AND "
+            Constants.PENDING_STATE -> " WHERE state == '${Constants.PENDING_STATE}' AND "
+            Constants.IN_PROGRESS_STATE -> " WHERE state == '${Constants.IN_PROGRESS_STATE}' AND "
+            Constants.FINISHED_STATE -> " WHERE state == '${Constants.FINISHED_STATE}' AND "
             else -> ""
         }
 
@@ -288,9 +288,9 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
     private fun setGamesCount(games: List<GameResponse>) {
 
         val filteredGames = games.mapNotNull { it.state }
-        val pendingGamesCount = filteredGames.filter { it == Constants.pending }.size
-        val inProgressGamesCount = filteredGames.filter { it == Constants.inProgress }.size
-        val finishedGamesCount = filteredGames.filter { it == Constants.finished }.size
+        val pendingGamesCount = filteredGames.filter { it == Constants.PENDING_STATE }.size
+        val inProgressGamesCount = filteredGames.filter { it == Constants.IN_PROGRESS_STATE }.size
+        val finishedGamesCount = filteredGames.filter { it == Constants.FINISHED_STATE }.size
 
         text_view_games_number.text = resources.getString(R.string.GAMES_NUMBER_TITLE, games.size)
         button_pending.text_view_subtitle.text = "$pendingGamesCount"
@@ -312,7 +312,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             if (!sharedPrefHandler.notificationLaunched(game.id)) {
 
                 notifications[game.id] =
-                    NotificationCompat.Builder(requireContext(), Constants.channelId)
+                    NotificationCompat.Builder(requireContext(), Constants.CHANNEL_ID)
                         .setSmallIcon(R.drawable.app_icon)
                         .setContentTitle(resources.getString(R.string.NOTIFICATION_TITLE, game.name))
                         .setContentText(resources.getString(R.string.NOTIFICATION_DESCRIPTION, Constants.dateToString(Date(), sharedPrefHandler), game.name))
@@ -320,7 +320,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
                         .setCategory(NotificationCompat.CATEGORY_REMINDER)
-                        .setGroup(Constants.channelGroup)
+                        .setGroup(Constants.CHANNEL_GROUP)
                         .build()
                 gameNames += game.name + ", "
             }
@@ -328,7 +328,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
         gameNames = gameNames.dropLast(2)
 
 
-        val summaryNotification = NotificationCompat.Builder(requireContext(), Constants.channelId)
+        val summaryNotification = NotificationCompat.Builder(requireContext(), Constants.CHANNEL_ID)
             .setContentTitle(resources.getString(R.string.SUMMARY_NOTIFICATIONS_TITLE, games.size))
             .setContentText(gameNames)
             .setSmallIcon(R.drawable.app_icon)
@@ -337,7 +337,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
                     .setBigContentTitle(resources.getString(R.string.SUMMARY_NOTIFICATIONS_TITLE, games.size))
                     .setSummaryText(gameNames)
             )
-            .setGroup(Constants.channelGroup)
+            .setGroup(Constants.CHANNEL_GROUP)
             .setGroupSummary(true)
             .build()
 

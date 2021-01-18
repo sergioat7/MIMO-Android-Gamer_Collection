@@ -41,7 +41,7 @@ class APIClient {
         fun getRetrofit(sharedPrefHandler: SharedPreferencesHandler): Retrofit {
 
             return Retrofit.Builder()
-                .baseUrl(Constants.baseEndpoint)
+                .baseUrl(Constants.BASE_ENDPOINT)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson(sharedPrefHandler)))
                 .build()
