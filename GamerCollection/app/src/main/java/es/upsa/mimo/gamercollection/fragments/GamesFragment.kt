@@ -269,7 +269,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
 
         val sortParam = sortKey ?: sharedPrefHandler.getSortingKey()
         val sortOrder = if(sortAscending) "ASC"  else "DESC"
-        queryString += " ORDER BY $sortParam $sortOrder"
+        queryString += " ORDER BY $sortParam $sortOrder, name ASC"
 
         val query = SimpleSQLiteQuery(queryString)
         val games = gameRepository.getGames(query)

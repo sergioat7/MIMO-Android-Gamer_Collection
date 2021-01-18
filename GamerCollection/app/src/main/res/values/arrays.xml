@@ -26,6 +26,7 @@
         <item>@string/RELEASE_DATE</item>
         <item>@string/PURCHASE_DATE</item>
         <item>@string/PRICE</item>
+        <item>@string/SCORE</item>
     </string-array>
 
     <string-array name="sorting_keys_ids">
@@ -34,5 +35,6 @@
         <item>releaseDate</item>
         <item>purchaseDate</item>
         <item>price</item>
+        <item>score</item>
     </string-array>
 </resources>
