@@ -41,7 +41,7 @@
                     <TextView
                         android:id="@+id/text_view_platform_title"
                         style="@style/WhiteTextView.Bold.ModalFilterTitle"
-                        android:text="@string/MODAL_FILTER_PLATFORM"
+                        android:text="@string/modal_filter_platform"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -67,7 +67,7 @@
                     <TextView
                         android:id="@+id/text_view_genre_title"
                         style="@style/WhiteTextView.Bold.ModalFilterTitle"
-                        android:text="@string/MODAL_FILTER_GENRE"
+                        android:text="@string/modal_filter_genre"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/scroll_platforms" />
 
@@ -93,7 +93,7 @@
                     <TextView
                         android:id="@+id/text_view_format_title"
                         style="@style/WhiteTextView.Bold.ModalFilterTitle"
-                        android:text="@string/MODAL_FILTER_FORMAT"
+                        android:text="@string/modal_filter_format"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/scroll_genres" />
 
@@ -118,7 +118,7 @@
                     <TextView
                         android:id="@+id/text_view_score_title"
                         style="@style/WhiteTextView.Bold.ModalFilterTitle"
-                        android:text="@string/MODAL_FILTER_SCORE"
+                        android:text="@string/modal_filter_score"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/scroll_formats" />
 
@@ -149,7 +149,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:text="@string/MIN" />
+                            android:text="@string/min" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -179,13 +179,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:text="@string/MAX" />
+                            android:text="@string/max" />
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/text_view_release_date_title"
                         style="@style/WhiteTextView.Bold.ModalFilterTitle"
-                        android:text="@string/MODAL_FILTER_RELEASE_DATE"
+                        android:text="@string/modal_filter_release_date"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/layout_max_rating" />
 
@@ -204,7 +204,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="@string/MIN" />
+                            android:hint="@string/min" />
 
                         <EditText
                             android:id="@+id/edit_text_release_date_max"
@@ -212,13 +212,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="@string/MAX" />
+                            android:hint="@string/max" />
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/text_view_purchase_date_title"
                         style="@style/WhiteTextView.Bold.ModalFilterTitle"
-                        android:text="@string/MODAL_FILTER_PURCHASE_DATE"
+                        android:text="@string/modal_filter_purchase_date"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linear_layout_release_dates" />
 
@@ -237,7 +237,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="@string/MIN" />
+                            android:hint="@string/min" />
 
                         <EditText
                             android:id="@+id/edit_text_purchase_date_max"
@@ -245,13 +245,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="@string/MAX" />
+                            android:hint="@string/max" />
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/text_view_price_title"
                         style="@style/WhiteTextView.Bold.ModalFilterTitle"
-                        android:text="@string/MODAL_FILTER_PRICE"
+                        android:text="@string/modal_filter_price"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linear_layout_purchase_dates" />
 
@@ -271,7 +271,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:inputType="numberDecimal"
-                            android:hint="@string/MIN" />
+                            android:hint="@string/min" />
 
                         <EditText
                             android:id="@+id/edit_text_price_max"
@@ -280,13 +280,13 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:inputType="numberDecimal"
-                            android:hint="@string/MAX" />
+                            android:hint="@string/max" />
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/text_view_goty_title"
                         style="@style/WhiteTextView.Bold.ModalFilterTitle"
-                        android:text="@string/MODAL_FILTER_GOTY"
+                        android:text="@string/modal_filter_goty"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linear_layout_prices" />
 
@@ -306,7 +306,7 @@
                             android:layout_weight="1"
                             android:buttonTint="@color/color2"
                             android:checked="true"
-                            android:text="@string/NO"
+                            android:text="@string/no"
                             android:textColor="@color/color2" />
 
                         <RadioButton
@@ -315,14 +315,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:buttonTint="@color/color2"
-                            android:text="@string/YES"
+                            android:text="@string/yes"
                             android:textColor="@color/color2" />
                     </RadioGroup>
 
                     <TextView
                         android:id="@+id/text_view_loaned_title"
                         style="@style/WhiteTextView.Bold.ModalFilterTitle"
-                        android:text="@string/MODAL_FILTER_LOANED"
+                        android:text="@string/modal_filter_loaned"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/radio_group_goty" />
 
@@ -342,7 +342,7 @@
                             android:layout_weight="1"
                             android:buttonTint="@color/color2"
                             android:checked="true"
-                            android:text="@string/NO"
+                            android:text="@string/no"
                             android:textColor="@color/color2" />
 
                         <RadioButton
@@ -351,14 +351,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:buttonTint="@color/color2"
-                            android:text="@string/YES"
+                            android:text="@string/yes"
                             android:textColor="@color/color2" />
                     </RadioGroup>
 
                     <TextView
                         android:id="@+id/text_view_saga_title"
                         style="@style/WhiteTextView.Bold.ModalFilterTitle"
-                        android:text="@string/MODAL_FILTER_HAS_SAGA"
+                        android:text="@string/modal_filter_has_saga"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/radio_group_loaned" />
 
@@ -378,7 +378,7 @@
                             android:layout_weight="1"
                             android:buttonTint="@color/color2"
                             android:checked="true"
-                            android:text="@string/NO"
+                            android:text="@string/no"
                             android:textColor="@color/color2" />
 
                         <RadioButton
@@ -387,14 +387,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:buttonTint="@color/color2"
-                            android:text="@string/YES"
+                            android:text="@string/yes"
                             android:textColor="@color/color2" />
                     </RadioGroup>
 
                     <TextView
                         android:id="@+id/text_view_songs_title"
                         style="@style/WhiteTextView.Bold.ModalFilterTitle"
-                        android:text="@string/MODAL_FILTER_HAS_SONGS"
+                        android:text="@string/modal_filter_has_songs"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/radio_group_saga" />
 
@@ -416,7 +416,7 @@
                             android:layout_weight="1"
                             android:buttonTint="@color/color2"
                             android:checked="true"
-                            android:text="@string/NO"
+                            android:text="@string/no"
                             android:textColor="@color/color2" />
 
                         <RadioButton
@@ -425,7 +425,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:buttonTint="@color/color2"
-                            android:text="@string/YES"
+                            android:text="@string/yes"
                             android:textColor="@color/color2" />
                     </RadioGroup>
 
@@ -460,7 +460,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/color4"
-                    android:text="@string/CANCEL" />
+                    android:text="@string/cancel" />
 
                 <View
                     android:id="@+id/line_view_left"
@@ -475,7 +475,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/color5"
-                    android:text="@string/RESET" />
+                    android:text="@string/reset" />
 
                 <View
                     android:id="@+id/line_view_right"
@@ -490,7 +490,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/color3"
-                    android:text="@string/SAVE" />
+                    android:text="@string/save" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

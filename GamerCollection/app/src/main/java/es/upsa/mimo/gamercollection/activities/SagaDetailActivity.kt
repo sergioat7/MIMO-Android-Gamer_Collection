@@ -12,7 +12,7 @@ class SagaDetailActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setTitle(R.string.SAGA_DETAIL)
+        setTitle(R.string.saga_detail)
         val sagaId = intent.getIntExtra("sagaId", 0)
         setContentView(R.layout.activity_saga_detail)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

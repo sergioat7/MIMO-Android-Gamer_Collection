@@ -44,7 +44,7 @@ private fun getPicker(editText: EditText, context: Context): DatePickerDialog {
 
         val newDay = if (day < 10) "0${day}" else day.toString()
         val newMonth = if (month < 9) "0${month+1}" else (month+1).toString()
-        val language = PreferenceManager.getDefaultSharedPreferences(context).getString("language", Locale.getDefault().language) ?: Locale.getDefault().language
+        val language = PreferenceManager.getDefaultSharedPreferences(context).getString("language", Locale.getDefault().language) ?: Locale.getDefault().language//TODO: modificar como en ReaderCollection
         val date = if (language == "es") "${newDay}-${newMonth}-${year}" else "${newMonth}-${newDay}-${year}"
         editText.setText(date)
     }, currentYear, currentMonth, currentDay)

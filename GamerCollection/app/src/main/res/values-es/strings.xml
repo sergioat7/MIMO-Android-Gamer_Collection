@@ -2,150 +2,139 @@
 <resources>
 
     // General
-    <string name="ACCEPT">Aceptar</string>
-    <string name="CANCEL">Cancelar</string>
-    <string name="RESET">Reiniciar</string>
-    <string name="SAVE">Guardar</string>
-    <string name="ADD">Añadir</string>
-    <string name="DELETE">Borrar</string>
-    <string name="EMPTY_LIST">La lista está vacía</string>
-    <string name="ASCENDING">Ascendente</string>
-    <string name="DESCENDING">Descendente</string>
-    <string name="YES">Sí</string>
-    <string name="NO">No</string>
-    <string name="LOADING">Cargando…</string>
-    <string name="SETTINGS">Configuración</string>
+    <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="reset">Reiniciar</string>
+    <string name="save">Guardar</string>
+    <string name="add">Añadir</string>
+    <string name="delete">Borrar</string>
+    <string name="empty_list">La lista está vacía</string>
+    <string name="ascending">Ascendente</string>
+    <string name="descending">Descendente</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="loading">Cargando…</string>
 
     // Login
-    <string name="LOGIN_USERNAME">Usuario</string>
-    <string name="LOGIN_PASSWORD">Contraseña</string>
-    <string name="LOGIN_ACCESS">Acceder</string>
-    <string name="LOGIN_NOT_ACCOUNT">¿No tienes cuenta?</string>
-    <string name="LOGIN_REGISTER">¡Regístrate!</string>
+    <string name="login_username">Usuario</string>
+    <string name="login_password">Contraseña</string>
+    <string name="login_access">Acceder</string>
+    <string name="login_not_account">¿No tienes cuenta?</string>
+    <string name="login_register">¡Regístrate!</string>
 
     // Register
-    <string name="REGISTRATION">Registro</string>
-    <string name="REGISTRATION_USERNAME">Usuario</string>
-    <string name="REGISTRATION_PASSWORD">Contraseña</string>
-    <string name="REGISTRATION_REPEAT_PASSWORD">Repetir contraseña</string>
-    <string name="REGISTER">Registrarse</string>
+    <string name="registration_username">Usuario</string>
+    <string name="registration_password">Contraseña</string>
+    <string name="registration_repeat_password">Repetir contraseña</string>
+    <string name="register">Registrarse</string>
 
     // Games
-    <string name="GAMES">Mis Juegos</string>
-    <string name="GAMES_FILTER_BUTTON_TITLE_PENDING">Pendientes</string>
-    <string name="GAMES_FILTER_BUTTON_TITLE_IN_PROGRESS">En Progreso</string>
-    <string name="GAMES_FILTER_BUTTON_TITLE_FINISHED">Terminados</string>
-    <string name="GAMES_RELEASED">Lanzado</string>
-    <string name="GAMES_UNRELEASED">No lanzado</string>
-    <string name="GAMES_NUMBER_TITLE">#%d juegos</string>
+    <string name="games">Mis Juegos</string>
+    <string name="games_filter_button_title_pending">Pendientes</string>
+    <string name="games_filter_button_title_in_progress">En Progreso</string>
+    <string name="games_filter_button_title_finished">Terminados</string>
+    <string name="games_number_title">#%d juegos</string>
 
     // Game detail
-    <string name="GAME_DETAIL">Detalle</string>
-    <string name="GAME_DETAIL_PLACEHOLDER_NAME">Añade un nombre</string>
-    <string name="GAME_DETAIL_IMAGE_MODAL_TITLE">Introduce un enlace válido</string>
-    <string name="GAME_DETAIL_PLATFORM">Plataforma</string>
-    <string name="GAME_DETAIL_SELECT_PLATFORM">Selecciona una plataforma</string>
-    <string name="GAME_DETAIL_GENRE">Género</string>
-    <string name="GAME_DETAIL_SELECT_GENRE">Selecciona un género</string>
-    <string name="GAME_DETAIL_FORMAT">Formato</string>
-    <string name="GAME_DETAIL_SELECT_FORMAT">Selecciona un formato</string>
-    <string name="GAME_DETAIL_RELEASE_DATE">Fecha de publicación</string>
-    <string name="GAME_DETAIL_SELECT_DATE">Selecciona una fecha</string>
-    <string name="GAME_DETAIL_BUTTON_TITLE_PENDING">Pendiente</string>
-    <string name="GAME_DETAIL_BUTTON_TITLE_IN_PROGRESS">En Progreso</string>
-    <string name="GAME_DETAIL_BUTTON_TITLE_FINISHED">Terminado</string>
-    <string name="GAME_DETAIL_TITLE">Detalles</string>
-    <string name="GAME_DETAIL_DISTRIBUTOR">Distribuidor</string>
-    <string name="GAME_DETAIL_PLACEHOLDER_DISTRIBUTOR">Añade el distribuidor</string>
-    <string name="GAME_DETAIL_DEVELOPER">Desarrollador</string>
-    <string name="GAME_DETAIL_PLACEHOLDER_DEVELOPER">Añade el desarrollador</string>
-    <string name="GAME_DETAIL_PEGI">Pegi</string>
-    <string name="GAME_DETAIL_SELECT_PEGI">Selecciona una categoría</string>
-    <string name="GAME_DETAIL_PLAYERS">Nº Jugadores</string>
-    <string name="GAME_DETAIL_PLACEHOLDER_PLAYERS">Añade el nº de jugadores</string>
-    <string name="GAME_DETAIL_PRICE">Precio</string>
-    <string name="GAME_DETAIL_PLACEHOLDER_PRICE">Añade el precio</string>
-    <string name="GAME_DETAIL_PURCHASE_DATE">Fecha de compra</string>
-    <string name="GAME_DETAIL_PURCHASE_LOCATION">Lugar de compra</string>
-    <string name="GAME_DETAIL_PLACEHOLDER_PURCHASE_LOCATION">Añade el lugar de compra</string>
-    <string name="GAME_DETAIL_GOTY">Juego del año (GOTY)</string>
-    <string name="GAME_DETAIL_LOANED_TO">Prestado a</string>
-    <string name="GAME_DETAIL_PLACEHOLDER_LOANED_TO">Añade un usuario</string>
-    <string name="GAME_DETAIL_VIDEO_URL">Enlace de vídeo</string>
-    <string name="GAME_DETAIL_PLACEHOLDER_VIDEO_URL">Añade un enlace</string>
-    <string name="GAME_DETAIL_OBSERVATIONS">Observaciones</string>
-    <string name="GAME_DETAIL_PLACEHOLDER_OBSERVATIONS">Añade unas observaciones</string>
-    <string name="GAME_DETAIL_SAGA">Saga</string>
-    <string name="GAME_DETAIL_SONGS_TITLE">Canciones</string>
-    <string name="GAME_DETAIL_DELETE_CONFIRMATION">¿Estás seguro de que quieres borrar este juego? Esta acción no se puede deshacer</string>
+    <string name="game_detail_placeholder_name">Añade un nombre</string>
+    <string name="game_detail_image_modal_title">Introduce un enlace válido</string>
+    <string name="game_detail_select_platform">Selecciona una plataforma</string>
+    <string name="game_detail_genre">Género</string>
+    <string name="game_detail_select_genre">Selecciona un género</string>
+    <string name="game_detail_format">Formato</string>
+    <string name="game_detail_select_format">Selecciona un formato</string>
+    <string name="game_detail_release_date">Fecha de publicación</string>
+    <string name="game_detail_select_date">Selecciona una fecha</string>
+    <string name="game_detail_button_title_pending">Pendiente</string>
+    <string name="game_detail_button_title_in_progress">En Progreso</string>
+    <string name="game_detail_button_title_finished">Terminado</string>
+    <string name="game_detail_title">Detalles</string>
+    <string name="game_detail_distributor">Distribuidor</string>
+    <string name="game_detail_placeholder_distributor">Añade el distribuidor</string>
+    <string name="game_detail_developer">Desarrollador</string>
+    <string name="game_detail_placeholder_developer">Añade el desarrollador</string>
+    <string name="game_detail_pegi">Pegi</string>
+    <string name="game_detail_select_pegi">Selecciona una categoría</string>
+    <string name="game_detail_players">Nº Jugadores</string>
+    <string name="game_detail_placeholder_players">Añade el nº de jugadores</string>
+    <string name="game_detail_price">Precio</string>
+    <string name="game_detail_placeholder_price">Añade el precio</string>
+    <string name="game_detail_purchase_date">Fecha de compra</string>
+    <string name="game_detail_purchase_location">Lugar de compra</string>
+    <string name="game_detail_placeholder_purchase_location">Añade el lugar de compra</string>
+    <string name="game_detail_goty">Juego del año (GOTY)</string>
+    <string name="game_detail_loaned_to">Prestado a</string>
+    <string name="game_detail_placeholder_loaned_to">Añade un usuario</string>
+    <string name="game_detail_video_url">Enlace de vídeo</string>
+    <string name="game_detail_placeholder_video_url">Añade un enlace</string>
+    <string name="game_detail_observations">Observaciones</string>
+    <string name="game_detail_placeholder_observations">Añade unas observaciones</string>
+    <string name="game_detail_saga">Saga</string>
+    <string name="game_detail_songs_title">Canciones</string>
+    <string name="game_detail_delete_confirmation">¿Estás seguro de que quieres borrar este juego? Esta acción no se puede deshacer</string>
 
     // Sagas
-    <string name="SAGAS">Mis Sagas</string>
+    <string name="sagas">Mis Sagas</string>
 
     // Saga detail
-    <string name="SAGA_DETAIL">Detalle</string>
-    <string name="SAGA_DETAIL_PLACEHOLDER_NAME">Añade un nombre</string>
-    <string name="SAGA_DETAIL_GAMES_TITLE">Juegos</string>
-    <string name="SAGA_DETAIL_DELETE_CONFIRMATION">¿Estás seguro de que quieres borrar esta saga? Esta acción no se puede deshacer</string>
-
-    // Ranking
-    <string name="RANKING">Mi Ranking</string>
+    <string name="saga_detail">Detalle</string>
+    <string name="saga_detail_placeholder_name">Añade un nombre</string>
+    <string name="saga_detail_games_title">Juegos</string>
+    <string name="saga_detail_delete_confirmation">¿Estás seguro de que quieres borrar esta saga? Esta acción no se puede deshacer</string>
 
     // Profile
-    <string name="PROFILE">Mi Perfil</string>
-    <string name="PROFILE_LOGOUT_CONFIRMATION">¿Estás seguro de que quieres salir?</string>
-    <string name="PROFILE_DELETE_CONFIRMATION">¿Estás seguro de que quieres borrar tu usuario? Perderás toda la información almacenada sobre los juegos</string>
+    <string name="profile">Mi Perfil</string>
+    <string name="profile_logout_confirmation">¿Estás seguro de que quieres salir?</string>
+    <string name="profile_delete_confirmation">¿Estás seguro de que quieres borrar tu usuario? Perderás toda la información almacenada sobre los juegos</string>
 
     // Synchronization
-    <string name="SYNC_TITLE">Sincronizando…</string>
-    <string name="SYNC_CONFIRMATION">¿Estás seguro de que quieres sincronizar la app? Este proceso puede llevar un tiempo</string>
+    <string name="sync_title">Sincronizando…</string>
+    <string name="sync_confirmation">¿Estás seguro de que quieres sincronizar la app? Este proceso puede llevar un tiempo</string>
 
     // Modal filter
-    <string name="MODAL_FILTER_PLATFORM">Plataforma</string>
-    <string name="MODAL_FILTER_GENRE">Género</string>
-    <string name="MODAL_FILTER_FORMAT">Formato</string>
-    <string name="MODAL_FILTER_SCORE">Puntuación</string>
-    <string name="MODAL_FILTER_RELEASE_DATE">Fecha de publicación</string>
-    <string name="MODAL_FILTER_PURCHASE_DATE">Fecha de compra</string>
-    <string name="MODAL_FILTER_PRICE">Precio</string>
-    <string name="MODAL_FILTER_GOTY">GOTY</string>
-    <string name="MODAL_FILTER_LOANED">Prestado</string>
-    <string name="MODAL_FILTER_HAS_SAGA">Tiene saga</string>
-    <string name="MODAL_FILTER_HAS_SONGS">Tiene canciones</string>
+    <string name="modal_filter_platform">Plataforma</string>
+    <string name="modal_filter_genre">Género</string>
+    <string name="modal_filter_format">Formato</string>
+    <string name="modal_filter_score">Puntuación</string>
+    <string name="modal_filter_release_date">Fecha de publicación</string>
+    <string name="modal_filter_purchase_date">Fecha de compra</string>
+    <string name="modal_filter_price">Precio</string>
+    <string name="modal_filter_goty">GOTY</string>
+    <string name="modal_filter_loaned">Prestado</string>
+    <string name="modal_filter_has_saga">Tiene saga</string>
+    <string name="modal_filter_has_songs">Tiene canciones</string>
 
     // Modal song
-    <string name="MODAL_SONG_PLACEHOLDER_NAME">Añade un nombre</string>
-    <string name="MODAL_SONG_PLACEHOLDER_SINGER">Añade un artista</string>
-    <string name="MODAL_SONG_PLACEHOLDER_URL">Añade un enlace</string>
+    <string name="modal_song_placeholder_name">Añade un nombre</string>
+    <string name="modal_song_placeholder_singer">Añade un artista</string>
+    <string name="modal_song_placeholder_url">Añade un enlace</string>
 
     // Sort picker
-    <string name="SORT_TITLE">Ordenar por</string>
+    <string name="sort_title">Ordenar por</string>
 
     // Settings
-    <string name="APP_LANGUAGE">Idioma de la aplicación</string>
-    <string name="ENGLISH">Inglés</string>
-    <string name="SPANISH">Español</string>
-    <string name="GAMES_SORTING_PARAMETER">Parámetro de ordenación de los juegos</string>
-    <string name="NAME">Nombre</string>
-    <string name="PLATFORM">Plataforma</string>
-    <string name="RELEASE_DATE">Fecha de publicación</string>
-    <string name="PURCHASE_DATE">Fecha de compra</string>
-    <string name="PRICE">Precio</string>
-    <string name="SWIPE_REFRESH_ENABLED_TITLE">Habilitar actualización de lista</string>
+    <string name="app_language">Idioma de la aplicación</string>
+    <string name="english">Inglés</string>
+    <string name="spanish">Español</string>
+    <string name="games_sorting_parameter">Parámetro de ordenación de los juegos</string>
+    <string name="name">Nombre</string>
+    <string name="platform">Plataforma</string>
+    <string name="release_date">Fecha de publicación</string>
+    <string name="purchase_date">Fecha de compra</string>
+    <string name="price">Precio</string>
+    <string name="score">Puntuación</string>
+    <string name="swipe_refresh_enabled_title">Habilitar actualización de lista</string>
 
     // Notifications
-    <string name="NOTIFICATION_TITLE">%s ya a la venta</string>
-    <string name="NOTIFICATION_DESCRIPTION">Hoy, %s, se ha puesto a la venta el juego %s</string>
-    <string name="SUMMARY_NOTIFICATIONS_TITLE">%d nuevos juegos lanzados</string>
+    <string name="channel_name">Aviso de lanzamiento</string>
+    <string name="channel_description">Aviso el día del lanzamiento de un juego pendiente</string>
+    <string name="notification_title">%s ya a la venta</string>
+    <string name="notification_description">Hoy, %s, se ha puesto a la venta el juego %s</string>
+    <string name="summary_notifications_title">%d nuevos juegos lanzados</string>
 
     // Errors
-    <string name="ERROR_BUTTON_ACCEPT">Aceptar</string>
-    <string name="ERROR_SERVER">Hubo un error al recuperar los datos. Por favor, inténtalo otra vez</string>
-    <string name="ERROR_REGISTRATION_EMPTY_DATA">El usuario y la contraseña no pueden estar vacíos</string>
-    <string name="ERROR_REGISTRATION_DIFFERENT_PASSWORDS">Las contraseñas no coinciden</string>
-    <string name="ERROR_DATABASE">Error en la base de datos. Por favor, inténtalo otra vez</string>
-    <string name="ERROR_IMAGE_URL">La imagen no se ha podido cargar</string>
-    <string name="CHANNEL_NAME">Aviso de lanzamiento</string>
-    <string name="CHANNEL_DESCRIPTION">Aviso el día del lanzamiento de un juego pendiente</string>
-    <string name="ERROR_EDITION_FREE_VERSION">La edición no está disponible en la versión gratuita</string>
+    <string name="error_server">Hubo un error al recuperar los datos. Por favor, inténtalo otra vez</string>
+    <string name="error_registration_empty_data">El usuario y la contraseña no pueden estar vacíos</string>
+    <string name="error_registration_different_passwords">Las contraseñas no coinciden</string>
+    <string name="error_image_url">La imagen no se ha podido cargar</string>
 </resources>

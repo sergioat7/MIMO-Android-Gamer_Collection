@@ -139,7 +139,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             button_in_progress.isSelected = false
             button_finished.isSelected = false
             swipe_refresh_layout.isEnabled = !it.isSelected && sharedPrefHandler.getSwipeRefresh()
-            state = if (it.isSelected) Constants.pending else null
+            state = if (it.isSelected) Constants.PENDING_STATE else null
             getContent(state, sortKey, sortAscending, currentFilters)
         }
         button_in_progress.setOnClickListener {
@@ -148,7 +148,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             it.isSelected = !it.isSelected
             button_finished.isSelected = false
             swipe_refresh_layout.isEnabled = !it.isSelected && sharedPrefHandler.getSwipeRefresh()
-            state = if (it.isSelected) Constants.inProgress else null
+            state = if (it.isSelected) Constants.IN_PROGRESS_STATE else null
             getContent(state, sortKey, sortAscending, currentFilters)
         }
         button_finished.setOnClickListener {
@@ -157,7 +157,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             button_in_progress.isSelected = false
             it.isSelected = !it.isSelected
             swipe_refresh_layout.isEnabled = !it.isSelected && sharedPrefHandler.getSwipeRefresh()
-            state = if (it.isSelected) Constants.finished else null
+            state = if (it.isSelected) Constants.FINISHED_STATE else null
             getContent(state, sortKey, sortAscending, currentFilters)
         }
 
@@ -179,9 +179,9 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
         var queryString = "SELECT * FROM Game"
 
         var queryConditions = when(state) {
-            Constants.pending -> " WHERE state == '${Constants.pending}' AND "
-            Constants.inProgress -> " WHERE state == '${Constants.inProgress}' AND "
-            Constants.finished -> " WHERE state == '${Constants.finished}' AND "
+            Constants.PENDING_STATE -> " WHERE state == '${Constants.PENDING_STATE}' AND "
+            Constants.IN_PROGRESS_STATE -> " WHERE state == '${Constants.IN_PROGRESS_STATE}' AND "
+            Constants.FINISHED_STATE -> " WHERE state == '${Constants.FINISHED_STATE}' AND "
             else -> ""
         }
 
@@ -269,7 +269,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
 
         val sortParam = sortKey ?: sharedPrefHandler.getSortingKey()
         val sortOrder = if(sortAscending) "ASC"  else "DESC"
-        queryString += " ORDER BY $sortParam $sortOrder"
+        queryString += " ORDER BY $sortParam $sortOrder, name ASC"
 
         val query = SimpleSQLiteQuery(queryString)
         val games = gameRepository.getGames(query)
@@ -288,11 +288,11 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
     private fun setGamesCount(games: List<GameResponse>) {
 
         val filteredGames = games.mapNotNull { it.state }
-        val pendingGamesCount = filteredGames.filter { it == Constants.pending }.size
-        val inProgressGamesCount = filteredGames.filter { it == Constants.inProgress }.size
-        val finishedGamesCount = filteredGames.filter { it == Constants.finished }.size
+        val pendingGamesCount = filteredGames.filter { it == Constants.PENDING_STATE }.size
+        val inProgressGamesCount = filteredGames.filter { it == Constants.IN_PROGRESS_STATE }.size
+        val finishedGamesCount = filteredGames.filter { it == Constants.FINISHED_STATE }.size
 
-        text_view_games_number.text = resources.getString(R.string.GAMES_NUMBER_TITLE, games.size)
+        text_view_games_number.text = resources.getString(R.string.games_number_title, games.size)
         button_pending.text_view_subtitle.text = "$pendingGamesCount"
         button_in_progress.text_view_subtitle.text = "$inProgressGamesCount"
         button_finished.text_view_subtitle.text = "$finishedGamesCount"
@@ -312,15 +312,15 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
             if (!sharedPrefHandler.notificationLaunched(game.id)) {
 
                 notifications[game.id] =
-                    NotificationCompat.Builder(requireContext(), Constants.channelId)
+                    NotificationCompat.Builder(requireContext(), Constants.CHANNEL_ID)
                         .setSmallIcon(R.drawable.app_icon)
-                        .setContentTitle(resources.getString(R.string.NOTIFICATION_TITLE, game.name))
-                        .setContentText(resources.getString(R.string.NOTIFICATION_DESCRIPTION, Constants.dateToString(Date(), sharedPrefHandler), game.name))
+                        .setContentTitle(resources.getString(R.string.notification_title, game.name))
+                        .setContentText(resources.getString(R.string.notification_description, Constants.dateToString(Date(), sharedPrefHandler), game.name))
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
                         .setCategory(NotificationCompat.CATEGORY_REMINDER)
-                        .setGroup(Constants.channelGroup)
+                        .setGroup(Constants.CHANNEL_GROUP)
                         .build()
                 gameNames += game.name + ", "
             }
@@ -328,16 +328,16 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
         gameNames = gameNames.dropLast(2)
 
 
-        val summaryNotification = NotificationCompat.Builder(requireContext(), Constants.channelId)
-            .setContentTitle(resources.getString(R.string.SUMMARY_NOTIFICATIONS_TITLE, games.size))
+        val summaryNotification = NotificationCompat.Builder(requireContext(), Constants.CHANNEL_ID)
+            .setContentTitle(resources.getString(R.string.summary_notifications_title, games.size))
             .setContentText(gameNames)
             .setSmallIcon(R.drawable.app_icon)
             .setStyle(
                 NotificationCompat.InboxStyle()
-                    .setBigContentTitle(resources.getString(R.string.SUMMARY_NOTIFICATIONS_TITLE, games.size))
+                    .setBigContentTitle(resources.getString(R.string.summary_notifications_title, games.size))
                     .setSummaryText(gameNames)
             )
-            .setGroup(Constants.channelGroup)
+            .setGroup(Constants.CHANNEL_GROUP)
             .setGroupSummary(true)
             .build()
 
@@ -372,7 +372,7 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
         val dialogView = LinearLayout(requireContext())
         dialogView.orientation = LinearLayout.HORIZONTAL
 
-        val ascendingPicker = getPicker(arrayOf(resources.getString(R.string.ASCENDING), resources.getString(R.string.DESCENDING)))
+        val ascendingPicker = getPicker(arrayOf(resources.getString(R.string.ascending), resources.getString(R.string.descending)))
         val ascendingPickerParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
@@ -394,16 +394,16 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
         dialogView.addView(ascendingPicker, ascendingPickerParams)
 
         AlertDialog.Builder(context)
-            .setTitle(resources.getString(R.string.SORT_TITLE))
+            .setTitle(resources.getString(R.string.sort_title))
             .setView(dialogView)
             .setCancelable(false)
-            .setPositiveButton(resources.getString(R.string.ACCEPT)) { dialog, _ ->
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
                 sortKey = sortingKeys[sortKeysPicker.value]
                 sortAscending = ascendingPicker.value == 0
                 getContent(state, sortKey, sortAscending, currentFilters)
                 dialog.dismiss()
             }
-            .setNegativeButton(resources.getString(R.string.CANCEL)) { dialog, _ ->
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
             }
             .show()

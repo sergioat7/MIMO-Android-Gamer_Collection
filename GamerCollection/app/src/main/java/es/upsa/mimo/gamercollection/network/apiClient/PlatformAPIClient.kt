@@ -18,7 +18,7 @@ class PlatformAPIClient(
     fun getPlatforms(success: (List<PlatformResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.getPlatforms(headers)
 
         APIClient.sendServer<List<PlatformResponse>, ErrorResponse>(sharedPrefHandler, resources, request, {

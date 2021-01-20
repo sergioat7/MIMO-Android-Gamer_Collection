@@ -18,8 +18,8 @@ class GameAPIClient(
     fun getGames(success: (List<GameResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
-        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
+        headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.getGames(headers)
 
         APIClient.sendServer<List<GameResponse>, ErrorResponse>(sharedPrefHandler, resources, request, {
@@ -32,8 +32,8 @@ class GameAPIClient(
     fun getGame(gameId: Int, success: (GameResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
-        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
+        headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.getGame(headers, gameId)
 
         APIClient.sendServer<GameResponse, ErrorResponse>(sharedPrefHandler, resources, request, {
@@ -46,8 +46,8 @@ class GameAPIClient(
     fun createGame(game: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
-        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
+        headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.createGame(headers, game)
 
         APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
@@ -60,8 +60,8 @@ class GameAPIClient(
     fun setGame(game: GameResponse, success: (GameResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
-        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
+        headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.setGame(headers, game.id, game)
 
         APIClient.sendServer<GameResponse, ErrorResponse>(sharedPrefHandler, resources, request, {
@@ -74,8 +74,8 @@ class GameAPIClient(
     fun deleteGame(gameId: Int, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
-        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
+        headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.deleteGame(headers, gameId)
 
         APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
