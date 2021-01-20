@@ -11,9 +11,9 @@ import androidx.fragment.app.DialogFragment
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.models.FilterModel
-import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.GenreRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
+import es.upsa.mimo.gamercollection.repositories.FormatRepository
+import es.upsa.mimo.gamercollection.repositories.GenreRepository
+import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_popup_filter_dialog.*

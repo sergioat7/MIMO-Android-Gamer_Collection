@@ -13,8 +13,8 @@ import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.network.apiClient.*
-import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.SagaRepository
+import es.upsa.mimo.gamercollection.repositories.GameRepository
+import es.upsa.mimo.gamercollection.repositories.SagaRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_profile.*

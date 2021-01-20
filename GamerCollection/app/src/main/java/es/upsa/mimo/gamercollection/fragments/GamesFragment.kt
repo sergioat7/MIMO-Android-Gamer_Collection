@@ -22,9 +22,9 @@ import es.upsa.mimo.gamercollection.fragments.popups.PopupFilterDialogFragment
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
-import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.StateRepository
+import es.upsa.mimo.gamercollection.repositories.GameRepository
+import es.upsa.mimo.gamercollection.repositories.PlatformRepository
+import es.upsa.mimo.gamercollection.repositories.StateRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_games.*

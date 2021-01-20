@@ -21,10 +21,10 @@ import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.PlatformResponse
 import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
 import es.upsa.mimo.gamercollection.network.apiClient.SongAPIClient
-import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.GenreRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
+import es.upsa.mimo.gamercollection.repositories.FormatRepository
+import es.upsa.mimo.gamercollection.repositories.GameRepository
+import es.upsa.mimo.gamercollection.repositories.GenreRepository
+import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.activity_game_detail.*

@@ -11,9 +11,9 @@ import es.upsa.mimo.gamercollection.adapters.SagasAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.base.BaseModel
 import es.upsa.mimo.gamercollection.network.apiClient.SagaAPIClient
-import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.SagaRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.StateRepository
+import es.upsa.mimo.gamercollection.repositories.PlatformRepository
+import es.upsa.mimo.gamercollection.repositories.SagaRepository
+import es.upsa.mimo.gamercollection.repositories.StateRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_sagas.*
 
