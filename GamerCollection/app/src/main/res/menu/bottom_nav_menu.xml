@@ -16,9 +16,4 @@
         android:icon="@drawable/bottom_navigation_profile_images"
         android:title="@string/profile" />
 
-    <item
-        android:id="@+id/navigation_settings"
-        android:icon="@drawable/bottom_navigation_settings_images"
-        android:title="@string/settings" />
-
 </menu>

@@ -16,7 +16,6 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="loading">Loading…</string>
-    <string name="settings">Settings</string>
 
     // Login
     <string name="login_username">Username</string>
