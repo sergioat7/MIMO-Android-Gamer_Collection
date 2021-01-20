@@ -22,10 +22,4 @@
         android:name="es.upsa.mimo.gamercollection.fragments.ProfileFragment"
         android:label="@string/profile"
         tools:layout="@layout/fragment_profile" />
-
-    <fragment
-        android:id="@+id/navigation_settings"
-        android:name="es.upsa.mimo.gamercollection.fragments.SettingsFragment"
-        android:label="@string/settings"
-        tools:layout="@layout/fragment_settings" />
 </navigation>
