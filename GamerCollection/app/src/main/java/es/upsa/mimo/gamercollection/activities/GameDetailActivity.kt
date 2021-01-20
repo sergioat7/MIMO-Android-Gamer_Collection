@@ -13,7 +13,6 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import es.upsa.mimo.gamercollection.BuildConfig
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.base.BaseActivity
 import es.upsa.mimo.gamercollection.adapters.GameDetailPagerAdapter
@@ -31,7 +30,6 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.activity_game_detail.*
 import kotlinx.android.synthetic.main.set_image_dialog.view.*
 import kotlinx.android.synthetic.main.set_rating_dialog.view.*
-import java.lang.Exception
 
 class GameDetailActivity : BaseActivity() {
 
@@ -117,7 +115,7 @@ class GameDetailActivity : BaseActivity() {
         platforms = platformRepository.getPlatforms()
         platformValues = ArrayList()
         platformValues.run {
-            this.add(resources.getString((R.string.GAME_DETAIL_SELECT_PLATFORM)))
+            this.add(resources.getString((R.string.game_detail_select_platform)))
             this.addAll(platforms.map { it.name })
         }
         spinner_platforms.adapter = Constants.getAdapter(this, platformValues)
@@ -137,7 +135,7 @@ class GameDetailActivity : BaseActivity() {
         pagerAdapter = GameDetailPagerAdapter(this, 2, currentGame)
         viewPager2.adapter = pagerAdapter
         TabLayoutMediator(tab_layout, viewPager2) { tab, position ->
-            tab.text = if(position == 0) resources.getString(R.string.GAME_DETAIL_TITLE) else resources.getString(R.string.GAME_DETAIL_SONGS_TITLE)
+            tab.text = if(position == 0) resources.getString(R.string.game_detail_title) else resources.getString(R.string.game_detail_songs_title)
         }.attach()
 
         showData(currentGame, currentGame == null)
@@ -236,7 +234,7 @@ class GameDetailActivity : BaseActivity() {
                         }
                         override fun onError(e: Exception?) {
                             imageUrl = null
-                            showPopupDialog(resources.getString(R.string.ERROR_IMAGE_URL))
+                            showPopupDialog(resources.getString(R.string.error_image_url))
                         }
                     })
             }
@@ -265,14 +263,10 @@ class GameDetailActivity : BaseActivity() {
 
     private fun editGame(){
 
-        if (BuildConfig.IS_EDITABLE) {
-            showEditButton(true)
-            showData(currentGame, true)
-            pagerAdapter.showData(currentGame, true)
-            pagerAdapter.enableEdition(true)
-        } else {
-            showPopupDialog(resources.getString(R.string.ERROR_EDITION_FREE_VERSION))
-        }
+        showEditButton(true)
+        showData(currentGame, true)
+        pagerAdapter.showData(currentGame, true)
+        pagerAdapter.enableEdition(true)
     }
 
     private fun saveGame() {

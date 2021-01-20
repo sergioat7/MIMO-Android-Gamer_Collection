@@ -74,11 +74,11 @@ open class BaseFragment : Fragment() {
         AlertDialog.Builder(context)
             .setMessage(message)
             .setCancelable(false)
-            .setPositiveButton(resources.getString(R.string.ACCEPT)) { dialog, _ ->
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
                 acceptHandler()
                 dialog.dismiss()
             }
-            .setNegativeButton(resources.getString(R.string.CANCEL)) { dialog, _ ->
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
             }
             .show()
@@ -86,7 +86,7 @@ open class BaseFragment : Fragment() {
 
     fun openSyncPopup() {
 
-        showPopupConfirmationDialog(resources.getString(R.string.SYNC_CONFIRMATION)) {
+        showPopupConfirmationDialog(resources.getString(R.string.sync_confirmation)) {
             showSyncPopup()
         }
     }

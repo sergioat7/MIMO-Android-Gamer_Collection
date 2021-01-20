@@ -41,7 +41,7 @@ class APIClient {
         fun getRetrofit(sharedPrefHandler: SharedPreferencesHandler): Retrofit {
 
             return Retrofit.Builder()
-                .baseUrl(Constants.baseEndpoint)
+                .baseUrl(Constants.BASE_ENDPOINT)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson(sharedPrefHandler)))
                 .build()
@@ -72,7 +72,7 @@ class APIClient {
                             return
                         } catch (e: Exception){}
 
-                        val error = ErrorResponse(resources.getString(R.string.ERROR_SERVER)) as U
+                        val error = ErrorResponse(resources.getString(R.string.error_server)) as U
                         failure(error)
                     } else if (response.isSuccessful && response.body() != null) {
 
@@ -86,14 +86,14 @@ class APIClient {
                         failure(errorResponse)
                     } else {
 
-                        val error = ErrorResponse(resources.getString(R.string.ERROR_SERVER)) as U
+                        val error = ErrorResponse(resources.getString(R.string.error_server)) as U
                         failure(error)
                     }
                 }
 
                 override fun onFailure(call: Call<T>?, t: Throwable) {
 
-                    val error = ErrorResponse(resources.getString(R.string.ERROR_SERVER)) as U
+                    val error = ErrorResponse(resources.getString(R.string.error_server)) as U
                     failure(error)
                 }
             })

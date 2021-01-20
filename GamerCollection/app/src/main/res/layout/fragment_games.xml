@@ -69,7 +69,7 @@
                 app:stateButton_background="@drawable/state_button"
                 app:stateButton_color="@drawable/pending_state_button_bottom_line"
                 app:stateButton_subtitle="0"
-                app:stateButton_title="@string/GAMES_FILTER_BUTTON_TITLE_PENDING" />
+                app:stateButton_title="@string/games_filter_button_title_pending" />
 
             <es.upsa.mimo.gamercollection.customviews.StateButton
                 android:id="@+id/button_in_progress"
@@ -81,7 +81,7 @@
                 app:stateButton_background="@drawable/state_button"
                 app:stateButton_color="@drawable/in_progress_state_button_bottom_line"
                 app:stateButton_subtitle="0"
-                app:stateButton_title="@string/GAMES_FILTER_BUTTON_TITLE_IN_PROGRESS" />
+                app:stateButton_title="@string/games_filter_button_title_in_progress" />
 
             <es.upsa.mimo.gamercollection.customviews.StateButton
                 android:id="@+id/button_finished"
@@ -91,7 +91,7 @@
                 app:stateButton_background="@drawable/state_button"
                 app:stateButton_color="@drawable/finished_state_button_bottom_line"
                 app:stateButton_subtitle="0"
-                app:stateButton_title="@string/GAMES_FILTER_BUTTON_TITLE_FINISHED" />
+                app:stateButton_title="@string/games_filter_button_title_finished" />
         </LinearLayout>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -137,7 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@string/EMPTY_LIST"
+                android:text="@string/empty_list"
                 android:textColor="@color/color2"
                 android:fontFamily="@font/roboto_bold"
                 android:textSize="20sp"

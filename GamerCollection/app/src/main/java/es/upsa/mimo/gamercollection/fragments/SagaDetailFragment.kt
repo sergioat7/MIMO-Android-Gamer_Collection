@@ -210,7 +210,7 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
     private fun deleteSaga() {
 
         currentSaga?.let {
-            showPopupConfirmationDialog(resources.getString(R.string.SAGA_DETAIL_DELETE_CONFIRMATION)) {
+            showPopupConfirmationDialog(resources.getString(R.string.saga_detail_delete_confirmation)) {
 
                 showLoading()
                 sagaAPIClient.deleteSaga(it.id, {

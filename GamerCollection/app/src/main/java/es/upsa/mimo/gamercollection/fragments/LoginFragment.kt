@@ -68,7 +68,7 @@ class LoginFragment : BaseFragment() {
         val password = edit_text_password.text.toString()
 
         if (username.isEmpty() || password.isEmpty()) {
-            showPopupDialog(resources.getString(R.string.ERROR_REGISTRATION_EMPTY_DATA))
+            showPopupDialog(resources.getString(R.string.error_registration_empty_data))
             return
         }
 

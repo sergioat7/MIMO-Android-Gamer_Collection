@@ -18,8 +18,8 @@ class SagaAPIClient(
     fun getSagas(success: (List<SagaResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
-        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
+        headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.getSagas(headers)
 
         APIClient.sendServer<List<SagaResponse>, ErrorResponse>(sharedPrefHandler, resources, request, {
@@ -32,8 +32,8 @@ class SagaAPIClient(
     fun createSaga(saga: SagaResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
-        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
+        headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.createSaga(headers, saga)
 
         APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
@@ -46,8 +46,8 @@ class SagaAPIClient(
     fun setSaga(saga: SagaResponse, success: (SagaResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
-        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
+        headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.setSaga(headers, saga.id, saga)
 
         APIClient.sendServer<SagaResponse, ErrorResponse>(sharedPrefHandler, resources, request, {
@@ -60,8 +60,8 @@ class SagaAPIClient(
     fun deleteSaga(sagaId: Int, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.acceptLanguageHeader] = sharedPrefHandler.getLanguage()
-        headers[Constants.authorizationHeader] = sharedPrefHandler.getCredentials().token
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
+        headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.deleteSaga(headers, sagaId)
 
         APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {

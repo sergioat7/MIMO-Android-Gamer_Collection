@@ -53,10 +53,10 @@ public class LandingActivity extends BaseActivity {
     private void createNotificationChannel() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String name = getString(R.string.CHANNEL_NAME);
-            String description = getString(R.string.CHANNEL_DESCRIPTION);
+            String name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(Constants.channelId, name, importance);
+            NotificationChannel channel = new NotificationChannel(Constants.CHANNEL_ID, name, importance);
             channel.setDescription(description);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             if (notificationManager != null) notificationManager.createNotificationChannel(channel);

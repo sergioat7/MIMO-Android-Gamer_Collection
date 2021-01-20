@@ -11,8 +11,8 @@
     </string-array>
 
     <string-array name="languages">
-        <item>@string/ENGLISH</item>
-        <item>@string/SPANISH</item>
+        <item>@string/english</item>
+        <item>@string/spanish</item>
     </string-array>
 
     <string-array name="languages_ids">
@@ -21,11 +21,12 @@
     </string-array>
 
     <string-array name="sorting_keys">
-        <item>@string/NAME</item>
-        <item>@string/PLATFORM</item>
-        <item>@string/RELEASE_DATE</item>
-        <item>@string/PURCHASE_DATE</item>
-        <item>@string/PRICE</item>
+        <item>@string/name</item>
+        <item>@string/platform</item>
+        <item>@string/release_date</item>
+        <item>@string/purchase_date</item>
+        <item>@string/price</item>
+        <item>@string/score</item>
     </string-array>
 
     <string-array name="sorting_keys_ids">
@@ -34,5 +35,6 @@
         <item>releaseDate</item>
         <item>purchaseDate</item>
         <item>price</item>
+        <item>score</item>
     </string-array>
 </resources>

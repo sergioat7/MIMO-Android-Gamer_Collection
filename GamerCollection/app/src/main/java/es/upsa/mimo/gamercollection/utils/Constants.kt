@@ -14,7 +14,7 @@ class Constants {
 
         // MARK: - Database constants
 
-        const val databaseName = "GamerCollection"
+        const val DATABASE_NAME = "GamerCollection"
 
         fun manageFormats(context: Context, formats: List<FormatResponse>) {
 
@@ -72,25 +72,25 @@ class Constants {
 
         // MARK: - SharedPref constants
 
-        const val preferencesName = "preferences"
-        const val userDataPrefName = "userData"
-        const val authDataPrefName = "authData"
-        const val languagePrefName = "language"
-        const val sortingKeyPrefName = "sorting_key"
-        const val swipeRefreshPrefName = "swipe_refresh_enabled"
-        const val gameNotificationPrefName = "game_notification_launched_"
+        const val PREFERENCES_NAME = "preferences"
+        const val USER_DATA_PREFERENCES_NAME = "userData"
+        const val AUTH_DATA_PREFERENCES_NAME = "authData"
+        const val LANGUAGE_PREFERENCES_NAME = "language"
+        const val SORTING_KEY_PREFERENCES_NAME = "sortingKey"
+        const val SWIPE_REFRESH_PREFERENCES_NAME = "swipeRefreshEnabled"
+        const val GAME_NOTIFICATION_PREFERENCES_NAME = "gameNotificationLaunched_"
 
         // MARK: - Retrofit constants
 
-        const val baseEndpoint = "https://videogames-collection-services.herokuapp.com/"
-        const val acceptLanguageHeader = "Accept-Language"
-        const val authorizationHeader = "Authorization"
+        const val BASE_ENDPOINT = "https://videogames-collection-services.herokuapp.com/"
+        const val ACCEPT_LANGUAGE_HEADER = "Accept-Language"
+        const val AUTHORIZATION_HEADER = "Authorization"
 
         // MARK: - State constants
 
-        const val pending = "PENDING"
-        const val inProgress = "IN_PROGRESS"
-        const val finished = "FINISHED"
+        const val PENDING_STATE = "PENDING"
+        const val IN_PROGRESS_STATE = "IN_PROGRESS"
+        const val FINISHED_STATE = "FINISHED"
 
         // MARK: - Spinner adapter
 
@@ -144,14 +144,14 @@ class Constants {
                 "releaseDate" -> games.sortedBy { it.releaseDate }
                 "purchaseDate" -> games.sortedBy { it.purchaseDate }
                 "price" -> games.sortedBy { it.price }
+                "score" -> games.sortedBy { it.score }
                 else -> games.sortedBy { it.name }
             }
         }
 
         // MARK: Notifications
 
-        const val channelId = "GAMER_COLLECTION_NOTIFICATIONS_CHANNEL_ID"
-
-        const val channelGroup = "GAMER_COLLECTION_NOTIFICATIONS_CHANNEL_GROUP"
+        const val CHANNEL_ID = "GAMER_COLLECTION_NOTIFICATIONS_CHANNEL_ID"
+        const val CHANNEL_GROUP = "GAMER_COLLECTION_NOTIFICATIONS_CHANNEL_GROUP"
     }
 }

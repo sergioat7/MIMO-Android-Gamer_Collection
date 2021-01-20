@@ -10,53 +10,149 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/edit_text_user"
-            style="@style/WhiteEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="10dp"
-            android:ems="10"
-            android:hint="@string/LOGIN_USERNAME"
-            android:inputType="text"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/button_change_password"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.20" />
+            >
 
-        <EditText
-            android:id="@+id/edit_text_password"
-            style="@style/WhiteEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="40dp"
-            android:ems="10"
-            android:hint="@string/LOGIN_PASSWORD"
-            android:inputType="textPassword"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_user" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edit_text_user"
+                    style="@style/WhiteEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginEnd="50dp"
+                    android:ems="10"
+                    android:hint="@string/login_username"
+                    android:inputType="text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/edit_text_password"
+                    style="@style/WhiteEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:ems="10"
+                    android:hint="@string/login_password"
+                    android:inputType="textPassword"
+                    app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
+                    app:layout_constraintStart_toStartOf="@+id/edit_text_user"
+                    app:layout_constraintTop_toBottomOf="@+id/edit_text_user" />
+
+                <TextView
+                    android:id="@+id/text_view_language_title"
+                    style="@style/WhiteTextView.Bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/app_language"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toTopOf="@+id/radio_group_language"
+                    app:layout_constraintEnd_toEndOf="@+id/radio_group_language"
+                    app:layout_constraintStart_toStartOf="@+id/radio_group_language"
+                    app:layout_constraintTop_toBottomOf="@+id/edit_text_password" />
+
+                <RadioGroup
+                    android:id="@+id/radio_group_language"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
+                    app:layout_constraintStart_toStartOf="@+id/edit_text_password"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_language_title"
+                    >
+
+                    <RadioButton
+                        android:id="@+id/radio_button_en"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/english"
+                        android:buttonTint="@color/color2"
+                        android:textColor="@color/color2"
+                        />
+
+                    <RadioButton
+                        android:id="@+id/radio_button_es"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/spanish"
+                        android:buttonTint="@color/color2"
+                        android:textColor="@color/color2"
+                        />
+
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/text_view_sort_keys"
+                    style="@style/WhiteTextView.Bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/games_sorting_parameter"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toTopOf="@+id/spinner_sorting_keys"
+                    app:layout_constraintEnd_toEndOf="@+id/spinner_sorting_keys"
+                    app:layout_constraintStart_toStartOf="@+id/spinner_sorting_keys"
+                    app:layout_constraintTop_toBottomOf="@+id/radio_group_language" />
+
+                <Spinner
+                    android:id="@+id/spinner_sorting_keys"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="@+id/radio_group_language"
+                    app:layout_constraintStart_toStartOf="@+id/radio_group_language"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_sort_keys"
+                    style="@style/CustomSpinner"
+                    />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_swipe_refresh"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/swipe_refresh_enabled_title"
+                    android:textColor="@color/color2"
+                    android:textSize="18sp"
+                    android:checked="true"
+                    android:fontFamily="@font/roboto_bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/spinner_sorting_keys"
+                    app:layout_constraintStart_toStartOf="@+id/spinner_sorting_keys"
+                    app:layout_constraintTop_toBottomOf="@+id/spinner_sorting_keys" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
 
         <Button
             android:id="@+id/button_change_password"
             style="@style/RoundedButton.Action"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="5dp"
             android:layout_marginEnd="40dp"
             android:layout_marginBottom="5dp"
-            android:text="@string/SAVE"
+            android:text="@string/save"
             app:layout_constraintBottom_toTopOf="@+id/button_delete_user"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_password"
-            app:layout_constraintVertical_bias="0.5" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/button_delete_user"
@@ -65,7 +161,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
             android:layout_marginBottom="20dp"
-            android:text="@string/DELETE"
+            android:text="@string/delete"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

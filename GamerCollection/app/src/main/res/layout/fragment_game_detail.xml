@@ -42,7 +42,7 @@
                         android:layout_weight="1"
                         app:stateButton_background="@drawable/bordered_pending_state_button"
                         app:stateButton_color="@drawable/pending_state_button_bottom_line"
-                        app:stateButton_title="@string/GAMES_FILTER_BUTTON_TITLE_PENDING" />
+                        app:stateButton_title="@string/game_detail_button_title_pending" />
 
                     <es.upsa.mimo.gamercollection.customviews.StateButton
                         android:id="@+id/button_in_progress"
@@ -53,7 +53,7 @@
                         android:layout_weight="1"
                         app:stateButton_background="@drawable/bordered_in_progress_state_button"
                         app:stateButton_color="@drawable/in_progress_state_button_bottom_line"
-                        app:stateButton_title="@string/GAME_DETAIL_BUTTON_TITLE_IN_PROGRESS" />
+                        app:stateButton_title="@string/game_detail_button_title_in_progress" />
 
                     <es.upsa.mimo.gamercollection.customviews.StateButton
                         android:id="@+id/button_finished"
@@ -62,7 +62,7 @@
                         android:layout_weight="1"
                         app:stateButton_background="@drawable/bordered_finished_state_button"
                         app:stateButton_color="@drawable/finished_state_button_bottom_line"
-                        app:stateButton_title="@string/GAME_DETAIL_BUTTON_TITLE_FINISHED" />
+                        app:stateButton_title="@string/game_detail_button_title_finished" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -86,7 +86,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/GAME_DETAIL_PEGI"
+                            android:text="@string/game_detail_pegi"
                             app:layout_constraintBottom_toTopOf="@+id/spinner_pegis"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
@@ -117,7 +117,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/GAME_DETAIL_GOTY"
+                            android:text="@string/game_detail_goty"
                             app:layout_constraintBottom_toTopOf="@+id/radio_group_goty"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
@@ -142,7 +142,7 @@
                                 android:layout_weight="1"
                                 android:buttonTint="@color/color2"
                                 android:checked="true"
-                                android:text="@string/NO"
+                                android:text="@string/no"
                                 android:textColor="@color/color2" />
 
                             <RadioButton
@@ -151,7 +151,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:buttonTint="@color/color2"
-                                android:text="@string/YES"
+                                android:text="@string/yes"
                                 android:textColor="@color/color2" />
                         </RadioGroup>
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -176,7 +176,7 @@
 
                         <TextView
                             style="@style/WhiteTextView.GameDetails"
-                            android:text="@string/GAME_DETAIL_GENRE" />
+                            android:text="@string/game_detail_genre" />
 
                         <Spinner
                             android:id="@+id/spinner_genres"
@@ -193,12 +193,12 @@
 
                         <TextView
                             style="@style/WhiteTextView.GameDetails"
-                            android:text="@string/GAME_DETAIL_RELEASE_DATE" />
+                            android:text="@string/game_detail_release_date" />
 
                         <EditText
                             android:id="@+id/edit_text_release_date"
                             style="@style/WhiteEditText.GameDetails"
-                            android:hint="@string/GAME_DETAIL_SELECT_DATE" />
+                            android:hint="@string/game_detail_select_date" />
 
                     </LinearLayout>
 
@@ -210,7 +210,7 @@
 
                         <TextView
                             style="@style/WhiteTextView.GameDetails"
-                            android:text="@string/GAME_DETAIL_FORMAT" />
+                            android:text="@string/game_detail_format" />
 
                         <Spinner
                             android:id="@+id/spinner_formats"
@@ -227,12 +227,12 @@
 
                         <TextView
                             style="@style/WhiteTextView.GameDetails"
-                            android:text="@string/GAME_DETAIL_DISTRIBUTOR" />
+                            android:text="@string/game_detail_distributor" />
 
                         <EditText
                             android:id="@+id/edit_text_distributor"
                             style="@style/WhiteEditText.GameDetails"
-                            android:hint="@string/GAME_DETAIL_PLACEHOLDER_DISTRIBUTOR" />
+                            android:hint="@string/game_detail_placeholder_distributor" />
 
                     </LinearLayout>
 
@@ -243,12 +243,12 @@
 
                         <TextView
                             style="@style/WhiteTextView.GameDetails"
-                            android:text="@string/GAME_DETAIL_DEVELOPER" />
+                            android:text="@string/game_detail_developer" />
 
                         <EditText
                             android:id="@+id/edit_text_developer"
                             style="@style/WhiteEditText.GameDetails"
-                            android:hint="@string/GAME_DETAIL_PLACEHOLDER_DEVELOPER" />
+                            android:hint="@string/game_detail_placeholder_developer" />
 
                     </LinearLayout>
 
@@ -259,12 +259,12 @@
 
                         <TextView
                             style="@style/WhiteTextView.GameDetails"
-                            android:text="@string/GAME_DETAIL_PLAYERS" />
+                            android:text="@string/game_detail_players" />
 
                         <EditText
                             android:id="@+id/edit_text_players"
                             style="@style/WhiteEditText.GameDetails"
-                            android:hint="@string/GAME_DETAIL_PLACEHOLDER_PLAYERS" />
+                            android:hint="@string/game_detail_placeholder_players" />
 
                     </LinearLayout>
 
@@ -276,12 +276,12 @@
                         <TextView
                             android:id="@+id/text_view_price"
                             style="@style/WhiteTextView.GameDetails"
-                            android:text="@string/GAME_DETAIL_PRICE" />
+                            android:text="@string/game_detail_price" />
 
                         <EditText
                             android:id="@+id/edit_text_price"
                             style="@style/WhiteEditText.GameDetails"
-                            android:hint="@string/GAME_DETAIL_PLACEHOLDER_PRICE" />
+                            android:hint="@string/game_detail_placeholder_price" />
 
                     </LinearLayout>
 
@@ -293,12 +293,12 @@
                         <TextView
                             android:id="@+id/text_view_purchase_date"
                             style="@style/WhiteTextView.GameDetails"
-                            android:text="@string/GAME_DETAIL_PURCHASE_DATE" />
+                            android:text="@string/game_detail_purchase_date" />
 
                         <EditText
                             android:id="@+id/edit_text_purchase_date"
                             style="@style/WhiteEditText.GameDetails"
-                            android:hint="@string/GAME_DETAIL_SELECT_DATE" />
+                            android:hint="@string/game_detail_select_date" />
 
                     </LinearLayout>
 
@@ -310,12 +310,12 @@
                         <TextView
                             android:id="@+id/text_view_purchase_location"
                             style="@style/WhiteTextView.GameDetails"
-                            android:text="@string/GAME_DETAIL_PURCHASE_LOCATION" />
+                            android:text="@string/game_detail_purchase_location" />
 
                         <EditText
                             android:id="@+id/edit_text_purchase_location"
                             style="@style/WhiteEditText.GameDetails"
-                            android:hint="@string/GAME_DETAIL_PLACEHOLDER_PURCHASE_LOCATION" />
+                            android:hint="@string/game_detail_placeholder_purchase_location" />
 
                     </LinearLayout>
 
@@ -327,12 +327,12 @@
                         <TextView
                             android:id="@+id/text_view_loaned"
                             style="@style/WhiteTextView.GameDetails"
-                            android:text="@string/GAME_DETAIL_LOANED_TO" />
+                            android:text="@string/game_detail_loaned_to" />
 
                         <EditText
                             android:id="@+id/edit_text_loaned"
                             style="@style/WhiteEditText.GameDetails"
-                            android:hint="@string/GAME_DETAIL_PLACEHOLDER_LOANED_TO" />
+                            android:hint="@string/game_detail_placeholder_loaned_to" />
 
                     </LinearLayout>
 
@@ -344,12 +344,12 @@
                         <TextView
                             android:id="@+id/text_view_video_url"
                             style="@style/WhiteTextView.GameDetails"
-                            android:text="@string/GAME_DETAIL_VIDEO_URL" />
+                            android:text="@string/game_detail_video_url" />
 
                         <EditText
                             android:id="@+id/edit_text_video_url"
                             style="@style/WhiteEditText.GameDetails"
-                            android:hint="@string/GAME_DETAIL_PLACEHOLDER_VIDEO_URL" />
+                            android:hint="@string/game_detail_placeholder_video_url" />
 
                     </LinearLayout>
 
@@ -361,12 +361,12 @@
                         <TextView
                             android:id="@+id/text_view_observations"
                             style="@style/WhiteTextView.GameDetails"
-                            android:text="@string/GAME_DETAIL_OBSERVATIONS" />
+                            android:text="@string/game_detail_observations" />
 
                         <EditText
                             android:id="@+id/edit_text_observations"
                             style="@style/WhiteEditText.GameDetails"
-                            android:hint="@string/GAME_DETAIL_PLACEHOLDER_OBSERVATIONS" />
+                            android:hint="@string/game_detail_placeholder_observations" />
 
                     </LinearLayout>
 
@@ -378,7 +378,7 @@
                         <TextView
                             android:id="@+id/text_view_saga"
                             style="@style/WhiteTextView.GameDetails"
-                            android:text="@string/GAME_DETAIL_SAGA" />
+                            android:text="@string/game_detail_saga" />
 
                         <EditText
                             android:id="@+id/edit_text_saga"
@@ -395,7 +395,7 @@
                     style="@style/RoundedButton.Delete"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
-                    android:text="@string/DELETE"
+                    android:text="@string/delete"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
