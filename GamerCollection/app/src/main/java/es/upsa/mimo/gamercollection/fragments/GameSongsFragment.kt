@@ -13,7 +13,7 @@ import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.SongResponse
 import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
 import es.upsa.mimo.gamercollection.network.apiClient.SongAPIClient
-import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
+import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_game_songs.*
 import kotlinx.android.synthetic.main.new_song_dialog.view.*

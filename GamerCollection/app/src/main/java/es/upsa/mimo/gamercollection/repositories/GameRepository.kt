@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.persistence.repositories
+package es.upsa.mimo.gamercollection.repositories
 
 import android.content.Context
 import androidx.sqlite.db.SimpleSQLiteQuery

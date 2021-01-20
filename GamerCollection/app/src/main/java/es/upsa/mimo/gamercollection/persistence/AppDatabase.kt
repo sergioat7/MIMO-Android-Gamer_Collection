@@ -5,9 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import es.upsa.mimo.gamercollection.daos.*
 import es.upsa.mimo.gamercollection.models.*
 import es.upsa.mimo.gamercollection.models.base.BaseModel
-import es.upsa.mimo.gamercollection.persistence.daos.*
 import es.upsa.mimo.gamercollection.utils.Constants
 
 @Database(entities = [
