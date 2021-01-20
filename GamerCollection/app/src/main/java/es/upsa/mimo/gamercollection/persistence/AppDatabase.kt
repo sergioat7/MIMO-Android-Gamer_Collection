@@ -12,21 +12,21 @@ import es.upsa.mimo.gamercollection.utils.Constants
 
 @Database(entities = [
     FormatResponse::class,
+    GameResponse::class,
     GenreResponse::class,
     PlatformResponse::class,
-    StateResponse::class,
-    GameResponse::class,
+    SagaResponse::class,
     SongResponse::class,
-    SagaResponse::class], version = 1)
+    StateResponse::class], version = 1)
 @TypeConverters(ListConverter::class, DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun formatDao(): FormatDao
+    abstract fun gameDao(): GameDao
     abstract fun genreDao(): GenreDao
     abstract fun platformDao(): PlatformDao
-    abstract fun stateDao(): StateDao
-    abstract fun gameDao(): GameDao
     abstract fun sagaDao(): SagaDao
+    abstract fun stateDao(): StateDao
 
     companion object {
 
@@ -36,7 +36,12 @@ abstract class AppDatabase : RoomDatabase() {
 
             if (instance == null) {
                 synchronized(AppDatabase::class) {
-                    instance = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, Constants.DATABASE_NAME).build()
+
+                    instance = Room.databaseBuilder(
+                        context.applicationContext,
+                        AppDatabase::class.java,
+                        Constants.DATABASE_NAME
+                    ).build()
                 }
             }
             return instance!!
