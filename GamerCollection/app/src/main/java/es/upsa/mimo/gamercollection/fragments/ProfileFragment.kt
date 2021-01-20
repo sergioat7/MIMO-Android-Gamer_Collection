@@ -1,16 +1,21 @@
 package es.upsa.mimo.gamercollection.fragments
 
+import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.InputType
 import android.view.*
+import androidx.core.content.ContextCompat
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.activities.LandingActivity
 import es.upsa.mimo.gamercollection.activities.LoginActivity
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.AuthData
-import es.upsa.mimo.gamercollection.network.apiClient.UserAPIClient
+import es.upsa.mimo.gamercollection.network.apiClient.*
 import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
 import es.upsa.mimo.gamercollection.persistence.repositories.SagaRepository
+import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_profile.*
 
@@ -20,6 +25,10 @@ class ProfileFragment : BaseFragment() {
     private lateinit var userAPIClient: UserAPIClient
     private lateinit var gameRepository: GameRepository
     private lateinit var sagaRepository: SagaRepository
+    private lateinit var formatAPIClient: FormatAPIClient
+    private lateinit var genreAPIClient: GenreAPIClient
+    private lateinit var platformAPIClient: PlatformAPIClient
+    private lateinit var stateAPIClient: StateAPIClient
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +45,10 @@ class ProfileFragment : BaseFragment() {
         userAPIClient = UserAPIClient(resources, sharedPrefHandler)
         gameRepository = GameRepository(requireContext())
         sagaRepository = SagaRepository(requireContext())
+        formatAPIClient = FormatAPIClient(resources, sharedPrefHandler)
+        genreAPIClient = GenreAPIClient(resources, sharedPrefHandler)
+        platformAPIClient = PlatformAPIClient(resources, sharedPrefHandler)
+        stateAPIClient = StateAPIClient(resources, sharedPrefHandler)
 
         initializeUI()
     }
@@ -71,6 +84,24 @@ class ProfileFragment : BaseFragment() {
 
         edit_text_user.setReadOnly(true, InputType.TYPE_NULL, 0)
 
+        radio_button_en.isChecked = sharedPrefHandler.getLanguage() == "en"
+        radio_button_es.isChecked = sharedPrefHandler.getLanguage() == "es"
+
+        spinner_sorting_keys.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.color2))
+        spinner_sorting_keys.adapter = Constants.getAdapter(
+            requireContext(),
+            resources.getStringArray(R.array.sorting_keys).toList(),
+            true
+        )
+        val sortingKeyIds = resources.getStringArray(R.array.sorting_keys_ids)
+        sortingKeyIds.firstOrNull { it == sharedPrefHandler.getSortingKey() }?.let {
+            spinner_sorting_keys.setSelection(sortingKeyIds.indexOf(it))
+        } ?: run {
+            spinner_sorting_keys.setSelection(0)
+        }
+
+        switch_swipe_refresh.isChecked = sharedPrefHandler.getSwipeRefresh()
+
         button_change_password.setOnClickListener { updatePassword() }
         button_delete_user.setOnClickListener { deleteUser() }
     }
@@ -94,20 +125,86 @@ class ProfileFragment : BaseFragment() {
 
     private fun updatePassword() {
 
-        val currentPassword = sharedPrefHandler.getUserData().password
-        val newPassword = edit_text_password.text.toString()
+        val language = if(radio_button_en.isChecked) "en" else "es"
+        val sortingKey = resources.getStringArray(R.array.sorting_keys_ids)[spinner_sorting_keys.selectedItemPosition]
+        save(
+            edit_text_password.text.toString(),
+            language,
+            sortingKey,
+            switch_swipe_refresh.isChecked
+        )
+    }
 
-        if (currentPassword == newPassword) return
+    private fun save (newPassword: String, newLanguage: String, newSortParam: String, newSwipeRefresh: Boolean) {
+
+        val changePassword = newPassword != sharedPrefHandler.getUserData().password
+        val changeLanguage = newLanguage != sharedPrefHandler.getLanguage()
+        val changeSortParam = newSortParam != sharedPrefHandler.getSortingKey()
+        val changeSwipeRefresh = newSwipeRefresh != sharedPrefHandler.getSwipeRefresh()
+
+        if (changePassword) {
+            showLoading()
+            userAPIClient.updatePassword(newPassword, {
+
+                sharedPrefHandler.storePassword(newPassword)
+                val userData = sharedPrefHandler.getUserData()
+                userAPIClient.login(userData.username, userData.password, {
+
+                    val authData = AuthData(it)
+                    sharedPrefHandler.storeCredentials(authData)
+                    hideLoading()
+                    if (changeLanguage) {
+                        reloadData()
+                    }
+                }, {
+                    manageError(it)
+                })
+            }, {
+                manageError(it)
+            })
+        }
+
+        if (changeSortParam) {
+            sharedPrefHandler.setSortingKey(newSortParam)
+        }
+
+        if (changeSwipeRefresh) {
+            sharedPrefHandler.setSwipeRefresh(newSwipeRefresh)
+        }
+
+        if (changeLanguage) {
+
+            sharedPrefHandler.setLanguage(newLanguage)
+            if (!changePassword) {
+                reloadData()
+            }
+        }
+    }
+
+    private fun reloadData() {
 
         showLoading()
-        userAPIClient.updatePassword(newPassword, {
-            sharedPrefHandler.storePassword(newPassword)
-            val userData = sharedPrefHandler.getUserData()
-            userAPIClient.login(userData.username, userData.password, {
 
-                val authData = AuthData(it)
-                sharedPrefHandler.storeCredentials(authData)
-                hideLoading()
+        formatAPIClient.getFormats({ formats ->
+            genreAPIClient.getGenres({ genres ->
+                platformAPIClient.getPlatforms({ platforms ->
+                    stateAPIClient.getStates({ states ->
+
+                        Constants.manageFormats(requireContext(), formats)
+                        Constants.manageGenres(requireContext(), genres)
+                        Constants.managePlatforms(requireContext(), platforms)
+                        Constants.manageStates(requireContext(), states)
+
+                        val landing = Intent(requireContext(), LandingActivity::class.java)
+                        startActivity(landing)
+                        activity?.finish()
+                        hideLoading()
+                    }, {
+                        manageError(it)
+                    })
+                }, {
+                    manageError(it)
+                })
             }, {
                 manageError(it)
             })
