@@ -13,7 +13,7 @@ class SagaAPIClient(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    private val api = APIClient.getRetrofit(sharedPrefHandler).create(SagaAPIService::class.java)
+    private val api = APIClient.retrofit.create(SagaAPIService::class.java)
 
     fun getSagas(success: (List<SagaResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
@@ -22,7 +22,7 @@ class SagaAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.getSagas(headers)
 
-        APIClient.sendServer<List<SagaResponse>, ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<List<SagaResponse>, ErrorResponse>(resources, request, {
             success(it)
         }, {
             failure(it)
@@ -36,7 +36,7 @@ class SagaAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.createSaga(headers, saga)
 
-        APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(resources, request, {
             success()
         }, {
             failure(it)
@@ -50,7 +50,7 @@ class SagaAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.setSaga(headers, saga.id, saga)
 
-        APIClient.sendServer<SagaResponse, ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<SagaResponse, ErrorResponse>(resources, request, {
             success(it)
         }, {
             failure(it)
@@ -64,7 +64,7 @@ class SagaAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.deleteSaga(headers, sagaId)
 
-        APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(resources, request, {
             success()
         }, {
             failure(it)

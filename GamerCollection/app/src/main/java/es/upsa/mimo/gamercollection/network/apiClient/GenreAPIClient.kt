@@ -13,7 +13,7 @@ class GenreAPIClient(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    private val api = APIClient.getRetrofit(sharedPrefHandler).create(GenreAPIService::class.java)
+    private val api = APIClient.retrofit.create(GenreAPIService::class.java)
 
     fun getGenres(success: (List<GenreResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
@@ -21,7 +21,7 @@ class GenreAPIClient(
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.getGenres(headers)
 
-        APIClient.sendServer<List<GenreResponse>, ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<List<GenreResponse>, ErrorResponse>(resources, request, {
             success(it)
         }, {
             failure(it)

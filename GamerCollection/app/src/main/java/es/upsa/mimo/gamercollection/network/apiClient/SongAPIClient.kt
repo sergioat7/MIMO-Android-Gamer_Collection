@@ -13,7 +13,7 @@ class SongAPIClient(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    private val api = APIClient.getRetrofit(sharedPrefHandler).create(SongAPIService::class.java)
+    private val api = APIClient.retrofit.create(SongAPIService::class.java)
 
     fun createSong(gameId: Int, song: SongResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
@@ -22,7 +22,7 @@ class SongAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.createSong(headers, gameId, song)
 
-        APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(resources, request, {
             success()
         }, {
             failure(it)
@@ -36,7 +36,7 @@ class SongAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.deleteSong(headers, gameId, songId)
 
-        APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(resources, request, {
             success()
         }, {
             failure(it)

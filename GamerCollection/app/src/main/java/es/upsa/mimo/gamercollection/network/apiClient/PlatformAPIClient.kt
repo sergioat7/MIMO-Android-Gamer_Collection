@@ -13,7 +13,7 @@ class PlatformAPIClient(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    private val api = APIClient.getRetrofit(sharedPrefHandler).create(PlatformAPIService::class.java)
+    private val api = APIClient.retrofit.create(PlatformAPIService::class.java)
 
     fun getPlatforms(success: (List<PlatformResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
@@ -21,7 +21,7 @@ class PlatformAPIClient(
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.getPlatforms(headers)
 
-        APIClient.sendServer<List<PlatformResponse>, ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<List<PlatformResponse>, ErrorResponse>(resources, request, {
             success(it)
         }, {
             failure(it)

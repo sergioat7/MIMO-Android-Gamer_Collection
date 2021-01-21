@@ -2,6 +2,7 @@ package es.upsa.mimo.gamercollection.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.SpinnerAdapter
 import es.upsa.mimo.gamercollection.models.*
@@ -102,34 +103,65 @@ class Constants {
 
         // MARK: Date format
 
-        fun getDateFormat(sharedPrefHandler: SharedPreferencesHandler): String {
-            return if (sharedPrefHandler.getLanguage() == "es") "dd-MM-yyyy" else "MM-dd-yyyy"
+        const val DATE_FORMAT = "yyyy-MM-dd"
+
+        fun getDateFormatToShow(sharedPrefHandler: SharedPreferencesHandler): String {
+
+            return when(sharedPrefHandler.getLanguage()) {
+                "es" -> "d MMMM yyyy"
+                else -> "MMMM d, yyyy"
+            }
         }
 
         @SuppressLint("SimpleDateFormat")
-        fun dateToString(date: Date?, sharedPrefHandler: SharedPreferencesHandler): String? {
+        fun dateToString(date: Date?,
+                         format: String? = null,
+                         language: String? = null): String? {
 
+            val dateFormat = format ?: DATE_FORMAT
+            val locale = language?.let {
+                Locale.forLanguageTag(it)
+            } ?: run {
+                Locale.getDefault()
+            }
             date?.let {
+
                 return try {
-                    SimpleDateFormat(getDateFormat(sharedPrefHandler)).format(it)
+                    SimpleDateFormat(dateFormat, locale).format(it)
                 } catch (e: Exception) {
+
+                    Log.e("Constants", e.message ?: "")
                     null
                 }
             } ?: run {
+
+                Log.e("Constants", "date null")
                 return null
             }
         }
 
         @SuppressLint("SimpleDateFormat")
-        fun stringToDate(dateString: String?, sharedPrefHandler: SharedPreferencesHandler): Date? {
+        fun stringToDate(dateString: String?,
+                         format: String? = null,
+                         language: String? = null): Date? {
 
+            val dateFormat = format ?: DATE_FORMAT
+            val locale = language?.let {
+                Locale.forLanguageTag(it)
+            } ?: run {
+                Locale.getDefault()
+            }
             dateString?.let {
+
                 return try {
-                    SimpleDateFormat(getDateFormat(sharedPrefHandler)).parse(it)
+                    SimpleDateFormat(dateFormat, locale).parse(it)
                 } catch (e: Exception) {
+
+                    Log.e("Constants", e.message ?: "")
                     null
                 }
             } ?: run {
+                Log.e("Constants", "dateString null")
                 return null
             }
         }
