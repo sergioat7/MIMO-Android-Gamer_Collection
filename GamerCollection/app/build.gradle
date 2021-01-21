@@ -74,7 +74,6 @@ dependencies {
 //    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
 //    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.preference:preference-ktx:1.1.1'//TODO borrar
     //Google Play Services
     implementation 'com.google.android.gms:play-services:12.0.1'
     //Gson

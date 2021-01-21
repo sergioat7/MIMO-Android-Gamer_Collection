@@ -8,16 +8,19 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.activities.RegisterActivity
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.*
 import es.upsa.mimo.gamercollection.network.apiClient.*
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Environment
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_login.*
+import javax.inject.Inject
 
 class LoginFragment : BaseFragment() {
 
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
+    @Inject
+    lateinit var sharedPrefHandler: SharedPreferencesHandler
     private lateinit var formatAPIClient: FormatAPIClient
     private lateinit var genreAPIClient: GenreAPIClient
     private lateinit var platformAPIClient: PlatformAPIClient
@@ -36,7 +39,9 @@ class LoginFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPrefHandler = SharedPreferencesHandler(context)
+        val application = activity?.application
+        (application as GamerCollectionApplication).appComponent.inject(this)
+
         formatAPIClient = FormatAPIClient(resources, sharedPrefHandler)
         genreAPIClient = GenreAPIClient(resources, sharedPrefHandler)
         platformAPIClient = PlatformAPIClient(resources, sharedPrefHandler)

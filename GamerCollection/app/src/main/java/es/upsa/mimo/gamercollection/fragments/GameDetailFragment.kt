@@ -14,6 +14,7 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.FormatResponse
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.GenreResponse
@@ -26,16 +27,22 @@ import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_game_detail.*
+import javax.inject.Inject
 
 class GameDetailFragment(
     private var currentGame: GameResponse? = null
 ) : BaseFragment(), OnLocationSelected {
 
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var formatRepository: FormatRepository
-    private lateinit var genreRepository: GenreRepository
-    private lateinit var platformRepository: PlatformRepository
-    private lateinit var gameRepository: GameRepository
+    @Inject
+    lateinit var sharedPrefHandler: SharedPreferencesHandler
+    @Inject
+    lateinit var formatRepository: FormatRepository
+    @Inject
+    lateinit var gameRepository: GameRepository
+    @Inject
+    lateinit var genreRepository: GenreRepository
+    @Inject
+    lateinit var platformRepository: PlatformRepository
     private lateinit var gameAPIClient: GameAPIClient
     private lateinit var songAPIClient: SongAPIClient
     private lateinit var genres: List<GenreResponse>
@@ -53,11 +60,9 @@ class GameDetailFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPrefHandler = SharedPreferencesHandler(context)
-        formatRepository = FormatRepository(requireContext())
-        genreRepository = GenreRepository(requireContext())
-        platformRepository = PlatformRepository(requireContext())
-        gameRepository = GameRepository(requireContext())
+        val application = activity?.application
+        (application as GamerCollectionApplication).appComponent.inject(this)
+
         gameAPIClient = GameAPIClient(resources, sharedPrefHandler)
         songAPIClient = SongAPIClient(resources, sharedPrefHandler)
 

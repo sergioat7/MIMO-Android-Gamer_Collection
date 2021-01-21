@@ -19,6 +19,7 @@ import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.fragments.popups.OnFiltersSelected
 import es.upsa.mimo.gamercollection.fragments.popups.PopupFilterDialogFragment
+import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
@@ -30,15 +31,20 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_games.*
 import kotlinx.android.synthetic.main.state_button.view.*
 import java.util.*
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFiltersSelected {
 
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
+    @Inject
+    lateinit var sharedPrefHandler: SharedPreferencesHandler
+    @Inject
+    lateinit var gameRepository: GameRepository
+    @Inject
+    lateinit var platformRepository: PlatformRepository
+    @Inject
+    lateinit var stateRepository: StateRepository
     private lateinit var gameAPIClient: GameAPIClient
-    private lateinit var gameRepository: GameRepository
-    private lateinit var platformRepository: PlatformRepository
-    private lateinit var stateRepository: StateRepository
     private var menu: Menu? = null
     private lateinit var sortingKeys: Array<String>
     private var sortingValues = arrayOf("")
@@ -58,11 +64,10 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPrefHandler = SharedPreferencesHandler(context)
+        val application = activity?.application
+        (application as GamerCollectionApplication).appComponent.inject(this)
+
         gameAPIClient = GameAPIClient(resources, sharedPrefHandler)
-        gameRepository = GameRepository(requireContext())
-        platformRepository = PlatformRepository(requireContext())
-        stateRepository = StateRepository(requireContext())
         sortingKeys = resources.getStringArray(R.array.sorting_keys_ids)
         sortingValues = resources.getStringArray(R.array.sorting_keys)
         sortKey = sharedPrefHandler.getSortingKey()
