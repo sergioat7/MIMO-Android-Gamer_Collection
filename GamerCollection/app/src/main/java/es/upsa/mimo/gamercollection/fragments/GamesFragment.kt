@@ -80,7 +80,15 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
 
         val games = getContent(state, sortKey, sortAscending, currentFilters)
         setGamesCount(games)
-        val today = Constants.stringToDate(Constants.dateToString(Date(), sharedPrefHandler), sharedPrefHandler)
+        val today = Constants.stringToDate(
+            Constants.dateToString(
+                Date(),
+                Constants.getDateFormatToShow(sharedPrefHandler),
+                sharedPrefHandler.getLanguage()
+            ),
+            Constants.getDateFormatToShow(sharedPrefHandler),
+            sharedPrefHandler.getLanguage()
+        )
         val gamesToNotify = ArrayList<GameResponse>()
         for (game in games) {
             if (game.releaseDate == today)
@@ -320,7 +328,17 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
                     NotificationCompat.Builder(requireContext(), Constants.CHANNEL_ID)
                         .setSmallIcon(R.drawable.app_icon)
                         .setContentTitle(resources.getString(R.string.notification_title, game.name))
-                        .setContentText(resources.getString(R.string.notification_description, Constants.dateToString(Date(), sharedPrefHandler), game.name))
+                        .setContentText(
+                            resources.getString(
+                                R.string.notification_description,
+                                Constants.dateToString(
+                                    Date(),
+                                    Constants.getDateFormatToShow(sharedPrefHandler),
+                                    sharedPrefHandler.getLanguage()
+                                ),
+                                game.name
+                            )
+                        )
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)

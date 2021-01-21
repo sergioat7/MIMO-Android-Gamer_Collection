@@ -19,18 +19,17 @@ import java.util.concurrent.TimeUnit
 class APIClient {
     companion object {
 
-        val gson = fun (sharedPrefHandler: SharedPreferencesHandler): Gson {
-            return GsonBuilder()
-                .registerTypeAdapter(Date::class.java, object : JsonDeserializer<Date?> {
-                    @Throws(JsonParseException::class)
-                    override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext?): Date? {
-                        return Constants.stringToDate(json.asString, sharedPrefHandler)
+        val gson: Gson =
+            GsonBuilder()
+                .registerTypeAdapter(
+                    Date::class.java,
+                    JsonDeserializer<Date> { json: JsonElement, _: Type?, _: JsonDeserializationContext? ->
+                        Constants.stringToDate(json.asString)
                     }
-                })
-                .setDateFormat(Constants.getDateFormat(sharedPrefHandler))
+                )
+                .setDateFormat(Constants.DATE_FORMAT)
                 .serializeNulls()
                 .create()
-        }
 
         private val okHttpClient: OkHttpClient = OkHttpClient.Builder()
             .connectTimeout(1, TimeUnit.MINUTES)
@@ -38,16 +37,15 @@ class APIClient {
             .writeTimeout(15, TimeUnit.SECONDS)
             .build()
 
-        fun getRetrofit(sharedPrefHandler: SharedPreferencesHandler): Retrofit {
-
-            return Retrofit.Builder()
+        val retrofit: Retrofit =
+            Retrofit
+                .Builder()
                 .baseUrl(Constants.BASE_ENDPOINT)
                 .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create(gson(sharedPrefHandler)))
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
-        }
 
-        inline fun <reified T, reified U> sendServer(sharedPrefHandler: SharedPreferencesHandler, resources: Resources, request: Call<T>, crossinline success: (T) -> Unit, crossinline failure: (U) -> Unit) {
+        inline fun <reified T, reified U> sendServer(resources: Resources, request: Call<T>, crossinline success: (T) -> Unit, crossinline failure: (U) -> Unit) {
 
             request.enqueue(object : Callback<T> {
                 override fun onResponse(call: Call<T>?, response: Response<T>) {
@@ -55,19 +53,19 @@ class APIClient {
                     if ( response.isSuccessful && (response.code() == 204 || T::class == Void::class) ) {
 
                         if (T::class == Void::class) {
-                            val result = gson(sharedPrefHandler).fromJson("", T::class.java)
+                            val result = gson.fromJson("", T::class.java)
                             success(result)
                             return
                         }
 
                         try {
-                            val result = gson(sharedPrefHandler).fromJson("{}", T::class.java)
+                            val result = gson.fromJson("{}", T::class.java)
                             success(result)
                             return
                         } catch (e: Exception){}
 
                         try {
-                            val result = gson(sharedPrefHandler).fromJson("[]", T::class.java)
+                            val result = gson.fromJson("[]", T::class.java)
                             success(result)
                             return
                         } catch (e: Exception){}
@@ -80,7 +78,7 @@ class APIClient {
                         success(result)
                     } else if (!response.isSuccessful && response.errorBody() != null) {
 
-                        val errorResponse: U = gson(sharedPrefHandler).fromJson(
+                        val errorResponse: U = gson.fromJson(
                             response.errorBody()!!.charStream(), U::class.java
                         )
                         failure(errorResponse)

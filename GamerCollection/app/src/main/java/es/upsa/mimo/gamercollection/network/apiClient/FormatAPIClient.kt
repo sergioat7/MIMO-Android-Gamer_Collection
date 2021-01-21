@@ -13,7 +13,7 @@ class FormatAPIClient(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    private val api = APIClient.getRetrofit(sharedPrefHandler).create(FormatAPIService::class.java)
+    private val api = APIClient.retrofit.create(FormatAPIService::class.java)
 
     fun getFormats(success: (List<FormatResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
@@ -21,7 +21,7 @@ class FormatAPIClient(
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.getFormats(headers)
 
-        APIClient.sendServer<List<FormatResponse>, ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<List<FormatResponse>, ErrorResponse>(resources, request, {
             success(it)
         }, {
             failure(it)

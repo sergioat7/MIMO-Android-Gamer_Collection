@@ -13,7 +13,7 @@ class StateAPIClient(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    private val api = APIClient.getRetrofit(sharedPrefHandler).create(StateAPIService::class.java)
+    private val api = APIClient.retrofit.create(StateAPIService::class.java)
 
     fun getStates(success: (List<StateResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
@@ -21,7 +21,7 @@ class StateAPIClient(
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.getStates(headers)
 
-        APIClient.sendServer<List<StateResponse>, ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<List<StateResponse>, ErrorResponse>(resources, request, {
             success(it)
         }, {
             failure(it)

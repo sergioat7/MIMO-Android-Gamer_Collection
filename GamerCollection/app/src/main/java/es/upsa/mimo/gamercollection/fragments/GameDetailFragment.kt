@@ -105,7 +105,11 @@ class GameDetailFragment(
                 genrePosition = if(pos > 0) pos else 0
             }
 
-            releaseDate = Constants.dateToString(game.releaseDate, sharedPrefHandler) ?: if (enabled) "" else "-"
+            releaseDate = Constants.dateToString(
+                game.releaseDate,
+                Constants.getDateFormatToShow(sharedPrefHandler),
+                sharedPrefHandler.getLanguage()
+            ) ?: if (enabled) "" else "-"
 
             game.format?.let { formatId ->
                 val formatName = formatRepository.getFormats().firstOrNull { it.id == formatId }?.name
@@ -132,7 +136,11 @@ class GameDetailFragment(
 
             edit_text_price.setText(game.price.toString())
 
-            purchaseDate = Constants.dateToString(game.purchaseDate, sharedPrefHandler) ?: if (enabled) "" else "-"
+            purchaseDate = Constants.dateToString(
+                game.purchaseDate,
+                Constants.getDateFormatToShow(sharedPrefHandler),
+                sharedPrefHandler.getLanguage()
+            ) ?: if (enabled) "" else "-"
 
             purchaseLocation = if (game.purchaseLocation != null && game.purchaseLocation.isNotEmpty()) game.purchaseLocation else if (enabled) "" else "-"
 
@@ -205,12 +213,20 @@ class GameDetailFragment(
         val distributor = edit_text_distributor.text.toString()
         val developer = edit_text_developer.text.toString()
         val players = edit_text_players.text.toString()
-        val releaseDate = Constants.stringToDate(edit_text_release_date.text.toString(), sharedPrefHandler)
+        val releaseDate = Constants.stringToDate(
+            edit_text_release_date.text.toString(),
+            Constants.getDateFormatToShow(sharedPrefHandler),
+            sharedPrefHandler.getLanguage()
+        )
         val goty = radio_button_yes.isChecked
         val format = formats.firstOrNull { it.name == spinner_formats.selectedItem.toString() }?.id
         val genre = genres.firstOrNull { it.name == spinner_genres.selectedItem.toString() }?.id
         val state = if(button_pending.isSelected) Constants.PENDING_STATE else if (button_in_progress.isSelected) Constants.IN_PROGRESS_STATE else if (button_finished.isSelected) Constants.FINISHED_STATE else null
-        val purchaseDate = Constants.stringToDate(edit_text_purchase_date.text.toString(), sharedPrefHandler)
+        val purchaseDate = Constants.stringToDate(
+            edit_text_purchase_date.text.toString(),
+            Constants.getDateFormatToShow(sharedPrefHandler),
+            sharedPrefHandler.getLanguage()
+        )
         val purchaseLocation = edit_text_purchase_location.text.toString()
         val price = try { edit_text_price.text.toString().toDouble() } catch (e: NumberFormatException) { 0.0 }
         val videoUrl = edit_text_video_url.text.toString()
