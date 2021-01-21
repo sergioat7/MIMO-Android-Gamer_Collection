@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.SongsAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.SongResponse
 import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
@@ -17,14 +18,17 @@ import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_game_songs.*
 import kotlinx.android.synthetic.main.new_song_dialog.view.*
+import javax.inject.Inject
 
 class GameSongsFragment(
     private var currentGame: GameResponse?,
     private var enabled: Boolean
 ) : BaseFragment(), SongsAdapter.OnItemClickListener {
 
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var gameRepository: GameRepository
+    @Inject
+    lateinit var sharedPrefHandler: SharedPreferencesHandler
+    @Inject
+    lateinit var gameRepository: GameRepository
     private lateinit var gameAPIClient: GameAPIClient
     private lateinit var songAPIClient: SongAPIClient
 
@@ -38,8 +42,9 @@ class GameSongsFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPrefHandler = SharedPreferencesHandler(context)
-        gameRepository = GameRepository(requireContext())
+        val application = activity?.application
+        (application as GamerCollectionApplication).appComponent.inject(this)
+
         gameAPIClient = GameAPIClient(resources, sharedPrefHandler)
         songAPIClient = SongAPIClient(resources, sharedPrefHandler)
 

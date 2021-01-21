@@ -1,23 +1,22 @@
 package es.upsa.mimo.gamercollection.repositories
 
-import android.content.Context
 import es.upsa.mimo.gamercollection.models.FormatResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
-class FormatRepository(context: Context) {
-
-    private val database = AppDatabase.getAppDatabase(context)
-    private val formatDao = database.formatDao()
+class FormatRepository @Inject constructor(
+    private val database: AppDatabase
+) {
 
     fun getFormats(): List<FormatResponse> {
 
         var formats = mutableListOf<FormatResponse>()
         runBlocking {
-            val result = GlobalScope.async { formatDao.getFormats() }
+            val result = GlobalScope.async { database.formatDao().getFormats() }
             formats = result.await().toMutableList()
             formats.sortBy { it.name }
             val other = formats.firstOrNull { it.id == "OTHER" }
@@ -32,14 +31,14 @@ class FormatRepository(context: Context) {
     fun insertFormat(format: FormatResponse) {
 
         GlobalScope.launch {
-            formatDao.insertFormat(format)
+            database.formatDao().insertFormat(format)
         }
     }
 
     private fun deleteFormat(format: FormatResponse) {
 
         GlobalScope.launch {
-            formatDao.deleteFormat(format)
+            database.formatDao().deleteFormat(format)
         }
     }
 

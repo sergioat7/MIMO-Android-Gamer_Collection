@@ -10,6 +10,7 @@ import androidx.core.view.children
 import androidx.fragment.app.DialogFragment
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
+import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.repositories.GenreRepository
@@ -17,17 +18,21 @@ import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_popup_filter_dialog.*
+import javax.inject.Inject
 
 class PopupFilterDialogFragment(
-    filters: FilterModel?,
+    private var currentFilters: FilterModel?,
     private val onFiltersSelected: OnFiltersSelected
 ) : DialogFragment() {
 
-    private var currentFilters = filters
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var formatRepository: FormatRepository
-    private lateinit var genreRepository: GenreRepository
-    private lateinit var platformRepository: PlatformRepository
+    @Inject
+    lateinit var sharedPrefHandler: SharedPreferencesHandler
+    @Inject
+    lateinit var formatRepository: FormatRepository
+    @Inject
+    lateinit var genreRepository: GenreRepository
+    @Inject
+    lateinit var platformRepository: PlatformRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,10 +44,8 @@ class PopupFilterDialogFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPrefHandler = SharedPreferencesHandler(context)
-        formatRepository = FormatRepository(requireContext())
-        genreRepository = GenreRepository(requireContext())
-        platformRepository = PlatformRepository(requireContext())
+        val application = activity?.application
+        (application as GamerCollectionApplication).appComponent.inject(this)
 
         initializeUI()
         configFilters(currentFilters)

@@ -17,6 +17,7 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.base.BaseActivity
 import es.upsa.mimo.gamercollection.adapters.GameDetailPagerAdapter
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
+import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.PlatformResponse
 import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
@@ -30,15 +31,21 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.activity_game_detail.*
 import kotlinx.android.synthetic.main.set_image_dialog.view.*
 import kotlinx.android.synthetic.main.set_rating_dialog.view.*
+import javax.inject.Inject
 
 class GameDetailActivity : BaseActivity() {
 
     private var gameId: Int? = null
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var formatRepository: FormatRepository
-    private lateinit var genreRepository: GenreRepository
-    private lateinit var platformRepository: PlatformRepository
-    private lateinit var gameRepository: GameRepository
+    @Inject
+    lateinit var sharedPrefHandler: SharedPreferencesHandler
+    @Inject
+    lateinit var formatRepository: FormatRepository
+    @Inject
+    lateinit var gameRepository: GameRepository
+    @Inject
+    lateinit var genreRepository: GenreRepository
+    @Inject
+    lateinit var platformRepository: PlatformRepository
     private lateinit var gameAPIClient: GameAPIClient
     private lateinit var songAPIClient: SongAPIClient
     private var menu: Menu? = null
@@ -59,11 +66,8 @@ class GameDetailActivity : BaseActivity() {
         val gameId = intent.getIntExtra("gameId", 0)
         if (gameId > 0) this.gameId = gameId
 
-        sharedPrefHandler = SharedPreferencesHandler(this)
-        formatRepository = FormatRepository(this)
-        genreRepository = GenreRepository(this)
-        platformRepository = PlatformRepository(this)
-        gameRepository = GameRepository(this)
+        (application as GamerCollectionApplication).appComponent.inject(this)
+
         gameAPIClient = GameAPIClient(resources, sharedPrefHandler)
         songAPIClient = SongAPIClient(resources, sharedPrefHandler)
 

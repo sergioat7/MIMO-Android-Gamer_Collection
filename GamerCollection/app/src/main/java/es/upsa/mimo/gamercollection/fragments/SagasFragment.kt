@@ -9,6 +9,7 @@ import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.activities.SagaDetailActivity
 import es.upsa.mimo.gamercollection.adapters.SagasAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.base.BaseModel
 import es.upsa.mimo.gamercollection.network.apiClient.SagaAPIClient
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
@@ -16,14 +17,19 @@ import es.upsa.mimo.gamercollection.repositories.SagaRepository
 import es.upsa.mimo.gamercollection.repositories.StateRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_sagas.*
+import javax.inject.Inject
 
 class SagasFragment : BaseFragment(), SagasAdapter.OnItemClickListener {
 
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
+    @Inject
+    lateinit var sharedPrefHandler: SharedPreferencesHandler
     private lateinit var sagaAPIClient: SagaAPIClient
-    private lateinit var sagaRepository: SagaRepository
-    private lateinit var platformRepository: PlatformRepository
-    private lateinit var stateRepository: StateRepository
+    @Inject
+    lateinit var sagaRepository: SagaRepository
+    @Inject
+    lateinit var platformRepository: PlatformRepository
+    @Inject
+    lateinit var stateRepository: StateRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,11 +42,10 @@ class SagasFragment : BaseFragment(), SagasAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPrefHandler = SharedPreferencesHandler(context)
+        val application = activity?.application
+        (application as GamerCollectionApplication).appComponent.inject(this)
+
         sagaAPIClient = SagaAPIClient(resources, sharedPrefHandler)
-        sagaRepository = SagaRepository(requireContext())
-        platformRepository = PlatformRepository(requireContext())
-        stateRepository = StateRepository(requireContext())
 
         initializeUI()
     }

@@ -1,6 +1,5 @@
 package es.upsa.mimo.gamercollection.repositories
 
-import android.content.Context
 import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.models.SagaWithGames
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
@@ -8,17 +7,17 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
-class SagaRepository(context: Context) {
-
-    private val database = AppDatabase.getAppDatabase(context)
-    private val sagaDao = database.sagaDao()
+class SagaRepository @Inject constructor(
+    private val database: AppDatabase
+) {
 
     fun getSagas(): List<SagaResponse> {
 
         var sagas: List<SagaWithGames> = arrayListOf()
         runBlocking {
-            val result = GlobalScope.async { sagaDao.getSagas() }
+            val result = GlobalScope.async { database.sagaDao().getSagas() }
             sagas = result.await()
         }
         val result = ArrayList<SagaResponse>()
@@ -32,7 +31,7 @@ class SagaRepository(context: Context) {
 
         var saga: SagaWithGames? = null
         runBlocking {
-            val result = GlobalScope.async { sagaDao.getSaga(sagaId) }
+            val result = GlobalScope.async { database.sagaDao().getSaga(sagaId) }
             saga = result.await()
         }
         return saga?.transform()
@@ -41,21 +40,21 @@ class SagaRepository(context: Context) {
     fun insertSaga(saga: SagaResponse) {
 
         GlobalScope.launch {
-            sagaDao.insertSaga(saga)
+            database.sagaDao().insertSaga(saga)
         }
     }
 
     fun updateSaga(saga: SagaResponse) {
 
         GlobalScope.launch {
-            sagaDao.updateSaga(saga)
+            database.sagaDao().updateSaga(saga)
         }
     }
 
     fun deleteSaga(saga: SagaResponse) {
 
         GlobalScope.launch {
-            sagaDao.deleteSaga(saga)
+            database.sagaDao().deleteSaga(saga)
         }
     }
 

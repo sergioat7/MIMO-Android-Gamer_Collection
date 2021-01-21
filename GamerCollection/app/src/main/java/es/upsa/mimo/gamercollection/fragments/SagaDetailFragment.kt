@@ -15,6 +15,7 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.network.apiClient.SagaAPIClient
@@ -26,15 +27,21 @@ import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_saga_detail.*
 import kotlinx.android.synthetic.main.games_dialog.view.*
+import javax.inject.Inject
 
 class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
 
     private var sagaId: Int? = null
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var gameRepository: GameRepository
-    private lateinit var platformRepository: PlatformRepository
-    private lateinit var stateRepository: StateRepository
-    private lateinit var sagaRepository: SagaRepository
+    @Inject
+    lateinit var sharedPrefHandler: SharedPreferencesHandler
+    @Inject
+    lateinit var gameRepository: GameRepository
+    @Inject
+    lateinit var platformRepository: PlatformRepository
+    @Inject
+    lateinit var stateRepository: StateRepository
+    @Inject
+    lateinit var sagaRepository: SagaRepository
     private lateinit var sagaAPIClient: SagaAPIClient
     private var menu: Menu? = null
     private var currentSaga: SagaResponse? = null
@@ -54,11 +61,9 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPrefHandler = SharedPreferencesHandler(context)
-        gameRepository = GameRepository(requireContext())
-        platformRepository = PlatformRepository(requireContext())
-        stateRepository = StateRepository(requireContext())
-        sagaRepository = SagaRepository(requireContext())
+        val application = activity?.application
+        (application as GamerCollectionApplication).appComponent.inject(this)
+
         sagaAPIClient = SagaAPIClient(resources, sharedPrefHandler)
 
         initializeUI()
