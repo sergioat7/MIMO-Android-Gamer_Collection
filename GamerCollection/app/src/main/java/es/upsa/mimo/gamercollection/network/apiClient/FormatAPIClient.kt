@@ -21,7 +21,7 @@ class FormatAPIClient(
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.getFormats(headers)
 
-        APIClient.sendServer<List<FormatResponse>, ErrorResponse>(resources, request, {
+        APIClient.sendServer<List<FormatResponse>, ErrorResponse>(request, {
             success(it)
         }, {
             failure(it)

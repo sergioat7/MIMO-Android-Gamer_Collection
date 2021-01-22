@@ -25,7 +25,7 @@ class UserAPIClient(
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.login(headers, loginCredentials)
 
-        APIClient.sendServer<LoginResponse, ErrorResponse>(resources, request, {
+        APIClient.sendServer<LoginResponse, ErrorResponse>(request, {
             success(it.token)
         }, {
             failure(it)
@@ -40,7 +40,7 @@ class UserAPIClient(
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.register(headers, loginCredentials)
 
-        APIClient.sendServer<Void, ErrorResponse>(resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(request, {
             success()
         }, {
             failure(it)
@@ -54,7 +54,7 @@ class UserAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.logout(headers)
 
-        APIClient.sendServer<Void, ErrorResponse>(resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(request, {
             success()
         }, {
             failure(it)
@@ -69,7 +69,7 @@ class UserAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.updatePassword(headers, newPasword)
 
-        APIClient.sendServer<Void, ErrorResponse>(resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(request, {
             success()
         }, {
             failure(it)
@@ -83,7 +83,7 @@ class UserAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.deleteUser(headers)
 
-        APIClient.sendServer<Void, ErrorResponse>(resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(request, {
             success()
         }, {
             failure(it)

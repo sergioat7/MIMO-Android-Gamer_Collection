@@ -21,7 +21,7 @@ class GenreAPIClient(
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.getGenres(headers)
 
-        APIClient.sendServer<List<GenreResponse>, ErrorResponse>(resources, request, {
+        APIClient.sendServer<List<GenreResponse>, ErrorResponse>(request, {
             success(it)
         }, {
             failure(it)

@@ -21,7 +21,7 @@ class PlatformAPIClient(
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.getPlatforms(headers)
 
-        APIClient.sendServer<List<PlatformResponse>, ErrorResponse>(resources, request, {
+        APIClient.sendServer<List<PlatformResponse>, ErrorResponse>(request, {
             success(it)
         }, {
             failure(it)

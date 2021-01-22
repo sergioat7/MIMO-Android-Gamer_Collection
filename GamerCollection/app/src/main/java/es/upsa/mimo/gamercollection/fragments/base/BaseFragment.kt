@@ -18,7 +18,25 @@ open class BaseFragment : Fragment() {
     fun manageError(errorResponse: ErrorResponse) {
 
         hideLoading()
-        showPopupDialog(errorResponse.error)
+        val error = StringBuilder()
+        if (errorResponse.error.isNotEmpty()) {
+            error.append(errorResponse.error)
+        } else {
+            error.append(resources.getString(errorResponse.errorKey))
+        }
+        showPopupDialog(error.toString())
+    }
+
+    fun showPopupDialog(message: String) {
+
+        val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
+        val prev = activity?.supportFragmentManager?.findFragmentByTag("popupDialog")
+        if (prev != null) {
+            ft.remove(prev)
+        }
+        ft.addToBackStack(null)
+        val dialogFragment = PopupErrorDialogFragment(message)
+        dialogFragment.show(ft, "popupDialog")
     }
 
     fun <T> launchActivity(activity: Class<T>) {
@@ -55,18 +73,6 @@ open class BaseFragment : Fragment() {
 
         loadingFragment?.dismiss()
         loadingFragment = null
-    }
-
-    fun showPopupDialog(message: String) {
-
-        val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
-        val prev = activity?.supportFragmentManager?.findFragmentByTag("popupDialog")
-        if (prev != null) {
-            ft.remove(prev)
-        }
-        ft.addToBackStack(null)
-        val dialogFragment = PopupErrorDialogFragment(message)
-        dialogFragment.show(ft, "popupDialog")
     }
 
     fun showPopupConfirmationDialog(message: String, acceptHandler: () -> Unit) {

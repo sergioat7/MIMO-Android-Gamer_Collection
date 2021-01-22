@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
+import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.network.apiClient.*
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
@@ -71,27 +72,27 @@ class PopupSyncAppDialogFragment : DialogFragment() {
                                 dismiss()
                             }, {
                                 dismiss()
-                                showPopupDialog(it.error)
+                                manageError(it)
                             })
                         }, {
                             dismiss()
-                            showPopupDialog(it.error)
+                            manageError(it)
                         })
                     }, {
                         dismiss()
-                        showPopupDialog(it.error)
+                        manageError(it)
                     })
                 }, {
                     dismiss()
-                    showPopupDialog(it.error)
+                    manageError(it)
                 })
             }, {
                 dismiss()
-                showPopupDialog(it.error)
+                manageError(it)
             })
         }, {
             dismiss()
-            showPopupDialog(it.error)
+            manageError(it)
         })
     }
 
@@ -99,6 +100,17 @@ class PopupSyncAppDialogFragment : DialogFragment() {
 
         val intent = Intent(context, MainActivity::class.java).apply {}
         startActivity(intent)
+    }
+
+    private fun manageError(errorResponse: ErrorResponse) {
+
+        val error = StringBuilder()
+        if (errorResponse.error.isNotEmpty()) {
+            error.append(errorResponse.error)
+        } else {
+            error.append(resources.getString(errorResponse.errorKey))
+        }
+        showPopupDialog(error.toString())
     }
 
     private fun showPopupDialog(message: String) {

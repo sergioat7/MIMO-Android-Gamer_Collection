@@ -22,7 +22,7 @@ class SagaAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.getSagas(headers)
 
-        APIClient.sendServer<List<SagaResponse>, ErrorResponse>(resources, request, {
+        APIClient.sendServer<List<SagaResponse>, ErrorResponse>(request, {
             success(it)
         }, {
             failure(it)
@@ -36,7 +36,7 @@ class SagaAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.createSaga(headers, saga)
 
-        APIClient.sendServer<Void, ErrorResponse>(resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(request, {
             success()
         }, {
             failure(it)
@@ -50,7 +50,7 @@ class SagaAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.setSaga(headers, saga.id, saga)
 
-        APIClient.sendServer<SagaResponse, ErrorResponse>(resources, request, {
+        APIClient.sendServer<SagaResponse, ErrorResponse>(request, {
             success(it)
         }, {
             failure(it)
@@ -64,7 +64,7 @@ class SagaAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.deleteSaga(headers, sagaId)
 
-        APIClient.sendServer<Void, ErrorResponse>(resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(request, {
             success()
         }, {
             failure(it)
