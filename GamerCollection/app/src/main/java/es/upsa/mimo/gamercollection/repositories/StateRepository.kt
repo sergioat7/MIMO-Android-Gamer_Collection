@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import android.content.Context
 import es.upsa.mimo.gamercollection.models.StateResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import kotlinx.coroutines.GlobalScope
@@ -49,5 +50,13 @@ class StateRepository @Inject constructor(
         for (state in states) {
             deleteState(state as StateResponse)
         }
+    }
+
+    fun manageStates(states: List<StateResponse>) {
+
+        for (state in states) {
+            insertState(state)
+        }
+        removeDisableContent(states)
     }
 }

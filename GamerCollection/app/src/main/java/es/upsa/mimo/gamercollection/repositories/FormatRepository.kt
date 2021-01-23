@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import android.content.Context
 import es.upsa.mimo.gamercollection.models.FormatResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import kotlinx.coroutines.GlobalScope
@@ -49,5 +50,13 @@ class FormatRepository @Inject constructor(
         for (format in formats) {
             deleteFormat(format as FormatResponse)
         }
+    }
+
+    fun manageFormats(formats: List<FormatResponse>) {
+
+        for (format in formats) {
+            insertFormat(format)
+        }
+        removeDisableContent(formats)
     }
 }
