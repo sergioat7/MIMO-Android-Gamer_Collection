@@ -43,8 +43,8 @@ class GameDetailFragment(
     lateinit var genreRepository: GenreRepository
     @Inject
     lateinit var platformRepository: PlatformRepository
-    private lateinit var gameAPIClient: GameAPIClient
-    private lateinit var songAPIClient: SongAPIClient
+    @Inject
+    lateinit var gameAPIClient: GameAPIClient
     private lateinit var genres: List<GenreResponse>
     private lateinit var formats: List<FormatResponse>
     private var genreValues = ArrayList<String>()
@@ -62,9 +62,6 @@ class GameDetailFragment(
 
         val application = activity?.application
         (application as GamerCollectionApplication).appComponent.inject(this)
-
-        gameAPIClient = GameAPIClient(resources, sharedPrefHandler)
-        songAPIClient = SongAPIClient(resources, sharedPrefHandler)
 
         initializeUI()
         loadData()

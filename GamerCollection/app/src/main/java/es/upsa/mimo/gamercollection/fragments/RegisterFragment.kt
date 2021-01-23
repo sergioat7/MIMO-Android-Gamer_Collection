@@ -19,11 +19,16 @@ class RegisterFragment : BaseFragment() {
 
     @Inject
     lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var formatAPIClient: FormatAPIClient
-    private lateinit var genreAPIClient: GenreAPIClient
-    private lateinit var platformAPIClient: PlatformAPIClient
-    private lateinit var stateAPIClient: StateAPIClient
-    private lateinit var userAPIClient: UserAPIClient
+    @Inject
+    lateinit var formatAPIClient: FormatAPIClient
+    @Inject
+    lateinit var genreAPIClient: GenreAPIClient
+    @Inject
+    lateinit var platformAPIClient: PlatformAPIClient
+    @Inject
+    lateinit var stateAPIClient: StateAPIClient
+    @Inject
+    lateinit var userAPIClient: UserAPIClient
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,12 +42,6 @@ class RegisterFragment : BaseFragment() {
 
         val application = activity?.application
         (application as GamerCollectionApplication).appComponent.inject(this)
-
-        formatAPIClient = FormatAPIClient(resources, sharedPrefHandler)
-        genreAPIClient = GenreAPIClient(resources, sharedPrefHandler)
-        platformAPIClient = PlatformAPIClient(resources, sharedPrefHandler)
-        stateAPIClient = StateAPIClient(resources, sharedPrefHandler)
-        userAPIClient = UserAPIClient(resources, sharedPrefHandler)
 
         initializeUI()
     }

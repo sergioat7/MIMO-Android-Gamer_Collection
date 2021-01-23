@@ -1,15 +1,13 @@
 package es.upsa.mimo.gamercollection.network.apiClient
 
-import android.content.res.Resources
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.StateResponse
 import es.upsa.mimo.gamercollection.network.apiService.StateAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
-import kotlin.collections.HashMap
+import javax.inject.Inject
 
-class StateAPIClient(
-    private val resources: Resources,
+class StateAPIClient @Inject constructor(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 

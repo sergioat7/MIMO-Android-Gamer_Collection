@@ -42,7 +42,8 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
     lateinit var stateRepository: StateRepository
     @Inject
     lateinit var sagaRepository: SagaRepository
-    private lateinit var sagaAPIClient: SagaAPIClient
+    @Inject
+    lateinit var sagaAPIClient: SagaAPIClient
     private var menu: Menu? = null
     private var currentSaga: SagaResponse? = null
     private var sagaGames: List<GameResponse> = arrayListOf()
@@ -63,8 +64,6 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
 
         val application = activity?.application
         (application as GamerCollectionApplication).appComponent.inject(this)
-
-        sagaAPIClient = SagaAPIClient(resources, sharedPrefHandler)
 
         initializeUI()
         loadData()
