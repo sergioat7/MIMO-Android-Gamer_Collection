@@ -44,7 +44,8 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
     lateinit var platformRepository: PlatformRepository
     @Inject
     lateinit var stateRepository: StateRepository
-    private lateinit var gameAPIClient: GameAPIClient
+    @Inject
+    lateinit var gameAPIClient: GameAPIClient
     private var menu: Menu? = null
     private lateinit var sortingKeys: Array<String>
     private var sortingValues = arrayOf("")
@@ -67,7 +68,6 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
         val application = activity?.application
         (application as GamerCollectionApplication).appComponent.inject(this)
 
-        gameAPIClient = GameAPIClient(resources, sharedPrefHandler)
         sortingKeys = resources.getStringArray(R.array.sorting_keys_ids)
         sortingValues = resources.getStringArray(R.array.sorting_keys)
         sortKey = sharedPrefHandler.getSortingKey()

@@ -29,8 +29,10 @@ class GameSongsFragment(
     lateinit var sharedPrefHandler: SharedPreferencesHandler
     @Inject
     lateinit var gameRepository: GameRepository
-    private lateinit var gameAPIClient: GameAPIClient
-    private lateinit var songAPIClient: SongAPIClient
+    @Inject
+    lateinit var gameAPIClient: GameAPIClient
+    @Inject
+    lateinit var songAPIClient: SongAPIClient
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,9 +46,6 @@ class GameSongsFragment(
 
         val application = activity?.application
         (application as GamerCollectionApplication).appComponent.inject(this)
-
-        gameAPIClient = GameAPIClient(resources, sharedPrefHandler)
-        songAPIClient = SongAPIClient(resources, sharedPrefHandler)
 
         initializeUI()
     }

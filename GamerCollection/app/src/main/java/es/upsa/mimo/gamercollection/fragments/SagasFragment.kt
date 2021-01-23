@@ -23,7 +23,8 @@ class SagasFragment : BaseFragment(), SagasAdapter.OnItemClickListener {
 
     @Inject
     lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var sagaAPIClient: SagaAPIClient
+    @Inject
+    lateinit var sagaAPIClient: SagaAPIClient
     @Inject
     lateinit var sagaRepository: SagaRepository
     @Inject
@@ -44,8 +45,6 @@ class SagasFragment : BaseFragment(), SagasAdapter.OnItemClickListener {
 
         val application = activity?.application
         (application as GamerCollectionApplication).appComponent.inject(this)
-
-        sagaAPIClient = SagaAPIClient(resources, sharedPrefHandler)
 
         initializeUI()
     }
