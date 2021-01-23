@@ -10,6 +10,7 @@ import es.upsa.mimo.gamercollection.injection.modules.AppDatabaseModule
 import es.upsa.mimo.gamercollection.injection.modules.SharedPreferencesModule
 import es.upsa.mimo.gamercollection.viewmodelfactories.LandingViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodelfactories.LoginViewModelFactory
+import es.upsa.mimo.gamercollection.viewmodelfactories.RegisterViewModelFactory
 
 @Component(modules = [
     AppDatabaseModule::class,
@@ -19,6 +20,7 @@ interface AppComponent {
 
     fun inject(landingViewModelFactory: LandingViewModelFactory)
     fun inject(loginViewModelFactory: LoginViewModelFactory)
+    fun inject(registerViewModelFactory: RegisterViewModelFactory)
 
     fun inject(popupFilterDialogFragment: PopupFilterDialogFragment)
     fun inject(gameDetailFragment: GameDetailFragment)
@@ -26,7 +28,6 @@ interface AppComponent {
     fun inject(profileFragment: ProfileFragment)
     fun inject(gameSongsFragment: GameSongsFragment)
     fun inject(gamesFragment: GamesFragment)
-    fun inject(registerFragment: RegisterFragment)
     fun inject(sagaDetailFragment: SagaDetailFragment)
     fun inject(sagasFragment: SagasFragment)
     fun inject(popupSyncAppDialogFragment: PopupSyncAppDialogFragment)

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
@@ -16,31 +17,16 @@ import es.upsa.mimo.gamercollection.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.repositories.StateRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
+import es.upsa.mimo.gamercollection.viewmodelfactories.LoginViewModelFactory
+import es.upsa.mimo.gamercollection.viewmodelfactories.RegisterViewModelFactory
+import es.upsa.mimo.gamercollection.viewmodels.LoginViewModel
+import es.upsa.mimo.gamercollection.viewmodels.RegisterViewModel
 import kotlinx.android.synthetic.main.fragment_register.*
 import javax.inject.Inject
 
 class RegisterFragment : BaseFragment() {
 
-    @Inject
-    lateinit var sharedPrefHandler: SharedPreferencesHandler
-    @Inject
-    lateinit var formatAPIClient: FormatAPIClient
-    @Inject
-    lateinit var genreAPIClient: GenreAPIClient
-    @Inject
-    lateinit var platformAPIClient: PlatformAPIClient
-    @Inject
-    lateinit var stateAPIClient: StateAPIClient
-    @Inject
-    lateinit var userAPIClient: UserAPIClient
-    @Inject
-    lateinit var formatRepository: FormatRepository
-    @Inject
-    lateinit var genreRepository: GenreRepository
-    @Inject
-    lateinit var platformRepository: PlatformRepository
-    @Inject
-    lateinit var stateRepository: StateRepository
+    private lateinit var viewModel: RegisterViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,17 +37,41 @@ class RegisterFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val application = activity?.application
-        (application as GamerCollectionApplication).appComponent.inject(this)
-
         initializeUI()
     }
 
     //MARK: - Private functions
 
     private fun initializeUI() {
+
+        val application = activity?.application
+        viewModel = ViewModelProvider(this, RegisterViewModelFactory(application)).get(RegisterViewModel::class.java)
+        setupBindings()
+
         register_button.setOnClickListener {register()}
+    }
+
+    private fun setupBindings() {
+
+        viewModel.registerLoading.observe(viewLifecycleOwner, { isLoading ->
+
+            if (isLoading) {
+                showLoading()
+            } else {
+                hideLoading()
+            }
+        })
+
+        viewModel.registerError.observe(viewLifecycleOwner, { error ->
+
+            if (error == null) {
+                launchActivity(MainActivity::class.java)
+            } else {
+
+                hideLoading()
+                manageError(error)
+            }
+        })
     }
 
     private fun register() {
@@ -80,56 +90,6 @@ class RegisterFragment : BaseFragment() {
             return
         }
 
-        showLoading()
-        userAPIClient.register(username, password, {
-            userAPIClient.login(username, password, { token ->
-
-                val userData = UserData(username, password, false)
-                val authData = AuthData(token)
-                sharedPrefHandler.run {
-                    storeUserData(userData)
-                    storeCredentials(authData)
-                }
-                syncApp(userData)
-            }, {
-                manageError(it)
-            })
-        }, {
-            manageError(it)
-        })
-    }
-
-    private fun syncApp(userData: UserData) {
-
-        formatAPIClient.getFormats({ formats ->
-            genreAPIClient.getGenres({ genres ->
-                platformAPIClient.getPlatforms({ platforms ->
-                    stateAPIClient.getStates({ states ->
-
-                        formatRepository.manageFormats(formats)
-                        genreRepository.manageGenres(genres)
-                        platformRepository.managePlatforms(platforms)
-                        stateRepository.manageStates(states)
-
-                        userData.isLoggedIn = true
-                        sharedPrefHandler.storeUserData(userData)
-                        goToMainView()
-                        hideLoading()
-                    }, {
-                        manageError(it)
-                    })
-                }, {
-                    manageError(it)
-                })
-            }, {
-                manageError(it)
-            })
-        }, {
-            manageError(it)
-        })
-    }
-
-    private fun goToMainView() {
-        launchActivity(MainActivity::class.java)
+        viewModel.register(username, password)
     }
 }
