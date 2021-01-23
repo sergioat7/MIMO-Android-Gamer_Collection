@@ -8,9 +8,13 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
-import es.upsa.mimo.gamercollection.models.*
+import es.upsa.mimo.gamercollection.models.AuthData
+import es.upsa.mimo.gamercollection.models.UserData
 import es.upsa.mimo.gamercollection.network.apiClient.*
-import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.repositories.FormatRepository
+import es.upsa.mimo.gamercollection.repositories.GenreRepository
+import es.upsa.mimo.gamercollection.repositories.PlatformRepository
+import es.upsa.mimo.gamercollection.repositories.StateRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_register.*
 import javax.inject.Inject
@@ -29,6 +33,14 @@ class RegisterFragment : BaseFragment() {
     lateinit var stateAPIClient: StateAPIClient
     @Inject
     lateinit var userAPIClient: UserAPIClient
+    @Inject
+    lateinit var formatRepository: FormatRepository
+    @Inject
+    lateinit var genreRepository: GenreRepository
+    @Inject
+    lateinit var platformRepository: PlatformRepository
+    @Inject
+    lateinit var stateRepository: StateRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -94,10 +106,10 @@ class RegisterFragment : BaseFragment() {
                 platformAPIClient.getPlatforms({ platforms ->
                     stateAPIClient.getStates({ states ->
 
-                        Constants.manageFormats(requireContext(), formats)
-                        Constants.manageGenres(requireContext(), genres)
-                        Constants.managePlatforms(requireContext(), platforms)
-                        Constants.manageStates(requireContext(), states)
+                        formatRepository.manageFormats(formats)
+                        genreRepository.manageGenres(genres)
+                        platformRepository.managePlatforms(platforms)
+                        stateRepository.manageStates(states)
 
                         userData.isLoggedIn = true
                         sharedPrefHandler.storeUserData(userData)

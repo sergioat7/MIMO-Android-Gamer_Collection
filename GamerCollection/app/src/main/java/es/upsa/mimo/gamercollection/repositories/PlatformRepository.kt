@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import android.content.Context
 import es.upsa.mimo.gamercollection.models.PlatformResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import kotlinx.coroutines.GlobalScope
@@ -49,5 +50,13 @@ class PlatformRepository @Inject constructor(
         for (platform in platforms) {
             deletePlatform(platform as PlatformResponse)
         }
+    }
+
+    fun managePlatforms(platforms: List<PlatformResponse>) {
+
+        for (platform in platforms) {
+            insertPlatform(platform)
+        }
+        removeDisableContent(platforms)
     }
 }

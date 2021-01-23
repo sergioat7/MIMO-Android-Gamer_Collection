@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import android.content.Context
 import es.upsa.mimo.gamercollection.models.GenreResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import kotlinx.coroutines.GlobalScope
@@ -49,5 +50,13 @@ class GenreRepository @Inject constructor(
         for (genre in genres) {
             deleteGenre(genre as GenreResponse)
         }
+    }
+
+    fun manageGenres(genres: List<GenreResponse>) {
+
+        for (genre in genres) {
+            insertGenre(genre)
+        }
+        removeDisableContent(genres)
     }
 }

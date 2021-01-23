@@ -14,8 +14,7 @@ import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.network.apiClient.*
-import es.upsa.mimo.gamercollection.repositories.GameRepository
-import es.upsa.mimo.gamercollection.repositories.SagaRepository
+import es.upsa.mimo.gamercollection.repositories.*
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -26,10 +25,6 @@ class ProfileFragment : BaseFragment() {
     @Inject
     lateinit var sharedPrefHandler: SharedPreferencesHandler
     @Inject
-    lateinit var gameRepository: GameRepository
-    @Inject
-    lateinit var sagaRepository: SagaRepository
-    @Inject
     lateinit var formatAPIClient: FormatAPIClient
     @Inject
     lateinit var genreAPIClient: GenreAPIClient
@@ -39,6 +34,18 @@ class ProfileFragment : BaseFragment() {
     lateinit var stateAPIClient: StateAPIClient
     @Inject
     lateinit var userAPIClient: UserAPIClient
+    @Inject
+    lateinit var formatRepository: FormatRepository
+    @Inject
+    lateinit var gameRepository: GameRepository
+    @Inject
+    lateinit var genreRepository: GenreRepository
+    @Inject
+    lateinit var platformRepository: PlatformRepository
+    @Inject
+    lateinit var sagaRepository: SagaRepository
+    @Inject
+    lateinit var stateRepository: StateRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -194,10 +201,10 @@ class ProfileFragment : BaseFragment() {
                 platformAPIClient.getPlatforms({ platforms ->
                     stateAPIClient.getStates({ states ->
 
-                        Constants.manageFormats(requireContext(), formats)
-                        Constants.manageGenres(requireContext(), genres)
-                        Constants.managePlatforms(requireContext(), platforms)
-                        Constants.manageStates(requireContext(), states)
+                        formatRepository.manageFormats(formats)
+                        genreRepository.manageGenres(genres)
+                        platformRepository.managePlatforms(platforms)
+                        stateRepository.manageStates(states)
 
                         val landing = Intent(requireContext(), LandingActivity::class.java)
                         startActivity(landing)
