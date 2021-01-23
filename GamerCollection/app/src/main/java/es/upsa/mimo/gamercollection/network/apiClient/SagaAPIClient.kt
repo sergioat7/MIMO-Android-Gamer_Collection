@@ -1,19 +1,17 @@
 package es.upsa.mimo.gamercollection.network.apiClient
 
-import android.content.res.Resources
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.network.apiService.SagaAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
-import kotlin.collections.HashMap
+import javax.inject.Inject
 
-class SagaAPIClient(
-    private val resources: Resources,
+class SagaAPIClient @Inject constructor(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    private val api = APIClient.getRetrofit(sharedPrefHandler).create(SagaAPIService::class.java)
+    private val api = APIClient.retrofit.create(SagaAPIService::class.java)
 
     fun getSagas(success: (List<SagaResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
@@ -22,7 +20,7 @@ class SagaAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.getSagas(headers)
 
-        APIClient.sendServer<List<SagaResponse>, ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<List<SagaResponse>, ErrorResponse>(request, {
             success(it)
         }, {
             failure(it)
@@ -36,7 +34,7 @@ class SagaAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.createSaga(headers, saga)
 
-        APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(request, {
             success()
         }, {
             failure(it)
@@ -50,7 +48,7 @@ class SagaAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.setSaga(headers, saga.id, saga)
 
-        APIClient.sendServer<SagaResponse, ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<SagaResponse, ErrorResponse>(request, {
             success(it)
         }, {
             failure(it)
@@ -64,7 +62,7 @@ class SagaAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.deleteSaga(headers, sagaId)
 
-        APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(request, {
             success()
         }, {
             failure(it)

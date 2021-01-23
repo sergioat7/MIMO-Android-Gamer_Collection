@@ -1,23 +1,22 @@
-package es.upsa.mimo.gamercollection.persistence.repositories
+package es.upsa.mimo.gamercollection.repositories
 
-import android.content.Context
 import es.upsa.mimo.gamercollection.models.PlatformResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
-class PlatformRepository(context: Context) {
-
-    private val database = AppDatabase.getAppDatabase(context)
-    private val platformDao = database.platformDao()
+class PlatformRepository @Inject constructor(
+    private val database: AppDatabase
+) {
 
     fun getPlatforms(): List<PlatformResponse> {
 
         var platforms = mutableListOf<PlatformResponse>()
         runBlocking {
-            val result = GlobalScope.async { platformDao.getPlatforms() }
+            val result = GlobalScope.async { database.platformDao().getPlatforms() }
             platforms = result.await().toMutableList()
             platforms.sortBy { it.name }
             val other = platforms.firstOrNull { it.id == "OTHER" }
@@ -32,14 +31,14 @@ class PlatformRepository(context: Context) {
     fun insertPlatform(platform: PlatformResponse) {
 
         GlobalScope.launch {
-            platformDao.insertPlatform(platform)
+            database.platformDao().insertPlatform(platform)
         }
     }
 
     private fun deletePlatform(platform: PlatformResponse) {
 
         GlobalScope.launch {
-            platformDao.deletePlatform(platform)
+            database.platformDao().deletePlatform(platform)
         }
     }
 

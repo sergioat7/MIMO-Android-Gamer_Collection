@@ -13,7 +13,13 @@ open class BaseActivity : AppCompatActivity() {
     fun manageError(errorResponse: ErrorResponse) {
 
         hideLoading()
-        showPopupDialog(errorResponse.error)
+        val error = StringBuilder()
+        if (errorResponse.error.isNotEmpty()) {
+            error.append(errorResponse.error)
+        } else {
+            error.append(resources.getString(errorResponse.errorKey))
+        }
+        showPopupDialog(error.toString())
     }
 
     fun showPopupDialog(message: String) {

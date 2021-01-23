@@ -1,14 +1,16 @@
 package es.upsa.mimo.gamercollection.utils
 
-import android.content.Context
+import android.content.SharedPreferences
 import com.google.gson.Gson
 import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.models.UserData
 import java.util.*
+import javax.inject.Inject
 
-class SharedPreferencesHandler(context: Context?) {
+class SharedPreferencesHandler @Inject constructor(
+    private val sharedPreferences: SharedPreferences?
+) {
 
-    private val sharedPref = context?.getSharedPreferences(Constants.PREFERENCES_NAME, Context.MODE_PRIVATE)
     private val gson = Gson()
 
     fun isLoggedIn(): Boolean {
@@ -20,7 +22,7 @@ class SharedPreferencesHandler(context: Context?) {
 
     fun getUserData(): UserData {
 
-        val userDataJson = sharedPref?.getString(Constants.USER_DATA_PREFERENCES_NAME,null)
+        val userDataJson = sharedPreferences?.getString(Constants.USER_DATA_PREFERENCES_NAME,null)
         return if (userDataJson != null) {
             gson.fromJson(userDataJson, UserData::class.java)
         } else {
@@ -30,8 +32,8 @@ class SharedPreferencesHandler(context: Context?) {
 
     fun storeUserData(userData: UserData) {
 
-        if (sharedPref != null) {
-            with (sharedPref.edit()) {
+        if (sharedPreferences != null) {
+            with (sharedPreferences.edit()) {
                 val userDataJson = gson.toJson(userData)
                 putString(Constants.USER_DATA_PREFERENCES_NAME, userDataJson)
                 commit()
@@ -47,7 +49,7 @@ class SharedPreferencesHandler(context: Context?) {
     }
 
     fun removeUserData() {
-        sharedPref?.edit()?.remove(Constants.USER_DATA_PREFERENCES_NAME)?.apply()
+        sharedPreferences?.edit()?.remove(Constants.USER_DATA_PREFERENCES_NAME)?.apply()
     }
 
     fun removePassword() {
@@ -60,7 +62,7 @@ class SharedPreferencesHandler(context: Context?) {
 
     fun getCredentials(): AuthData {
 
-        val authDataJson = sharedPref?.getString(Constants.AUTH_DATA_PREFERENCES_NAME,null)
+        val authDataJson = sharedPreferences?.getString(Constants.AUTH_DATA_PREFERENCES_NAME,null)
         return if (authDataJson != null) {
             gson.fromJson(authDataJson, AuthData::class.java)
         } else {
@@ -70,8 +72,8 @@ class SharedPreferencesHandler(context: Context?) {
 
     fun storeCredentials(authData: AuthData) {
 
-        if (sharedPref != null) {
-            with (sharedPref.edit()) {
+        if (sharedPreferences != null) {
+            with (sharedPreferences.edit()) {
                 val authDataJson = gson.toJson(authData)
                 putString(Constants.AUTH_DATA_PREFERENCES_NAME, authDataJson)
                 commit()
@@ -80,12 +82,12 @@ class SharedPreferencesHandler(context: Context?) {
     }
 
     fun removeCredentials() {
-        sharedPref?.edit()?.remove(Constants.AUTH_DATA_PREFERENCES_NAME)?.apply()
+        sharedPreferences?.edit()?.remove(Constants.AUTH_DATA_PREFERENCES_NAME)?.apply()
     }
 
     fun getLanguage(): String {
 
-        sharedPref?.getString(Constants.LANGUAGE_PREFERENCES_NAME, null)?.let {
+        sharedPreferences?.getString(Constants.LANGUAGE_PREFERENCES_NAME, null)?.let {
             return it
         } ?: run {
             val locale = Locale.getDefault().language
@@ -96,8 +98,8 @@ class SharedPreferencesHandler(context: Context?) {
 
     fun setLanguage(language: String) {
 
-        if (sharedPref != null) {
-            with (sharedPref.edit()) {
+        if (sharedPreferences != null) {
+            with (sharedPreferences.edit()) {
                 putString(Constants.LANGUAGE_PREFERENCES_NAME, language)
                 commit()
             }
@@ -105,13 +107,13 @@ class SharedPreferencesHandler(context: Context?) {
     }
 
     fun getSortingKey(): String {
-        return sharedPref?.getString(Constants.SORTING_KEY_PREFERENCES_NAME, null) ?: "name"
+        return sharedPreferences?.getString(Constants.SORTING_KEY_PREFERENCES_NAME, null) ?: "name"
     }
 
     fun setSortingKey(sortingKey: String) {
 
-        if (sharedPref != null) {
-            with (sharedPref.edit()) {
+        if (sharedPreferences != null) {
+            with (sharedPreferences.edit()) {
                 putString(Constants.SORTING_KEY_PREFERENCES_NAME, sortingKey)
                 commit()
             }
@@ -119,13 +121,13 @@ class SharedPreferencesHandler(context: Context?) {
     }
 
     fun getSwipeRefresh(): Boolean {
-        return sharedPref?.getBoolean(Constants.SWIPE_REFRESH_PREFERENCES_NAME, true) ?: true
+        return sharedPreferences?.getBoolean(Constants.SWIPE_REFRESH_PREFERENCES_NAME, true) ?: true
     }
 
     fun setSwipeRefresh(swipeRefresh: Boolean) {
 
-        if (sharedPref != null) {
-            with (sharedPref.edit()) {
+        if (sharedPreferences != null) {
+            with (sharedPreferences.edit()) {
                 putBoolean(Constants.SWIPE_REFRESH_PREFERENCES_NAME, swipeRefresh)
                 commit()
             }
@@ -133,13 +135,13 @@ class SharedPreferencesHandler(context: Context?) {
     }
 
     fun notificationLaunched(gameId: Int): Boolean {
-        return sharedPref?.getBoolean("${Constants.GAME_NOTIFICATION_PREFERENCES_NAME}${gameId}", false) ?: false
+        return sharedPreferences?.getBoolean("${Constants.GAME_NOTIFICATION_PREFERENCES_NAME}${gameId}", false) ?: false
     }
 
     fun setNotificationLaunched(gameId: Int, value: Boolean) {
 
-        if (sharedPref != null) {
-            with (sharedPref.edit()) {
+        if (sharedPreferences != null) {
+            with (sharedPreferences.edit()) {
                 putBoolean("${Constants.GAME_NOTIFICATION_PREFERENCES_NAME}$gameId", value)
                 commit()
             }

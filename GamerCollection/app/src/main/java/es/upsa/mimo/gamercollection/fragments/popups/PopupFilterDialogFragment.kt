@@ -10,24 +10,29 @@ import androidx.core.view.children
 import androidx.fragment.app.DialogFragment
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
+import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.FilterModel
-import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.GenreRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
+import es.upsa.mimo.gamercollection.repositories.FormatRepository
+import es.upsa.mimo.gamercollection.repositories.GenreRepository
+import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_popup_filter_dialog.*
+import javax.inject.Inject
 
 class PopupFilterDialogFragment(
-    filters: FilterModel?,
+    private var currentFilters: FilterModel?,
     private val onFiltersSelected: OnFiltersSelected
 ) : DialogFragment() {
 
-    private var currentFilters = filters
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var formatRepository: FormatRepository
-    private lateinit var genreRepository: GenreRepository
-    private lateinit var platformRepository: PlatformRepository
+    @Inject
+    lateinit var sharedPrefHandler: SharedPreferencesHandler
+    @Inject
+    lateinit var formatRepository: FormatRepository
+    @Inject
+    lateinit var genreRepository: GenreRepository
+    @Inject
+    lateinit var platformRepository: PlatformRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,10 +44,8 @@ class PopupFilterDialogFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPrefHandler = SharedPreferencesHandler(context)
-        formatRepository = FormatRepository(requireContext())
-        genreRepository = GenreRepository(requireContext())
-        platformRepository = PlatformRepository(requireContext())
+        val application = activity?.application
+        (application as GamerCollectionApplication).appComponent.inject(this)
 
         initializeUI()
         configFilters(currentFilters)
@@ -99,11 +102,34 @@ class PopupFilterDialogFragment(
             rating_bar_min.rating = (filters.minScore / 2).toFloat()
             rating_bar_max.rating = (filters.maxScore / 2).toFloat()
 
-            edit_text_release_date_min.setText(Constants.dateToString(filters.minReleaseDate, sharedPrefHandler))
-            edit_text_release_date_max.setText(Constants.dateToString(filters.maxReleaseDate, sharedPrefHandler))
+            edit_text_release_date_min.setText(
+                Constants.dateToString(
+                    filters.minReleaseDate,
+                    Constants.getDateFormatToShow(sharedPrefHandler),
+                    sharedPrefHandler.getLanguage()
+                )
+            )
+            edit_text_release_date_max.setText(
+                Constants.dateToString(
+                    filters.maxReleaseDate,
+                    Constants.getDateFormatToShow(sharedPrefHandler),
+                    sharedPrefHandler.getLanguage()
+                )
+            )
 
-            edit_text_purchase_date_min.setText(Constants.dateToString(filters.minPurchaseDate, sharedPrefHandler))
-            edit_text_purchase_date_max.setText(Constants.dateToString(filters.maxPurchaseDate, sharedPrefHandler))
+            edit_text_purchase_date_min.setText(
+                Constants.dateToString(
+                    filters.minPurchaseDate,
+                    Constants.getDateFormatToShow(sharedPrefHandler),
+                    sharedPrefHandler.getLanguage()
+                )
+            )
+            edit_text_purchase_date_max.setText(
+                Constants.dateToString(
+                    filters.maxPurchaseDate,
+                    Constants.getDateFormatToShow(sharedPrefHandler),
+                    sharedPrefHandler.getLanguage())
+            )
 
             if (filters.minPrice > 0) edit_text_price_min.setText(filters.minPrice.toString())
             if (filters.maxPrice > 0) edit_text_price_max.setText(filters.maxPrice.toString())
@@ -239,11 +265,27 @@ class PopupFilterDialogFragment(
         val minScore = (rating_bar_min.rating * 2).toDouble()
         val maxScore = (rating_bar_max.rating * 2).toDouble()
 
-        val minReleaseDate = Constants.stringToDate(edit_text_release_date_min.text.toString(), sharedPrefHandler)
-        val maxReleaseDate = Constants.stringToDate(edit_text_release_date_max.text.toString(), sharedPrefHandler)
+        val minReleaseDate = Constants.stringToDate(
+            edit_text_release_date_min.text.toString(),
+            Constants.getDateFormatToShow(sharedPrefHandler),
+            sharedPrefHandler.getLanguage()
+        )
+        val maxReleaseDate = Constants.stringToDate(
+            edit_text_release_date_max.text.toString(),
+            Constants.getDateFormatToShow(sharedPrefHandler),
+            sharedPrefHandler.getLanguage()
+        )
 
-        val minPurchaseDate = Constants.stringToDate(edit_text_purchase_date_min.text.toString(), sharedPrefHandler)
-        val maxPurchaseDate = Constants.stringToDate(edit_text_purchase_date_max.text.toString(), sharedPrefHandler)
+        val minPurchaseDate = Constants.stringToDate(
+            edit_text_purchase_date_min.text.toString(),
+            Constants.getDateFormatToShow(sharedPrefHandler),
+            sharedPrefHandler.getLanguage()
+        )
+        val maxPurchaseDate = Constants.stringToDate(
+            edit_text_purchase_date_max.text.toString(),
+            Constants.getDateFormatToShow(sharedPrefHandler),
+            sharedPrefHandler.getLanguage()
+        )
 
         var minPrice = 0.0
         try {

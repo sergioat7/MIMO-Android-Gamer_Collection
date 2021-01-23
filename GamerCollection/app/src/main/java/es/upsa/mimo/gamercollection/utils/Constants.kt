@@ -2,10 +2,10 @@ package es.upsa.mimo.gamercollection.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.SpinnerAdapter
 import es.upsa.mimo.gamercollection.models.*
-import es.upsa.mimo.gamercollection.persistence.repositories.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,56 +18,56 @@ class Constants {
 
         fun manageFormats(context: Context, formats: List<FormatResponse>) {
 
-            val formatRepository = FormatRepository(context)
-            for (format in formats) {
-                formatRepository.insertFormat(format)
-            }
-            formatRepository.removeDisableContent(formats)
+//            val formatRepository = FormatRepository(context)
+//            for (format in formats) {
+//                formatRepository.insertFormat(format)
+//            }
+//            formatRepository.removeDisableContent(formats)
         }
 
         fun manageGenres(context: Context, genres: List<GenreResponse>) {
 
-            val genreRepository = GenreRepository(context)
-            for (genre in genres) {
-                genreRepository.insertGenre(genre)
-            }
-            genreRepository.removeDisableContent(genres)
+//            val genreRepository = GenreRepository(context)
+//            for (genre in genres) {
+//                genreRepository.insertGenre(genre)
+//            }
+//            genreRepository.removeDisableContent(genres)
         }
 
         fun managePlatforms(context: Context, platforms: List<PlatformResponse>) {
 
-            val platformRepository = PlatformRepository(context)
-            for (platform in platforms) {
-                platformRepository.insertPlatform(platform)
-            }
-            platformRepository.removeDisableContent(platforms)
+//            val platformRepository = PlatformRepository(context)
+//            for (platform in platforms) {
+//                platformRepository.insertPlatform(platform)
+//            }
+//            platformRepository.removeDisableContent(platforms)
         }
 
         fun manageStates(context: Context, states: List<StateResponse>) {
 
-            val stateRepository = StateRepository(context)
-            for (state in states) {
-                stateRepository.insertState(state)
-            }
-            stateRepository.removeDisableContent(states)
+//            val stateRepository = StateRepository(context)
+//            for (state in states) {
+//                stateRepository.insertState(state)
+//            }
+//            stateRepository.removeDisableContent(states)
         }
 
         fun manageGames(context: Context, games: List<GameResponse>) {
 
-            val gameRepository = GameRepository(context)
-            for (game in games) {
-                gameRepository.insertGame(game)
-            }
-            gameRepository.removeDisableContent(games)
+//            val gameRepository = GameRepository(context)
+//            for (game in games) {
+//                gameRepository.insertGame(game)
+//            }
+//            gameRepository.removeDisableContent(games)
         }
 
         fun manageSagas(context: Context, sagas: List<SagaResponse>) {
 
-            val sagaRepository = SagaRepository(context)
-            for (saga in sagas) {
-                sagaRepository.insertSaga(saga)
-            }
-            sagaRepository.removeDisableContent(sagas)
+//            val sagaRepository = SagaRepository(context)
+//            for (saga in sagas) {
+//                sagaRepository.insertSaga(saga)
+//            }
+//            sagaRepository.removeDisableContent(sagas)
         }
 
         // MARK: - SharedPref constants
@@ -103,34 +103,65 @@ class Constants {
 
         // MARK: Date format
 
-        fun getDateFormat(sharedPrefHandler: SharedPreferencesHandler): String {
-            return if (sharedPrefHandler.getLanguage() == "es") "dd-MM-yyyy" else "MM-dd-yyyy"
+        const val DATE_FORMAT = "yyyy-MM-dd"
+
+        fun getDateFormatToShow(sharedPrefHandler: SharedPreferencesHandler): String {
+
+            return when(sharedPrefHandler.getLanguage()) {
+                "es" -> "d MMMM yyyy"
+                else -> "MMMM d, yyyy"
+            }
         }
 
         @SuppressLint("SimpleDateFormat")
-        fun dateToString(date: Date?, sharedPrefHandler: SharedPreferencesHandler): String? {
+        fun dateToString(date: Date?,
+                         format: String? = null,
+                         language: String? = null): String? {
 
+            val dateFormat = format ?: DATE_FORMAT
+            val locale = language?.let {
+                Locale.forLanguageTag(it)
+            } ?: run {
+                Locale.getDefault()
+            }
             date?.let {
+
                 return try {
-                    SimpleDateFormat(getDateFormat(sharedPrefHandler)).format(it)
+                    SimpleDateFormat(dateFormat, locale).format(it)
                 } catch (e: Exception) {
+
+                    Log.e("Constants", e.message ?: "")
                     null
                 }
             } ?: run {
+
+                Log.e("Constants", "date null")
                 return null
             }
         }
 
         @SuppressLint("SimpleDateFormat")
-        fun stringToDate(dateString: String?, sharedPrefHandler: SharedPreferencesHandler): Date? {
+        fun stringToDate(dateString: String?,
+                         format: String? = null,
+                         language: String? = null): Date? {
 
+            val dateFormat = format ?: DATE_FORMAT
+            val locale = language?.let {
+                Locale.forLanguageTag(it)
+            } ?: run {
+                Locale.getDefault()
+            }
             dateString?.let {
+
                 return try {
-                    SimpleDateFormat(getDateFormat(sharedPrefHandler)).parse(it)
+                    SimpleDateFormat(dateFormat, locale).parse(it)
                 } catch (e: Exception) {
+
+                    Log.e("Constants", e.message ?: "")
                     null
                 }
             } ?: run {
+                Log.e("Constants", "dateString null")
                 return null
             }
         }

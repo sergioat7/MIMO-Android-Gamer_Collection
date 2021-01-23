@@ -19,26 +19,33 @@ import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.fragments.popups.OnFiltersSelected
 import es.upsa.mimo.gamercollection.fragments.popups.PopupFilterDialogFragment
+import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
-import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.StateRepository
+import es.upsa.mimo.gamercollection.repositories.GameRepository
+import es.upsa.mimo.gamercollection.repositories.PlatformRepository
+import es.upsa.mimo.gamercollection.repositories.StateRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_games.*
 import kotlinx.android.synthetic.main.state_button.view.*
 import java.util.*
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFiltersSelected {
 
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var gameAPIClient: GameAPIClient
-    private lateinit var gameRepository: GameRepository
-    private lateinit var platformRepository: PlatformRepository
-    private lateinit var stateRepository: StateRepository
+    @Inject
+    lateinit var sharedPrefHandler: SharedPreferencesHandler
+    @Inject
+    lateinit var gameRepository: GameRepository
+    @Inject
+    lateinit var platformRepository: PlatformRepository
+    @Inject
+    lateinit var stateRepository: StateRepository
+    @Inject
+    lateinit var gameAPIClient: GameAPIClient
     private var menu: Menu? = null
     private lateinit var sortingKeys: Array<String>
     private var sortingValues = arrayOf("")
@@ -58,11 +65,9 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPrefHandler = SharedPreferencesHandler(context)
-        gameAPIClient = GameAPIClient(resources, sharedPrefHandler)
-        gameRepository = GameRepository(requireContext())
-        platformRepository = PlatformRepository(requireContext())
-        stateRepository = StateRepository(requireContext())
+        val application = activity?.application
+        (application as GamerCollectionApplication).appComponent.inject(this)
+
         sortingKeys = resources.getStringArray(R.array.sorting_keys_ids)
         sortingValues = resources.getStringArray(R.array.sorting_keys)
         sortKey = sharedPrefHandler.getSortingKey()
@@ -75,7 +80,15 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
 
         val games = getContent(state, sortKey, sortAscending, currentFilters)
         setGamesCount(games)
-        val today = Constants.stringToDate(Constants.dateToString(Date(), sharedPrefHandler), sharedPrefHandler)
+        val today = Constants.stringToDate(
+            Constants.dateToString(
+                Date(),
+                Constants.getDateFormatToShow(sharedPrefHandler),
+                sharedPrefHandler.getLanguage()
+            ),
+            Constants.getDateFormatToShow(sharedPrefHandler),
+            sharedPrefHandler.getLanguage()
+        )
         val gamesToNotify = ArrayList<GameResponse>()
         for (game in games) {
             if (game.releaseDate == today)
@@ -315,7 +328,17 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
                     NotificationCompat.Builder(requireContext(), Constants.CHANNEL_ID)
                         .setSmallIcon(R.drawable.app_icon)
                         .setContentTitle(resources.getString(R.string.notification_title, game.name))
-                        .setContentText(resources.getString(R.string.notification_description, Constants.dateToString(Date(), sharedPrefHandler), game.name))
+                        .setContentText(
+                            resources.getString(
+                                R.string.notification_description,
+                                Constants.dateToString(
+                                    Date(),
+                                    Constants.getDateFormatToShow(sharedPrefHandler),
+                                    sharedPrefHandler.getLanguage()
+                                ),
+                                game.name
+                            )
+                        )
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)

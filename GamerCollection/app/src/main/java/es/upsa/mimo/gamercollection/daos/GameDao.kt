@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.persistence.daos
+package es.upsa.mimo.gamercollection.daos
 
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery
