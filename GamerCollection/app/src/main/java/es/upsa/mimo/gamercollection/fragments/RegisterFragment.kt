@@ -7,20 +7,28 @@ import android.view.ViewGroup
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.*
 import es.upsa.mimo.gamercollection.network.apiClient.*
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_register.*
+import javax.inject.Inject
 
 class RegisterFragment : BaseFragment() {
 
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var formatAPIClient: FormatAPIClient
-    private lateinit var genreAPIClient: GenreAPIClient
-    private lateinit var platformAPIClient: PlatformAPIClient
-    private lateinit var stateAPIClient: StateAPIClient
-    private lateinit var userAPIClient: UserAPIClient
+    @Inject
+    lateinit var sharedPrefHandler: SharedPreferencesHandler
+    @Inject
+    lateinit var formatAPIClient: FormatAPIClient
+    @Inject
+    lateinit var genreAPIClient: GenreAPIClient
+    @Inject
+    lateinit var platformAPIClient: PlatformAPIClient
+    @Inject
+    lateinit var stateAPIClient: StateAPIClient
+    @Inject
+    lateinit var userAPIClient: UserAPIClient
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,12 +40,8 @@ class RegisterFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPrefHandler = SharedPreferencesHandler(context)
-        formatAPIClient = FormatAPIClient(resources, sharedPrefHandler)
-        genreAPIClient = GenreAPIClient(resources, sharedPrefHandler)
-        platformAPIClient = PlatformAPIClient(resources, sharedPrefHandler)
-        stateAPIClient = StateAPIClient(resources, sharedPrefHandler)
-        userAPIClient = UserAPIClient(resources, sharedPrefHandler)
+        val application = activity?.application
+        (application as GamerCollectionApplication).appComponent.inject(this)
 
         initializeUI()
     }

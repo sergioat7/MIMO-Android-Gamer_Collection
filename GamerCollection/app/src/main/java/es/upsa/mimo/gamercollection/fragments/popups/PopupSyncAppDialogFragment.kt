@@ -9,19 +9,29 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentTransaction
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
+import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
+import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.network.apiClient.*
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
+import javax.inject.Inject
 
 class PopupSyncAppDialogFragment : DialogFragment() {
 
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var formatAPIClient: FormatAPIClient
-    private lateinit var genreAPIClient: GenreAPIClient
-    private lateinit var platformAPIClient: PlatformAPIClient
-    private lateinit var stateAPIClient: StateAPIClient
-    private lateinit var gameAPIClient: GameAPIClient
-    private lateinit var sagaAPIClient: SagaAPIClient
+    @Inject
+    lateinit var sharedPrefHandler: SharedPreferencesHandler
+    @Inject
+    lateinit var formatAPIClient: FormatAPIClient
+    @Inject
+    lateinit var gameAPIClient: GameAPIClient
+    @Inject
+    lateinit var genreAPIClient: GenreAPIClient
+    @Inject
+    lateinit var platformAPIClient: PlatformAPIClient
+    @Inject
+    lateinit var sagaAPIClient: SagaAPIClient
+    @Inject
+    lateinit var stateAPIClient: StateAPIClient
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,13 +43,8 @@ class PopupSyncAppDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPrefHandler = SharedPreferencesHandler(context)
-        formatAPIClient = FormatAPIClient(resources, sharedPrefHandler)
-        genreAPIClient = GenreAPIClient(resources, sharedPrefHandler)
-        platformAPIClient = PlatformAPIClient(resources, sharedPrefHandler)
-        stateAPIClient = StateAPIClient(resources, sharedPrefHandler)
-        gameAPIClient = GameAPIClient(resources, sharedPrefHandler)
-        sagaAPIClient = SagaAPIClient(resources, sharedPrefHandler)
+        val application = activity?.application
+        (application as GamerCollectionApplication).appComponent.inject(this)
 
         syncApp()
     }
@@ -66,27 +71,27 @@ class PopupSyncAppDialogFragment : DialogFragment() {
                                 dismiss()
                             }, {
                                 dismiss()
-                                showPopupDialog(it.error)
+                                manageError(it)
                             })
                         }, {
                             dismiss()
-                            showPopupDialog(it.error)
+                            manageError(it)
                         })
                     }, {
                         dismiss()
-                        showPopupDialog(it.error)
+                        manageError(it)
                     })
                 }, {
                     dismiss()
-                    showPopupDialog(it.error)
+                    manageError(it)
                 })
             }, {
                 dismiss()
-                showPopupDialog(it.error)
+                manageError(it)
             })
         }, {
             dismiss()
-            showPopupDialog(it.error)
+            manageError(it)
         })
     }
 
@@ -94,6 +99,17 @@ class PopupSyncAppDialogFragment : DialogFragment() {
 
         val intent = Intent(context, MainActivity::class.java).apply {}
         startActivity(intent)
+    }
+
+    private fun manageError(errorResponse: ErrorResponse) {
+
+        val error = StringBuilder()
+        if (errorResponse.error.isNotEmpty()) {
+            error.append(errorResponse.error)
+        } else {
+            error.append(resources.getString(errorResponse.errorKey))
+        }
+        showPopupDialog(error.toString())
     }
 
     private fun showPopupDialog(message: String) {

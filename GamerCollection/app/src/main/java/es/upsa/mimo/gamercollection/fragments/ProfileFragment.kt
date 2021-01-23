@@ -11,24 +11,34 @@ import es.upsa.mimo.gamercollection.activities.LandingActivity
 import es.upsa.mimo.gamercollection.activities.LoginActivity
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.network.apiClient.*
-import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.SagaRepository
+import es.upsa.mimo.gamercollection.repositories.GameRepository
+import es.upsa.mimo.gamercollection.repositories.SagaRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import kotlinx.android.synthetic.main.fragment_profile.*
+import javax.inject.Inject
 
 class ProfileFragment : BaseFragment() {
 
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var userAPIClient: UserAPIClient
-    private lateinit var gameRepository: GameRepository
-    private lateinit var sagaRepository: SagaRepository
-    private lateinit var formatAPIClient: FormatAPIClient
-    private lateinit var genreAPIClient: GenreAPIClient
-    private lateinit var platformAPIClient: PlatformAPIClient
-    private lateinit var stateAPIClient: StateAPIClient
+    @Inject
+    lateinit var sharedPrefHandler: SharedPreferencesHandler
+    @Inject
+    lateinit var gameRepository: GameRepository
+    @Inject
+    lateinit var sagaRepository: SagaRepository
+    @Inject
+    lateinit var formatAPIClient: FormatAPIClient
+    @Inject
+    lateinit var genreAPIClient: GenreAPIClient
+    @Inject
+    lateinit var platformAPIClient: PlatformAPIClient
+    @Inject
+    lateinit var stateAPIClient: StateAPIClient
+    @Inject
+    lateinit var userAPIClient: UserAPIClient
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,14 +51,8 @@ class ProfileFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPrefHandler = SharedPreferencesHandler(context)
-        userAPIClient = UserAPIClient(resources, sharedPrefHandler)
-        gameRepository = GameRepository(requireContext())
-        sagaRepository = SagaRepository(requireContext())
-        formatAPIClient = FormatAPIClient(resources, sharedPrefHandler)
-        genreAPIClient = GenreAPIClient(resources, sharedPrefHandler)
-        platformAPIClient = PlatformAPIClient(resources, sharedPrefHandler)
-        stateAPIClient = StateAPIClient(resources, sharedPrefHandler)
+        val application = activity?.application
+        (application as GamerCollectionApplication).appComponent.inject(this)
 
         initializeUI()
     }

@@ -1,6 +1,5 @@
 package es.upsa.mimo.gamercollection.network.apiClient
 
-import android.content.res.Resources
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.LoginCredentials
 import es.upsa.mimo.gamercollection.models.LoginResponse
@@ -8,14 +7,13 @@ import es.upsa.mimo.gamercollection.models.NewPassword
 import es.upsa.mimo.gamercollection.network.apiService.UserAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
-import kotlin.collections.HashMap
+import javax.inject.Inject
 
-class UserAPIClient(
-    private val resources: Resources,
+class UserAPIClient @Inject constructor(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    private val api = APIClient.getRetrofit(sharedPrefHandler).create(UserAPIService::class.java)
+    private val api = APIClient.retrofit.create(UserAPIService::class.java)
 
     fun login(username: String, password: String, success: (String) -> Unit, failure: (ErrorResponse) -> Unit) {
 
@@ -25,7 +23,7 @@ class UserAPIClient(
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.login(headers, loginCredentials)
 
-        APIClient.sendServer<LoginResponse, ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<LoginResponse, ErrorResponse>(request, {
             success(it.token)
         }, {
             failure(it)
@@ -40,7 +38,7 @@ class UserAPIClient(
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.register(headers, loginCredentials)
 
-        APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(request, {
             success()
         }, {
             failure(it)
@@ -54,7 +52,7 @@ class UserAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.logout(headers)
 
-        APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(request, {
             success()
         }, {
             failure(it)
@@ -69,7 +67,7 @@ class UserAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.updatePassword(headers, newPasword)
 
-        APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(request, {
             success()
         }, {
             failure(it)
@@ -83,7 +81,7 @@ class UserAPIClient(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.deleteUser(headers)
 
-        APIClient.sendServer<Void, ErrorResponse>(sharedPrefHandler, resources, request, {
+        APIClient.sendServer<Void, ErrorResponse>(request, {
             success()
         }, {
             failure(it)
