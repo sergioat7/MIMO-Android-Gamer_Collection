@@ -12,7 +12,7 @@ import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.network.apiClient.*
-import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.repositories.*
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
 
@@ -32,6 +32,18 @@ class PopupSyncAppDialogFragment : DialogFragment() {
     lateinit var sagaAPIClient: SagaAPIClient
     @Inject
     lateinit var stateAPIClient: StateAPIClient
+    @Inject
+    lateinit var formatRepository: FormatRepository
+    @Inject
+    lateinit var gameRepository: GameRepository
+    @Inject
+    lateinit var genreRepository: GenreRepository
+    @Inject
+    lateinit var platformRepository: PlatformRepository
+    @Inject
+    lateinit var sagaRepository: SagaRepository
+    @Inject
+    lateinit var stateRepository: StateRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,12 +72,12 @@ class PopupSyncAppDialogFragment : DialogFragment() {
                         gameAPIClient.getGames({ games ->
                             sagaAPIClient.getSagas({ sagas ->
 
-                                Constants.manageFormats(requireContext(), formats)
-                                Constants.manageGenres(requireContext(), genres)
-                                Constants.managePlatforms(requireContext(), platforms)
-                                Constants.manageStates(requireContext(), states)
-                                Constants.manageGames(requireContext(), games)
-                                Constants.manageSagas(requireContext(), sagas)
+                                formatRepository.manageFormats(formats)
+                                genreRepository.manageGenres(genres)
+                                platformRepository.managePlatforms(platforms)
+                                stateRepository.manageStates(states)
+                                gameRepository.manageGames(games)
+                                sagaRepository.manageSagas(sagas)
 
                                 goToMainView()
                                 dismiss()
