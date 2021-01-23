@@ -8,6 +8,7 @@ import es.upsa.mimo.gamercollection.fragments.popups.PopupFilterDialogFragment
 import es.upsa.mimo.gamercollection.fragments.popups.PopupSyncAppDialogFragment
 import es.upsa.mimo.gamercollection.injection.modules.AppDatabaseModule
 import es.upsa.mimo.gamercollection.injection.modules.SharedPreferencesModule
+import es.upsa.mimo.gamercollection.viewmodelfactories.LandingViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodelfactories.LoginViewModelFactory
 
 @Component(modules = [
@@ -16,6 +17,7 @@ import es.upsa.mimo.gamercollection.viewmodelfactories.LoginViewModelFactory
 ])
 interface AppComponent {
 
+    fun inject(landingViewModelFactory: LandingViewModelFactory)
     fun inject(loginViewModelFactory: LoginViewModelFactory)
 
     fun inject(popupFilterDialogFragment: PopupFilterDialogFragment)
@@ -28,5 +30,4 @@ interface AppComponent {
     fun inject(sagaDetailFragment: SagaDetailFragment)
     fun inject(sagasFragment: SagasFragment)
     fun inject(popupSyncAppDialogFragment: PopupSyncAppDialogFragment)
-    fun inject(landingActivity: LandingActivity)
 }
