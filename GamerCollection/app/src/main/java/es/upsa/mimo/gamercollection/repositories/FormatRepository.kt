@@ -1,6 +1,5 @@
 package es.upsa.mimo.gamercollection.repositories
 
-import android.content.Context
 import es.upsa.mimo.gamercollection.models.FormatResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import kotlinx.coroutines.GlobalScope
@@ -43,20 +42,16 @@ class FormatRepository @Inject constructor(
         }
     }
 
-    fun removeDisableContent(newFormats: List<FormatResponse>) {
+    fun manageFormats(newFormats: List<FormatResponse>) {
+
+        for (newFormat in newFormats) {
+            insertFormat(newFormat)
+        }
 
         val currentFormats = getFormats()
-        val formats = AppDatabase.getDisabledContent(currentFormats, newFormats) as List<*>
-        for (format in formats) {
+        val formatsToRemove = AppDatabase.getDisabledContent(currentFormats, newFormats)
+        for (format in formatsToRemove) {
             deleteFormat(format as FormatResponse)
         }
-    }
-
-    fun manageFormats(formats: List<FormatResponse>) {
-
-        for (format in formats) {
-            insertFormat(format)
-        }
-        removeDisableContent(formats)
     }
 }

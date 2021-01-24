@@ -50,14 +50,14 @@ class PopupFilterDialogFragment(
         fillGenres()
         fillFormats()
 
-        edit_text_release_date_min.showDatePicker(requireContext())
+        edit_text_release_date_min.showDatePicker(requireContext(), Constants.getFilterDateFormat(viewModel.language))
         edit_text_release_date_min.setRawInputType(InputType.TYPE_NULL)
-        edit_text_release_date_max.showDatePicker(requireContext())
+        edit_text_release_date_max.showDatePicker(requireContext(), Constants.getFilterDateFormat(viewModel.language))
         edit_text_release_date_max.setRawInputType(InputType.TYPE_NULL)
 
-        edit_text_purchase_date_min.showDatePicker(requireContext())
+        edit_text_purchase_date_min.showDatePicker(requireContext(), Constants.getFilterDateFormat(viewModel.language))
         edit_text_purchase_date_min.setRawInputType(InputType.TYPE_NULL)
-        edit_text_purchase_date_max.showDatePicker(requireContext())
+        edit_text_purchase_date_max.showDatePicker(requireContext(), Constants.getFilterDateFormat(viewModel.language))
         edit_text_purchase_date_max.setRawInputType(InputType.TYPE_NULL)
 
         button_cancel.setOnClickListener { cancel() }
@@ -98,14 +98,14 @@ class PopupFilterDialogFragment(
             edit_text_release_date_min.setText(
                 Constants.dateToString(
                     filters.minReleaseDate,
-                    Constants.getDateFormatToShow(viewModel.sharedPreferencesHandler),
+                    Constants.getFilterDateFormat(viewModel.language),
                     viewModel.language
                 )
             )
             edit_text_release_date_max.setText(
                 Constants.dateToString(
                     filters.maxReleaseDate,
-                    Constants.getDateFormatToShow(viewModel.sharedPreferencesHandler),
+                    Constants.getFilterDateFormat(viewModel.language),
                     viewModel.language
                 )
             )
@@ -113,14 +113,14 @@ class PopupFilterDialogFragment(
             edit_text_purchase_date_min.setText(
                 Constants.dateToString(
                     filters.minPurchaseDate,
-                    Constants.getDateFormatToShow(viewModel.sharedPreferencesHandler),
+                    Constants.getFilterDateFormat(viewModel.language),
                     viewModel.language
                 )
             )
             edit_text_purchase_date_max.setText(
                 Constants.dateToString(
                     filters.maxPurchaseDate,
-                    Constants.getDateFormatToShow(viewModel.sharedPreferencesHandler),
+                    Constants.getFilterDateFormat(viewModel.language),
                     viewModel.language
                 )
             )
@@ -270,23 +270,23 @@ class PopupFilterDialogFragment(
 
         val minReleaseDate = Constants.stringToDate(
             edit_text_release_date_min.text.toString(),
-            Constants.getDateFormatToShow(viewModel.sharedPreferencesHandler),
+            Constants.getFilterDateFormat(viewModel.language),
             viewModel.language
         )
         val maxReleaseDate = Constants.stringToDate(
             edit_text_release_date_max.text.toString(),
-            Constants.getDateFormatToShow(viewModel.sharedPreferencesHandler),
+            Constants.getFilterDateFormat(viewModel.language),
             viewModel.language
         )
 
         val minPurchaseDate = Constants.stringToDate(
             edit_text_purchase_date_min.text.toString(),
-            Constants.getDateFormatToShow(viewModel.sharedPreferencesHandler),
+            Constants.getFilterDateFormat(viewModel.language),
             viewModel.language
         )
         val maxPurchaseDate = Constants.stringToDate(
             edit_text_purchase_date_max.text.toString(),
-            Constants.getDateFormatToShow(viewModel.sharedPreferencesHandler),
+            Constants.getFilterDateFormat(viewModel.language),
             viewModel.language
         )
 

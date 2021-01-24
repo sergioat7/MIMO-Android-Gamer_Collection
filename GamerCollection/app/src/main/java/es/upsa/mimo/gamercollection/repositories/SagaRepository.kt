@@ -1,6 +1,5 @@
 package es.upsa.mimo.gamercollection.repositories
 
-import android.content.Context
 import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.models.SagaWithGames
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
@@ -59,20 +58,16 @@ class SagaRepository @Inject constructor(
         }
     }
 
-    fun removeDisableContent(newSagas: List<SagaResponse>) {
+    fun manageSagas(newSagas: List<SagaResponse>) {
+
+        for (newSaga in newSagas) {
+            insertSaga(newSaga)
+        }
 
         val currentSagas = getSagas()
-        val sagas = AppDatabase.getDisabledContent(currentSagas, newSagas) as List<*>
-        for (saga in sagas) {
+        val sagasToRemove = AppDatabase.getDisabledContent(currentSagas, newSagas)
+        for (saga in sagasToRemove) {
             deleteSaga(saga as SagaResponse)
         }
-    }
-
-    fun manageSagas(sagas: List<SagaResponse>) {
-
-        for (saga in sagas) {
-            insertSaga(saga)
-        }
-        removeDisableContent(sagas)
     }
 }

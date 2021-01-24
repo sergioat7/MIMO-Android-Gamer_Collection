@@ -19,7 +19,6 @@ import es.upsa.mimo.gamercollection.models.FormatResponse
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.GenreResponse
 import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
-import es.upsa.mimo.gamercollection.network.apiClient.SongAPIClient
 import es.upsa.mimo.gamercollection.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.GenreRepository
@@ -104,7 +103,7 @@ class GameDetailFragment(
 
             releaseDate = Constants.dateToString(
                 game.releaseDate,
-                Constants.getDateFormatToShow(sharedPrefHandler),
+                Constants.getDateFormatToShow(sharedPrefHandler.getLanguage()),
                 sharedPrefHandler.getLanguage()
             ) ?: if (enabled) "" else "-"
 
@@ -135,7 +134,7 @@ class GameDetailFragment(
 
             purchaseDate = Constants.dateToString(
                 game.purchaseDate,
-                Constants.getDateFormatToShow(sharedPrefHandler),
+                Constants.getDateFormatToShow(sharedPrefHandler.getLanguage()),
                 sharedPrefHandler.getLanguage()
             ) ?: if (enabled) "" else "-"
 
@@ -212,7 +211,7 @@ class GameDetailFragment(
         val players = edit_text_players.text.toString()
         val releaseDate = Constants.stringToDate(
             edit_text_release_date.text.toString(),
-            Constants.getDateFormatToShow(sharedPrefHandler),
+            Constants.getDateFormatToShow(sharedPrefHandler.getLanguage()),
             sharedPrefHandler.getLanguage()
         )
         val goty = radio_button_yes.isChecked
@@ -221,7 +220,7 @@ class GameDetailFragment(
         val state = if(button_pending.isSelected) Constants.PENDING_STATE else if (button_in_progress.isSelected) Constants.IN_PROGRESS_STATE else if (button_finished.isSelected) Constants.FINISHED_STATE else null
         val purchaseDate = Constants.stringToDate(
             edit_text_purchase_date.text.toString(),
-            Constants.getDateFormatToShow(sharedPrefHandler),
+            Constants.getDateFormatToShow(sharedPrefHandler.getLanguage()),
             sharedPrefHandler.getLanguage()
         )
         val purchaseLocation = edit_text_purchase_location.text.toString()
