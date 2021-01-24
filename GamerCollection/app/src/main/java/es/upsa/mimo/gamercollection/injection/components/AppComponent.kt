@@ -13,6 +13,7 @@ import es.upsa.mimo.gamercollection.viewmodelfactories.*
 ])
 interface AppComponent {
 
+    fun inject(gamesViewModelFactory: GamesViewModelFactory)
     fun inject(landingViewModelFactory: LandingViewModelFactory)
     fun inject(loginViewModelFactory: LoginViewModelFactory)
     fun inject(popupFilterViewModelFactory: PopupFilterViewModelFactory)
@@ -25,5 +26,4 @@ interface AppComponent {
     fun inject(gameDetailFragment: GameDetailFragment)
     fun inject(gameDetailActivity: GameDetailActivity)
     fun inject(gameSongsFragment: GameSongsFragment)
-    fun inject(gamesFragment: GamesFragment)
 }

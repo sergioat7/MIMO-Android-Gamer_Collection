@@ -13,13 +13,15 @@ import es.upsa.mimo.gamercollection.viewholders.GamesViewHolder
 import kotlinx.android.synthetic.main.game_item.view.*
 
 class GamesAdapter(
-    private val context: Context,
-    var games: List<GameResponse>,
+    private var games: List<GameResponse>,
     private val platforms: List<PlatformResponse>,
     private val states: List<StateResponse>,
     private val sagaId: Int?,
+    private val context: Context,
     private var onItemClickListener: OnItemClickListener
 ): RecyclerView.Adapter<GamesViewHolder?>() {
+
+    //MARK: - Lifecycle methods
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GamesViewHolder {
 
@@ -42,6 +44,14 @@ class GamesAdapter(
             holder.itemView.check_box.isChecked = !holder.itemView.check_box.isChecked
             onItemClickListener.onItemClick(game.id)
         }
+    }
+
+    //MARK: - Public methods
+
+    fun setGames(newGames: List<GameResponse>) {
+
+        this.games = newGames
+        notifyDataSetChanged()
     }
 
     interface OnItemClickListener {
