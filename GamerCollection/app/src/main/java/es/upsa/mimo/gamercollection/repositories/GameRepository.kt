@@ -1,6 +1,5 @@
 package es.upsa.mimo.gamercollection.repositories
 
-import android.content.Context
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
 import es.upsa.mimo.gamercollection.models.GameResponse
@@ -61,20 +60,16 @@ class GameRepository @Inject constructor(
         }
     }
 
-    fun removeDisableContent(newGames: List<GameResponse>) {
+    fun manageGames(newGames: List<GameResponse>) {
+
+        for (newGame in newGames) {
+            insertGame(newGame)
+        }
 
         val currentGames = getGames()
-        val games = AppDatabase.getDisabledContent(currentGames, newGames) as List<*>
-        for (game in games) {
+        val gamesToRemove = AppDatabase.getDisabledContent(currentGames, newGames)
+        for (game in gamesToRemove) {
             deleteGame(game as GameResponse)
         }
-    }
-
-    fun manageGames(games: List<GameResponse>) {
-
-        for (game in games) {
-            insertGame(game)
-        }
-        removeDisableContent(games)
     }
 }

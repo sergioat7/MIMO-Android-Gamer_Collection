@@ -73,26 +73,23 @@ class ProfileFragment : BaseFragment() {
         edit_text_user.setReadOnly(true, InputType.TYPE_NULL, 0)
         edit_text_password.setText(viewModel.userData.password)
 
-        radio_button_en.isChecked = viewModel.language == "en"
-        radio_button_es.isChecked = viewModel.language == "es"
+        radio_button_en.isChecked = viewModel.language == Constants.ENGLISH_LANGUAGE_KEY
+        radio_button_es.isChecked = viewModel.language == Constants.SPANISH_LANGUAGE_KEY
 
-        var position = 0
-        viewModel.sortingKey.let { sortingKey ->
-            position = resources.getStringArray(R.array.sorting_keys_ids).indexOf(sortingKey)
-        }
-        spinner_sorting_keys.setSelection(position)
         spinner_sorting_keys.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.color2))
         spinner_sorting_keys.adapter = Constants.getAdapter(
             requireContext(),
             resources.getStringArray(R.array.sorting_keys).toList(),
             true
         )
+        val position = resources.getStringArray(R.array.sorting_keys_ids).indexOf(viewModel.sortingKey)
+        spinner_sorting_keys.setSelection(position)
 
         switch_swipe_refresh.isChecked = viewModel.swipeRefresh
 
         button_change_password.setOnClickListener {
 
-            val language = if(radio_button_en.isChecked) "en" else "es"
+            val language = if(radio_button_en.isChecked) Constants.ENGLISH_LANGUAGE_KEY else Constants.SPANISH_LANGUAGE_KEY
             val sortingKey = resources.getStringArray(R.array.sorting_keys_ids)[spinner_sorting_keys.selectedItemPosition]
             viewModel.save(
                 edit_text_password.text.toString(),

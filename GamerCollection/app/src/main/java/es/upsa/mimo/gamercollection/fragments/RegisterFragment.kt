@@ -26,7 +26,11 @@ import javax.inject.Inject
 
 class RegisterFragment : BaseFragment() {
 
+    //MARK: - Private properties
+
     private lateinit var viewModel: RegisterViewModel
+
+    // MARK: - Lifecycle methods
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +44,7 @@ class RegisterFragment : BaseFragment() {
         initializeUI()
     }
 
-    //MARK: - Private functions
+    //MARK: - Private methods
 
     private fun initializeUI() {
 

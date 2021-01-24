@@ -22,6 +22,8 @@ class Constants {
         const val USER_DATA_PREFERENCES_NAME = "userData"
         const val AUTH_DATA_PREFERENCES_NAME = "authData"
         const val LANGUAGE_PREFERENCES_NAME = "language"
+        const val ENGLISH_LANGUAGE_KEY = "en"
+        const val SPANISH_LANGUAGE_KEY = "es"
         const val SORTING_KEY_PREFERENCES_NAME = "sortingKey"
         const val SWIPE_REFRESH_PREFERENCES_NAME = "swipeRefreshEnabled"
         const val GAME_NOTIFICATION_PREFERENCES_NAME = "gameNotificationLaunched_"
@@ -51,11 +53,19 @@ class Constants {
 
         const val DATE_FORMAT = "yyyy-MM-dd"
 
-        fun getDateFormatToShow(sharedPrefHandler: SharedPreferencesHandler): String {
+        fun getDateFormatToShow(language: String): String {
 
-            return when(sharedPrefHandler.getLanguage()) {
-                "es" -> "d MMMM yyyy"
+            return when(language) {
+                SPANISH_LANGUAGE_KEY -> "d MMMM yyyy"
                 else -> "MMMM d, yyyy"
+            }
+        }
+
+        fun getFilterDateFormat(language: String): String {
+
+            return when(language) {
+                SPANISH_LANGUAGE_KEY -> "dd/MM/yyyy"
+                else -> "MM/dd/yyyy"
             }
         }
 

@@ -16,7 +16,7 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
 
 class PopupFilterViewModel @Inject constructor(
-    val sharedPreferencesHandler: SharedPreferencesHandler,
+    sharedPreferencesHandler: SharedPreferencesHandler,
     formatRepository: FormatRepository,
     genreRepository: GenreRepository,
     platformRepository: PlatformRepository
