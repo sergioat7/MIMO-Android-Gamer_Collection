@@ -122,20 +122,6 @@ class Constants {
             }
         }
 
-        // MARK: Game ordering
-
-        fun orderGamesBy(games: List<GameResponse>, sortingKey: String): List<GameResponse> {
-
-            return when(sortingKey) {
-                "platform" -> games.sortedBy { it.platform }
-                "releaseDate" -> games.sortedBy { it.releaseDate }
-                "purchaseDate" -> games.sortedBy { it.purchaseDate }
-                "price" -> games.sortedBy { it.price }
-                "score" -> games.sortedBy { it.score }
-                else -> games.sortedBy { it.name }
-            }
-        }
-
         // MARK: Notifications
 
         const val CHANNEL_ID = "GAMER_COLLECTION_NOTIFICATIONS_CHANNEL_ID"

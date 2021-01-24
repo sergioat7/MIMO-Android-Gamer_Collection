@@ -10,45 +10,30 @@ import android.view.*
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
-import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.SagaResponse
-import es.upsa.mimo.gamercollection.network.apiClient.SagaAPIClient
-import es.upsa.mimo.gamercollection.repositories.GameRepository
-import es.upsa.mimo.gamercollection.repositories.PlatformRepository
-import es.upsa.mimo.gamercollection.repositories.SagaRepository
-import es.upsa.mimo.gamercollection.repositories.StateRepository
-import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
+import es.upsa.mimo.gamercollection.viewmodelfactories.SagaDetailViewModelFactory
+import es.upsa.mimo.gamercollection.viewmodels.SagaDetailViewModel
 import kotlinx.android.synthetic.main.fragment_saga_detail.*
 import kotlinx.android.synthetic.main.games_dialog.view.*
-import javax.inject.Inject
 
 class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
 
+    //MARK: - Private properties
+
     private var sagaId: Int? = null
-    @Inject
-    lateinit var sharedPrefHandler: SharedPreferencesHandler
-    @Inject
-    lateinit var gameRepository: GameRepository
-    @Inject
-    lateinit var platformRepository: PlatformRepository
-    @Inject
-    lateinit var stateRepository: StateRepository
-    @Inject
-    lateinit var sagaRepository: SagaRepository
-    @Inject
-    lateinit var sagaAPIClient: SagaAPIClient
+    private lateinit var viewModel: SagaDetailViewModel
     private var menu: Menu? = null
-    private var currentSaga: SagaResponse? = null
     private var sagaGames: List<GameResponse> = arrayListOf()
     private var newGames: ArrayList<GameResponse> = arrayListOf()
-    private var allGames: List<GameResponse> = arrayListOf()
+
+    // MARK: - Lifecycle methods
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,12 +46,7 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val application = activity?.application
-        (application as GamerCollectionApplication).appComponent.inject(this)
-
         initializeUI()
-        loadData()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -75,8 +55,8 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         this.menu = menu
         menu.clear()
         inflater.inflate(R.menu.saga_toolbar_menu, menu)
-        menu.findItem(R.id.action_edit).isVisible = currentSaga != null
-        menu.findItem(R.id.action_save).isVisible = currentSaga == null
+        menu.findItem(R.id.action_edit).isVisible = viewModel.saga.value != null
+        menu.findItem(R.id.action_save).isVisible = viewModel.saga.value == null
         menu.findItem(R.id.action_cancel).isVisible = false
     }
 
@@ -84,14 +64,22 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
 
         when(item.itemId) {
             R.id.action_edit -> {
+
                 editSaga()
                 return true
             }
             R.id.action_save -> {
-                saveSaga()
+
+                val newSaga = SagaResponse(
+                    sagaId ?: 0,
+                    edit_text_name.text.toString(),
+                    newGames
+                )
+                viewModel.saveSaga(newSaga)
                 return true
             }
             R.id.action_cancel -> {
+
                 cancelEdition()
                 return true
             }
@@ -99,52 +87,78 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         return super.onOptionsItemSelected(item)
     }
 
+    //MARK: - Interface methods
+
     override fun onItemClick(gameId: Int) {
 
-        val selectedGame = allGames.firstOrNull { it.id == gameId }
+        val selectedGame = viewModel.games.firstOrNull { it.id == gameId }
         newGames.firstOrNull { it.id == gameId }?.let {
 
             newGames.remove(it)
-            selectedGame?.saga = null
+            it.saga = null
         } ?: run {
             selectedGame?.let {
 
                 newGames.add(it)
-                it.saga = currentSaga
+                it.saga = viewModel.saga.value
             }
         }
     }
 
-    //MARK: - Private functions
+    //MARK: - Private methods
 
     private fun initializeUI() {
 
+        val application = activity?.application
+        viewModel = ViewModelProvider(this, SagaDetailViewModelFactory(application, sagaId)).get(SagaDetailViewModel::class.java)
+        setupBindings()
+
         button_add_game.setOnClickListener { addGame() }
-        button_delete_saga.setOnClickListener { deleteSaga() }
+        button_delete_saga.setOnClickListener {
+
+            showPopupConfirmationDialog(resources.getString(R.string.saga_detail_delete_confirmation)) {
+                viewModel.deleteSaga()
+            }
+        }
     }
 
-    private fun loadData() {
+    private fun setupBindings() {
 
-        sagaId?.let {
+        viewModel.sagaDetailLoading.observe(viewLifecycleOwner, { isLoading ->
 
-            showLoading()
-            currentSaga = sagaRepository.getSaga(it)
-            currentSaga?.let { saga ->
-                sagaGames = saga.games
-                newGames.clear()
-                newGames.addAll(sagaGames)
+            if (isLoading) {
+                showLoading()
+            } else {
+
+                hideLoading()
+                cancelEdition()
             }
-            hideLoading()
-        }
+        })
 
-        showData(currentSaga)
-        enableEdition(currentSaga == null)
+        viewModel.sagaDetailError.observe(viewLifecycleOwner, { error ->
+
+            if (error == null) {
+                activity?.finish()
+            } else {
+
+                hideLoading()
+                manageError(error)
+            }
+        })
+
+        viewModel.saga.observe(viewLifecycleOwner, { saga ->
+
+            saga?.let {
+                sagaGames = it.games
+            }
+
+            showData(saga)
+            enableEdition(saga == null)
+        })
     }
 
     private fun showData(saga: SagaResponse?) {
 
-        allGames = gameRepository.getGames()
-        currentSaga = saga
         saga?.let {
 
             edit_text_name.setText(saga.name)
@@ -164,8 +178,7 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         )
         layoutParams.setMargins(0, 15, 0, 15)
 
-        val orderedGames = Constants.orderGamesBy(games, sharedPrefHandler.getSortingKey())
-        for (game in orderedGames) {
+        for (game in viewModel.getOrderedGames(games)) {
 
             val tvGame = TextView(requireContext())
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) tvGame.setTextAppearance(R.style.WhiteEditText_Regular)
@@ -184,7 +197,7 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
 
         edit_text_name.setReadOnly(!enable, inputTypeText, backgroundColor)
         button_add_game.visibility = if(enable) View.VISIBLE else View.GONE
-        button_delete_saga.visibility = if (enable && currentSaga != null) View.VISIBLE else View.GONE
+        button_delete_saga.visibility = if (enable && viewModel.saga.value != null) View.VISIBLE else View.GONE
     }
 
     private fun addGame() {
@@ -193,16 +206,23 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         val dialogView = this.layoutInflater.inflate(R.layout.games_dialog, null)
 
         dialogView.recycler_view_games.layoutManager = LinearLayoutManager(requireContext())
-        val orderedGames = Constants.orderGamesBy(allGames, sharedPrefHandler.getSortingKey())
-        val platforms = platformRepository.getPlatforms()
-        val states = stateRepository.getStates()
+        val orderedGames = viewModel.getOrderedGames(viewModel.games)
         if (orderedGames.isNotEmpty()) {
-            dialogView.recycler_view_games.adapter = GamesAdapter(requireContext(), orderedGames, platforms, states, sagaId ?: 0, this)
+
+            dialogView.recycler_view_games.adapter = GamesAdapter(
+                orderedGames,
+                viewModel.platforms,
+                viewModel.states,
+                sagaId ?: 0,
+                requireContext(),
+                this
+            )
         }
         dialogView.recycler_view_games.visibility = if (orderedGames.isNotEmpty()) View.VISIBLE else View.GONE
         dialogView.layout_empty_list.visibility = if (orderedGames.isNotEmpty()) View.GONE else View.VISIBLE
 
         dialogView.button_accept.setOnClickListener {
+
             showGames(newGames)
             dialogBuilder.dismiss()
         }
@@ -211,111 +231,16 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
         dialogBuilder.show()
     }
 
-    private fun deleteSaga() {
-
-        currentSaga?.let {
-            showPopupConfirmationDialog(resources.getString(R.string.saga_detail_delete_confirmation)) {
-
-                showLoading()
-                sagaAPIClient.deleteSaga(it.id, {
-                    sagaRepository.deleteSaga(it)
-
-                    hideLoading()
-                    activity?.finish()
-                }, {
-                    manageError(it)
-                })
-            }
-        }
-    }
-
     private fun editSaga(){
 
         showEditButton(true)
         enableEdition(true)
     }
 
-    private fun saveSaga() {
-
-        val newSaga = SagaResponse(
-            sagaId ?: 0,
-            edit_text_name.text.toString(),
-            newGames
-        )
-
-        showLoading()
-        if (currentSaga != null) {
-
-            sagaAPIClient.setSaga(newSaga, {
-                sagaRepository.updateSaga(it)
-                removeSagaFromGames(newSaga)
-                updateGames(newSaga)
-
-                currentSaga = it
-                cancelEdition()
-                hideLoading()
-            }, {
-                manageError(it)
-            })
-        } else {
-
-            sagaAPIClient.createSaga(newSaga, {
-                sagaAPIClient.getSagas({ sagas ->
-
-                    for (saga in sagas) {
-                        sagaRepository.insertSaga(saga)
-                    }
-                    val gameSaga = sagas.firstOrNull { saga ->
-                        val game = saga.games.firstOrNull { game ->
-                            game.id == newGames.firstOrNull()?.id
-                        }
-                        game != null
-                    }
-                    gameSaga?.let {
-                        updateGames(it)
-                    }
-                    hideLoading()
-                    activity?.finish()
-                }, {
-                    manageError(it)
-                })
-            }, {
-                manageError(it)
-            })
-        }
-    }
-
-    private fun removeSagaFromGames(saga: SagaResponse) {
-
-        val games = gameRepository.getGames().filter { it.saga?.id  == saga.id }
-        for (game in games) {
-            if (newGames.firstOrNull { it.id == game.id } == null) {
-
-                game.saga = null
-                gameRepository.updateGame(game)
-            }
-        }
-
-        val sagaVar = SagaResponse(saga.id, saga.name, arrayListOf())
-        for (newGame in newGames) {
-            newGame.saga = sagaVar
-            gameRepository.updateGame(newGame)
-        }
-    }
-
-    private fun updateGames(saga: SagaResponse) {
-
-        val sagaVar = SagaResponse(saga.id, saga.name, arrayListOf())
-        for (newGame in newGames) {
-            newGame.saga = sagaVar
-            gameRepository.updateGame(newGame)
-        }
-    }
-
     private fun cancelEdition(){
 
         showEditButton(false)
-        showData(currentSaga)
+        showData(viewModel.saga.value)
         enableEdition(false)
     }
 
