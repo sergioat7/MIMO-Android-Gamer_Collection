@@ -47,10 +47,7 @@ class SagasViewModel @Inject constructor(
 
         sagaAPIClient.getSagas({
 
-            for (saga in it) {
-                sagaRepository.insertSaga(saga)
-            }
-            sagaRepository.removeDisableContent(it)
+            sagaRepository.manageSagas(it)
             _sagas.value = sagaRepository.getSagas()
             _sagasLoading.value = false
         },{
