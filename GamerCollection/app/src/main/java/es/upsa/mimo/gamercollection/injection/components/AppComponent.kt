@@ -19,11 +19,11 @@ interface AppComponent {
     fun inject(popupSyncAppViewModelFactory: PopupSyncAppViewModelFactory)
     fun inject(profileViewModelFactory: ProfileViewModelFactory)
     fun inject(registerViewModelFactory: RegisterViewModelFactory)
+    fun inject(sagaDetailViewModelFactory: SagaDetailViewModelFactory)
     fun inject(sagasViewModelFactory: SagasViewModelFactory)
 
     fun inject(gameDetailFragment: GameDetailFragment)
     fun inject(gameDetailActivity: GameDetailActivity)
     fun inject(gameSongsFragment: GameSongsFragment)
     fun inject(gamesFragment: GamesFragment)
-    fun inject(sagaDetailFragment: SagaDetailFragment)
 }
