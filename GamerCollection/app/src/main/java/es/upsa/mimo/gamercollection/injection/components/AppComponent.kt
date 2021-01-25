@@ -24,6 +24,6 @@ interface AppComponent {
     fun inject(sagaDetailViewModelFactory: SagaDetailViewModelFactory)
     fun inject(sagasViewModelFactory: SagasViewModelFactory)
 
-    fun inject(gameDetailFragment: GameDetailFragment)
+    fun inject(gameDataFragment: GameDataFragment)
     fun inject(gameDetailActivity: GameDetailActivity)
 }

@@ -25,10 +25,10 @@ import es.upsa.mimo.gamercollection.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
-import kotlinx.android.synthetic.main.fragment_game_detail.*
+import kotlinx.android.synthetic.main.fragment_game_data.*
 import javax.inject.Inject
 
-class GameDetailFragment(
+class GameDataFragment(
     private var currentGame: GameResponse? = null
 ) : BaseFragment(), OnLocationSelected {
 
@@ -53,7 +53,7 @@ class GameDetailFragment(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_game_detail, container, false)
+        return inflater.inflate(R.layout.fragment_game_data, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
