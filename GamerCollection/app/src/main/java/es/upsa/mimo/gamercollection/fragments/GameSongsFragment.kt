@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SongsAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.GameResponse
@@ -20,7 +21,7 @@ import kotlinx.android.synthetic.main.new_song_dialog.view.*
 class GameSongsFragment(
     private var game: GameResponse?,
     private var enabled: Boolean
-) : BaseFragment(), SongsAdapter.OnItemClickListener {
+) : BaseFragment(), OnItemClickListener {
 
     //MARK: - Private properties
 
@@ -43,9 +44,11 @@ class GameSongsFragment(
 
     // MARK: - Interface methods
 
-    override fun onItemClick(songId: Int) {
-        viewModel.deleteSong(songId)
+    override fun onItemClick(id: Int) {
+        viewModel.deleteSong(id)
     }
+
+    override fun onSubItemClick(id: Int) {}
 
     // MARK: Public methods
 

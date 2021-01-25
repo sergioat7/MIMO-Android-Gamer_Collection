@@ -16,7 +16,6 @@ import es.upsa.mimo.gamercollection.viewholders.SagasViewHolder
 import kotlinx.android.synthetic.main.game_item.view.*
 import kotlinx.android.synthetic.main.saga_item.view.*
 import kotlinx.android.synthetic.main.saga_item.view.image_view_arrow
-import kotlin.collections.ArrayList
 
 class SagasAdapter(
     private var items: MutableList<BaseModel<Int>>,
@@ -95,12 +94,12 @@ class SagasAdapter(
             holder.fillData(game, context, null)
 
             holder.itemView.check_box.setOnClickListener {
-                onItemClickListener.onGameItemClick(game.id)
+                onItemClickListener.onSubItemClick(game.id)
             }
 
             holder.itemView.setOnClickListener {
                 holder.itemView.check_box.isChecked = !holder.itemView.check_box.isChecked
-                onItemClickListener.onGameItemClick(game.id)
+                onItemClickListener.onSubItemClick(game.id)
             }
         }
     }
@@ -119,10 +118,5 @@ class SagasAdapter(
 
         this.items = mutableListOf()
         notifyDataSetChanged()
-    }
-
-    interface OnItemClickListener {
-        fun onItemClick(sagaId: Int)
-        fun onGameItemClick(gameId: Int)
     }
 }

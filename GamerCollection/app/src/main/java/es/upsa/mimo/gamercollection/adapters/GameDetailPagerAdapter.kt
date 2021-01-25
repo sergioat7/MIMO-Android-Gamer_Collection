@@ -13,9 +13,13 @@ class GameDetailPagerAdapter(
     private val currentGame: GameResponse?
 ): FragmentStateAdapter(activity) {
 
+    //MARK: - Private properties
+
     private var gameDetailFragment: GameDetailFragment? = null
     private var gameSongsFragment: GameSongsFragment? = null
     private var enabled = false
+
+    //MARK: - Lifecycle methods
 
     override fun getItemCount(): Int {
         return itemsCount
@@ -32,7 +36,10 @@ class GameDetailPagerAdapter(
         }
     }
 
+    // MARK: Public methods
+
     fun enableEdition(enable: Boolean) {
+
         this.enabled = enable
         gameSongsFragment?.enableEdition(enable)
     }
