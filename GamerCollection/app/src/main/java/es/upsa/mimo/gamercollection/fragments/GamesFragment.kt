@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
+import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.fragments.popups.OnFiltersSelected
 import es.upsa.mimo.gamercollection.fragments.popups.PopupFilterDialogFragment
@@ -26,7 +27,7 @@ import kotlinx.android.synthetic.main.state_button.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFiltersSelected {
+class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
 
     //MARK: - Private properties
 
@@ -91,11 +92,13 @@ class GamesFragment : BaseFragment(), GamesAdapter.OnItemClickListener, OnFilter
 
     //MARK: - Interface methods
 
-    override fun onItemClick(gameId: Int) {
+    override fun onItemClick(id: Int) {
         
-        val params = mapOf("gameId" to gameId)
+        val params = mapOf("gameId" to id)
         launchActivityWithExtras(GameDetailActivity::class.java, params)
     }
+
+    override fun onSubItemClick(id: Int) {}
 
     override fun filter(filters: FilterModel?) {
 

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.activities.SagaDetailActivity
+import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SagasAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.SagaResponse
@@ -15,7 +16,7 @@ import es.upsa.mimo.gamercollection.viewmodelfactories.SagasViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.SagasViewModel
 import kotlinx.android.synthetic.main.fragment_sagas.*
 
-class SagasFragment : BaseFragment(), SagasAdapter.OnItemClickListener {
+class SagasFragment : BaseFragment(), OnItemClickListener {
 
     //MARK: - Private properties
 
@@ -67,15 +68,15 @@ class SagasFragment : BaseFragment(), SagasAdapter.OnItemClickListener {
 
     //MARK: - Interface methods
 
-    override fun onItemClick(sagaId: Int) {
+    override fun onItemClick(id: Int) {
 
-        val params = mapOf("sagaId" to sagaId)
+        val params = mapOf("sagaId" to id)
         launchActivityWithExtras(SagaDetailActivity::class.java, params)
     }
 
-    override fun onGameItemClick(gameId: Int) {
+    override fun onSubItemClick(id: Int) {
 
-        val params = mapOf("gameId" to gameId)
+        val params = mapOf("gameId" to id)
         launchActivityWithExtras(GameDetailActivity::class.java, params)
     }
 

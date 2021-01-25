@@ -9,17 +9,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 import es.upsa.mimo.gamercollection.R;
 
 public class SpinnerAdapter extends ArrayAdapter {
 
+    //MARK: - Private properties
+
     private Context context;
     private List<String> values;
     private boolean firstOptionEnabled;
+
+    //MARK: - Lifecycle methods
 
     public SpinnerAdapter(Context context, List<String> values, boolean firstOptionEnabled) {
         super(context, 0 , values);

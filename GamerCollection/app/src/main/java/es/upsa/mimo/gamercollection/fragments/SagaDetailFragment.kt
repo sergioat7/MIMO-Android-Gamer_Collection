@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
+import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.GameResponse
@@ -23,7 +24,7 @@ import es.upsa.mimo.gamercollection.viewmodels.SagaDetailViewModel
 import kotlinx.android.synthetic.main.fragment_saga_detail.*
 import kotlinx.android.synthetic.main.games_dialog.view.*
 
-class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
+class SagaDetailFragment : BaseFragment(), OnItemClickListener {
 
     //MARK: - Private properties
 
@@ -89,10 +90,10 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
 
     //MARK: - Interface methods
 
-    override fun onItemClick(gameId: Int) {
+    override fun onItemClick(id: Int) {
 
-        val selectedGame = viewModel.games.firstOrNull { it.id == gameId }
-        newGames.firstOrNull { it.id == gameId }?.let {
+        val selectedGame = viewModel.games.firstOrNull { it.id == id }
+        newGames.firstOrNull { it.id == id }?.let {
 
             newGames.remove(it)
             it.saga = null
@@ -104,6 +105,8 @@ class SagaDetailFragment : BaseFragment(), GamesAdapter.OnItemClickListener {
             }
         }
     }
+
+    override fun onSubItemClick(id: Int) {}
 
     //MARK: - Private methods
 

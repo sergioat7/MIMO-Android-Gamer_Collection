@@ -53,8 +53,4 @@ class GamesAdapter(
         this.games = newGames
         notifyDataSetChanged()
     }
-
-    interface OnItemClickListener {
-        fun onItemClick(gameId: Int)
-    }
 }

@@ -52,9 +52,5 @@ class SongsAdapter(
         notifyDataSetChanged()
     }
 
-    interface OnItemClickListener {
-        fun onItemClick(songId: Int)
-    }
-
     class SongsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 }
