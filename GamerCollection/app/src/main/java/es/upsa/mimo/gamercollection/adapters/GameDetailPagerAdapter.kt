@@ -3,7 +3,7 @@ package es.upsa.mimo.gamercollection.adapters
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import es.upsa.mimo.gamercollection.fragments.GameDetailFragment
+import es.upsa.mimo.gamercollection.fragments.GameDataFragment
 import es.upsa.mimo.gamercollection.fragments.GameSongsFragment
 import es.upsa.mimo.gamercollection.models.GameResponse
 
@@ -15,7 +15,7 @@ class GameDetailPagerAdapter(
 
     //MARK: - Private properties
 
-    private var gameDetailFragment: GameDetailFragment? = null
+    private var gameDataFragment: GameDataFragment? = null
     private var gameSongsFragment: GameSongsFragment? = null
     private var enabled = false
 
@@ -28,8 +28,8 @@ class GameDetailPagerAdapter(
     override fun createFragment(position: Int): Fragment {
 
         return if (position == 0) {
-            gameDetailFragment = GameDetailFragment(currentGame)
-            gameDetailFragment!!
+            gameDataFragment = GameDataFragment(currentGame)
+            gameDataFragment!!
         } else {
             gameSongsFragment = GameSongsFragment(currentGame, enabled)
             gameSongsFragment!!
@@ -45,12 +45,12 @@ class GameDetailPagerAdapter(
     }
 
     fun showData(game: GameResponse?, enabled: Boolean) {
-        gameDetailFragment?.showData(game, enabled)
+        gameDataFragment?.showData(game, enabled)
     }
 
     fun getGameData(): GameResponse? {
 
-        val game = gameDetailFragment?.getGameData()
+        val game = gameDataFragment?.getGameData()
         if (game != null) {
             game.songs = gameSongsFragment?.getSongs() ?: currentGame?.songs ?: ArrayList()
         }
