@@ -12,6 +12,8 @@ class FormatRepository @Inject constructor(
     private val database: AppDatabase
 ) {
 
+    // MARK: - Public methods
+
     fun getFormats(): List<FormatResponse> {
 
         var formats = mutableListOf<FormatResponse>()
@@ -28,13 +30,6 @@ class FormatRepository @Inject constructor(
         return formats
     }
 
-    fun insertFormat(format: FormatResponse) {
-
-        GlobalScope.launch {
-            database.formatDao().insertFormat(format)
-        }
-    }
-
     private fun deleteFormat(format: FormatResponse) {
 
         GlobalScope.launch {
@@ -42,12 +37,25 @@ class FormatRepository @Inject constructor(
         }
     }
 
-    fun removeDisableContent(newFormats: List<FormatResponse>) {
+    fun manageFormats(newFormats: List<FormatResponse>) {
+
+        for (newFormat in newFormats) {
+            insertFormat(newFormat)
+        }
 
         val currentFormats = getFormats()
-        val formats = AppDatabase.getDisabledContent(currentFormats, newFormats) as List<*>
-        for (format in formats) {
+        val formatsToRemove = AppDatabase.getDisabledContent(currentFormats, newFormats)
+        for (format in formatsToRemove) {
             deleteFormat(format as FormatResponse)
+        }
+    }
+
+    // MARK: - Private methods
+
+    private fun insertFormat(format: FormatResponse) {
+
+        GlobalScope.launch {
+            database.formatDao().insertFormat(format)
         }
     }
 }

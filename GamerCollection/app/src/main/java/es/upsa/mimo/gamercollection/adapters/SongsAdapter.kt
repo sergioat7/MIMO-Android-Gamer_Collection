@@ -9,10 +9,12 @@ import es.upsa.mimo.gamercollection.models.SongResponse
 import kotlinx.android.synthetic.main.song_item.view.*
 
 class SongsAdapter(
-    var songs: List<SongResponse>,
-    var editable: Boolean,
+    private var songs: List<SongResponse>,
+    private var editable: Boolean,
     private var onItemClickListener: OnItemClickListener
 ): RecyclerView.Adapter<SongsAdapter.SongsViewHolder?>() {
+
+    //MARK: - Lifecycle methods
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongsViewHolder {
 
@@ -36,8 +38,18 @@ class SongsAdapter(
         }
     }
 
-    interface OnItemClickListener {
-        fun onItemClick(songId: Int)
+    //MARK: - Public methods
+
+    fun setSongs(newSongs: List<SongResponse>) {
+
+        this.songs = newSongs
+        notifyDataSetChanged()
+    }
+
+    fun setEditable(editable: Boolean) {
+
+        this.editable = editable
+        notifyDataSetChanged()
     }
 
     class SongsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)

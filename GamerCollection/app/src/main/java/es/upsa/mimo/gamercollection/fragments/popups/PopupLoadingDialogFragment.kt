@@ -10,6 +10,8 @@ import es.upsa.mimo.gamercollection.R
 
 class PopupLoadingDialogFragment : DialogFragment() {
 
+    // MARK: - Lifecycle methods
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_TITLE, R.style.AppThemeDialogTransparent)

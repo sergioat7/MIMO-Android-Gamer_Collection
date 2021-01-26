@@ -18,23 +18,23 @@ fun EditText.setReadOnly(value: Boolean, inputType: Int, lineColor: Int) {
     this.backgroundTintList = if (value) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(lineColor)
 }
 
-fun EditText.showDatePicker(context: Context) {
+fun EditText.showDatePicker(context: Context, dateFormat: String? = null) {
 
     this.setOnFocusChangeListener { _, hasFocus ->
         if (hasFocus) {
-            val picker = getPicker(this, context)
+            val picker = getPicker(this, context, dateFormat)
             picker.show()
         }
     }
     this.setOnClickListener {
-        val picker = getPicker(this, context)
+        val picker = getPicker(this, context, dateFormat)
         picker.show()
     }
 }
 
 // MARK - Private functions
 
-private fun getPicker(editText: EditText, context: Context): DatePickerDialog {
+private fun getPicker(editText: EditText, context: Context, dateFormat: String?): DatePickerDialog {
 
     val calendar = Calendar.getInstance()
     val currentDay: Int = calendar.get(Calendar.DAY_OF_MONTH)
@@ -50,6 +50,7 @@ private fun getPicker(editText: EditText, context: Context): DatePickerDialog {
             context.getSharedPreferences(Constants.PREFERENCES_NAME, Context.MODE_PRIVATE)
         )
         val language = sharedPreferencesHandler.getLanguage()
+        val dateFormatToShow = dateFormat ?: Constants.getDateFormatToShow(language)
 
         val date = Constants.stringToDate(
             newDate,
@@ -58,7 +59,7 @@ private fun getPicker(editText: EditText, context: Context): DatePickerDialog {
         )
         val dateString = Constants.dateToString(
             date,
-            Constants.getDateFormatToShow(sharedPreferencesHandler),
+            dateFormatToShow,
             language
         )
 

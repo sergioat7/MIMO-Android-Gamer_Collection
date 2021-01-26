@@ -12,6 +12,8 @@ import kotlinx.android.synthetic.main.saga_item.view.*
 
 class SagasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+    // MARK: - Public methods
+
     fun fillData(saga: SagaResponse, context: Context) {
 
         itemView.edit_text_name.setText(saga.name)

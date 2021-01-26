@@ -5,7 +5,6 @@ import android.content.Context
 import android.util.Log
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.SpinnerAdapter
-import es.upsa.mimo.gamercollection.models.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -16,66 +15,14 @@ class Constants {
 
         const val DATABASE_NAME = "GamerCollection"
 
-        fun manageFormats(context: Context, formats: List<FormatResponse>) {
-
-//            val formatRepository = FormatRepository(context)
-//            for (format in formats) {
-//                formatRepository.insertFormat(format)
-//            }
-//            formatRepository.removeDisableContent(formats)
-        }
-
-        fun manageGenres(context: Context, genres: List<GenreResponse>) {
-
-//            val genreRepository = GenreRepository(context)
-//            for (genre in genres) {
-//                genreRepository.insertGenre(genre)
-//            }
-//            genreRepository.removeDisableContent(genres)
-        }
-
-        fun managePlatforms(context: Context, platforms: List<PlatformResponse>) {
-
-//            val platformRepository = PlatformRepository(context)
-//            for (platform in platforms) {
-//                platformRepository.insertPlatform(platform)
-//            }
-//            platformRepository.removeDisableContent(platforms)
-        }
-
-        fun manageStates(context: Context, states: List<StateResponse>) {
-
-//            val stateRepository = StateRepository(context)
-//            for (state in states) {
-//                stateRepository.insertState(state)
-//            }
-//            stateRepository.removeDisableContent(states)
-        }
-
-        fun manageGames(context: Context, games: List<GameResponse>) {
-
-//            val gameRepository = GameRepository(context)
-//            for (game in games) {
-//                gameRepository.insertGame(game)
-//            }
-//            gameRepository.removeDisableContent(games)
-        }
-
-        fun manageSagas(context: Context, sagas: List<SagaResponse>) {
-
-//            val sagaRepository = SagaRepository(context)
-//            for (saga in sagas) {
-//                sagaRepository.insertSaga(saga)
-//            }
-//            sagaRepository.removeDisableContent(sagas)
-        }
-
         // MARK: - SharedPref constants
 
         const val PREFERENCES_NAME = "preferences"
         const val USER_DATA_PREFERENCES_NAME = "userData"
         const val AUTH_DATA_PREFERENCES_NAME = "authData"
         const val LANGUAGE_PREFERENCES_NAME = "language"
+        const val ENGLISH_LANGUAGE_KEY = "en"
+        const val SPANISH_LANGUAGE_KEY = "es"
         const val SORTING_KEY_PREFERENCES_NAME = "sortingKey"
         const val SWIPE_REFRESH_PREFERENCES_NAME = "swipeRefreshEnabled"
         const val GAME_NOTIFICATION_PREFERENCES_NAME = "gameNotificationLaunched_"
@@ -105,11 +52,19 @@ class Constants {
 
         const val DATE_FORMAT = "yyyy-MM-dd"
 
-        fun getDateFormatToShow(sharedPrefHandler: SharedPreferencesHandler): String {
+        fun getDateFormatToShow(language: String): String {
 
-            return when(sharedPrefHandler.getLanguage()) {
-                "es" -> "d MMMM yyyy"
+            return when(language) {
+                SPANISH_LANGUAGE_KEY -> "d MMMM yyyy"
                 else -> "MMMM d, yyyy"
+            }
+        }
+
+        fun getFilterDateFormat(language: String): String {
+
+            return when(language) {
+                SPANISH_LANGUAGE_KEY -> "dd/MM/yyyy"
+                else -> "MM/dd/yyyy"
             }
         }
 
@@ -163,20 +118,6 @@ class Constants {
             } ?: run {
                 Log.e("Constants", "dateString null")
                 return null
-            }
-        }
-
-        // MARK: Game ordering
-
-        fun orderGamesBy(games: List<GameResponse>, sortingKey: String): List<GameResponse> {
-
-            return when(sortingKey) {
-                "platform" -> games.sortedBy { it.platform }
-                "releaseDate" -> games.sortedBy { it.releaseDate }
-                "purchaseDate" -> games.sortedBy { it.purchaseDate }
-                "price" -> games.sortedBy { it.price }
-                "score" -> games.sortedBy { it.score }
-                else -> games.sortedBy { it.name }
             }
         }
 

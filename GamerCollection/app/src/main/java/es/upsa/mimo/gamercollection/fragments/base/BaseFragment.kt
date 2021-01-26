@@ -13,7 +13,11 @@ import java.io.Serializable
 
 open class BaseFragment : Fragment() {
 
+    // MARK: - Private properties
+
     private var loadingFragment: PopupLoadingDialogFragment? = null
+
+    // MARK: - Public methods
 
     fun manageError(errorResponse: ErrorResponse) {
 
@@ -97,7 +101,7 @@ open class BaseFragment : Fragment() {
         }
     }
 
-    //MARK - Private functions
+    //MARK - Private methods
 
     private fun showSyncPopup() {
 

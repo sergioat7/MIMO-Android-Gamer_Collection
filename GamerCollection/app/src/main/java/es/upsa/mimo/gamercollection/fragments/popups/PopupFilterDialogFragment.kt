@@ -5,34 +5,28 @@ import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.core.view.children
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.adapters.OnFiltersSelected
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
-import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.FilterModel
-import es.upsa.mimo.gamercollection.repositories.FormatRepository
-import es.upsa.mimo.gamercollection.repositories.GenreRepository
-import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
+import es.upsa.mimo.gamercollection.viewmodelfactories.PopupFilterViewModelFactory
+import es.upsa.mimo.gamercollection.viewmodels.PopupFilterViewModel
 import kotlinx.android.synthetic.main.fragment_popup_filter_dialog.*
-import javax.inject.Inject
 
 class PopupFilterDialogFragment(
     private var currentFilters: FilterModel?,
     private val onFiltersSelected: OnFiltersSelected
 ) : DialogFragment() {
 
-    @Inject
-    lateinit var sharedPrefHandler: SharedPreferencesHandler
-    @Inject
-    lateinit var formatRepository: FormatRepository
-    @Inject
-    lateinit var genreRepository: GenreRepository
-    @Inject
-    lateinit var platformRepository: PlatformRepository
+    //MARK: - Private properties
+
+    private lateinit var viewModel: PopupFilterViewModel
+
+    // MARK: - Lifecycle methods
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,35 +37,35 @@ class PopupFilterDialogFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val application = activity?.application
-        (application as GamerCollectionApplication).appComponent.inject(this)
-
         initializeUI()
-        configFilters(currentFilters)
     }
 
-    //MARK: - Private functions
+    //MARK: - Private methods
 
     private fun initializeUI() {
+
+        val application = activity?.application
+        viewModel = ViewModelProvider(this, PopupFilterViewModelFactory(application)).get(PopupFilterViewModel::class.java)
 
         fillPlatforms()
         fillGenres()
         fillFormats()
 
-        edit_text_release_date_min.showDatePicker(requireContext())
+        edit_text_release_date_min.showDatePicker(requireContext(), Constants.getFilterDateFormat(viewModel.language))
         edit_text_release_date_min.setRawInputType(InputType.TYPE_NULL)
-        edit_text_release_date_max.showDatePicker(requireContext())
+        edit_text_release_date_max.showDatePicker(requireContext(), Constants.getFilterDateFormat(viewModel.language))
         edit_text_release_date_max.setRawInputType(InputType.TYPE_NULL)
 
-        edit_text_purchase_date_min.showDatePicker(requireContext())
+        edit_text_purchase_date_min.showDatePicker(requireContext(), Constants.getFilterDateFormat(viewModel.language))
         edit_text_purchase_date_min.setRawInputType(InputType.TYPE_NULL)
-        edit_text_purchase_date_max.showDatePicker(requireContext())
+        edit_text_purchase_date_max.showDatePicker(requireContext(), Constants.getFilterDateFormat(viewModel.language))
         edit_text_purchase_date_max.setRawInputType(InputType.TYPE_NULL)
 
         button_cancel.setOnClickListener { cancel() }
         button_reset.setOnClickListener { reset() }
         button_save.setOnClickListener { save() }
+
+        configFilters(currentFilters)
     }
 
     private fun configFilters(filters: FilterModel?) {
@@ -105,30 +99,31 @@ class PopupFilterDialogFragment(
             edit_text_release_date_min.setText(
                 Constants.dateToString(
                     filters.minReleaseDate,
-                    Constants.getDateFormatToShow(sharedPrefHandler),
-                    sharedPrefHandler.getLanguage()
+                    Constants.getFilterDateFormat(viewModel.language),
+                    viewModel.language
                 )
             )
             edit_text_release_date_max.setText(
                 Constants.dateToString(
                     filters.maxReleaseDate,
-                    Constants.getDateFormatToShow(sharedPrefHandler),
-                    sharedPrefHandler.getLanguage()
+                    Constants.getFilterDateFormat(viewModel.language),
+                    viewModel.language
                 )
             )
 
             edit_text_purchase_date_min.setText(
                 Constants.dateToString(
                     filters.minPurchaseDate,
-                    Constants.getDateFormatToShow(sharedPrefHandler),
-                    sharedPrefHandler.getLanguage()
+                    Constants.getFilterDateFormat(viewModel.language),
+                    viewModel.language
                 )
             )
             edit_text_purchase_date_max.setText(
                 Constants.dateToString(
                     filters.maxPurchaseDate,
-                    Constants.getDateFormatToShow(sharedPrefHandler),
-                    sharedPrefHandler.getLanguage())
+                    Constants.getFilterDateFormat(viewModel.language),
+                    viewModel.language
+                )
             )
 
             if (filters.minPrice > 0) edit_text_price_min.setText(filters.minPrice.toString())
@@ -147,10 +142,13 @@ class PopupFilterDialogFragment(
     private fun fillPlatforms() {
 
         linear_layout_platforms.removeAllViews()
-        val platforms = platformRepository.getPlatforms()
-        for (platform in platforms) {
+        for (platform in viewModel.platforms) {
 
-            val button = getRoundedSelectorButton(platform.id, platform.name)
+            val button = viewModel.getRoundedSelectorButton(
+                platform.id,
+                platform.name,
+                requireContext()
+            )
 
             val view = View(requireContext())
             view.layoutParams = ViewGroup.LayoutParams(
@@ -167,10 +165,13 @@ class PopupFilterDialogFragment(
     private fun fillGenres() {
 
         linear_layout_genres.removeAllViews()
-        val genres = genreRepository.getGenres()
-        for (genre in genres) {
+        for (genre in viewModel.genres) {
 
-            val button = getRoundedSelectorButton(genre.id, genre.name)
+            val button = viewModel.getRoundedSelectorButton(
+                genre.id,
+                genre.name,
+                requireContext()
+            )
 
             val view = View(requireContext())
             view.layoutParams = ViewGroup.LayoutParams(
@@ -187,10 +188,13 @@ class PopupFilterDialogFragment(
     private fun fillFormats() {
 
         linear_layout_formats.removeAllViews()
-        val formats = formatRepository.getFormats()
-        for (format in formats) {
+        for (format in viewModel.formats) {
 
-            val button = getRoundedSelectorButton(format.id, format.name)
+            val button = viewModel.getRoundedSelectorButton(
+                format.id,
+                format.name,
+                requireContext()
+            )
 
             val view = View(requireContext())
             view.layoutParams = ViewGroup.LayoutParams(
@@ -267,24 +271,24 @@ class PopupFilterDialogFragment(
 
         val minReleaseDate = Constants.stringToDate(
             edit_text_release_date_min.text.toString(),
-            Constants.getDateFormatToShow(sharedPrefHandler),
-            sharedPrefHandler.getLanguage()
+            Constants.getFilterDateFormat(viewModel.language),
+            viewModel.language
         )
         val maxReleaseDate = Constants.stringToDate(
             edit_text_release_date_max.text.toString(),
-            Constants.getDateFormatToShow(sharedPrefHandler),
-            sharedPrefHandler.getLanguage()
+            Constants.getFilterDateFormat(viewModel.language),
+            viewModel.language
         )
 
         val minPurchaseDate = Constants.stringToDate(
             edit_text_purchase_date_min.text.toString(),
-            Constants.getDateFormatToShow(sharedPrefHandler),
-            sharedPrefHandler.getLanguage()
+            Constants.getFilterDateFormat(viewModel.language),
+            viewModel.language
         )
         val maxPurchaseDate = Constants.stringToDate(
             edit_text_purchase_date_max.text.toString(),
-            Constants.getDateFormatToShow(sharedPrefHandler),
-            sharedPrefHandler.getLanguage()
+            Constants.getFilterDateFormat(viewModel.language),
+            viewModel.language
         )
 
         var minPrice = 0.0
@@ -346,25 +350,4 @@ class PopupFilterDialogFragment(
         onFiltersSelected.filter(currentFilters)
         dismiss()
     }
-
-    private fun getRoundedSelectorButton(id: String, text: String): Button {
-
-        val button = Button(requireContext(), null, R.style.RoundedSelectorButton, R.style.RoundedSelectorButton)
-        button.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
-        button.tag = id
-        button.text = text
-        button.setOnClickListener { selectButton(it) }
-        return button
-    }
-
-    private fun selectButton(button: View) {
-        button.isSelected = !button.isSelected
-    }
-}
-
-interface OnFiltersSelected {
-    fun filter(filters: FilterModel?)
 }
