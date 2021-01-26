@@ -28,7 +28,6 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
 
     //MARK: - Private properties
 
-    private var sagaId: Int? = null
     private lateinit var viewModel: SagaDetailViewModel
     private var menu: Menu? = null
     private var sagaGames: List<GameResponse> = arrayListOf()
@@ -40,7 +39,6 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        sagaId = this.arguments?.getInt("sagaId")
         setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_saga_detail, container, false)
     }
@@ -71,12 +69,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
             }
             R.id.action_save -> {
 
-                val newSaga = SagaResponse(
-                    sagaId ?: 0,
-                    edit_text_name.text.toString(),
-                    newGames
-                )
-                viewModel.saveSaga(newSaga)
+                viewModel.saveSaga(edit_text_name.text.toString(), newGames)
                 return true
             }
             R.id.action_cancel -> {
@@ -113,6 +106,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
     private fun initializeUI() {
 
         val application = activity?.application
+        val sagaId = this.arguments?.getInt("sagaId")
         viewModel = ViewModelProvider(this, SagaDetailViewModelFactory(application, sagaId)).get(SagaDetailViewModel::class.java)
         setupBindings()
 
@@ -216,7 +210,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
                 orderedGames,
                 viewModel.platforms,
                 viewModel.states,
-                sagaId ?: 0,
+                viewModel.saga.value?.id ?: 0,
                 requireContext(),
                 this
             )
