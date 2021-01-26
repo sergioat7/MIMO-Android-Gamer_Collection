@@ -63,7 +63,13 @@ class SagaDetailViewModel @Inject constructor(
         }
     }
 
-    fun saveSaga(newSaga: SagaResponse) {
+    fun saveSaga(name: String, games: List<GameResponse>) {
+
+        val newSaga = SagaResponse(
+            sagaId ?: 0,
+            name,
+            games
+        )
 
         _sagaDetailLoading.value = true
         if (_saga.value != null) {
