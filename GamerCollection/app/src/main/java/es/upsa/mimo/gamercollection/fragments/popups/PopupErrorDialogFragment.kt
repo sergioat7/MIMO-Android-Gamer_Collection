@@ -10,6 +10,8 @@ import kotlinx.android.synthetic.main.fragment_popup_error_dialog.*
 
 class PopupErrorDialogFragment(private val message: String) : DialogFragment() {
 
+    // MARK: - Lifecycle methods
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

@@ -12,6 +12,8 @@ class StateRepository @Inject constructor(
     private val database: AppDatabase
 ) {
 
+    // MARK: - Public methods
+
     fun getStates(): List<StateResponse> {
 
         var states = mutableListOf<StateResponse>()
@@ -28,7 +30,22 @@ class StateRepository @Inject constructor(
         return states
     }
 
-    fun insertState(state: StateResponse) {
+    fun manageStates(newStates: List<StateResponse>) {
+
+        for (newState in newStates) {
+            insertState(newState)
+        }
+
+        val currentStates = getStates()
+        val statesToRemove = AppDatabase.getDisabledContent(currentStates, newStates)
+        for (state in statesToRemove) {
+            deleteState(state as StateResponse)
+        }
+    }
+
+    // MARK: - Private methods
+
+    private fun insertState(state: StateResponse) {
 
         GlobalScope.launch {
             database.stateDao().insertState(state)
@@ -39,15 +56,6 @@ class StateRepository @Inject constructor(
 
         GlobalScope.launch {
             database.stateDao().deleteState(state)
-        }
-    }
-
-    fun removeDisableContent(newStates: List<StateResponse>) {
-
-        val currentStates = getStates()
-        val states = AppDatabase.getDisabledContent(currentStates, newStates) as List<*>
-        for (state in states) {
-            deleteState(state as StateResponse)
         }
     }
 }

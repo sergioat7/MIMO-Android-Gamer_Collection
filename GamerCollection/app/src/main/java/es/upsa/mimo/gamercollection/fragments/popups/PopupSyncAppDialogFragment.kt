@@ -7,31 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
-import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.ErrorResponse
-import es.upsa.mimo.gamercollection.network.apiClient.*
-import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
-import javax.inject.Inject
+import es.upsa.mimo.gamercollection.viewmodelfactories.PopupSyncAppViewModelFactory
+import es.upsa.mimo.gamercollection.viewmodels.PopupSyncAppViewModel
 
 class PopupSyncAppDialogFragment : DialogFragment() {
 
-    @Inject
-    lateinit var sharedPrefHandler: SharedPreferencesHandler
-    @Inject
-    lateinit var formatAPIClient: FormatAPIClient
-    @Inject
-    lateinit var gameAPIClient: GameAPIClient
-    @Inject
-    lateinit var genreAPIClient: GenreAPIClient
-    @Inject
-    lateinit var platformAPIClient: PlatformAPIClient
-    @Inject
-    lateinit var sagaAPIClient: SagaAPIClient
-    @Inject
-    lateinit var stateAPIClient: StateAPIClient
+    //MARK: - Private properties
+
+    private lateinit var viewModel: PopupSyncAppViewModel
+
+    // MARK: - Lifecycle methods
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,63 +31,33 @@ class PopupSyncAppDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initializeUI()
+    }
+
+    //MARK: - Private methods
+
+    private fun initializeUI() {
 
         val application = activity?.application
-        (application as GamerCollectionApplication).appComponent.inject(this)
+        viewModel = ViewModelProvider(this, PopupSyncAppViewModelFactory(application)).get(PopupSyncAppViewModel::class.java)
+        setupBindings()
 
-        syncApp()
+        viewModel.loadContent()
     }
 
-    //MARK: - Private functions
+    private fun setupBindings() {
 
-    private fun syncApp() {
+        viewModel.popupSyncAppError.observe(viewLifecycleOwner, { error ->
 
-        formatAPIClient.getFormats({ formats ->
-            genreAPIClient.getGenres({ genres ->
-                platformAPIClient.getPlatforms({ platforms ->
-                    stateAPIClient.getStates({ states ->
-                        gameAPIClient.getGames({ games ->
-                            sagaAPIClient.getSagas({ sagas ->
-
-                                Constants.manageFormats(requireContext(), formats)
-                                Constants.manageGenres(requireContext(), genres)
-                                Constants.managePlatforms(requireContext(), platforms)
-                                Constants.manageStates(requireContext(), states)
-                                Constants.manageGames(requireContext(), games)
-                                Constants.manageSagas(requireContext(), sagas)
-
-                                goToMainView()
-                                dismiss()
-                            }, {
-                                dismiss()
-                                manageError(it)
-                            })
-                        }, {
-                            dismiss()
-                            manageError(it)
-                        })
-                    }, {
-                        dismiss()
-                        manageError(it)
-                    })
-                }, {
-                    dismiss()
-                    manageError(it)
-                })
-            }, {
-                dismiss()
-                manageError(it)
-            })
-        }, {
             dismiss()
-            manageError(it)
+            if (error == null) {
+
+                val intent = Intent(context, MainActivity::class.java).apply {}
+                startActivity(intent)
+            } else {
+                manageError(error)
+            }
         })
-    }
-
-    private fun goToMainView() {
-
-        val intent = Intent(context, MainActivity::class.java).apply {}
-        startActivity(intent)
     }
 
     private fun manageError(errorResponse: ErrorResponse) {

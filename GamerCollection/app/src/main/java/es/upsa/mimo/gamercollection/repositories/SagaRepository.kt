@@ -13,6 +13,8 @@ class SagaRepository @Inject constructor(
     private val database: AppDatabase
 ) {
 
+    // MARK: - Public methods
+
     fun getSagas(): List<SagaResponse> {
 
         var sagas: List<SagaWithGames> = arrayListOf()
@@ -58,11 +60,15 @@ class SagaRepository @Inject constructor(
         }
     }
 
-    fun removeDisableContent(newSagas: List<SagaResponse>) {
+    fun manageSagas(newSagas: List<SagaResponse>) {
+
+        for (newSaga in newSagas) {
+            insertSaga(newSaga)
+        }
 
         val currentSagas = getSagas()
-        val sagas = AppDatabase.getDisabledContent(currentSagas, newSagas) as List<*>
-        for (saga in sagas) {
+        val sagasToRemove = AppDatabase.getDisabledContent(currentSagas, newSagas)
+        for (saga in sagasToRemove) {
             deleteSaga(saga as SagaResponse)
         }
     }

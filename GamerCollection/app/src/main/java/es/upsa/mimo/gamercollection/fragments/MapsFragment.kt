@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
+import es.upsa.mimo.gamercollection.adapters.OnLocationSelected
 import kotlinx.android.synthetic.main.fragment_maps.*
 
 class MapsFragment(
@@ -33,9 +34,13 @@ class MapsFragment(
     private val onLocationSelected: OnLocationSelected
 ) : DialogFragment(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener {
 
+    //MARK: - Private properties
+
     private val madrid = LatLng(40.4169019, -3.7056721)
     private lateinit var googleMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    // MARK: - Lifecycle methods
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_maps, container, false)
@@ -48,6 +53,8 @@ class MapsFragment(
 
         initializeUI()
     }
+
+    // MARK: - Interface methods
 
     override fun onMapReady(googleMap: GoogleMap) {
 
@@ -84,7 +91,7 @@ class MapsFragment(
         }
     }
 
-    // MARK: - Private functions
+    // MARK: - Private methods
 
     private fun initializeUI() {
 
@@ -181,7 +188,4 @@ class MapsFragment(
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(position))
         location = position
     }
-}
-interface OnLocationSelected {
-    fun setLocation(location: LatLng?)
 }

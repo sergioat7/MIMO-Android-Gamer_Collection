@@ -4,37 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.activities.RegisterActivity
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
-import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
-import es.upsa.mimo.gamercollection.models.*
-import es.upsa.mimo.gamercollection.network.apiClient.*
-import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Environment
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
+import es.upsa.mimo.gamercollection.viewmodelfactories.LoginViewModelFactory
+import es.upsa.mimo.gamercollection.viewmodels.LoginViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
-import javax.inject.Inject
 
 class LoginFragment : BaseFragment() {
 
-    @Inject
-    lateinit var sharedPrefHandler: SharedPreferencesHandler
-    @Inject
-    lateinit var formatAPIClient: FormatAPIClient
-    @Inject
-    lateinit var gameAPIClient: GameAPIClient
-    @Inject
-    lateinit var genreAPIClient: GenreAPIClient
-    @Inject
-    lateinit var platformAPIClient: PlatformAPIClient
-    @Inject
-    lateinit var sagaAPIClient: SagaAPIClient
-    @Inject
-    lateinit var stateAPIClient: StateAPIClient
-    @Inject
-    lateinit var userAPIClient: UserAPIClient
+    //MARK: - Private properties
+
+    private lateinit var viewModel: LoginViewModel
+
+    // MARK: - Lifecycle methods
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,93 +31,55 @@ class LoginFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val application = activity?.application
-        (application as GamerCollectionApplication).appComponent.inject(this)
-
         initializeUI()
     }
 
-    //MARK: - Private functions
+    //MARK: - Private methods
 
     private fun initializeUI() {
 
-        val username = sharedPrefHandler.getUserData().username
+        val application = activity?.application
+        viewModel = ViewModelProvider(this, LoginViewModelFactory(application)).get(LoginViewModel::class.java)
+        setupBindings()
+
+        val username = viewModel.username
         val user = if (username.isEmpty()) Environment.getUsername() else username
         edit_text_user.setText(user)
         val password = if (username.isEmpty()) Environment.getPassword() else ""
         edit_text_password.setText(password)
 
-        login_button.setOnClickListener {login()}
-        register_button.setOnClickListener {register()}
-    }
+        login_button.setOnClickListener {
 
-    private fun login() {
-
-        val username = edit_text_user.text.toString()
-        val password = edit_text_password.text.toString()
-
-        if (username.isEmpty() || password.isEmpty()) {
-            showPopupDialog(resources.getString(R.string.error_registration_empty_data))
-            return
+            viewModel.login(
+                edit_text_user.text.toString(),
+                edit_text_password.text.toString()
+            )
         }
+        register_button.setOnClickListener {
+            launchActivity(RegisterActivity::class.java)
+        }
+    }
 
-        showLoading()
-        userAPIClient.login(username, password, { token ->
+    private fun setupBindings() {
 
-            val userData = UserData(username, password, false)
-            val authData = AuthData(token)
-            sharedPrefHandler.run {
-                storeUserData(userData)
-                storeCredentials(authData)
+        viewModel.loginLoading.observe(viewLifecycleOwner, { isLoading ->
+
+            if (isLoading) {
+                showLoading()
+            } else {
+                hideLoading()
             }
-            syncApp(userData)
-        }, {
-            manageError(it)
         })
-    }
 
-    private fun register() {
-        launchActivity(RegisterActivity::class.java)
-    }
+        viewModel.loginError.observe(viewLifecycleOwner, { error ->
 
-    private fun syncApp(userData: UserData) {
+            if (error == null) {
+                launchActivity(MainActivity::class.java)
+            } else {
 
-        formatAPIClient.getFormats({ formats ->
-            genreAPIClient.getGenres({ genres ->
-                platformAPIClient.getPlatforms({ platforms ->
-                    stateAPIClient.getStates({ states ->
-                        gameAPIClient.getGames({ games ->
-                            sagaAPIClient.getSagas({ sagas ->
-
-                                Constants.manageFormats(requireContext(), formats)
-                                Constants.manageGenres(requireContext(), genres)
-                                Constants.managePlatforms(requireContext(), platforms)
-                                Constants.manageStates(requireContext(), states)
-                                Constants.manageGames(requireContext(), games)
-                                Constants.manageSagas(requireContext(), sagas)
-
-                                userData.isLoggedIn = true
-                                sharedPrefHandler.storeUserData(userData)
-                                launchActivity(MainActivity::class.java)
-                                hideLoading()
-                            }, {
-                                manageError(it)
-                            })
-                        }, {
-                            manageError(it)
-                        })
-                    }, {
-                        manageError(it)
-                    })
-                }, {
-                    manageError(it)
-                })
-            }, {
-                manageError(it)
-            })
-        }, {
-            manageError(it)
+                hideLoading()
+                manageError(error)
+            }
         })
     }
 }

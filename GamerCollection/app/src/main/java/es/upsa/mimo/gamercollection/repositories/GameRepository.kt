@@ -15,6 +15,8 @@ class GameRepository @Inject constructor(
     private val database: AppDatabase
 ) {
 
+    // MARK: - Public methods
+
     fun getGames(query: SupportSQLiteQuery? = null): List<GameResponse> {
 
         var games: List<GameWithSaga> = arrayListOf()
@@ -60,11 +62,15 @@ class GameRepository @Inject constructor(
         }
     }
 
-    fun removeDisableContent(newGames: List<GameResponse>) {
+    fun manageGames(newGames: List<GameResponse>) {
+
+        for (newGame in newGames) {
+            insertGame(newGame)
+        }
 
         val currentGames = getGames()
-        val games = AppDatabase.getDisabledContent(currentGames, newGames) as List<*>
-        for (game in games) {
+        val gamesToRemove = AppDatabase.getDisabledContent(currentGames, newGames)
+        for (game in gamesToRemove) {
             deleteGame(game as GameResponse)
         }
     }

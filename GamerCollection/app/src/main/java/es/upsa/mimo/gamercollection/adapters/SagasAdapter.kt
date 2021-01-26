@@ -16,16 +16,17 @@ import es.upsa.mimo.gamercollection.viewholders.SagasViewHolder
 import kotlinx.android.synthetic.main.game_item.view.*
 import kotlinx.android.synthetic.main.saga_item.view.*
 import kotlinx.android.synthetic.main.saga_item.view.image_view_arrow
-import kotlin.collections.ArrayList
 
 class SagasAdapter(
-    private val context: Context,
-    var items: ArrayList<BaseModel<Int>>,
-    var expandedIds: ArrayList<Int>,
+    private var items: MutableList<BaseModel<Int>>,
+    private var expandedIds: MutableList<Int>,
     private val platforms: List<PlatformResponse>,
     private val states: List<StateResponse>,
+    private val context: Context,
     private var onItemClickListener: OnItemClickListener
 ): RecyclerView.Adapter<ViewHolder?>() {
+
+    //MARK: - Lifecycle methods
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -40,14 +41,10 @@ class SagasAdapter(
 
     override fun getItemViewType(position: Int): Int {
 
-        val currentItem = items[position]
-
-        return if (currentItem is SagaResponse) {
-            R.layout.saga_item
-        } else if (currentItem is GameResponse) {
-            R.layout.game_item
-        } else {
-            throw Throwable("Unsupported type")
+        return when(items[position]) {
+            is SagaResponse -> R.layout.saga_item
+            is GameResponse -> R.layout.game_item
+            else -> throw Throwable("Unsupported type")
         }
     }
 
@@ -97,18 +94,29 @@ class SagasAdapter(
             holder.fillData(game, context, null)
 
             holder.itemView.check_box.setOnClickListener {
-                onItemClickListener.onGameItemClick(game.id)
+                onItemClickListener.onSubItemClick(game.id)
             }
 
             holder.itemView.setOnClickListener {
                 holder.itemView.check_box.isChecked = !holder.itemView.check_box.isChecked
-                onItemClickListener.onGameItemClick(game.id)
+                onItemClickListener.onSubItemClick(game.id)
             }
         }
     }
 
-    interface OnItemClickListener {
-        fun onItemClick(sagaId: Int)
-        fun onGameItemClick(gameId: Int)
+    //MARK: - Public methods
+
+    fun setItems(newItems: MutableList<BaseModel<Int>>) {
+        this.items = newItems
+    }
+
+    fun setExpandedIds(newExpandedIds: MutableList<Int>) {
+        this.expandedIds = newExpandedIds
+    }
+
+    fun resetList() {
+
+        this.items = mutableListOf()
+        notifyDataSetChanged()
     }
 }
