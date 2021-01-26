@@ -15,6 +15,8 @@ class GameRepository @Inject constructor(
     private val database: AppDatabase
 ) {
 
+    // MARK: - Public methods
+
     fun getGames(query: SupportSQLiteQuery? = null): List<GameResponse> {
 
         var games: List<GameWithSaga> = arrayListOf()

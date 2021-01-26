@@ -11,7 +11,11 @@ class PlatformAPIClient @Inject constructor(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
+    // MARK: - Private properties
+
     private val api = APIClient.retrofit.create(PlatformAPIService::class.java)
+
+    // MARK: - Public methods
 
     fun getPlatforms(success: (List<PlatformResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 

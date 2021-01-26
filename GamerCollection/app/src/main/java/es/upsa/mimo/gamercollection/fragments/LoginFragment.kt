@@ -16,7 +16,11 @@ import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : BaseFragment() {
 
+    //MARK: - Private properties
+
     private lateinit var viewModel: LoginViewModel
+
+    // MARK: - Lifecycle methods
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +34,7 @@ class LoginFragment : BaseFragment() {
         initializeUI()
     }
 
-    //MARK: - Private functions
+    //MARK: - Private methods
 
     private fun initializeUI() {
 

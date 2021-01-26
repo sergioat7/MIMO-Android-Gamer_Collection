@@ -11,7 +11,11 @@ class StateAPIClient @Inject constructor(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
+    // MARK: - Private properties
+
     private val api = APIClient.retrofit.create(StateAPIService::class.java)
+
+    // MARK: - Public methods
 
     fun getStates(success: (List<StateResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 

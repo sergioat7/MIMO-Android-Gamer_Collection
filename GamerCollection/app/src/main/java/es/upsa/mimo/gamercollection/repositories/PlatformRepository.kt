@@ -12,6 +12,8 @@ class PlatformRepository @Inject constructor(
     private val database: AppDatabase
 ) {
 
+    // MARK: - Public methods
+
     fun getPlatforms(): List<PlatformResponse> {
 
         var platforms = mutableListOf<PlatformResponse>()
@@ -26,13 +28,6 @@ class PlatformRepository @Inject constructor(
             }
         }
         return platforms
-    }
-
-    fun insertPlatform(platform: PlatformResponse) {
-
-        GlobalScope.launch {
-            database.platformDao().insertPlatform(platform)
-        }
     }
 
     private fun deletePlatform(platform: PlatformResponse) {
@@ -52,6 +47,15 @@ class PlatformRepository @Inject constructor(
         val platformsToRemove = AppDatabase.getDisabledContent(currentPlatforms, newPlatforms)
         for (platform in platformsToRemove) {
             deletePlatform(platform as PlatformResponse)
+        }
+    }
+
+    // MARK: - Private methods
+
+    private fun insertPlatform(platform: PlatformResponse) {
+
+        GlobalScope.launch {
+            database.platformDao().insertPlatform(platform)
         }
     }
 }

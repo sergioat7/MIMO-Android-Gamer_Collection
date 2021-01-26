@@ -11,7 +11,11 @@ class SagaAPIClient @Inject constructor(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
+    // MARK: - Private properties
+
     private val api = APIClient.retrofit.create(SagaAPIService::class.java)
+
+    // MARK: - Public methods
 
     fun getSagas(success: (List<SagaResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 

@@ -8,21 +8,9 @@ import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
-import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
-import es.upsa.mimo.gamercollection.models.AuthData
-import es.upsa.mimo.gamercollection.models.UserData
-import es.upsa.mimo.gamercollection.network.apiClient.*
-import es.upsa.mimo.gamercollection.repositories.FormatRepository
-import es.upsa.mimo.gamercollection.repositories.GenreRepository
-import es.upsa.mimo.gamercollection.repositories.PlatformRepository
-import es.upsa.mimo.gamercollection.repositories.StateRepository
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
-import es.upsa.mimo.gamercollection.viewmodelfactories.LoginViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodelfactories.RegisterViewModelFactory
-import es.upsa.mimo.gamercollection.viewmodels.LoginViewModel
 import es.upsa.mimo.gamercollection.viewmodels.RegisterViewModel
 import kotlinx.android.synthetic.main.fragment_register.*
-import javax.inject.Inject
 
 class RegisterFragment : BaseFragment() {
 

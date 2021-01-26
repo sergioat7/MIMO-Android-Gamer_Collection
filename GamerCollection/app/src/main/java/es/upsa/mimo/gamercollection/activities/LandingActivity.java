@@ -16,7 +16,11 @@ import es.upsa.mimo.gamercollection.viewmodels.LandingViewModel;
 
 public class LandingActivity extends BaseActivity {
 
+    //MARK: - Private properties
+
     private LandingViewModel viewModel;
+
+    // MARK: - Lifecycle methods
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

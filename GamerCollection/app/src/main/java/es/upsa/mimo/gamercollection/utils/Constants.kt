@@ -5,7 +5,6 @@ import android.content.Context
 import android.util.Log
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.SpinnerAdapter
-import es.upsa.mimo.gamercollection.models.*
 import java.text.SimpleDateFormat
 import java.util.*
 
