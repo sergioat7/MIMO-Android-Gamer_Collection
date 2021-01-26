@@ -11,7 +11,11 @@ class GameAPIClient @Inject constructor(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
+    // MARK: - Private properties
+
     private val api = APIClient.retrofit.create(GameAPIService::class.java)
+
+    // MARK: - Public methods
 
     fun getGames(success: (List<GameResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 

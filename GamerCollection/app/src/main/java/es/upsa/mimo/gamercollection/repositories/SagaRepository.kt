@@ -13,6 +13,8 @@ class SagaRepository @Inject constructor(
     private val database: AppDatabase
 ) {
 
+    // MARK: - Public methods
+
     fun getSagas(): List<SagaResponse> {
 
         var sagas: List<SagaWithGames> = arrayListOf()

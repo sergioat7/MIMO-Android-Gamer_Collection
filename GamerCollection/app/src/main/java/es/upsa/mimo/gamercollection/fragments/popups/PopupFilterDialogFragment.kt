@@ -9,6 +9,7 @@ import androidx.core.view.children
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.adapters.OnFiltersSelected
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.utils.Constants
@@ -349,8 +350,4 @@ class PopupFilterDialogFragment(
         onFiltersSelected.filter(currentFilters)
         dismiss()
     }
-}
-
-interface OnFiltersSelected {
-    fun filter(filters: FilterModel?)
 }

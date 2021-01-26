@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.model.LatLng
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.adapters.OnLocationSelected
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment

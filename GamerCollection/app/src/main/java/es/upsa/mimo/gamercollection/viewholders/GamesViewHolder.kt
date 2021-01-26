@@ -22,6 +22,8 @@ class GamesViewHolder(
     private val states: List<StateResponse>
 ) : RecyclerView.ViewHolder(itemView) {
 
+    // MARK: - Public methods
+
     fun fillData(game: GameResponse, context: Context, sagaId: Int?) {
 
         val state = states.firstOrNull { it.id == game.state }

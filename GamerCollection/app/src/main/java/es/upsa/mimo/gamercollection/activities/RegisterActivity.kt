@@ -6,6 +6,8 @@ import es.upsa.mimo.gamercollection.activities.base.BaseActivity
 
 class RegisterActivity : BaseActivity() {
 
+    // MARK: - Lifecycle methods
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)

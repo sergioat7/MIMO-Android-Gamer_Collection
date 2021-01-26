@@ -9,6 +9,8 @@ import es.upsa.mimo.gamercollection.fragments.SagaDetailFragment
 
 class SagaDetailActivity : BaseActivity() {
 
+    // MARK: - Lifecycle methods
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

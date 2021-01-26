@@ -1,8 +1,6 @@
 package es.upsa.mimo.gamercollection.injection.components
 
 import dagger.Component
-import es.upsa.mimo.gamercollection.activities.GameDetailActivity
-import es.upsa.mimo.gamercollection.fragments.*
 import es.upsa.mimo.gamercollection.injection.modules.AppDatabaseModule
 import es.upsa.mimo.gamercollection.injection.modules.SharedPreferencesModule
 import es.upsa.mimo.gamercollection.viewmodelfactories.*

@@ -11,7 +11,11 @@ class GenreAPIClient @Inject constructor(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
+    // MARK: - Private properties
+
     private val api = APIClient.retrofit.create(GenreAPIService::class.java)
+
+    // MARK: - Public methods
 
     fun getGenres(success: (List<GenreResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 

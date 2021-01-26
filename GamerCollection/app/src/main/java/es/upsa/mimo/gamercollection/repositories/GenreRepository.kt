@@ -12,6 +12,8 @@ class GenreRepository @Inject constructor(
     private val database: AppDatabase
 ) {
 
+    // MARK: - Public methods
+
     fun getGenres(): List<GenreResponse> {
 
         var genres = mutableListOf<GenreResponse>()
@@ -26,13 +28,6 @@ class GenreRepository @Inject constructor(
             }
         }
         return genres
-    }
-
-    fun insertGenre(genre: GenreResponse) {
-
-        GlobalScope.launch {
-            database.genreDao().insertGenre(genre)
-        }
     }
 
     private fun deleteGenre(genre: GenreResponse) {
@@ -52,6 +47,15 @@ class GenreRepository @Inject constructor(
         val genresToRemove = AppDatabase.getDisabledContent(currentGenres, newGenres)
         for (genre in genresToRemove) {
             deleteGenre(genre as GenreResponse)
+        }
+    }
+
+    // MARK: - Private methods
+
+    private fun insertGenre(genre: GenreResponse) {
+
+        GlobalScope.launch {
+            database.genreDao().insertGenre(genre)
         }
     }
 }
