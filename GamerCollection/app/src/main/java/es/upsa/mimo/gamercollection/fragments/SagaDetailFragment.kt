@@ -19,6 +19,7 @@ import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.SagaResponse
+import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.SagaDetailViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.SagaDetailViewModel
 import kotlinx.android.synthetic.main.fragment_saga_detail.*
@@ -106,7 +107,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
     private fun initializeUI() {
 
         val application = activity?.application
-        val sagaId = this.arguments?.getInt("sagaId")
+        val sagaId = this.arguments?.getInt(Constants.SAGA_ID)
         viewModel = ViewModelProvider(this, SagaDetailViewModelFactory(application, sagaId)).get(SagaDetailViewModel::class.java)
         setupBindings()
 

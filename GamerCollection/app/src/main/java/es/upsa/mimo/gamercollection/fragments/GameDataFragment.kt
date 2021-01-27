@@ -50,7 +50,7 @@ class GameDataFragment(
 
     override fun setLocation(location: LatLng?) {
 
-        var locationText = ""
+        var locationText = Constants.EMPTY_VALUE
         location?.let {
             locationText = "${it.latitude},${it.longitude}"
         }
@@ -87,7 +87,7 @@ class GameDataFragment(
                 game.releaseDate,
                 Constants.getDateFormatToShow(viewModel.language),
                 viewModel.language
-            ) ?: if (enabled) "" else "-"
+            ) ?: if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
 
             game.format?.let { formatId ->
                 val formatName = viewModel.formats.firstOrNull { it.id == formatId }?.name
@@ -101,16 +101,16 @@ class GameDataFragment(
                 button_finished.isSelected = it == Constants.FINISHED_STATE
             }
 
-            distributor = if (game.distributor != null && game.distributor.isNotEmpty()) game.distributor else if (enabled) "" else "-"
+            distributor = if (game.distributor != null && game.distributor.isNotEmpty()) game.distributor else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
 
-            developer = if (game.developer != null && game.developer.isNotEmpty()) game.developer else if (enabled) "" else "-"
+            developer = if (game.developer != null && game.developer.isNotEmpty()) game.developer else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
 
             game.pegi?.let { pegi ->
                 val pos = resources.getStringArray(R.array.pegis).indexOf(pegi)
                 spinner_pegis.setSelection(pos+1)
             }
 
-            players = if (game.players != null && game.players.isNotEmpty()) game.players else if (enabled) "" else "-"
+            players = if (game.players != null && game.players.isNotEmpty()) game.players else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
 
             edit_text_price.setText(game.price.toString())
 
@@ -118,31 +118,31 @@ class GameDataFragment(
                 game.purchaseDate,
                 Constants.getDateFormatToShow(viewModel.language),
                 viewModel.language
-            ) ?: if (enabled) "" else "-"
+            ) ?: if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
 
-            purchaseLocation = if (game.purchaseLocation != null && game.purchaseLocation.isNotEmpty()) game.purchaseLocation else if (enabled) "" else "-"
+            purchaseLocation = if (game.purchaseLocation != null && game.purchaseLocation.isNotEmpty()) game.purchaseLocation else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
 
             radio_button_yes.isChecked = game.goty
             radio_button_no.isChecked = !game.goty
 
-            loaned = if (game.loanedTo != null && game.loanedTo.isNotEmpty()) game.loanedTo else if (enabled) "" else "-"
+            loaned = if (game.loanedTo != null && game.loanedTo.isNotEmpty()) game.loanedTo else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
 
-            videoUrl = if (game.videoUrl != null && game.videoUrl.isNotEmpty()) game.videoUrl else if (enabled) "" else "-"
+            videoUrl = if (game.videoUrl != null && game.videoUrl.isNotEmpty()) game.videoUrl else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
 
-            observations = if (game.observations != null && game.observations.isNotEmpty()) game.observations else if (enabled) "" else "-"
+            observations = if (game.observations != null && game.observations.isNotEmpty()) game.observations else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
 
             edit_text_saga.setText(game.saga?.name)
         } ?: run {
 
-            releaseDate = if (enabled) "" else "-"
-            distributor = if (enabled) "" else "-"
-            developer = if (enabled) "" else "-"
-            players = if (enabled) "" else "-"
-            purchaseDate = if (enabled) "" else "-"
-            purchaseLocation = if (enabled) "" else "-"
-            loaned = if (enabled) "" else "-"
-            videoUrl = if (enabled) "" else "-"
-            observations = if (enabled) "" else "-"
+            releaseDate = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
+            distributor = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
+            developer = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
+            players = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
+            purchaseDate = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
+            purchaseLocation = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
+            loaned = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
+            videoUrl = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
+            observations = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
         }
 
         spinner_genres.setSelection(genrePosition)

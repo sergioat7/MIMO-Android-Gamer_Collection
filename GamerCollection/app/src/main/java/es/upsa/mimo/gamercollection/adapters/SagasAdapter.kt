@@ -11,6 +11,7 @@ import es.upsa.mimo.gamercollection.models.PlatformResponse
 import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.models.StateResponse
 import es.upsa.mimo.gamercollection.models.base.BaseModel
+import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewholders.GamesViewHolder
 import es.upsa.mimo.gamercollection.viewholders.SagasViewHolder
 import kotlinx.android.synthetic.main.game_item.view.*
@@ -59,21 +60,21 @@ class SagasAdapter(
             val saga = items[position] as SagaResponse
             holder.fillData(saga, context)
 
-            val rotation = if (expandedIds.contains(saga.id)) 0f else -180f
+            val rotation = if (expandedIds.contains(saga.id)) Constants.POINT_UP else Constants.POINT_DOWN
             holder.rotateArrow(rotation)
 
             holder.itemView.image_view_arrow.setOnClickListener {
                 if (expandedIds.contains(saga.id)) {
 
                     val currentPosition = holder.layoutPosition
-                    holder.rotateArrow(-180f)
+                    holder.rotateArrow(Constants.POINT_DOWN)
                     expandedIds.remove(saga.id)
                     items.removeAll(saga.games)
                     notifyItemRangeRemoved(currentPosition+1, saga.games.size)
                 } else {
 
                     val currentPosition = holder.layoutPosition
-                    holder.rotateArrow(0f)
+                    holder.rotateArrow(Constants.POINT_UP)
                     expandedIds.add(saga.id)
                     if (currentPosition+1 < items.size) {
                         items.addAll(currentPosition+1, saga.games.sortedBy { it.releaseDate })

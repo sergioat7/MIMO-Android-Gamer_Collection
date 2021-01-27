@@ -2,6 +2,7 @@ package es.upsa.mimo.gamercollection.repositories
 
 import es.upsa.mimo.gamercollection.models.FormatResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
+import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ class FormatRepository @Inject constructor(
             val result = GlobalScope.async { database.formatDao().getFormats() }
             formats = result.await().toMutableList()
             formats.sortBy { it.name }
-            val other = formats.firstOrNull { it.id == "OTHER" }
+            val other = formats.firstOrNull { it.id == Constants.DEFAULT_PLATFORM }
             formats.remove(other)
             other?.let {
                 formats.add(it)

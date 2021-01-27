@@ -94,7 +94,7 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
 
     override fun onItemClick(id: Int) {
         
-        val params = mapOf("gameId" to id)
+        val params = mapOf(Constants.GAME_ID to id)
         launchActivityWithExtras(GameDetailActivity::class.java, params)
     }
 
@@ -220,11 +220,11 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
     private fun launchNotification(games: List<GameResponse>) {
 
         val notifications = mutableMapOf<Int, Notification>()
-        var gameNames = ""
+        var gameNames = Constants.EMPTY_VALUE
         for (game in games) {
 
             val intent = Intent(requireContext(), GameDetailActivity::class.java).apply {
-                putExtra("gameId", game.id)
+                putExtra(Constants.GAME_ID, game.id)
             }
             val pendingIntent = PendingIntent.getActivity(requireContext(), game.id, intent, PendingIntent.FLAG_ONE_SHOT)
 
