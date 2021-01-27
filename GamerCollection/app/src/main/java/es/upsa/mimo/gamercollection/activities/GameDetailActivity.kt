@@ -42,7 +42,7 @@ class GameDetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_game_detail)
-        title = ""
+        title = Constants.EMPTY_VALUE
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -95,7 +95,7 @@ class GameDetailActivity : BaseActivity() {
 
     private fun initializeUI() {
 
-        val id = intent.getIntExtra("gameId", 0)
+        val id = intent.getIntExtra(Constants.GAME_ID, 0)
         val gameId = if (id > 0) id else null
         viewModel = ViewModelProvider(this, GameDetailViewModelFactory(application, gameId)).get(GameDetailViewModel::class.java)
         setupBindings()
@@ -187,7 +187,7 @@ class GameDetailActivity : BaseActivity() {
 
             image_view_goty.visibility = if(game.goty) View.VISIBLE else View.GONE
 
-            name = if (game.name != null && game.name!!.isNotEmpty()) game.name else if (enabled) "" else "-"
+            name = if (game.name != null && game.name!!.isNotEmpty()) game.name else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
 
             game.platform?.let { platformId ->
                 val platformName = viewModel.platforms.firstOrNull { it.id == platformId }?.name
@@ -197,18 +197,9 @@ class GameDetailActivity : BaseActivity() {
 
             rating_button.text = game.score.toString()
 
-            when(game.pegi) {
-                "+3" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi3))
-                "+4" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi4))
-                "+6" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi6))
-                "+7" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi7))
-                "+12" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi12))
-                "+16" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi16))
-                "+18" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi18))
-                else -> image_view_pegi.setImageDrawable(null)
-            }
+            image_view_pegi.setImageDrawable(Constants.getPegiImage(game.pegi, this))
         } ?: run {
-            name = if (enabled) "" else "-"
+            name = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
         }
 
         edit_text_name.setText(name)

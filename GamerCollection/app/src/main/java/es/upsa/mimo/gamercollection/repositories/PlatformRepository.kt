@@ -2,6 +2,7 @@ package es.upsa.mimo.gamercollection.repositories
 
 import es.upsa.mimo.gamercollection.models.PlatformResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
+import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ class PlatformRepository @Inject constructor(
             val result = GlobalScope.async { database.platformDao().getPlatforms() }
             platforms = result.await().toMutableList()
             platforms.sortBy { it.name }
-            val other = platforms.firstOrNull { it.id == "OTHER" }
+            val other = platforms.firstOrNull { it.id == Constants.DEFAULT_PLATFORM }
             platforms.remove(other)
             other?.let {
                 platforms.add(it)

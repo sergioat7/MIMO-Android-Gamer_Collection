@@ -2,6 +2,7 @@ package es.upsa.mimo.gamercollection.repositories
 
 import es.upsa.mimo.gamercollection.models.GenreResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
+import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ class GenreRepository @Inject constructor(
             val result = GlobalScope.async { database.genreDao().getGenres() }
             genres = result.await().toMutableList()
             genres.sortBy { it.name }
-            val other = genres.firstOrNull { it.id == "OTHER" }
+            val other = genres.firstOrNull { it.id == Constants.DEFAULT_PLATFORM }
             genres.remove(other)
             other?.let {
                 genres.add(it)

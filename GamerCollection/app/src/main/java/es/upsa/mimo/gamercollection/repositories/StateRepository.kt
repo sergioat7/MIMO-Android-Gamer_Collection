@@ -2,6 +2,7 @@ package es.upsa.mimo.gamercollection.repositories
 
 import es.upsa.mimo.gamercollection.models.StateResponse
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
+import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ class StateRepository @Inject constructor(
             val result = GlobalScope.async { database.stateDao().getStates() }
             states = result.await().toMutableList()
             states.sortBy { it.name }
-            val other = states.firstOrNull { it.id == "OTHER" }
+            val other = states.firstOrNull { it.id == Constants.DEFAULT_PLATFORM }
             states.remove(other)
             other?.let {
                 states.add(it)

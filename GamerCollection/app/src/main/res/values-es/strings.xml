@@ -72,6 +72,7 @@
     <string name="game_detail_saga">Saga</string>
     <string name="game_detail_songs_title">Canciones</string>
     <string name="game_detail_delete_confirmation">¿Estás seguro de que quieres borrar este juego? Esta acción no se puede deshacer</string>
+    <string name="turn_on_location">Activa la localización</string>
 
     // Sagas
     <string name="sagas">Mis Sagas</string>

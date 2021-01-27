@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentTransaction
 import es.upsa.mimo.gamercollection.fragments.popups.PopupErrorDialogFragment
 import es.upsa.mimo.gamercollection.fragments.popups.PopupLoadingDialogFragment
 import es.upsa.mimo.gamercollection.models.ErrorResponse
+import es.upsa.mimo.gamercollection.utils.Constants
 
 open class BaseActivity : AppCompatActivity() {
 
@@ -25,19 +26,19 @@ open class BaseActivity : AppCompatActivity() {
     fun showPopupDialog(message: String) {
 
         val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-        val prev = supportFragmentManager.findFragmentByTag("popupDialog")
+        val prev = supportFragmentManager.findFragmentByTag(Constants.POPUP_DIALOG)
         if (prev != null) {
             ft.remove(prev)
         }
         ft.addToBackStack(null)
         val dialogFragment = PopupErrorDialogFragment(message)
-        dialogFragment.show(ft, "popupDialog")
+        dialogFragment.show(ft, Constants.POPUP_DIALOG)
     }
 
     fun showLoading() {
 
         val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-        val prev = supportFragmentManager.findFragmentByTag("loadingDialog")
+        val prev = supportFragmentManager.findFragmentByTag(Constants.LOADING_DIALOG)
         if (prev != null) {
             ft.remove(prev)
         }
@@ -45,7 +46,7 @@ open class BaseActivity : AppCompatActivity() {
         loadingFragment = PopupLoadingDialogFragment()
         loadingFragment?.let {
             it.isCancelable = false
-            it.show(ft, "loadingDialog")
+            it.show(ft, Constants.LOADING_DIALOG)
         }
     }
 

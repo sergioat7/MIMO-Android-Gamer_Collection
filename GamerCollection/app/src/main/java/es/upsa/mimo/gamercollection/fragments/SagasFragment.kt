@@ -12,6 +12,7 @@ import es.upsa.mimo.gamercollection.adapters.SagasAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.models.base.BaseModel
+import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.SagasViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.SagasViewModel
 import kotlinx.android.synthetic.main.fragment_sagas.*
@@ -70,13 +71,13 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
 
     override fun onItemClick(id: Int) {
 
-        val params = mapOf("sagaId" to id)
+        val params = mapOf(Constants.SAGA_ID to id)
         launchActivityWithExtras(SagaDetailActivity::class.java, params)
     }
 
     override fun onSubItemClick(id: Int) {
 
-        val params = mapOf("gameId" to id)
+        val params = mapOf(Constants.GAME_ID to id)
         launchActivityWithExtras(GameDetailActivity::class.java, params)
     }
 

@@ -59,7 +59,7 @@ class SharedPreferencesHandler @Inject constructor(
     fun removePassword() {
 
         val userData = getUserData()
-        userData.password = ""
+        userData.password = Constants.EMPTY_VALUE
         userData.isLoggedIn = false
         storeUserData(userData)
     }
@@ -111,7 +111,7 @@ class SharedPreferencesHandler @Inject constructor(
     }
 
     fun getSortingKey(): String {
-        return sharedPreferences?.getString(Constants.SORTING_KEY_PREFERENCES_NAME, null) ?: "name"
+        return sharedPreferences?.getString(Constants.SORTING_KEY_PREFERENCES_NAME, null) ?: Constants.DEFAULT_SORTING_KEY
     }
 
     fun setSortingKey(sortingKey: String) {

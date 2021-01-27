@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.OnLocationSelected
+import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.android.synthetic.main.fragment_maps.*
 
 class MapsFragment(
@@ -36,7 +37,6 @@ class MapsFragment(
 
     //MARK: - Private properties
 
-    private val madrid = LatLng(40.4169019, -3.7056721)
     private lateinit var googleMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -62,7 +62,7 @@ class MapsFragment(
         location?.let {
             addMarker(it)
         } ?: run {
-            addMarker(madrid)
+            addMarker(Constants.DEFAULT_LOCATION)
             if (checkPermissions()) {
                 if (isLocationEnabled()) {
                     getUserLocation()
@@ -136,7 +136,7 @@ class MapsFragment(
             if (isLocationEnabled()) {
                 getUserLocation()
             } else {
-                Toast.makeText(requireContext(), "Turn on location", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), resources.getString(R.string.turn_on_location), Toast.LENGTH_LONG).show()
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 startActivity(intent)
             }
