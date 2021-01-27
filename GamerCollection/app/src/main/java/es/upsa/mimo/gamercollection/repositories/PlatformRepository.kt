@@ -51,6 +51,14 @@ class PlatformRepository @Inject constructor(
         }
     }
 
+    fun resetTable() {
+
+        val platforms = getPlatforms()
+        for (platform in platforms) {
+            deletePlatform(platform)
+        }
+    }
+
     // MARK: - Private methods
 
     private fun insertPlatform(platform: PlatformResponse) {

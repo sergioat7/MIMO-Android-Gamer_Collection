@@ -51,6 +51,14 @@ class GenreRepository @Inject constructor(
         }
     }
 
+    fun resetTable() {
+
+        val genres = getGenres()
+        for (genre in genres) {
+            deleteGenre(genre)
+        }
+    }
+
     // MARK: - Private methods
 
     private fun insertGenre(genre: GenreResponse) {

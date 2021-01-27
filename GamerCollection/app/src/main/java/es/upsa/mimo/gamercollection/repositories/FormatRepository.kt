@@ -51,6 +51,14 @@ class FormatRepository @Inject constructor(
         }
     }
 
+    fun resetTable() {
+
+        val formats = getFormats()
+        for (format in formats) {
+            deleteFormat(format)
+        }
+    }
+
     // MARK: - Private methods
 
     private fun insertFormat(format: FormatResponse) {

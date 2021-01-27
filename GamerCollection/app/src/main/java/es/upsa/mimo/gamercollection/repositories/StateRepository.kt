@@ -44,6 +44,14 @@ class StateRepository @Inject constructor(
         }
     }
 
+    fun resetTable() {
+
+        val states = getStates()
+        for (state in states) {
+            deleteState(state)
+        }
+    }
+
     // MARK: - Private methods
 
     private fun insertState(state: StateResponse) {
