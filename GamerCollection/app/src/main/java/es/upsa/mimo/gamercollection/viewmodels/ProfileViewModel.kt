@@ -149,14 +149,8 @@ class ProfileViewModel @Inject constructor(
 
     private fun resetDatabase() {
 
-        val games = gameRepository.getGames()
-        for (game in games) {
-            gameRepository.deleteGame(game)
-        }
-        val sagas = sagaRepository.getSagas()
-        for (saga in sagas) {
-            sagaRepository.deleteSaga(saga)
-        }
+        gameRepository.resetTable()
+        sagaRepository.resetTable()
 
         _profileLoading.value = false
         _profileError.value = null

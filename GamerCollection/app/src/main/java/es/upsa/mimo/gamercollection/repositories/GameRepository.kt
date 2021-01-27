@@ -74,4 +74,12 @@ class GameRepository @Inject constructor(
             deleteGame(game as GameResponse)
         }
     }
+
+    fun resetTable() {
+
+        val games = getGames()
+        for (game in games) {
+            deleteGame(game)
+        }
+    }
 }

@@ -46,6 +46,7 @@ class Constants {
         const val DEFAULT_SORTING_KEY = "name"
         const val SWIPE_REFRESH_PREFERENCES_NAME = "swipeRefreshEnabled"
         const val GAME_NOTIFICATION_PREFERENCES_NAME = "gameNotificationLaunched_"
+        const val VERSION_PREFERENCE_NAME = "version"
 
         // MARK: - Retrofit constants
 

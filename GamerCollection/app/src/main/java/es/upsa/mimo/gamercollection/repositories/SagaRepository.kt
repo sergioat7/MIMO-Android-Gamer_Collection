@@ -72,4 +72,12 @@ class SagaRepository @Inject constructor(
             deleteSaga(saga as SagaResponse)
         }
     }
+
+    fun resetTable() {
+
+        val sagas = getSagas()
+        for (saga in sagas) {
+            deleteSaga(saga)
+        }
+    }
 }
