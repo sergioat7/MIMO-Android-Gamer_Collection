@@ -70,10 +70,10 @@ class LoginViewModel @Inject constructor(
                             sagaAPIClient.getSagas({ sagas ->
 
                                 formatRepository.manageFormats(formats)
+                                gameRepository.manageGames(games)
                                 genreRepository.manageGenres(genres)
                                 platformRepository.managePlatforms(platforms)
                                 stateRepository.manageStates(states)
-                                gameRepository.manageGames(games)
                                 sagaRepository.manageSagas(sagas)
 
                                 userData.isLoggedIn = true
