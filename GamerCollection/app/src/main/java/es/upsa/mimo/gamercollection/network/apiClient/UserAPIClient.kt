@@ -49,18 +49,14 @@ class UserAPIClient @Inject constructor(
         })
     }
 
-    fun logout(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+    fun logout() {
 
         val headers: MutableMap<String, String> = HashMap()
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.logout(headers)
 
-        APIClient.sendServer<Void, ErrorResponse>(request, {
-            success()
-        }, {
-            failure(it)
-        })
+        APIClient.sendServer<Void, ErrorResponse>(request, {}, {})
     }
 
     fun updatePassword(password: String, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
