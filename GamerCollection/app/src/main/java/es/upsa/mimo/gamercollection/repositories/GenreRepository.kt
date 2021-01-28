@@ -1,6 +1,8 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.GenreResponse
+import es.upsa.mimo.gamercollection.network.apiClient.GenreAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.GlobalScope
@@ -10,12 +12,29 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class GenreRepository @Inject constructor(
-    private val database: AppDatabase
+    private val database: AppDatabase,
+    private val genreAPIClient: GenreAPIClient
 ) {
 
     // MARK: - Public methods
 
-    fun getGenres(): List<GenreResponse> {
+    fun loadGenres(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        genreAPIClient.getGenres({ newGenres ->
+
+            for (newGenre in newGenres) {
+                insertGenreDatabase(newGenre)
+            }
+            val currentGenres = getGenresDatabase()
+            val genresToRemove = AppDatabase.getDisabledContent(currentGenres, newGenres)
+            for (genre in genresToRemove) {
+                deleteGenreDatabase(genre as GenreResponse)
+            }
+            success()
+        }, failure)
+    }
+
+    fun getGenresDatabase(): List<GenreResponse> {
 
         var genres = mutableListOf<GenreResponse>()
         runBlocking {
@@ -31,40 +50,27 @@ class GenreRepository @Inject constructor(
         return genres
     }
 
-    private fun deleteGenre(genre: GenreResponse) {
-
-        GlobalScope.launch {
-            database.genreDao().deleteGenre(genre)
-        }
-    }
-
-    fun manageGenres(newGenres: List<GenreResponse>) {
-
-        for (newGenre in newGenres) {
-            insertGenre(newGenre)
-        }
-
-        val currentGenres = getGenres()
-        val genresToRemove = AppDatabase.getDisabledContent(currentGenres, newGenres)
-        for (genre in genresToRemove) {
-            deleteGenre(genre as GenreResponse)
-        }
-    }
-
     fun resetTable() {
 
-        val genres = getGenres()
+        val genres = getGenresDatabase()
         for (genre in genres) {
-            deleteGenre(genre)
+            deleteGenreDatabase(genre)
         }
     }
 
     // MARK: - Private methods
 
-    private fun insertGenre(genre: GenreResponse) {
+    private fun insertGenreDatabase(genre: GenreResponse) {
 
         GlobalScope.launch {
             database.genreDao().insertGenre(genre)
+        }
+    }
+
+    private fun deleteGenreDatabase(genre: GenreResponse) {
+
+        GlobalScope.launch {
+            database.genreDao().deleteGenre(genre)
         }
     }
 }

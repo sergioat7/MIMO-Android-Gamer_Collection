@@ -6,17 +6,13 @@ import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.UserData
-import es.upsa.mimo.gamercollection.network.apiClient.*
+import es.upsa.mimo.gamercollection.network.apiClient.UserAPIClient
 import es.upsa.mimo.gamercollection.repositories.*
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
     private val sharedPreferencesHandler: SharedPreferencesHandler,
-    private val formatAPIClient: FormatAPIClient,
-    private val genreAPIClient: GenreAPIClient,
-    private val platformAPIClient: PlatformAPIClient,
-    private val stateAPIClient: StateAPIClient,
     private val userAPIClient: UserAPIClient,
     private val formatRepository: FormatRepository,
     private val gameRepository: GameRepository,
@@ -33,10 +29,14 @@ class ProfileViewModel @Inject constructor(
 
     //MARK: - Public properties
 
-    val userData: UserData = sharedPreferencesHandler.getUserData()
-    val language: String = sharedPreferencesHandler.getLanguage()
-    val sortingKey: String = sharedPreferencesHandler.getSortingKey()
-    val swipeRefresh: Boolean = sharedPreferencesHandler.getSwipeRefresh()
+    val userData: UserData
+        get() = sharedPreferencesHandler.getUserData()
+    val language: String
+        get() = sharedPreferencesHandler.getLanguage()
+    val sortingKey: String
+        get() = sharedPreferencesHandler.getSortingKey()
+    val swipeRefresh: Boolean
+        get() = sharedPreferencesHandler.getSwipeRefresh()
     val profileLoading: LiveData<Boolean> = _profileLoading
     val profileError: LiveData<ErrorResponse> = _profileError
 
@@ -121,15 +121,10 @@ class ProfileViewModel @Inject constructor(
 
         _profileLoading.value = true
 
-        formatAPIClient.getFormats({ formats ->
-            genreAPIClient.getGenres({ genres ->
-                platformAPIClient.getPlatforms({ platforms ->
-                    stateAPIClient.getStates({ states ->
-
-                        formatRepository.manageFormats(formats)
-                        genreRepository.manageGenres(genres)
-                        platformRepository.managePlatforms(platforms)
-                        stateRepository.manageStates(states)
+        formatRepository.loadFormats({
+            genreRepository.loadGenres({
+                platformRepository.loadPlatforms({
+                    stateRepository.loadStates({
 
                         _profileLoading.value = false
                         _profileError.value = null

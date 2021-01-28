@@ -16,18 +16,22 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
 
 class PopupFilterViewModel @Inject constructor(
-    sharedPreferencesHandler: SharedPreferencesHandler,
-    formatRepository: FormatRepository,
-    genreRepository: GenreRepository,
-    platformRepository: PlatformRepository
+    private val sharedPreferencesHandler: SharedPreferencesHandler,
+    private val formatRepository: FormatRepository,
+    private val genreRepository: GenreRepository,
+    private val platformRepository: PlatformRepository
 ): ViewModel() {
 
     //MARK: - Public properties
 
-    val language: String = sharedPreferencesHandler.getLanguage()
-    val formats: List<FormatResponse> = formatRepository.getFormats()
-    val genres: List<GenreResponse> = genreRepository.getGenres()
-    val platforms: List<PlatformResponse> = platformRepository.getPlatforms()
+    val language: String
+        get() = sharedPreferencesHandler.getLanguage()
+    val formats: List<FormatResponse>
+        get() = formatRepository.getFormatsDatabase()
+    val genres: List<GenreResponse>
+        get() = genreRepository.getGenresDatabase()
+    val platforms: List<PlatformResponse>
+        get() = platformRepository.getPlatformsDatabase()
 
     //MARK: - Public methods
 

@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModel
 import androidx.sqlite.db.SimpleSQLiteQuery
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.*
-import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.repositories.StateRepository
@@ -23,9 +22,8 @@ import javax.inject.Inject
 class GamesViewModel @Inject constructor(
     private val sharedPreferencesHandler: SharedPreferencesHandler,
     private val gameRepository: GameRepository,
-    platformRepository: PlatformRepository,
-    stateRepository: StateRepository,
-    private val gameAPIClient: GameAPIClient
+    private val platformRepository: PlatformRepository,
+    private val stateRepository: StateRepository
 ): ViewModel() {
 
     //MARK: - Private properties
@@ -34,20 +32,24 @@ class GamesViewModel @Inject constructor(
     private val _gamesError = MutableLiveData<ErrorResponse>()
     private val _games = MutableLiveData<List<GameResponse>>()
     private val _gamesCount = MutableLiveData<List<GameResponse>>()
+    private var sortKey: String = sharedPreferencesHandler.getSortingKey()
+    private var sortAscending = true
 
     //MARK: - Public properties
 
-    val language: String = sharedPreferencesHandler.getLanguage()
-    val swipeRefresh: Boolean = sharedPreferencesHandler.getSwipeRefresh()
-    val platforms: List<PlatformResponse> = platformRepository.getPlatforms()
-    val states: List<StateResponse> = stateRepository.getStates()
+    val language: String
+        get() = sharedPreferencesHandler.getLanguage()
+    val swipeRefresh: Boolean
+        get() = sharedPreferencesHandler.getSwipeRefresh()
+    val platforms: List<PlatformResponse>
+        get() = platformRepository.getPlatformsDatabase()
+    val states: List<StateResponse>
+        get() = stateRepository.getStatesDatabase()
     val gamesLoading: LiveData<Boolean> = _gamesLoading
     val gamesError: LiveData<ErrorResponse> = _gamesError
     val games: LiveData<List<GameResponse>> = _games
     val gamesCount: LiveData<List<GameResponse>> = _gamesCount
     var state: String? = null
-    var sortKey: String = sharedPreferencesHandler.getSortingKey()
-    var sortAscending = true
     var filters: FilterModel? = null
 
     //MARK: - Public methods
@@ -55,9 +57,8 @@ class GamesViewModel @Inject constructor(
     fun loadGames() {
 
         _gamesLoading.value = true
-        gameAPIClient.getGames({
+        gameRepository.loadGames({
 
-            gameRepository.manageGames(it)
             resetProperties()
             getGames()
             _gamesLoading.value = false
@@ -160,7 +161,7 @@ class GamesViewModel @Inject constructor(
         queryString += " ORDER BY $sortKey $sortOrder, name ASC"
 
         val query = SimpleSQLiteQuery(queryString)
-        val games = gameRepository.getGames(query)
+        val games = gameRepository.getGamesDatabase(query)
 
         _games.value = games
 

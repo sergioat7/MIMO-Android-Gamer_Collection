@@ -1,6 +1,8 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.PlatformResponse
+import es.upsa.mimo.gamercollection.network.apiClient.PlatformAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.GlobalScope
@@ -10,12 +12,29 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class PlatformRepository @Inject constructor(
-    private val database: AppDatabase
+    private val database: AppDatabase,
+    private val platformAPIClient: PlatformAPIClient
 ) {
 
     // MARK: - Public methods
 
-    fun getPlatforms(): List<PlatformResponse> {
+    fun loadPlatforms(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        platformAPIClient.getPlatforms({ newPlatforms ->
+
+            for (newPlatform in newPlatforms) {
+                insertPlatformDatabase(newPlatform)
+            }
+            val currentPlatforms = getPlatformsDatabase()
+            val platformsToRemove = AppDatabase.getDisabledContent(currentPlatforms, newPlatforms)
+            for (platform in platformsToRemove) {
+                deletePlatformDatabase(platform as PlatformResponse)
+            }
+            success()
+        }, failure)
+    }
+
+    fun getPlatformsDatabase(): List<PlatformResponse> {
 
         var platforms = mutableListOf<PlatformResponse>()
         runBlocking {
@@ -31,40 +50,27 @@ class PlatformRepository @Inject constructor(
         return platforms
     }
 
-    private fun deletePlatform(platform: PlatformResponse) {
-
-        GlobalScope.launch {
-            database.platformDao().deletePlatform(platform)
-        }
-    }
-
-    fun managePlatforms(newPlatforms: List<PlatformResponse>) {
-
-        for (newPlatform in newPlatforms) {
-            insertPlatform(newPlatform)
-        }
-
-        val currentPlatforms = getPlatforms()
-        val platformsToRemove = AppDatabase.getDisabledContent(currentPlatforms, newPlatforms)
-        for (platform in platformsToRemove) {
-            deletePlatform(platform as PlatformResponse)
-        }
-    }
-
     fun resetTable() {
 
-        val platforms = getPlatforms()
+        val platforms = getPlatformsDatabase()
         for (platform in platforms) {
-            deletePlatform(platform)
+            deletePlatformDatabase(platform)
         }
     }
 
     // MARK: - Private methods
 
-    private fun insertPlatform(platform: PlatformResponse) {
+    private fun insertPlatformDatabase(platform: PlatformResponse) {
 
         GlobalScope.launch {
             database.platformDao().insertPlatform(platform)
+        }
+    }
+
+    private fun deletePlatformDatabase(platform: PlatformResponse) {
+
+        GlobalScope.launch {
+            database.platformDao().deletePlatform(platform)
         }
     }
 }

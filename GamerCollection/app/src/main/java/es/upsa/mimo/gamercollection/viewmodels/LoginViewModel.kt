@@ -6,19 +6,13 @@ import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.UserData
-import es.upsa.mimo.gamercollection.network.apiClient.*
+import es.upsa.mimo.gamercollection.network.apiClient.UserAPIClient
 import es.upsa.mimo.gamercollection.repositories.*
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
     private val sharedPreferencesHandler: SharedPreferencesHandler,
-    private val formatAPIClient: FormatAPIClient,
-    private val gameAPIClient: GameAPIClient,
-    private val genreAPIClient: GenreAPIClient,
-    private val platformAPIClient: PlatformAPIClient,
-    private val sagaAPIClient: SagaAPIClient,
-    private val stateAPIClient: StateAPIClient,
     private val userAPIClient: UserAPIClient,
     private val formatRepository: FormatRepository,
     private val gameRepository: GameRepository,
@@ -35,7 +29,8 @@ class LoginViewModel @Inject constructor(
 
     //MARK: - Public properties
 
-    val username: String = sharedPreferencesHandler.getUserData().username
+    val username: String
+        get() = sharedPreferencesHandler.getUserData().username
     val loginLoading: LiveData<Boolean> = _loginLoading
     val loginError: LiveData<ErrorResponse> = _loginError
 
@@ -62,19 +57,12 @@ class LoginViewModel @Inject constructor(
 
     private fun loadContent(userData: UserData) {
 
-        formatAPIClient.getFormats({ formats ->
-            genreAPIClient.getGenres({ genres ->
-                platformAPIClient.getPlatforms({ platforms ->
-                    stateAPIClient.getStates({ states ->
-                        gameAPIClient.getGames({ games ->
-                            sagaAPIClient.getSagas({ sagas ->
-
-                                formatRepository.manageFormats(formats)
-                                gameRepository.manageGames(games)
-                                genreRepository.manageGenres(genres)
-                                platformRepository.managePlatforms(platforms)
-                                stateRepository.manageStates(states)
-                                sagaRepository.manageSagas(sagas)
+        formatRepository.loadFormats({
+            gameRepository.loadGames({
+                genreRepository.loadGenres({
+                    platformRepository.loadPlatforms({
+                        sagaRepository.loadSagas({
+                            stateRepository.loadStates({
 
                                 userData.isLoggedIn = true
                                 sharedPreferencesHandler.storeUserData(userData)
