@@ -40,13 +40,7 @@ class GameRepository @Inject constructor(
     fun createGame(game: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         gameAPIClient.createGame(game, {
-            gameAPIClient.getGames({ games ->
-
-                for (g in games) {
-                    insertGameDatabase(g)
-                }
-                success()
-            }, failure)
+            loadGames(success, failure)
         }, failure)
     }
 

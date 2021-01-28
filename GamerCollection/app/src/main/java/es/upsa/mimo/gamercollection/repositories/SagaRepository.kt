@@ -37,14 +37,11 @@ class SagaRepository @Inject constructor(
     fun createSaga(saga: SagaResponse, success: (SagaResponse?) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         sagaAPIClient.createSaga(saga, {
-            sagaAPIClient.getSagas({ sagas ->
+            loadSagas({
 
-                for (s in sagas) {
-                    insertSagaDatabase(s)
-                }
-
-                val newSagaCreated = sagas.firstOrNull { sg ->
-                    val game = sg.games.firstOrNull { game ->
+                val sagas = getSagasDatabase()
+                val newSagaCreated = sagas.firstOrNull { s ->
+                    val game = s.games.firstOrNull { game ->
                         game.id == saga.games.firstOrNull()?.id
                     }
                     game != null
@@ -52,7 +49,6 @@ class SagaRepository @Inject constructor(
 
                 success(newSagaCreated)
             }, failure)
-
         }, failure)
     }
 
