@@ -7,7 +7,6 @@ import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.FormatResponse
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.GenreResponse
-import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
 import es.upsa.mimo.gamercollection.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.GenreRepository
@@ -17,11 +16,10 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 class GameDataViewModel @Inject constructor(
-    sharedPreferencesHandler: SharedPreferencesHandler,
-    private val gameAPIClient: GameAPIClient,
-    formatRepository: FormatRepository,
+    private val sharedPreferencesHandler: SharedPreferencesHandler,
+    private val formatRepository: FormatRepository,
     private val gameRepository: GameRepository,
-    genreRepository: GenreRepository
+    private val genreRepository: GenreRepository
 ): ViewModel() {
 
     //MARK: - Private properties
@@ -32,9 +30,12 @@ class GameDataViewModel @Inject constructor(
 
     //MARK: - Public properties
 
-    val language: String = sharedPreferencesHandler.getLanguage()
-    val formats: List<FormatResponse> = formatRepository.getFormats()
-    val genres: List<GenreResponse> = genreRepository.getGenres()
+    val language: String
+        get() = sharedPreferencesHandler.getLanguage()
+    val formats: List<FormatResponse>
+        get() = formatRepository.getFormatsDatabase()
+    val genres: List<GenreResponse>
+        get() = genreRepository.getGenresDatabase()
     val gameDataLoading: LiveData<Boolean> = _gameDataLoading
     val gameDataError: LiveData<ErrorResponse> = _gameDataError
 
@@ -44,9 +45,7 @@ class GameDataViewModel @Inject constructor(
 
         game?.let { game ->
 
-            _gameDataLoading.value = true
-            gameAPIClient.deleteGame(game.id, {
-                gameRepository.deleteGame(game)
+            gameRepository.deleteGame(game, {
 
                 _gameDataLoading.value = true
                 _gameDataError.value = null

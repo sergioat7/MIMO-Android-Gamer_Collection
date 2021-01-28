@@ -1,6 +1,8 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.StateResponse
+import es.upsa.mimo.gamercollection.network.apiClient.StateAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.GlobalScope
@@ -10,12 +12,29 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class StateRepository @Inject constructor(
-    private val database: AppDatabase
+    private val database: AppDatabase,
+    private val stateAPIClient: StateAPIClient
 ) {
 
     // MARK: - Public methods
 
-    fun getStates(): List<StateResponse> {
+    fun loadStates(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        stateAPIClient.getStates({ newStates ->
+
+            for (newState in newStates) {
+                insertStateDatabase(newState)
+            }
+            val currentStates = getStatesDatabase()
+            val statesToRemove = AppDatabase.getDisabledContent(currentStates, newStates)
+            for (state in statesToRemove) {
+                deleteStateDatabase(state as StateResponse)
+            }
+            success()
+        }, failure)
+    }
+
+    fun getStatesDatabase(): List<StateResponse> {
 
         var states = mutableListOf<StateResponse>()
         runBlocking {
@@ -31,37 +50,24 @@ class StateRepository @Inject constructor(
         return states
     }
 
-    fun manageStates(newStates: List<StateResponse>) {
-
-        for (newState in newStates) {
-            insertState(newState)
-        }
-
-        val currentStates = getStates()
-        val statesToRemove = AppDatabase.getDisabledContent(currentStates, newStates)
-        for (state in statesToRemove) {
-            deleteState(state as StateResponse)
-        }
-    }
-
     fun resetTable() {
 
-        val states = getStates()
+        val states = getStatesDatabase()
         for (state in states) {
-            deleteState(state)
+            deleteStateDatabase(state)
         }
     }
 
     // MARK: - Private methods
 
-    private fun insertState(state: StateResponse) {
+    private fun insertStateDatabase(state: StateResponse) {
 
         GlobalScope.launch {
             database.stateDao().insertState(state)
         }
     }
 
-    private fun deleteState(state: StateResponse) {
+    private fun deleteStateDatabase(state: StateResponse) {
 
         GlobalScope.launch {
             database.stateDao().deleteState(state)

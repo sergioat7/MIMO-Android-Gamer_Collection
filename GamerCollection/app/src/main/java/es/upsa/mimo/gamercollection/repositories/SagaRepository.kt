@@ -1,7 +1,9 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.models.SagaWithGames
+import es.upsa.mimo.gamercollection.network.apiClient.SagaAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -10,12 +12,69 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class SagaRepository @Inject constructor(
-    private val database: AppDatabase
+    private val database: AppDatabase,
+    private val sagaAPIClient: SagaAPIClient
 ) {
 
     // MARK: - Public methods
 
-    fun getSagas(): List<SagaResponse> {
+    fun loadSagas(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        sagaAPIClient.getSagas({ newSagas ->
+
+            for (newSaga in newSagas) {
+                insertSagaDatabase(newSaga)
+            }
+            val currentSagas = getSagasDatabase()
+            val sagasToRemove = AppDatabase.getDisabledContent(currentSagas, newSagas)
+            for (saga in sagasToRemove) {
+                deleteSagaDatabase(saga as SagaResponse)
+            }
+            success()
+        }, failure)
+    }
+
+    fun createSaga(saga: SagaResponse, success: (SagaResponse?) -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        sagaAPIClient.createSaga(saga, {
+            sagaAPIClient.getSagas({ sagas ->
+
+                for (s in sagas) {
+                    insertSagaDatabase(s)
+                }
+
+                val newSagaCreated = sagas.firstOrNull { sg ->
+                    val game = sg.games.firstOrNull { game ->
+                        game.id == saga.games.firstOrNull()?.id
+                    }
+                    game != null
+                }
+
+                success(newSagaCreated)
+            }, failure)
+
+        }, failure)
+    }
+
+    fun setSaga(saga: SagaResponse, success: (SagaResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        sagaAPIClient.setSaga(saga, {
+
+            updateSagaDatabase(it)
+            success(it)
+        }, failure)
+    }
+
+    fun deleteSaga(saga: SagaResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        sagaAPIClient.deleteSaga(saga.id, {
+
+            deleteSagaDatabase(saga)
+            success()
+        }, failure)
+    }
+
+    fun getSagasDatabase(): List<SagaResponse> {
 
         var sagas: List<SagaWithGames> = arrayListOf()
         runBlocking {
@@ -29,7 +88,7 @@ class SagaRepository @Inject constructor(
         return result
     }
 
-    fun getSaga(sagaId: Int): SagaResponse? {
+    fun getSagaDatabase(sagaId: Int): SagaResponse? {
 
         var saga: SagaWithGames? = null
         runBlocking {
@@ -39,45 +98,34 @@ class SagaRepository @Inject constructor(
         return saga?.transform()
     }
 
-    fun insertSaga(saga: SagaResponse) {
+    fun resetTable() {
+
+        val sagas = getSagasDatabase()
+        for (saga in sagas) {
+            deleteSagaDatabase(saga)
+        }
+    }
+
+    // MARK: - Private methods
+
+    private fun insertSagaDatabase(saga: SagaResponse) {
 
         GlobalScope.launch {
             database.sagaDao().insertSaga(saga)
         }
     }
 
-    fun updateSaga(saga: SagaResponse) {
+    private fun updateSagaDatabase(saga: SagaResponse) {
 
         GlobalScope.launch {
             database.sagaDao().updateSaga(saga)
         }
     }
 
-    fun deleteSaga(saga: SagaResponse) {
+    private fun deleteSagaDatabase(saga: SagaResponse) {
 
         GlobalScope.launch {
             database.sagaDao().deleteSaga(saga)
-        }
-    }
-
-    fun manageSagas(newSagas: List<SagaResponse>) {
-
-        for (newSaga in newSagas) {
-            insertSaga(newSaga)
-        }
-
-        val currentSagas = getSagas()
-        val sagasToRemove = AppDatabase.getDisabledContent(currentSagas, newSagas)
-        for (saga in sagasToRemove) {
-            deleteSaga(saga as SagaResponse)
-        }
-    }
-
-    fun resetTable() {
-
-        val sagas = getSagas()
-        for (saga in sagas) {
-            deleteSaga(saga)
         }
     }
 }

@@ -6,13 +6,11 @@ import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.SongResponse
-import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
 import es.upsa.mimo.gamercollection.network.apiClient.SongAPIClient
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import javax.inject.Inject
 
 class GameSongsViewModel @Inject constructor(
-    private val gameAPIClient: GameAPIClient,
     private val songAPIClient: SongAPIClient,
     private val gameRepository: GameRepository
 ): ViewModel() {
@@ -38,7 +36,14 @@ class GameSongsViewModel @Inject constructor(
 
             _gameSongsLoading.value = true
             songAPIClient.createSong(game.id, song, {
-                updateData(game)
+                gameRepository.updateGameSongs(game.id, {
+
+                    this.game = it
+                    _songs.value = it.songs
+                    _gameSongsLoading.value = false
+                }, {
+                    _gameSongsError.value = it
+                })
             }, {
                 _gameSongsError.value = it
             })
@@ -51,7 +56,14 @@ class GameSongsViewModel @Inject constructor(
 
             _gameSongsLoading.value = true
             songAPIClient.deleteSong(game.id, songId, {
-                updateData(game)
+                gameRepository.updateGameSongs(game.id, {
+
+                    this.game = it
+                    _songs.value = it.songs
+                    _gameSongsLoading.value = false
+                }, {
+                    _gameSongsError.value = it
+                })
             }, {
                 _gameSongsError.value = it
             })
@@ -59,22 +71,8 @@ class GameSongsViewModel @Inject constructor(
     }
 
     fun setGame(game: GameResponse?) {
+
         this.game = game
         _songs.value = game?.songs ?: ArrayList()
-    }
-
-    //MARK: - Private methods
-
-    private fun updateData(game: GameResponse) {
-
-            gameAPIClient.getGame(game.id, {
-                gameRepository.updateGame(it)
-
-                this.game = it
-                _songs.value = it.songs
-                _gameSongsLoading.value = false
-            }, {
-                _gameSongsError.value = it
-            })
     }
 }

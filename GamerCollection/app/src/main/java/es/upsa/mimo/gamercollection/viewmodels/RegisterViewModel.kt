@@ -6,17 +6,13 @@ import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.UserData
-import es.upsa.mimo.gamercollection.network.apiClient.*
+import es.upsa.mimo.gamercollection.network.apiClient.UserAPIClient
 import es.upsa.mimo.gamercollection.repositories.*
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
 
 class RegisterViewModel @Inject constructor(
     private val sharedPreferencesHandler: SharedPreferencesHandler,
-    private val formatAPIClient: FormatAPIClient,
-    private val genreAPIClient: GenreAPIClient,
-    private val platformAPIClient: PlatformAPIClient,
-    private val stateAPIClient: StateAPIClient,
     private val userAPIClient: UserAPIClient,
     private val formatRepository: FormatRepository,
     private val genreRepository: GenreRepository,
@@ -61,15 +57,10 @@ class RegisterViewModel @Inject constructor(
 
     private fun loadContent(userData: UserData) {
 
-        formatAPIClient.getFormats({ formats ->
-            genreAPIClient.getGenres({ genres ->
-                platformAPIClient.getPlatforms({ platforms ->
-                    stateAPIClient.getStates({ states ->
-
-                        formatRepository.manageFormats(formats)
-                        genreRepository.manageGenres(genres)
-                        platformRepository.managePlatforms(platforms)
-                        stateRepository.manageStates(states)
+        formatRepository.loadFormats({
+            genreRepository.loadGenres({
+                platformRepository.loadPlatforms({
+                    stateRepository.loadStates({
 
                         userData.isLoggedIn = true
                         sharedPreferencesHandler.storeUserData(userData)

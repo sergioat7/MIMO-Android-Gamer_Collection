@@ -6,15 +6,13 @@ import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.PlatformResponse
-import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import javax.inject.Inject
 
 class GameDetailViewModel @Inject constructor(
-    private val gameAPIClient: GameAPIClient,
     private val gameRepository: GameRepository,
-    platformRepository: PlatformRepository
+    private val platformRepository: PlatformRepository
 ): ViewModel() {
 
     //MARK: - Private properties
@@ -26,7 +24,8 @@ class GameDetailViewModel @Inject constructor(
 
     //MARK: - Public properties
 
-    val platforms: List<PlatformResponse> = platformRepository.getPlatforms()
+    val platforms: List<PlatformResponse>
+        get() = platformRepository.getPlatformsDatabase()
     val gameDetailLoading: LiveData<Boolean> = _gameDetailLoading
     val gameDetailError: LiveData<ErrorResponse> = _gameDetailError
     val game: LiveData<GameResponse?> = _game
@@ -38,7 +37,7 @@ class GameDetailViewModel @Inject constructor(
         gameId?.let {
 
             _gameDetailLoading.value = true
-            _game.value = gameRepository.getGame(it)
+            _game.value = gameRepository.getGameDatabase(it)
             _gameDetailLoading.value = false
         } ?: run {
             _game.value = null
@@ -88,8 +87,7 @@ class GameDetailViewModel @Inject constructor(
         _gameDetailLoading.value = true
         if (_game.value != null) {
 
-            gameAPIClient.setGame(newGame, {
-                gameRepository.updateGame(it)
+            gameRepository.setGame(newGame, {
 
                 _game.value = it
                 _gameDetailLoading.value = false
@@ -98,17 +96,10 @@ class GameDetailViewModel @Inject constructor(
             })
         } else {
 
-            gameAPIClient.createGame(newGame, {
-                gameAPIClient.getGames({ games ->
+            gameRepository.createGame(newGame, {
 
-                    for (g in games) {
-                        gameRepository.insertGame(g)
-                    }
-                    _gameDetailLoading.value = false
-                    _gameDetailError.value = null
-                }, {
-                    _gameDetailError.value = it
-                })
+                _gameDetailLoading.value = false
+                _gameDetailError.value = null
             }, {
                 _gameDetailError.value = it
             })

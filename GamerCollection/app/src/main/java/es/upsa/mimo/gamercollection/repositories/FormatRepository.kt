@@ -1,6 +1,8 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.FormatResponse
+import es.upsa.mimo.gamercollection.network.apiClient.FormatAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.GlobalScope
@@ -10,12 +12,29 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class FormatRepository @Inject constructor(
-    private val database: AppDatabase
+    private val database: AppDatabase,
+    private val formatAPIClient: FormatAPIClient
 ) {
 
     // MARK: - Public methods
 
-    fun getFormats(): List<FormatResponse> {
+    fun loadFormats(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        formatAPIClient.getFormats({ newFormats ->
+
+            for (newFormat in newFormats) {
+                insertFormatDatabase(newFormat)
+            }
+            val currentFormats = getFormatsDatabase()
+            val formatsToRemove = AppDatabase.getDisabledContent(currentFormats, newFormats)
+            for (format in formatsToRemove) {
+                deleteFormatDatabase(format as FormatResponse)
+            }
+            success()
+        }, failure)
+    }
+
+    fun getFormatsDatabase(): List<FormatResponse> {
 
         var formats = mutableListOf<FormatResponse>()
         runBlocking {
@@ -31,40 +50,27 @@ class FormatRepository @Inject constructor(
         return formats
     }
 
-    private fun deleteFormat(format: FormatResponse) {
-
-        GlobalScope.launch {
-            database.formatDao().deleteFormat(format)
-        }
-    }
-
-    fun manageFormats(newFormats: List<FormatResponse>) {
-
-        for (newFormat in newFormats) {
-            insertFormat(newFormat)
-        }
-
-        val currentFormats = getFormats()
-        val formatsToRemove = AppDatabase.getDisabledContent(currentFormats, newFormats)
-        for (format in formatsToRemove) {
-            deleteFormat(format as FormatResponse)
-        }
-    }
-
     fun resetTable() {
 
-        val formats = getFormats()
+        val formats = getFormatsDatabase()
         for (format in formats) {
-            deleteFormat(format)
+            deleteFormatDatabase(format)
         }
     }
 
     // MARK: - Private methods
 
-    private fun insertFormat(format: FormatResponse) {
+    private fun insertFormatDatabase(format: FormatResponse) {
 
         GlobalScope.launch {
             database.formatDao().insertFormat(format)
+        }
+    }
+
+    private fun deleteFormatDatabase(format: FormatResponse) {
+
+        GlobalScope.launch {
+            database.formatDao().deleteFormat(format)
         }
     }
 }
