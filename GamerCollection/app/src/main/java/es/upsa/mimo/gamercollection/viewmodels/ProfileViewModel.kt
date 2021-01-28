@@ -45,15 +45,9 @@ class ProfileViewModel @Inject constructor(
     fun logout() {
 
         _profileLoading.value = true
-        userAPIClient.logout({
-
-            sharedPreferencesHandler.removePassword()
-            resetDatabase()
-        }, {
-
-            sharedPreferencesHandler.removePassword()
-            resetDatabase()
-        })
+        userAPIClient.logout()
+        sharedPreferencesHandler.removePassword()
+        resetDatabase()
     }
 
     fun save (newPassword: String, newLanguage: String, newSortParam: String, newSwipeRefresh: Boolean) {
