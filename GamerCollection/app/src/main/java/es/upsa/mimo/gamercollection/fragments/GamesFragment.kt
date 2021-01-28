@@ -123,21 +123,12 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
         }
 
         button_pending.setOnClickListener {
-
-            button_in_progress.isSelected = false
-            button_finished.isSelected = false
             buttonClicked(it, Constants.PENDING_STATE)
         }
         button_in_progress.setOnClickListener {
-
-            button_pending.isSelected = false
-            button_finished.isSelected = false
             buttonClicked(it, Constants.IN_PROGRESS_STATE)
         }
         button_finished.setOnClickListener {
-
-            button_pending.isSelected = false
-            button_in_progress.isSelected = false
             buttonClicked(it, Constants.FINISHED_STATE)
         }
 
@@ -302,7 +293,9 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
 
     private fun buttonClicked(it: View, newState: String) {
 
-        it.isSelected = !it.isSelected
+        button_pending.isSelected = if(it == button_pending) !it.isSelected else false
+        button_in_progress.isSelected = if(it == button_in_progress) !it.isSelected else false
+        button_finished.isSelected = if(it == button_finished) !it.isSelected else false
         swipe_refresh_layout.isEnabled = !it.isSelected && viewModel.swipeRefresh
         viewModel.state = if (it.isSelected) newState else null
         viewModel.getGames()

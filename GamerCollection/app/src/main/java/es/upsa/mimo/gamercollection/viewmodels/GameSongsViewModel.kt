@@ -38,7 +38,7 @@ class GameSongsViewModel @Inject constructor(
 
             _gameSongsLoading.value = true
             songAPIClient.createSong(game.id, song, {
-                updateData()
+                updateData(game)
             }, {
                 _gameSongsError.value = it
             })
@@ -51,7 +51,7 @@ class GameSongsViewModel @Inject constructor(
 
             _gameSongsLoading.value = true
             songAPIClient.deleteSong(game.id, songId, {
-                updateData()
+                updateData(game)
             }, {
                 _gameSongsError.value = it
             })
@@ -65,9 +65,8 @@ class GameSongsViewModel @Inject constructor(
 
     //MARK: - Private methods
 
-    private fun updateData() {
+    private fun updateData(game: GameResponse) {
 
-        game?.let { game ->
             gameAPIClient.getGame(game.id, {
                 gameRepository.updateGame(it)
 
@@ -77,6 +76,5 @@ class GameSongsViewModel @Inject constructor(
             }, {
                 _gameSongsError.value = it
             })
-        }
     }
 }
