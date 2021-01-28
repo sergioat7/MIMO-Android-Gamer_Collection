@@ -23,10 +23,6 @@ class PlatformAPIClient @Inject constructor(
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.getPlatforms(headers)
 
-        APIClient.sendServer<List<PlatformResponse>, ErrorResponse>(request, {
-            success(it)
-        }, {
-            failure(it)
-        })
+        APIClient.sendServer(request, success, failure)
     }
 }

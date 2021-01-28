@@ -24,11 +24,9 @@ class SongAPIClient @Inject constructor(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.createSong(headers, gameId, song)
 
-        APIClient.sendServer<Void, ErrorResponse>(request, {
+        APIClient.sendServer(request, {
             success()
-        }, {
-            failure(it)
-        })
+        }, failure)
     }
 
     fun deleteSong(gameId: Int, songId: Int, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
@@ -38,10 +36,8 @@ class SongAPIClient @Inject constructor(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.deleteSong(headers, gameId, songId)
 
-        APIClient.sendServer<Void, ErrorResponse>(request, {
+        APIClient.sendServer(request, {
             success()
-        }, {
-            failure(it)
-        })
+        }, failure)
     }
 }

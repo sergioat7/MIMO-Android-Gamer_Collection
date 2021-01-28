@@ -23,10 +23,6 @@ class GenreAPIClient @Inject constructor(
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.getGenres(headers)
 
-        APIClient.sendServer<List<GenreResponse>, ErrorResponse>(request, {
-            success(it)
-        }, {
-            failure(it)
-        })
+        APIClient.sendServer(request, success, failure)
     }
 }

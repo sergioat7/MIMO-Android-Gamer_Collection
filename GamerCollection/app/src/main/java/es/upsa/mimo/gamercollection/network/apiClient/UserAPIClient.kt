@@ -2,7 +2,6 @@ package es.upsa.mimo.gamercollection.network.apiClient
 
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.LoginCredentials
-import es.upsa.mimo.gamercollection.models.LoginResponse
 import es.upsa.mimo.gamercollection.models.NewPassword
 import es.upsa.mimo.gamercollection.network.apiService.UserAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
@@ -27,11 +26,9 @@ class UserAPIClient @Inject constructor(
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.login(headers, loginCredentials)
 
-        APIClient.sendServer<LoginResponse, ErrorResponse>(request, {
+        APIClient.sendServer(request, {
             success(it.token)
-        }, {
-            failure(it)
-        })
+        }, failure)
     }
 
     fun register(username: String, password: String, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
@@ -42,11 +39,9 @@ class UserAPIClient @Inject constructor(
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.register(headers, loginCredentials)
 
-        APIClient.sendServer<Void, ErrorResponse>(request, {
+        APIClient.sendServer(request, {
             success()
-        }, {
-            failure(it)
-        })
+        }, failure)
     }
 
     fun logout() {
@@ -67,11 +62,9 @@ class UserAPIClient @Inject constructor(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.updatePassword(headers, newPasword)
 
-        APIClient.sendServer<Void, ErrorResponse>(request, {
+        APIClient.sendServer(request, {
             success()
-        }, {
-            failure(it)
-        })
+        }, failure)
     }
 
     fun deleteUser(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
@@ -81,10 +74,8 @@ class UserAPIClient @Inject constructor(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.deleteUser(headers)
 
-        APIClient.sendServer<Void, ErrorResponse>(request, {
+        APIClient.sendServer(request, {
             success()
-        }, {
-            failure(it)
-        })
+        }, failure)
     }
 }
