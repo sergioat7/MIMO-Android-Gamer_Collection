@@ -4,16 +4,16 @@
     <item android:state_selected="true">
         <shape android:shape="rectangle">
             <corners android:radius="5dp" />
-            <stroke android:width="5px" android:color="@color/color4" />
-            <solid android:color="@color/color2" />
+            <stroke android:width="5px" android:color="@color/colorPending" />
+            <solid android:color="@color/colorSecondary" />
         </shape>
     </item>
 
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="5dp" />
-            <stroke android:width="5px" android:color="@color/color4" />
-            <solid android:color="@color/color1" />
+            <stroke android:width="5px" android:color="@color/colorPending" />
+            <solid android:color="@color/colorPrimary" />
         </shape>
     </item>
 </selector>

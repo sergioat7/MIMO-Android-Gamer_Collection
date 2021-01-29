@@ -133,8 +133,8 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
         }
 
         swipe_refresh_layout.isEnabled = viewModel.swipeRefresh
-        swipe_refresh_layout.setColorSchemeResources(R.color.color3)
-        swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.color2)
+        swipe_refresh_layout.setColorSchemeResources(R.color.colorFinished)
+        swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
         swipe_refresh_layout.setOnRefreshListener {
             viewModel.loadGames()
         }

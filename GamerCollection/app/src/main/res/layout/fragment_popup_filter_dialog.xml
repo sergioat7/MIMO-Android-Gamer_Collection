@@ -26,7 +26,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="20dp"
-                android:background="@color/color1"
+                android:background="@color/colorPrimary"
                 android:scrollbars="none"
                 app:layout_constraintBottom_toTopOf="@+id/line_view_top"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -304,19 +304,19 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:buttonTint="@color/color2"
+                            android:buttonTint="@color/colorSecondary"
                             android:checked="true"
                             android:text="@string/no"
-                            android:textColor="@color/color2" />
+                            android:textColor="@color/colorSecondary" />
 
                         <RadioButton
                             android:id="@+id/radio_button_goty_yes"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:buttonTint="@color/color2"
+                            android:buttonTint="@color/colorSecondary"
                             android:text="@string/yes"
-                            android:textColor="@color/color2" />
+                            android:textColor="@color/colorSecondary" />
                     </RadioGroup>
 
                     <TextView
@@ -340,19 +340,19 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:buttonTint="@color/color2"
+                            android:buttonTint="@color/colorSecondary"
                             android:checked="true"
                             android:text="@string/no"
-                            android:textColor="@color/color2" />
+                            android:textColor="@color/colorSecondary" />
 
                         <RadioButton
                             android:id="@+id/radio_button_loaned_yes"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:buttonTint="@color/color2"
+                            android:buttonTint="@color/colorSecondary"
                             android:text="@string/yes"
-                            android:textColor="@color/color2" />
+                            android:textColor="@color/colorSecondary" />
                     </RadioGroup>
 
                     <TextView
@@ -376,19 +376,19 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:buttonTint="@color/color2"
+                            android:buttonTint="@color/colorSecondary"
                             android:checked="true"
                             android:text="@string/no"
-                            android:textColor="@color/color2" />
+                            android:textColor="@color/colorSecondary" />
 
                         <RadioButton
                             android:id="@+id/radio_button_saga_yes"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:buttonTint="@color/color2"
+                            android:buttonTint="@color/colorSecondary"
                             android:text="@string/yes"
-                            android:textColor="@color/color2" />
+                            android:textColor="@color/colorSecondary" />
                     </RadioGroup>
 
                     <TextView
@@ -414,19 +414,19 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:buttonTint="@color/color2"
+                            android:buttonTint="@color/colorSecondary"
                             android:checked="true"
                             android:text="@string/no"
-                            android:textColor="@color/color2" />
+                            android:textColor="@color/colorSecondary" />
 
                         <RadioButton
                             android:id="@+id/radio_button_songs_yes"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:buttonTint="@color/color2"
+                            android:buttonTint="@color/colorSecondary"
                             android:text="@string/yes"
-                            android:textColor="@color/color2" />
+                            android:textColor="@color/colorSecondary" />
                     </RadioGroup>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -436,7 +436,7 @@
                 android:id="@+id/line_view_top"
                 android:layout_width="0dp"
                 android:layout_height="2dp"
-                android:background="@color/color2"
+                android:background="@color/colorSecondary"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -459,14 +459,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/color4"
+                    android:background="@color/colorPending"
                     android:text="@string/cancel" />
 
                 <View
                     android:id="@+id/line_view_left"
                     android:layout_width="2dp"
                     android:layout_height="match_parent"
-                    android:background="@color/color2" />
+                    android:background="@color/colorSecondary" />
 
                 <Button
                     android:id="@+id/button_reset"
@@ -474,14 +474,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/color5"
+                    android:background="@color/colorInProgress"
                     android:text="@string/reset" />
 
                 <View
                     android:id="@+id/line_view_right"
                     android:layout_width="2dp"
                     android:layout_height="match_parent"
-                    android:background="@color/color2" />
+                    android:background="@color/colorSecondary" />
 
                 <Button
                     android:id="@+id/button_save"
@@ -489,7 +489,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/color3"
+                    android:background="@color/colorFinished"
                     android:text="@string/save" />
             </LinearLayout>
 
