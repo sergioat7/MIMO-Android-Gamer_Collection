@@ -27,13 +27,14 @@ class GameDetailPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
 
-        return if (position == 0) {
+        val fragment = if (position == 0) {
             gameDataFragment = GameDataFragment(currentGame)
-            gameDataFragment!!
+            gameDataFragment
         } else {
             gameSongsFragment = GameSongsFragment(currentGame, enabled)
-            gameSongsFragment!!
+            gameSongsFragment
         }
+        return fragment ?: Fragment()
     }
 
     // MARK: Public methods
