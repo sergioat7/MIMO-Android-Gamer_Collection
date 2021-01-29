@@ -50,7 +50,12 @@ class APIClient {
             request.enqueue(object : Callback<T> {
                 override fun onResponse(call: Call<T>?, response: Response<T>) {
 
-                    if ( response.isSuccessful && (response.code() == 204 || T::class == Void::class) ) {
+                    val isSuccessful = response.isSuccessful
+                    val code = response.code()
+                    val body = response.body()
+                    val errorBody = response.errorBody()
+
+                    if ( isSuccessful && (code == 204 || T::class == Void::class) ) {
 
                         if (T::class == Void::class) {
                             val result = gson.fromJson("", T::class.java)
@@ -72,14 +77,14 @@ class APIClient {
 
                         val error = ErrorResponse("", R.string.error_server) as U
                         failure(error)
-                    } else if (response.isSuccessful && response.body() != null) {
+                    } else if (isSuccessful && body != null) {
 
-                        val result = response.body() as T
+                        val result = body as T
                         success(result)
-                    } else if (!response.isSuccessful && response.errorBody() != null) {
+                    } else if (!isSuccessful && errorBody != null) {
 
                         val errorResponse: U = gson.fromJson(
-                            response.errorBody()!!.charStream(), U::class.java
+                            errorBody.charStream(), U::class.java
                         )
                         failure(errorResponse)
                     } else {

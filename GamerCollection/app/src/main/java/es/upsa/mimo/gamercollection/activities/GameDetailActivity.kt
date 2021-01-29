@@ -187,7 +187,8 @@ class GameDetailActivity : BaseActivity() {
 
             image_view_goty.visibility = if(game.goty) View.VISIBLE else View.GONE
 
-            name = if (game.name != null && game.name!!.isNotEmpty()) game.name else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
+            val gameName = game.name
+            name = if (gameName != null && gameName.isNotBlank()) gameName else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
 
             game.platform?.let { platformId ->
                 val platformName = viewModel.platforms.firstOrNull { it.id == platformId }?.name

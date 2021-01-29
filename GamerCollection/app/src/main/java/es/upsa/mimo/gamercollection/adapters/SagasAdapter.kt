@@ -32,12 +32,11 @@ class SagasAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val itemView = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
-        var holder: ViewHolder? = null
-        when (viewType) {
-            R.layout.saga_item -> holder = SagasViewHolder(itemView)
-            R.layout.game_item -> holder = GamesViewHolder(itemView, platforms, states)
+        return when (viewType) {
+            R.layout.saga_item -> SagasViewHolder(itemView)
+            R.layout.game_item -> GamesViewHolder(itemView, platforms, states)
+            else -> throw Throwable("Unsupported type")
         }
-        return holder!!
     }
 
     override fun getItemViewType(position: Int): Int {
