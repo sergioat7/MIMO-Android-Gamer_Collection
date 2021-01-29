@@ -1,13 +1,10 @@
 package es.upsa.mimo.gamercollection.repositories
 
 import androidx.sqlite.db.SimpleSQLiteQuery
-import androidx.sqlite.db.SupportSQLiteQuery
-import es.upsa.mimo.gamercollection.models.ErrorResponse
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.models.GameWithSaga
-import es.upsa.mimo.gamercollection.models.SagaResponse
+import es.upsa.mimo.gamercollection.models.*
 import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
+import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -62,14 +59,112 @@ class GameRepository @Inject constructor(
         }, failure)
     }
 
-    fun getGamesDatabase(query: SupportSQLiteQuery? = null): List<GameResponse> {
+    fun getGamesDatabase(state: String? = null,
+                         filters: FilterModel? = null,
+                         sortKey: String? = null,
+                         ascending: Boolean = true): List<GameResponse> {
+
+        var queryString = "SELECT * FROM Game"
+
+        var queryConditions = when(state) {
+            Constants.PENDING_STATE -> " WHERE state == '${Constants.PENDING_STATE}' AND "
+            Constants.IN_PROGRESS_STATE -> " WHERE state == '${Constants.IN_PROGRESS_STATE}' AND "
+            Constants.FINISHED_STATE -> " WHERE state == '${Constants.FINISHED_STATE}' AND "
+            else -> ""
+        }
+
+        filters?.let { filtersVar ->
+
+            if (queryConditions.isEmpty()) queryConditions += " WHERE "
+
+            var queryPlatforms = ""
+            val platforms = filtersVar.platforms
+            if (platforms.isNotEmpty()) {
+                queryPlatforms += "("
+                for (platform in platforms) {
+                    queryPlatforms += "platform == '${platform}' OR "
+                }
+                queryPlatforms = queryPlatforms.dropLast(4) + ") AND "
+            }
+
+            var queryGenres = ""
+            val genres = filtersVar.genres
+            if (genres.isNotEmpty()){
+                queryGenres += "("
+                for (genre in genres) {
+                    queryGenres += "genre == '${genre}' OR "
+                }
+                queryGenres = queryGenres.dropLast(4) + ") AND "
+            }
+
+            var queryFormats = ""
+            val formats = filtersVar.formats
+            if (formats.isNotEmpty()){
+                queryFormats += "("
+                for (format in formats) {
+                    queryFormats += "format == '${format}' OR "
+                }
+
+                queryFormats = queryFormats.dropLast(4) + ") AND "
+            }
+
+            queryConditions += queryPlatforms + queryGenres + queryFormats
+
+            queryConditions += "score >= ${filtersVar.minScore} AND score <= ${filtersVar.maxScore} AND "
+
+            if (filtersVar.minReleaseDate != null) {
+                queryConditions += "releaseDate >= '${filtersVar.minReleaseDate}' AND "
+            }
+            if (filtersVar.maxReleaseDate != null) {
+                queryConditions += "releaseDate <= '${filtersVar.maxReleaseDate}' AND "
+            }
+
+            if (filtersVar.minPurchaseDate != null) {
+                queryConditions += "purchaseDate >= '${filtersVar.minPurchaseDate}' AND "
+            }
+            if (filtersVar.maxPurchaseDate != null) {
+                queryConditions += "purchaseDate <= '${filtersVar.maxPurchaseDate}' AND "
+            }
+
+            queryConditions += "price >= ${filtersVar.minPrice} AND "
+            if (filtersVar.maxPrice > 0) {
+                queryConditions += "price <= ${filtersVar.maxPrice} AND "
+            }
+
+            if (filtersVar.isGoty) {
+                queryConditions += "goty == 1 AND "
+            }
+
+            if (filtersVar.isLoaned) {
+                queryConditions += "loanedTo != null AND "
+            }
+
+            if (filtersVar.hasSaga) {
+                queryConditions += "saga_id != -1 AND "
+            }
+
+            if (filtersVar.hasSongs) {
+                queryConditions += "songs != '[]' AND "
+            }
+        }
+        queryConditions = queryConditions.dropLast(5)
+        queryString += queryConditions
+
+        queryString += " ORDER BY "
+        sortKey.let {
+            val order = if(ascending) "ASC"  else "DESC"
+            queryString += "$sortKey $order, "
+        }
+        queryString += "name ASC"
+
+        val query = SimpleSQLiteQuery(queryString)
 
         var games: List<GameWithSaga> = arrayListOf()
         runBlocking {
             val result = GlobalScope.async {
                 database
                     .gameDao()
-                    .getGames(query ?: SimpleSQLiteQuery("SELECT * FROM Game"))
+                    .getGames(query)
             }
             games = result.await()
         }

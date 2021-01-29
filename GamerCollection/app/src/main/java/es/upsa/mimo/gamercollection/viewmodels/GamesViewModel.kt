@@ -9,13 +9,11 @@ import android.widget.NumberPicker
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.sqlite.db.SimpleSQLiteQuery
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.*
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.repositories.StateRepository
-import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
 
@@ -71,98 +69,12 @@ class GamesViewModel @Inject constructor(
 
     fun getGames() {
 
-        var queryString = "SELECT * FROM Game"
-
-        var queryConditions = when(state) {
-            Constants.PENDING_STATE -> " WHERE state == '${Constants.PENDING_STATE}' AND "
-            Constants.IN_PROGRESS_STATE -> " WHERE state == '${Constants.IN_PROGRESS_STATE}' AND "
-            Constants.FINISHED_STATE -> " WHERE state == '${Constants.FINISHED_STATE}' AND "
-            else -> ""
-        }
-
-        filters?.let { filters ->
-
-            if (queryConditions.isEmpty()) queryConditions += " WHERE "
-
-            var queryPlatforms = ""
-            val platforms = filters.platforms
-            if (platforms.isNotEmpty()) {
-                queryPlatforms += "("
-                for (platform in platforms) {
-                    queryPlatforms += "platform == '${platform}' OR "
-                }
-                queryPlatforms = queryPlatforms.dropLast(4) + ") AND "
-            }
-
-            var queryGenres = ""
-            val genres = filters.genres
-            if (genres.isNotEmpty()){
-                queryGenres += "("
-                for (genre in genres) {
-                    queryGenres += "genre == '${genre}' OR "
-                }
-                queryGenres = queryGenres.dropLast(4) + ") AND "
-            }
-
-            var queryFormats = ""
-            val formats = filters.formats
-            if (formats.isNotEmpty()){
-                queryFormats += "("
-                for (format in formats) {
-                    queryFormats += "format == '${format}' OR "
-                }
-
-                queryFormats = queryFormats.dropLast(4) + ") AND "
-            }
-
-            queryConditions += queryPlatforms + queryGenres + queryFormats
-
-            queryConditions += "score >= ${filters.minScore} AND score <= ${filters.maxScore} AND "
-
-            if (filters.minReleaseDate != null) {
-                queryConditions += "releaseDate >= '${filters.minReleaseDate}' AND "
-            }
-            if (filters.maxReleaseDate != null) {
-                queryConditions += "releaseDate <= '${filters.maxReleaseDate}' AND "
-            }
-
-            if (filters.minPurchaseDate != null) {
-                queryConditions += "purchaseDate >= '${filters.minPurchaseDate}' AND "
-            }
-            if (filters.maxPurchaseDate != null) {
-                queryConditions += "purchaseDate <= '${filters.maxPurchaseDate}' AND "
-            }
-
-            queryConditions += "price >= ${filters.minPrice} AND "
-            if (filters.maxPrice > 0) {
-                queryConditions += "price <= ${filters.maxPrice} AND "
-            }
-
-            if (filters.isGoty) {
-                queryConditions += "goty == 1 AND "
-            }
-
-            if (filters.isLoaned) {
-                queryConditions += "loanedTo != null AND "
-            }
-
-            if (filters.hasSaga) {
-                queryConditions += "saga_id != -1 AND "
-            }
-
-            if (filters.hasSongs) {
-                queryConditions += "songs != '[]' AND "
-            }
-        }
-        queryConditions = queryConditions.dropLast(5)
-        queryString += queryConditions
-
-        val sortOrder = if(sortAscending) "ASC"  else "DESC"
-        queryString += " ORDER BY $sortKey $sortOrder, name ASC"
-
-        val query = SimpleSQLiteQuery(queryString)
-        val games = gameRepository.getGamesDatabase(query)
-
+        val games = gameRepository.getGamesDatabase(
+            state,
+            filters,
+            sortKey,
+            sortAscending
+        )
         _games.value = games
 
         if (_gamesCount.value == null) {
