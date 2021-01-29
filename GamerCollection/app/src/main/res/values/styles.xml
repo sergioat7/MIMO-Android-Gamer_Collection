@@ -1,9 +1,9 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/color2</item>
-        <item name="android:colorBackground">@color/color1</item>
-        <item name="titleTextColor">@color/color1</item>
+        <item name="colorPrimary">@color/colorSecondary</item>
+        <item name="android:colorBackground">@color/colorPrimary</item>
+        <item name="titleTextColor">@color/colorPrimary</item>
         <item name="dialogCornerRadius">5dp</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_keyboard_backspace_black_24dp</item>
     </style>
@@ -13,28 +13,28 @@
     </style>
 
     <style name="AppThemeSettings" parent="AppTheme">
-        <item name="android:colorBackground">@color/color2</item>
+        <item name="android:colorBackground">@color/colorSecondary</item>
     </style>
 
     <style name="AppThemeGame" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/color2</item>
-        <item name="android:colorBackground">@color/color1</item>
-        <item name="titleTextColor">@color/color1</item>
+        <item name="colorPrimary">@color/colorSecondary</item>
+        <item name="android:colorBackground">@color/colorPrimary</item>
+        <item name="titleTextColor">@color/colorPrimary</item>
         <item name="dialogCornerRadius">5dp</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_keyboard_backspace_white_24dp</item>
     </style>
 
     <style name="AppThemeNoActionBar" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@color/color2</item>
-        <item name="android:colorBackground">@color/color1</item>
-        <item name="titleTextColor">@color/color1</item>
+        <item name="colorPrimary">@color/colorSecondary</item>
+        <item name="android:colorBackground">@color/colorPrimary</item>
+        <item name="titleTextColor">@color/colorPrimary</item>
         <item name="dialogCornerRadius">5dp</item>
     </style>
 
     <style name="WhiteEditText" parent="Widget.AppCompat.EditText">
-        <item name="backgroundTint">@color/color2</item>
-        <item name="android:textColor">@color/color2</item>
-        <item name="android:textColorHint">@color/color2Light</item>
+        <item name="backgroundTint">@color/colorSecondary</item>
+        <item name="android:textColor">@color/colorSecondary</item>
+        <item name="android:textColorHint">@color/colorSecondaryLight</item>
         <item name="android:textIsSelectable">true</item>
     </style>
 
@@ -65,7 +65,7 @@
     </style>
 
     <style name="WhiteTextView" parent="Widget.AppCompat.TextView">
-        <item name="android:textColor">@color/color2</item>
+        <item name="android:textColor">@color/colorSecondary</item>
         <item name="android:textIsSelectable">true</item>
     </style>
 
@@ -87,7 +87,7 @@
     
     <style name="RoundedButton" parent="android:style/Widget.Button">
         <item name="android:layout_width">200dp</item>
-        <item name="android:textColor">@color/color2</item>
+        <item name="android:textColor">@color/colorSecondary</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textAllCaps">true</item>
@@ -104,28 +104,28 @@
     </style>
 
     <style name="CustomRatingBar" parent="Widget.AppCompat.RatingBar.Indicator">
-        <item name="android:progressTint">@color/color5</item>
+        <item name="android:progressTint">@color/colorInProgress</item>
     </style>
 
     <style name="CustomRatingBar.LightBackground" parent="CustomRatingBar">
-        <item name="android:progressBackgroundTint">@color/color1Light</item>
+        <item name="android:progressBackgroundTint">@color/colorPrimaryLight</item>
         <item name="android:secondaryProgressTint">@android:color/transparent</item>
     </style>
 
     <style name="CustomRatingBar.DarkBackground" parent="CustomRatingBar">
-        <item name="android:progressBackgroundTint">@color/color2Light</item>
+        <item name="android:progressBackgroundTint">@color/colorSecondaryLight</item>
         <item name="android:secondaryProgressTint">@android:color/transparent</item>
     </style>
 
     <style name="CustomSpinner" parent="Widget.AppCompat.Spinner.Underlined">
         <item name="android:spinnerMode">dropdown</item>
-        <item name="android:backgroundTint">@color/color2</item>
+        <item name="android:backgroundTint">@color/colorSecondary</item>
         <item name="android:minHeight">30dp</item>
         <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="FilterButton" parent="android:style/Widget.Button">
-        <item name="android:textColor">@color/color1</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="fontFamily">@font/roboto_bold</item>
         <item name="android:textSize">18dp</item>
     </style>
@@ -145,7 +145,7 @@
     </style>
 
     <style name="MapButton" parent="android:style/Widget.Button">
-        <item name="android:textColor">@color/color1</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="fontFamily">@font/roboto_bold</item>
         <item name="android:textSize">18dp</item>
     </style>

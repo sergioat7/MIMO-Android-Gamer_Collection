@@ -153,7 +153,7 @@ class GameDetailActivity : BaseActivity() {
     private fun showData(game: GameResponse?, enabled: Boolean) {
 
         val inputTypeText = if (enabled) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
-        val backgroundColor = ContextCompat.getColor(this, R.color.color2)
+        val backgroundColor = ContextCompat.getColor(this, R.color.colorSecondary)
 
         var name: String? = null
         var platformPosition = 0

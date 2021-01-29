@@ -29,9 +29,9 @@ class GamesViewHolder(
         val state = states.firstOrNull { it.id == game.state }
         state?.let {
             when (it.id) {
-                Constants.PENDING_STATE -> itemView.view_state.setBackgroundColor(ContextCompat.getColor(context, R.color.color4))
-                Constants.IN_PROGRESS_STATE -> itemView.view_state.setBackgroundColor(ContextCompat.getColor(context, R.color.color5))
-                Constants.FINISHED_STATE -> itemView.view_state.setBackgroundColor(ContextCompat.getColor(context, R.color.color3))
+                Constants.PENDING_STATE -> itemView.view_state.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPending))
+                Constants.IN_PROGRESS_STATE -> itemView.view_state.setBackgroundColor(ContextCompat.getColor(context, R.color.colorInProgress))
+                Constants.FINISHED_STATE -> itemView.view_state.setBackgroundColor(ContextCompat.getColor(context, R.color.colorFinished))
                 else -> itemView.view_state.setBackgroundColor(Color.TRANSPARENT)
             }
         } ?: run {

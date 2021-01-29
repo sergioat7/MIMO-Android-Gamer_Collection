@@ -43,7 +43,7 @@ public class SpinnerAdapter extends ArrayAdapter {
         TextView tvValue = listItem.findViewById(R.id.text_view_value);
         tvValue.setText(currentValue);
 
-        int colorId = position == 0 && !firstOptionEnabled ? R.color.color2Light : R.color.color2;
+        int colorId = position == 0 && !firstOptionEnabled ? R.color.colorSecondaryLight : R.color.colorSecondary;
         tvValue.setTextColor(ContextCompat.getColor(context, colorId));
 
         return listItem;
@@ -58,7 +58,7 @@ public class SpinnerAdapter extends ArrayAdapter {
     public View getDropDownView(int position, View convertView, @NotNull ViewGroup parent) {
 
         TextView tvValue = (TextView) super.getDropDownView(position, convertView, parent);
-        int colorId = position == 0 && !firstOptionEnabled ? R.color.color2Light : R.color.color2;
+        int colorId = position == 0 && !firstOptionEnabled ? R.color.colorSecondaryLight : R.color.colorSecondary;
         tvValue.setTextColor(ContextCompat.getColor(context, colorId));
         return tvValue;
     }

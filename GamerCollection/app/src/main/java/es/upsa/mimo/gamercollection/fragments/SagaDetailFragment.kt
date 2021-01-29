@@ -191,7 +191,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
     private fun enableEdition(enable: Boolean) {
 
         val inputTypeText = if (enable) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
-        val backgroundColor = ContextCompat.getColor(requireContext(), R.color.color2)
+        val backgroundColor = ContextCompat.getColor(requireContext(), R.color.colorSecondary)
 
         edit_text_name.setReadOnly(!enable, inputTypeText, backgroundColor)
         button_add_game.visibility = if(enable) View.VISIBLE else View.GONE

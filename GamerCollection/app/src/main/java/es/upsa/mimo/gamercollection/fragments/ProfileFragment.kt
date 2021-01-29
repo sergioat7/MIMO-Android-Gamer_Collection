@@ -76,7 +76,7 @@ class ProfileFragment : BaseFragment() {
         radio_button_en.isChecked = viewModel.language == Constants.ENGLISH_LANGUAGE_KEY
         radio_button_es.isChecked = viewModel.language == Constants.SPANISH_LANGUAGE_KEY
 
-        spinner_sorting_keys.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.color2))
+        spinner_sorting_keys.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.colorSecondary))
         spinner_sorting_keys.adapter = Constants.getAdapter(
             requireContext(),
             resources.getStringArray(R.array.sorting_keys).toList(),

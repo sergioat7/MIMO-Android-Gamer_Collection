@@ -140,19 +140,19 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:buttonTint="@color/color2"
+                                android:buttonTint="@color/colorSecondary"
                                 android:checked="true"
                                 android:text="@string/no"
-                                android:textColor="@color/color2" />
+                                android:textColor="@color/colorSecondary" />
 
                             <RadioButton
                                 android:id="@+id/radio_button_yes"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:buttonTint="@color/color2"
+                                android:buttonTint="@color/colorSecondary"
                                 android:text="@string/yes"
-                                android:textColor="@color/color2" />
+                                android:textColor="@color/colorSecondary" />
                         </RadioGroup>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

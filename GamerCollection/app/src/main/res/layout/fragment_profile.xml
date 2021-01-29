@@ -83,8 +83,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/english"
-                        android:buttonTint="@color/color2"
-                        android:textColor="@color/color2"
+                        android:buttonTint="@color/colorSecondary"
+                        android:textColor="@color/colorSecondary"
                         />
 
                     <RadioButton
@@ -93,8 +93,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/spanish"
-                        android:buttonTint="@color/color2"
-                        android:textColor="@color/color2"
+                        android:buttonTint="@color/colorSecondary"
+                        android:textColor="@color/colorSecondary"
                         />
 
                 </RadioGroup>
@@ -129,7 +129,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="@string/swipe_refresh_enabled_title"
-                    android:textColor="@color/color2"
+                    android:textColor="@color/colorSecondary"
                     android:textSize="18sp"
                     android:checked="true"
                     android:fontFamily="@font/roboto_bold"

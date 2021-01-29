@@ -20,7 +20,7 @@
         android:id="@+id/view_mask"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/color1Light"
+        android:background="@color/colorPrimaryLight"
         app:layout_constraintBottom_toBottomOf="@+id/image_view_blurred"
         app:layout_constraintEnd_toEndOf="@+id/image_view_blurred"
         app:layout_constraintStart_toStartOf="@+id/image_view_blurred"
@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        android:indeterminateTint="@color/color3"
+        android:indeterminateTint="@color/colorFinished"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/constraint_layout_main_details"
         app:layout_constraintEnd_toEndOf="@+id/image_view_game"
@@ -99,9 +99,9 @@
             android:background="@android:color/transparent"
             android:drawableStart="@drawable/ic_star_white_24dp"
             android:drawablePadding="-30dp"
-            android:drawableTint="@color/color5"
+            android:drawableTint="@color/colorInProgress"
             android:text="0"
-            android:textColor="@color/color2"
+            android:textColor="@color/colorSecondary"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/image_view_pegi"
@@ -151,9 +151,9 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/barrier"
-        app:tabIndicatorColor="@color/color3"
-        app:tabSelectedTextColor="@color/color2"
-        app:tabTextColor="@color/color2SuperLight">
+        app:tabIndicatorColor="@color/colorFinished"
+        app:tabSelectedTextColor="@color/colorSecondary"
+        app:tabTextColor="@color/colorSecondarySuperLight">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tab_item_details"
