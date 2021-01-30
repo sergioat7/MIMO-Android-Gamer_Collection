@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MapButton" parent="android:style/Widget.Button">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+</resources>

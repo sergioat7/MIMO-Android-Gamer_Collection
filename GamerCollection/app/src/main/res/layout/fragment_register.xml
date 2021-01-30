@@ -22,7 +22,7 @@
 
         <EditText
             android:id="@+id/edit_text_user"
-            style="@style/WhiteEditText"
+            style="@style/CustomEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -38,7 +38,7 @@
 
         <EditText
             android:id="@+id/edit_text_password"
-            style="@style/WhiteEditText"
+            style="@style/CustomEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -54,7 +54,7 @@
 
         <EditText
             android:id="@+id/edit_text_repeatPassword"
-            style="@style/WhiteEditText"
+            style="@style/CustomEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"

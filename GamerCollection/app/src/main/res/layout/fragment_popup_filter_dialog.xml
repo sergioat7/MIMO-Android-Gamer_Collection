@@ -40,7 +40,9 @@
 
                     <TextView
                         android:id="@+id/text_view_platform_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/ModalFilterTitle"
                         android:text="@string/modal_filter_platform"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -66,7 +68,9 @@
 
                     <TextView
                         android:id="@+id/text_view_genre_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/ModalFilterTitle"
                         android:text="@string/modal_filter_genre"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/scroll_platforms" />
@@ -92,7 +96,9 @@
 
                     <TextView
                         android:id="@+id/text_view_format_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/ModalFilterTitle"
                         android:text="@string/modal_filter_format"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/scroll_genres" />
@@ -117,7 +123,9 @@
 
                     <TextView
                         android:id="@+id/text_view_score_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/ModalFilterTitle"
                         android:text="@string/modal_filter_score"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/scroll_formats" />
@@ -145,7 +153,7 @@
 
                         <TextView
                             android:id="@+id/text_view_min_rating"
-                            style="@style/WhiteTextView.Regular"
+                            style="@style/CustomTextView.Regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
@@ -175,7 +183,7 @@
 
                         <TextView
                             android:id="@+id/text_view_max_rating"
-                            style="@style/WhiteTextView.Regular"
+                            style="@style/CustomTextView.Regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
@@ -184,7 +192,9 @@
 
                     <TextView
                         android:id="@+id/text_view_release_date_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/ModalFilterTitle"
                         android:text="@string/modal_filter_release_date"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/layout_max_rating" />
@@ -200,7 +210,7 @@
 
                         <EditText
                             android:id="@+id/edit_text_release_date_min"
-                            style="@style/WhiteEditText.Regular"
+                            style="@style/CustomEditText.Regular"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -208,7 +218,7 @@
 
                         <EditText
                             android:id="@+id/edit_text_release_date_max"
-                            style="@style/WhiteEditText.Regular"
+                            style="@style/CustomEditText.Regular"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -217,7 +227,9 @@
 
                     <TextView
                         android:id="@+id/text_view_purchase_date_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/ModalFilterTitle"
                         android:text="@string/modal_filter_purchase_date"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linear_layout_release_dates" />
@@ -233,7 +245,7 @@
 
                         <EditText
                             android:id="@+id/edit_text_purchase_date_min"
-                            style="@style/WhiteEditText.Regular"
+                            style="@style/CustomEditText.Regular"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -241,7 +253,7 @@
 
                         <EditText
                             android:id="@+id/edit_text_purchase_date_max"
-                            style="@style/WhiteEditText.Regular"
+                            style="@style/CustomEditText.Regular"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -250,7 +262,9 @@
 
                     <TextView
                         android:id="@+id/text_view_price_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/ModalFilterTitle"
                         android:text="@string/modal_filter_price"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linear_layout_purchase_dates" />
@@ -266,7 +280,7 @@
 
                         <EditText
                             android:id="@+id/edit_text_price_min"
-                            style="@style/WhiteEditText.Regular"
+                            style="@style/CustomEditText.Regular"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -275,7 +289,7 @@
 
                         <EditText
                             android:id="@+id/edit_text_price_max"
-                            style="@style/WhiteEditText.Regular"
+                            style="@style/CustomEditText.Regular"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -285,7 +299,9 @@
 
                     <TextView
                         android:id="@+id/text_view_goty_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/ModalFilterTitle"
                         android:text="@string/modal_filter_goty"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linear_layout_prices" />
@@ -321,7 +337,9 @@
 
                     <TextView
                         android:id="@+id/text_view_loaned_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/ModalFilterTitle"
                         android:text="@string/modal_filter_loaned"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/radio_group_goty" />
@@ -357,7 +375,9 @@
 
                     <TextView
                         android:id="@+id/text_view_saga_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/ModalFilterTitle"
                         android:text="@string/modal_filter_has_saga"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/radio_group_loaned" />
@@ -393,7 +413,9 @@
 
                     <TextView
                         android:id="@+id/text_view_songs_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/ModalFilterTitle"
                         android:text="@string/modal_filter_has_songs"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/radio_group_saga" />

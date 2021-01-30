@@ -73,7 +73,7 @@
 
         <EditText
             android:id="@+id/edit_text_name"
-            style="@style/WhiteEditText.Bold"
+            style="@style/CustomEditText.Bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/game_detail_placeholder_name"

@@ -179,8 +179,8 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
         for (game in viewModel.getOrderedGames(games)) {
 
             val tvGame = TextView(requireContext())
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) tvGame.setTextAppearance(R.style.WhiteEditText_Regular)
-            else tvGame.setTextAppearance(requireContext(), R.style.WhiteEditText_Regular)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) tvGame.setTextAppearance(R.style.CustomEditText_Regular)
+            else tvGame.setTextAppearance(requireContext(), R.style.CustomEditText_Regular)
             tvGame.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18F)
 
             tvGame.text = "- ${game.name}"
