@@ -26,7 +26,7 @@
 
                 <EditText
                     android:id="@+id/edit_text_user"
-                    style="@style/WhiteEditText"
+                    style="@style/CustomEditText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="50dp"
@@ -42,7 +42,7 @@
 
                 <EditText
                     android:id="@+id/edit_text_password"
-                    style="@style/WhiteEditText"
+                    style="@style/CustomEditText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -55,7 +55,7 @@
 
                 <TextView
                     android:id="@+id/text_view_language_title"
-                    style="@style/WhiteTextView.Bold"
+                    style="@style/CustomTextView.Bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -101,7 +101,7 @@
 
                 <TextView
                     android:id="@+id/text_view_sort_keys"
-                    style="@style/WhiteTextView.Bold"
+                    style="@style/CustomTextView.Bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"

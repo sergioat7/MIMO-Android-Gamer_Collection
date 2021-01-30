@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="FilterButton" parent="android:style/Widget.Button">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="ModalFilterTitle" parent="CustomTextView.Bold">
+        <item name="android:layout_marginTop">20dp</item>
+    </style>
+
+    <style name="RoundedSelectorButton" parent="android:style/Widget.Button">
+        <item name="android:background">@drawable/rounded_filter_selector_button</item>
+        <item name="android:textColor">@drawable/state_button_text_color</item>
+        <item name="android:maxLines">1</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+</resources>

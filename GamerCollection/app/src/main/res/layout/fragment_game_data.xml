@@ -82,7 +82,7 @@
                         android:layout_weight="1">
 
                         <TextView
-                            style="@style/WhiteTextView.GameDetails"
+                            style="@style/GameDataTitleTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -113,7 +113,7 @@
                         android:layout_weight="1">
 
                         <TextView
-                            style="@style/WhiteTextView.GameDetails"
+                            style="@style/GameDataTitleTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -175,7 +175,8 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            style="@style/WhiteTextView.GameDetails"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDataTitleTextView"
                             android:text="@string/game_detail_genre" />
 
                         <Spinner
@@ -192,12 +193,15 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            style="@style/WhiteTextView.GameDetails"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDataTitleTextView"
                             android:text="@string/game_detail_release_date" />
 
                         <EditText
                             android:id="@+id/edit_text_release_date"
-                            style="@style/WhiteEditText.GameDetails"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDetailEditText"
                             android:hint="@string/game_detail_select_date" />
 
                     </LinearLayout>
@@ -209,7 +213,8 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            style="@style/WhiteTextView.GameDetails"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDataTitleTextView"
                             android:text="@string/game_detail_format" />
 
                         <Spinner
@@ -226,12 +231,15 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            style="@style/WhiteTextView.GameDetails"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDataTitleTextView"
                             android:text="@string/game_detail_distributor" />
 
                         <EditText
                             android:id="@+id/edit_text_distributor"
-                            style="@style/WhiteEditText.GameDetails"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDetailEditText"
                             android:hint="@string/game_detail_placeholder_distributor" />
 
                     </LinearLayout>
@@ -242,12 +250,15 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            style="@style/WhiteTextView.GameDetails"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDataTitleTextView"
                             android:text="@string/game_detail_developer" />
 
                         <EditText
                             android:id="@+id/edit_text_developer"
-                            style="@style/WhiteEditText.GameDetails"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDetailEditText"
                             android:hint="@string/game_detail_placeholder_developer" />
 
                     </LinearLayout>
@@ -258,12 +269,15 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            style="@style/WhiteTextView.GameDetails"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDataTitleTextView"
                             android:text="@string/game_detail_players" />
 
                         <EditText
                             android:id="@+id/edit_text_players"
-                            style="@style/WhiteEditText.GameDetails"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDetailEditText"
                             android:hint="@string/game_detail_placeholder_players" />
 
                     </LinearLayout>
@@ -275,12 +289,15 @@
 
                         <TextView
                             android:id="@+id/text_view_price"
-                            style="@style/WhiteTextView.GameDetails"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDataTitleTextView"
                             android:text="@string/game_detail_price" />
 
                         <EditText
                             android:id="@+id/edit_text_price"
-                            style="@style/WhiteEditText.GameDetails"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDetailEditText"
                             android:hint="@string/game_detail_placeholder_price" />
 
                     </LinearLayout>
@@ -292,12 +309,15 @@
 
                         <TextView
                             android:id="@+id/text_view_purchase_date"
-                            style="@style/WhiteTextView.GameDetails"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDataTitleTextView"
                             android:text="@string/game_detail_purchase_date" />
 
                         <EditText
                             android:id="@+id/edit_text_purchase_date"
-                            style="@style/WhiteEditText.GameDetails"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDetailEditText"
                             android:hint="@string/game_detail_select_date" />
 
                     </LinearLayout>
@@ -309,12 +329,15 @@
 
                         <TextView
                             android:id="@+id/text_view_purchase_location"
-                            style="@style/WhiteTextView.GameDetails"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDataTitleTextView"
                             android:text="@string/game_detail_purchase_location" />
 
                         <EditText
                             android:id="@+id/edit_text_purchase_location"
-                            style="@style/WhiteEditText.GameDetails"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDetailEditText"
                             android:hint="@string/game_detail_placeholder_purchase_location" />
 
                     </LinearLayout>
@@ -326,12 +349,15 @@
 
                         <TextView
                             android:id="@+id/text_view_loaned"
-                            style="@style/WhiteTextView.GameDetails"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDataTitleTextView"
                             android:text="@string/game_detail_loaned_to" />
 
                         <EditText
                             android:id="@+id/edit_text_loaned"
-                            style="@style/WhiteEditText.GameDetails"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDetailEditText"
                             android:hint="@string/game_detail_placeholder_loaned_to" />
 
                     </LinearLayout>
@@ -343,12 +369,15 @@
 
                         <TextView
                             android:id="@+id/text_view_video_url"
-                            style="@style/WhiteTextView.GameDetails"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDataTitleTextView"
                             android:text="@string/game_detail_video_url" />
 
                         <EditText
                             android:id="@+id/edit_text_video_url"
-                            style="@style/WhiteEditText.GameDetails"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDetailEditText"
                             android:hint="@string/game_detail_placeholder_video_url" />
 
                     </LinearLayout>
@@ -360,12 +389,15 @@
 
                         <TextView
                             android:id="@+id/text_view_observations"
-                            style="@style/WhiteTextView.GameDetails"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDataTitleTextView"
                             android:text="@string/game_detail_observations" />
 
                         <EditText
                             android:id="@+id/edit_text_observations"
-                            style="@style/WhiteEditText.GameDetails"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDetailEditText"
                             android:hint="@string/game_detail_placeholder_observations" />
 
                     </LinearLayout>
@@ -377,12 +409,15 @@
 
                         <TextView
                             android:id="@+id/text_view_saga"
-                            style="@style/WhiteTextView.GameDetails"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDataTitleTextView"
                             android:text="@string/game_detail_saga" />
 
                         <EditText
                             android:id="@+id/edit_text_saga"
-                            style="@style/WhiteEditText.GameDetails"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/GameDetailEditText"
                             android:background="@android:color/transparent"
                             android:inputType="none" />
 

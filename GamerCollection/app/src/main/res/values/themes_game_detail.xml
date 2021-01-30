@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="GameDataTitleTextView" parent="CustomTextView.Bold">
+        <item name="android:layout_width">125dp</item>
+        <item name="android:layout_gravity">center_vertical|start</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="GameDetailEditText" parent="CustomEditText.Regular">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:minHeight">50dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+</resources>

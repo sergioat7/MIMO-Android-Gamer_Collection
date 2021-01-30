@@ -7,7 +7,7 @@
 
     <EditText
         android:id="@+id/edit_text_name"
-        style="@style/WhiteEditText.Regular"
+        style="@style/CustomEditText.Regular"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -22,7 +22,7 @@
 
     <EditText
         android:id="@+id/edit_text_singer"
-        style="@style/WhiteEditText.Regular"
+        style="@style/CustomEditText.Regular"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -33,7 +33,7 @@
 
     <EditText
         android:id="@+id/edit_text_url"
-        style="@style/WhiteEditText.Regular"
+        style="@style/CustomEditText.Regular"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

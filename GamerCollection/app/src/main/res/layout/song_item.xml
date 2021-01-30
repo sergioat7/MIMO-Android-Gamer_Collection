@@ -31,14 +31,14 @@
 
         <TextView
             android:id="@+id/text_view_name"
-            style="@style/WhiteTextView.Bold"
+            style="@style/CustomTextView.Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/text_view_singer"
-            style="@style/WhiteTextView.Regular"
+            style="@style/CustomTextView.Regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
@@ -46,7 +46,7 @@
 
         <TextView
             android:id="@+id/text_view_url"
-            style="@style/WhiteTextView.Regular"
+            style="@style/CustomTextView.Regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

@@ -14,4 +14,7 @@
     <color name="colorPendingLight">#75EC5565</color>
 
     <color name="colorInProgress">#FECD54</color>
+
+    <color name="textPrimary">#FFFFFF</color>
+    <color name="textPrimaryLight">#75FFFFFF</color>
 </resources>
