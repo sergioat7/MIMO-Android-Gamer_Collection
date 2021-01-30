@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="AddGameTitleTextView" parent="@style/CustomEditText.Bold">
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:text">@string/saga_detail_games_title</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="AddGameButton" parent="@style/Widget.AppCompat.ImageButton">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:background">@drawable/ic_add_circle_outline_white_24dp</item>
+    </style>
+
+    <style name="AddGameSeparatorView">
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:background">@color/colorSecondary</item>
+    </style>
+
+    <style name="SagaGamesContentView">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:scrollbars">none</item>
+    </style>
+
     <style name="SagaTitleEditText" parent="CustomEditText.Bold">
         <item name="android:layout_marginTop">20dp</item>
         <item name="android:layout_marginStart">50dp</item>

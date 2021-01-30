@@ -81,20 +81,16 @@
                         android:id="@+id/radio_button_en"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="@string/english"
-                        android:buttonTint="@color/colorSecondary"
-                        android:textColor="@color/colorSecondary"
+                        style="@style/CustomRadioButton"
                         />
 
                     <RadioButton
                         android:id="@+id/radio_button_es"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="@string/spanish"
-                        android:buttonTint="@color/colorSecondary"
-                        android:textColor="@color/colorSecondary"
+                        style="@style/CustomRadioButton"
                         />
 
                 </RadioGroup>

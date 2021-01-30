@@ -14,4 +14,12 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="AddSongButton" parent="@style/RoundedButton.Action">
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:text">@string/add</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
 </resources>

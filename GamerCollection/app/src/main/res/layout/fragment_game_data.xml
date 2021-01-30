@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.GameDataFragment">
+    tools:context=".fragments.GameDataFragment"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <ScrollView
             android:layout_width="0dp"
@@ -19,11 +22,13 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                >
 
                 <LinearLayout
                     android:id="@+id/linear_layout_state_buttons"
@@ -33,7 +38,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    >
 
                     <es.upsa.mimo.gamercollection.customviews.StateButton
                         android:id="@+id/button_pending"
@@ -42,7 +48,8 @@
                         android:layout_weight="1"
                         app:stateButton_background="@drawable/bordered_pending_state_button"
                         app:stateButton_color="@drawable/pending_state_button_bottom_line"
-                        app:stateButton_title="@string/game_detail_button_title_pending" />
+                        app:stateButton_title="@string/game_detail_button_title_pending"
+                        />
 
                     <es.upsa.mimo.gamercollection.customviews.StateButton
                         android:id="@+id/button_in_progress"
@@ -53,7 +60,8 @@
                         android:layout_weight="1"
                         app:stateButton_background="@drawable/bordered_in_progress_state_button"
                         app:stateButton_color="@drawable/in_progress_state_button_bottom_line"
-                        app:stateButton_title="@string/game_detail_button_title_in_progress" />
+                        app:stateButton_title="@string/game_detail_button_title_in_progress"
+                        />
 
                     <es.upsa.mimo.gamercollection.customviews.StateButton
                         android:id="@+id/button_finished"
@@ -62,7 +70,9 @@
                         android:layout_weight="1"
                         app:stateButton_background="@drawable/bordered_finished_state_button"
                         app:stateButton_color="@drawable/finished_state_button_bottom_line"
-                        app:stateButton_title="@string/game_detail_button_title_finished" />
+                        app:stateButton_title="@string/game_detail_button_title_finished"
+                        />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -74,12 +84,14 @@
                     android:animateLayoutChanges="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linear_layout_state_buttons">
+                    app:layout_constraintTop_toBottomOf="@+id/linear_layout_state_buttons"
+                    >
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        >
 
                         <TextView
                             style="@style/GameDataTitleTextView"
@@ -92,7 +104,8 @@
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0" />
+                            app:layout_constraintVertical_bias="0.0"
+                            />
 
                         <Spinner
                             android:id="@+id/spinner_pegis"
@@ -102,7 +115,9 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent" />
+                            app:layout_constraintStart_toStartOf="parent"
+                            />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -110,7 +125,8 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        >
 
                         <TextView
                             style="@style/GameDataTitleTextView"
@@ -123,7 +139,8 @@
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0" />
+                            app:layout_constraintVertical_bias="0.0"
+                            />
 
                         <RadioGroup
                             android:id="@+id/radio_group_goty"
@@ -133,7 +150,8 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent">
+                            app:layout_constraintStart_toStartOf="parent"
+                            >
 
                             <RadioButton
                                 android:id="@+id/radio_button_no"
@@ -143,7 +161,8 @@
                                 android:buttonTint="@color/colorSecondary"
                                 android:checked="true"
                                 android:text="@string/no"
-                                android:textColor="@color/colorSecondary" />
+                                android:textColor="@color/colorSecondary"
+                                />
 
                             <RadioButton
                                 android:id="@+id/radio_button_yes"
@@ -152,8 +171,11 @@
                                 android:layout_weight="1"
                                 android:buttonTint="@color/colorSecondary"
                                 android:text="@string/yes"
-                                android:textColor="@color/colorSecondary" />
+                                android:textColor="@color/colorSecondary"
+                                />
+
                         </RadioGroup>
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
@@ -166,43 +188,50 @@
                     android:layout_marginTop="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linear_layout_hidden">
+                    app:layout_constraintTop_toBottomOf="@+id/linear_layout_hidden"
+                    >
 
                     <LinearLayout
                         android:id="@+id/linear_layout_genres"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        >
 
                         <TextView
                             android:layout_height="wrap_content"
                             style="@style/GameDataTitleTextView"
-                            android:text="@string/game_detail_genre" />
+                            android:text="@string/game_detail_genre"
+                            />
 
                         <Spinner
                             android:id="@+id/spinner_genres"
                             style="@style/CustomSpinner"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        >
 
                         <TextView
                             android:layout_height="wrap_content"
                             style="@style/GameDataTitleTextView"
-                            android:text="@string/game_detail_release_date" />
+                            android:text="@string/game_detail_release_date"
+                            />
 
                         <EditText
                             android:id="@+id/edit_text_release_date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/GameDetailEditText"
-                            android:hint="@string/game_detail_select_date" />
+                            android:hint="@string/game_detail_select_date"
+                            />
 
                     </LinearLayout>
 
@@ -210,208 +239,240 @@
                         android:id="@+id/linear_layout_formats"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        >
 
                         <TextView
                             android:layout_height="wrap_content"
                             style="@style/GameDataTitleTextView"
-                            android:text="@string/game_detail_format" />
+                            android:text="@string/game_detail_format"
+                            />
 
                         <Spinner
                             android:id="@+id/spinner_formats"
                             style="@style/CustomSpinner"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        >
 
                         <TextView
                             android:layout_height="wrap_content"
                             style="@style/GameDataTitleTextView"
-                            android:text="@string/game_detail_distributor" />
+                            android:text="@string/game_detail_distributor"
+                            />
 
                         <EditText
                             android:id="@+id/edit_text_distributor"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/GameDetailEditText"
-                            android:hint="@string/game_detail_placeholder_distributor" />
+                            android:hint="@string/game_detail_placeholder_distributor"
+                            />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        >
 
                         <TextView
                             android:layout_height="wrap_content"
                             style="@style/GameDataTitleTextView"
-                            android:text="@string/game_detail_developer" />
+                            android:text="@string/game_detail_developer"
+                            />
 
                         <EditText
                             android:id="@+id/edit_text_developer"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/GameDetailEditText"
-                            android:hint="@string/game_detail_placeholder_developer" />
+                            android:hint="@string/game_detail_placeholder_developer"
+                            />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        >
 
                         <TextView
                             android:layout_height="wrap_content"
                             style="@style/GameDataTitleTextView"
-                            android:text="@string/game_detail_players" />
+                            android:text="@string/game_detail_players"
+                            />
 
                         <EditText
                             android:id="@+id/edit_text_players"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/GameDetailEditText"
-                            android:hint="@string/game_detail_placeholder_players" />
+                            android:hint="@string/game_detail_placeholder_players"
+                            />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        >
 
                         <TextView
                             android:id="@+id/text_view_price"
                             android:layout_height="wrap_content"
                             style="@style/GameDataTitleTextView"
-                            android:text="@string/game_detail_price" />
+                            android:text="@string/game_detail_price"
+                            />
 
                         <EditText
                             android:id="@+id/edit_text_price"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/GameDetailEditText"
-                            android:hint="@string/game_detail_placeholder_price" />
+                            android:hint="@string/game_detail_placeholder_price"
+                            />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        >
 
                         <TextView
                             android:id="@+id/text_view_purchase_date"
                             android:layout_height="wrap_content"
                             style="@style/GameDataTitleTextView"
-                            android:text="@string/game_detail_purchase_date" />
+                            android:text="@string/game_detail_purchase_date"
+                            />
 
                         <EditText
                             android:id="@+id/edit_text_purchase_date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/GameDetailEditText"
-                            android:hint="@string/game_detail_select_date" />
+                            android:hint="@string/game_detail_select_date"
+                            />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        >
 
                         <TextView
                             android:id="@+id/text_view_purchase_location"
                             android:layout_height="wrap_content"
                             style="@style/GameDataTitleTextView"
-                            android:text="@string/game_detail_purchase_location" />
+                            android:text="@string/game_detail_purchase_location"
+                            />
 
                         <EditText
                             android:id="@+id/edit_text_purchase_location"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/GameDetailEditText"
-                            android:hint="@string/game_detail_placeholder_purchase_location" />
+                            android:hint="@string/game_detail_placeholder_purchase_location"
+                            />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        >
 
                         <TextView
                             android:id="@+id/text_view_loaned"
                             android:layout_height="wrap_content"
                             style="@style/GameDataTitleTextView"
-                            android:text="@string/game_detail_loaned_to" />
+                            android:text="@string/game_detail_loaned_to"
+                            />
 
                         <EditText
                             android:id="@+id/edit_text_loaned"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/GameDetailEditText"
-                            android:hint="@string/game_detail_placeholder_loaned_to" />
+                            android:hint="@string/game_detail_placeholder_loaned_to"
+                            />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        >
 
                         <TextView
                             android:id="@+id/text_view_video_url"
                             android:layout_height="wrap_content"
                             style="@style/GameDataTitleTextView"
-                            android:text="@string/game_detail_video_url" />
+                            android:text="@string/game_detail_video_url"
+                            />
 
                         <EditText
                             android:id="@+id/edit_text_video_url"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/GameDetailEditText"
-                            android:hint="@string/game_detail_placeholder_video_url" />
+                            android:hint="@string/game_detail_placeholder_video_url"
+                            />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        >
 
                         <TextView
                             android:id="@+id/text_view_observations"
                             android:layout_height="wrap_content"
                             style="@style/GameDataTitleTextView"
-                            android:text="@string/game_detail_observations" />
+                            android:text="@string/game_detail_observations"
+                            />
 
                         <EditText
                             android:id="@+id/edit_text_observations"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/GameDetailEditText"
-                            android:hint="@string/game_detail_placeholder_observations" />
+                            android:hint="@string/game_detail_placeholder_observations"
+                            />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        >
 
                         <TextView
                             android:id="@+id/text_view_saga"
                             android:layout_height="wrap_content"
                             style="@style/GameDataTitleTextView"
-                            android:text="@string/game_detail_saga" />
+                            android:text="@string/game_detail_saga"
+                            />
 
                         <EditText
                             android:id="@+id/edit_text_saga"
@@ -419,7 +480,8 @@
                             android:layout_height="wrap_content"
                             style="@style/GameDetailEditText"
                             android:background="@android:color/transparent"
-                            android:inputType="none" />
+                            android:inputType="none"
+                            />
 
                     </LinearLayout>
 
@@ -434,10 +496,13 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linear_layout_details" />
+                    app:layout_constraintTop_toBottomOf="@+id/linear_layout_details"
+                    />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </FrameLayout>

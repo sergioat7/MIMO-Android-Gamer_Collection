@@ -100,4 +100,10 @@
         <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
+    <style name="CustomRadioButton">
+        <item name="android:layout_weight">1</item>
+        <item name="android:buttonTint">@color/colorSecondary</item>
+        <item name="android:textColor">@color/colorSecondary</item>
+    </style>
+
 </resources>
