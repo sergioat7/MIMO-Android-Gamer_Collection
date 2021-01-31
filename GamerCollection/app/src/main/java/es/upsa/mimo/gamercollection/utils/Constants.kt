@@ -168,5 +168,15 @@ class Constants {
         // MARK: - Maps
 
         val DEFAULT_LOCATION = LatLng(40.4169019, -3.7056721)
+
+        // MARK: - Login constants
+
+        fun isUserNameValid(username: String): Boolean {
+            return username.isNotBlank()
+        }
+
+        fun isPasswordValid(password: String): Boolean {
+            return password.length > 3
+        }
     }
 }
