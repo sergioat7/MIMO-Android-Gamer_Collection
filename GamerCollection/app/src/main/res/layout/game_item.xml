@@ -4,14 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="@dimen/size_high"
     android:background="@android:color/transparent"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="@dimen/margin_tiny"
         android:background="@color/colorSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,7 +21,7 @@
 
         <View
             android:id="@+id/view_state"
-            android:layout_width="10dp"
+            android:layout_width="@dimen/size_small"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,8 +62,8 @@
 
             <ProgressBar
                 android:id="@+id/progress_bar_loading"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="@dimen/size_medium"
+                android:layout_height="@dimen/size_medium"
                 app:layout_constraintBottom_toBottomOf="@+id/image_view_game"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -122,8 +122,8 @@
             android:id="@+id/layout_buttons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/linearLayout"

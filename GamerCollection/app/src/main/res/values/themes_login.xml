@@ -7,29 +7,29 @@
     </style>
 
     <style name="UsernameEditText" parent="CredentialsEditText">
-        <item name="android:layout_marginStart">50dp</item>
-        <item name="android:layout_marginEnd">50dp</item>
+        <item name="android:layout_marginStart">@dimen/margin_larger</item>
+        <item name="android:layout_marginEnd">@dimen/margin_larger</item>
         <item name="android:hint">@string/login_username</item>
         <item name="android:inputType">text</item>
     </style>
 
     <style name="PasswordEditText" parent="CredentialsEditText">
-        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
         <item name="android:hint">@string/login_password</item>
         <item name="android:inputType">textPassword</item>
     </style>
 
     <style name="LoginButton" parent="@style/RoundedButton.Action">
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
-        <item name="android:layout_marginStart">40dp</item>
-        <item name="android:layout_marginEnd">40dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:layout_marginStart">@dimen/margin_large</item>
+        <item name="android:layout_marginEnd">@dimen/margin_large</item>
         <item name="android:layout_gravity">start</item>
         <item name="android:text">@string/login_access</item>
     </style>
 
     <style name="NoAccountText">
-        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:layout_marginEnd">@dimen/margin_tiny</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:text">@string/login_not_account</item>
@@ -46,8 +46,8 @@
     </style>
 
     <style name="RegisterButton" parent="@style/RoundedButton.Action">
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
         <item name="android:layout_gravity">start</item>
         <item name="android:text">@string/register</item>
     </style>
