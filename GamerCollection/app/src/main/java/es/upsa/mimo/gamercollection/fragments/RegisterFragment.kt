@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
+import es.upsa.mimo.gamercollection.extensions.afterTextChanged
+import es.upsa.mimo.gamercollection.extensions.clearErrors
+import es.upsa.mimo.gamercollection.extensions.onFocusChange
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.viewmodelfactories.RegisterViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.RegisterViewModel
@@ -40,10 +43,51 @@ class RegisterFragment : BaseFragment() {
         viewModel = ViewModelProvider(this, RegisterViewModelFactory(application)).get(RegisterViewModel::class.java)
         setupBindings()
 
+        edit_text_user.afterTextChanged {
+            registerDataChanged()
+        }
+        edit_text_password.onFocusChange {
+            registerDataChanged()
+        }
+
+        edit_text_password.afterTextChanged {
+            registerDataChanged()
+        }
+        edit_text_password.onFocusChange {
+            registerDataChanged()
+        }
+
+        edit_text_repeatPassword.afterTextChanged {
+            registerDataChanged()
+        }
+        edit_text_repeatPassword.onFocusChange {
+            registerDataChanged()
+        }
+
         register_button.setOnClickListener {register()}
     }
 
     private fun setupBindings() {
+
+        viewModel.registerFormState.observe(viewLifecycleOwner, {
+
+            val registerState = it ?: return@observe
+
+            edit_text_user.clearErrors()
+            edit_text_password.clearErrors()
+            edit_text_repeatPassword.clearErrors()
+
+            register_button.isEnabled = registerState.isDataValid
+
+            if (registerState.usernameError != null) {
+                edit_text_user.error = getString(registerState.usernameError)
+            }
+            if (registerState.passwordError != null) {
+
+                edit_text_password.error = getString(registerState.passwordError)
+                edit_text_repeatPassword.error = getString(registerState.passwordError)
+            }
+        })
 
         viewModel.registerLoading.observe(viewLifecycleOwner, { isLoading ->
 
@@ -64,6 +108,15 @@ class RegisterFragment : BaseFragment() {
                 manageError(error)
             }
         })
+    }
+
+    private fun registerDataChanged() {
+
+        viewModel.registerDataChanged(
+            edit_text_user.text.toString(),
+            edit_text_password.text.toString(),
+            edit_text_repeatPassword.text.toString()
+        )
     }
 
     private fun register() {

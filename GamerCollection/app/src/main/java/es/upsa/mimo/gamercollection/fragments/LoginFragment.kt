@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.activities.RegisterActivity
+import es.upsa.mimo.gamercollection.extensions.afterTextChanged
+import es.upsa.mimo.gamercollection.extensions.onFocusChange
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.utils.Environment
 import es.upsa.mimo.gamercollection.viewmodelfactories.LoginViewModelFactory
@@ -48,6 +50,20 @@ class LoginFragment : BaseFragment() {
         val password = if (username.isEmpty()) Environment.getPassword() else ""
         edit_text_password.setText(password)
 
+        edit_text_user.afterTextChanged {
+            loginDataChanged()
+        }
+        edit_text_user.onFocusChange {
+            loginDataChanged()
+        }
+
+        edit_text_password.afterTextChanged {
+            loginDataChanged()
+        }
+        edit_text_password.onFocusChange {
+            loginDataChanged()
+        }
+
         login_button.setOnClickListener {
 
             viewModel.login(
@@ -61,6 +77,20 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun setupBindings() {
+
+        viewModel.loginFormState.observe(viewLifecycleOwner, {
+
+            val loginState = it ?: return@observe
+
+            login_button.isEnabled = loginState.isDataValid
+
+            if (loginState.usernameError != null) {
+                edit_text_user.error = getString(loginState.usernameError)
+            }
+            if (loginState.passwordError != null) {
+                edit_text_password.error = getString(loginState.passwordError)
+            }
+        })
 
         viewModel.loginLoading.observe(viewLifecycleOwner, { isLoading ->
 
@@ -81,5 +111,13 @@ class LoginFragment : BaseFragment() {
                 manageError(error)
             }
         })
+    }
+
+    private fun loginDataChanged() {
+
+        viewModel.loginDataChanged(
+            edit_text_user.text.toString(),
+            edit_text_password.text.toString()
+        )
     }
 }
