@@ -2,107 +2,107 @@
 <resources>
 
     <style name="AddImage">
-        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginStart">@dimen/margin_medium</item>
         <item name="android:adjustViewBounds">true</item>
         <item name="srcCompat">@drawable/add_photo</item>
     </style>
 
     <style name="GameTitleEditText" parent="@style/CustomEditText.Bold">
         <item name="android:hint">@string/game_detail_placeholder_name</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/font_larger</item>
     </style>
 
     <style name="RatingButton" parent="android:style/Widget.Button">
-        <item name="android:layout_height">20dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_height">@dimen/margin_medium</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:drawableStart">@drawable/ic_star_white_24dp</item>
-        <item name="android:drawablePadding">-30dp</item>
+        <item name="android:drawablePadding">@dimen/margin_medium_negative</item>
         <item name="android:drawableTint">@color/colorInProgress</item>
         <item name="android:text">0</item>
         <item name="android:textColor">@color/colorSecondary</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/font_medium</item>
     </style>
 
     <style name="PegiImage">
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
         <item name="android:adjustViewBounds">true</item>
-        <item name="android:maxWidth">40dp</item>
+        <item name="android:maxWidth">@dimen/size_big</item>
     </style>
 
     <style name="GameDetailTabLayout">
-        <item name="android:layout_marginStart">20dp</item>
-        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:layout_marginStart">@dimen/margin_medium</item>
+        <item name="android:layout_marginEnd">@dimen/margin_medium</item>
         <item name="tabIndicatorColor">@color/colorFinished</item>
         <item name="tabSelectedTextColor">@color/colorSecondary</item>
         <item name="tabTextColor">@color/colorSecondarySuperLight</item>
     </style>
 
     <style name="GameDataContentView">
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
         <item name="android:scrollbars">none</item>
     </style>
 
     <style name="HiddenContentView">
-        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_medium</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:animateLayoutChanges">true</item>
     </style>
 
     <style name="GameDataTitleTextView" parent="CustomTextView.Bold">
-        <item name="android:layout_width">125dp</item>
+        <item name="android:layout_width">@dimen/size_higher</item>
         <item name="android:layout_gravity">center_vertical|start</item>
-        <item name="android:layout_marginEnd">10dp</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginEnd">@dimen/margin_small</item>
+        <item name="android:textSize">@dimen/font_medium</item>
     </style>
 
     <style name="GameDetailEditText" parent="CustomEditText.Regular">
         <item name="android:layout_gravity">center</item>
-        <item name="android:minHeight">50dp</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:minHeight">@dimen/size_bigger</item>
+        <item name="android:textSize">@dimen/font_medium</item>
     </style>
 
     <style name="AddSongButton" parent="@style/RoundedButton.Action">
-        <item name="android:layout_marginBottom">10dp</item>
-        <item name="android:layout_marginStart">20dp</item>
-        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:layout_marginStart">@dimen/margin_medium</item>
+        <item name="android:layout_marginEnd">@dimen/margin_medium</item>
         <item name="android:text">@string/add</item>
         <item name="android:visibility">gone</item>
     </style>
 
     <style name="SetImageTitleTextView">
-        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
         <item name="android:text">@string/game_detail_image_modal_title</item>
         <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/font_large</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
     </style>
 
     <style name="SetImageEditText">
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginStart">10dp</item>
-        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginStart">@dimen/margin_small</item>
+        <item name="android:layout_marginEnd">@dimen/margin_small</item>
         <item name="android:backgroundTint">@color/colorPrimary</item>
         <item name="android:inputType">textUri</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/font_medium</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="SongInfoImage">
-        <item name="android:layout_width">40dp</item>
-        <item name="android:layout_height">40dp</item>
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_width">@dimen/size_big</item>
+        <item name="android:layout_height">@dimen/size_big</item>
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
         <item name="srcCompat">@drawable/song_icon</item>
     </style>
 
     <style name="SongInfoContainerView">
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
-        <item name="android:layout_marginStart">10dp</item>
-        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:layout_marginStart">@dimen/margin_small</item>
+        <item name="android:layout_marginEnd">@dimen/margin_small</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:orientation">vertical</item>
     </style>

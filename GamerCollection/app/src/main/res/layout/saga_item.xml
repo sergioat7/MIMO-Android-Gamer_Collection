@@ -31,7 +31,7 @@
             android:id="@+id/image_view_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="50dp"
+            android:layout_marginEnd="@dimen/margin_larger"
             app:srcCompat="@drawable/ic_keyboard_arrow_down_white_24dp"
             app:layout_constraintBottom_toBottomOf="@+id/edit_text_name"
             app:layout_constraintEnd_toStartOf="@+id/image_view_edit"
@@ -53,7 +53,7 @@
     <View
         android:id="@+id/line_view"
         android:layout_width="0dp"
-        android:layout_height="5dp"
+        android:layout_height="@dimen/size_tiny"
         android:background="@color/colorSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

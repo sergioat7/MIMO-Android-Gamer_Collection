@@ -2,8 +2,8 @@
 <resources>
 
     <style name="LocationButton">
-        <item name="android:layout_marginBottom">10dp</item>
-        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:layout_marginEnd">@dimen/margin_small</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:src">@drawable/ic_my_location_black_24dp</item>
     </style>
@@ -12,7 +12,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="fontFamily">@font/roboto_bold</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/font_large</item>
     </style>
 
 </resources>

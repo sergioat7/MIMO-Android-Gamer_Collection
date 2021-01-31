@@ -158,7 +158,7 @@
                             android:id="@+id/text_view_min_rating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
+                            android:layout_marginStart="@dimen/margin_small"
                             android:text="@string/min"
                             style="@style/CustomTextView.Regular"
                             />
@@ -187,7 +187,7 @@
                             android:id="@+id/text_view_max_rating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
+                            android:layout_marginStart="@dimen/margin_small"
                             android:text="@string/max"
                             style="@style/CustomTextView.Regular"
                             />
@@ -447,7 +447,7 @@
                         android:id="@+id/radio_group_songs"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginBottom="@dimen/margin_medium"
                         android:orientation="horizontal"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -481,7 +481,7 @@
             <View
                 android:id="@+id/line_view_top"
                 android:layout_width="0dp"
-                android:layout_height="2dp"
+                android:layout_height="@dimen/size_mini"
                 android:background="@color/colorSecondary"
                 app:layout_constraintBottom_toTopOf="@+id/linear_layout_filter_buttons"
                 app:layout_constraintEnd_toEndOf="parent"

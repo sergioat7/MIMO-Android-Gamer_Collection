@@ -3,21 +3,21 @@
 
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <corners android:radius="15dp" />
+            <corners android:radius="@dimen/radius_normal" />
             <solid android:color="@color/colorPendingLight" />
         </shape>
     </item>
 
     <item android:state_enabled="false">
         <shape android:shape="rectangle">
-            <corners android:radius="15dp" />
+            <corners android:radius="@dimen/radius_normal" />
             <solid android:color="@color/colorPendingLight" />
         </shape>
     </item>
 
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="15dp" />
+            <corners android:radius="@dimen/radius_normal" />
             <solid android:color="@color/colorPending" />
         </shape>
     </item>
