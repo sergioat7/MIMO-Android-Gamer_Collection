@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="120dp"
-    android:background="@android:color/transparent">
+    android:background="@android:color/transparent"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,7 +16,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <View
             android:id="@+id/view_state"
@@ -22,7 +25,8 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_images"
@@ -31,7 +35,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/view_state"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.25">
+            app:layout_constraintWidth_percent="0.25"
+            >
 
             <ImageView
                 android:id="@+id/image_view_game"
@@ -41,90 +46,77 @@
                 app:layout_constraintBottom_toTopOf="@+id/image_view_goty"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
             <ImageView
                 android:id="@+id/image_view_goty"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/image_view_game"
-                app:srcCompat="@drawable/goty_label" />
+                style="@style/GotyImage"
+                />
 
             <ProgressBar
                 android:id="@+id/progress_bar_loading"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:indeterminate="true"
-                android:indeterminateTint="@color/colorFinished"
                 app:layout_constraintBottom_toBottomOf="@+id/image_view_game"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:visibility="gone" />
+                tools:visibility="gone"
+                style="@style/LoadingProgressBar"
+                />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="5dp"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/layout_buttons"
             app:layout_constraintStart_toEndOf="@+id/layout_images"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/GameInfoContainerView"
+            >
 
             <TextView
                 android:id="@+id/text_view_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:ellipsize="end"
-                android:fontFamily="@font/roboto_bold"
-                android:maxLines="2"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
+                style="@style/GameNameTextView"
+                />
 
             <TextView
                 android:id="@+id/text_view_platform"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:fontFamily="@font/roboto_regular"
-                android:maxLines="1"
-                android:textColor="@color/colorPrimary"
-                android:textSize="14sp" />
+                style="@style/GamePlatformTextView"
+                />
 
             <me.zhanghai.android.materialratingbar.MaterialRatingBar
                 android:id="@+id/rating_bar"
-                style="@style/CustomRatingBar.LightBackground"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:isIndicator="true"
-                android:numStars="5"
-                android:stepSize="0.5" />
+                style="@style/GameScoreRatingBar"
+                />
+
         </LinearLayout>
 
         <ImageView
             android:id="@+id/image_view_calendar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="5dp"
-            android:adjustViewBounds="true"
             app:layout_constraintBottom_toTopOf="@+id/layout_buttons"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/linearLayout"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/released" />
+            style="@style/GameCalendarImage"
+            />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_buttons"
@@ -135,17 +127,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/linearLayout"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            >
 
             <ImageView
                 android:id="@+id/image_view_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+                />
 
             <CheckBox
                 android:id="@+id/check_box"
@@ -155,7 +149,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

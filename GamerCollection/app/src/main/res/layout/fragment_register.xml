@@ -1,84 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.RegisterFragment">
+    tools:context=".fragments.RegisterFragment"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <ImageView
-            android:id="@+id/app_name_image_view"
+            android:id="@+id/image_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/app_name_white"
             app:layout_constraintBottom_toTopOf="@+id/edit_text_user"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <EditText
             android:id="@+id/edit_text_user"
-            style="@style/CustomEditText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="10dp"
-            android:ems="10"
-            android:hint="@string/registration_username"
-            android:inputType="text"
             app:layout_constraintBottom_toTopOf="@+id/edit_text_password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/UsernameEditText"
+            />
 
         <EditText
             android:id="@+id/edit_text_password"
-            style="@style/CustomEditText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:ems="10"
-            android:hint="@string/registration_password"
-            android:inputType="textPassword"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
+            app:layout_constraintStart_toStartOf="@+id/edit_text_user"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/PasswordEditText"
+            />
 
         <EditText
             android:id="@+id/edit_text_repeatPassword"
-            style="@style/CustomEditText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="40dp"
-            android:ems="10"
             android:hint="@string/registration_repeat_password"
-            android:inputType="textPassword"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_password" />
+            app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
+            app:layout_constraintStart_toStartOf="@+id/edit_text_password"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_password"
+            style="@style/PasswordEditText"
+            />
 
         <Button
             android:id="@+id/register_button"
-            style="@style/RoundedButton.Action"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:text="@string/register"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_repeatPassword" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_repeatPassword"
+            style="@style/RegisterButton"
+            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </FrameLayout>

@@ -2,14 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    >
 
     <me.zhanghai.android.materialratingbar.MaterialRatingBar
         android:id="@+id/rating_bar"
-        style="@style/CustomRatingBar.LightBackground"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -18,7 +16,9 @@
         android:stepSize="0.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/CustomRatingBar.LightBackground"
+        />
 
     <Button
         android:id="@+id/button_rate"
@@ -29,6 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rating_bar"
-        app:layout_constraintWidth_percent="0.5" />
+        app:layout_constraintWidth_percent="0.5"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

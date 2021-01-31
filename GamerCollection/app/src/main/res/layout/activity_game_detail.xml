@@ -34,38 +34,32 @@
         android:id="@+id/image_view_game"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:adjustViewBounds="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintWidth_percent="0.4"
-        app:srcCompat="@drawable/add_photo"
+        style="@style/AddImage"
         />
 
     <ProgressBar
         android:id="@+id/progress_bar_loading"
-        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/colorFinished"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/constraint_layout_main_details"
         app:layout_constraintEnd_toEndOf="@+id/image_view_game"
         app:layout_constraintStart_toStartOf="@+id/image_view_game"
         app:layout_constraintTop_toTopOf="@+id/constraint_layout_main_details"
+        style="@style/LoadingProgressBar"
         />
 
     <ImageView
         android:id="@+id/image_view_goty"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/image_view_game"
         app:layout_constraintStart_toStartOf="@+id/image_view_game"
         app:layout_constraintTop_toBottomOf="@+id/image_view_game"
-        app:srcCompat="@drawable/goty_label"
+        style="@style/GotyImage"
         />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -81,57 +75,44 @@
 
         <EditText
             android:id="@+id/edit_text_name"
-            style="@style/CustomEditText.Bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="@string/game_detail_placeholder_name"
-            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            style="@style/GameTitleEditText"
             />
 
         <Spinner
             android:id="@+id/spinner_platforms"
-            style="@style/CustomSpinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_text_name"
+            style="@style/CustomSpinner"
             />
 
         <Button
             android:id="@+id/rating_button"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_marginBottom="10dp"
-            android:background="@android:color/transparent"
-            android:drawableStart="@drawable/ic_star_white_24dp"
-            android:drawablePadding="-30dp"
-            android:drawableTint="@color/colorInProgress"
-            android:text="0"
-            android:textColor="@color/colorSecondary"
-            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/image_view_pegi"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinner_platforms"
             app:layout_constraintVertical_bias="0.0"
+            style="@style/RatingButton"
             />
 
         <ImageView
             android:id="@+id/image_view_pegi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:adjustViewBounds="true"
-            android:maxWidth="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinner_platforms"
+            style="@style/PegiImage"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -159,15 +140,11 @@
         android:id="@+id/tab_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/barrier"
-        app:tabIndicatorColor="@color/colorFinished"
-        app:tabSelectedTextColor="@color/colorSecondary"
-        app:tabTextColor="@color/colorSecondarySuperLight"
+        style="@style/GameDetailTabLayout"
         >
 
         <com.google.android.material.tabs.TabItem
