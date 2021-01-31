@@ -11,8 +11,8 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SongsAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.models.SongResponse
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.SongResponse
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameSongsViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameSongsViewModel
 import kotlinx.android.synthetic.main.fragment_game_songs.*

@@ -1,7 +1,7 @@
 package es.upsa.mimo.gamercollection.daos
 
 import androidx.room.*
-import es.upsa.mimo.gamercollection.models.FormatResponse
+import es.upsa.mimo.gamercollection.models.responses.FormatResponse
 
 @Dao
 interface FormatDao {

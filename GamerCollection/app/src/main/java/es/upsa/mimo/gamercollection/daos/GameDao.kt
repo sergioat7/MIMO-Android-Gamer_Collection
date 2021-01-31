@@ -2,7 +2,7 @@ package es.upsa.mimo.gamercollection.daos
 
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery
-import es.upsa.mimo.gamercollection.models.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.GameWithSaga
 
 @Dao

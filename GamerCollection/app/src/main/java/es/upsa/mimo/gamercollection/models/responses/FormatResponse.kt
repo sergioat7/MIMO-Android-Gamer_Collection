@@ -1,17 +1,15 @@
-package es.upsa.mimo.gamercollection.models
+package es.upsa.mimo.gamercollection.models.responses
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import es.upsa.mimo.gamercollection.models.base.BaseModel
 
-@Entity(tableName = "Saga")
-data class SagaResponse(
+@Entity(tableName = "Format")
+data class FormatResponse(
     @PrimaryKey
     @SerializedName("id")
-    override val id: Int,
+    override val id: String,
     @SerializedName("name")
-    val name: String?,
-    @SerializedName("games")
-    val games: List<GameResponse>
-): BaseModel<Int>
+    val name: String
+): BaseModel<String>

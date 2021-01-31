@@ -1,11 +1,9 @@
 package es.upsa.mimo.gamercollection.network.apiClient
 
-import android.content.res.Resources
 import com.google.gson.*
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.models.ErrorResponse
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback

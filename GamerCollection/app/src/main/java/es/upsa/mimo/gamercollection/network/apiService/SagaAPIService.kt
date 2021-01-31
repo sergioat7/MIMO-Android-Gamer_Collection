@@ -1,6 +1,6 @@
 package es.upsa.mimo.gamercollection.network.apiService
 
-import es.upsa.mimo.gamercollection.models.SagaResponse
+import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import retrofit2.Call
 import retrofit2.http.*
 

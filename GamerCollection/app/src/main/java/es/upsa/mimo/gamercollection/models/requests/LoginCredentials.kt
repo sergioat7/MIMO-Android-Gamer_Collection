@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.models
+package es.upsa.mimo.gamercollection.models.requests
 
 data class LoginCredentials(
     val username: String,

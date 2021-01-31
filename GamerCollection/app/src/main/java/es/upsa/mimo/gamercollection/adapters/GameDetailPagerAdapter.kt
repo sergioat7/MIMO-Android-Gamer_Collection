@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import es.upsa.mimo.gamercollection.fragments.GameDataFragment
 import es.upsa.mimo.gamercollection.fragments.GameSongsFragment
-import es.upsa.mimo.gamercollection.models.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
 
 class GameDetailPagerAdapter(
     activity: AppCompatActivity,

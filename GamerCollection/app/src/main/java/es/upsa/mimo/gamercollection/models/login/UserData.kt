@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.models
+package es.upsa.mimo.gamercollection.models.login
 
 data class UserData(
     var username: String,

@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.models
+package es.upsa.mimo.gamercollection.models.responses
 
 import com.google.gson.annotations.SerializedName
 

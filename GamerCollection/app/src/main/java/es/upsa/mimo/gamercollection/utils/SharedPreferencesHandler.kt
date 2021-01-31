@@ -2,8 +2,8 @@ package es.upsa.mimo.gamercollection.utils
 
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import es.upsa.mimo.gamercollection.models.AuthData
-import es.upsa.mimo.gamercollection.models.UserData
+import es.upsa.mimo.gamercollection.models.login.AuthData
+import es.upsa.mimo.gamercollection.models.login.UserData
 import java.util.*
 import javax.inject.Inject
 

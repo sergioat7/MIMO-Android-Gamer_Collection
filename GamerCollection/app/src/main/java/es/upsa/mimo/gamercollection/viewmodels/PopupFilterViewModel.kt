@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.models.FormatResponse
-import es.upsa.mimo.gamercollection.models.GenreResponse
-import es.upsa.mimo.gamercollection.models.PlatformResponse
+import es.upsa.mimo.gamercollection.models.responses.FormatResponse
+import es.upsa.mimo.gamercollection.models.responses.GenreResponse
+import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
