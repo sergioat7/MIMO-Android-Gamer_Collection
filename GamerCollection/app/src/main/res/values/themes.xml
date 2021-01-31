@@ -14,7 +14,7 @@
         <item name="android:homeAsUpIndicator">@drawable/ic_keyboard_backspace_black_24dp</item>
     </style>
 
-    <style name="Theme.GamerCollection.NoActionBar" parent="Theme.AppCompat.NoActionBar">
+    <style name="Theme.GamerCollection.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorSecondary</item>
         <item name="android:colorBackground">@color/colorPrimary</item>
         <item name="titleTextColor">@color/colorPrimary</item>
@@ -104,6 +104,11 @@
         <item name="android:layout_weight">1</item>
         <item name="android:buttonTint">@color/colorSecondary</item>
         <item name="android:textColor">@color/colorSecondary</item>
+    </style>
+
+    <style name="LoadingProgressBar">
+        <item name="android:indeterminate">true</item>
+        <item name="android:indeterminateTint">@color/colorFinished</item>
     </style>
 
 </resources>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <style name="GamesCountTextView">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="GamesSortButton" parent="Widget.AppCompat.ImageButton">
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:src">@drawable/ic_sort_black_24dp</item>
+    </style>
+
+    <style name="StateButtonsContainerView">
+        <item name="android:background">#000000</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="GotyImage">
+        <item name="android:visibility">gone</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="srcCompat">@drawable/goty_label</item>
+    </style>
+
+    <style name="GameInfoContainerView">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="GameNameTextView">
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="GamePlatformTextView">
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="GameScoreRatingBar" parent="@style/CustomRatingBar.LightBackground">
+        <item name="android:layout_height">20dp</item>
+        <item name="android:isIndicator">true</item>
+        <item name="android:numStars">5</item>
+        <item name="android:stepSize">0.5</item>
+    </style>
+
+    <style name="GameCalendarImage">
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="srcCompat">@drawable/released</item>
+    </style>
+    
+</resources>

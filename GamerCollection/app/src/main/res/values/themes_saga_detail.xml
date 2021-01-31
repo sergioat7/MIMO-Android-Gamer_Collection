@@ -38,4 +38,17 @@
         <item name="android:scrollbars">none</item>
     </style>
 
+    <style name="GamesSelectorContainerView">
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginStart">2dp</item>
+        <item name="android:layout_marginEnd">2dp</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="GamesSelectorAcceptButton">
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:text">@string/accept</item>
+    </style>
+
 </resources>

@@ -23,8 +23,6 @@
     <string name="login_register">¡Regístrate!</string>
 
     // Register
-    <string name="registration_username">Usuario</string>
-    <string name="registration_password">Contraseña</string>
     <string name="registration_repeat_password">Repetir contraseña</string>
     <string name="register">Registrarse</string>
 

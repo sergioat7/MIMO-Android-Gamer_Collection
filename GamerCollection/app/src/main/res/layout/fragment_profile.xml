@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ProfileFragment">
+    tools:context=".fragments.ProfileFragment"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <ScrollView
             android:layout_width="0dp"
@@ -22,50 +25,42 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                >
 
                 <EditText
                     android:id="@+id/edit_text_user"
-                    style="@style/CustomEditText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="50dp"
                     android:layout_marginTop="50dp"
-                    android:layout_marginEnd="50dp"
-                    android:ems="10"
-                    android:hint="@string/login_username"
-                    android:inputType="text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    style="@style/UsernameEditText"
+                    />
 
                 <EditText
                     android:id="@+id/edit_text_password"
-                    style="@style/CustomEditText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:ems="10"
-                    android:hint="@string/login_password"
-                    android:inputType="textPassword"
                     app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
                     app:layout_constraintStart_toStartOf="@+id/edit_text_user"
-                    app:layout_constraintTop_toBottomOf="@+id/edit_text_user" />
+                    app:layout_constraintTop_toBottomOf="@+id/edit_text_user"
+                    style="@style/PasswordEditText"
+                    />
 
                 <TextView
                     android:id="@+id/text_view_language_title"
-                    style="@style/CustomTextView.Bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="5dp"
                     android:text="@string/app_language"
-                    android:textSize="18sp"
                     app:layout_constraintBottom_toTopOf="@+id/radio_group_language"
                     app:layout_constraintEnd_toEndOf="@+id/radio_group_language"
                     app:layout_constraintStart_toStartOf="@+id/radio_group_language"
-                    app:layout_constraintTop_toBottomOf="@+id/edit_text_password" />
+                    app:layout_constraintTop_toBottomOf="@+id/edit_text_password"
+                    style="@style/ProfileSectionTitleTextView"
+                    />
 
                 <RadioGroup
                     android:id="@+id/radio_group_language"
@@ -97,17 +92,15 @@
 
                 <TextView
                     android:id="@+id/text_view_sort_keys"
-                    style="@style/CustomTextView.Bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="5dp"
                     android:text="@string/games_sorting_parameter"
-                    android:textSize="18sp"
                     app:layout_constraintBottom_toTopOf="@+id/spinner_sorting_keys"
                     app:layout_constraintEnd_toEndOf="@+id/spinner_sorting_keys"
                     app:layout_constraintStart_toStartOf="@+id/spinner_sorting_keys"
-                    app:layout_constraintTop_toBottomOf="@+id/radio_group_language" />
+                    app:layout_constraintTop_toBottomOf="@+id/radio_group_language"
+                    style="@style/ProfileSectionTitleTextView"
+                    />
 
                 <Spinner
                     android:id="@+id/spinner_sorting_keys"
@@ -123,16 +116,14 @@
                     android:id="@+id/switch_swipe_refresh"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:text="@string/swipe_refresh_enabled_title"
-                    android:textColor="@color/colorSecondary"
-                    android:textSize="18sp"
                     android:checked="true"
-                    android:fontFamily="@font/roboto_bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/spinner_sorting_keys"
                     app:layout_constraintStart_toStartOf="@+id/spinner_sorting_keys"
-                    app:layout_constraintTop_toBottomOf="@+id/spinner_sorting_keys" />
+                    app:layout_constraintTop_toBottomOf="@+id/spinner_sorting_keys"
+                    style="@style/ProfileSwitch"
+                    />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -140,28 +131,27 @@
 
         <Button
             android:id="@+id/button_change_password"
-            style="@style/RoundedButton.Action"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
             android:layout_marginBottom="5dp"
             android:text="@string/save"
             app:layout_constraintBottom_toTopOf="@+id/button_delete_user"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/RoundedButton.Action"
+            />
 
         <Button
             android:id="@+id/button_delete_user"
-            style="@style/RoundedButton.Delete"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
             android:layout_marginBottom="20dp"
             android:text="@string/delete"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/RoundedButton.Delete"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </FrameLayout>
