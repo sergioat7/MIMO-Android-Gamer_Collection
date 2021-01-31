@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
-import es.upsa.mimo.gamercollection.models.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.network.apiClient.*
 import es.upsa.mimo.gamercollection.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.repositories.GameRepository

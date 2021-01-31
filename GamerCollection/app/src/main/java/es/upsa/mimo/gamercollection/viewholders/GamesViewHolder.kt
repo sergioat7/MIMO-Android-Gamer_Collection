@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.models.PlatformResponse
-import es.upsa.mimo.gamercollection.models.StateResponse
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
+import es.upsa.mimo.gamercollection.models.responses.StateResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.android.synthetic.main.game_item.view.*
 import java.lang.Exception

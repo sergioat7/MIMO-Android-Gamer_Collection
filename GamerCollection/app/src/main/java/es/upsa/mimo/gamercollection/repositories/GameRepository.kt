@@ -2,6 +2,9 @@ package es.upsa.mimo.gamercollection.repositories
 
 import androidx.sqlite.db.SimpleSQLiteQuery
 import es.upsa.mimo.gamercollection.models.*
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import es.upsa.mimo.gamercollection.utils.Constants

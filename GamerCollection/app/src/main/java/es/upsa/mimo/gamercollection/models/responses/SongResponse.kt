@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.models
+package es.upsa.mimo.gamercollection.models.responses
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

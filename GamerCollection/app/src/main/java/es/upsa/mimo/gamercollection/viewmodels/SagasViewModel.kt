@@ -3,10 +3,10 @@ package es.upsa.mimo.gamercollection.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import es.upsa.mimo.gamercollection.models.ErrorResponse
-import es.upsa.mimo.gamercollection.models.PlatformResponse
-import es.upsa.mimo.gamercollection.models.SagaResponse
-import es.upsa.mimo.gamercollection.models.StateResponse
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
+import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
+import es.upsa.mimo.gamercollection.models.responses.SagaResponse
+import es.upsa.mimo.gamercollection.models.responses.StateResponse
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.repositories.SagaRepository
 import es.upsa.mimo.gamercollection.repositories.StateRepository

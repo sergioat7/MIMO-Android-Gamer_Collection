@@ -3,7 +3,7 @@ package es.upsa.mimo.gamercollection.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import es.upsa.mimo.gamercollection.models.ErrorResponse
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.repositories.*
 import javax.inject.Inject
 

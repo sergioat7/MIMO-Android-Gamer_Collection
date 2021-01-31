@@ -1,7 +1,7 @@
 package es.upsa.mimo.gamercollection.repositories
 
-import es.upsa.mimo.gamercollection.models.ErrorResponse
-import es.upsa.mimo.gamercollection.models.PlatformResponse
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
+import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.network.apiClient.PlatformAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import es.upsa.mimo.gamercollection.utils.Constants

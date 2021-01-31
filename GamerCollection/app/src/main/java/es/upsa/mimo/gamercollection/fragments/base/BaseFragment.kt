@@ -8,7 +8,7 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.fragments.popups.PopupErrorDialogFragment
 import es.upsa.mimo.gamercollection.fragments.popups.PopupLoadingDialogFragment
 import es.upsa.mimo.gamercollection.fragments.popups.PopupSyncAppDialogFragment
-import es.upsa.mimo.gamercollection.models.ErrorResponse
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import java.io.Serializable
 

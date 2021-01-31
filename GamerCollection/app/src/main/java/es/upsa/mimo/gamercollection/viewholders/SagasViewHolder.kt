@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
-import es.upsa.mimo.gamercollection.models.SagaResponse
+import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import kotlinx.android.synthetic.main.saga_item.view.*
 
 class SagasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

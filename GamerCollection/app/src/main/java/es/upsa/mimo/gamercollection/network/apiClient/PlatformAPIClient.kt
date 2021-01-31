@@ -1,7 +1,7 @@
 package es.upsa.mimo.gamercollection.network.apiClient
 
-import es.upsa.mimo.gamercollection.models.ErrorResponse
-import es.upsa.mimo.gamercollection.models.PlatformResponse
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
+import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.network.apiService.PlatformAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
