@@ -91,6 +91,7 @@ class GamesViewModel @Inject constructor(
         dialogView.orientation = LinearLayout.HORIZONTAL
 
         val ascendingPicker = getPicker(arrayOf(resources.getString(R.string.ascending), resources.getString(R.string.descending)), context)
+        ascendingPicker.value = if(sortAscending) 0 else 1
         val ascendingPickerParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
@@ -98,6 +99,7 @@ class GamesViewModel @Inject constructor(
         ascendingPickerParams.weight = 1f
 
         val sortKeysPicker = getPicker(sortingValues, context)
+        sortKeysPicker.value = sortingKeys.indexOf(sortKey)
         val sortKeysPickerParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
