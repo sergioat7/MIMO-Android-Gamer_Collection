@@ -16,6 +16,6 @@
     <color name="textPrimary">#FFFFFF</color>
     <color name="textPrimaryLight">#75FFFFFF</color>
     <color name="textSecondary">#363636</color>
-    <color name="textTertiary">#585858</color>
+    <color name="textTertiary">#C8C8C8</color>
 
 </resources>
