@@ -1,19 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-    <style name="GamesCountTextView">
-        <item name="android:layout_marginTop">@dimen/margin_small</item>
-        <item name="android:layout_marginBottom">@dimen/margin_small</item>
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textSize">@dimen/font_large</item>
-        <item name="android:fontFamily">@font/roboto_bold</item>
-    </style>
-
-    <style name="GamesSortButton" parent="Widget.AppCompat.ImageButton">
-        <item name="android:layout_marginEnd">@dimen/margin_small</item>
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:src">@drawable/ic_sort_black_24dp</item>
-    </style>
 
     <style name="StateButtonsContainerView">
         <item name="android:background">#000000</item>
@@ -32,7 +18,6 @@
         <item name="android:layout_marginTop">@dimen/margin_tiny</item>
         <item name="android:layout_marginBottom">@dimen/margin_tiny</item>
         <item name="android:layout_marginStart">@dimen/margin_medium</item>
-<!--        <item name="android:gravity">center_vertical</item>-->
         <item name="android:orientation">vertical</item>
     </style>
 

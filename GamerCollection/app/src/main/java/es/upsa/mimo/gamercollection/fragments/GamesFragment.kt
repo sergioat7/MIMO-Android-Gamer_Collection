@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.FragmentTransaction
@@ -81,6 +82,11 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
                 filter()
                 return true
             }
+            R.id.action_sort_on -> {
+
+                viewModel.sortGames(requireContext(), resources)
+                return true
+            }
             R.id.action_add -> {
 
                 launchActivity(GameDetailActivity::class.java)
@@ -117,10 +123,6 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
         val application = activity?.application
         viewModel = ViewModelProvider(this, GamesViewModelFactory(application)).get(GamesViewModel::class.java)
         setupBindings()
-
-        button_sort.setOnClickListener {
-            viewModel.sortGames(requireContext(), resources)
-        }
 
         button_pending.setOnClickListener {
             buttonClicked(it, Constants.PENDING_STATE)
@@ -192,6 +194,7 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
 
         viewModel.gamesCount.observe(viewLifecycleOwner, {
             setGamesCount(it)
+            setTitle(it.size)
         })
     }
 
@@ -277,10 +280,18 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
         val inProgressGamesCount = filteredGames.filter { it == Constants.IN_PROGRESS_STATE }.size
         val finishedGamesCount = filteredGames.filter { it == Constants.FINISHED_STATE }.size
 
-        text_view_games_number.text = resources.getString(R.string.games_number_title, games.size)
         button_pending.text_view_subtitle.text = "$pendingGamesCount"
         button_in_progress.text_view_subtitle.text = "$inProgressGamesCount"
         button_finished.text_view_subtitle.text = "$finishedGamesCount"
+    }
+
+    private fun setTitle(gamesCount: Int) {
+
+        val title = when(gamesCount) {
+            1 -> resources.getString(R.string.games_number_title, gamesCount)
+            else -> resources.getString(R.string.games_number_title, gamesCount)
+        }
+        (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
 
     private fun enableStateButtons(enable: Boolean) {
