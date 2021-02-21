@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryLight">#75FFFFFF</color>
+    <color name="colorSecondary">#363636</color>
+    <color name="colorSecondaryLight">#75363636</color>
+    <color name="colorSecondarySuperLight">#50363636</color>
+    <color name="colorFinished">#1ABC9C</color>
+    <color name="colorFinishedLight">#751ABC9C</color>
+    <color name="colorPending">#EC5565</color>
+    <color name="colorPendingLight">#75EC5565</color>
+    <color name="colorInProgress">#FECD54</color>
+    <color name="buttonPrimary">#FFFFFF</color>
+    <color name="buttonSecondary">#363636</color>
+    <color name="textPrimary">#FFFFFF</color>
+    <color name="textPrimaryLight">#75FFFFFF</color>
+    <color name="textSecondary">#363636</color>
+    <color name="textTertiary">#585858</color>
+
+</resources>

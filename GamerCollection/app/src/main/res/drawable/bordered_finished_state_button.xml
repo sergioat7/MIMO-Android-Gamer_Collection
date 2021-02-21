@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_selected="true" android:textColor="@color/colorPrimary">
+    <item android:state_selected="true">
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/radius_tiny" />
             <stroke android:width="5px" android:color="@color/colorFinished" />
-            <solid android:color="@color/colorSecondary" />
+            <solid android:color="@color/colorPrimary" />
         </shape>
     </item>
 
@@ -13,7 +13,7 @@
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/radius_tiny" />
             <stroke android:width="5px" android:color="@color/colorFinished" />
-            <solid android:color="@color/colorPrimary" />
+            <solid android:color="@color/colorSecondary" />
         </shape>
     </item>
 </selector>

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="SagaNameEditText" parent="@style/CustomEditText.Bold">
+    <style name="SagaNameEditText">
         <item name="android:layout_marginTop">@dimen/margin_tiny</item>
         <item name="android:layout_marginBottom">@dimen/margin_tiny</item>
         <item name="android:layout_marginStart">@dimen/margin_small</item>
         <item name="android:layout_marginEnd">@dimen/margin_tiny</item>
         <item name="android:background">@android:color/transparent</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/textSecondary</item>
     </style>
 
     <style name="SagaEditButton">

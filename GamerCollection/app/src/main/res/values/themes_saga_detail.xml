@@ -29,7 +29,7 @@
         <item name="android:layout_marginTop">@dimen/margin_tiny</item>
         <item name="android:layout_marginStart">@dimen/margin_medium</item>
         <item name="android:layout_marginEnd">@dimen/margin_medium</item>
-        <item name="android:background">@color/colorSecondary</item>
+        <item name="android:background">@color/colorPrimary</item>
     </style>
 
     <style name="SagaGamesContentView">
@@ -42,13 +42,14 @@
         <item name="android:layout_marginTop">@dimen/margin_mini</item>
         <item name="android:layout_marginStart">@dimen/margin_mini</item>
         <item name="android:layout_marginEnd">@dimen/margin_mini</item>
-        <item name="android:background">@color/colorPrimary</item>
     </style>
 
     <style name="GamesSelectorAcceptButton">
         <item name="android:layout_marginTop">@dimen/margin_tiny</item>
         <item name="android:layout_marginBottom">@dimen/margin_tiny</item>
+        <item name="android:background">@color/colorPrimary</item>
         <item name="android:text">@string/accept</item>
+        <item name="android:textColor">@color/colorSecondary</item>
     </style>
 
 </resources>
