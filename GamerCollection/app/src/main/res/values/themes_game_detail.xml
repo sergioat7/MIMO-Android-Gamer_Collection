@@ -20,7 +20,7 @@
         <item name="android:drawablePadding">@dimen/margin_medium_negative</item>
         <item name="android:drawableTint">@color/colorInProgress</item>
         <item name="android:text">0</item>
-        <item name="android:textColor">@color/colorSecondary</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textSize">@dimen/font_medium</item>
     </style>
 
@@ -35,8 +35,8 @@
         <item name="android:layout_marginStart">@dimen/margin_medium</item>
         <item name="android:layout_marginEnd">@dimen/margin_medium</item>
         <item name="tabIndicatorColor">@color/colorFinished</item>
-        <item name="tabSelectedTextColor">@color/colorSecondary</item>
-        <item name="tabTextColor">@color/colorSecondarySuperLight</item>
+        <item name="tabSelectedTextColor">@color/colorPrimary</item>
+        <item name="tabTextColor">@color/colorPrimaryLight</item>
     </style>
 
     <style name="GameDataContentView">
@@ -87,6 +87,7 @@
         <item name="android:backgroundTint">@color/colorPrimary</item>
         <item name="android:inputType">textUri</item>
         <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 

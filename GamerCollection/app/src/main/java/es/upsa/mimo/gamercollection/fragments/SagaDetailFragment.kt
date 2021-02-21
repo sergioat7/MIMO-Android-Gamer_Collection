@@ -176,7 +176,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
         )
         layoutParams.setMargins(0, 15, 0, 15)
 
-        for (game in viewModel.getOrderedGames(games)) {
+        for (game in games.sortedBy { it.releaseDate }) {
 
             val tvGame = TextView(requireContext())
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) tvGame.setTextAppearance(R.style.CustomEditText_Regular)
@@ -191,7 +191,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
     private fun enableEdition(enable: Boolean) {
 
         val inputTypeText = if (enable) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
-        val backgroundColor = ContextCompat.getColor(requireContext(), R.color.colorSecondary)
+        val backgroundColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
 
         edit_text_name.setReadOnly(!enable, inputTypeText, backgroundColor)
         button_add_game.visibility = if(enable) View.VISIBLE else View.GONE

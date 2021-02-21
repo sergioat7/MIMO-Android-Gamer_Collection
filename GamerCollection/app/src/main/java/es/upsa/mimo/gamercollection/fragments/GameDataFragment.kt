@@ -60,7 +60,7 @@ class GameDataFragment(
     fun showData(game: GameResponse?, enabled: Boolean) {
 
         val inputTypeText = if (enabled) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
-        val backgroundColor = ContextCompat.getColor(requireContext(), R.color.colorSecondary)
+        val backgroundColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
 
         var genrePosition = 0
         var releaseDate: String? = null
@@ -253,7 +253,7 @@ class GameDataFragment(
         }
         spinner_genres.adapter = Constants.getAdapter(requireContext(), genreValues)
 
-        spinner_pegis.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.colorSecondary))
+        spinner_pegis.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
         val pegis = ArrayList<String>()
         pegis.run {
             this.add(resources.getString(R.string.game_detail_select_pegi))
