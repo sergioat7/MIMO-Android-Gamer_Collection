@@ -90,7 +90,6 @@ class GamesViewHolder(
             itemView.rating_bar.visibility = View.GONE
         }
 
-        itemView.image_view_arrow.visibility = if(sagaId != null) View.GONE else View.VISIBLE
         itemView.check_box.visibility = if(sagaId != null) View.VISIBLE else View.GONE
         itemView.check_box.isChecked = game.saga?.id  == sagaId
     }
