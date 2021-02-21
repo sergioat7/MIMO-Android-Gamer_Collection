@@ -23,7 +23,7 @@
         android:id="@+id/view_mask"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/colorSecondaryLight"
+        android:background="@drawable/gradient_view"
         app:layout_constraintBottom_toBottomOf="@+id/image_view_blurred"
         app:layout_constraintEnd_toEndOf="@+id/image_view_blurred"
         app:layout_constraintStart_toStartOf="@+id/image_view_blurred"
