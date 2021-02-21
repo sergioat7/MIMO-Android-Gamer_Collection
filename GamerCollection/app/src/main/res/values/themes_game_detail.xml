@@ -35,8 +35,8 @@
         <item name="android:layout_marginStart">@dimen/margin_medium</item>
         <item name="android:layout_marginEnd">@dimen/margin_medium</item>
         <item name="tabIndicatorColor">@color/colorFinished</item>
-        <item name="tabSelectedTextColor">@color/colorPrimary</item>
-        <item name="tabTextColor">@color/colorPrimaryLight</item>
+        <item name="tabSelectedTextColor">@color/colorSecondary</item>
+        <item name="tabTextColor">@color/colorSecondaryLight</item>
     </style>
 
     <style name="GameDataContentView">
