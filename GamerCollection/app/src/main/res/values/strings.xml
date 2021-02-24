@@ -36,7 +36,10 @@
     <string name="games_filter_button_title_pending">Pending</string>
     <string name="games_filter_button_title_in_progress">In Progress</string>
     <string name="games_filter_button_title_finished">Finished</string>
-    <string name="games_number_title">%d games</string>
+    <plurals name="games_number_title">
+        <item quantity="one">%d game</item>
+        <item quantity="other">%d games</item>
+    </plurals>
 
     // Game detail
     <string name="game_detail_placeholder_name">Add a name</string>
