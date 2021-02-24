@@ -83,12 +83,11 @@ class GamesViewHolder(
             itemView.image_view_calendar.visibility = View.GONE
         }
 
-        if (game.score > 0) {
-            itemView.rating_bar.rating = (game.score / 2).toFloat()
-            itemView.rating_bar.visibility = View.VISIBLE
-        } else {
-            itemView.rating_bar.visibility = View.GONE
-        }
+        val rating = game.score
+        itemView.rating_bar.rating = rating.toFloat() / 2
+        itemView.text_view_rating.text = rating.toInt().toString()
+        itemView.linear_layout_rating.visibility = if (rating > 0) View.VISIBLE else View.GONE
+        itemView.text_view_new.visibility = if (rating > 0) View.GONE else View.VISIBLE
 
         itemView.check_box.visibility = if(sagaId != null) View.VISIBLE else View.GONE
         itemView.check_box.isChecked = game.saga?.id  == sagaId

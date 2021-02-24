@@ -77,8 +77,8 @@
 
     <style name="CustomRatingBar" parent="Widget.MaterialRatingBar.RatingBar">
         <item name="android:progressTint">@color/colorInProgress</item>
-        <item name="android:progressBackgroundTint">@color/colorPrimaryLight</item>
-        <item name="android:secondaryProgressTint">@android:color/transparent</item>
+        <item name="android:progressBackgroundTint">@color/colorInProgressLight</item>
+        <item name="android:secondaryProgressTint">@color/colorInProgressLight</item>
         <item name="mrb_fillBackgroundStars">false</item>
     </style>
 

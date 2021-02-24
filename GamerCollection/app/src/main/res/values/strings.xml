@@ -40,6 +40,7 @@
         <item quantity="one">%d game</item>
         <item quantity="other">%d games</item>
     </plurals>
+    <string name="new_game">New</string>
 
     // Game detail
     <string name="game_detail_placeholder_name">Add a name</string>
