@@ -16,7 +16,9 @@ class SagasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun fillData(saga: SagaResponse, context: Context) {
 
-        itemView.edit_text_name.setText(saga.name)
+        val gamesCount = saga.games.size
+        val title = context.resources.getQuantityString(R.plurals.saga_title, gamesCount, saga.name, gamesCount)
+        itemView.edit_text_name.setText(title)
         itemView.edit_text_name.setReadOnly(true, InputType.TYPE_NULL, 0)
         itemView.image_view_arrow.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_keyboard_arrow_down_white_24dp))
         itemView.image_view_arrow.visibility = if (saga.games.isNotEmpty()) View.VISIBLE else View.GONE

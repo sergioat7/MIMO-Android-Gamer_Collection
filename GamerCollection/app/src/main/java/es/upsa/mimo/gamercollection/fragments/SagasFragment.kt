@@ -156,10 +156,7 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
 
     private fun setTitle(sagasCount: Int) {
 
-        val title = when(sagasCount) {
-            1 -> resources.getString(R.string.sagas_number_title, sagasCount)
-            else -> resources.getString(R.string.sagas_number_title, sagasCount)
-        }
+        val title = resources.getQuantityString(R.plurals.sagas_number_title, sagasCount, sagasCount)
         (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
 }

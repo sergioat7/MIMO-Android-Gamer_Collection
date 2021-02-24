@@ -82,7 +82,14 @@
 
     // Sagas
     <string name="sagas">My Sagas</string>
-    <string name="sagas_number_title" translatable="false">%d sagas</string>
+    <plurals name="sagas_number_title" translatable="false">
+        <item quantity="one">%d saga</item>
+        <item quantity="other">%d sagas</item>
+    </plurals>
+    <plurals name="saga_title">
+        <item quantity="one">%s (%d game)</item>
+        <item quantity="other">%s (%d games)</item>
+    </plurals>
 
     // Saga detail
     <string name="saga_detail">Detail</string>
