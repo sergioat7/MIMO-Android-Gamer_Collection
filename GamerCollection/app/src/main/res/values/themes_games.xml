@@ -26,7 +26,7 @@
         <item name="android:textColor">@color/textPrimary</item>
         <item name="android:textSize">@dimen/font_extra_large</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
-        <item name="android:maxLines">2</item>
+        <item name="android:maxLines">3</item>
         <item name="android:ellipsize">end</item>
     </style>
 
@@ -53,6 +53,13 @@
         <item name="android:gravity">bottom</item>
         <item name="android:textColor">@color/colorInProgress</item>
         <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="NoRatingTextView">
+        <item name="android:text">@string/new_game</item>
+        <item name="android:textColor">@color/colorInProgress</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
     </style>
 

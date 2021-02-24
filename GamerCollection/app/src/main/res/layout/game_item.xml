@@ -130,6 +130,15 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/text_view_new"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:visibility="gone"
+                style="@style/NoRatingTextView"
+                />
+
         </LinearLayout>
 
         <CheckBox

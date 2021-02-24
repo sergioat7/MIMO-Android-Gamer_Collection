@@ -38,6 +38,7 @@
         <item quantity="one">%d juego</item>
         <item quantity="other">%d juegos</item>
     </plurals>
+    <string name="new_game">Nuevo</string>
 
     // Game detail
     <string name="game_detail_placeholder_name">Añade un nombre</string>
