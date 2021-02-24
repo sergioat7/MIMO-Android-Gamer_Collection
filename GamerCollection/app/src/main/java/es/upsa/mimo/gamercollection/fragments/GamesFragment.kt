@@ -287,10 +287,7 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
 
     private fun setTitle(gamesCount: Int) {
 
-        val title = when(gamesCount) {
-            1 -> resources.getString(R.string.games_number_title, gamesCount)
-            else -> resources.getString(R.string.games_number_title, gamesCount)
-        }
+        val title = resources.getQuantityString(R.plurals.games_number_title, gamesCount, gamesCount)
         (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
 
