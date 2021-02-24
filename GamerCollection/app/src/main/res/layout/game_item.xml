@@ -99,13 +99,6 @@
                 style="@style/GamePlatformTextView"
                 />
 
-            <ImageView
-                android:id="@+id/image_view_calendar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/GameCalendarImage"
-                />
-
             <LinearLayout
                 android:id="@+id/linear_layout_rating"
                 android:layout_width="wrap_content"

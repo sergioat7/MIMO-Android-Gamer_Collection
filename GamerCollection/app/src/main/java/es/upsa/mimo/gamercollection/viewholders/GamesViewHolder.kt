@@ -71,18 +71,6 @@ class GamesViewHolder(
             itemView.text_view_platform.visibility = View.GONE
         }
 
-        if (game.releaseDate != null && game.state == Constants.PENDING_STATE) {
-
-            if (Date().before(game.releaseDate)) {
-                itemView.image_view_calendar.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.unreleased))
-            } else {
-                itemView.image_view_calendar.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.released))
-            }
-            itemView.image_view_calendar.visibility = View.VISIBLE
-        } else {
-            itemView.image_view_calendar.visibility = View.GONE
-        }
-
         val rating = game.score
         itemView.rating_bar.rating = rating.toFloat() / 2
         itemView.text_view_rating.text = rating.toInt().toString()
