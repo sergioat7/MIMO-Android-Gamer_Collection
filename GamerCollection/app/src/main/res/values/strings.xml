@@ -79,6 +79,7 @@
 
     // Sagas
     <string name="sagas">My Sagas</string>
+    <string name="sagas_number_title" translatable="false">%d sagas</string>
 
     // Saga detail
     <string name="saga_detail">Detail</string>

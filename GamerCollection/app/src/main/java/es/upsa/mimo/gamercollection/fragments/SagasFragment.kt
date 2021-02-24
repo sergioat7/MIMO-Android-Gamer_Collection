@@ -2,6 +2,7 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import es.upsa.mimo.gamercollection.R
@@ -129,6 +130,7 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
 
         viewModel.sagas.observe(viewLifecycleOwner, {
             showData(it)
+            setTitle(it.size)
         })
     }
 
@@ -150,5 +152,14 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
 
         layout_empty_list.visibility = if (sagas.isNotEmpty()) View.GONE else View.VISIBLE
         swipe_refresh_layout.visibility = if (sagas.isNotEmpty()) View.VISIBLE else View.GONE
+    }
+
+    private fun setTitle(sagasCount: Int) {
+
+        val title = when(sagasCount) {
+            1 -> resources.getString(R.string.sagas_number_title, sagasCount)
+            else -> resources.getString(R.string.sagas_number_title, sagasCount)
+        }
+        (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
 }
