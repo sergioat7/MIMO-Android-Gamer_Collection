@@ -45,6 +45,11 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
         viewModel.getSagas()
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.expandedIds = sagasAdapter.getExpandedIds()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         menu.clear()
@@ -139,15 +144,15 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
         sagasAdapter.resetList()
 
         val items = mutableListOf<BaseModel<Int>>()
-        val expandedIds = mutableListOf<Int>()
         for (saga in sagas) {
 
             items.add(saga)
-            items.addAll(saga.games.sortedBy { it.releaseDate })
-            expandedIds.add(saga.id)
+            if (viewModel.expandedIds.contains(saga.id)) {
+                items.addAll(saga.games.sortedBy { it.releaseDate })
+            }
         }
         sagasAdapter.setItems(items)
-        sagasAdapter.setExpandedIds(expandedIds)
+        sagasAdapter.setExpandedIds(viewModel.expandedIds)
         sagasAdapter.notifyDataSetChanged()
 
         layout_empty_list.visibility = if (sagas.isNotEmpty()) View.GONE else View.VISIBLE
