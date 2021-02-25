@@ -4,6 +4,7 @@
     <!--  margins between views  -->
     <dimen name="margin_extra_large">100dp</dimen>
     <dimen name="margin_larger">50dp</dimen>
+    <dimen name="margin_large_negative">-40dp</dimen>
     <dimen name="margin_large">40dp</dimen>
     <dimen name="margin_medium_negative">-20dp</dimen>
     <dimen name="margin_medium">20dp</dimen>

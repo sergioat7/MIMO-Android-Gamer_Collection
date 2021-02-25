@@ -16,36 +16,48 @@
         app:layout_constraintTop_toTopOf="parent"
         >
 
-        <EditText
-            android:id="@+id/edit_text_name"
+        <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/image_view_arrow"
+            android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/SagaNameEditText"
-            />
+            app:layout_constraintEnd_toStartOf="@id/image_view_arrow"
+            >
+
+            <LinearLayout
+                android:id="@+id/linear_layout_title_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/SagaNameContainer"
+                >
+
+                <EditText
+                    android:id="@+id/edit_text_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/SagaNameEditText"
+                    />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/image_view_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/linear_layout_title_container"
+                style="@style/SagaEditButton"
+                />
+
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/image_view_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_larger"
+            android:layout_marginEnd="@dimen/margin_normal"
             app:srcCompat="@drawable/ic_keyboard_arrow_down_white_24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/edit_text_name"
-            app:layout_constraintEnd_toStartOf="@+id/image_view_edit"
-            app:layout_constraintTop_toTopOf="@+id/edit_text_name"
-            />
-
-        <ImageView
-            android:id="@+id/image_view_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/SagaEditButton"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
