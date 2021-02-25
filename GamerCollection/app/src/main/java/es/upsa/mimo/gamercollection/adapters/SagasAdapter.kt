@@ -110,6 +110,10 @@ class SagasAdapter(
         this.items = newItems
     }
 
+    fun getExpandedIds(): MutableList<Int> {
+        return this.expandedIds
+    }
+
     fun setExpandedIds(newExpandedIds: MutableList<Int>) {
         this.expandedIds = newExpandedIds
     }

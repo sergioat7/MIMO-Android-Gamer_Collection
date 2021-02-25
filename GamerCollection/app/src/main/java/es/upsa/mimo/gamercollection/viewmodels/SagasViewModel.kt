@@ -37,6 +37,7 @@ class SagasViewModel @Inject constructor(
     val sagasLoading: LiveData<Boolean> = _sagasLoading
     val sagasError: LiveData<ErrorResponse> = _sagasError
     val sagas: LiveData<List<SagaResponse>> = _sagas
+    var expandedIds: MutableList<Int> = mutableListOf()
 
     //MARK: - Public methods
 
