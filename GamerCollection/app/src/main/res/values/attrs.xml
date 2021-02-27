@@ -11,5 +11,13 @@
     <declare-styleable name="EmptyListLayout">
         <attr name="emptyListLayout_image" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="CustomEditText">
+        <attr name="customEditText_type" format="string"/>
+        <attr name="customEditText_placeholder" format="string"/>
+        <attr name="customEditText_font" format="reference"/>
+        <attr name="customEditText_text_size" format="reference"/>
+        <attr name="customEditText_icon" format="reference"/>
+    </declare-styleable>
     
 </resources>
