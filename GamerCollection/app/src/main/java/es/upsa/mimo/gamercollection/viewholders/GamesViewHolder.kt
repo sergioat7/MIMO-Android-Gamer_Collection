@@ -13,8 +13,6 @@ import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.models.responses.StateResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.android.synthetic.main.game_item.view.*
-import java.lang.Exception
-import java.util.*
 
 class GamesViewHolder(
     itemView: View,
@@ -38,21 +36,24 @@ class GamesViewHolder(
             itemView.view_state.setBackgroundColor(Color.TRANSPARENT)
         }
 
-        game.imageUrl?.let { url ->
-            itemView.progress_bar_loading.visibility = View.VISIBLE
-            Picasso.get()
-                .load(url)
-                .into(itemView.image_view_game, object : Callback {
+        val image = game.imageUrl ?: "-"
+        val errorImage = if (Constants.isDarkMode(context)) R.drawable.ic_default_game_cover_dark else R.drawable.ic_default_game_cover_light
+        val loading = itemView.progress_bar_loading
+        loading.visibility = View.VISIBLE
+        Picasso
+            .get()
+            .load(image)
+            .error(errorImage)
+            .into(itemView.image_view_game, object : Callback {
+
                 override fun onSuccess() {
-                    itemView.progress_bar_loading.visibility = View.GONE
+                    loading.visibility = View.GONE
                 }
+
                 override fun onError(e: Exception?) {
-                    itemView.progress_bar_loading.visibility = View.GONE
+                    loading.visibility = View.GONE
                 }
             })
-        } ?: run {
-            itemView.image_view_game.setImageDrawable(null)
-        }
 
         itemView.image_view_goty.visibility = if (game.goty) View.VISIBLE else View.GONE
 
