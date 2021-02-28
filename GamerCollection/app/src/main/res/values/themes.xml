@@ -31,7 +31,7 @@
 
     <style name="RoundedButton" parent="android:style/Widget.Button">
         <item name="android:layout_width">@dimen/size_semi_huge</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/textSecondary</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="android:textSize">@dimen/font_medium</item>
         <item name="android:textAllCaps">false</item>
@@ -40,7 +40,7 @@
     </style>
 
     <style name="RoundedButton.Action">
-        <item name="android:background">@drawable/rounded_button_green</item>
+        <item name="android:background">@drawable/rounded_button_primary</item>
     </style>
 
     <style name="RoundedButton.Delete">
