@@ -86,11 +86,10 @@
         <item name="android:layout_marginTop">@dimen/margin_small</item>
         <item name="android:layout_marginStart">@dimen/margin_small</item>
         <item name="android:layout_marginEnd">@dimen/margin_small</item>
-        <item name="android:backgroundTint">@color/colorPrimary</item>
-        <item name="android:inputType">textUri</item>
-        <item name="android:textSize">@dimen/font_medium</item>
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="customEditText_type">"URL"</item>
+        <item name="customEditText_font">@font/roboto_regular</item>
+        <item name="customEditText_text_size">@dimen/font_medium</item>
+        <item name="customEditText_icon">@drawable/ic_cancel_black_24dp</item>
     </style>
 
     <style name="SongInfoImage">

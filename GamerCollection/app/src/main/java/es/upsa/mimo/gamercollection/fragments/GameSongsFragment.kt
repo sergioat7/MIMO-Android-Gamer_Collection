@@ -108,9 +108,9 @@ class GameSongsFragment(
 
         dialogView.button_accept.setOnClickListener {
 
-            val name = dialogView.edit_text_name.text.toString()
-            val singer = dialogView.edit_text_singer.text.toString()
-            val url = dialogView.edit_text_url.text.toString()
+            val name = dialogView.custom_edit_text_name.getText()
+            val singer = dialogView.custom_edit_text_singer.getText()
+            val url = dialogView.custom_edit_text_url.getText()
 
             if (name.isNotBlank() || singer.isNotBlank() || url.isNotBlank()) {
                 val song = SongResponse(

@@ -218,7 +218,7 @@ class GameDetailActivity : BaseActivity() {
 
         dialogView.button_accept.setOnClickListener {
 
-            val url = dialogView.edit_text_url.text.toString()
+            val url = dialogView.custom_edit_text_url.getText()
             if (url.isNotEmpty()) {
 
                 Picasso.get()
