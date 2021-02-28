@@ -3,7 +3,6 @@ package es.upsa.mimo.gamercollection.fragments
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.model.LatLng
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnLocationSelected
-import es.upsa.mimo.gamercollection.extensions.setReadOnly
-import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
@@ -54,12 +51,11 @@ class GameDataFragment(
         location?.let {
             locationText = "${it.latitude},${it.longitude}"
         }
-        edit_text_purchase_location.setText(locationText)
+        custom_edit_text_purchase_location.setText(locationText)
     }
 
     fun showData(game: GameResponse?, enabled: Boolean) {
 
-        val inputTypeText = if (enabled) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
         val backgroundColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
 
         var genrePosition = 0
@@ -112,7 +108,7 @@ class GameDataFragment(
 
             players = if (game.players != null && game.players.isNotEmpty()) game.players else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
 
-            edit_text_price.setText(game.price.toString())
+            custom_edit_text_price.setText(game.price.toString())
 
             purchaseDate = Constants.dateToString(
                 game.purchaseDate,
@@ -131,7 +127,7 @@ class GameDataFragment(
 
             observations = if (game.observations != null && game.observations.isNotEmpty()) game.observations else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
 
-            edit_text_saga.setText(game.saga?.name)
+            custom_edit_text_saga.setText(game.saga?.name)
         } ?: run {
 
             releaseDate = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
@@ -147,23 +143,23 @@ class GameDataFragment(
 
         spinner_genres.setSelection(genrePosition)
         linear_layout_genres.visibility = if (enabled || genrePosition > 0) View.VISIBLE else View.GONE
-        edit_text_release_date.setText(releaseDate)
+        custom_edit_text_release_date.setText(releaseDate)
         spinner_formats.setSelection(formatPosition)
         linear_layout_formats.visibility = if (enabled || formatPosition > 0) View.VISIBLE else View.GONE
-        edit_text_distributor.setText(distributor)
-        edit_text_developer.setText(developer)
-        edit_text_players.setText(players)
-        edit_text_purchase_date.setText(purchaseDate)
-        edit_text_purchase_location.setText(purchaseLocation)
-        edit_text_loaned.setText(loaned)
-        edit_text_video_url.setText(videoUrl)
-        edit_text_observations.setText(observations)
+        custom_edit_text_distributor.setText(distributor)
+        custom_edit_text_developer.setText(developer)
+        custom_edit_text_players.setText(players)
+        custom_edit_text_purchase_date.setText(purchaseDate)
+        custom_edit_text_purchase_location.setText(purchaseLocation)
+        custom_edit_text_loaned.setText(loaned)
+        custom_edit_text_video_url.setText(videoUrl)
+        custom_edit_text_observations.setText(observations)
 
         button_pending.isEnabled = enabled
         button_in_progress.isEnabled = enabled
         button_finished.isEnabled = enabled
 
-        edit_text_release_date.setReadOnly(!enabled, InputType.TYPE_NULL, backgroundColor)
+        custom_edit_text_release_date.setReadOnly(!enabled, backgroundColor)
         spinner_formats.backgroundTintList = if (!enabled) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
         spinner_formats.isEnabled = enabled
         spinner_genres.backgroundTintList = if (!enabled) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
@@ -171,15 +167,15 @@ class GameDataFragment(
 
         linear_layout_hidden.visibility = if(enabled) View.VISIBLE else View.GONE
 
-        edit_text_distributor.setReadOnly(!enabled, inputTypeText, backgroundColor)
-        edit_text_developer.setReadOnly(!enabled, inputTypeText, backgroundColor)
-        edit_text_players.setReadOnly(!enabled, inputTypeText, backgroundColor)
-        edit_text_price.setReadOnly(!enabled, if (enabled) InputType.TYPE_CLASS_NUMBER else InputType.TYPE_NULL, backgroundColor)
-        edit_text_purchase_date.setReadOnly(!enabled, InputType.TYPE_NULL, backgroundColor)
-        edit_text_purchase_location.setReadOnly(!enabled, InputType.TYPE_NULL, backgroundColor)
-        edit_text_loaned.setReadOnly(!enabled, inputTypeText, backgroundColor)
-        edit_text_video_url.setReadOnly(!enabled, if (enabled) InputType.TYPE_TEXT_VARIATION_URI else InputType.TYPE_NULL, backgroundColor)
-        edit_text_observations.setReadOnly(!enabled, inputTypeText, backgroundColor)
+        custom_edit_text_distributor.setReadOnly(!enabled, backgroundColor)
+        custom_edit_text_developer.setReadOnly(!enabled, backgroundColor)
+        custom_edit_text_players.setReadOnly(!enabled, backgroundColor)
+        custom_edit_text_price.setReadOnly(!enabled, backgroundColor)
+        custom_edit_text_purchase_date.setReadOnly(!enabled, backgroundColor)
+        custom_edit_text_purchase_location.setReadOnly(!enabled, backgroundColor)
+        custom_edit_text_loaned.setReadOnly(!enabled, backgroundColor)
+        custom_edit_text_video_url.setReadOnly(!enabled, backgroundColor)
+        custom_edit_text_observations.setReadOnly(!enabled, backgroundColor)
 
         button_delete_game.visibility = if(enabled && game != null) View.VISIBLE else View.GONE
     }
@@ -188,7 +184,7 @@ class GameDataFragment(
 
         val pegi = resources.getStringArray(R.array.pegis).firstOrNull { it == spinner_pegis.selectedItem.toString() }
         val releaseDate = Constants.stringToDate(
-            edit_text_release_date.text.toString(),
+            custom_edit_text_release_date.getText(),
             Constants.getDateFormatToShow(viewModel.language),
             viewModel.language
         )
@@ -196,28 +192,28 @@ class GameDataFragment(
         val genre = viewModel.genres.firstOrNull { it.name == spinner_genres.selectedItem.toString() }?.id
         val state = if(button_pending.isSelected) Constants.PENDING_STATE else if (button_in_progress.isSelected) Constants.IN_PROGRESS_STATE else if (button_finished.isSelected) Constants.FINISHED_STATE else null
         val purchaseDate = Constants.stringToDate(
-            edit_text_purchase_date.text.toString(),
+            custom_edit_text_purchase_date.getText(),
             Constants.getDateFormatToShow(viewModel.language),
             viewModel.language
         )
-        val price = try { edit_text_price.text.toString().toDouble() } catch (e: NumberFormatException) { 0.0 }
+        val price = try { custom_edit_text_price.getText().toDouble() } catch (e: NumberFormatException) { 0.0 }
 
         return viewModel.getGameData(
             pegi,
-            edit_text_distributor.text.toString(),
-            edit_text_developer.text.toString(),
-            edit_text_players.text.toString(),
+            custom_edit_text_distributor.getText(),
+            custom_edit_text_developer.getText(),
+            custom_edit_text_players.getText(),
             releaseDate,
             radio_button_yes.isChecked,
             format,
             genre,
             state,
             purchaseDate,
-            edit_text_purchase_location.text.toString(),
+            custom_edit_text_purchase_location.getText(),
             price,
-            edit_text_video_url.text.toString(),
-            edit_text_loaned.text.toString(),
-            edit_text_observations.text.toString()
+            custom_edit_text_video_url.getText(),
+            custom_edit_text_loaned.getText(),
+            custom_edit_text_observations.getText()
         )
     }
 
@@ -239,7 +235,6 @@ class GameDataFragment(
             buttonClicked(it)
         }
 
-        edit_text_release_date.showDatePicker(requireContext())
         formatValues = ArrayList()
         formatValues.run {
             this.add(resources.getString((R.string.game_detail_select_format)))
@@ -261,9 +256,8 @@ class GameDataFragment(
         }
         spinner_pegis.adapter = Constants.getAdapter(requireContext(), pegis)
 
-        edit_text_purchase_date.showDatePicker(requireContext())
-        edit_text_purchase_location.setOnClickListener { showMap() }
-        edit_text_saga.setReadOnly(true, InputType.TYPE_NULL, 0)
+        custom_edit_text_purchase_location.setOnClickListener { showMap() }
+        custom_edit_text_saga.setReadOnly(true, 0)
 
         button_delete_game.setOnClickListener {
 

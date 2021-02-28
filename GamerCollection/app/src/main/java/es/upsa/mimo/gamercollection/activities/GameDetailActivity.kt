@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -17,7 +16,6 @@ import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.base.BaseActivity
 import es.upsa.mimo.gamercollection.adapters.GameDetailPagerAdapter
-import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameDetailViewModelFactory
@@ -152,7 +150,6 @@ class GameDetailActivity : BaseActivity() {
 
     private fun showData(game: GameResponse?, enabled: Boolean) {
 
-        val inputTypeText = if (enabled) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
         val backgroundColor = ContextCompat.getColor(this, R.color.colorPrimary)
 
         var name: String? = null
@@ -203,12 +200,12 @@ class GameDetailActivity : BaseActivity() {
             name = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
         }
 
-        edit_text_name.setText(name)
+        custom_edit_text_name.setText(name)
         spinner_platforms.setSelection(platformPosition)
         spinner_platforms.visibility = if (enabled || platformPosition > 0) View.VISIBLE else View.GONE
 
         image_view_game.isEnabled = enabled
-        edit_text_name.setReadOnly(!enabled, inputTypeText, backgroundColor)
+        custom_edit_text_name.setReadOnly(!enabled, backgroundColor)
         spinner_platforms.backgroundTintList = if (!enabled) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
         spinner_platforms.isEnabled = enabled
         rating_button.isEnabled = enabled
@@ -265,7 +262,7 @@ class GameDetailActivity : BaseActivity() {
         val platform = viewModel.platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
 
         viewModel.saveGame(
-            edit_text_name.text.toString(),
+            custom_edit_text_name.getText(),
             platform,
             rating_button.text.toString().toDouble(),
             imageUrl,
