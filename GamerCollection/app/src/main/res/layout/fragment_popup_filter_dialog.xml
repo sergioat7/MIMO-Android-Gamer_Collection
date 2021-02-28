@@ -214,22 +214,26 @@
                         app:layout_constraintTop_toBottomOf="@+id/text_view_release_date_title"
                         >
 
-                        <EditText
-                            android:id="@+id/edit_text_release_date_min"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_release_date_min"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="@string/min"
-                            style="@style/CustomEditText.Regular"
+                            app:customEditText_type="DATE"
+                            app:customEditText_placeholder="@string/min"
+                            app:customEditText_font="@font/roboto_regular"
+                            app:customEditText_text_size="@dimen/font_medium"
                             />
 
-                        <EditText
-                            android:id="@+id/edit_text_release_date_max"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_release_date_max"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="@string/max"
-                            style="@style/CustomEditText.Regular"
+                            app:customEditText_type="DATE"
+                            app:customEditText_placeholder="@string/max"
+                            app:customEditText_font="@font/roboto_regular"
+                            app:customEditText_text_size="@dimen/font_medium"
                             />
 
                     </LinearLayout>
@@ -254,22 +258,26 @@
                         app:layout_constraintTop_toBottomOf="@+id/text_view_purchase_date_title"
                         >
 
-                        <EditText
-                            android:id="@+id/edit_text_purchase_date_min"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_purchase_date_min"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="@string/min"
-                            style="@style/CustomEditText.Regular"
+                            app:customEditText_type="DATE"
+                            app:customEditText_placeholder="@string/min"
+                            app:customEditText_font="@font/roboto_regular"
+                            app:customEditText_text_size="@dimen/font_medium"
                             />
 
-                        <EditText
-                            android:id="@+id/edit_text_purchase_date_max"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_purchase_date_max"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="@string/max"
-                            style="@style/CustomEditText.Regular"
+                            app:customEditText_type="DATE"
+                            app:customEditText_placeholder="@string/max"
+                            app:customEditText_font="@font/roboto_regular"
+                            app:customEditText_text_size="@dimen/font_medium"
                             />
 
                     </LinearLayout>
@@ -294,24 +302,26 @@
                         app:layout_constraintTop_toBottomOf="@+id/text_view_price_title"
                         >
 
-                        <EditText
-                            android:id="@+id/edit_text_price_min"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_price_min"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:inputType="numberDecimal"
-                            android:hint="@string/min"
-                            style="@style/CustomEditText.Regular"
+                            app:customEditText_type="NUMBER"
+                            app:customEditText_placeholder="@string/min"
+                            app:customEditText_font="@font/roboto_regular"
+                            app:customEditText_text_size="@dimen/font_medium"
                             />
 
-                        <EditText
-                            android:id="@+id/edit_text_price_max"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_price_max"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:inputType="numberDecimal"
-                            android:hint="@string/max"
-                            style="@style/CustomEditText.Regular"
+                            app:customEditText_type="NUMBER"
+                            app:customEditText_placeholder="@string/max"
+                            app:customEditText_font="@font/roboto_regular"
+                            app:customEditText_text_size="@dimen/font_medium"
                             />
 
                     </LinearLayout>
