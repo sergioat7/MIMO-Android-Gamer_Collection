@@ -217,11 +217,13 @@
                             style="@style/GameDataTitleTextView"
                             />
 
-                        <EditText
-                            android:id="@+id/edit_text_release_date"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_release_date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/game_detail_select_date"
+                            app:customEditText_type="DATE"
+                            app:customEditText_placeholder="@string/game_detail_select_date"
+                            app:customEditText_icon="@drawable/ic_cancel_black_24dp"
                             style="@style/GameDetailEditText"
                             />
 
@@ -261,11 +263,12 @@
                             style="@style/GameDataTitleTextView"
                             />
 
-                        <EditText
-                            android:id="@+id/edit_text_distributor"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_distributor"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/game_detail_placeholder_distributor"
+                            app:customEditText_type="TEXT"
+                            app:customEditText_placeholder="@string/game_detail_placeholder_distributor"
                             style="@style/GameDetailEditText"
                             />
 
@@ -283,11 +286,12 @@
                             style="@style/GameDataTitleTextView"
                             />
 
-                        <EditText
-                            android:id="@+id/edit_text_developer"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_developer"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/game_detail_placeholder_developer"
+                            app:customEditText_type="TEXT"
+                            app:customEditText_placeholder="@string/game_detail_placeholder_developer"
                             style="@style/GameDetailEditText"
                             />
 
@@ -305,11 +309,12 @@
                             style="@style/GameDataTitleTextView"
                             />
 
-                        <EditText
-                            android:id="@+id/edit_text_players"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_players"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/game_detail_placeholder_players"
+                            app:customEditText_type="TEXT"
+                            app:customEditText_placeholder="@string/game_detail_placeholder_players"
                             style="@style/GameDetailEditText"
                             />
 
@@ -328,11 +333,12 @@
                             style="@style/GameDataTitleTextView"
                             />
 
-                        <EditText
-                            android:id="@+id/edit_text_price"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_price"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/game_detail_placeholder_price"
+                            app:customEditText_type="NUMBER"
+                            app:customEditText_placeholder="@string/game_detail_placeholder_price"
                             style="@style/GameDetailEditText"
                             />
 
@@ -351,11 +357,13 @@
                             style="@style/GameDataTitleTextView"
                             />
 
-                        <EditText
-                            android:id="@+id/edit_text_purchase_date"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_purchase_date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/game_detail_select_date"
+                            app:customEditText_type="DATE"
+                            app:customEditText_placeholder="@string/game_detail_select_date"
+                            app:customEditText_icon="@drawable/ic_cancel_black_24dp"
                             style="@style/GameDetailEditText"
                             />
 
@@ -374,11 +382,13 @@
                             style="@style/GameDataTitleTextView"
                             />
 
-                        <EditText
-                            android:id="@+id/edit_text_purchase_location"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_purchase_location"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/game_detail_placeholder_purchase_location"
+                            app:customEditText_type="NONE"
+                            app:customEditText_placeholder="@string/game_detail_placeholder_purchase_location"
+                            app:customEditText_icon="@drawable/ic_cancel_black_24dp"
                             style="@style/GameDetailEditText"
                             />
 
@@ -397,11 +407,12 @@
                             style="@style/GameDataTitleTextView"
                             />
 
-                        <EditText
-                            android:id="@+id/edit_text_loaned"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_loaned"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/game_detail_placeholder_loaned_to"
+                            app:customEditText_type="TEXT"
+                            app:customEditText_placeholder="@string/game_detail_placeholder_loaned_to"
                             style="@style/GameDetailEditText"
                             />
 
@@ -420,11 +431,12 @@
                             style="@style/GameDataTitleTextView"
                             />
 
-                        <EditText
-                            android:id="@+id/edit_text_video_url"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_video_url"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/game_detail_placeholder_video_url"
+                            app:customEditText_type="URL"
+                            app:customEditText_placeholder="@string/game_detail_placeholder_video_url"
                             style="@style/GameDetailEditText"
                             />
 
@@ -443,11 +455,12 @@
                             style="@style/GameDataTitleTextView"
                             />
 
-                        <EditText
-                            android:id="@+id/edit_text_observations"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_observations"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/game_detail_placeholder_observations"
+                            app:customEditText_type="TEXT"
+                            app:customEditText_placeholder="@string/game_detail_placeholder_observations"
                             style="@style/GameDetailEditText"
                             />
 
@@ -466,12 +479,11 @@
                             style="@style/GameDataTitleTextView"
                             />
 
-                        <EditText
-                            android:id="@+id/edit_text_saga"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_saga"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@android:color/transparent"
-                            android:inputType="none"
+                            app:customEditText_type="NONE"
                             style="@style/GameDetailEditText"
                             />
 

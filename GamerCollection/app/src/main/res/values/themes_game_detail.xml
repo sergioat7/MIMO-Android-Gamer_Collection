@@ -7,9 +7,11 @@
         <item name="srcCompat">@drawable/add_photo</item>
     </style>
 
-    <style name="GameTitleEditText" parent="@style/CustomEditText.Bold">
-        <item name="android:hint">@string/game_detail_placeholder_name</item>
-        <item name="android:textSize">@dimen/font_larger</item>
+    <style name="GameTitleEditText">
+        <item name="customEditText_type">"TEXT"</item>
+        <item name="customEditText_placeholder">@string/game_detail_placeholder_name</item>
+        <item name="customEditText_font">@font/roboto_bold</item>
+        <item name="customEditText_text_size">@dimen/font_larger</item>
     </style>
 
     <style name="RatingButton" parent="android:style/Widget.Button">
@@ -58,10 +60,10 @@
         <item name="android:textSize">@dimen/font_medium</item>
     </style>
 
-    <style name="GameDetailEditText" parent="CustomEditText.Regular">
+    <style name="GameDetailEditText">
         <item name="android:layout_gravity">center</item>
-        <item name="android:minHeight">@dimen/size_bigger</item>
-        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="customEditText_font">@font/roboto_regular</item>
+        <item name="customEditText_text_size">@dimen/font_medium</item>
     </style>
 
     <style name="AddSongButton" parent="@style/RoundedButton.Action">

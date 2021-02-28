@@ -62,10 +62,15 @@ class CustomEditText: ConstraintLayout {
                     EditTextType.NUMBER -> InputType.TYPE_CLASS_NUMBER
                     EditTextType.URL -> InputType.TYPE_TEXT_VARIATION_URI
                     EditTextType.DATE -> InputType.TYPE_NULL
+                    EditTextType.NONE -> InputType.TYPE_NULL
                 }
             }
         edit_text.setReadOnly(value, type, lineColor)
         image_button.visibility = if(!value) View.VISIBLE else View.GONE
+    }
+
+    override fun setOnClickListener(l: OnClickListener?) {
+        edit_text.setOnClickListener(l)
     }
 
     // MARK: - Private methods
@@ -88,7 +93,12 @@ class CustomEditText: ConstraintLayout {
             val paddingEnd =
                 if (icon != null) (resources.getDimension(R.dimen.margin_larger) / resources.displayMetrics.density).toInt()
                 else edit_text.paddingRight
-            edit_text.setPadding(edit_text.paddingLeft, edit_text.paddingTop, paddingEnd, edit_text.paddingBottom)
+            edit_text.setPadding(
+                edit_text.paddingLeft,
+                edit_text.paddingTop,
+                paddingEnd,
+                edit_text.paddingBottom
+            )
             image_button.setImageDrawable(icon)
             image_button.setOnClickListener {
                 edit_text.setText("")
@@ -101,5 +111,5 @@ class CustomEditText: ConstraintLayout {
     }
 }
 enum class EditTextType {
-    EMAIL, PASSWORD, TEXT, NUMBER, URL, DATE
+    EMAIL, PASSWORD, TEXT, NUMBER, URL, DATE, NONE
 }
