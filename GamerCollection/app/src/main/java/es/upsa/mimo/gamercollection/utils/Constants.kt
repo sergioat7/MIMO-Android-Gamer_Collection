@@ -2,6 +2,7 @@ package es.upsa.mimo.gamercollection.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.core.content.ContextCompat
@@ -28,6 +29,12 @@ class Constants {
             val arrayAdapter = SpinnerAdapter(context, data, firstOptionEnabled)
             arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
             return arrayAdapter
+        }
+
+        fun isDarkMode(context: Context?): Boolean {
+
+            val mode = context?.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)
+            return mode == Configuration.UI_MODE_NIGHT_YES
         }
 
         // MARK: - Database constants
