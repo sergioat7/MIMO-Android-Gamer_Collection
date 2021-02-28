@@ -49,10 +49,10 @@ class CustomEditText: ConstraintLayout {
         edit_text.setText(text)
     }
 
-    fun setReadOnly(value: Boolean, lineColor: Int) {
+    fun setReadOnly(notEditable: Boolean, lineColor: Int) {
 
         val type =
-            if (value) {
+            if (notEditable) {
                 InputType.TYPE_NULL
             } else {
                 when(inputType) {
@@ -65,12 +65,16 @@ class CustomEditText: ConstraintLayout {
                     EditTextType.NONE -> InputType.TYPE_NULL
                 }
             }
-        edit_text.setReadOnly(value, type, lineColor)
-        image_button.visibility = if(!value) View.VISIBLE else View.GONE
+        edit_text.setReadOnly(notEditable, type, lineColor)
+        image_button.visibility = if(!notEditable) View.VISIBLE else View.GONE
     }
 
     override fun setOnClickListener(l: OnClickListener?) {
         edit_text.setOnClickListener(l)
+    }
+
+    fun setDatePickerFormat(dateFormat: String) {
+        edit_text.showDatePicker(context, dateFormat)
     }
 
     // MARK: - Private methods
@@ -107,6 +111,17 @@ class CustomEditText: ConstraintLayout {
             if (inputType == EditTextType.DATE) {
                 edit_text.showDatePicker(context)
             }
+
+            val type = when(inputType) {
+                EditTextType.EMAIL -> InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+                EditTextType.PASSWORD -> InputType.TYPE_TEXT_VARIATION_PASSWORD
+                EditTextType.TEXT -> InputType.TYPE_CLASS_TEXT
+                EditTextType.NUMBER -> InputType.TYPE_CLASS_NUMBER
+                EditTextType.URL -> InputType.TYPE_TEXT_VARIATION_URI
+                EditTextType.DATE -> InputType.TYPE_NULL
+                EditTextType.NONE -> InputType.TYPE_NULL
+            }
+            edit_text.setRawInputType(type)
         }
     }
 }
