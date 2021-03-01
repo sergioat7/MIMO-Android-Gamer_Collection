@@ -7,14 +7,9 @@
         <item name="android:layout_marginStart">@dimen/margin_medium</item>
         <item name="android:layout_marginEnd">@dimen/margin_medium</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:textColor">@color/colorPrimary</item>
-    </style>
-
-    <style name="ErrorAcceptButton">
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:text">@string/accept</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@color/colorSecondary</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">@dimen/font_large</item>
     </style>
 
 </resources>

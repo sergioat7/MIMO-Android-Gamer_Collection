@@ -12,6 +12,11 @@ class PopupErrorDialogFragment(private val message: String) : DialogFragment() {
 
     // MARK: - Lifecycle methods
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_TITLE, R.style.Theme_GamerCollection_DialogTransparent)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -23,6 +28,6 @@ class PopupErrorDialogFragment(private val message: String) : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         error_text_view.text = message
-        accept_button.setOnClickListener { dismiss() }
+        button_accept.setOnClickListener { dismiss() }
     }
 }
