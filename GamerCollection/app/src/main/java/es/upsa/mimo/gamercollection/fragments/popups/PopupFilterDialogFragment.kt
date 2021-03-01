@@ -26,6 +26,11 @@ class PopupFilterDialogFragment(
 
     // MARK: - Lifecycle methods
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_TITLE, R.style.Theme_GamerCollection_DialogTransparent)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

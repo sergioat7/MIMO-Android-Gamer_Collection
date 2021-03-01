@@ -18,7 +18,7 @@
         <item name="android:colorBackground">@color/colorSecondary</item>
     </style>
 
-    <style name="Theme.GamerCollection.DialogTransparent" parent="Theme.AppCompat.Light.Dialog">
+    <style name="Theme.GamerCollection.DialogTransparent" parent="Theme.AppCompat.DayNight.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
@@ -45,6 +45,12 @@
 
     <style name="RoundedButton.Delete">
         <item name="android:background">@drawable/rounded_button_red</item>
+    </style>
+
+    <style name="PopupAcceptButton" parent="RoundedButton.Action">
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:text">@string/accept</item>
     </style>
 
     <style name="CustomEditText" parent="Widget.AppCompat.EditText">
