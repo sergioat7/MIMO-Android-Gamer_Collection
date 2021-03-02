@@ -132,24 +132,12 @@
         <Button
             android:id="@+id/button_change_password"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_tiny"
+            android:layout_marginBottom="@dimen/margin_medium"
             android:text="@string/save"
-            app:layout_constraintBottom_toTopOf="@+id/button_delete_user"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             style="@style/RoundedButton.Action"
-            />
-
-        <Button
-            android:id="@+id/button_delete_user"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_medium"
-            android:text="@string/delete"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            style="@style/RoundedButton.Delete"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

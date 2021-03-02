@@ -45,9 +45,11 @@ class ProfileFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when(item.itemId) {
-            R.id.action_synchronize -> {
+            R.id.action_delete -> {
 
-                openSyncPopup()
+                showPopupConfirmationDialog(resources.getString(R.string.profile_delete_confirmation)) {
+                    viewModel.deleteUser()
+                }
                 return true
             }
             R.id.action_logout -> {
@@ -97,12 +99,6 @@ class ProfileFragment : BaseFragment() {
                 sortingKey,
                 switch_swipe_refresh.isChecked
             )
-        }
-        button_delete_user.setOnClickListener {
-
-            showPopupConfirmationDialog(resources.getString(R.string.profile_delete_confirmation)) {
-                viewModel.deleteUser()
-            }
         }
     }
 
