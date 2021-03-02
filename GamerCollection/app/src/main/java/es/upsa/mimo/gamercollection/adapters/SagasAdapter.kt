@@ -59,21 +59,21 @@ class SagasAdapter(
             val saga = items[position] as SagaResponse
             holder.fillData(saga, context)
 
-            val rotation = if (expandedIds.contains(saga.id)) Constants.POINT_UP else Constants.POINT_DOWN
+            val rotation = if (expandedIds.contains(saga.id)) Constants.POINT_DOWN else Constants.POINT_UP
             holder.rotateArrow(rotation)
 
             holder.itemView.image_view_arrow.setOnClickListener {
                 if (expandedIds.contains(saga.id)) {
 
                     val currentPosition = holder.layoutPosition
-                    holder.rotateArrow(Constants.POINT_DOWN)
+                    holder.rotateArrow(Constants.POINT_UP)
                     expandedIds.remove(saga.id)
                     items.removeAll(saga.games)
                     notifyItemRangeRemoved(currentPosition+1, saga.games.size)
                 } else {
 
                     val currentPosition = holder.layoutPosition
-                    holder.rotateArrow(Constants.POINT_UP)
+                    holder.rotateArrow(Constants.POINT_DOWN)
                     expandedIds.add(saga.id)
                     if (currentPosition+1 < items.size) {
                         items.addAll(currentPosition+1, saga.games.sortedBy { it.releaseDate })

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
+import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.android.synthetic.main.saga_item.view.*
 
 class SagasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -20,7 +21,8 @@ class SagasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title = context.resources.getQuantityString(R.plurals.saga_title, gamesCount, saga.name, gamesCount)
         itemView.edit_text_name.setText(title)
         itemView.edit_text_name.setReadOnly(true, InputType.TYPE_NULL, 0)
-        itemView.image_view_arrow.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_keyboard_arrow_down_white_24dp))
+        val imageId = if (Constants.isDarkMode(context)) R.drawable.ic_triangle_up_dark else R.drawable.ic_triangle_up_light
+        itemView.image_view_arrow.setImageDrawable(ContextCompat.getDrawable(context, imageId))
         itemView.image_view_arrow.visibility = if (saga.games.isNotEmpty()) View.VISIBLE else View.GONE
     }
 
