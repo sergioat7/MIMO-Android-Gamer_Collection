@@ -71,7 +71,11 @@ class GameSongsFragment(
         setupBindings()
 
         recycler_view_songs.layoutManager = LinearLayoutManager(requireContext())
-        songsAdapter = SongsAdapter(ArrayList(), enabled, this)
+        songsAdapter = SongsAdapter(
+            ArrayList(),
+            enabled,
+            requireContext(),
+            this)
         recycler_view_songs.adapter = songsAdapter
 
         button_add_song.setOnClickListener { showNewSongPopup() }
