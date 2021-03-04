@@ -12,7 +12,7 @@
         />
 
     <item android:id="@+id/action_add"
-        android:icon="@drawable/ic_add_dark"
+        android:icon="@drawable/ic_add_saga_dark"
         android:title=""
         app:showAsAction="always"
         />
