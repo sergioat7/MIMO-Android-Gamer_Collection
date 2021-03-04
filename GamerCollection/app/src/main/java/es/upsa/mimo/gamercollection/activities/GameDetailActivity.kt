@@ -56,6 +56,7 @@ class GameDetailActivity : BaseActivity() {
             it.clear()
             menuInflater.inflate(R.menu.game_toolbar_menu, menu)
             it.findItem(R.id.action_edit).isVisible = game != null
+            it.findItem(R.id.action_remove).isVisible = game != null
             it.findItem(R.id.action_save).isVisible = game == null
             it.findItem(R.id.action_cancel).isVisible = false
         }
@@ -73,6 +74,13 @@ class GameDetailActivity : BaseActivity() {
             R.id.action_edit -> {
 
                 setEdition(true)
+                return true
+            }
+            R.id.action_remove -> {
+
+                showPopupConfirmationDialog(resources.getString(R.string.game_detail_delete_confirmation)) {
+                    viewModel.deleteGame()
+                }
                 return true
             }
             R.id.action_save -> {
@@ -282,6 +290,7 @@ class GameDetailActivity : BaseActivity() {
 
         menu?.let {
             it.findItem(R.id.action_edit).isVisible = !hidden
+            it.findItem(R.id.action_remove).isVisible = !hidden
             it.findItem(R.id.action_save).isVisible = hidden
             it.findItem(R.id.action_cancel).isVisible = hidden
         }

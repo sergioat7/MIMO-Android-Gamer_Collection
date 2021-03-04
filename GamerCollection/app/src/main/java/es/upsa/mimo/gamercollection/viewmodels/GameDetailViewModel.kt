@@ -106,6 +106,19 @@ class GameDetailViewModel @Inject constructor(
         }
     }
 
+    fun deleteGame() {
+
+        _game.value?.let { game ->
+            gameRepository.deleteGame(game, {
+
+                _gameDetailLoading.value = true
+                _gameDetailError.value = null
+            }, {
+                _gameDetailError.value = it
+            })
+        }
+    }
+
     fun setGameId(gameId: Int?) {
         this.gameId = gameId
     }

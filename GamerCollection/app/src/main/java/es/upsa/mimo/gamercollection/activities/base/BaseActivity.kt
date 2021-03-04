@@ -1,7 +1,9 @@
 package es.upsa.mimo.gamercollection.activities.base
 
+import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
+import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.fragments.popups.PopupErrorDialogFragment
 import es.upsa.mimo.gamercollection.fragments.popups.PopupLoadingDialogFragment
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
@@ -54,5 +56,20 @@ open class BaseActivity : AppCompatActivity() {
 
         loadingFragment?.dismiss()
         loadingFragment = null
+    }
+
+    fun showPopupConfirmationDialog(message: String, acceptHandler: () -> Unit) {
+
+        AlertDialog.Builder(this)
+            .setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
+                acceptHandler()
+                dialog.dismiss()
+            }
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 }
