@@ -56,6 +56,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
         menu.clear()
         inflater.inflate(R.menu.saga_toolbar_menu, menu)
         menu.findItem(R.id.action_edit).isVisible = viewModel.saga.value != null
+        menu.findItem(R.id.action_remove).isVisible = viewModel.saga.value != null
         menu.findItem(R.id.action_save).isVisible = viewModel.saga.value == null
         menu.findItem(R.id.action_cancel).isVisible = false
     }
@@ -66,6 +67,13 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
             R.id.action_edit -> {
 
                 editSaga()
+                return true
+            }
+            R.id.action_remove -> {
+
+                showPopupConfirmationDialog(resources.getString(R.string.saga_detail_delete_confirmation)) {
+                    viewModel.deleteSaga()
+                }
                 return true
             }
             R.id.action_save -> {
@@ -112,12 +120,6 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
         setupBindings()
 
         button_add_game.setOnClickListener { addGame() }
-        button_delete_saga.setOnClickListener {
-
-            showPopupConfirmationDialog(resources.getString(R.string.saga_detail_delete_confirmation)) {
-                viewModel.deleteSaga()
-            }
-        }
     }
 
     private fun setupBindings() {
@@ -195,7 +197,6 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
 
         edit_text_name.setReadOnly(!enable, inputTypeText, backgroundColor)
         button_add_game.visibility = if(enable) View.VISIBLE else View.GONE
-        button_delete_saga.visibility = if (enable && viewModel.saga.value != null) View.VISIBLE else View.GONE
     }
 
     private fun addGame() {
@@ -246,6 +247,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
 
         menu?.let {
             it.findItem(R.id.action_edit).isVisible = !hidden
+            it.findItem(R.id.action_remove).isVisible = !hidden
             it.findItem(R.id.action_save).isVisible = hidden
             it.findItem(R.id.action_cancel).isVisible = hidden
         }

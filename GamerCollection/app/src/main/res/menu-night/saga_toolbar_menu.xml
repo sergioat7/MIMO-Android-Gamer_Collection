@@ -24,7 +24,13 @@
         android:icon="@drawable/ic_edit_light"
         android:title=""
         app:showAsAction="always"
-        tools:ignore="PrivateResource"
+        />
+
+    <item
+        android:id="@+id/action_remove"
+        android:icon="@drawable/ic_remove_saga_dark"
+        android:title=""
+        app:showAsAction="always"
         />
 
 </menu>
