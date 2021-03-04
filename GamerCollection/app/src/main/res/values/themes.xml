@@ -43,10 +43,6 @@
         <item name="android:background">@drawable/rounded_button_primary</item>
     </style>
 
-    <style name="RoundedButton.Delete">
-        <item name="android:background">@drawable/rounded_button_red</item>
-    </style>
-
     <style name="PopupAcceptButton" parent="RoundedButton.Action">
         <item name="android:layout_marginTop">@dimen/margin_small</item>
         <item name="android:layout_marginBottom">@dimen/margin_small</item>
