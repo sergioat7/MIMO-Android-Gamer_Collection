@@ -176,8 +176,6 @@ class GameDataFragment(
         custom_edit_text_loaned.setReadOnly(!enabled, backgroundColor)
         custom_edit_text_video_url.setReadOnly(!enabled, backgroundColor)
         custom_edit_text_observations.setReadOnly(!enabled, backgroundColor)
-
-        button_delete_game.visibility = if(enabled && game != null) View.VISIBLE else View.GONE
     }
 
     fun getGameData(): GameResponse? {
@@ -258,13 +256,6 @@ class GameDataFragment(
 
         custom_edit_text_purchase_location.setOnClickListener { showMap() }
         custom_edit_text_saga.setReadOnly(true, 0)
-
-        button_delete_game.setOnClickListener {
-
-            showPopupConfirmationDialog(resources.getString(R.string.game_detail_delete_confirmation)) {
-                viewModel.deleteGame()
-            }
-        }
 
         showData(game, game == null)
     }

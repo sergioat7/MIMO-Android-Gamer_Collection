@@ -41,20 +41,6 @@ class GameDataViewModel @Inject constructor(
 
     //MARK: - Public methods
 
-    fun deleteGame() {
-
-        game?.let { game ->
-
-            gameRepository.deleteGame(game, {
-
-                _gameDataLoading.value = true
-                _gameDataError.value = null
-            }, {
-                _gameDataError.value = it
-            })
-        }
-    }
-
     fun setGame(game: GameResponse?) {
         this.game = game
     }
