@@ -5,7 +5,7 @@
         <item name="android:layout_marginBottom">@dimen/margin_small</item>
         <item name="android:layout_marginEnd">@dimen/margin_small</item>
         <item name="android:background">@android:color/transparent</item>
-        <item name="android:src">@drawable/ic_my_location_black_24dp</item>
+        <item name="android:src">@drawable/ic_locate_me</item>
     </style>
 
     <style name="MapButton" parent="android:style/Widget.Button">

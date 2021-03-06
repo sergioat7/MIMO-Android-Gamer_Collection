@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="MainImageView">
+        <item name="android:src">@drawable/app_name_light</item>
+    </style>
+
     <style name="CredentialsEditText" parent="CustomEditText">
         <item name="android:ems">10</item>
         <item name="android:selectAllOnFocus">true</item>

@@ -168,10 +168,11 @@ class GameDetailActivity : BaseActivity() {
             imageUrl = game.imageUrl
             imageUrl?.let { url ->
 
+                val errorImage = if (Constants.isDarkMode(this)) R.drawable.ic_add_image_dark else R.drawable.ic_add_image_light
                 progress_bar_loading.visibility = View.VISIBLE
                 Picasso.get()
                     .load(url)
-                    .error(R.drawable.add_photo)
+                    .error(errorImage)
                     .into(image_view_game, object : Callback {
                         override fun onSuccess() {
                             progress_bar_loading.visibility = View.GONE
@@ -227,11 +228,12 @@ class GameDetailActivity : BaseActivity() {
         dialogView.button_accept.setOnClickListener {
 
             val url = dialogView.custom_edit_text_url.getText()
+            val errorImage = if (Constants.isDarkMode(this)) R.drawable.ic_add_image_dark else R.drawable.ic_add_image_light
             if (url.isNotEmpty()) {
 
                 Picasso.get()
                     .load(url)
-                    .error(R.drawable.add_photo)
+                    .error(errorImage)
                     .into(image_view_game, object : Callback {
                         override fun onSuccess() {
                             imageUrl = url

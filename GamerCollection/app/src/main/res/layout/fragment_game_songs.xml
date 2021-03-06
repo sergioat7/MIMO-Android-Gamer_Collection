@@ -30,11 +30,11 @@
             android:layout_height="0dp"
             android:layout_marginBottom="@dimen/margin_small"
             android:visibility="visible"
-            app:emptyListLayout_image="@drawable/song_icon"
             app:layout_constraintBottom_toTopOf="@+id/button_add_song"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            style="@style/SongsEmptyLayout"
             />
 
         <Button
