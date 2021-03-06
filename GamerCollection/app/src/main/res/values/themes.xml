@@ -10,7 +10,7 @@
 
     <style name="Theme.GamerCollection" parent="Theme">
         <item name="titleTextColor">@color/colorSecondary</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_keyboard_backspace_black_24dp</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_light</item>
     </style>
 
     <style name="Theme.GamerCollection.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">
@@ -100,6 +100,14 @@
     <style name="LoadingProgressBar">
         <item name="android:indeterminate">true</item>
         <item name="android:indeterminateTint">@color/colorFinished</item>
+    </style>
+
+    <style name="GamesEmptyLayout">
+        <item name="emptyListLayout_image">@drawable/ic_games_dark</item>
+    </style>
+
+    <style name="SagasEmptyLayout">
+        <item name="emptyListLayout_image">@drawable/ic_sagas_dark</item>
     </style>
 
 </resources>

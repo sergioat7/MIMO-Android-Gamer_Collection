@@ -221,10 +221,7 @@
                             android:id="@+id/custom_edit_text_release_date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:customEditText_type="DATE"
-                            app:customEditText_placeholder="@string/game_detail_select_date"
-                            app:customEditText_icon="@drawable/ic_cancel_black_24dp"
-                            style="@style/GameDetailEditText"
+                            style="@style/ReleaseDateEditText"
                             />
 
                     </LinearLayout>
@@ -361,10 +358,7 @@
                             android:id="@+id/custom_edit_text_purchase_date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:customEditText_type="DATE"
-                            app:customEditText_placeholder="@string/game_detail_select_date"
-                            app:customEditText_icon="@drawable/ic_cancel_black_24dp"
-                            style="@style/GameDetailEditText"
+                            style="@style/PurchaseDateEditText"
                             />
 
                     </LinearLayout>
@@ -386,10 +380,7 @@
                             android:id="@+id/custom_edit_text_purchase_location"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:customEditText_type="NONE"
-                            app:customEditText_placeholder="@string/game_detail_placeholder_purchase_location"
-                            app:customEditText_icon="@drawable/ic_cancel_black_24dp"
-                            style="@style/GameDetailEditText"
+                            style="@style/PurchaseLocationEditText"
                             />
 
                     </LinearLayout>

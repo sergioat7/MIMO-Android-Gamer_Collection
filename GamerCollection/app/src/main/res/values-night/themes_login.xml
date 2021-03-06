@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MainImageView">
+        <item name="android:src">@drawable/app_name_dark</item>
+    </style>
+
+</resources>

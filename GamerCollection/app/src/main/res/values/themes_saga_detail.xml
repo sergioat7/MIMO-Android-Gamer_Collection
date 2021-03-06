@@ -21,7 +21,7 @@
     <style name="AddGameButton" parent="@style/Widget.AppCompat.ImageButton">
         <item name="android:layout_width">@dimen/margin_medium</item>
         <item name="android:layout_height">@dimen/margin_medium</item>
-        <item name="android:background">@drawable/ic_add_circle_outline_white_24dp</item>
+        <item name="android:background">@drawable/ic_add_game_dark</item>
     </style>
 
     <style name="AddGameSeparatorView">
