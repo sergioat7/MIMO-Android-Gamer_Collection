@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="StartListButton.Image">
+        <item name="android:src">@drawable/ic_double_arrow_up_dark</item>
+    </style>
+
+    <style name="EndListButton.Image">
+        <item name="android:src">@drawable/ic_double_arrow_down_dark</item>
+    </style>
+
+</resources>

@@ -9,8 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
@@ -35,6 +37,7 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
     private lateinit var viewModel: GamesViewModel
     private lateinit var gamesAdapter: GamesAdapter
     private var menu: Menu? = null
+    private val scrollPosition = MutableLiveData<ScrollPosition>()
 
     // MARK: - Lifecycle methods
 
@@ -151,6 +154,36 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
             this
         )
         recycler_view_games.adapter = gamesAdapter
+        recycler_view_games.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                scrollPosition.value =
+                    if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        ScrollPosition.TOP
+                    } else if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        ScrollPosition.END
+                    } else {
+                        ScrollPosition.MIDDLE
+                    }
+            }
+        })
+
+        scrollPosition.value = ScrollPosition.TOP
+
+        floating_action_button_start_list.setOnClickListener {
+
+            recycler_view_games.scrollToPosition(0)
+            scrollPosition.value = ScrollPosition.TOP
+        }
+
+        floating_action_button_end_list.setOnClickListener {
+
+            val position: Int = gamesAdapter.itemCount - 1
+            recycler_view_games.scrollToPosition(position)
+            scrollPosition.value = ScrollPosition.END
+        }
     }
 
     private fun setupBindings() {
@@ -195,6 +228,12 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
         viewModel.gamesCount.observe(viewLifecycleOwner, {
             setGamesCount(it)
             setTitle(it.size)
+        })
+
+        scrollPosition.observe(viewLifecycleOwner, {
+
+            floating_action_button_start_list.visibility = if (it == ScrollPosition.TOP) View.GONE else View.VISIBLE
+            floating_action_button_end_list.visibility = if (it == ScrollPosition.END) View.GONE else View.VISIBLE
         })
     }
 
@@ -308,4 +347,7 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
         viewModel.state = if (it.isSelected) newState else null
         viewModel.getGames()
     }
+}
+enum class ScrollPosition {
+    TOP, MIDDLE, END
 }
