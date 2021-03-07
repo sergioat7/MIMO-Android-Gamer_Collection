@@ -17,6 +17,7 @@ import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameDataViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameDataViewModel
+import kotlinx.android.synthetic.main.custom_edit_text.view.*
 import kotlinx.android.synthetic.main.fragment_game_data.*
 
 class GameDataFragment(
@@ -103,7 +104,7 @@ class GameDataFragment(
 
             game.pegi?.let { pegi ->
                 val pos = resources.getStringArray(R.array.pegis).indexOf(pegi)
-                spinner_pegis.setSelection(pos+1)
+                spinner_pegis.setSelection(pos + 1)
             }
 
             players = if (game.players != null && game.players.isNotEmpty()) game.players else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
@@ -176,6 +177,31 @@ class GameDataFragment(
         custom_edit_text_loaned.setReadOnly(!enabled, backgroundColor)
         custom_edit_text_video_url.setReadOnly(!enabled, backgroundColor)
         custom_edit_text_observations.setReadOnly(!enabled, backgroundColor)
+
+        custom_edit_text_distributor.edit_text.setOnEditorActionListener { _, _, _ ->
+            custom_edit_text_developer.requestFocus()
+            true
+        }
+        custom_edit_text_developer.edit_text.setOnEditorActionListener { _, _, _ ->
+            custom_edit_text_players.requestFocus()
+            true
+        }
+        custom_edit_text_players.edit_text.setOnEditorActionListener { _, _, _ ->
+            custom_edit_text_price.requestFocus()
+            true
+        }
+        custom_edit_text_price.edit_text.setOnEditorActionListener { _, _, _ ->
+            custom_edit_text_loaned.requestFocus()
+            true
+        }
+        custom_edit_text_loaned.edit_text.setOnEditorActionListener { _, _, _ ->
+            custom_edit_text_video_url.requestFocus()
+            true
+        }
+        custom_edit_text_video_url.edit_text.setOnEditorActionListener { _, _, _ ->
+            custom_edit_text_observations.requestFocus()
+            true
+        }
     }
 
     fun getGameData(): GameResponse? {

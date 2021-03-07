@@ -13,21 +13,7 @@
         <item name="srcCompat">@drawable/ic_add_image_dark</item>
     </style>
 
-    <style name="ReleaseDateEditText" parent="GameDetailEditText">
-        <item name="customEditText_type">"DATE"</item>
-        <item name="customEditText_placeholder">@string/game_detail_select_date</item>
-        <item name="customEditText_icon">@drawable/ic_remove_text_dark</item>
-    </style>
-
-    <style name="PurchaseDateEditText" parent="GameDetailEditText">
-        <item name="customEditText_type">"DATE"</item>
-        <item name="customEditText_placeholder">@string/game_detail_select_date</item>
-        <item name="customEditText_icon">@drawable/ic_remove_text_dark</item>
-    </style>
-
-    <style name="PurchaseLocationEditText" parent="GameDetailEditText">
-        <item name="customEditText_type">"NONE"</item>
-        <item name="customEditText_placeholder">@string/game_detail_placeholder_purchase_location</item>
+    <style name="GameDetailEditTextWithRemoveImage" parent="GameDetailEditText">
         <item name="customEditText_icon">@drawable/ic_remove_text_dark</item>
     </style>
 
@@ -43,6 +29,7 @@
         <item name="customEditText_font">@font/roboto_regular</item>
         <item name="customEditText_text_size">@dimen/font_medium</item>
         <item name="customEditText_icon">@drawable/ic_remove_text_dark</item>
+        <item name="customEditText_ime_option">"DONE"</item>
     </style>
 
     <style name="SongInfoImage">
@@ -53,30 +40,7 @@
         <item name="srcCompat">@drawable/ic_song_dark</item>
     </style>
 
-    <style name="NewSongNameEditText">
-        <item name="android:layout_marginTop">@dimen/margin_medium</item>
-        <item name="android:layout_marginStart">@dimen/margin_small</item>
-        <item name="android:layout_marginEnd">@dimen/margin_small</item>
-        <item name="customEditText_type">"TEXT"</item>
-        <item name="customEditText_placeholder">@string/modal_song_placeholder_name</item>
-        <item name="customEditText_font">@font/roboto_regular</item>
-        <item name="customEditText_text_size">@dimen/font_large</item>
-        <item name="customEditText_icon">@drawable/ic_remove_text_dark</item>
-    </style>
-
-    <style name="NewSongSingerEditText">
-        <item name="android:layout_marginTop">@dimen/margin_small</item>
-        <item name="customEditText_type">"TEXT"</item>
-        <item name="customEditText_placeholder">@string/modal_song_placeholder_singer</item>
-        <item name="customEditText_font">@font/roboto_regular</item>
-        <item name="customEditText_text_size">@dimen/font_large</item>
-        <item name="customEditText_icon">@drawable/ic_remove_text_dark</item>
-    </style>
-
-    <style name="NewSongUrlEditText">
-        <item name="android:layout_marginTop">@dimen/margin_small</item>
-        <item name="customEditText_type">"URL"</item>
-        <item name="customEditText_placeholder">@string/modal_song_placeholder_url</item>
+    <style name="NewSongCustomEditText">
         <item name="customEditText_font">@font/roboto_regular</item>
         <item name="customEditText_text_size">@dimen/font_large</item>
         <item name="customEditText_icon">@drawable/ic_remove_text_dark</item>

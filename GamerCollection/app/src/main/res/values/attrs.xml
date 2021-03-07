@@ -18,6 +18,7 @@
         <attr name="customEditText_font" format="reference"/>
         <attr name="customEditText_text_size" format="reference"/>
         <attr name="customEditText_icon" format="reference"/>
+        <attr name="customEditText_ime_option" format="string"/>
     </declare-styleable>
     
 </resources>
