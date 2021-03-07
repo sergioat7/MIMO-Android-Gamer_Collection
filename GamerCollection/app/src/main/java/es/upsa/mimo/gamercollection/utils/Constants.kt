@@ -4,7 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
+import android.widget.EditText
+import android.widget.ImageButton
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
 import es.upsa.mimo.gamercollection.R
@@ -184,6 +188,21 @@ class Constants {
 
         fun isPasswordValid(password: String): Boolean {
             return password.length > 3
+        }
+
+        fun showOrHidePassword(editText: EditText, imageButton: ImageButton, isDarkMode: Boolean) {
+
+            if (editText.transformationMethod is HideReturnsTransformationMethod) {
+
+                val image = if (isDarkMode) R.drawable.ic_show_password_dark else R.drawable.ic_show_password_light
+                imageButton.setImageResource(image)
+                editText.transformationMethod = PasswordTransformationMethod.getInstance()
+            } else {
+
+                val image = if (isDarkMode) R.drawable.ic_hide_password_dark else R.drawable.ic_hide_password_light
+                imageButton.setImageResource(image)
+                editText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+            }
         }
     }
 }

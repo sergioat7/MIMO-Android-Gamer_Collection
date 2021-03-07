@@ -11,6 +11,7 @@ import es.upsa.mimo.gamercollection.extensions.afterTextChanged
 import es.upsa.mimo.gamercollection.extensions.clearErrors
 import es.upsa.mimo.gamercollection.extensions.onFocusChange
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.RegisterViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.RegisterViewModel
 import kotlinx.android.synthetic.main.fragment_register.*
@@ -46,7 +47,7 @@ class RegisterFragment : BaseFragment() {
         edit_text_user.afterTextChanged {
             registerDataChanged()
         }
-        edit_text_password.onFocusChange {
+        edit_text_user.onFocusChange {
             registerDataChanged()
         }
 
@@ -57,11 +58,19 @@ class RegisterFragment : BaseFragment() {
             registerDataChanged()
         }
 
+        image_button_password.setOnClickListener {
+            Constants.showOrHidePassword(edit_text_password, image_button_password, Constants.isDarkMode(context))
+        }
+
         edit_text_repeatPassword.afterTextChanged {
             registerDataChanged()
         }
         edit_text_repeatPassword.onFocusChange {
             registerDataChanged()
+        }
+
+        image_button_confirm_password.setOnClickListener {
+            Constants.showOrHidePassword(edit_text_password, image_button_password, Constants.isDarkMode(context))
         }
 
         register_button.setOnClickListener {register()}

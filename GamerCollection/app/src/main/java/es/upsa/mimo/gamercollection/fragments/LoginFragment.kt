@@ -11,6 +11,7 @@ import es.upsa.mimo.gamercollection.activities.RegisterActivity
 import es.upsa.mimo.gamercollection.extensions.afterTextChanged
 import es.upsa.mimo.gamercollection.extensions.onFocusChange
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Environment
 import es.upsa.mimo.gamercollection.viewmodelfactories.LoginViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.LoginViewModel
@@ -62,6 +63,10 @@ class LoginFragment : BaseFragment() {
         }
         edit_text_password.onFocusChange {
             loginDataChanged()
+        }
+
+        image_button_password.setOnClickListener {
+            Constants.showOrHidePassword(edit_text_password, image_button_password, Constants.isDarkMode(context))
         }
 
         login_button.setOnClickListener {
