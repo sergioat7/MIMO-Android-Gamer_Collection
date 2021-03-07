@@ -105,7 +105,7 @@ class CustomEditText: ConstraintLayout {
             )
             image_button.setImageDrawable(icon)
             image_button.setOnClickListener {
-                edit_text.setText("")
+                edit_text.setText(Constants.EMPTY_VALUE)
             }
 
             if (inputType == EditTextType.DATE) {

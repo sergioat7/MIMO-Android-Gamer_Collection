@@ -73,14 +73,14 @@ class GameRepository @Inject constructor(
             Constants.PENDING_STATE -> " WHERE state == '${Constants.PENDING_STATE}' AND "
             Constants.IN_PROGRESS_STATE -> " WHERE state == '${Constants.IN_PROGRESS_STATE}' AND "
             Constants.FINISHED_STATE -> " WHERE state == '${Constants.FINISHED_STATE}' AND "
-            else -> ""
+            else -> Constants.EMPTY_VALUE
         }
 
         filters?.let { filtersVar ->
 
             if (queryConditions.isEmpty()) queryConditions += " WHERE "
 
-            var queryPlatforms = ""
+            var queryPlatforms = Constants.EMPTY_VALUE
             val platforms = filtersVar.platforms
             if (platforms.isNotEmpty()) {
                 queryPlatforms += "("
@@ -90,7 +90,7 @@ class GameRepository @Inject constructor(
                 queryPlatforms = queryPlatforms.dropLast(4) + ") AND "
             }
 
-            var queryGenres = ""
+            var queryGenres = Constants.EMPTY_VALUE
             val genres = filtersVar.genres
             if (genres.isNotEmpty()){
                 queryGenres += "("
@@ -100,7 +100,7 @@ class GameRepository @Inject constructor(
                 queryGenres = queryGenres.dropLast(4) + ") AND "
             }
 
-            var queryFormats = ""
+            var queryFormats = Constants.EMPTY_VALUE
             val formats = filtersVar.formats
             if (formats.isNotEmpty()){
                 queryFormats += "("

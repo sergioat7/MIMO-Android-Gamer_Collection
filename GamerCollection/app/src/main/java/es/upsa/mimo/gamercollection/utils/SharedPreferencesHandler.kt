@@ -30,7 +30,7 @@ class SharedPreferencesHandler @Inject constructor(
         return if (userDataJson != null) {
             gson.fromJson(userDataJson, UserData::class.java)
         } else {
-            UserData("", "", false)
+            UserData(Constants.EMPTY_VALUE, Constants.EMPTY_VALUE, false)
         }
     }
 
@@ -70,7 +70,7 @@ class SharedPreferencesHandler @Inject constructor(
         return if (authDataJson != null) {
             gson.fromJson(authDataJson, AuthData::class.java)
         } else {
-            AuthData("")
+            AuthData(Constants.EMPTY_VALUE)
         }
     }
 

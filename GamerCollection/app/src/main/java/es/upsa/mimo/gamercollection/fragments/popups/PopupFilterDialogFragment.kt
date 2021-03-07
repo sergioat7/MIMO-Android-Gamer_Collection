@@ -228,14 +228,14 @@ class PopupFilterDialogFragment(
         rating_bar_min.rating = 0F
         rating_bar_max.rating = 5F
 
-        custom_edit_text_release_date_min.setText("")
-        custom_edit_text_release_date_max.setText("")
+        custom_edit_text_release_date_min.setText(Constants.EMPTY_VALUE)
+        custom_edit_text_release_date_max.setText(Constants.EMPTY_VALUE)
 
-        custom_edit_text_purchase_date_min.setText("")
-        custom_edit_text_purchase_date_max.setText("")
+        custom_edit_text_purchase_date_min.setText(Constants.EMPTY_VALUE)
+        custom_edit_text_purchase_date_max.setText(Constants.EMPTY_VALUE)
 
-        custom_edit_text_price_min.setText("")
-        custom_edit_text_price_max.setText("")
+        custom_edit_text_price_min.setText(Constants.EMPTY_VALUE)
+        custom_edit_text_price_max.setText(Constants.EMPTY_VALUE)
 
         radio_button_goty_no.isChecked = true
 
