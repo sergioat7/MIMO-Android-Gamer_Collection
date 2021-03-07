@@ -266,6 +266,7 @@
                             android:layout_height="wrap_content"
                             app:customEditText_type="TEXT"
                             app:customEditText_placeholder="@string/game_detail_placeholder_distributor"
+                            app:customEditText_ime_option="NEXT"
                             style="@style/GameDetailEditText"
                             />
 
@@ -289,6 +290,7 @@
                             android:layout_height="wrap_content"
                             app:customEditText_type="TEXT"
                             app:customEditText_placeholder="@string/game_detail_placeholder_developer"
+                            app:customEditText_ime_option="NEXT"
                             style="@style/GameDetailEditText"
                             />
 
@@ -312,6 +314,7 @@
                             android:layout_height="wrap_content"
                             app:customEditText_type="TEXT"
                             app:customEditText_placeholder="@string/game_detail_placeholder_players"
+                            app:customEditText_ime_option="NEXT"
                             style="@style/GameDetailEditText"
                             />
 
@@ -336,6 +339,7 @@
                             android:layout_height="wrap_content"
                             app:customEditText_type="NUMBER"
                             app:customEditText_placeholder="@string/game_detail_placeholder_price"
+                            app:customEditText_ime_option="NEXT"
                             style="@style/GameDetailEditText"
                             />
 
@@ -404,6 +408,7 @@
                             android:layout_height="wrap_content"
                             app:customEditText_type="TEXT"
                             app:customEditText_placeholder="@string/game_detail_placeholder_loaned_to"
+                            app:customEditText_ime_option="NEXT"
                             style="@style/GameDetailEditText"
                             />
 
@@ -428,6 +433,7 @@
                             android:layout_height="wrap_content"
                             app:customEditText_type="URL"
                             app:customEditText_placeholder="@string/game_detail_placeholder_video_url"
+                            app:customEditText_ime_option="NEXT"
                             style="@style/GameDetailEditText"
                             />
 
@@ -452,6 +458,7 @@
                             android:layout_height="wrap_content"
                             app:customEditText_type="TEXT"
                             app:customEditText_placeholder="@string/game_detail_placeholder_observations"
+                            app:customEditText_ime_option="DONE"
                             style="@style/GameDetailEditText"
                             />
 

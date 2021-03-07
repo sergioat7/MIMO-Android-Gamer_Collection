@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import es.upsa.mimo.gamercollection.R
@@ -90,6 +91,7 @@ class CustomEditText: ConstraintLayout {
             val font = typed.getResourceId(R.styleable.CustomEditText_customEditText_font, 0)
             val textSize = resources.getDimension(typed.getResourceId(R.styleable.CustomEditText_customEditText_text_size, 0))
             val icon = typed.getDrawable(R.styleable.CustomEditText_customEditText_icon)
+            val imeOption = EditTextImeOption.valueOf(typed.getString(R.styleable.CustomEditText_customEditText_ime_option) ?: "NONE")
 
             edit_text.hint = hint
             edit_text.typeface = ResourcesCompat.getFont(context, font)
@@ -122,9 +124,19 @@ class CustomEditText: ConstraintLayout {
                 EditTextType.NONE -> InputType.TYPE_NULL
             }
             edit_text.setRawInputType(type)
+
+            val option = when(imeOption) {
+                EditTextImeOption.NEXT -> EditorInfo.IME_ACTION_NEXT
+                EditTextImeOption.DONE -> EditorInfo.IME_ACTION_DONE
+                EditTextImeOption.NONE -> EditorInfo.IME_ACTION_NONE
+            }
+            edit_text.imeOptions = option
         }
     }
 }
 enum class EditTextType {
     EMAIL, PASSWORD, TEXT, NUMBER, URL, DATE, NONE
+}
+enum class EditTextImeOption {
+    NEXT, DONE, NONE
 }
