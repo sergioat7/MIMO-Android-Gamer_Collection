@@ -51,6 +51,10 @@ class RegisterFragment : BaseFragment() {
             registerDataChanged()
         }
 
+        image_button_info.setOnClickListener {
+            showPopupDialog(resources.getString(R.string.username_info))
+        }
+
         edit_text_password.afterTextChanged {
             registerDataChanged()
         }
