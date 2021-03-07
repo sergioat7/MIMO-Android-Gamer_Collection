@@ -116,17 +116,17 @@ class GameRepository @Inject constructor(
             queryConditions += "score >= ${filtersVar.minScore} AND score <= ${filtersVar.maxScore} AND "
 
             if (filtersVar.minReleaseDate != null) {
-                queryConditions += "releaseDate >= '${filtersVar.minReleaseDate}' AND "
+                queryConditions += "releaseDate >= '${filtersVar.minReleaseDate.time}' AND "
             }
             if (filtersVar.maxReleaseDate != null) {
-                queryConditions += "releaseDate <= '${filtersVar.maxReleaseDate}' AND "
+                queryConditions += "releaseDate <= '${filtersVar.maxReleaseDate.time}' AND "
             }
 
             if (filtersVar.minPurchaseDate != null) {
-                queryConditions += "purchaseDate >= '${filtersVar.minPurchaseDate}' AND "
+                queryConditions += "purchaseDate >= '${filtersVar.minPurchaseDate.time}' AND "
             }
             if (filtersVar.maxPurchaseDate != null) {
-                queryConditions += "purchaseDate <= '${filtersVar.maxPurchaseDate}' AND "
+                queryConditions += "purchaseDate <= '${filtersVar.maxPurchaseDate.time}' AND "
             }
 
             queryConditions += "price >= ${filtersVar.minPrice} AND "
