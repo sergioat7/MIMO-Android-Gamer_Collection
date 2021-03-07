@@ -32,6 +32,10 @@
         <item name="android:scaleType">fitCenter</item>
     </style>
 
+    <style name="UsernameInfoButton" parent="EditTextButton">
+        <item name="android:src">@drawable/ic_show_info_light</item>
+    </style>
+
     <style name="PasswordEyeButton" parent="EditTextButton">
         <item name="android:src">@drawable/ic_show_password_light</item>
     </style>
