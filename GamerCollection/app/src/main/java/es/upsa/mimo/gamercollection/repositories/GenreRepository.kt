@@ -5,16 +5,17 @@ import es.upsa.mimo.gamercollection.models.responses.GenreResponse
 import es.upsa.mimo.gamercollection.network.apiClient.GenreAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import es.upsa.mimo.gamercollection.utils.Constants
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class GenreRepository @Inject constructor(
     private val database: AppDatabase,
     private val genreAPIClient: GenreAPIClient
 ) {
+
+    // MARK: - Private properties
+
+    private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
 
     // MARK: - Public methods
 
@@ -38,10 +39,13 @@ class GenreRepository @Inject constructor(
 
         var genres = mutableListOf<GenreResponse>()
         runBlocking {
-            val result = GlobalScope.async { database.genreDao().getGenres() }
+
+            val result = databaseScope.async {
+                database.genreDao().getGenres()
+            }
             genres = result.await().toMutableList()
             genres.sortBy { it.name }
-            val other = genres.firstOrNull { it.id == Constants.DEFAULT_PLATFORM }
+            val other = genres.firstOrNull { it.id == Constants.OTHER_VALUE }
             genres.remove(other)
             other?.let {
                 genres.add(it)
@@ -62,15 +66,21 @@ class GenreRepository @Inject constructor(
 
     private fun insertGenreDatabase(genre: GenreResponse) {
 
-        GlobalScope.launch {
-            database.genreDao().insertGenre(genre)
+        runBlocking {
+            val job = databaseScope.launch {
+                database.genreDao().insertGenre(genre)
+            }
+            job.join()
         }
     }
 
     private fun deleteGenreDatabase(genre: GenreResponse) {
 
-        GlobalScope.launch {
-            database.genreDao().deleteGenre(genre)
+        runBlocking {
+            val job = databaseScope.launch {
+                database.genreDao().deleteGenre(genre)
+            }
+            job.join()
         }
     }
 }

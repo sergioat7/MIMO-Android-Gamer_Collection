@@ -5,16 +5,17 @@ import es.upsa.mimo.gamercollection.models.responses.StateResponse
 import es.upsa.mimo.gamercollection.network.apiClient.StateAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import es.upsa.mimo.gamercollection.utils.Constants
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class StateRepository @Inject constructor(
     private val database: AppDatabase,
     private val stateAPIClient: StateAPIClient
 ) {
+
+    // MARK: - Private properties
+
+    private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
 
     // MARK: - Public methods
 
@@ -38,10 +39,13 @@ class StateRepository @Inject constructor(
 
         var states = mutableListOf<StateResponse>()
         runBlocking {
-            val result = GlobalScope.async { database.stateDao().getStates() }
+
+            val result = databaseScope.async {
+                database.stateDao().getStates()
+            }
             states = result.await().toMutableList()
             states.sortBy { it.name }
-            val other = states.firstOrNull { it.id == Constants.DEFAULT_PLATFORM }
+            val other = states.firstOrNull { it.id == Constants.OTHER_VALUE }
             states.remove(other)
             other?.let {
                 states.add(it)
@@ -62,15 +66,21 @@ class StateRepository @Inject constructor(
 
     private fun insertStateDatabase(state: StateResponse) {
 
-        GlobalScope.launch {
-            database.stateDao().insertState(state)
+        runBlocking {
+            val job = databaseScope.launch {
+                database.stateDao().insertState(state)
+            }
+            job.join()
         }
     }
 
     private fun deleteStateDatabase(state: StateResponse) {
 
-        GlobalScope.launch {
-            database.stateDao().deleteState(state)
+        runBlocking {
+            val job = databaseScope.launch {
+                database.stateDao().deleteState(state)
+            }
+            job.join()
         }
     }
 }

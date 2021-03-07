@@ -5,16 +5,17 @@ import es.upsa.mimo.gamercollection.models.responses.FormatResponse
 import es.upsa.mimo.gamercollection.network.apiClient.FormatAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import es.upsa.mimo.gamercollection.utils.Constants
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class FormatRepository @Inject constructor(
     private val database: AppDatabase,
     private val formatAPIClient: FormatAPIClient
 ) {
+
+    // MARK: - Private properties
+
+    private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
 
     // MARK: - Public methods
 
@@ -38,10 +39,13 @@ class FormatRepository @Inject constructor(
 
         var formats = mutableListOf<FormatResponse>()
         runBlocking {
-            val result = GlobalScope.async { database.formatDao().getFormats() }
+
+            val result = databaseScope.async {
+                database.formatDao().getFormats()
+            }
             formats = result.await().toMutableList()
             formats.sortBy { it.name }
-            val other = formats.firstOrNull { it.id == Constants.DEFAULT_PLATFORM }
+            val other = formats.firstOrNull { it.id == Constants.OTHER_VALUE }
             formats.remove(other)
             other?.let {
                 formats.add(it)
@@ -62,15 +66,21 @@ class FormatRepository @Inject constructor(
 
     private fun insertFormatDatabase(format: FormatResponse) {
 
-        GlobalScope.launch {
-            database.formatDao().insertFormat(format)
+        runBlocking {
+            val job = databaseScope.launch {
+                database.formatDao().insertFormat(format)
+            }
+            job.join()
         }
     }
 
     private fun deleteFormatDatabase(format: FormatResponse) {
 
-        GlobalScope.launch {
-            database.formatDao().deleteFormat(format)
+        runBlocking {
+            val job = databaseScope.launch {
+                database.formatDao().deleteFormat(format)
+            }
+            job.join()
         }
     }
 }
