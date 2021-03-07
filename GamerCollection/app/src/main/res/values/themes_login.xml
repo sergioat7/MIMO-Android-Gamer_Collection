@@ -23,6 +23,19 @@
         <item name="android:inputType">textPassword</item>
     </style>
 
+    <style name="EditTextButton">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+    <style name="PasswordEyeButton" parent="EditTextButton">
+        <item name="android:src">@drawable/ic_show_password_light</item>
+    </style>
+
     <style name="LoginButton" parent="@style/RoundedButton.Action">
         <item name="android:layout_marginTop">@dimen/margin_small</item>
         <item name="android:layout_marginBottom">@dimen/margin_small</item>

@@ -75,6 +75,10 @@ class ProfileFragment : BaseFragment() {
         edit_text_user.setReadOnly(true, InputType.TYPE_NULL, 0)
         edit_text_password.setText(viewModel.userData.password)
 
+        image_button_password.setOnClickListener {
+            Constants.showOrHidePassword(edit_text_password, image_button_password, Constants.isDarkMode(context))
+        }
+
         radio_button_en.isChecked = viewModel.language == Constants.ENGLISH_LANGUAGE_KEY
         radio_button_es.isChecked = viewModel.language == Constants.SPANISH_LANGUAGE_KEY
 
