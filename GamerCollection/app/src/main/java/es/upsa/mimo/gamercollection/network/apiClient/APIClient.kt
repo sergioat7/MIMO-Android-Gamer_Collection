@@ -56,7 +56,7 @@ class APIClient {
                     if ( isSuccessful && (code == 204 || T::class == Void::class) ) {
 
                         if (T::class == Void::class) {
-                            val result = gson.fromJson("", T::class.java)
+                            val result = gson.fromJson(Constants.EMPTY_VALUE, T::class.java)
                             success(result)
                             return
                         }
@@ -73,7 +73,7 @@ class APIClient {
                             return
                         } catch (e: Exception){}
 
-                        val error = ErrorResponse("", R.string.error_server) as U
+                        val error = ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server) as U
                         failure(error)
                     } else if (isSuccessful && body != null) {
 
@@ -87,14 +87,14 @@ class APIClient {
                         failure(errorResponse)
                     } else {
 
-                        val error = ErrorResponse("", R.string.error_server) as U
+                        val error = ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server) as U
                         failure(error)
                     }
                 }
 
                 override fun onFailure(call: Call<T>?, t: Throwable) {
 
-                    val error = ErrorResponse("", R.string.error_server) as U
+                    val error = ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server) as U
                     failure(error)
                 }
             })

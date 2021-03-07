@@ -112,7 +112,7 @@ class Constants {
                     SimpleDateFormat(dateFormat, locale).format(it)
                 } catch (e: Exception) {
 
-                    Log.e("Constants", e.message ?: "")
+                    Log.e("Constants", e.message ?: Constants.EMPTY_VALUE)
                     null
                 }
             } ?: run {
@@ -139,7 +139,7 @@ class Constants {
                     SimpleDateFormat(dateFormat, locale).parse(it)
                 } catch (e: Exception) {
 
-                    Log.e("Constants", e.message ?: "")
+                    Log.e("Constants", e.message ?: Constants.EMPTY_VALUE)
                     null
                 }
             } ?: run {

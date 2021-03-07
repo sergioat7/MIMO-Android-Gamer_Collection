@@ -48,7 +48,7 @@ class LoginFragment : BaseFragment() {
         val username = viewModel.username
         val user = if (username.isEmpty()) Environment.getUsername() else username
         edit_text_user.setText(user)
-        val password = if (username.isEmpty()) Environment.getPassword() else ""
+        val password = if (username.isEmpty()) Environment.getPassword() else Constants.EMPTY_VALUE
         edit_text_password.setText(password)
 
         edit_text_user.afterTextChanged {
