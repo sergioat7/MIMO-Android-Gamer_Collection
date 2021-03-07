@@ -24,7 +24,7 @@
     <string name="login_register">Register here!</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must have more than 3 characters</string>
-    <string name="username_info">This username is only needed for identification purposes and to be able to separate your books from another user\'s ones.\n\nHowever, due to any personal information is stored, if you forget your password you won\'t be able to retrieve it.\n\nIf this happens, contact the app\'s developer, you can find his email in the Google Play Store app\'s card.</string>
+    <string name="username_info">This username is only needed for identification purposes and to be able to separate your games from another user\'s ones.\n\nHowever, due to any personal information is stored, if you forget your password you won\'t be able to retrieve it.\n\nIf this happens, contact the app\'s developer, you can find his email in the Google Play Store app\'s card.</string>
 
     // Register
     <string name="registration_repeat_password">Repeat password</string>

@@ -13,8 +13,8 @@ import es.upsa.mimo.gamercollection.activities.SagaDetailActivity
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SagasAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
-import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.models.base.BaseModel
+import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.SagasViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.SagasViewModel
@@ -167,14 +167,15 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
         })
 
         viewModel.sagas.observe(viewLifecycleOwner, {
+
             showData(it)
             setTitle(it.size)
         })
 
         scrollPosition.observe(viewLifecycleOwner, {
 
-            floating_action_button_start_list.visibility = if (it == ScrollPosition.TOP) View.GONE else View.VISIBLE
-            floating_action_button_end_list.visibility = if (it == ScrollPosition.END) View.GONE else View.VISIBLE
+            floating_action_button_start_list.visibility = if (it == ScrollPosition.TOP || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
+            floating_action_button_end_list.visibility = if (it == ScrollPosition.END || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
         })
     }
 
@@ -196,6 +197,7 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
 
         layout_empty_list.visibility = if (sagas.isNotEmpty()) View.GONE else View.VISIBLE
         swipe_refresh_layout.visibility = if (sagas.isNotEmpty()) View.VISIBLE else View.GONE
+        scrollPosition.value = if (sagas.isNotEmpty()) scrollPosition.value else ScrollPosition.NONE
     }
 
     private fun setTitle(sagasCount: Int) {
