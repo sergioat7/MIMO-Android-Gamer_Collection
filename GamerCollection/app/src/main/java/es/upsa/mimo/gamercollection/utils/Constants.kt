@@ -64,10 +64,7 @@ class Constants {
         const val BASE_ENDPOINT = "https://videogames-collection-services.herokuapp.com/"
         const val ACCEPT_LANGUAGE_HEADER = "Accept-Language"
         const val AUTHORIZATION_HEADER = "Authorization"
-
-        // MARK: - Platform constants
-
-        const val DEFAULT_PLATFORM = "OTHER"
+        const val OTHER_VALUE = "OTHER"
 
         // MARK: - State constants
 

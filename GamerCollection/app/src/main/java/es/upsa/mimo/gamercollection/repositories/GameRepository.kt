@@ -8,16 +8,17 @@ import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import es.upsa.mimo.gamercollection.utils.Constants
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class GameRepository @Inject constructor(
     private val database: AppDatabase,
     private val gameAPIClient: GameAPIClient
 ) {
+
+    // MARK: - Private properties
+
+    private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
 
     // MARK: - Public methods
 
@@ -164,7 +165,7 @@ class GameRepository @Inject constructor(
 
         var games: List<GameWithSaga> = arrayListOf()
         runBlocking {
-            val result = GlobalScope.async {
+            val result = databaseScope.async {
                 database
                     .gameDao()
                     .getGames(query)
@@ -182,7 +183,7 @@ class GameRepository @Inject constructor(
 
         var game: GameWithSaga? = null
         runBlocking {
-            val result = GlobalScope.async {
+            val result = databaseScope.async {
                 database
                     .gameDao()
                     .getGames(SimpleSQLiteQuery("SELECT * FROM Game WHERE id == '${gameId}'"))
@@ -246,22 +247,31 @@ class GameRepository @Inject constructor(
 
     private fun insertGameDatabase(game: GameResponse) {
 
-        GlobalScope.launch {
-            database.gameDao().insertGame(game)
+        runBlocking {
+            val job = databaseScope.launch {
+                database.gameDao().insertGame(game)
+            }
+            job.join()
         }
     }
 
     private fun updateGameDatabase(game: GameResponse) {
 
-        GlobalScope.launch {
-            database.gameDao().updateGame(game)
+        runBlocking {
+            val job = databaseScope.launch {
+                database.gameDao().updateGame(game)
+            }
+            job.join()
         }
     }
 
     private fun deleteGameDatabase(game: GameResponse) {
 
-        GlobalScope.launch {
-            database.gameDao().deleteGame(game)
+        runBlocking {
+            val job = databaseScope.launch {
+                database.gameDao().deleteGame(game)
+            }
+            job.join()
         }
     }
 }

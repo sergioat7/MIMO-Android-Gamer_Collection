@@ -5,16 +5,17 @@ import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.models.SagaWithGames
 import es.upsa.mimo.gamercollection.network.apiClient.SagaAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class SagaRepository @Inject constructor(
     private val database: AppDatabase,
     private val sagaAPIClient: SagaAPIClient
 ) {
+
+    // MARK: - Private properties
+
+    private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
 
     // MARK: - Public methods
 
@@ -74,7 +75,10 @@ class SagaRepository @Inject constructor(
 
         var sagas: List<SagaWithGames> = arrayListOf()
         runBlocking {
-            val result = GlobalScope.async { database.sagaDao().getSagas() }
+
+            val result = databaseScope.async {
+                database.sagaDao().getSagas()
+            }
             sagas = result.await()
         }
         val result = ArrayList<SagaResponse>()
@@ -88,7 +92,10 @@ class SagaRepository @Inject constructor(
 
         var saga: SagaWithGames? = null
         runBlocking {
-            val result = GlobalScope.async { database.sagaDao().getSaga(sagaId) }
+
+            val result = databaseScope.async {
+                database.sagaDao().getSaga(sagaId)
+            }
             saga = result.await()
         }
         return saga?.transform()
@@ -106,22 +113,31 @@ class SagaRepository @Inject constructor(
 
     private fun insertSagaDatabase(saga: SagaResponse) {
 
-        GlobalScope.launch {
-            database.sagaDao().insertSaga(saga)
+        runBlocking {
+            val job = databaseScope.launch {
+                database.sagaDao().insertSaga(saga)
+            }
+            job.join()
         }
     }
 
     private fun updateSagaDatabase(saga: SagaResponse) {
 
-        GlobalScope.launch {
-            database.sagaDao().updateSaga(saga)
+        runBlocking {
+            val job = databaseScope.launch {
+                database.sagaDao().updateSaga(saga)
+            }
+            job.join()
         }
     }
 
     private fun deleteSagaDatabase(saga: SagaResponse) {
 
-        GlobalScope.launch {
-            database.sagaDao().deleteSaga(saga)
+        runBlocking {
+            val job = databaseScope.launch {
+                database.sagaDao().deleteSaga(saga)
+            }
+            job.join()
         }
     }
 }

@@ -5,16 +5,17 @@ import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.network.apiClient.PlatformAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import es.upsa.mimo.gamercollection.utils.Constants
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class PlatformRepository @Inject constructor(
     private val database: AppDatabase,
     private val platformAPIClient: PlatformAPIClient
 ) {
+
+    // MARK: - Private properties
+
+    private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
 
     // MARK: - Public methods
 
@@ -38,10 +39,11 @@ class PlatformRepository @Inject constructor(
 
         var platforms = mutableListOf<PlatformResponse>()
         runBlocking {
+
             val result = GlobalScope.async { database.platformDao().getPlatforms() }
             platforms = result.await().toMutableList()
             platforms.sortBy { it.name }
-            val other = platforms.firstOrNull { it.id == Constants.DEFAULT_PLATFORM }
+            val other = platforms.firstOrNull { it.id == Constants.OTHER_VALUE }
             platforms.remove(other)
             other?.let {
                 platforms.add(it)
@@ -62,15 +64,21 @@ class PlatformRepository @Inject constructor(
 
     private fun insertPlatformDatabase(platform: PlatformResponse) {
 
-        GlobalScope.launch {
-            database.platformDao().insertPlatform(platform)
+        runBlocking {
+            val job = databaseScope.launch {
+                database.platformDao().insertPlatform(platform)
+            }
+            job.join()
         }
     }
 
     private fun deletePlatformDatabase(platform: PlatformResponse) {
 
-        GlobalScope.launch {
-            database.platformDao().deletePlatform(platform)
+        runBlocking {
+            val job = databaseScope.launch {
+                database.platformDao().deletePlatform(platform)
+            }
+            job.join()
         }
     }
 }
