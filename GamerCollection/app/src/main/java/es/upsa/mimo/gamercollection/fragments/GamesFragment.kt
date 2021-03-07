@@ -116,6 +116,7 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
             it.findItem(R.id.action_filter).isVisible = filters == null
             it.findItem(R.id.action_filter_on).isVisible = filters != null
         }
+        scrollPosition.value = ScrollPosition.TOP
         viewModel.getGames()
     }
 
@@ -207,6 +208,7 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
             gamesAdapter.setGames(it)
             layout_empty_list.visibility = if (it.isNotEmpty()) View.GONE else View.VISIBLE
             swipe_refresh_layout.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
+            scrollPosition.value = if (it.isNotEmpty()) scrollPosition.value else ScrollPosition.NONE
 
             val today = Constants.stringToDate(
                 Constants.dateToString(
@@ -232,8 +234,8 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
 
         scrollPosition.observe(viewLifecycleOwner, {
 
-            floating_action_button_start_list.visibility = if (it == ScrollPosition.TOP) View.GONE else View.VISIBLE
-            floating_action_button_end_list.visibility = if (it == ScrollPosition.END) View.GONE else View.VISIBLE
+            floating_action_button_start_list.visibility = if (it == ScrollPosition.TOP || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
+            floating_action_button_end_list.visibility = if (it == ScrollPosition.END || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
         })
     }
 
@@ -345,9 +347,10 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
         button_finished.isSelected = if(it == button_finished) !it.isSelected else false
         swipe_refresh_layout.isEnabled = !it.isSelected && viewModel.swipeRefresh
         viewModel.state = if (it.isSelected) newState else null
+        scrollPosition.value = ScrollPosition.TOP
         viewModel.getGames()
     }
 }
 enum class ScrollPosition {
-    TOP, MIDDLE, END
+    TOP, MIDDLE, END, NONE
 }
