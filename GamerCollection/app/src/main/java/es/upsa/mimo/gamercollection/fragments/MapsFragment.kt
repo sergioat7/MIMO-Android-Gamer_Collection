@@ -100,12 +100,8 @@ class MapsFragment(
 
         button_location.setOnClickListener { locateUser() }
 
-        button_save.setOnClickListener {
+        button_accept.setOnClickListener {
             onLocationSelected.setLocation(location)
-            dismiss()
-        }
-        button_remove.setOnClickListener {
-            onLocationSelected.setLocation(null)
             dismiss()
         }
     }

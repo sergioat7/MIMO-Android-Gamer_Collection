@@ -18,7 +18,11 @@ class SagasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun fillData(saga: SagaResponse, context: Context) {
 
         val gamesCount = saga.games.size
-        val title = context.resources.getQuantityString(R.plurals.saga_title, gamesCount, saga.name, gamesCount)
+        val title = if (gamesCount > 0) {
+            context.resources.getQuantityString(R.plurals.saga_title, gamesCount, saga.name, gamesCount)
+        } else {
+            saga.name
+        }
         itemView.edit_text_name.setText(title)
         itemView.edit_text_name.setReadOnly(true, InputType.TYPE_NULL, 0)
         val imageId = if (Constants.isDarkMode(context)) R.drawable.ic_triangle_up_dark else R.drawable.ic_triangle_up_light

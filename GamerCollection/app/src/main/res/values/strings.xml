@@ -7,7 +7,6 @@
     <string name="reset">Reset</string>
     <string name="save">Save</string>
     <string name="add">Add</string>
-    <string name="delete">Delete</string>
     <string name="min" translatable="false">Min</string>
     <string name="max" translatable="false">Max</string>
     <string name="empty_list">The list is empty</string>
