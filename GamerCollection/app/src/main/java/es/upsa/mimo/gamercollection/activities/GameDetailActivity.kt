@@ -256,10 +256,10 @@ class GameDetailActivity : BaseActivity() {
         val dialogBuilder = AlertDialog.Builder(this).create()
         val dialogView = this.layoutInflater.inflate(R.layout.set_rating_dialog, null)
 
-        dialogView.rating_bar.rating = rating_button.text.toString().toFloat()
+        dialogView.rating_bar.rating = rating_button.text.toString().toFloat() / 2
         dialogView.button_rate.setOnClickListener {
 
-            rating_button.text = dialogView.rating_bar.rating.toString()
+            rating_button.text = (dialogView.rating_bar.rating * 2).toString()
             dialogBuilder.dismiss()
         }
 
