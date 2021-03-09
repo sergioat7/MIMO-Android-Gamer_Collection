@@ -1,91 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SagaDetailFragment">
+    tools:context=".fragments.SagaDetailFragment"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <EditText
             android:id="@+id/edit_text_name"
-            style="@style/WhiteEditText.GameDetailsTitle"
-            android:hint="@string/saga_detail_placeholder_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/SagaTitleEditText"
+            />
 
         <TextView
             android:id="@+id/text_view_games_title"
-            style="@style/WhiteEditText.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
-            android:background="@android:color/transparent"
-            android:text="@string/saga_detail_games_title"
-            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/line_view"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_name" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_name"
+            style="@style/AddGameTitleTextView"
+            />
 
         <Button
             android:id="@+id/button_add_game"
-            style="@style/Widget.AppCompat.ImageButton"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/ic_add_circle_outline_white_24dp"
             app:layout_constraintBottom_toBottomOf="@+id/text_view_games_title"
-            app:layout_constraintEnd_toEndOf="@+id/line_view" />
+            app:layout_constraintEnd_toEndOf="@+id/line_view"
+            style="@style/AddGameButton"
+            />
 
         <View
             android:id="@+id/line_view"
             android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
-            android:background="@color/color2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_games_title" />
+            app:layout_constraintTop_toBottomOf="@+id/text_view_games_title"
+            style="@style/AddGameSeparatorView"
+            />
 
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
-            android:scrollbars="none"
-            app:layout_constraintBottom_toTopOf="@+id/button_delete_saga"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/line_view"
             app:layout_constraintStart_toStartOf="@+id/text_view_games_title"
-            app:layout_constraintTop_toBottomOf="@+id/line_view">
+            app:layout_constraintTop_toBottomOf="@+id/line_view"
+            style="@style/SagaGamesContentView"
+            >
 
             <LinearLayout
                 android:id="@+id/linear_layout_games"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:orientation="vertical"
+                />
+
         </ScrollView>
 
-        <Button
-            android:id="@+id/button_delete_saga"
-            style="@style/RoundedButton.Delete"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="20dp"
-            android:text="@string/delete"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </FrameLayout>

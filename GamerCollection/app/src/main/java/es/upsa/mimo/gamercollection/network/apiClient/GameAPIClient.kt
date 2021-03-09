@@ -1,7 +1,7 @@
 package es.upsa.mimo.gamercollection.network.apiClient
 
-import es.upsa.mimo.gamercollection.models.ErrorResponse
-import es.upsa.mimo.gamercollection.models.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.network.apiService.GameAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
@@ -24,11 +24,7 @@ class GameAPIClient @Inject constructor(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.getGames(headers)
 
-        APIClient.sendServer<List<GameResponse>, ErrorResponse>(request, {
-            success(it)
-        }, {
-            failure(it)
-        })
+        APIClient.sendServer(request, success, failure)
     }
 
     fun getGame(gameId: Int, success: (GameResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
@@ -38,11 +34,7 @@ class GameAPIClient @Inject constructor(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.getGame(headers, gameId)
 
-        APIClient.sendServer<GameResponse, ErrorResponse>(request, {
-            success(it)
-        }, {
-            failure(it)
-        })
+        APIClient.sendServer(request, success, failure)
     }
 
     fun createGame(game: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
@@ -52,11 +44,9 @@ class GameAPIClient @Inject constructor(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.createGame(headers, game)
 
-        APIClient.sendServer<Void, ErrorResponse>(request, {
+        APIClient.sendServer(request, {
             success()
-        }, {
-            failure(it)
-        })
+        }, failure)
     }
 
     fun setGame(game: GameResponse, success: (GameResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
@@ -66,11 +56,7 @@ class GameAPIClient @Inject constructor(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.setGame(headers, game.id, game)
 
-        APIClient.sendServer<GameResponse, ErrorResponse>(request, {
-            success(it)
-        }, {
-            failure(it)
-        })
+        APIClient.sendServer(request, success, failure)
     }
 
     fun deleteGame(gameId: Int, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
@@ -80,10 +66,8 @@ class GameAPIClient @Inject constructor(
         headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
         val request = api.deleteGame(headers, gameId)
 
-        APIClient.sendServer<Void, ErrorResponse>(request, {
+        APIClient.sendServer(request, {
             success()
-        }, {
-            failure(it)
-        })
+        }, failure)
     }
 }

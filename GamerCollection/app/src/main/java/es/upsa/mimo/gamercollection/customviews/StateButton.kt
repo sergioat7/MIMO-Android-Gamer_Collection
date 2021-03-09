@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.android.synthetic.main.state_button.view.*
 
 class StateButton: ConstraintLayout {
@@ -37,8 +38,8 @@ class StateButton: ConstraintLayout {
         attrs?.let {
 
             val typed = context.obtainStyledAttributes(it, R.styleable.StateButton, 0, 0)
-            val title = typed.getString(R.styleable.StateButton_stateButton_title) ?: ""
-            val subtitle = typed.getString(R.styleable.StateButton_stateButton_subtitle) ?: ""
+            val title = typed.getString(R.styleable.StateButton_stateButton_title) ?: Constants.EMPTY_VALUE
+            val subtitle = typed.getString(R.styleable.StateButton_stateButton_subtitle) ?: Constants.EMPTY_VALUE
             val color = typed.getDrawable(R.styleable.StateButton_stateButton_color)
             val background = typed.getDrawable(R.styleable.StateButton_stateButton_background)
 

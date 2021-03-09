@@ -3,18 +3,11 @@ package es.upsa.mimo.gamercollection.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import es.upsa.mimo.gamercollection.models.ErrorResponse
-import es.upsa.mimo.gamercollection.network.apiClient.*
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.repositories.*
 import javax.inject.Inject
 
 class PopupSyncAppViewModel @Inject constructor(
-    private val formatAPIClient: FormatAPIClient,
-    private val gameAPIClient: GameAPIClient,
-    private val genreAPIClient: GenreAPIClient,
-    private val platformAPIClient: PlatformAPIClient,
-    private val sagaAPIClient: SagaAPIClient,
-    private val stateAPIClient: StateAPIClient,
     private val formatRepository: FormatRepository,
     private val gameRepository: GameRepository,
     private val genreRepository: GenreRepository,
@@ -35,19 +28,12 @@ class PopupSyncAppViewModel @Inject constructor(
 
     fun loadContent() {
 
-        formatAPIClient.getFormats({ formats ->
-            genreAPIClient.getGenres({ genres ->
-                platformAPIClient.getPlatforms({ platforms ->
-                    stateAPIClient.getStates({ states ->
-                        gameAPIClient.getGames({ games ->
-                            sagaAPIClient.getSagas({ sagas ->
-
-                                formatRepository.manageFormats(formats)
-                                genreRepository.manageGenres(genres)
-                                platformRepository.managePlatforms(platforms)
-                                stateRepository.manageStates(states)
-                                gameRepository.manageGames(games)
-                                sagaRepository.manageSagas(sagas)
+        formatRepository.loadFormats({
+            gameRepository.loadGames({
+                genreRepository.loadGenres({
+                    platformRepository.loadPlatforms({
+                        sagaRepository.loadSagas({
+                            stateRepository.loadStates({
 
                                 _popupSyncAppError.value = null
                             }, {

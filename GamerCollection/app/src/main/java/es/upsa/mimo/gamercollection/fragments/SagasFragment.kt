@@ -2,16 +2,20 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.activities.SagaDetailActivity
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SagasAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
-import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.models.base.BaseModel
+import es.upsa.mimo.gamercollection.models.responses.SagaResponse
+import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.SagasViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.SagasViewModel
 import kotlinx.android.synthetic.main.fragment_sagas.*
@@ -22,6 +26,7 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
 
     private lateinit var viewModel: SagasViewModel
     private lateinit var sagasAdapter: SagasAdapter
+    private val scrollPosition = MutableLiveData<ScrollPosition>()
 
     // MARK: - Lifecycle methods
 
@@ -41,6 +46,11 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
     override fun onResume() {
         super.onResume()
         viewModel.getSagas()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.expandedIds = sagasAdapter.getExpandedIds()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -70,13 +80,13 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
 
     override fun onItemClick(id: Int) {
 
-        val params = mapOf("sagaId" to id)
+        val params = mapOf(Constants.SAGA_ID to id)
         launchActivityWithExtras(SagaDetailActivity::class.java, params)
     }
 
     override fun onSubItemClick(id: Int) {
 
-        val params = mapOf("gameId" to id)
+        val params = mapOf(Constants.GAME_ID to id)
         launchActivityWithExtras(GameDetailActivity::class.java, params)
     }
 
@@ -89,8 +99,8 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
         setupBindings()
 
         swipe_refresh_layout.isEnabled = viewModel.swipeRefresh
-        swipe_refresh_layout.setColorSchemeResources(R.color.color3)
-        swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.color2)
+        swipe_refresh_layout.setColorSchemeResources(R.color.colorFinished)
+        swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
         swipe_refresh_layout.setOnRefreshListener {
             viewModel.loadSagas()
         }
@@ -105,6 +115,36 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
             this
         )
         recycler_view_sagas.adapter = sagasAdapter
+        recycler_view_sagas.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                scrollPosition.value =
+                    if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        ScrollPosition.TOP
+                    } else if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        ScrollPosition.END
+                    } else {
+                        ScrollPosition.MIDDLE
+                    }
+            }
+        })
+
+        scrollPosition.value = ScrollPosition.TOP
+
+        floating_action_button_start_list.setOnClickListener {
+
+            recycler_view_sagas.scrollToPosition(0)
+            scrollPosition.value = ScrollPosition.TOP
+        }
+
+        floating_action_button_end_list.setOnClickListener {
+
+            val position: Int = sagasAdapter.itemCount - 1
+            recycler_view_sagas.scrollToPosition(position)
+            scrollPosition.value = ScrollPosition.END
+        }
     }
 
     private fun setupBindings() {
@@ -127,7 +167,15 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
         })
 
         viewModel.sagas.observe(viewLifecycleOwner, {
+
             showData(it)
+            setTitle(it.size)
+        })
+
+        scrollPosition.observe(viewLifecycleOwner, {
+
+            floating_action_button_start_list.visibility = if (it == ScrollPosition.TOP || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
+            floating_action_button_end_list.visibility = if (it == ScrollPosition.END || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
         })
     }
 
@@ -136,18 +184,25 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
         sagasAdapter.resetList()
 
         val items = mutableListOf<BaseModel<Int>>()
-        val expandedIds = mutableListOf<Int>()
         for (saga in sagas) {
 
             items.add(saga)
-            items.addAll(saga.games.sortedBy { it.releaseDate })
-            expandedIds.add(saga.id)
+            if (viewModel.expandedIds.contains(saga.id)) {
+                items.addAll(saga.games.sortedBy { it.releaseDate })
+            }
         }
         sagasAdapter.setItems(items)
-        sagasAdapter.setExpandedIds(expandedIds)
+        sagasAdapter.setExpandedIds(viewModel.expandedIds)
         sagasAdapter.notifyDataSetChanged()
 
         layout_empty_list.visibility = if (sagas.isNotEmpty()) View.GONE else View.VISIBLE
         swipe_refresh_layout.visibility = if (sagas.isNotEmpty()) View.VISIBLE else View.GONE
+        scrollPosition.value = if (sagas.isNotEmpty()) scrollPosition.value else ScrollPosition.NONE
+    }
+
+    private fun setTitle(sagasCount: Int) {
+
+        val title = resources.getQuantityString(R.plurals.sagas_number_title, sagasCount, sagasCount)
+        (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
 }

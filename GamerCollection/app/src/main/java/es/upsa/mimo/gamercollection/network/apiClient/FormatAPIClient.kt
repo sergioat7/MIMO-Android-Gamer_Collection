@@ -1,7 +1,7 @@
 package es.upsa.mimo.gamercollection.network.apiClient
 
-import es.upsa.mimo.gamercollection.models.ErrorResponse
-import es.upsa.mimo.gamercollection.models.FormatResponse
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
+import es.upsa.mimo.gamercollection.models.responses.FormatResponse
 import es.upsa.mimo.gamercollection.network.apiService.FormatAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
@@ -23,10 +23,6 @@ class FormatAPIClient @Inject constructor(
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
         val request = api.getFormats(headers)
 
-        APIClient.sendServer<List<FormatResponse>, ErrorResponse>(request, {
-            success(it)
-        }, {
-            failure(it)
-        })
+        APIClient.sendServer(request, success, failure)
     }
 }

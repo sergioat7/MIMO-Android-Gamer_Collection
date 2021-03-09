@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.models.PlatformResponse
-import es.upsa.mimo.gamercollection.models.SagaResponse
-import es.upsa.mimo.gamercollection.models.StateResponse
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
+import es.upsa.mimo.gamercollection.models.responses.SagaResponse
+import es.upsa.mimo.gamercollection.models.responses.StateResponse
 import es.upsa.mimo.gamercollection.models.base.BaseModel
+import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewholders.GamesViewHolder
 import es.upsa.mimo.gamercollection.viewholders.SagasViewHolder
 import kotlinx.android.synthetic.main.game_item.view.*
@@ -31,12 +32,11 @@ class SagasAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val itemView = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
-        var holder: ViewHolder? = null
-        when (viewType) {
-            R.layout.saga_item -> holder = SagasViewHolder(itemView)
-            R.layout.game_item -> holder = GamesViewHolder(itemView, platforms, states)
+        return when (viewType) {
+            R.layout.saga_item -> SagasViewHolder(itemView)
+            R.layout.game_item -> GamesViewHolder(itemView, platforms, states)
+            else -> throw Throwable("Unsupported type")
         }
-        return holder!!
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -59,21 +59,21 @@ class SagasAdapter(
             val saga = items[position] as SagaResponse
             holder.fillData(saga, context)
 
-            val rotation = if (expandedIds.contains(saga.id)) 0f else -180f
+            val rotation = if (expandedIds.contains(saga.id)) Constants.POINT_DOWN else Constants.POINT_UP
             holder.rotateArrow(rotation)
 
             holder.itemView.image_view_arrow.setOnClickListener {
                 if (expandedIds.contains(saga.id)) {
 
                     val currentPosition = holder.layoutPosition
-                    holder.rotateArrow(-180f)
+                    holder.rotateArrow(Constants.POINT_UP)
                     expandedIds.remove(saga.id)
                     items.removeAll(saga.games)
                     notifyItemRangeRemoved(currentPosition+1, saga.games.size)
                 } else {
 
                     val currentPosition = holder.layoutPosition
-                    holder.rotateArrow(0f)
+                    holder.rotateArrow(Constants.POINT_DOWN)
                     expandedIds.add(saga.id)
                     if (currentPosition+1 < items.size) {
                         items.addAll(currentPosition+1, saga.games.sortedBy { it.releaseDate })
@@ -108,6 +108,10 @@ class SagasAdapter(
 
     fun setItems(newItems: MutableList<BaseModel<Int>>) {
         this.items = newItems
+    }
+
+    fun getExpandedIds(): MutableList<Int> {
+        return this.expandedIds
     }
 
     fun setExpandedIds(newExpandedIds: MutableList<Int>) {

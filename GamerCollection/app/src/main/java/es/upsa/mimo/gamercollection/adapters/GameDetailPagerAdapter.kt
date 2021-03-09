@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import es.upsa.mimo.gamercollection.fragments.GameDataFragment
 import es.upsa.mimo.gamercollection.fragments.GameSongsFragment
-import es.upsa.mimo.gamercollection.models.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
 
 class GameDetailPagerAdapter(
     activity: AppCompatActivity,
@@ -27,13 +27,14 @@ class GameDetailPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
 
-        return if (position == 0) {
+        val fragment = if (position == 0) {
             gameDataFragment = GameDataFragment(currentGame)
-            gameDataFragment!!
+            gameDataFragment
         } else {
             gameSongsFragment = GameSongsFragment(currentGame, enabled)
-            gameSongsFragment!!
+            gameSongsFragment
         }
+        return fragment ?: Fragment()
     }
 
     // MARK: Public methods

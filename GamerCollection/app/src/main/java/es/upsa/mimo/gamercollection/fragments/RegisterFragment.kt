@@ -7,7 +7,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
+import es.upsa.mimo.gamercollection.extensions.afterTextChanged
+import es.upsa.mimo.gamercollection.extensions.clearErrors
+import es.upsa.mimo.gamercollection.extensions.onFocusChange
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.RegisterViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.RegisterViewModel
 import kotlinx.android.synthetic.main.fragment_register.*
@@ -40,10 +44,63 @@ class RegisterFragment : BaseFragment() {
         viewModel = ViewModelProvider(this, RegisterViewModelFactory(application)).get(RegisterViewModel::class.java)
         setupBindings()
 
+        edit_text_user.afterTextChanged {
+            registerDataChanged()
+        }
+        edit_text_user.onFocusChange {
+            registerDataChanged()
+        }
+
+        image_button_info.setOnClickListener {
+            showPopupDialog(resources.getString(R.string.username_info))
+        }
+
+        edit_text_password.afterTextChanged {
+            registerDataChanged()
+        }
+        edit_text_password.onFocusChange {
+            registerDataChanged()
+        }
+
+        image_button_password.setOnClickListener {
+            Constants.showOrHidePassword(edit_text_password, image_button_password, Constants.isDarkMode(context))
+        }
+
+        edit_text_repeatPassword.afterTextChanged {
+            registerDataChanged()
+        }
+        edit_text_repeatPassword.onFocusChange {
+            registerDataChanged()
+        }
+
+        image_button_confirm_password.setOnClickListener {
+            Constants.showOrHidePassword(edit_text_password, image_button_password, Constants.isDarkMode(context))
+        }
+
         register_button.setOnClickListener {register()}
     }
 
     private fun setupBindings() {
+
+        viewModel.registerFormState.observe(viewLifecycleOwner, {
+
+            val registerState = it ?: return@observe
+
+            edit_text_user.clearErrors()
+            edit_text_password.clearErrors()
+            edit_text_repeatPassword.clearErrors()
+
+            register_button.isEnabled = registerState.isDataValid
+
+            if (registerState.usernameError != null) {
+                edit_text_user.error = getString(registerState.usernameError)
+            }
+            if (registerState.passwordError != null) {
+
+                edit_text_password.error = getString(registerState.passwordError)
+                edit_text_repeatPassword.error = getString(registerState.passwordError)
+            }
+        })
 
         viewModel.registerLoading.observe(viewLifecycleOwner, { isLoading ->
 
@@ -64,6 +121,15 @@ class RegisterFragment : BaseFragment() {
                 manageError(error)
             }
         })
+    }
+
+    private fun registerDataChanged() {
+
+        viewModel.registerDataChanged(
+            edit_text_user.text.toString(),
+            edit_text_password.text.toString(),
+            edit_text_repeatPassword.text.toString()
+        )
     }
 
     private fun register() {

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.GamerCollection.NoActionBar.GameDetail" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_dark</item>
+    </style>
+
+    <style name="AddImage">
+        <item name="android:layout_marginStart">@dimen/margin_medium</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="srcCompat">@drawable/ic_add_image_light</item>
+    </style>
+
+    <style name="GameTitleEditText">
+        <item name="customEditText_type">"TEXT"</item>
+        <item name="customEditText_placeholder">@string/game_detail_placeholder_name</item>
+        <item name="customEditText_font">@font/roboto_bold</item>
+        <item name="customEditText_text_size">@dimen/font_larger</item>
+    </style>
+
+    <style name="RatingButton" parent="android:style/Widget.Button">
+        <item name="android:layout_height">@dimen/margin_medium</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:drawableStart">@drawable/ic_star_white_24dp</item>
+        <item name="android:drawablePadding">@dimen/margin_medium_negative</item>
+        <item name="android:drawableTint">@color/colorInProgress</item>
+        <item name="android:text">0</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="PegiImage">
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:maxWidth">@dimen/size_big</item>
+    </style>
+
+    <style name="GameDetailTabLayout">
+        <item name="android:layout_marginStart">@dimen/margin_medium</item>
+        <item name="android:layout_marginEnd">@dimen/margin_medium</item>
+        <item name="tabIndicatorColor">@color/colorFinished</item>
+        <item name="tabSelectedTextColor">@color/colorSecondary</item>
+        <item name="tabTextColor">@color/colorSecondaryLight</item>
+    </style>
+
+    <style name="GameDataContentView">
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:scrollbars">none</item>
+    </style>
+
+    <style name="HiddenContentView">
+        <item name="android:layout_marginTop">@dimen/margin_medium</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:animateLayoutChanges">true</item>
+    </style>
+
+    <style name="GameDataTitleTextView" parent="CustomTextView.Bold">
+        <item name="android:layout_width">@dimen/size_higher</item>
+        <item name="android:layout_gravity">center_vertical|start</item>
+        <item name="android:layout_marginEnd">@dimen/margin_small</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="GameDetailEditText">
+        <item name="android:layout_gravity">center</item>
+        <item name="customEditText_font">@font/roboto_regular</item>
+        <item name="customEditText_text_size">@dimen/font_medium</item>
+    </style>
+
+    <style name="GameDetailEditTextWithRemoveImage" parent="GameDetailEditText">
+        <item name="customEditText_icon">@drawable/ic_remove_text_light</item>
+    </style>
+
+    <style name="ReleaseDateEditText" parent="GameDetailEditTextWithRemoveImage">
+        <item name="customEditText_type">"DATE"</item>
+        <item name="customEditText_placeholder">@string/game_detail_select_date</item>
+    </style>
+
+    <style name="PurchaseDateEditText" parent="GameDetailEditTextWithRemoveImage">
+        <item name="customEditText_type">"DATE"</item>
+        <item name="customEditText_placeholder">@string/game_detail_select_date</item>
+    </style>
+
+    <style name="PurchaseLocationEditText" parent="GameDetailEditTextWithRemoveImage">
+        <item name="customEditText_type">"NONE"</item>
+        <item name="customEditText_placeholder">@string/game_detail_placeholder_purchase_location</item>
+    </style>
+
+    <style name="SongsEmptyLayout">
+        <item name="emptyListLayout_image">@drawable/ic_song_light</item>
+    </style>
+
+    <style name="AddSongButton" parent="@style/RoundedButton.Action">
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:layout_marginStart">@dimen/margin_medium</item>
+        <item name="android:layout_marginEnd">@dimen/margin_medium</item>
+        <item name="android:text">@string/add</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="SetImageTitleTextView">
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:text">@string/game_detail_image_modal_title</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="SetImageEditText">
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginStart">@dimen/margin_small</item>
+        <item name="android:layout_marginEnd">@dimen/margin_small</item>
+        <item name="customEditText_type">"URL"</item>
+        <item name="customEditText_font">@font/roboto_regular</item>
+        <item name="customEditText_text_size">@dimen/font_medium</item>
+        <item name="customEditText_icon">@drawable/ic_remove_text_light</item>
+        <item name="customEditText_ime_option">"DONE"</item>
+    </style>
+
+    <style name="SongInfoImage">
+        <item name="android:layout_width">@dimen/size_big</item>
+        <item name="android:layout_height">@dimen/size_big</item>
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="srcCompat">@drawable/ic_song_light</item>
+    </style>
+
+    <style name="SongInfoContainerView">
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:layout_marginStart">@dimen/margin_small</item>
+        <item name="android:layout_marginEnd">@dimen/margin_small</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="NewSongCustomEditText">
+        <item name="customEditText_font">@font/roboto_regular</item>
+        <item name="customEditText_text_size">@dimen/font_large</item>
+        <item name="customEditText_icon">@drawable/ic_remove_text_light</item>
+    </style>
+
+    <style name="NewSongNameEditText" parent="NewSongCustomEditText">
+        <item name="android:layout_marginTop">@dimen/margin_medium</item>
+        <item name="android:layout_marginStart">@dimen/margin_small</item>
+        <item name="android:layout_marginEnd">@dimen/margin_small</item>
+        <item name="customEditText_type">"TEXT"</item>
+        <item name="customEditText_placeholder">@string/modal_song_placeholder_name</item>
+        <item name="customEditText_ime_option">"NEXT"</item>
+    </style>
+
+    <style name="NewSongSingerEditText" parent="NewSongCustomEditText">
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="customEditText_type">"TEXT"</item>
+        <item name="customEditText_placeholder">@string/modal_song_placeholder_singer</item>
+        <item name="customEditText_ime_option">"NEXT"</item>
+    </style>
+
+    <style name="NewSongUrlEditText" parent="NewSongCustomEditText">
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="customEditText_type">"URL"</item>
+        <item name="customEditText_placeholder">@string/modal_song_placeholder_url</item>
+        <item name="customEditText_ime_option">"DONE"</item>
+    </style>
+
+</resources>

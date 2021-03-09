@@ -1,11 +1,9 @@
 package es.upsa.mimo.gamercollection.network.apiClient
 
-import android.content.res.Resources
 import com.google.gson.*
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.models.ErrorResponse
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -50,10 +48,15 @@ class APIClient {
             request.enqueue(object : Callback<T> {
                 override fun onResponse(call: Call<T>?, response: Response<T>) {
 
-                    if ( response.isSuccessful && (response.code() == 204 || T::class == Void::class) ) {
+                    val isSuccessful = response.isSuccessful
+                    val code = response.code()
+                    val body = response.body()
+                    val errorBody = response.errorBody()
+
+                    if ( isSuccessful && (code == 204 || T::class == Void::class) ) {
 
                         if (T::class == Void::class) {
-                            val result = gson.fromJson("", T::class.java)
+                            val result = gson.fromJson(Constants.EMPTY_VALUE, T::class.java)
                             success(result)
                             return
                         }
@@ -70,28 +73,28 @@ class APIClient {
                             return
                         } catch (e: Exception){}
 
-                        val error = ErrorResponse("", R.string.error_server) as U
+                        val error = ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server) as U
                         failure(error)
-                    } else if (response.isSuccessful && response.body() != null) {
+                    } else if (isSuccessful && body != null) {
 
-                        val result = response.body() as T
+                        val result = body as T
                         success(result)
-                    } else if (!response.isSuccessful && response.errorBody() != null) {
+                    } else if (!isSuccessful && errorBody != null) {
 
                         val errorResponse: U = gson.fromJson(
-                            response.errorBody()!!.charStream(), U::class.java
+                            errorBody.charStream(), U::class.java
                         )
                         failure(errorResponse)
                     } else {
 
-                        val error = ErrorResponse("", R.string.error_server) as U
+                        val error = ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server) as U
                         failure(error)
                     }
                 }
 
                 override fun onFailure(call: Call<T>?, t: Throwable) {
 
-                    val error = ErrorResponse("", R.string.error_server) as U
+                    val error = ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server) as U
                     failure(error)
                 }
             })

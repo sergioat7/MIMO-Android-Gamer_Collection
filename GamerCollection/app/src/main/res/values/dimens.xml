@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--  margins between views  -->
+    <dimen name="margin_extra_large">100dp</dimen>
+    <dimen name="margin_larger">50dp</dimen>
+    <dimen name="margin_large_negative">-40dp</dimen>
+    <dimen name="margin_large">40dp</dimen>
+    <dimen name="margin_medium_negative">-20dp</dimen>
+    <dimen name="margin_medium">20dp</dimen>
+    <dimen name="margin_normal">15dp</dimen>
+    <dimen name="margin_small">10dp</dimen>
+    <dimen name="margin_tiny">5dp</dimen>
+    <dimen name="margin_mini">2dp</dimen>
+
+    <!-- sizes of views   -->
+    <dimen name="size_huge">400dp</dimen>
+    <dimen name="size_wide">300dp</dimen>
+    <dimen name="size_semi_huge">200dp</dimen>
+    <dimen name="size_higher">125dp</dimen>
+    <dimen name="size_high">120dp</dimen>
+    <dimen name="size_bigger">50dp</dimen>
+    <dimen name="size_big">40dp</dimen>
+    <dimen name="size_large">30dp</dimen>
+    <dimen name="size_medium">25dp</dimen>
+    <dimen name="size_normal">20dp</dimen>
+    <dimen name="size_small">10dp</dimen>
+    <dimen name="size_tiny">5dp</dimen>
+    <dimen name="size_mini">2dp</dimen>
+    <dimen name="size_minimum">1dp</dimen>
+
+    <!--  font sizes  -->
+    <dimen name="font_extra_large">24sp</dimen>
+    <dimen name="font_larger">20sp</dimen>
+    <dimen name="font_large">18sp</dimen>
+    <dimen name="font_medium">16sp</dimen>
+    <dimen name="font_normal">14sp</dimen>
+
+    <!--  radius  -->
+    <dimen name="radius_huge">36dp</dimen>
+    <dimen name="radius_normal">15dp</dimen>
+    <dimen name="radius_small">10dp</dimen>
+    <dimen name="radius_tiny">5dp</dimen>
+    <dimen name="radius_mini">2dp</dimen>
+
+</resources>

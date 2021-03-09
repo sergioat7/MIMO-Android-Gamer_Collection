@@ -4,11 +4,11 @@ class Environment {
     companion object {
 
         fun getUsername(): String {
-            return ""
+            return Constants.EMPTY_VALUE
         }
 
         fun getPassword(): String {
-            return ""
+            return Constants.EMPTY_VALUE
         }
     }
 }

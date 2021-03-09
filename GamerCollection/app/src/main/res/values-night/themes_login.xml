@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MainImageView">
+        <item name="android:src">@drawable/app_name_dark</item>
+    </style>
+
+    <style name="UsernameInfoButton" parent="EditTextButton">
+        <item name="android:src">@drawable/ic_show_info_dark</item>
+    </style>
+
+    <style name="PasswordEyeButton" parent="EditTextButton">
+        <item name="android:src">@drawable/ic_show_password_dark</item>
+    </style>
+
+</resources>

@@ -1,27 +1,51 @@
 package es.upsa.mimo.gamercollection.repositories
 
-import es.upsa.mimo.gamercollection.models.StateResponse
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
+import es.upsa.mimo.gamercollection.models.responses.StateResponse
+import es.upsa.mimo.gamercollection.network.apiClient.StateAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import es.upsa.mimo.gamercollection.utils.Constants
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class StateRepository @Inject constructor(
-    private val database: AppDatabase
+    private val database: AppDatabase,
+    private val stateAPIClient: StateAPIClient
 ) {
+
+    // MARK: - Private properties
+
+    private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
 
     // MARK: - Public methods
 
-    fun getStates(): List<StateResponse> {
+    fun loadStates(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        stateAPIClient.getStates({ newStates ->
+
+            for (newState in newStates) {
+                insertStateDatabase(newState)
+            }
+            val currentStates = getStatesDatabase()
+            val statesToRemove = AppDatabase.getDisabledContent(currentStates, newStates)
+            for (state in statesToRemove) {
+                deleteStateDatabase(state as StateResponse)
+            }
+            success()
+        }, failure)
+    }
+
+    fun getStatesDatabase(): List<StateResponse> {
 
         var states = mutableListOf<StateResponse>()
         runBlocking {
-            val result = GlobalScope.async { database.stateDao().getStates() }
+
+            val result = databaseScope.async {
+                database.stateDao().getStates()
+            }
             states = result.await().toMutableList()
             states.sortBy { it.name }
-            val other = states.firstOrNull { it.id == "OTHER" }
+            val other = states.firstOrNull { it.id == Constants.OTHER_VALUE }
             states.remove(other)
             other?.let {
                 states.add(it)
@@ -30,32 +54,33 @@ class StateRepository @Inject constructor(
         return states
     }
 
-    fun manageStates(newStates: List<StateResponse>) {
+    fun resetTable() {
 
-        for (newState in newStates) {
-            insertState(newState)
-        }
-
-        val currentStates = getStates()
-        val statesToRemove = AppDatabase.getDisabledContent(currentStates, newStates)
-        for (state in statesToRemove) {
-            deleteState(state as StateResponse)
+        val states = getStatesDatabase()
+        for (state in states) {
+            deleteStateDatabase(state)
         }
     }
 
     // MARK: - Private methods
 
-    private fun insertState(state: StateResponse) {
+    private fun insertStateDatabase(state: StateResponse) {
 
-        GlobalScope.launch {
-            database.stateDao().insertState(state)
+        runBlocking {
+            val job = databaseScope.launch {
+                database.stateDao().insertState(state)
+            }
+            job.join()
         }
     }
 
-    private fun deleteState(state: StateResponse) {
+    private fun deleteStateDatabase(state: StateResponse) {
 
-        GlobalScope.launch {
-            database.stateDao().deleteState(state)
+        runBlocking {
+            val job = databaseScope.launch {
+                database.stateDao().deleteState(state)
+            }
+            job.join()
         }
     }
 }

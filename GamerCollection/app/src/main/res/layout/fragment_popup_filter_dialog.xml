@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.popups.PopupFilterDialogFragment">
+    tools:context=".fragments.popups.PopupFilterDialogFragment"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
@@ -18,176 +21,188 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" >
+            app:layout_constraintTop_toTopOf="parent"
+            >
 
             <ScrollView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginEnd="20dp"
-                android:background="@color/color1"
-                android:scrollbars="none"
                 app:layout_constraintBottom_toTopOf="@+id/line_view_top"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.875"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/ModalFilterContentView"
+                >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    >
 
                     <TextView
                         android:id="@+id/text_view_platform_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="@string/modal_filter_platform"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        style="@style/ModalFilterTitle"
+                        />
 
                     <HorizontalScrollView
                         android:id="@+id/scroll_platforms"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="20dp"
-                        android:scrollbars="none"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/text_view_platform_title">
+                        app:layout_constraintTop_toBottomOf="@+id/text_view_platform_title"
+                        style="@style/ModalFilterHorizontalContentView"
+                        >
 
                         <LinearLayout
                             android:id="@+id/linear_layout_platforms"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal" />
+                            android:orientation="horizontal"
+                            />
 
                     </HorizontalScrollView>
 
                     <TextView
                         android:id="@+id/text_view_genre_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="@string/modal_filter_genre"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/scroll_platforms" />
+                        app:layout_constraintTop_toBottomOf="@+id/scroll_platforms"
+                        style="@style/ModalFilterTitle"
+                        />
 
                     <HorizontalScrollView
                         android:id="@+id/scroll_genres"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="20dp"
-                        android:scrollbars="none"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/text_view_genre_title">
+                        app:layout_constraintTop_toBottomOf="@+id/text_view_genre_title"
+                        style="@style/ModalFilterHorizontalContentView"
+                        >
 
                         <LinearLayout
                             android:id="@+id/linear_layout_genres"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal" />
+                            android:orientation="horizontal"
+                            />
 
                     </HorizontalScrollView>
 
                     <TextView
                         android:id="@+id/text_view_format_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="@string/modal_filter_format"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/scroll_genres" />
+                        app:layout_constraintTop_toBottomOf="@+id/scroll_genres"
+                        style="@style/ModalFilterTitle"
+                        />
 
                     <HorizontalScrollView
                         android:id="@+id/scroll_formats"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="20dp"
-                        android:scrollbars="none"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/text_view_format_title">
+                        app:layout_constraintTop_toBottomOf="@+id/text_view_format_title"
+                        style="@style/ModalFilterHorizontalContentView"
+                        >
 
                         <LinearLayout
                             android:id="@+id/linear_layout_formats"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal" />
+                            android:orientation="horizontal"
+                            />
                     </HorizontalScrollView>
 
                     <TextView
                         android:id="@+id/text_view_score_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="@string/modal_filter_score"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/scroll_formats" />
+                        app:layout_constraintTop_toBottomOf="@+id/scroll_formats"
+                        style="@style/ModalFilterTitle"
+                        />
 
                     <LinearLayout
-                        android:id="@+id/layout_min_rating"
+                        android:id="@+id/linear_layout_min_rating"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="20dp"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/text_view_score_title">
+                        app:layout_constraintTop_toBottomOf="@+id/text_view_score_title"
+                        style="@style/RatingLayout"
+                        >
 
-                        <RatingBar
+                        <me.zhanghai.android.materialratingbar.MaterialRatingBar
                             android:id="@+id/rating_bar_min"
-                            style="@style/CustomRatingBar.DarkBackground"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:isIndicator="false"
-                            android:numStars="5"
                             android:rating="0"
-                            android:stepSize="0.5" />
+                            style="@style/ModalFilterRatingBar"
+                            />
 
                         <TextView
                             android:id="@+id/text_view_min_rating"
-                            style="@style/WhiteTextView.Regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:text="@string/min" />
+                            android:layout_marginStart="@dimen/margin_small"
+                            android:text="@string/min"
+                            style="@style/CustomTextView.Regular"
+                            />
+
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/layout_max_rating"
+                        android:id="@+id/linear_layout_max_rating"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="20dp"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/layout_min_rating">
+                        app:layout_constraintTop_toBottomOf="@+id/linear_layout_min_rating"
+                        style="@style/RatingLayout"
+                        >
 
-                        <RatingBar
+                        <me.zhanghai.android.materialratingbar.MaterialRatingBar
                             android:id="@+id/rating_bar_max"
-                            style="@style/CustomRatingBar.DarkBackground"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:isIndicator="false"
-                            android:numStars="5"
                             android:rating="5"
-                            android:stepSize="0.5" />
+                            style="@style/ModalFilterRatingBar"
+                            />
 
                         <TextView
                             android:id="@+id/text_view_max_rating"
-                            style="@style/WhiteTextView.Regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:text="@string/max" />
+                            android:layout_marginStart="@dimen/margin_small"
+                            android:text="@string/max"
+                            style="@style/CustomTextView.Regular"
+                            />
+
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/text_view_release_date_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="@string/modal_filter_release_date"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/layout_max_rating" />
+                        app:layout_constraintTop_toBottomOf="@+id/linear_layout_max_rating"
+                        style="@style/ModalFilterTitle"
+                        />
 
                     <LinearLayout
                         android:id="@+id/linear_layout_release_dates"
@@ -196,31 +211,42 @@
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/text_view_release_date_title">
+                        app:layout_constraintTop_toBottomOf="@+id/text_view_release_date_title"
+                        >
 
-                        <EditText
-                            android:id="@+id/edit_text_release_date_min"
-                            style="@style/WhiteEditText.Regular"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_release_date_min"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="@string/min" />
+                            app:customEditText_type="DATE"
+                            app:customEditText_placeholder="@string/min"
+                            app:customEditText_font="@font/roboto_regular"
+                            app:customEditText_text_size="@dimen/font_medium"
+                            />
 
-                        <EditText
-                            android:id="@+id/edit_text_release_date_max"
-                            style="@style/WhiteEditText.Regular"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_release_date_max"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="@string/max" />
+                            app:customEditText_type="DATE"
+                            app:customEditText_placeholder="@string/max"
+                            app:customEditText_font="@font/roboto_regular"
+                            app:customEditText_text_size="@dimen/font_medium"
+                            />
+
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/text_view_purchase_date_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="@string/modal_filter_purchase_date"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/linear_layout_release_dates" />
+                        app:layout_constraintTop_toBottomOf="@+id/linear_layout_release_dates"
+                        style="@style/ModalFilterTitle"
+                        />
 
                     <LinearLayout
                         android:id="@+id/linear_layout_purchase_dates"
@@ -229,31 +255,42 @@
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/text_view_purchase_date_title">
+                        app:layout_constraintTop_toBottomOf="@+id/text_view_purchase_date_title"
+                        >
 
-                        <EditText
-                            android:id="@+id/edit_text_purchase_date_min"
-                            style="@style/WhiteEditText.Regular"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_purchase_date_min"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="@string/min" />
+                            app:customEditText_type="DATE"
+                            app:customEditText_placeholder="@string/min"
+                            app:customEditText_font="@font/roboto_regular"
+                            app:customEditText_text_size="@dimen/font_medium"
+                            />
 
-                        <EditText
-                            android:id="@+id/edit_text_purchase_date_max"
-                            style="@style/WhiteEditText.Regular"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_purchase_date_max"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="@string/max" />
+                            app:customEditText_type="DATE"
+                            app:customEditText_placeholder="@string/max"
+                            app:customEditText_font="@font/roboto_regular"
+                            app:customEditText_text_size="@dimen/font_medium"
+                            />
+
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/text_view_price_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="@string/modal_filter_price"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/linear_layout_purchase_dates" />
+                        app:layout_constraintTop_toBottomOf="@+id/linear_layout_purchase_dates"
+                        style="@style/ModalFilterTitle"
+                        />
 
                     <LinearLayout
                         android:id="@+id/linear_layout_prices"
@@ -262,33 +299,42 @@
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/text_view_price_title">
+                        app:layout_constraintTop_toBottomOf="@+id/text_view_price_title"
+                        >
 
-                        <EditText
-                            android:id="@+id/edit_text_price_min"
-                            style="@style/WhiteEditText.Regular"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_price_min"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:inputType="numberDecimal"
-                            android:hint="@string/min" />
+                            app:customEditText_type="NUMBER"
+                            app:customEditText_placeholder="@string/min"
+                            app:customEditText_font="@font/roboto_regular"
+                            app:customEditText_text_size="@dimen/font_medium"
+                            />
 
-                        <EditText
-                            android:id="@+id/edit_text_price_max"
-                            style="@style/WhiteEditText.Regular"
+                        <es.upsa.mimo.gamercollection.customviews.CustomEditText
+                            android:id="@+id/custom_edit_text_price_max"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:inputType="numberDecimal"
-                            android:hint="@string/max" />
+                            app:customEditText_type="NUMBER"
+                            app:customEditText_placeholder="@string/max"
+                            app:customEditText_font="@font/roboto_regular"
+                            app:customEditText_text_size="@dimen/font_medium"
+                            />
+
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/text_view_goty_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="@string/modal_filter_goty"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/linear_layout_prices" />
+                        app:layout_constraintTop_toBottomOf="@+id/linear_layout_prices"
+                        style="@style/ModalFilterTitle"
+                        />
 
                     <RadioGroup
                         android:id="@+id/radio_group_goty"
@@ -297,34 +343,37 @@
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/text_view_goty_title">
+                        app:layout_constraintTop_toBottomOf="@+id/text_view_goty_title"
+                        >
 
                         <RadioButton
                             android:id="@+id/radio_button_goty_no"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:buttonTint="@color/color2"
                             android:checked="true"
                             android:text="@string/no"
-                            android:textColor="@color/color2" />
+                            style="@style/CustomRadioButton"
+                            />
 
                         <RadioButton
                             android:id="@+id/radio_button_goty_yes"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:buttonTint="@color/color2"
                             android:text="@string/yes"
-                            android:textColor="@color/color2" />
+                            style="@style/CustomRadioButton"
+                            />
+
                     </RadioGroup>
 
                     <TextView
                         android:id="@+id/text_view_loaned_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="@string/modal_filter_loaned"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/radio_group_goty" />
+                        app:layout_constraintTop_toBottomOf="@+id/radio_group_goty"
+                        style="@style/ModalFilterTitle"
+                        />
 
                     <RadioGroup
                         android:id="@+id/radio_group_loaned"
@@ -333,34 +382,37 @@
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/text_view_loaned_title">
+                        app:layout_constraintTop_toBottomOf="@+id/text_view_loaned_title"
+                        >
 
                         <RadioButton
                             android:id="@+id/radio_button_loaned_no"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:buttonTint="@color/color2"
                             android:checked="true"
                             android:text="@string/no"
-                            android:textColor="@color/color2" />
+                            style="@style/CustomRadioButton"
+                            />
 
                         <RadioButton
                             android:id="@+id/radio_button_loaned_yes"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:buttonTint="@color/color2"
                             android:text="@string/yes"
-                            android:textColor="@color/color2" />
+                            style="@style/CustomRadioButton"
+                            />
+
                     </RadioGroup>
 
                     <TextView
                         android:id="@+id/text_view_saga_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="@string/modal_filter_has_saga"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/radio_group_loaned" />
+                        app:layout_constraintTop_toBottomOf="@+id/radio_group_loaned"
+                        style="@style/ModalFilterTitle"
+                        />
 
                     <RadioGroup
                         android:id="@+id/radio_group_saga"
@@ -369,130 +421,136 @@
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/text_view_saga_title">
+                        app:layout_constraintTop_toBottomOf="@+id/text_view_saga_title"
+                        >
 
                         <RadioButton
                             android:id="@+id/radio_button_saga_no"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:buttonTint="@color/color2"
                             android:checked="true"
                             android:text="@string/no"
-                            android:textColor="@color/color2" />
+                            style="@style/CustomRadioButton"
+                            />
 
                         <RadioButton
                             android:id="@+id/radio_button_saga_yes"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:buttonTint="@color/color2"
                             android:text="@string/yes"
-                            android:textColor="@color/color2" />
+                            style="@style/CustomRadioButton"
+                            />
+
                     </RadioGroup>
 
                     <TextView
                         android:id="@+id/text_view_songs_title"
-                        style="@style/WhiteTextView.Bold.ModalFilterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="@string/modal_filter_has_songs"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/radio_group_saga" />
+                        app:layout_constraintTop_toBottomOf="@+id/radio_group_saga"
+                        style="@style/ModalFilterTitle"
+                        />
 
                     <RadioGroup
                         android:id="@+id/radio_group_songs"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginBottom="@dimen/margin_medium"
                         android:orientation="horizontal"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/text_view_songs_title">
+                        app:layout_constraintTop_toBottomOf="@+id/text_view_songs_title"
+                        >
 
                         <RadioButton
                             android:id="@+id/radio_button_songs_no"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:buttonTint="@color/color2"
                             android:checked="true"
                             android:text="@string/no"
-                            android:textColor="@color/color2" />
+                            style="@style/CustomRadioButton"
+                            />
 
                         <RadioButton
                             android:id="@+id/radio_button_songs_yes"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:buttonTint="@color/color2"
                             android:text="@string/yes"
-                            android:textColor="@color/color2" />
+                            style="@style/CustomRadioButton"
+                            />
+
                     </RadioGroup>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
             </ScrollView>
 
             <View
                 android:id="@+id/line_view_top"
                 android:layout_width="0dp"
-                android:layout_height="2dp"
-                android:background="@color/color2"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+                android:layout_height="@dimen/size_mini"
+                android:background="@color/colorSecondary"
+                app:layout_constraintBottom_toTopOf="@+id/linear_layout_filter_buttons"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                />
 
             <LinearLayout
-                android:id="@+id/linearLayout3"
+                android:id="@+id/linear_layout_filter_buttons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
-                android:layout_marginBottom="2dp"
-                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                style="@style/FilterButtonsContentView"
+                >
 
                 <Button
                     android:id="@+id/button_cancel"
-                    style="@style/FilterButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/color4"
-                    android:text="@string/cancel" />
+                    android:background="@color/colorPending"
+                    android:text="@string/cancel"
+                    style="@style/FilterButton"
+                    />
 
                 <View
                     android:id="@+id/line_view_left"
-                    android:layout_width="2dp"
                     android:layout_height="match_parent"
-                    android:background="@color/color2" />
+                    style="@style/FilterButtonSeparatorView"
+                    />
 
                 <Button
                     android:id="@+id/button_reset"
-                    style="@style/FilterButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/color5"
-                    android:text="@string/reset" />
+                    android:background="@color/colorInProgress"
+                    android:text="@string/reset"
+                    style="@style/FilterButton"
+                    />
 
                 <View
                     android:id="@+id/line_view_right"
-                    android:layout_width="2dp"
                     android:layout_height="match_parent"
-                    android:background="@color/color2" />
+                    style="@style/FilterButtonSeparatorView"
+                    />
 
                 <Button
                     android:id="@+id/button_save"
-                    style="@style/FilterButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/color3"
-                    android:text="@string/save" />
+                    android:background="@color/colorFinished"
+                    android:text="@string/save"
+                    style="@style/FilterButton"
+                    />
+
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </FrameLayout>

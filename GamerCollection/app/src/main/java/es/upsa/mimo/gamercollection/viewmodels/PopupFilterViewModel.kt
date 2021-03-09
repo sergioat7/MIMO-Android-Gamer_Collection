@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.models.FormatResponse
-import es.upsa.mimo.gamercollection.models.GenreResponse
-import es.upsa.mimo.gamercollection.models.PlatformResponse
+import es.upsa.mimo.gamercollection.models.responses.FormatResponse
+import es.upsa.mimo.gamercollection.models.responses.GenreResponse
+import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
@@ -16,18 +16,22 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
 
 class PopupFilterViewModel @Inject constructor(
-    sharedPreferencesHandler: SharedPreferencesHandler,
-    formatRepository: FormatRepository,
-    genreRepository: GenreRepository,
-    platformRepository: PlatformRepository
+    private val sharedPreferencesHandler: SharedPreferencesHandler,
+    private val formatRepository: FormatRepository,
+    private val genreRepository: GenreRepository,
+    private val platformRepository: PlatformRepository
 ): ViewModel() {
 
     //MARK: - Public properties
 
-    val language: String = sharedPreferencesHandler.getLanguage()
-    val formats: List<FormatResponse> = formatRepository.getFormats()
-    val genres: List<GenreResponse> = genreRepository.getGenres()
-    val platforms: List<PlatformResponse> = platformRepository.getPlatforms()
+    val language: String
+        get() = sharedPreferencesHandler.getLanguage()
+    val formats: List<FormatResponse>
+        get() = formatRepository.getFormatsDatabase()
+    val genres: List<GenreResponse>
+        get() = genreRepository.getGenresDatabase()
+    val platforms: List<PlatformResponse>
+        get() = platformRepository.getPlatformsDatabase()
 
     //MARK: - Public methods
 

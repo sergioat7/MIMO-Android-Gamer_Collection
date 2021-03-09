@@ -11,8 +11,8 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SongsAdapter
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.models.SongResponse
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.SongResponse
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameSongsViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameSongsViewModel
 import kotlinx.android.synthetic.main.fragment_game_songs.*
@@ -71,7 +71,11 @@ class GameSongsFragment(
         setupBindings()
 
         recycler_view_songs.layoutManager = LinearLayoutManager(requireContext())
-        songsAdapter = SongsAdapter(ArrayList(), enabled, this)
+        songsAdapter = SongsAdapter(
+            ArrayList(),
+            enabled,
+            requireContext(),
+            this)
         recycler_view_songs.adapter = songsAdapter
 
         button_add_song.setOnClickListener { showNewSongPopup() }
@@ -108,9 +112,9 @@ class GameSongsFragment(
 
         dialogView.button_accept.setOnClickListener {
 
-            val name = dialogView.edit_text_name.text.toString()
-            val singer = dialogView.edit_text_singer.text.toString()
-            val url = dialogView.edit_text_url.text.toString()
+            val name = dialogView.custom_edit_text_name.getText()
+            val singer = dialogView.custom_edit_text_singer.getText()
+            val url = dialogView.custom_edit_text_url.getText()
 
             if (name.isNotBlank() || singer.isNotBlank() || url.isNotBlank()) {
                 val song = SongResponse(

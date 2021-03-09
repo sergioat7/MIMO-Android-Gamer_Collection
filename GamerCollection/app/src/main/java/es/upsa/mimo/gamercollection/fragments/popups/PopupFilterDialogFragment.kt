@@ -1,7 +1,6 @@
 package es.upsa.mimo.gamercollection.fragments.popups
 
 import android.os.Bundle
-import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnFiltersSelected
-import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.PopupFilterViewModelFactory
@@ -27,6 +25,11 @@ class PopupFilterDialogFragment(
     private lateinit var viewModel: PopupFilterViewModel
 
     // MARK: - Lifecycle methods
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_TITLE, R.style.Theme_GamerCollection_DialogTransparent)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,15 +54,11 @@ class PopupFilterDialogFragment(
         fillGenres()
         fillFormats()
 
-        edit_text_release_date_min.showDatePicker(requireContext(), Constants.getFilterDateFormat(viewModel.language))
-        edit_text_release_date_min.setRawInputType(InputType.TYPE_NULL)
-        edit_text_release_date_max.showDatePicker(requireContext(), Constants.getFilterDateFormat(viewModel.language))
-        edit_text_release_date_max.setRawInputType(InputType.TYPE_NULL)
+        custom_edit_text_release_date_min.setDatePickerFormat(Constants.getFilterDateFormat(viewModel.language))
+        custom_edit_text_release_date_max.setDatePickerFormat(Constants.getFilterDateFormat(viewModel.language))
 
-        edit_text_purchase_date_min.showDatePicker(requireContext(), Constants.getFilterDateFormat(viewModel.language))
-        edit_text_purchase_date_min.setRawInputType(InputType.TYPE_NULL)
-        edit_text_purchase_date_max.showDatePicker(requireContext(), Constants.getFilterDateFormat(viewModel.language))
-        edit_text_purchase_date_max.setRawInputType(InputType.TYPE_NULL)
+        custom_edit_text_purchase_date_min.setDatePickerFormat(Constants.getFilterDateFormat(viewModel.language))
+        custom_edit_text_purchase_date_max.setDatePickerFormat(Constants.getFilterDateFormat(viewModel.language))
 
         button_cancel.setOnClickListener { cancel() }
         button_reset.setOnClickListener { reset() }
@@ -96,14 +95,14 @@ class PopupFilterDialogFragment(
             rating_bar_min.rating = (filters.minScore / 2).toFloat()
             rating_bar_max.rating = (filters.maxScore / 2).toFloat()
 
-            edit_text_release_date_min.setText(
+            custom_edit_text_release_date_min.setText(
                 Constants.dateToString(
                     filters.minReleaseDate,
                     Constants.getFilterDateFormat(viewModel.language),
                     viewModel.language
                 )
             )
-            edit_text_release_date_max.setText(
+            custom_edit_text_release_date_max.setText(
                 Constants.dateToString(
                     filters.maxReleaseDate,
                     Constants.getFilterDateFormat(viewModel.language),
@@ -111,14 +110,14 @@ class PopupFilterDialogFragment(
                 )
             )
 
-            edit_text_purchase_date_min.setText(
+            custom_edit_text_purchase_date_min.setText(
                 Constants.dateToString(
                     filters.minPurchaseDate,
                     Constants.getFilterDateFormat(viewModel.language),
                     viewModel.language
                 )
             )
-            edit_text_purchase_date_max.setText(
+            custom_edit_text_purchase_date_max.setText(
                 Constants.dateToString(
                     filters.maxPurchaseDate,
                     Constants.getFilterDateFormat(viewModel.language),
@@ -126,8 +125,8 @@ class PopupFilterDialogFragment(
                 )
             )
 
-            if (filters.minPrice > 0) edit_text_price_min.setText(filters.minPrice.toString())
-            if (filters.maxPrice > 0) edit_text_price_max.setText(filters.maxPrice.toString())
+            if (filters.minPrice > 0) custom_edit_text_price_min.setText(filters.minPrice.toString())
+            if (filters.maxPrice > 0) custom_edit_text_price_max.setText(filters.maxPrice.toString())
 
             radio_button_goty_yes.isChecked = filters.isGoty
 
@@ -229,14 +228,14 @@ class PopupFilterDialogFragment(
         rating_bar_min.rating = 0F
         rating_bar_max.rating = 5F
 
-        edit_text_release_date_min.setText("")
-        edit_text_release_date_max.setText("")
+        custom_edit_text_release_date_min.setText(Constants.EMPTY_VALUE)
+        custom_edit_text_release_date_max.setText(Constants.EMPTY_VALUE)
 
-        edit_text_purchase_date_min.setText("")
-        edit_text_purchase_date_max.setText("")
+        custom_edit_text_purchase_date_min.setText(Constants.EMPTY_VALUE)
+        custom_edit_text_purchase_date_max.setText(Constants.EMPTY_VALUE)
 
-        edit_text_price_min.setText("")
-        edit_text_price_max.setText("")
+        custom_edit_text_price_min.setText(Constants.EMPTY_VALUE)
+        custom_edit_text_price_max.setText(Constants.EMPTY_VALUE)
 
         radio_button_goty_no.isChecked = true
 
@@ -270,34 +269,34 @@ class PopupFilterDialogFragment(
         val maxScore = (rating_bar_max.rating * 2).toDouble()
 
         val minReleaseDate = Constants.stringToDate(
-            edit_text_release_date_min.text.toString(),
+            custom_edit_text_release_date_min.getText(),
             Constants.getFilterDateFormat(viewModel.language),
             viewModel.language
         )
         val maxReleaseDate = Constants.stringToDate(
-            edit_text_release_date_max.text.toString(),
+            custom_edit_text_release_date_max.getText(),
             Constants.getFilterDateFormat(viewModel.language),
             viewModel.language
         )
 
         val minPurchaseDate = Constants.stringToDate(
-            edit_text_purchase_date_min.text.toString(),
+            custom_edit_text_purchase_date_min.getText(),
             Constants.getFilterDateFormat(viewModel.language),
             viewModel.language
         )
         val maxPurchaseDate = Constants.stringToDate(
-            edit_text_purchase_date_max.text.toString(),
+            custom_edit_text_purchase_date_max.getText(),
             Constants.getFilterDateFormat(viewModel.language),
             viewModel.language
         )
 
         var minPrice = 0.0
         try {
-            minPrice = edit_text_price_min.text.toString().toDouble()
+            minPrice = custom_edit_text_price_min.getText().toDouble()
         } catch (e: Exception){}
         var maxPrice = 0.0
         try {
-            maxPrice = edit_text_price_max.text.toString().toDouble()
+            maxPrice = custom_edit_text_price_max.getText().toDouble()
         } catch (e: Exception){}
 
         val isGoty = radio_button_goty_yes.isChecked

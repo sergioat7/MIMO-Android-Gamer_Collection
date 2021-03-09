@@ -2,8 +2,8 @@ package es.upsa.mimo.gamercollection.utils
 
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import es.upsa.mimo.gamercollection.models.AuthData
-import es.upsa.mimo.gamercollection.models.UserData
+import es.upsa.mimo.gamercollection.models.login.AuthData
+import es.upsa.mimo.gamercollection.models.login.UserData
 import java.util.*
 import javax.inject.Inject
 
@@ -30,7 +30,7 @@ class SharedPreferencesHandler @Inject constructor(
         return if (userDataJson != null) {
             gson.fromJson(userDataJson, UserData::class.java)
         } else {
-            UserData("", "", false)
+            UserData(Constants.EMPTY_VALUE, Constants.EMPTY_VALUE, false)
         }
     }
 
@@ -59,7 +59,7 @@ class SharedPreferencesHandler @Inject constructor(
     fun removePassword() {
 
         val userData = getUserData()
-        userData.password = ""
+        userData.password = Constants.EMPTY_VALUE
         userData.isLoggedIn = false
         storeUserData(userData)
     }
@@ -70,7 +70,7 @@ class SharedPreferencesHandler @Inject constructor(
         return if (authDataJson != null) {
             gson.fromJson(authDataJson, AuthData::class.java)
         } else {
-            AuthData("")
+            AuthData(Constants.EMPTY_VALUE)
         }
     }
 
@@ -111,7 +111,7 @@ class SharedPreferencesHandler @Inject constructor(
     }
 
     fun getSortingKey(): String {
-        return sharedPreferences?.getString(Constants.SORTING_KEY_PREFERENCES_NAME, null) ?: "name"
+        return sharedPreferences?.getString(Constants.SORTING_KEY_PREFERENCES_NAME, null) ?: Constants.DEFAULT_SORTING_KEY
     }
 
     fun setSortingKey(sortingKey: String) {
@@ -147,6 +147,20 @@ class SharedPreferencesHandler @Inject constructor(
         if (sharedPreferences != null) {
             with (sharedPreferences.edit()) {
                 putBoolean("${Constants.GAME_NOTIFICATION_PREFERENCES_NAME}$gameId", value)
+                commit()
+            }
+        }
+    }
+
+    fun getVersion(): Int {
+        return sharedPreferences?.getInt(Constants.VERSION_PREFERENCE_NAME, 0) ?: 0
+    }
+
+    fun setVersion(version: Int) {
+
+        sharedPreferences?.let {
+            with(it.edit()) {
+                putInt(Constants.VERSION_PREFERENCE_NAME, version)
                 commit()
             }
         }
