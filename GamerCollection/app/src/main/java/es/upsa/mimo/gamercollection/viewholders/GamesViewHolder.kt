@@ -43,6 +43,8 @@ class GamesViewHolder(
         Picasso
             .get()
             .load(image)
+            .fit()
+            .centerCrop()
             .error(errorImage)
             .into(itemView.image_view_game, object : Callback {
 
