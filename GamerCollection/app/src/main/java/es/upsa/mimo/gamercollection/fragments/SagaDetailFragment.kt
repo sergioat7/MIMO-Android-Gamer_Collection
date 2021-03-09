@@ -17,8 +17,9 @@ import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.models.SagaResponse
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.SagaResponse
+import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.SagaDetailViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.SagaDetailViewModel
 import kotlinx.android.synthetic.main.fragment_saga_detail.*
@@ -55,6 +56,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
         menu.clear()
         inflater.inflate(R.menu.saga_toolbar_menu, menu)
         menu.findItem(R.id.action_edit).isVisible = viewModel.saga.value != null
+        menu.findItem(R.id.action_remove).isVisible = viewModel.saga.value != null
         menu.findItem(R.id.action_save).isVisible = viewModel.saga.value == null
         menu.findItem(R.id.action_cancel).isVisible = false
     }
@@ -65,6 +67,13 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
             R.id.action_edit -> {
 
                 editSaga()
+                return true
+            }
+            R.id.action_remove -> {
+
+                showPopupConfirmationDialog(resources.getString(R.string.saga_detail_delete_confirmation)) {
+                    viewModel.deleteSaga()
+                }
                 return true
             }
             R.id.action_save -> {
@@ -106,17 +115,11 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
     private fun initializeUI() {
 
         val application = activity?.application
-        val sagaId = this.arguments?.getInt("sagaId")
+        val sagaId = this.arguments?.getInt(Constants.SAGA_ID)
         viewModel = ViewModelProvider(this, SagaDetailViewModelFactory(application, sagaId)).get(SagaDetailViewModel::class.java)
         setupBindings()
 
         button_add_game.setOnClickListener { addGame() }
-        button_delete_saga.setOnClickListener {
-
-            showPopupConfirmationDialog(resources.getString(R.string.saga_detail_delete_confirmation)) {
-                viewModel.deleteSaga()
-            }
-        }
     }
 
     private fun setupBindings() {
@@ -175,11 +178,11 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
         )
         layoutParams.setMargins(0, 15, 0, 15)
 
-        for (game in viewModel.getOrderedGames(games)) {
+        for (game in games.sortedBy { it.releaseDate }) {
 
             val tvGame = TextView(requireContext())
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) tvGame.setTextAppearance(R.style.WhiteEditText_Regular)
-            else tvGame.setTextAppearance(requireContext(), R.style.WhiteEditText_Regular)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) tvGame.setTextAppearance(R.style.CustomEditText_Regular)
+            else tvGame.setTextAppearance(requireContext(), R.style.CustomEditText_Regular)
             tvGame.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18F)
 
             tvGame.text = "- ${game.name}"
@@ -190,11 +193,10 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
     private fun enableEdition(enable: Boolean) {
 
         val inputTypeText = if (enable) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
-        val backgroundColor = ContextCompat.getColor(requireContext(), R.color.color2)
+        val backgroundColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
 
         edit_text_name.setReadOnly(!enable, inputTypeText, backgroundColor)
         button_add_game.visibility = if(enable) View.VISIBLE else View.GONE
-        button_delete_saga.visibility = if (enable && viewModel.saga.value != null) View.VISIBLE else View.GONE
     }
 
     private fun addGame() {
@@ -245,6 +247,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
 
         menu?.let {
             it.findItem(R.id.action_edit).isVisible = !hidden
+            it.findItem(R.id.action_remove).isVisible = !hidden
             it.findItem(R.id.action_save).isVisible = hidden
             it.findItem(R.id.action_cancel).isVisible = hidden
         }

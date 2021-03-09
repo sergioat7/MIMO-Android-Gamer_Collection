@@ -6,6 +6,7 @@ import androidx.core.app.NavUtils
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.base.BaseActivity
 import es.upsa.mimo.gamercollection.fragments.SagaDetailFragment
+import es.upsa.mimo.gamercollection.utils.Constants
 
 class SagaDetailActivity : BaseActivity() {
 
@@ -15,14 +16,14 @@ class SagaDetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         setTitle(R.string.saga_detail)
-        val sagaId = intent.getIntExtra("sagaId", 0)
+        val sagaId = intent.getIntExtra(Constants.SAGA_ID, 0)
         setContentView(R.layout.activity_saga_detail)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val sagaDetailFragment = SagaDetailFragment()
         if (sagaId > 0) {
             val bundle = Bundle()
-            bundle.putInt("sagaId", sagaId)
+            bundle.putInt(Constants.SAGA_ID, sagaId)
             sagaDetailFragment.arguments = bundle
         }
         val transaction = supportFragmentManager.beginTransaction()

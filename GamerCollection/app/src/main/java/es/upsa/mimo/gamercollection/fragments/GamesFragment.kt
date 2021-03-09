@@ -5,11 +5,14 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
@@ -18,7 +21,7 @@ import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.fragments.popups.PopupFilterDialogFragment
 import es.upsa.mimo.gamercollection.models.FilterModel
-import es.upsa.mimo.gamercollection.models.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.GamesViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GamesViewModel
@@ -34,6 +37,7 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
     private lateinit var viewModel: GamesViewModel
     private lateinit var gamesAdapter: GamesAdapter
     private var menu: Menu? = null
+    private val scrollPosition = MutableLiveData<ScrollPosition>()
 
     // MARK: - Lifecycle methods
 
@@ -81,6 +85,11 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
                 filter()
                 return true
             }
+            R.id.action_sort_on -> {
+
+                viewModel.sortGames(requireContext(), resources)
+                return true
+            }
             R.id.action_add -> {
 
                 launchActivity(GameDetailActivity::class.java)
@@ -94,7 +103,7 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
 
     override fun onItemClick(id: Int) {
         
-        val params = mapOf("gameId" to id)
+        val params = mapOf(Constants.GAME_ID to id)
         launchActivityWithExtras(GameDetailActivity::class.java, params)
     }
 
@@ -107,6 +116,7 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
             it.findItem(R.id.action_filter).isVisible = filters == null
             it.findItem(R.id.action_filter_on).isVisible = filters != null
         }
+        scrollPosition.value = ScrollPosition.TOP
         viewModel.getGames()
     }
 
@@ -118,32 +128,19 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
         viewModel = ViewModelProvider(this, GamesViewModelFactory(application)).get(GamesViewModel::class.java)
         setupBindings()
 
-        button_sort.setOnClickListener {
-            viewModel.sortGames(requireContext(), resources)
-        }
-
         button_pending.setOnClickListener {
-
-            button_in_progress.isSelected = false
-            button_finished.isSelected = false
             buttonClicked(it, Constants.PENDING_STATE)
         }
         button_in_progress.setOnClickListener {
-
-            button_pending.isSelected = false
-            button_finished.isSelected = false
             buttonClicked(it, Constants.IN_PROGRESS_STATE)
         }
         button_finished.setOnClickListener {
-
-            button_pending.isSelected = false
-            button_in_progress.isSelected = false
             buttonClicked(it, Constants.FINISHED_STATE)
         }
 
         swipe_refresh_layout.isEnabled = viewModel.swipeRefresh
-        swipe_refresh_layout.setColorSchemeResources(R.color.color3)
-        swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.color2)
+        swipe_refresh_layout.setColorSchemeResources(R.color.colorFinished)
+        swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
         swipe_refresh_layout.setOnRefreshListener {
             viewModel.loadGames()
         }
@@ -158,6 +155,36 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
             this
         )
         recycler_view_games.adapter = gamesAdapter
+        recycler_view_games.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                scrollPosition.value =
+                    if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        ScrollPosition.TOP
+                    } else if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        ScrollPosition.END
+                    } else {
+                        ScrollPosition.MIDDLE
+                    }
+            }
+        })
+
+        scrollPosition.value = ScrollPosition.TOP
+
+        floating_action_button_start_list.setOnClickListener {
+
+            recycler_view_games.scrollToPosition(0)
+            scrollPosition.value = ScrollPosition.TOP
+        }
+
+        floating_action_button_end_list.setOnClickListener {
+
+            val position: Int = gamesAdapter.itemCount - 1
+            recycler_view_games.scrollToPosition(position)
+            scrollPosition.value = ScrollPosition.END
+        }
     }
 
     private fun setupBindings() {
@@ -181,6 +208,7 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
             gamesAdapter.setGames(it)
             layout_empty_list.visibility = if (it.isNotEmpty()) View.GONE else View.VISIBLE
             swipe_refresh_layout.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
+            scrollPosition.value = if (it.isNotEmpty()) scrollPosition.value else ScrollPosition.NONE
 
             val today = Constants.stringToDate(
                 Constants.dateToString(
@@ -201,6 +229,13 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
 
         viewModel.gamesCount.observe(viewLifecycleOwner, {
             setGamesCount(it)
+            setTitle(it.size)
+        })
+
+        scrollPosition.observe(viewLifecycleOwner, {
+
+            floating_action_button_start_list.visibility = if (it == ScrollPosition.TOP || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
+            floating_action_button_end_list.visibility = if (it == ScrollPosition.END || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
         })
     }
 
@@ -220,11 +255,11 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
     private fun launchNotification(games: List<GameResponse>) {
 
         val notifications = mutableMapOf<Int, Notification>()
-        var gameNames = ""
+        var gameNames = Constants.EMPTY_VALUE
         for (game in games) {
 
             val intent = Intent(requireContext(), GameDetailActivity::class.java).apply {
-                putExtra("gameId", game.id)
+                putExtra(Constants.GAME_ID, game.id)
             }
             val pendingIntent = PendingIntent.getActivity(requireContext(), game.id, intent, PendingIntent.FLAG_ONE_SHOT)
 
@@ -286,10 +321,15 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
         val inProgressGamesCount = filteredGames.filter { it == Constants.IN_PROGRESS_STATE }.size
         val finishedGamesCount = filteredGames.filter { it == Constants.FINISHED_STATE }.size
 
-        text_view_games_number.text = resources.getString(R.string.games_number_title, games.size)
         button_pending.text_view_subtitle.text = "$pendingGamesCount"
         button_in_progress.text_view_subtitle.text = "$inProgressGamesCount"
         button_finished.text_view_subtitle.text = "$finishedGamesCount"
+    }
+
+    private fun setTitle(gamesCount: Int) {
+
+        val title = resources.getQuantityString(R.plurals.games_number_title, gamesCount, gamesCount)
+        (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
 
     private fun enableStateButtons(enable: Boolean) {
@@ -302,9 +342,15 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
 
     private fun buttonClicked(it: View, newState: String) {
 
-        it.isSelected = !it.isSelected
+        button_pending.isSelected = if(it == button_pending) !it.isSelected else false
+        button_in_progress.isSelected = if(it == button_in_progress) !it.isSelected else false
+        button_finished.isSelected = if(it == button_finished) !it.isSelected else false
         swipe_refresh_layout.isEnabled = !it.isSelected && viewModel.swipeRefresh
         viewModel.state = if (it.isSelected) newState else null
+        scrollPosition.value = ScrollPosition.TOP
         viewModel.getGames()
     }
+}
+enum class ScrollPosition {
+    TOP, MIDDLE, END, NONE
 }

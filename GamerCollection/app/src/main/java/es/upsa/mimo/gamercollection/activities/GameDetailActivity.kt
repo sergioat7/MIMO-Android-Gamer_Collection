@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -17,8 +16,7 @@ import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.base.BaseActivity
 import es.upsa.mimo.gamercollection.adapters.GameDetailPagerAdapter
-import es.upsa.mimo.gamercollection.extensions.setReadOnly
-import es.upsa.mimo.gamercollection.models.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameDetailViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameDetailViewModel
@@ -42,7 +40,7 @@ class GameDetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_game_detail)
-        title = ""
+        title = Constants.EMPTY_VALUE
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -58,6 +56,7 @@ class GameDetailActivity : BaseActivity() {
             it.clear()
             menuInflater.inflate(R.menu.game_toolbar_menu, menu)
             it.findItem(R.id.action_edit).isVisible = game != null
+            it.findItem(R.id.action_remove).isVisible = game != null
             it.findItem(R.id.action_save).isVisible = game == null
             it.findItem(R.id.action_cancel).isVisible = false
         }
@@ -75,6 +74,13 @@ class GameDetailActivity : BaseActivity() {
             R.id.action_edit -> {
 
                 setEdition(true)
+                return true
+            }
+            R.id.action_remove -> {
+
+                showPopupConfirmationDialog(resources.getString(R.string.game_detail_delete_confirmation)) {
+                    viewModel.deleteGame()
+                }
                 return true
             }
             R.id.action_save -> {
@@ -95,7 +101,7 @@ class GameDetailActivity : BaseActivity() {
 
     private fun initializeUI() {
 
-        val id = intent.getIntExtra("gameId", 0)
+        val id = intent.getIntExtra(Constants.GAME_ID, 0)
         val gameId = if (id > 0) id else null
         viewModel = ViewModelProvider(this, GameDetailViewModelFactory(application, gameId)).get(GameDetailViewModel::class.java)
         setupBindings()
@@ -152,8 +158,7 @@ class GameDetailActivity : BaseActivity() {
 
     private fun showData(game: GameResponse?, enabled: Boolean) {
 
-        val inputTypeText = if (enabled) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
-        val backgroundColor = ContextCompat.getColor(this, R.color.color2)
+        val backgroundColor = ContextCompat.getColor(this, R.color.colorPrimary)
 
         var name: String? = null
         var platformPosition = 0
@@ -163,10 +168,11 @@ class GameDetailActivity : BaseActivity() {
             imageUrl = game.imageUrl
             imageUrl?.let { url ->
 
+                val errorImage = if (Constants.isDarkMode(this)) R.drawable.ic_add_image_dark else R.drawable.ic_add_image_light
                 progress_bar_loading.visibility = View.VISIBLE
                 Picasso.get()
                     .load(url)
-                    .error(R.drawable.add_photo)
+                    .error(errorImage)
                     .into(image_view_game, object : Callback {
                         override fun onSuccess() {
                             progress_bar_loading.visibility = View.GONE
@@ -187,7 +193,8 @@ class GameDetailActivity : BaseActivity() {
 
             image_view_goty.visibility = if(game.goty) View.VISIBLE else View.GONE
 
-            name = if (game.name != null && game.name!!.isNotEmpty()) game.name else if (enabled) "" else "-"
+            val gameName = game.name
+            name = if (gameName != null && gameName.isNotBlank()) gameName else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
 
             game.platform?.let { platformId ->
                 val platformName = viewModel.platforms.firstOrNull { it.id == platformId }?.name
@@ -197,26 +204,17 @@ class GameDetailActivity : BaseActivity() {
 
             rating_button.text = game.score.toString()
 
-            when(game.pegi) {
-                "+3" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi3))
-                "+4" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi4))
-                "+6" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi6))
-                "+7" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi7))
-                "+12" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi12))
-                "+16" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi16))
-                "+18" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi18))
-                else -> image_view_pegi.setImageDrawable(null)
-            }
+            image_view_pegi.setImageDrawable(Constants.getPegiImage(game.pegi, this))
         } ?: run {
-            name = if (enabled) "" else "-"
+            name = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
         }
 
-        edit_text_name.setText(name)
+        custom_edit_text_name.setText(name)
         spinner_platforms.setSelection(platformPosition)
         spinner_platforms.visibility = if (enabled || platformPosition > 0) View.VISIBLE else View.GONE
 
         image_view_game.isEnabled = enabled
-        edit_text_name.setReadOnly(!enabled, inputTypeText, backgroundColor)
+        custom_edit_text_name.setReadOnly(!enabled, backgroundColor)
         spinner_platforms.backgroundTintList = if (!enabled) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
         spinner_platforms.isEnabled = enabled
         rating_button.isEnabled = enabled
@@ -229,12 +227,13 @@ class GameDetailActivity : BaseActivity() {
 
         dialogView.button_accept.setOnClickListener {
 
-            val url = dialogView.edit_text_url.text.toString()
+            val url = dialogView.custom_edit_text_url.getText()
+            val errorImage = if (Constants.isDarkMode(this)) R.drawable.ic_add_image_dark else R.drawable.ic_add_image_light
             if (url.isNotEmpty()) {
 
                 Picasso.get()
                     .load(url)
-                    .error(R.drawable.add_photo)
+                    .error(errorImage)
                     .into(image_view_game, object : Callback {
                         override fun onSuccess() {
                             imageUrl = url
@@ -257,10 +256,10 @@ class GameDetailActivity : BaseActivity() {
         val dialogBuilder = AlertDialog.Builder(this).create()
         val dialogView = this.layoutInflater.inflate(R.layout.set_rating_dialog, null)
 
-        dialogView.rating_bar.rating = rating_button.text.toString().toFloat()
+        dialogView.rating_bar.rating = rating_button.text.toString().toFloat() / 2
         dialogView.button_rate.setOnClickListener {
 
-            rating_button.text = dialogView.rating_bar.rating.toString()
+            rating_button.text = (dialogView.rating_bar.rating * 2).toString()
             dialogBuilder.dismiss()
         }
 
@@ -273,7 +272,7 @@ class GameDetailActivity : BaseActivity() {
         val platform = viewModel.platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
 
         viewModel.saveGame(
-            edit_text_name.text.toString(),
+            custom_edit_text_name.getText(),
             platform,
             rating_button.text.toString().toDouble(),
             imageUrl,
@@ -293,6 +292,7 @@ class GameDetailActivity : BaseActivity() {
 
         menu?.let {
             it.findItem(R.id.action_edit).isVisible = !hidden
+            it.findItem(R.id.action_remove).isVisible = !hidden
             it.findItem(R.id.action_save).isVisible = hidden
             it.findItem(R.id.action_cancel).isVisible = hidden
         }

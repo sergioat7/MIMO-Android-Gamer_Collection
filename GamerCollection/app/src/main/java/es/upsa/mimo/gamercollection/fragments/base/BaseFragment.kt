@@ -8,7 +8,8 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.fragments.popups.PopupErrorDialogFragment
 import es.upsa.mimo.gamercollection.fragments.popups.PopupLoadingDialogFragment
 import es.upsa.mimo.gamercollection.fragments.popups.PopupSyncAppDialogFragment
-import es.upsa.mimo.gamercollection.models.ErrorResponse
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
+import es.upsa.mimo.gamercollection.utils.Constants
 import java.io.Serializable
 
 open class BaseFragment : Fragment() {
@@ -34,13 +35,13 @@ open class BaseFragment : Fragment() {
     fun showPopupDialog(message: String) {
 
         val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
-        val prev = activity?.supportFragmentManager?.findFragmentByTag("popupDialog")
+        val prev = activity?.supportFragmentManager?.findFragmentByTag(Constants.POPUP_DIALOG)
         if (prev != null) {
             ft.remove(prev)
         }
         ft.addToBackStack(null)
         val dialogFragment = PopupErrorDialogFragment(message)
-        dialogFragment.show(ft, "popupDialog")
+        dialogFragment.show(ft, Constants.POPUP_DIALOG)
     }
 
     fun <T> launchActivity(activity: Class<T>) {
@@ -61,7 +62,7 @@ open class BaseFragment : Fragment() {
     fun showLoading() {
 
         val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
-        val prev = activity?.supportFragmentManager?.findFragmentByTag("loadingDialog")
+        val prev = activity?.supportFragmentManager?.findFragmentByTag(Constants.LOADING_DIALOG)
         if (prev != null) {
             ft.remove(prev)
         }
@@ -69,7 +70,7 @@ open class BaseFragment : Fragment() {
         loadingFragment = PopupLoadingDialogFragment()
         loadingFragment?.let {
             it.isCancelable = false
-            it.show(ft, "loadingDialog")
+            it.show(ft, Constants.LOADING_DIALOG)
         }
     }
 
@@ -106,13 +107,13 @@ open class BaseFragment : Fragment() {
     private fun showSyncPopup() {
 
         val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
-        val prev = activity?.supportFragmentManager?.findFragmentByTag("syncDialog")
+        val prev = activity?.supportFragmentManager?.findFragmentByTag(Constants.SYNC_DIALOG)
         if (prev != null) {
             ft.remove(prev)
         }
         ft.addToBackStack(null)
         val dialogFragment = PopupSyncAppDialogFragment()
         dialogFragment.isCancelable = false
-        dialogFragment.show(ft, "syncDialog")
+        dialogFragment.show(ft, Constants.SYNC_DIALOG)
     }
 }

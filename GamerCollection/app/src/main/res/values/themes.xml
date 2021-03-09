@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorBackground">@color/colorSecondary</item>
+        <item name="colorControlActivated">@color/buttonPrimary</item>
+        <item name="colorSwitchThumbNormal">@color/buttonSecondary</item>
+    </style>
+
+    <style name="Theme.GamerCollection" parent="Theme">
+        <item name="titleTextColor">@color/colorSecondary</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_light</item>
+    </style>
+
+    <style name="Theme.GamerCollection.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorBackground">@color/colorSecondary</item>
+    </style>
+
+    <style name="Theme.GamerCollection.DialogTransparent" parent="Theme.AppCompat.DayNight.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="BottomMenu">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="itemTextColor">@color/colorSecondary</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="menu">@menu/bottom_nav_menu</item>
+    </style>
+
+    <style name="RoundedButton" parent="android:style/Widget.Button">
+        <item name="android:layout_width">@dimen/size_semi_huge</item>
+        <item name="android:textColor">@color/textSecondary</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="RoundedButton.Action">
+        <item name="android:background">@drawable/rounded_button_primary</item>
+    </style>
+
+    <style name="PopupAcceptButton" parent="RoundedButton.Action">
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:text">@string/accept</item>
+    </style>
+
+    <style name="CustomEditText" parent="Widget.AppCompat.EditText">
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textColorHint">@color/textPrimaryLight</item>
+        <item name="android:textIsSelectable">true</item>
+    </style>
+
+    <style name="CustomEditText.Regular" parent="CustomEditText">
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="CustomEditText.Bold" parent="CustomEditText">
+        <item name="fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="CustomTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textIsSelectable">true</item>
+    </style>
+
+    <style name="CustomTextView.Bold" parent="CustomTextView">
+        <item name="fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="CustomTextView.Regular" parent="CustomTextView">
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="CustomRatingBar" parent="Widget.MaterialRatingBar.RatingBar">
+        <item name="android:progressTint">@color/colorInProgress</item>
+        <item name="android:progressBackgroundTint">@color/colorInProgressLight</item>
+        <item name="android:secondaryProgressTint">@color/colorInProgressLight</item>
+        <item name="mrb_fillBackgroundStars">false</item>
+    </style>
+
+    <style name="CustomSpinner" parent="Widget.AppCompat.Spinner.Underlined">
+        <item name="android:spinnerMode">dropdown</item>
+        <item name="android:backgroundTint">@android:color/transparent</item>
+        <item name="android:minHeight">@dimen/size_large</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="CustomRadioButton">
+        <item name="android:layout_weight">1</item>
+        <item name="android:buttonTint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="LoadingProgressBar">
+        <item name="android:indeterminate">true</item>
+        <item name="android:indeterminateTint">@color/colorPrimary</item>
+    </style>
+
+    <style name="GamesEmptyLayout">
+        <item name="emptyListLayout_image">@drawable/ic_games_dark</item>
+    </style>
+
+    <style name="SagasEmptyLayout">
+        <item name="emptyListLayout_image">@drawable/ic_sagas_dark</item>
+    </style>
+
+</resources>

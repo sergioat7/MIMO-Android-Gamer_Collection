@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
+import es.upsa.mimo.gamercollection.network.apiClient.*
 import es.upsa.mimo.gamercollection.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.GenreRepository
@@ -23,7 +23,11 @@ class GameDataViewModelFactory(
     @Inject
     lateinit var sharedPrefHandler: SharedPreferencesHandler
     @Inject
+    lateinit var formatAPIClient: FormatAPIClient
+    @Inject
     lateinit var gameAPIClient: GameAPIClient
+    @Inject
+    lateinit var genreAPIClient: GenreAPIClient
     @Inject
     lateinit var formatRepository: FormatRepository
     @Inject

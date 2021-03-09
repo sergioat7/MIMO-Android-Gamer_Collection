@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="LocationButton">
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:layout_marginEnd">@dimen/margin_small</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:src">@drawable/ic_locate_me</item>
+    </style>
+
+</resources>

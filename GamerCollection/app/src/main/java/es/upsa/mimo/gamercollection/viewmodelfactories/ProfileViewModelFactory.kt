@@ -21,6 +21,8 @@ class ProfileViewModelFactory(
     @Inject
     lateinit var formatAPIClient: FormatAPIClient
     @Inject
+    lateinit var gameAPIClient: GameAPIClient
+    @Inject
     lateinit var genreAPIClient: GenreAPIClient
     @Inject
     lateinit var platformAPIClient: PlatformAPIClient

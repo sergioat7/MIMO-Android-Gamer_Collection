@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <item
+        android:id="@+id/action_synchronize"
+        android:icon="@drawable/ic_synchronize_dark"
+        android:title=""
+        app:showAsAction="always"
+        />
+
+    <item android:id="@+id/action_filter"
+        android:icon="@drawable/ic_filter_dark"
+        android:title=""
+        app:showAsAction="always"
+        />
+
+    <item android:id="@+id/action_filter_on"
+        android:icon="@drawable/ic_filter_on_dark"
+        android:title=""
+        android:visible="false"
+        app:showAsAction="always"
+        />
+
+    <item android:id="@+id/action_sort_on"
+        android:icon="@drawable/ic_sort_dark"
+        android:title=""
+        app:showAsAction="always"
+        />
+
+    <item android:id="@+id/action_add"
+        android:icon="@drawable/ic_add_game_dark"
+        android:title=""
+        app:showAsAction="always"
+        />
+
+</menu>

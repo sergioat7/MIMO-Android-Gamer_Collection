@@ -1,65 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/color2SuperLight"
+        android:background="@color/colorPrimaryLight"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
-        <EditText
-            android:id="@+id/edit_text_name"
-            style="@style/WhiteEditText.Bold"
+        <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"
-            android:background="@android:color/transparent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/image_view_arrow"
+            android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toStartOf="@id/image_view_arrow"
+            >
+
+            <LinearLayout
+                android:id="@+id/linear_layout_title_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/SagaNameContainer"
+                >
+
+                <EditText
+                    android:id="@+id/edit_text_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/SagaNameEditText"
+                    />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/image_view_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/linear_layout_title_container"
+                style="@style/SagaEditButton"
+                />
+
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/image_view_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="50dp"
-            app:layout_constraintBottom_toBottomOf="@+id/edit_text_name"
-            app:layout_constraintEnd_toStartOf="@+id/image_view_edit"
-            app:layout_constraintTop_toTopOf="@+id/edit_text_name"
-            app:srcCompat="@drawable/ic_keyboard_arrow_down_white_24dp" />
-
-        <ImageView
-            android:id="@+id/image_view_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="@dimen/margin_normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_edit_white_24dp" />
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:id="@+id/line_view"
         android:layout_width="0dp"
-        android:layout_height="5dp"
-        android:background="@color/color2"
+        android:layout_height="@dimen/size_tiny"
+        android:background="@color/colorSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraint_layout_name" />
+        app:layout_constraintTop_toBottomOf="@+id/constraint_layout_name"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

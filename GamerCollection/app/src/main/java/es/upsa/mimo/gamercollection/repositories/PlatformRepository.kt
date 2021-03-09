@@ -1,27 +1,49 @@
 package es.upsa.mimo.gamercollection.repositories
 
-import es.upsa.mimo.gamercollection.models.PlatformResponse
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
+import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
+import es.upsa.mimo.gamercollection.network.apiClient.PlatformAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import es.upsa.mimo.gamercollection.utils.Constants
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class PlatformRepository @Inject constructor(
-    private val database: AppDatabase
+    private val database: AppDatabase,
+    private val platformAPIClient: PlatformAPIClient
 ) {
+
+    // MARK: - Private properties
+
+    private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
 
     // MARK: - Public methods
 
-    fun getPlatforms(): List<PlatformResponse> {
+    fun loadPlatforms(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        platformAPIClient.getPlatforms({ newPlatforms ->
+
+            for (newPlatform in newPlatforms) {
+                insertPlatformDatabase(newPlatform)
+            }
+            val currentPlatforms = getPlatformsDatabase()
+            val platformsToRemove = AppDatabase.getDisabledContent(currentPlatforms, newPlatforms)
+            for (platform in platformsToRemove) {
+                deletePlatformDatabase(platform as PlatformResponse)
+            }
+            success()
+        }, failure)
+    }
+
+    fun getPlatformsDatabase(): List<PlatformResponse> {
 
         var platforms = mutableListOf<PlatformResponse>()
         runBlocking {
+
             val result = GlobalScope.async { database.platformDao().getPlatforms() }
             platforms = result.await().toMutableList()
             platforms.sortBy { it.name }
-            val other = platforms.firstOrNull { it.id == "OTHER" }
+            val other = platforms.firstOrNull { it.id == Constants.OTHER_VALUE }
             platforms.remove(other)
             other?.let {
                 platforms.add(it)
@@ -30,32 +52,33 @@ class PlatformRepository @Inject constructor(
         return platforms
     }
 
-    private fun deletePlatform(platform: PlatformResponse) {
+    fun resetTable() {
 
-        GlobalScope.launch {
-            database.platformDao().deletePlatform(platform)
-        }
-    }
-
-    fun managePlatforms(newPlatforms: List<PlatformResponse>) {
-
-        for (newPlatform in newPlatforms) {
-            insertPlatform(newPlatform)
-        }
-
-        val currentPlatforms = getPlatforms()
-        val platformsToRemove = AppDatabase.getDisabledContent(currentPlatforms, newPlatforms)
-        for (platform in platformsToRemove) {
-            deletePlatform(platform as PlatformResponse)
+        val platforms = getPlatformsDatabase()
+        for (platform in platforms) {
+            deletePlatformDatabase(platform)
         }
     }
 
     // MARK: - Private methods
 
-    private fun insertPlatform(platform: PlatformResponse) {
+    private fun insertPlatformDatabase(platform: PlatformResponse) {
 
-        GlobalScope.launch {
-            database.platformDao().insertPlatform(platform)
+        runBlocking {
+            val job = databaseScope.launch {
+                database.platformDao().insertPlatform(platform)
+            }
+            job.join()
+        }
+    }
+
+    private fun deletePlatformDatabase(platform: PlatformResponse) {
+
+        runBlocking {
+            val job = databaseScope.launch {
+                database.platformDao().deletePlatform(platform)
+            }
+            job.join()
         }
     }
 }

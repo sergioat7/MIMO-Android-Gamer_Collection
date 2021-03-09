@@ -1,27 +1,51 @@
 package es.upsa.mimo.gamercollection.repositories
 
-import es.upsa.mimo.gamercollection.models.FormatResponse
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
+import es.upsa.mimo.gamercollection.models.responses.FormatResponse
+import es.upsa.mimo.gamercollection.network.apiClient.FormatAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import es.upsa.mimo.gamercollection.utils.Constants
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class FormatRepository @Inject constructor(
-    private val database: AppDatabase
+    private val database: AppDatabase,
+    private val formatAPIClient: FormatAPIClient
 ) {
+
+    // MARK: - Private properties
+
+    private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
 
     // MARK: - Public methods
 
-    fun getFormats(): List<FormatResponse> {
+    fun loadFormats(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        formatAPIClient.getFormats({ newFormats ->
+
+            for (newFormat in newFormats) {
+                insertFormatDatabase(newFormat)
+            }
+            val currentFormats = getFormatsDatabase()
+            val formatsToRemove = AppDatabase.getDisabledContent(currentFormats, newFormats)
+            for (format in formatsToRemove) {
+                deleteFormatDatabase(format as FormatResponse)
+            }
+            success()
+        }, failure)
+    }
+
+    fun getFormatsDatabase(): List<FormatResponse> {
 
         var formats = mutableListOf<FormatResponse>()
         runBlocking {
-            val result = GlobalScope.async { database.formatDao().getFormats() }
+
+            val result = databaseScope.async {
+                database.formatDao().getFormats()
+            }
             formats = result.await().toMutableList()
             formats.sortBy { it.name }
-            val other = formats.firstOrNull { it.id == "OTHER" }
+            val other = formats.firstOrNull { it.id == Constants.OTHER_VALUE }
             formats.remove(other)
             other?.let {
                 formats.add(it)
@@ -30,32 +54,33 @@ class FormatRepository @Inject constructor(
         return formats
     }
 
-    private fun deleteFormat(format: FormatResponse) {
+    fun resetTable() {
 
-        GlobalScope.launch {
-            database.formatDao().deleteFormat(format)
-        }
-    }
-
-    fun manageFormats(newFormats: List<FormatResponse>) {
-
-        for (newFormat in newFormats) {
-            insertFormat(newFormat)
-        }
-
-        val currentFormats = getFormats()
-        val formatsToRemove = AppDatabase.getDisabledContent(currentFormats, newFormats)
-        for (format in formatsToRemove) {
-            deleteFormat(format as FormatResponse)
+        val formats = getFormatsDatabase()
+        for (format in formats) {
+            deleteFormatDatabase(format)
         }
     }
 
     // MARK: - Private methods
 
-    private fun insertFormat(format: FormatResponse) {
+    private fun insertFormatDatabase(format: FormatResponse) {
 
-        GlobalScope.launch {
-            database.formatDao().insertFormat(format)
+        runBlocking {
+            val job = databaseScope.launch {
+                database.formatDao().insertFormat(format)
+            }
+            job.join()
+        }
+    }
+
+    private fun deleteFormatDatabase(format: FormatResponse) {
+
+        runBlocking {
+            val job = databaseScope.launch {
+                database.formatDao().deleteFormat(format)
+            }
+            job.join()
         }
     }
 }

@@ -10,7 +10,8 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
-import es.upsa.mimo.gamercollection.models.ErrorResponse
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
+import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.PopupSyncAppViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.PopupSyncAppViewModel
 
@@ -21,6 +22,11 @@ class PopupSyncAppDialogFragment : DialogFragment() {
     private lateinit var viewModel: PopupSyncAppViewModel
 
     // MARK: - Lifecycle methods
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_TITLE, R.style.Theme_GamerCollection_DialogTransparent)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,12 +80,12 @@ class PopupSyncAppDialogFragment : DialogFragment() {
     private fun showPopupDialog(message: String) {
 
         val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
-        val prev = activity?.supportFragmentManager?.findFragmentByTag("popupDialog")
+        val prev = activity?.supportFragmentManager?.findFragmentByTag(Constants.POPUP_DIALOG)
         if (prev != null) {
             ft.remove(prev)
         }
         ft.addToBackStack(null)
         val dialogFragment = PopupErrorDialogFragment(message)
-        dialogFragment.show(ft, "popupDialog")
+        dialogFragment.show(ft, Constants.POPUP_DIALOG)
     }
 }

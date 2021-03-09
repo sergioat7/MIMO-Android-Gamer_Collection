@@ -1,27 +1,175 @@
 package es.upsa.mimo.gamercollection.repositories
 
 import androidx.sqlite.db.SimpleSQLiteQuery
-import androidx.sqlite.db.SupportSQLiteQuery
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.models.GameWithSaga
+import es.upsa.mimo.gamercollection.models.*
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.SagaResponse
+import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import es.upsa.mimo.gamercollection.utils.Constants
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class GameRepository @Inject constructor(
-    private val database: AppDatabase
+    private val database: AppDatabase,
+    private val gameAPIClient: GameAPIClient
 ) {
+
+    // MARK: - Private properties
+
+    private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
 
     // MARK: - Public methods
 
-    fun getGames(query: SupportSQLiteQuery? = null): List<GameResponse> {
+    fun loadGames(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        gameAPIClient.getGames({ newGames ->
+
+            for (newGame in newGames) {
+                insertGameDatabase(newGame)
+            }
+            val currentGames = getGamesDatabase()
+            val gamesToRemove = AppDatabase.getDisabledContent(currentGames, newGames)
+            for (game in gamesToRemove) {
+                deleteGameDatabase(game as GameResponse)
+            }
+            success()
+        }, failure)
+    }
+
+    fun createGame(game: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        gameAPIClient.createGame(game, {
+            loadGames(success, failure)
+        }, failure)
+    }
+
+    fun setGame(game: GameResponse, success: (GameResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        gameAPIClient.setGame(game, {
+
+            updateGameDatabase(it)
+            success(it)
+        }, failure)
+    }
+
+    fun deleteGame(game: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        gameAPIClient.deleteGame(game.id, {
+
+            deleteGameDatabase(game)
+            success()
+        }, failure)
+    }
+
+    fun getGamesDatabase(state: String? = null,
+                         filters: FilterModel? = null,
+                         sortKey: String? = null,
+                         ascending: Boolean = true): List<GameResponse> {
+
+        var queryString = "SELECT * FROM Game"
+
+        var queryConditions = when(state) {
+            Constants.PENDING_STATE -> " WHERE state == '${Constants.PENDING_STATE}' AND "
+            Constants.IN_PROGRESS_STATE -> " WHERE state == '${Constants.IN_PROGRESS_STATE}' AND "
+            Constants.FINISHED_STATE -> " WHERE state == '${Constants.FINISHED_STATE}' AND "
+            else -> Constants.EMPTY_VALUE
+        }
+
+        filters?.let { filtersVar ->
+
+            if (queryConditions.isEmpty()) queryConditions += " WHERE "
+
+            var queryPlatforms = Constants.EMPTY_VALUE
+            val platforms = filtersVar.platforms
+            if (platforms.isNotEmpty()) {
+                queryPlatforms += "("
+                for (platform in platforms) {
+                    queryPlatforms += "platform == '${platform}' OR "
+                }
+                queryPlatforms = queryPlatforms.dropLast(4) + ") AND "
+            }
+
+            var queryGenres = Constants.EMPTY_VALUE
+            val genres = filtersVar.genres
+            if (genres.isNotEmpty()){
+                queryGenres += "("
+                for (genre in genres) {
+                    queryGenres += "genre == '${genre}' OR "
+                }
+                queryGenres = queryGenres.dropLast(4) + ") AND "
+            }
+
+            var queryFormats = Constants.EMPTY_VALUE
+            val formats = filtersVar.formats
+            if (formats.isNotEmpty()){
+                queryFormats += "("
+                for (format in formats) {
+                    queryFormats += "format == '${format}' OR "
+                }
+
+                queryFormats = queryFormats.dropLast(4) + ") AND "
+            }
+
+            queryConditions += queryPlatforms + queryGenres + queryFormats
+
+            queryConditions += "score >= ${filtersVar.minScore} AND score <= ${filtersVar.maxScore} AND "
+
+            if (filtersVar.minReleaseDate != null) {
+                queryConditions += "releaseDate >= '${filtersVar.minReleaseDate.time}' AND "
+            }
+            if (filtersVar.maxReleaseDate != null) {
+                queryConditions += "releaseDate <= '${filtersVar.maxReleaseDate.time}' AND "
+            }
+
+            if (filtersVar.minPurchaseDate != null) {
+                queryConditions += "purchaseDate >= '${filtersVar.minPurchaseDate.time}' AND "
+            }
+            if (filtersVar.maxPurchaseDate != null) {
+                queryConditions += "purchaseDate <= '${filtersVar.maxPurchaseDate.time}' AND "
+            }
+
+            queryConditions += "price >= ${filtersVar.minPrice} AND "
+            if (filtersVar.maxPrice > 0) {
+                queryConditions += "price <= ${filtersVar.maxPrice} AND "
+            }
+
+            if (filtersVar.isGoty) {
+                queryConditions += "goty == 1 AND "
+            }
+
+            if (filtersVar.isLoaned) {
+                queryConditions += "loanedTo != null AND "
+            }
+
+            if (filtersVar.hasSaga) {
+                queryConditions += "saga_id != -1 AND "
+            }
+
+            if (filtersVar.hasSongs) {
+                queryConditions += "songs != '[]' AND "
+            }
+        }
+        queryConditions = queryConditions.dropLast(5)
+        queryString += queryConditions
+
+        queryString += " ORDER BY "
+        sortKey.let {
+            val order = if(ascending) "ASC"  else "DESC"
+            queryString += "$sortKey $order, "
+        }
+        queryString += "name ASC"
+
+        val query = SimpleSQLiteQuery(queryString)
 
         var games: List<GameWithSaga> = arrayListOf()
         runBlocking {
-            val result = GlobalScope.async { database.gameDao().getGames(query ?: SimpleSQLiteQuery("SELECT * FROM Game")) }
+            val result = databaseScope.async {
+                database
+                    .gameDao()
+                    .getGames(query)
+            }
             games = result.await()
         }
         val result = ArrayList<GameResponse>()
@@ -31,47 +179,99 @@ class GameRepository @Inject constructor(
         return result
     }
 
-    fun getGame(gameId: Int): GameResponse? {
+    fun getGameDatabase(gameId: Int): GameResponse? {
 
         var game: GameWithSaga? = null
         runBlocking {
-            val result = GlobalScope.async { database.gameDao().getGames(SimpleSQLiteQuery("SELECT * FROM Game WHERE id == '${gameId}'")).firstOrNull() }
+            val result = databaseScope.async {
+                database
+                    .gameDao()
+                    .getGames(SimpleSQLiteQuery("SELECT * FROM Game WHERE id == '${gameId}'"))
+                    .firstOrNull()
+            }
             game = result.await()
         }
         return game?.transform()
     }
 
-    fun insertGame(game: GameResponse) {
+    fun removeSagaFromGames(saga: SagaResponse) {
 
-        GlobalScope.launch {
-            database.gameDao().insertGame(game)
+        val newSagaGames = saga.games
+        val allGames = getGamesDatabase()
+        val oldSagaGames = allGames.filter { it.saga?.id  == saga.id }
+
+        for (oldSagaGame in oldSagaGames) {
+            if (newSagaGames.firstOrNull { it.id == oldSagaGame.id } == null) {
+
+                oldSagaGame.saga = null
+                updateGameDatabase(oldSagaGame)
+            }
+        }
+
+        val sagaVar = SagaResponse(saga.id, saga.name, arrayListOf())
+        for (newSagaGame in newSagaGames) {
+
+            newSagaGame.saga = sagaVar
+            updateGameDatabase(newSagaGame)
         }
     }
 
-    fun updateGame(game: GameResponse) {
+    fun updateSagaGames(saga: SagaResponse) {
 
-        GlobalScope.launch {
-            database.gameDao().updateGame(game)
+        val sagaVar = SagaResponse(saga.id, saga.name, arrayListOf())
+        for (newGame in saga.games) {
+
+            newGame.saga = sagaVar
+            updateGameDatabase(newGame)
         }
     }
 
-    fun deleteGame(game: GameResponse) {
+    fun updateGameSongs(gameId: Int, success: (GameResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
 
-        GlobalScope.launch {
-            database.gameDao().deleteGame(game)
+        gameAPIClient.getGame(gameId, {
+
+            updateGameDatabase(it)
+            success(it)
+        }, failure)
+    }
+
+    fun resetTable() {
+
+        val games = getGamesDatabase()
+        for (game in games) {
+            deleteGameDatabase(game)
         }
     }
 
-    fun manageGames(newGames: List<GameResponse>) {
+    // MARK: - Private methods
 
-        for (newGame in newGames) {
-            insertGame(newGame)
+    private fun insertGameDatabase(game: GameResponse) {
+
+        runBlocking {
+            val job = databaseScope.launch {
+                database.gameDao().insertGame(game)
+            }
+            job.join()
         }
+    }
 
-        val currentGames = getGames()
-        val gamesToRemove = AppDatabase.getDisabledContent(currentGames, newGames)
-        for (game in gamesToRemove) {
-            deleteGame(game as GameResponse)
+    private fun updateGameDatabase(game: GameResponse) {
+
+        runBlocking {
+            val job = databaseScope.launch {
+                database.gameDao().updateGame(game)
+            }
+            job.join()
+        }
+    }
+
+    private fun deleteGameDatabase(game: GameResponse) {
+
+        runBlocking {
+            val job = databaseScope.launch {
+                database.gameDao().deleteGame(game)
+            }
+            job.join()
         }
     }
 }

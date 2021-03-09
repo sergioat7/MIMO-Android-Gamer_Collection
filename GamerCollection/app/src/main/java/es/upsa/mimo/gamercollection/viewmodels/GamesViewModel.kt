@@ -9,23 +9,23 @@ import android.widget.NumberPicker
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.sqlite.db.SimpleSQLiteQuery
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.*
-import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
+import es.upsa.mimo.gamercollection.models.responses.StateResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.repositories.StateRepository
-import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
 
 class GamesViewModel @Inject constructor(
     private val sharedPreferencesHandler: SharedPreferencesHandler,
     private val gameRepository: GameRepository,
-    platformRepository: PlatformRepository,
-    stateRepository: StateRepository,
-    private val gameAPIClient: GameAPIClient
+    private val platformRepository: PlatformRepository,
+    private val stateRepository: StateRepository
 ): ViewModel() {
 
     //MARK: - Private properties
@@ -34,20 +34,24 @@ class GamesViewModel @Inject constructor(
     private val _gamesError = MutableLiveData<ErrorResponse>()
     private val _games = MutableLiveData<List<GameResponse>>()
     private val _gamesCount = MutableLiveData<List<GameResponse>>()
+    private var sortKey: String = sharedPreferencesHandler.getSortingKey()
+    private var sortAscending = true
 
     //MARK: - Public properties
 
-    val language: String = sharedPreferencesHandler.getLanguage()
-    val swipeRefresh: Boolean = sharedPreferencesHandler.getSwipeRefresh()
-    val platforms: List<PlatformResponse> = platformRepository.getPlatforms()
-    val states: List<StateResponse> = stateRepository.getStates()
+    val language: String
+        get() = sharedPreferencesHandler.getLanguage()
+    val swipeRefresh: Boolean
+        get() = sharedPreferencesHandler.getSwipeRefresh()
+    val platforms: List<PlatformResponse>
+        get() = platformRepository.getPlatformsDatabase()
+    val states: List<StateResponse>
+        get() = stateRepository.getStatesDatabase()
     val gamesLoading: LiveData<Boolean> = _gamesLoading
     val gamesError: LiveData<ErrorResponse> = _gamesError
     val games: LiveData<List<GameResponse>> = _games
     val gamesCount: LiveData<List<GameResponse>> = _gamesCount
     var state: String? = null
-    var sortKey: String = sharedPreferencesHandler.getSortingKey()
-    var sortAscending = true
     var filters: FilterModel? = null
 
     //MARK: - Public methods
@@ -55,9 +59,8 @@ class GamesViewModel @Inject constructor(
     fun loadGames() {
 
         _gamesLoading.value = true
-        gameAPIClient.getGames({
+        gameRepository.loadGames({
 
-            gameRepository.manageGames(it)
             resetProperties()
             getGames()
             _gamesLoading.value = false
@@ -70,98 +73,12 @@ class GamesViewModel @Inject constructor(
 
     fun getGames() {
 
-        var queryString = "SELECT * FROM Game"
-
-        var queryConditions = when(state) {
-            Constants.PENDING_STATE -> " WHERE state == '${Constants.PENDING_STATE}' AND "
-            Constants.IN_PROGRESS_STATE -> " WHERE state == '${Constants.IN_PROGRESS_STATE}' AND "
-            Constants.FINISHED_STATE -> " WHERE state == '${Constants.FINISHED_STATE}' AND "
-            else -> ""
-        }
-
-        filters?.let { filters ->
-
-            if (queryConditions.isEmpty()) queryConditions += " WHERE "
-
-            var queryPlatforms = ""
-            val platforms = filters.platforms
-            if (platforms.isNotEmpty()) {
-                queryPlatforms += "("
-                for (platform in platforms) {
-                    queryPlatforms += "platform == '${platform}' OR "
-                }
-                queryPlatforms = queryPlatforms.dropLast(4) + ") AND "
-            }
-
-            var queryGenres = ""
-            val genres = filters.genres
-            if (genres.isNotEmpty()){
-                queryGenres += "("
-                for (genre in genres) {
-                    queryGenres += "genre == '${genre}' OR "
-                }
-                queryGenres = queryGenres.dropLast(4) + ") AND "
-            }
-
-            var queryFormats = ""
-            val formats = filters.formats
-            if (formats.isNotEmpty()){
-                queryFormats += "("
-                for (format in formats) {
-                    queryFormats += "format == '${format}' OR "
-                }
-
-                queryFormats = queryFormats.dropLast(4) + ") AND "
-            }
-
-            queryConditions += queryPlatforms + queryGenres + queryFormats
-
-            queryConditions += "score >= ${filters.minScore} AND score <= ${filters.maxScore} AND "
-
-            if (filters.minReleaseDate != null) {
-                queryConditions += "releaseDate >= '${filters.minReleaseDate}' AND "
-            }
-            if (filters.maxReleaseDate != null) {
-                queryConditions += "releaseDate <= '${filters.maxReleaseDate}' AND "
-            }
-
-            if (filters.minPurchaseDate != null) {
-                queryConditions += "purchaseDate >= '${filters.minPurchaseDate}' AND "
-            }
-            if (filters.maxPurchaseDate != null) {
-                queryConditions += "purchaseDate <= '${filters.maxPurchaseDate}' AND "
-            }
-
-            queryConditions += "price >= ${filters.minPrice} AND "
-            if (filters.maxPrice > 0) {
-                queryConditions += "price <= ${filters.maxPrice} AND "
-            }
-
-            if (filters.isGoty) {
-                queryConditions += "goty == 1 AND "
-            }
-
-            if (filters.isLoaned) {
-                queryConditions += "loanedTo != null AND "
-            }
-
-            if (filters.hasSaga) {
-                queryConditions += "saga_id != -1 AND "
-            }
-
-            if (filters.hasSongs) {
-                queryConditions += "songs != '[]' AND "
-            }
-        }
-        queryConditions = queryConditions.dropLast(5)
-        queryString += queryConditions
-
-        val sortOrder = if(sortAscending) "ASC"  else "DESC"
-        queryString += " ORDER BY $sortKey $sortOrder, name ASC"
-
-        val query = SimpleSQLiteQuery(queryString)
-        val games = gameRepository.getGames(query)
-
+        val games = gameRepository.getGamesDatabase(
+            state,
+            filters,
+            sortKey,
+            sortAscending
+        )
         _games.value = games
 
         if (_gamesCount.value == null) {
@@ -178,6 +95,7 @@ class GamesViewModel @Inject constructor(
         dialogView.orientation = LinearLayout.HORIZONTAL
 
         val ascendingPicker = getPicker(arrayOf(resources.getString(R.string.ascending), resources.getString(R.string.descending)), context)
+        ascendingPicker.value = if(sortAscending) 0 else 1
         val ascendingPickerParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
@@ -185,6 +103,7 @@ class GamesViewModel @Inject constructor(
         ascendingPickerParams.weight = 1f
 
         val sortKeysPicker = getPicker(sortingValues, context)
+        sortKeysPicker.value = sortingKeys.indexOf(sortKey)
         val sortKeysPickerParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT

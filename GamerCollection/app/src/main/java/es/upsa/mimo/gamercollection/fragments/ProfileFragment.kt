@@ -45,9 +45,11 @@ class ProfileFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when(item.itemId) {
-            R.id.action_synchronize -> {
+            R.id.action_delete -> {
 
-                openSyncPopup()
+                showPopupConfirmationDialog(resources.getString(R.string.profile_delete_confirmation)) {
+                    viewModel.deleteUser()
+                }
                 return true
             }
             R.id.action_logout -> {
@@ -73,10 +75,18 @@ class ProfileFragment : BaseFragment() {
         edit_text_user.setReadOnly(true, InputType.TYPE_NULL, 0)
         edit_text_password.setText(viewModel.userData.password)
 
+        image_button_info.setOnClickListener {
+            showPopupDialog(resources.getString(R.string.username_info))
+        }
+
+        image_button_password.setOnClickListener {
+            Constants.showOrHidePassword(edit_text_password, image_button_password, Constants.isDarkMode(context))
+        }
+
         radio_button_en.isChecked = viewModel.language == Constants.ENGLISH_LANGUAGE_KEY
         radio_button_es.isChecked = viewModel.language == Constants.SPANISH_LANGUAGE_KEY
 
-        spinner_sorting_keys.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.color2))
+        spinner_sorting_keys.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
         spinner_sorting_keys.adapter = Constants.getAdapter(
             requireContext(),
             resources.getStringArray(R.array.sorting_keys).toList(),
@@ -97,12 +107,6 @@ class ProfileFragment : BaseFragment() {
                 sortingKey,
                 switch_swipe_refresh.isChecked
             )
-        }
-        button_delete_user.setOnClickListener {
-
-            showPopupConfirmationDialog(resources.getString(R.string.profile_delete_confirmation)) {
-                viewModel.deleteUser()
-            }
         }
     }
 

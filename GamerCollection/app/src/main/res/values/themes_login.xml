@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MainImageView">
+        <item name="android:src">@drawable/app_name_light</item>
+    </style>
+
+    <style name="CredentialsEditText" parent="CustomEditText">
+        <item name="android:ems">10</item>
+        <item name="android:selectAllOnFocus">true</item>
+    </style>
+
+    <style name="UsernameEditText" parent="CredentialsEditText">
+        <item name="android:layout_marginStart">@dimen/margin_larger</item>
+        <item name="android:layout_marginEnd">@dimen/margin_larger</item>
+        <item name="android:hint">@string/login_username</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="PasswordEditText" parent="CredentialsEditText">
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:hint">@string/login_password</item>
+        <item name="android:inputType">textPassword</item>
+    </style>
+
+    <style name="EditTextButton">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+    <style name="UsernameInfoButton" parent="EditTextButton">
+        <item name="android:src">@drawable/ic_show_info_light</item>
+    </style>
+
+    <style name="PasswordEyeButton" parent="EditTextButton">
+        <item name="android:src">@drawable/ic_show_password_light</item>
+    </style>
+
+    <style name="LoginButton" parent="@style/RoundedButton.Action">
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:layout_marginStart">@dimen/margin_large</item>
+        <item name="android:layout_marginEnd">@dimen/margin_large</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:text">@string/login_access</item>
+    </style>
+
+    <style name="NoAccountText">
+        <item name="android:layout_marginEnd">@dimen/margin_tiny</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:text">@string/login_not_account</item>
+        <item name="android:textColor">@color/textPrimaryLight</item>
+    </style>
+
+    <style name="NoAccountButton">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:text">@string/login_register</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">@color/textPrimary</item>
+    </style>
+
+    <style name="RegisterButton" parent="@style/RoundedButton.Action">
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:text">@string/register</item>
+    </style>
+
+</resources>

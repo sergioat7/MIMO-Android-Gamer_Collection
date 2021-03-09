@@ -1,7 +1,7 @@
 package es.upsa.mimo.gamercollection.daos
 
 import androidx.room.*
-import es.upsa.mimo.gamercollection.models.PlatformResponse
+import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 
 @Dao
 interface PlatformDao {

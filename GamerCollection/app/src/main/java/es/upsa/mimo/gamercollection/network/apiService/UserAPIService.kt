@@ -1,8 +1,8 @@
 package es.upsa.mimo.gamercollection.network.apiService
 
-import es.upsa.mimo.gamercollection.models.LoginCredentials
-import es.upsa.mimo.gamercollection.models.LoginResponse
-import es.upsa.mimo.gamercollection.models.NewPassword
+import es.upsa.mimo.gamercollection.models.requests.LoginCredentials
+import es.upsa.mimo.gamercollection.models.responses.LoginResponse
+import es.upsa.mimo.gamercollection.models.requests.NewPassword
 import retrofit2.Call
 import retrofit2.http.*
 
