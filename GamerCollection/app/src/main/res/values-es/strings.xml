@@ -40,6 +40,9 @@
     </plurals>
     <string name="new_game">Nuevo</string>
 
+    // Game search
+    <string name="game_search">Búsqueda</string>
+
     // Game detail
     <string name="game_detail_placeholder_name">Añade un nombre</string>
     <string name="game_detail_image_modal_title">Introduce un enlace válido</string>
