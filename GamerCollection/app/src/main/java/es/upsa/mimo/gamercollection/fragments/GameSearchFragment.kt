@@ -2,16 +2,26 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.os.Bundle
 import android.view.*
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.activities.GameDetailActivity
+import es.upsa.mimo.gamercollection.adapters.GamesAdapter
+import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodels.GameSearchViewModel
+import kotlinx.android.synthetic.main.fragment_game_search.*
 
-class GameSearchFragment : BaseFragment() {
+class GameSearchFragment : BaseFragment(), OnItemClickListener {
 
     //MARK: - Private properties
 
     private lateinit var viewModel: GameSearchViewModel
+    private lateinit var gamesAdapter: GamesAdapter
+    private val scrollPosition = MutableLiveData<ScrollPosition>()
 
     // MARK: - Lifecycle methods
 
@@ -47,16 +57,79 @@ class GameSearchFragment : BaseFragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    //MARK: - Interface methods
+
+    override fun onItemClick(id: Int) {
+
+        val params = mapOf(Constants.GAME_ID to id)
+        launchActivityWithExtras(GameDetailActivity::class.java, params)
+    }
+
+    override fun onSubItemClick(id: Int) {}
+
     //MARK: - Private methods
 
     private fun initializeUI() {
 
         viewModel = ViewModelProvider(this).get(GameSearchViewModel::class.java)
         setupBindings()
-        // TODO: Use the ViewModel
+
+        //TODO: enable/disable refreshing
+        swipe_refresh_layout.setColorSchemeResources(R.color.colorPrimary)
+        swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
+        swipe_refresh_layout.setOnRefreshListener {
+            //TODO: load games
+        }
+
+        recycler_view_games.layoutManager = LinearLayoutManager(requireContext())
+        gamesAdapter = GamesAdapter(
+            listOf(),
+            listOf(),
+            listOf(),
+            null,
+            requireContext(),
+            this
+        )
+        recycler_view_games.adapter = gamesAdapter
+        recycler_view_games.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                scrollPosition.value =
+                    if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        ScrollPosition.TOP
+                    } else if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        ScrollPosition.END
+                    } else {
+                        ScrollPosition.MIDDLE
+                    }
+            }
+        })
+
+        scrollPosition.value = ScrollPosition.TOP
+
+        floating_action_button_start_list.setOnClickListener {
+
+            recycler_view_games.scrollToPosition(0)
+            scrollPosition.value = ScrollPosition.TOP
+        }
+
+        floating_action_button_end_list.setOnClickListener {
+
+            val position: Int = gamesAdapter.itemCount - 1
+            recycler_view_games.scrollToPosition(position)
+            scrollPosition.value = ScrollPosition.END
+        }
     }
 
     private fun setupBindings() {
         //TODO: setup bindings
+
+        scrollPosition.observe(viewLifecycleOwner, {
+
+            floating_action_button_start_list.visibility = if (it == ScrollPosition.TOP || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
+            floating_action_button_end_list.visibility = if (it == ScrollPosition.END || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
+        })
     }
 }
