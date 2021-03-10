@@ -15,6 +15,7 @@ interface AppComponent {
     fun inject(gameDetailViewModelFactory: GameDetailViewModelFactory)
     fun inject(gameSongsViewModelFactory: GameSongsViewModelFactory)
     fun inject(gamesViewModelFactory: GamesViewModelFactory)
+    fun inject(gameSearchViewModelFactory: GameSearchViewModelFactory)
     fun inject(landingViewModelFactory: LandingViewModelFactory)
     fun inject(loginViewModelFactory: LoginViewModelFactory)
     fun inject(popupFilterViewModelFactory: PopupFilterViewModelFactory)
