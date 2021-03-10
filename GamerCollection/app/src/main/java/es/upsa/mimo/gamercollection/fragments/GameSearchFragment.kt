@@ -2,6 +2,7 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +13,7 @@ import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.viewmodelfactories.GameSearchViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameSearchViewModel
 import kotlinx.android.synthetic.main.fragment_game_search.*
 
@@ -71,21 +73,22 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
 
     private fun initializeUI() {
 
-        viewModel = ViewModelProvider(this).get(GameSearchViewModel::class.java)
+        val application = activity?.application
+        viewModel = ViewModelProvider(this, GameSearchViewModelFactory(application)).get(GameSearchViewModel::class.java)
         setupBindings()
 
-        //TODO: enable/disable refreshing
+        swipe_refresh_layout.isEnabled = viewModel.swipeRefresh
         swipe_refresh_layout.setColorSchemeResources(R.color.colorPrimary)
         swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
         swipe_refresh_layout.setOnRefreshListener {
-            //TODO: load games
+            viewModel.loadGames()
         }
 
         recycler_view_games.layoutManager = LinearLayoutManager(requireContext())
         gamesAdapter = GamesAdapter(
-            listOf(),
-            listOf(),
-            listOf(),
+            viewModel.games.value ?: listOf(),
+            viewModel.platforms,
+            viewModel.states,
             null,
             requireContext(),
             this
@@ -124,12 +127,39 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
     }
 
     private fun setupBindings() {
-        //TODO: setup bindings
+
+        viewModel.gamesLoading.observe(viewLifecycleOwner, { isLoading ->
+
+            if (isLoading) {
+                showLoading()
+            } else {
+                hideLoading()
+            }
+        })
+
+        viewModel.gamesError.observe(viewLifecycleOwner, { error ->
+            manageError(error)
+        })
+
+        viewModel.games.observe(viewLifecycleOwner, {
+
+            gamesAdapter.setGames(it)
+            setTitle(it.size)
+            layout_empty_list.visibility = if (it.isNotEmpty()) View.GONE else View.VISIBLE
+            swipe_refresh_layout.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
+            scrollPosition.value = if (it.isNotEmpty()) scrollPosition.value else ScrollPosition.NONE
+        })
 
         scrollPosition.observe(viewLifecycleOwner, {
 
             floating_action_button_start_list.visibility = if (it == ScrollPosition.TOP || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
             floating_action_button_end_list.visibility = if (it == ScrollPosition.END || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
         })
+    }
+
+    private fun setTitle(gamesCount: Int) {
+
+        val title = resources.getQuantityString(R.plurals.games_number_title, gamesCount, gamesCount)
+        (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
 }
