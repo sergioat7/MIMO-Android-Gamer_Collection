@@ -45,10 +45,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
+        //This is not necessary because debug type is always include in the project by default,
+        //but I include it because I want to set the suffix
         debug {
             applicationIdSuffix ".debug"
             versionNameSuffix '-debug'
-            debuggable true
+            debuggable true//This is always true in debug type
         }
     }
 
