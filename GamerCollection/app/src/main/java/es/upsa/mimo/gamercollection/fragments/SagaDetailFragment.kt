@@ -108,7 +108,11 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
         }
     }
 
-    override fun onSubItemClick(id: Int) {}
+    override fun onSubItemClick(id: Int) {
+    }
+
+    override fun onLoadMoreItemsClick() {
+    }
 
     //MARK: - Private methods
 

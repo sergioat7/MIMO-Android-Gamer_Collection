@@ -90,6 +90,9 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
         launchActivityWithExtras(GameDetailActivity::class.java, params)
     }
 
+    override fun onLoadMoreItemsClick() {
+    }
+
     //MARK: - Private methods
 
     private fun initializeUI() {

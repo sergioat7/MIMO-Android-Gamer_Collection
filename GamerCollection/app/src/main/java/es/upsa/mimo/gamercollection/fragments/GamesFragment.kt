@@ -107,7 +107,11 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
         launchActivityWithExtras(GameDetailActivity::class.java, params)
     }
 
-    override fun onSubItemClick(id: Int) {}
+    override fun onSubItemClick(id: Int) {
+    }
+
+    override fun onLoadMoreItemsClick() {
+    }
 
     override fun filter(filters: FilterModel?) {
 

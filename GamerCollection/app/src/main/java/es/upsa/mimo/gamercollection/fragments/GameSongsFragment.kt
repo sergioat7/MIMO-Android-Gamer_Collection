@@ -48,7 +48,11 @@ class GameSongsFragment(
         viewModel.deleteSong(id)
     }
 
-    override fun onSubItemClick(id: Int) {}
+    override fun onSubItemClick(id: Int) {
+    }
+
+    override fun onLoadMoreItemsClick() {
+    }
 
     // MARK: Public methods
 
