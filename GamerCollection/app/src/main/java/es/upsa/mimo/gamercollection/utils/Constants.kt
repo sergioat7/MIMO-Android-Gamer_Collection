@@ -167,8 +167,6 @@ class Constants {
 
             return when(pegi) {
                 "+3" -> ContextCompat.getDrawable(context, R.drawable.pegi3)
-                "+4" -> ContextCompat.getDrawable(context, R.drawable.pegi4)
-                "+6" -> ContextCompat.getDrawable(context, R.drawable.pegi6)
                 "+7" -> ContextCompat.getDrawable(context, R.drawable.pegi7)
                 "+12" -> ContextCompat.getDrawable(context, R.drawable.pegi12)
                 "+16" -> ContextCompat.getDrawable(context, R.drawable.pegi16)
