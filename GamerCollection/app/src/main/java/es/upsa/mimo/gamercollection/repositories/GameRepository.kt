@@ -318,7 +318,7 @@ class GameRepository @Inject constructor(
             rawgGame.id,
             rawgGame.name,
             null,
-            0.0,
+            rawgGame.rating,
             getRawgEsrbRating(rawgGame.esrbRating),
             getRawgPublishers(rawgGame.publishers),
             getRawgDevelopers(rawgGame.developers),
