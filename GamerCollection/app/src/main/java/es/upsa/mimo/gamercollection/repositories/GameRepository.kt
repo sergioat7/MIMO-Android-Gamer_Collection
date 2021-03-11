@@ -2,6 +2,10 @@ package es.upsa.mimo.gamercollection.repositories
 
 import androidx.sqlite.db.SimpleSQLiteQuery
 import es.upsa.mimo.gamercollection.models.*
+import es.upsa.mimo.gamercollection.models.rawg.RawgDeveloperResponse
+import es.upsa.mimo.gamercollection.models.rawg.RawgEsrbResponse
+import es.upsa.mimo.gamercollection.models.rawg.RawgGameResponse
+import es.upsa.mimo.gamercollection.models.rawg.RawgPublisherResponse
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
@@ -226,7 +230,10 @@ class GameRepository @Inject constructor(
         }
     }
 
-    fun updateGameSongs(gameId: Int, success: (GameResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
+    fun updateGameSongs(
+        gameId: Int,
+        success: (GameResponse) -> Unit,
+        failure: (ErrorResponse) -> Unit) {
 
         gameAPIClient.getGame(gameId, {
 
@@ -241,6 +248,25 @@ class GameRepository @Inject constructor(
         for (game in games) {
             deleteGameDatabase(game)
         }
+    }
+
+    fun getRawgGames(
+        page: Int,
+        query: String?,
+        success: (List<GameResponse>, Int) -> Unit,
+        failure: (ErrorResponse) -> Unit) {
+
+        gameAPIClient.getRawgGames(page, query, {
+
+            val games = mapRawgGames(it.results)
+            success(games, it.count)
+        }, failure)
+    }
+
+    fun getRawgGame(gameId: Int, success: (GameResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
+        gameAPIClient.getRawgGame(gameId, {
+            success(mapRawgGame(it))
+        }, failure)
     }
 
     // MARK: - Private methods
@@ -272,6 +298,89 @@ class GameRepository @Inject constructor(
                 database.gameDao().deleteGame(game)
             }
             job.join()
+        }
+    }
+
+    private fun mapRawgGames(rawgGames: List<RawgGameResponse>?): List<GameResponse> {
+
+        val games = mutableListOf<GameResponse>()
+        rawgGames?.let {
+            for (rawgGame in it) {
+                games.add(mapRawgGame(rawgGame))
+            }
+        }
+        return games
+    }
+
+    private fun mapRawgGame(rawgGame: RawgGameResponse): GameResponse {
+
+        return GameResponse(
+            rawgGame.id,
+            rawgGame.name,
+            null,
+            0.0,
+            getRawgEsrbRating(rawgGame.esrbRating),
+            getRawgPublishers(rawgGame.publishers),
+            getRawgDevelopers(rawgGame.developers),
+            null,
+            null,
+            false,
+            null,
+            null,
+            null,
+            null,
+            null,
+            0.0,
+            rawgGame.backgroundImage,
+            null,
+            null,
+            null,
+            null,
+            listOf()
+        )
+    }
+
+    private fun getRawgDevelopers(developers: List<RawgDeveloperResponse>?): String? {
+
+        val result = StringBuilder()
+        developers?.let {
+            for (developer in it) {
+                result.append(developer.name)
+                result.append(Constants.NEXT_VALUE_SEPARATOR)
+            }
+        }
+        return if (result.isNotBlank()) {
+            StringBuilder(result.substring(0, result.length - Constants.NEXT_VALUE_SEPARATOR.length)).toString()
+        } else {
+            null
+        }
+    }
+
+    private fun getRawgPublishers(publishers: List<RawgPublisherResponse>?): String? {
+
+        val result = StringBuilder()
+        publishers?.let {
+            for (publisher in it) {
+                result.append(publisher.name)
+                result.append(Constants.NEXT_VALUE_SEPARATOR)
+            }
+        }
+        return if (result.isNotBlank()) {
+            StringBuilder(result.substring(0, result.length - Constants.NEXT_VALUE_SEPARATOR.length)).toString()
+        } else {
+            null
+        }
+    }
+
+    private fun getRawgEsrbRating(esrbRating: RawgEsrbResponse?): String? {
+
+        return when (esrbRating?.slug) {
+            "everyone" -> "+3"
+            "everyone-10-plus" -> "+7"
+            "teen" -> "+12"
+            "mature" -> "+16"
+            "adults-only" -> "+18"
+            else -> null
         }
     }
 }

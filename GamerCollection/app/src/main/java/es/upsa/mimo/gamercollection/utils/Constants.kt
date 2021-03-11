@@ -27,6 +27,7 @@ class Constants {
         const val EMPTY_VALUE = ""
         const val POINT_UP = 0f
         const val POINT_DOWN = -180f
+        const val NEXT_VALUE_SEPARATOR = ", "
 
         fun getAdapter(context: Context, data: List<String>, firstOptionEnabled: Boolean = false): SpinnerAdapter {
 
