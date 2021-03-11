@@ -253,13 +253,13 @@ class GameRepository @Inject constructor(
     fun getRawgGames(
         page: Int,
         query: String?,
-        success: (List<GameResponse>, Int) -> Unit,
+        success: (List<GameResponse>, Int, Boolean) -> Unit,
         failure: (ErrorResponse) -> Unit) {
 
         gameAPIClient.getRawgGames(page, query, {
 
             val games = mapRawgGames(it.results)
-            success(games, it.count)
+            success(games, it.count, it.next != null)
         }, failure)
     }
 

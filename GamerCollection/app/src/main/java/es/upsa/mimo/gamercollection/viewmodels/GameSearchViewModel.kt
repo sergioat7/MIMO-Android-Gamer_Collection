@@ -50,12 +50,10 @@ class GameSearchViewModel @Inject constructor(
     fun loadGames() {
 
         _gamesLoading.value = true
-        gameRepository.getRawgGames(page, query, { games, gamesCount ->
+        gameRepository.getRawgGames(page, query, { newGames, gamesCount, next ->
             
             _gamesLoading.value = false
-            val currentGames = _games.value ?: mutableListOf()
-            currentGames.addAll(games)
-            _games.value = currentGames
+            addGames(newGames, next)
             if (page == 1) {
 
                 _scrollPosition.value = ScrollPosition.TOP
@@ -71,5 +69,43 @@ class GameSearchViewModel @Inject constructor(
 
         page = 1
         _games.value = mutableListOf()
+    }
+
+    //MARK: - Private methods
+
+    private fun addGames(newGames: List<GameResponse>, next: Boolean) {
+
+        val currentGames = _games.value ?: mutableListOf()
+        if (currentGames.size > 0) {
+            currentGames.removeLast()
+        }
+        currentGames.addAll(newGames)
+        if (next) {
+            currentGames.add(GameResponse(
+                0,
+                null,
+                null,
+                0.0,
+                null,
+                null,
+                null,
+                null,
+                null,
+                false,
+                null,
+                null,
+                null,
+                null,
+                null,
+                0.0,
+                null,
+                null,
+                null,
+                null,
+                null,
+                listOf()
+            ))
+        }
+        _games.value = currentGames
     }
 }
