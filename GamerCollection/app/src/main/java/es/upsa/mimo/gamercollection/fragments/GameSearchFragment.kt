@@ -71,6 +71,9 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
     override fun onSubItemClick(id: Int) {}
 
     override fun onLoadMoreItemsClick() {
+
+        viewModel.loadGames()
+        scrollPosition.value = ScrollPosition.MIDDLE
     }
 
     //MARK: - Private methods
