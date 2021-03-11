@@ -42,6 +42,7 @@
 
     // Game search
     <string name="game_search">Búsqueda</string>
+    <string name="load_more">Cargar más</string>
 
     // Game detail
     <string name="game_detail_placeholder_name">Añade un nombre</string>

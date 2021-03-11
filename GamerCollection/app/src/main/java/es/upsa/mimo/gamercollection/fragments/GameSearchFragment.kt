@@ -52,7 +52,8 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
         when(item.itemId) {
             R.id.action_search -> {
 
-                //TODO: set search action
+                viewModel.query = null // TODO: get text
+                reset()
                 return true
             }
         }
@@ -69,6 +70,9 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
 
     override fun onSubItemClick(id: Int) {}
 
+    override fun onLoadMoreItemsClick() {
+    }
+
     //MARK: - Private methods
 
     private fun initializeUI() {
@@ -81,9 +85,7 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
         swipe_refresh_layout.setColorSchemeResources(R.color.colorPrimary)
         swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
         swipe_refresh_layout.setOnRefreshListener {
-
-            viewModel.resetPage()
-            viewModel.loadGames()
+            reset()
         }
 
         recycler_view_games.layoutManager = LinearLayoutManager(requireContext())
@@ -170,5 +172,12 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
 
         val title = resources.getQuantityString(R.plurals.games_number_title, gamesCount, gamesCount)
         (activity as AppCompatActivity?)?.supportActionBar?.title = title
+    }
+
+    private fun reset() {
+
+        gamesAdapter.resetList()
+        viewModel.resetPage()
+        viewModel.loadGames()
     }
 }

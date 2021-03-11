@@ -96,5 +96,20 @@
     <style name="EndListButton.Image">
         <item name="android:src">@drawable/ic_double_arrow_down_light</item>
     </style>
+
+    <style name="LoadMoreButton">
+        <item name="android:layout_margin">@dimen/margin_small</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">@dimen/margin_small</item>
+        <item name="android:paddingEnd">@dimen/margin_small</item>
+        <item name="android:drawablePadding">@dimen/margin_small</item>
+        <item name="android:background">@drawable/bordered_button_primary</item>
+        <item name="android:text">@string/load_more</item>
+        <item name="android:textColor">@color/colorSecondary</item>
+    </style>
+
+    <style name="LoadMoreButton.Image">
+        <item name="android:drawableStart">@drawable/ic_add_circle_light</item>
+    </style>
     
 </resources>
