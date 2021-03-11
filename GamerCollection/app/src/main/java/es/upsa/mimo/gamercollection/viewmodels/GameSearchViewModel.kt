@@ -3,6 +3,7 @@ package es.upsa.mimo.gamercollection.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import es.upsa.mimo.gamercollection.fragments.ScrollPosition
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
@@ -22,12 +23,16 @@ class GameSearchViewModel @Inject constructor(
 
     //MARK: - Private properties
 
+    private var page: Int = 1
     private val _gamesLoading = MutableLiveData<Boolean>()
     private val _gamesError = MutableLiveData<ErrorResponse>()
-    private val _games = MutableLiveData<List<GameResponse>>()
+    private val _games = MutableLiveData<MutableList<GameResponse>>()
+    private val _gamesCount = MutableLiveData<Int>()
+    private val _scrollPosition = MutableLiveData(ScrollPosition.TOP)
 
     //MARK: - Public properties
 
+    var query: String? = null
     val swipeRefresh: Boolean
         get() = sharedPreferencesHandler.getSwipeRefresh()
     val platforms: List<PlatformResponse>
@@ -36,11 +41,35 @@ class GameSearchViewModel @Inject constructor(
         get() = stateRepository.getStatesDatabase()
     val gamesLoading: LiveData<Boolean> = _gamesLoading
     val gamesError: LiveData<ErrorResponse> = _gamesError
-    val games: LiveData<List<GameResponse>> = _games
+    val games: LiveData<MutableList<GameResponse>> = _games
+    val gamesCount: LiveData<Int> = _gamesCount
+    val scrollPosition: LiveData<ScrollPosition> = _scrollPosition
 
     //MARK: - Public methods
 
     fun loadGames() {
-        //TODO: load games from RAWG
+
+        _gamesLoading.value = true
+        gameRepository.getRawgGames(page, query, { games, gamesCount ->
+            
+            _gamesLoading.value = false
+            val currentGames = _games.value ?: mutableListOf()
+            currentGames.addAll(games)
+            _games.value = currentGames
+            if (page == 1) {
+
+                _scrollPosition.value = ScrollPosition.TOP
+                _gamesCount.value = gamesCount
+            }
+            page += 1
+        }, {
+            _gamesError.value = it
+        })
+    }
+
+    fun resetPage() {
+
+        page = 1
+        _games.value = mutableListOf()
     }
 }

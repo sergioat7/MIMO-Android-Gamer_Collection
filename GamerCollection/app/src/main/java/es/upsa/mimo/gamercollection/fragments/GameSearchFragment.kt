@@ -81,6 +81,8 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
         swipe_refresh_layout.setColorSchemeResources(R.color.colorPrimary)
         swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
         swipe_refresh_layout.setOnRefreshListener {
+
+            viewModel.resetPage()
             viewModel.loadGames()
         }
 
@@ -144,10 +146,17 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
         viewModel.games.observe(viewLifecycleOwner, {
 
             gamesAdapter.setGames(it)
-            setTitle(it.size)
             layout_empty_list.visibility = if (it.isNotEmpty()) View.GONE else View.VISIBLE
             swipe_refresh_layout.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
             scrollPosition.value = if (it.isNotEmpty()) scrollPosition.value else ScrollPosition.NONE
+        })
+
+        viewModel.gamesCount.observe(viewLifecycleOwner, {
+            setTitle(it)
+        })
+
+        viewModel.scrollPosition.observe(viewLifecycleOwner, {
+            scrollPosition.value = it
         })
 
         scrollPosition.observe(viewLifecycleOwner, {
