@@ -44,6 +44,7 @@ class GameSearchViewModelFactory(
         if (modelClass.isAssignableFrom(GameSearchViewModel::class.java)) {
 
             (application as GamerCollectionApplication).appComponent.inject(this)
+            gameSearchViewModel.loadGames()
             return gameSearchViewModel as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
