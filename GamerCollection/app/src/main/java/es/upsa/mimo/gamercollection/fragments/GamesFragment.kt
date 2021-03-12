@@ -103,7 +103,7 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
 
     override fun onItemClick(id: Int) {
         
-        val params = mapOf(Constants.GAME_ID to id)
+        val params = mapOf(Constants.GAME_ID to id, Constants.IS_RAWG_GAME to false)
         launchActivityWithExtras(GameDetailActivity::class.java, params)
     }
 

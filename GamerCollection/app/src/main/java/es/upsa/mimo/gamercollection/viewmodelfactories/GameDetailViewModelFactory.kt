@@ -13,7 +13,8 @@ import javax.inject.Inject
 
 class GameDetailViewModelFactory(
     private val application: Application?,
-    private val gameId: Int?
+    private val gameId: Int?,
+    private val isRawgGame: Boolean
 ): ViewModelProvider.Factory {
 
     //MARK: - Public properties
@@ -39,6 +40,7 @@ class GameDetailViewModelFactory(
 
             (application as GamerCollectionApplication).appComponent.inject(this)
             gameDetailViewModel.setGameId(gameId)
+            gameDetailViewModel.setIsRawgGame(isRawgGame)
             gameDetailViewModel.getGame()
             return gameDetailViewModel as T
         }
