@@ -76,6 +76,12 @@ class GamesAdapter(
 
     fun setGames(newGames: List<GameResponse>) {
 
+        this.games = newGames
+        notifyDataSetChanged()
+    }
+
+    fun addGames(newGames: List<GameResponse>) {
+
         val position = games.size
         games = newGames
         notifyItemInserted(position)
