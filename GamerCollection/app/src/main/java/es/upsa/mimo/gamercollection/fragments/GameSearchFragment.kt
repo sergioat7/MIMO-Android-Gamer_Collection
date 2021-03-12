@@ -150,10 +150,18 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
 
         viewModel.games.observe(viewLifecycleOwner, {
 
-            layout_empty_list.visibility = if (it.isNotEmpty()) View.GONE else View.VISIBLE
-            swipe_refresh_layout.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
-            scrollPosition.value = if (it.isNotEmpty()) scrollPosition.value else ScrollPosition.NONE
             gamesAdapter.addGames(it)
+            if (it.isNotEmpty()) {
+
+                layout_empty_list.visibility = View.GONE
+                swipe_refresh_layout.visibility = View.VISIBLE
+                scrollPosition.value = scrollPosition.value
+            } else {
+
+                layout_empty_list.visibility = View.VISIBLE
+                swipe_refresh_layout.visibility = View.GONE
+                scrollPosition.value = ScrollPosition.NONE
+            }
         })
 
         viewModel.gamesCount.observe(viewLifecycleOwner, {
@@ -166,8 +174,10 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
 
         scrollPosition.observe(viewLifecycleOwner, {
 
-            floating_action_button_start_list.visibility = if (it == ScrollPosition.TOP || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
-            floating_action_button_end_list.visibility = if (it == ScrollPosition.END || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
+            floating_action_button_start_list.visibility =
+                if (it == ScrollPosition.TOP || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
+            floating_action_button_end_list.visibility =
+                if (it == ScrollPosition.END || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
         })
     }
 
