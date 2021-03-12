@@ -103,7 +103,12 @@ class GameDetailActivity : BaseActivity() {
 
         val id = intent.getIntExtra(Constants.GAME_ID, 0)
         val gameId = if (id > 0) id else null
-        viewModel = ViewModelProvider(this, GameDetailViewModelFactory(application, gameId)).get(GameDetailViewModel::class.java)
+        val isRawgGame = intent.getBooleanExtra(Constants.IS_RAWG_GAME, false)
+        viewModel = ViewModelProvider(this, GameDetailViewModelFactory(
+            application,
+            gameId,
+            isRawgGame)
+        ).get(GameDetailViewModel::class.java)
         setupBindings()
 
         image_view_game.setOnClickListener { setImage() }

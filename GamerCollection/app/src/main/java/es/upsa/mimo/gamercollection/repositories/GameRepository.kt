@@ -323,7 +323,7 @@ class GameRepository @Inject constructor(
             getRawgPublishers(rawgGame.publishers),
             getRawgDevelopers(rawgGame.developers),
             null,
-            null,
+            rawgGame.released,
             false,
             null,
             null,

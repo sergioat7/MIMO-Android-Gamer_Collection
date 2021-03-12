@@ -170,6 +170,7 @@ class Constants {
         // MARK: Game
 
         const val GAME_ID = "gameId"
+        const val IS_RAWG_GAME = "isRawgGame"
         const val NO_VALUE = "-"
 
         fun getPegiImage(pegi: String?, context: Context): Drawable? {
