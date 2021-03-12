@@ -173,7 +173,11 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
 
     private fun setTitle(gamesCount: Int) {
 
-        val title = resources.getQuantityString(R.plurals.games_number_title, gamesCount, gamesCount)
+        val title = resources.getQuantityString(
+            R.plurals.games_number_title,
+            gamesCount,
+            Constants.getFormattedNumber(gamesCount)
+        )
         (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
 

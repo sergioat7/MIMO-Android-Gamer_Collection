@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.SpinnerAdapter
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -151,6 +152,14 @@ class Constants {
                 Log.e("Constants", "dateString null")
                 return null
             }
+        }
+
+        // MARK: Number format
+
+        fun getFormattedNumber(number: Int): String {
+
+            val formatter = DecimalFormat("#,###")
+            return formatter.format(number)
         }
 
         // MARK: Notifications

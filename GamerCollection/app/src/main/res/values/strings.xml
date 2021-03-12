@@ -37,8 +37,8 @@
     <string name="games_filter_button_title_in_progress">In Progress</string>
     <string name="games_filter_button_title_finished">Finished</string>
     <plurals name="games_number_title">
-        <item quantity="one">%d game</item>
-        <item quantity="other">%d games</item>
+        <item quantity="one">%s game</item>
+        <item quantity="other">%s games</item>
     </plurals>
     <string name="new_game">New</string>
 
