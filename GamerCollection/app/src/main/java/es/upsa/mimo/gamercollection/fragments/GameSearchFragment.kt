@@ -150,10 +150,10 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
 
         viewModel.games.observe(viewLifecycleOwner, {
 
-            gamesAdapter.setGames(it)
             layout_empty_list.visibility = if (it.isNotEmpty()) View.GONE else View.VISIBLE
             swipe_refresh_layout.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
             scrollPosition.value = if (it.isNotEmpty()) scrollPosition.value else ScrollPosition.NONE
+            gamesAdapter.addGames(it)
         })
 
         viewModel.gamesCount.observe(viewLifecycleOwner, {
