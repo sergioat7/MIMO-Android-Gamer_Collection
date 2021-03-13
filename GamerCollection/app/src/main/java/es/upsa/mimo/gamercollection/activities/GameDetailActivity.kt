@@ -33,6 +33,7 @@ class GameDetailActivity : BaseActivity() {
     private lateinit var viewModel: GameDetailViewModel
     private var menu: Menu? = null
     private lateinit var pagerAdapter: GameDetailPagerAdapter
+    private var game: GameResponse? = null
     private var platformValues = ArrayList<String>()
     private var imageUrl: String? = null
 
@@ -61,9 +62,11 @@ class GameDetailActivity : BaseActivity() {
             it.clear()
             val menuRes = if (isRawgGame) R.menu.rawg_game_toolbar_menu else R.menu.game_toolbar_menu
             menuInflater.inflate(menuRes, menu)
-
-            menu.findItem(R.id.action_save).isVisible = isRawgGame
             if (!isRawgGame) {
+
+                menu.findItem(R.id.action_edit).isVisible = game != null
+                menu.findItem(R.id.action_remove).isVisible = game != null
+                menu.findItem(R.id.action_save).isVisible = game == null
                 it.findItem(R.id.action_cancel).isVisible = false
             }
         }
@@ -85,7 +88,7 @@ class GameDetailActivity : BaseActivity() {
             }
             R.id.action_save -> {
 
-                if (isRawgGame) {
+                if (isRawgGame || game == null) {
                     viewModel.createGame(getGameData())
                 } else {
 
@@ -95,7 +98,7 @@ class GameDetailActivity : BaseActivity() {
             }
             R.id.action_cancel -> {
 
-                showData(viewModel.game.value)
+                showData(game)
                 setEdition(false)
             }
         }
@@ -160,8 +163,9 @@ class GameDetailActivity : BaseActivity() {
 
         viewModel.game.observe(this, {
 
+            game = it
             showData(it)
-            makeFieldsEditable(isRawgGame)
+            makeFieldsEditable(isRawgGame || it == null)
         })
     }
 
