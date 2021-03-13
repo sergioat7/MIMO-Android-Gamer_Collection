@@ -2,6 +2,7 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.os.Bundle
 import android.view.*
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
@@ -45,19 +46,7 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
 
         menu.clear()
         inflater.inflate(R.menu.game_search_toolbar_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        when(item.itemId) {
-            R.id.action_search -> {
-
-                viewModel.query = null // TODO: get text
-                reset()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
+        setupSearchView(menu)
     }
 
     //MARK: - Interface methods
@@ -88,6 +77,8 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
         swipe_refresh_layout.setColorSchemeResources(R.color.colorPrimary)
         swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
         swipe_refresh_layout.setOnRefreshListener {
+
+            viewModel.query = null
             reset()
         }
 
@@ -196,5 +187,36 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
         gamesAdapter.resetList()
         viewModel.resetPage()
         viewModel.loadGames()
+    }
+
+    private fun setupSearchView(menu: Menu) {
+
+        val menuItem = menu.findItem(R.id.action_search)
+        this.searchView = menuItem.actionView as SearchView
+        this.searchView?.let { searchView ->
+
+            searchView.queryHint = resources.getString(R.string.search_games)
+            searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+
+                override fun onQueryTextChange(newText: String): Boolean {
+                    return true
+                }
+
+                override fun onQueryTextSubmit(query: String): Boolean {
+
+                    searchGames(query)
+                    menuItem.collapseActionView()
+                    return true
+                }
+            })
+        }
+        this.setupSearchView(viewModel.query ?: Constants.EMPTY_VALUE)
+    }
+
+    private fun searchGames(query: String) {
+
+        viewModel.query = query
+        reset()
+        Constants.hideSoftKeyboard(requireActivity())
     }
 }
