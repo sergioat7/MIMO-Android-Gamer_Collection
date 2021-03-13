@@ -56,10 +56,11 @@ class GameSongsFragment(
 
     // MARK: Public methods
 
-    fun enableEdition(enable: Boolean) {
+    fun setEdition(editable: Boolean) {
 
-        songsAdapter.setEditable(enable)
-        button_add_song?.visibility = if(enable) View.VISIBLE else View.GONE
+        enabled = editable
+        songsAdapter.setEditable(editable)
+        button_add_song?.visibility = if(editable) View.VISIBLE else View.GONE
     }
 
     fun getSongs(): List<SongResponse> {
