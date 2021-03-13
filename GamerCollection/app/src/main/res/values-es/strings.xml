@@ -82,6 +82,8 @@
     <string name="game_detail_songs_title">Canciones</string>
     <string name="game_detail_delete_confirmation">¿Estás seguro de que quieres borrar este juego? Esta acción no se puede deshacer</string>
     <string name="turn_on_location">Activa la localización</string>
+    <string name="game_created">¡Juego añadido!</string>
+    <string name="game_removed">¡Juego eliminado!</string>
 
     // Sagas
     <string name="sagas">Mis Sagas</string>
@@ -95,6 +97,8 @@
     <string name="saga_detail_placeholder_name">Añade un nombre</string>
     <string name="saga_detail_games_title">Juegos</string>
     <string name="saga_detail_delete_confirmation">¿Estás seguro de que quieres borrar esta saga? Esta acción no se puede deshacer</string>
+    <string name="saga_created">¡Saga creada!</string>
+    <string name="saga_removed">¡Saga eliminada!</string>
 
     // Profile
     <string name="profile">Mi Perfil</string>
