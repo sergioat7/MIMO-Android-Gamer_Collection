@@ -1,12 +1,14 @@
 package es.upsa.mimo.gamercollection.utils
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.core.content.ContextCompat
@@ -41,6 +43,15 @@ class Constants {
 
             val mode = context?.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)
             return mode == Configuration.UI_MODE_NIGHT_YES
+        }
+
+        fun hideSoftKeyboard(activity: Activity) {
+
+            activity.currentFocus?.let { currentFocus ->
+
+                val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
+            } ?: return
         }
 
         // MARK: - Database constants
