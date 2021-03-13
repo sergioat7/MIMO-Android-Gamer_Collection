@@ -59,6 +59,7 @@ class GameDetailViewModel @Inject constructor(
 
     fun createGame(game: GameResponse) {
 
+        _gameDetailLoading.value = true
         gameRepository.createGame(game, {
 
             _gameDetailLoading.value = false
@@ -70,6 +71,7 @@ class GameDetailViewModel @Inject constructor(
 
     fun setGame(game: GameResponse) {
 
+        _gameDetailLoading.value = true
         gameRepository.setGame(game, {
 
             _game.value = it
