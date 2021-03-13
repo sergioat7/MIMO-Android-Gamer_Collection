@@ -3,6 +3,7 @@ package es.upsa.mimo.gamercollection.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
@@ -20,6 +21,7 @@ class GameDetailViewModel @Inject constructor(
     private var gameId: Int? = null
     private var isRawgGame: Boolean = false
     private val _gameDetailLoading = MutableLiveData<Boolean>()
+    private val _gameDetailSuccessMessage = MutableLiveData<Int>()
     private val _gameDetailError = MutableLiveData<ErrorResponse>()
     private val _game = MutableLiveData<GameResponse?>()
 
@@ -28,6 +30,7 @@ class GameDetailViewModel @Inject constructor(
     val platforms: List<PlatformResponse>
         get() = platformRepository.getPlatformsDatabase()
     val gameDetailLoading: LiveData<Boolean> = _gameDetailLoading
+    val gameDetailSuccessMessage: LiveData<Int> = _gameDetailSuccessMessage
     val gameDetailError: LiveData<ErrorResponse> = _gameDetailError
     val game: LiveData<GameResponse?> = _game
 
@@ -63,7 +66,7 @@ class GameDetailViewModel @Inject constructor(
         gameRepository.createGame(game, {
 
             _gameDetailLoading.value = false
-            _gameDetailError.value = null
+            _gameDetailSuccessMessage.value = R.string.game_created
         }, {
             _gameDetailError.value = it
         })
@@ -87,7 +90,7 @@ class GameDetailViewModel @Inject constructor(
             gameRepository.deleteGame(game, {
 
                 _gameDetailLoading.value = true
-                _gameDetailError.value = null
+                _gameDetailSuccessMessage.value = R.string.game_removed
             }, {
                 _gameDetailError.value = it
             })

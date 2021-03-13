@@ -3,6 +3,7 @@ package es.upsa.mimo.gamercollection.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.responses.*
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
@@ -23,6 +24,7 @@ class SagaDetailViewModel @Inject constructor(
 
     private var sagaId: Int? = null
     private val _sagaDetailLoading = MutableLiveData<Boolean>()
+    private val _sagaDetailSuccessMessage = MutableLiveData<Int>()
     private val _sagaDetailError = MutableLiveData<ErrorResponse>()
     private val _saga = MutableLiveData<SagaResponse?>()
 
@@ -35,6 +37,7 @@ class SagaDetailViewModel @Inject constructor(
     val states: List<StateResponse>
         get() = stateRepository.getStatesDatabase()
     val sagaDetailLoading: LiveData<Boolean> = _sagaDetailLoading
+    val sagaDetailSuccessMessage: LiveData<Int> = _sagaDetailSuccessMessage
     val sagaDetailError: LiveData<ErrorResponse> = _sagaDetailError
     val saga: LiveData<SagaResponse?> = _saga
 
@@ -72,32 +75,10 @@ class SagaDetailViewModel @Inject constructor(
             games
         )
 
-        _sagaDetailLoading.value = true
         if (_saga.value != null) {
-
-            sagaRepository.setSaga(newSaga, {
-
-                gameRepository.removeSagaFromGames(newSaga)
-                gameRepository.updateSagaGames(newSaga)
-
-                _saga.value = it
-                _sagaDetailLoading.value = false
-            }, {
-                _sagaDetailError.value = it
-            })
+            setSaga(newSaga)
         } else {
-
-            sagaRepository.createSaga(newSaga, { newSagaCreated ->
-
-                newSagaCreated?.let {
-                    gameRepository.updateSagaGames(it)
-                }
-
-                _sagaDetailLoading.value = false
-                _sagaDetailError.value = null
-            }, {
-                _sagaDetailError.value = it
-            })
+            createSaga(newSaga)
         }
     }
 
@@ -109,7 +90,7 @@ class SagaDetailViewModel @Inject constructor(
             sagaRepository.deleteSaga(saga, {
 
                 _sagaDetailLoading.value = false
-                _sagaDetailError.value = null
+                _sagaDetailSuccessMessage.value = R.string.saga_removed
             }, {
                 _sagaDetailError.value = it
             })
@@ -120,5 +101,38 @@ class SagaDetailViewModel @Inject constructor(
 
     fun setSagaId(sagaId: Int?) {
         this.sagaId = sagaId
+    }
+
+    // MARK: Private methods
+
+    private fun createSaga(saga: SagaResponse) {
+
+        _sagaDetailLoading.value = true
+        sagaRepository.createSaga(saga, { newSagaCreated ->
+
+            newSagaCreated?.let {
+                gameRepository.updateSagaGames(it)
+            }
+
+            _sagaDetailLoading.value = false
+            _sagaDetailSuccessMessage.value = R.string.saga_created
+        }, {
+            _sagaDetailError.value = it
+        })
+    }
+
+    private fun setSaga(saga: SagaResponse) {
+
+        _sagaDetailLoading.value = true
+        sagaRepository.setSaga(saga, {
+
+            gameRepository.removeSagaFromGames(saga)
+            gameRepository.updateSagaGames(saga)
+
+            _saga.value = it
+            _sagaDetailLoading.value = false
+        }, {
+            _sagaDetailError.value = it
+        })
     }
 }

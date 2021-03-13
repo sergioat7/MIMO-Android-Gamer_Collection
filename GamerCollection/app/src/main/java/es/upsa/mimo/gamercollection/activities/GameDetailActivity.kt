@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Callback
@@ -36,6 +37,7 @@ class GameDetailActivity : BaseActivity() {
     private var game: GameResponse? = null
     private var platformValues = ArrayList<String>()
     private var imageUrl: String? = null
+    private val goBack = MutableLiveData<Boolean>()
 
     // MARK: - Lifecycle methods
 
@@ -150,15 +152,16 @@ class GameDetailActivity : BaseActivity() {
             }
         })
 
+        viewModel.gameDetailSuccessMessage.observe(this, {
+
+            val message = resources.getString(it)
+            showPopupDialog(message, goBack)
+        })
+
         viewModel.gameDetailError.observe(this, { error ->
 
-            if (error == null) {
-                finish()
-            } else {
-
-                hideLoading()
-                manageError(error)
-            }
+            hideLoading()
+            manageError(error)
         })
 
         viewModel.game.observe(this, {
@@ -166,6 +169,10 @@ class GameDetailActivity : BaseActivity() {
             game = it
             showData(it)
             makeFieldsEditable(isRawgGame || it == null)
+        })
+
+        goBack.observe(this, {
+            finish()
         })
     }
 

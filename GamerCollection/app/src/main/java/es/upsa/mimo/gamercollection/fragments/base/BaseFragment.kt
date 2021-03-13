@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.MutableLiveData
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.fragments.popups.PopupErrorDialogFragment
 import es.upsa.mimo.gamercollection.fragments.popups.PopupLoadingDialogFragment
@@ -32,7 +33,7 @@ open class BaseFragment : Fragment() {
         showPopupDialog(error.toString())
     }
 
-    fun showPopupDialog(message: String) {
+    fun showPopupDialog(message: String, goBack: MutableLiveData<Boolean>? = null) {
 
         val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
         val prev = activity?.supportFragmentManager?.findFragmentByTag(Constants.POPUP_DIALOG)
@@ -40,7 +41,7 @@ open class BaseFragment : Fragment() {
             ft.remove(prev)
         }
         ft.addToBackStack(null)
-        val dialogFragment = PopupErrorDialogFragment(message)
+        val dialogFragment = PopupErrorDialogFragment(message, goBack)
         dialogFragment.show(ft, Constants.POPUP_DIALOG)
     }
 
