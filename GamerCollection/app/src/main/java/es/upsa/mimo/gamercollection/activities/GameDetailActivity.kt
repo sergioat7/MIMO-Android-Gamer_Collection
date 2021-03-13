@@ -28,6 +28,8 @@ class GameDetailActivity : BaseActivity() {
 
     //MARK: - Private properties
 
+    private var gameId: Int? = null
+    private var isRawgGame: Boolean = false
     private lateinit var viewModel: GameDetailViewModel
     private var menu: Menu? = null
     private lateinit var pagerAdapter: GameDetailPagerAdapter
@@ -44,6 +46,10 @@ class GameDetailActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        val id = intent.getIntExtra(Constants.GAME_ID, 0)
+        gameId = if (id > 0) id else null
+        isRawgGame = intent.getBooleanExtra(Constants.IS_RAWG_GAME, false)
+
         initializeUI()
     }
 
@@ -52,13 +58,14 @@ class GameDetailActivity : BaseActivity() {
         this.menu = menu
         menu?.let{
 
-            val game = viewModel.game.value
             it.clear()
-            menuInflater.inflate(R.menu.game_toolbar_menu, menu)
-            it.findItem(R.id.action_edit).isVisible = game != null
-            it.findItem(R.id.action_remove).isVisible = game != null
-            it.findItem(R.id.action_save).isVisible = game == null
-            it.findItem(R.id.action_cancel).isVisible = false
+            val menuRes = if (isRawgGame) R.menu.rawg_game_toolbar_menu else R.menu.game_toolbar_menu
+            menuInflater.inflate(menuRes, menu)
+
+            menu.findItem(R.id.action_save).isVisible = isRawgGame
+            if (!isRawgGame) {
+                it.findItem(R.id.action_cancel).isVisible = false
+            }
         }
         return true
     }
@@ -67,31 +74,29 @@ class GameDetailActivity : BaseActivity() {
 
         when(item.itemId) {
             android.R.id.home -> {
-
                 NavUtils.navigateUpFromSameTask(this)
-                return true
             }
-            R.id.action_edit -> {
-
-                setEdition(true)
-                return true
-            }
+            R.id.action_edit -> setEdition(true)
             R.id.action_remove -> {
 
                 showPopupConfirmationDialog(resources.getString(R.string.game_detail_delete_confirmation)) {
                     viewModel.deleteGame()
                 }
-                return true
             }
             R.id.action_save -> {
 
-                saveGame()
-                return true
+                if (isRawgGame) {
+                    viewModel.createGame(getGameData())
+                } else {
+
+                    viewModel.setGame(getGameData())
+                    setEdition(false)
+                }
             }
             R.id.action_cancel -> {
 
+                showData(viewModel.game.value)
                 setEdition(false)
-                return true
             }
         }
         return super.onOptionsItemSelected(item)
@@ -101,9 +106,6 @@ class GameDetailActivity : BaseActivity() {
 
     private fun initializeUI() {
 
-        val id = intent.getIntExtra(Constants.GAME_ID, 0)
-        val gameId = if (id > 0) id else null
-        val isRawgGame = intent.getBooleanExtra(Constants.IS_RAWG_GAME, false)
         viewModel = ViewModelProvider(this, GameDetailViewModelFactory(
             application,
             gameId,
@@ -111,7 +113,9 @@ class GameDetailActivity : BaseActivity() {
         ).get(GameDetailViewModel::class.java)
         setupBindings()
 
-        image_view_game.setOnClickListener { setImage() }
+        image_view_game.setOnClickListener {
+            setImage()
+        }
         platformValues = ArrayList()
         platformValues.run {
             this.add(resources.getString((R.string.game_detail_select_platform)))
@@ -139,8 +143,6 @@ class GameDetailActivity : BaseActivity() {
             if (isLoading) {
                 showLoading()
             } else {
-
-                setEdition(false)
                 hideLoading()
             }
         })
@@ -157,72 +159,98 @@ class GameDetailActivity : BaseActivity() {
         })
 
         viewModel.game.observe(this, {
-            showData(it, it == null)
+
+            showData(it)
+            makeFieldsEditable(isRawgGame)
         })
     }
 
-    private fun showData(game: GameResponse?, enabled: Boolean) {
+    private fun showData(game: GameResponse?) {
+
+        imageUrl = game?.imageUrl
+
+        val image = imageUrl ?: Constants.NO_VALUE
+        val errorImage = if (Constants.isDarkMode(this)) R.drawable.ic_add_image_light else R.drawable.ic_add_image_dark
+        progress_bar_loading.visibility = View.VISIBLE
+        Picasso
+            .get()
+            .load(image)
+            .error(errorImage)
+            .into(image_view_game, object : Callback {
+
+                override fun onSuccess() {
+                    progress_bar_loading.visibility = View.GONE
+                }
+
+                override fun onError(e: Exception?) {
+                    progress_bar_loading.visibility = View.GONE
+                }
+            })
+        Picasso
+            .get()
+            .load(image)
+            .into(image_view_blurred, object : Callback {
+
+                override fun onSuccess() {
+                    image_view_blurred.setBlur(5)
+                }
+
+                override fun onError(e: Exception?) {
+                }
+            })
+
+        image_view_goty.visibility = if(game?.goty == true) View.VISIBLE else View.GONE
+
+        rating_button.text = (game?.score ?: 0).toString()
+
+        image_view_pegi.setImageDrawable(Constants.getPegiImage(game?.pegi, this))
+
+        val name = game?.name ?: Constants.EMPTY_VALUE
+        custom_edit_text_name.setText(
+            if (name.isNotBlank()) name
+            else Constants.NO_VALUE
+        )
+
+        var platformPosition = 0
+        game?.platform?.let { platformId ->
+
+            val platformName = viewModel.platforms.firstOrNull { it.id == platformId }?.name
+            val pos = platformValues.indexOf(platformName)
+            platformPosition = if(pos > 0) pos else 0
+        }
+        spinner_platforms.setSelection(platformPosition)
+
+        pagerAdapter.showData(game)
+    }
+
+    private fun setEdition(editable: Boolean) {
+
+        menu?.let {
+            it.findItem(R.id.action_edit).isVisible = !editable
+            it.findItem(R.id.action_remove).isVisible = !editable
+            it.findItem(R.id.action_save).isVisible = editable
+            it.findItem(R.id.action_cancel).isVisible = editable
+        }
+
+        makeFieldsEditable(editable)
+    }
+
+    private fun makeFieldsEditable(editable: Boolean) {
 
         val backgroundColor = ContextCompat.getColor(this, R.color.colorPrimary)
 
-        var name: String? = null
-        var platformPosition = 0
+        spinner_platforms.visibility =
+            if (editable || spinner_platforms.selectedItemPosition > 0) View.VISIBLE
+            else View.GONE
+        image_view_game.isEnabled = editable
+        custom_edit_text_name.setReadOnly(!editable, backgroundColor)
+        spinner_platforms.backgroundTintList =
+            if (!editable) ColorStateList.valueOf(Color.TRANSPARENT)
+            else ColorStateList.valueOf(backgroundColor)
+        spinner_platforms.isEnabled = editable
+        rating_button.isEnabled = editable
 
-        game?.let {
-
-            imageUrl = game.imageUrl
-            imageUrl?.let { url ->
-
-                val errorImage = if (Constants.isDarkMode(this)) R.drawable.ic_add_image_dark else R.drawable.ic_add_image_light
-                progress_bar_loading.visibility = View.VISIBLE
-                Picasso.get()
-                    .load(url)
-                    .error(errorImage)
-                    .into(image_view_game, object : Callback {
-                        override fun onSuccess() {
-                            progress_bar_loading.visibility = View.GONE
-                        }
-                        override fun onError(e: Exception?) {
-                            progress_bar_loading.visibility = View.GONE
-                        }
-                })
-                Picasso.get()
-                    .load(url)
-                    .into(image_view_blurred, object : Callback {
-                        override fun onSuccess() {
-                            image_view_blurred.setBlur(5)
-                        }
-                        override fun onError(e: Exception?) {}
-                    })
-            }
-
-            image_view_goty.visibility = if(game.goty) View.VISIBLE else View.GONE
-
-            val gameName = game.name
-            name = if (gameName != null && gameName.isNotBlank()) gameName else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
-
-            game.platform?.let { platformId ->
-                val platformName = viewModel.platforms.firstOrNull { it.id == platformId }?.name
-                val pos = platformValues.indexOf(platformName)
-                platformPosition = if(pos > 0) pos else 0
-            }
-
-            rating_button.text = game.score.toString()
-
-            image_view_pegi.setImageDrawable(Constants.getPegiImage(game.pegi, this))
-        } ?: run {
-            name = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
-        }
-
-        custom_edit_text_name.setText(name)
-        spinner_platforms.setSelection(platformPosition)
-        spinner_platforms.visibility = if (enabled || platformPosition > 0) View.VISIBLE else View.GONE
-
-        image_view_game.isEnabled = enabled
-        custom_edit_text_name.setReadOnly(!enabled, backgroundColor)
-        spinner_platforms.backgroundTintList = if (!enabled) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
-        spinner_platforms.isEnabled = enabled
-        rating_button.isEnabled = enabled
+        pagerAdapter.setEdition(editable)
     }
 
     private fun setImage() {
@@ -233,7 +261,7 @@ class GameDetailActivity : BaseActivity() {
         dialogView.button_accept.setOnClickListener {
 
             val url = dialogView.custom_edit_text_url.getText()
-            val errorImage = if (Constants.isDarkMode(this)) R.drawable.ic_add_image_dark else R.drawable.ic_add_image_light
+            val errorImage = if (Constants.isDarkMode(this)) R.drawable.ic_add_image_light else R.drawable.ic_add_image_dark
             if (url.isNotEmpty()) {
 
                 Picasso.get()
@@ -272,34 +300,45 @@ class GameDetailActivity : BaseActivity() {
         dialogBuilder.show()
     }
 
-    private fun saveGame() {
+    private fun getGameData(): GameResponse {
 
+        val id = gameId ?: 0
+        val name = custom_edit_text_name.getText()
         val platform = viewModel.platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
+        val score = rating_button.text.toString().toDouble()
 
-        viewModel.saveGame(
-            custom_edit_text_name.getText(),
-            platform,
-            rating_button.text.toString().toDouble(),
-            imageUrl,
-            pagerAdapter.getGameData()
-        )
-    }
+        return pagerAdapter.getGameData()?.let {
 
-    private fun setEdition(value: Boolean) {
+            it.name = name
+            it.platform = platform
+            it.imageUrl = imageUrl
+            it.score = score
+            it
+        } ?: run {
 
-        showEditButton(value)
-        showData(viewModel.game.value, value)
-        pagerAdapter.showData(viewModel.game.value, value)
-        pagerAdapter.enableEdition(value)
-    }
-
-    private fun showEditButton(hidden: Boolean) {
-
-        menu?.let {
-            it.findItem(R.id.action_edit).isVisible = !hidden
-            it.findItem(R.id.action_remove).isVisible = !hidden
-            it.findItem(R.id.action_save).isVisible = hidden
-            it.findItem(R.id.action_cancel).isVisible = hidden
+            GameResponse(
+                id,
+                name,
+                platform,
+                score,
+                null,
+                null,
+                null,
+                null,
+                null,
+                false,
+                null,
+                null,
+                null,
+                null,
+                null,
+                0.0,
+                imageUrl,
+                null,
+                null,
+                null,
+                null,
+                ArrayList())
         }
     }
 }

@@ -57,66 +57,26 @@ class GameDetailViewModel @Inject constructor(
         }
     }
 
-    fun saveGame(name: String,
-                 platform: String?,
-                 score: Double,
-                 imageUrl: String?,
-                 game: GameResponse?) {
+    fun createGame(game: GameResponse) {
 
-        if (name.isEmpty() && platform == null && score == 0.0 && imageUrl == null && game == null) return
+        gameRepository.createGame(game, {
 
-        val newGame = game?.let {
-            it.name = name
-            it.platform = platform
-            it.imageUrl = imageUrl
-            it.score = score
-            it
-        } ?: run {
-            GameResponse(
-                _game.value?.id ?: 0,
-                name,
-                platform,
-                score,
-                null,
-                null,
-                null,
-                null,
-                null,
-                false,
-                null,
-                null,
-                null,
-                null,
-                null,
-                0.0,
-                imageUrl,
-                null,
-                null,
-                null,
-                null,
-                ArrayList())
-        }
+            _gameDetailLoading.value = false
+            _gameDetailError.value = null
+        }, {
+            _gameDetailError.value = it
+        })
+    }
 
-        _gameDetailLoading.value = true
-        if (_game.value != null) {
+    fun setGame(game: GameResponse) {
 
-            gameRepository.setGame(newGame, {
+        gameRepository.setGame(game, {
 
-                _game.value = it
-                _gameDetailLoading.value = false
-            }, {
-                _gameDetailError.value = it
-            })
-        } else {
-
-            gameRepository.createGame(newGame, {
-
-                _gameDetailLoading.value = false
-                _gameDetailError.value = null
-            }, {
-                _gameDetailError.value = it
-            })
-        }
+            _game.value = it
+            _gameDetailLoading.value = false
+        }, {
+            _gameDetailError.value = it
+        })
     }
 
     fun deleteGame() {
