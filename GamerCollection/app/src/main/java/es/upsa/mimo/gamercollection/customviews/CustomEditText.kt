@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.utils.Constants
@@ -43,7 +44,7 @@ class CustomEditText: ConstraintLayout {
     // MARK: - Public methods
 
     fun getText(): String {
-        return edit_text.text.toString()
+        return edit_text.getValue()
     }
 
     fun setText(text: String?) {
@@ -51,6 +52,10 @@ class CustomEditText: ConstraintLayout {
     }
 
     fun setReadOnly(notEditable: Boolean, lineColor: Int) {
+
+        if (edit_text.text.toString() == Constants.NO_VALUE && !notEditable) {
+            edit_text.text = null
+        }
 
         val type =
             if (notEditable) {

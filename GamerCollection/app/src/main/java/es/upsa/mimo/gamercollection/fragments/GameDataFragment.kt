@@ -21,7 +21,8 @@ import kotlinx.android.synthetic.main.custom_edit_text.view.*
 import kotlinx.android.synthetic.main.fragment_game_data.*
 
 class GameDataFragment(
-    private var game: GameResponse? = null
+    private var game: GameResponse? = null,
+    private var enabled: Boolean
 ) : BaseFragment(), OnLocationSelected {
 
     //MARK: - Private properties
@@ -55,153 +56,148 @@ class GameDataFragment(
         custom_edit_text_purchase_location.setText(locationText)
     }
 
-    fun showData(game: GameResponse?, enabled: Boolean) {
+    fun showData(game: GameResponse?) {
+
+        var genrePosition = 0
+        game?.genre?.let { genreId ->
+            val genreName = viewModel.genres.firstOrNull { it.id == genreId }?.name
+            val pos = genreValues.indexOf(genreName)
+            genrePosition = if(pos > 0) pos else 0
+        }
+        spinner_genres.setSelection(genrePosition)
+
+        var formatPosition = 0
+        game?.format?.let { formatId ->
+            val formatName = viewModel.formats.firstOrNull { it.id == formatId }?.name
+            val pos = formatValues.indexOf(formatName)
+            formatPosition = if(pos > 0) pos else 0
+        }
+        spinner_formats.setSelection(formatPosition)
+
+        game?.state?.let {
+            button_pending.isSelected = it == Constants.PENDING_STATE
+            button_in_progress.isSelected = it == Constants.IN_PROGRESS_STATE
+            button_finished.isSelected = it == Constants.FINISHED_STATE
+        }
+
+        val releaseDate = Constants.dateToString(
+            game?.releaseDate,
+            Constants.getDateFormatToShow(viewModel.language),
+            viewModel.language
+        ) ?: Constants.EMPTY_VALUE
+        custom_edit_text_release_date.setText(
+            if (releaseDate.isNotBlank()) releaseDate
+            else Constants.NO_VALUE
+        )
+
+        var distributor = Constants.NO_VALUE
+        if (game?.distributor != null && game.distributor.isNotBlank()) {
+            distributor = game.distributor
+        }
+        custom_edit_text_distributor.setText(distributor)
+
+        var developer = Constants.NO_VALUE
+        if (game?.developer != null && game.developer.isNotBlank()) {
+            developer = game.developer
+        }
+        custom_edit_text_developer.setText(developer)
+
+        game?.pegi?.let { pegi ->
+            val pos = resources.getStringArray(R.array.pegis).indexOf(pegi)
+            spinner_pegis.setSelection(pos + 1)
+        }
+
+        var players = Constants.NO_VALUE
+        if (game?.players != null && game.players.isNotBlank()) {
+            players = game.players
+        }
+        custom_edit_text_players.setText(players)
+
+        val price = game?.price ?: 0
+        custom_edit_text_price.setText(price.toString())
+
+        val purchaseDate = Constants.dateToString(
+            game?.purchaseDate,
+            Constants.getDateFormatToShow(viewModel.language),
+            viewModel.language
+        ) ?: Constants.EMPTY_VALUE
+        custom_edit_text_purchase_date.setText(
+            if (purchaseDate.isNotBlank()) purchaseDate
+            else Constants.NO_VALUE
+        )
+
+        val purchaseLocation = game?.purchaseLocation ?: Constants.EMPTY_VALUE
+        custom_edit_text_purchase_location.setText(
+            if (purchaseLocation.isNotBlank()) purchaseLocation
+            else Constants.NO_VALUE
+        )
+
+        val goty = game?.goty == true
+        radio_button_yes.isChecked = goty
+        radio_button_no.isChecked = !goty
+
+        val loaned = game?.loanedTo ?: Constants.EMPTY_VALUE
+        custom_edit_text_loaned.setText(
+            if (loaned.isNotBlank()) loaned
+            else Constants.NO_VALUE
+        )
+
+        val videoUrl = game?.videoUrl ?: Constants.EMPTY_VALUE
+        custom_edit_text_video_url.setText(
+            if (videoUrl.isNotBlank()) videoUrl
+            else Constants.NO_VALUE
+        )
+
+        val observations = game?.observations ?: Constants.EMPTY_VALUE
+        custom_edit_text_observations.setText(
+            if (observations.isNotBlank()) observations
+            else Constants.NO_VALUE
+        )
+
+        custom_edit_text_saga.setText(game?.saga?.name)
+    }
+
+    fun setEdition(editable: Boolean) {
+
+        enabled = editable
 
         val backgroundColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
 
-        var genrePosition = 0
-        var releaseDate: String? = null
-        var formatPosition = 0
-        var distributor: String? = null
-        var developer: String? = null
-        var players: String? = null
-        var purchaseDate: String? = null
-        var purchaseLocation: String? = null
-        var loaned: String? = null
-        var videoUrl: String? = null
-        var observations: String? = null
+        linear_layout_formats.visibility =
+            if (editable || spinner_formats.selectedItemPosition > 0) View.VISIBLE
+            else View.GONE
 
-        this.game = game
-        game?.let {
+        linear_layout_genres.visibility =
+            if (editable || spinner_genres.selectedItemPosition > 0) View.VISIBLE
+            else View.GONE
 
-            game.genre?.let { genreId ->
-                val genreName = viewModel.genres.firstOrNull { it.id == genreId }?.name
-                val pos = genreValues.indexOf(genreName)
-                genrePosition = if(pos > 0) pos else 0
-            }
+        button_pending.isEnabled = editable
+        button_in_progress.isEnabled = editable
+        button_finished.isEnabled = editable
 
-            releaseDate = Constants.dateToString(
-                game.releaseDate,
-                Constants.getDateFormatToShow(viewModel.language),
-                viewModel.language
-            ) ?: if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
+        custom_edit_text_release_date.setReadOnly(!editable, backgroundColor)
+        spinner_formats.backgroundTintList =
+            if (!editable) ColorStateList.valueOf(Color.TRANSPARENT)
+            else ColorStateList.valueOf(backgroundColor)
+        spinner_formats.isEnabled = editable
+        spinner_genres.backgroundTintList =
+            if (!editable) ColorStateList.valueOf(Color.TRANSPARENT)
+            else ColorStateList.valueOf(backgroundColor)
+        spinner_genres.isEnabled = editable
 
-            game.format?.let { formatId ->
-                val formatName = viewModel.formats.firstOrNull { it.id == formatId }?.name
-                val pos = formatValues.indexOf(formatName)
-                formatPosition = if(pos > 0) pos else 0
-            }
+        linear_layout_hidden.visibility =
+            if(editable) View.VISIBLE
+            else View.GONE
 
-            game.state?.let {
-                button_pending.isSelected = it == Constants.PENDING_STATE
-                button_in_progress.isSelected = it == Constants.IN_PROGRESS_STATE
-                button_finished.isSelected = it == Constants.FINISHED_STATE
-            }
-
-            distributor = if (game.distributor != null && game.distributor.isNotEmpty()) game.distributor else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
-
-            developer = if (game.developer != null && game.developer.isNotEmpty()) game.developer else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
-
-            game.pegi?.let { pegi ->
-                val pos = resources.getStringArray(R.array.pegis).indexOf(pegi)
-                spinner_pegis.setSelection(pos + 1)
-            }
-
-            players = if (game.players != null && game.players.isNotEmpty()) game.players else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
-
-            custom_edit_text_price.setText(game.price.toString())
-
-            purchaseDate = Constants.dateToString(
-                game.purchaseDate,
-                Constants.getDateFormatToShow(viewModel.language),
-                viewModel.language
-            ) ?: if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
-
-            purchaseLocation = if (game.purchaseLocation != null && game.purchaseLocation.isNotEmpty()) game.purchaseLocation else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
-
-            radio_button_yes.isChecked = game.goty
-            radio_button_no.isChecked = !game.goty
-
-            loaned = if (game.loanedTo != null && game.loanedTo.isNotEmpty()) game.loanedTo else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
-
-            videoUrl = if (game.videoUrl != null && game.videoUrl.isNotEmpty()) game.videoUrl else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
-
-            observations = if (game.observations != null && game.observations.isNotEmpty()) game.observations else if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
-
-            custom_edit_text_saga.setText(game.saga?.name)
-        } ?: run {
-
-            releaseDate = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
-            distributor = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
-            developer = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
-            players = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
-            purchaseDate = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
-            purchaseLocation = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
-            loaned = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
-            videoUrl = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
-            observations = if (enabled) Constants.EMPTY_VALUE else Constants.NO_VALUE
-        }
-
-        spinner_genres.setSelection(genrePosition)
-        linear_layout_genres.visibility = if (enabled || genrePosition > 0) View.VISIBLE else View.GONE
-        custom_edit_text_release_date.setText(releaseDate)
-        spinner_formats.setSelection(formatPosition)
-        linear_layout_formats.visibility = if (enabled || formatPosition > 0) View.VISIBLE else View.GONE
-        custom_edit_text_distributor.setText(distributor)
-        custom_edit_text_developer.setText(developer)
-        custom_edit_text_players.setText(players)
-        custom_edit_text_purchase_date.setText(purchaseDate)
-        custom_edit_text_purchase_location.setText(purchaseLocation)
-        custom_edit_text_loaned.setText(loaned)
-        custom_edit_text_video_url.setText(videoUrl)
-        custom_edit_text_observations.setText(observations)
-
-        button_pending.isEnabled = enabled
-        button_in_progress.isEnabled = enabled
-        button_finished.isEnabled = enabled
-
-        custom_edit_text_release_date.setReadOnly(!enabled, backgroundColor)
-        spinner_formats.backgroundTintList = if (!enabled) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
-        spinner_formats.isEnabled = enabled
-        spinner_genres.backgroundTintList = if (!enabled) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
-        spinner_genres.isEnabled = enabled
-
-        linear_layout_hidden.visibility = if(enabled) View.VISIBLE else View.GONE
-
-        custom_edit_text_distributor.setReadOnly(!enabled, backgroundColor)
-        custom_edit_text_developer.setReadOnly(!enabled, backgroundColor)
-        custom_edit_text_players.setReadOnly(!enabled, backgroundColor)
-        custom_edit_text_price.setReadOnly(!enabled, backgroundColor)
-        custom_edit_text_purchase_date.setReadOnly(!enabled, backgroundColor)
-        custom_edit_text_purchase_location.setReadOnly(!enabled, backgroundColor)
-        custom_edit_text_loaned.setReadOnly(!enabled, backgroundColor)
-        custom_edit_text_video_url.setReadOnly(!enabled, backgroundColor)
-        custom_edit_text_observations.setReadOnly(!enabled, backgroundColor)
-
-        custom_edit_text_distributor.edit_text.setOnEditorActionListener { _, _, _ ->
-            custom_edit_text_developer.requestFocus()
-            true
-        }
-        custom_edit_text_developer.edit_text.setOnEditorActionListener { _, _, _ ->
-            custom_edit_text_players.requestFocus()
-            true
-        }
-        custom_edit_text_players.edit_text.setOnEditorActionListener { _, _, _ ->
-            custom_edit_text_price.requestFocus()
-            true
-        }
-        custom_edit_text_price.edit_text.setOnEditorActionListener { _, _, _ ->
-            custom_edit_text_loaned.requestFocus()
-            true
-        }
-        custom_edit_text_loaned.edit_text.setOnEditorActionListener { _, _, _ ->
-            custom_edit_text_video_url.requestFocus()
-            true
-        }
-        custom_edit_text_video_url.edit_text.setOnEditorActionListener { _, _, _ ->
-            custom_edit_text_observations.requestFocus()
-            true
-        }
+        custom_edit_text_distributor.setReadOnly(!editable, backgroundColor)
+        custom_edit_text_developer.setReadOnly(!editable, backgroundColor)
+        custom_edit_text_players.setReadOnly(!editable, backgroundColor)
+        custom_edit_text_price.setReadOnly(!editable, backgroundColor)
+        custom_edit_text_purchase_date.setReadOnly(!editable, backgroundColor)
+        custom_edit_text_purchase_location.setReadOnly(!editable, backgroundColor)
+        custom_edit_text_loaned.setReadOnly(!editable, backgroundColor)
+        custom_edit_text_video_url.setReadOnly(!editable, backgroundColor)
+        custom_edit_text_observations.setReadOnly(!editable, backgroundColor)
     }
 
     fun getGameData(): GameResponse? {
@@ -272,7 +268,10 @@ class GameDataFragment(
         }
         spinner_genres.adapter = Constants.getAdapter(requireContext(), genreValues)
 
-        spinner_pegis.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+        spinner_pegis.backgroundTintList = ColorStateList.valueOf(
+            ContextCompat.getColor(requireContext(),
+                R.color.colorPrimary)
+        )
         val pegis = ArrayList<String>()
         pegis.run {
             this.add(resources.getString(R.string.game_detail_select_pegi))
@@ -280,10 +279,38 @@ class GameDataFragment(
         }
         spinner_pegis.adapter = Constants.getAdapter(requireContext(), pegis)
 
-        custom_edit_text_purchase_location.setOnClickListener { showMap() }
+        custom_edit_text_purchase_location.setOnClickListener {
+            showMap()
+        }
         custom_edit_text_saga.setReadOnly(true, 0)
 
-        showData(game, game == null)
+        custom_edit_text_distributor.edit_text.setOnEditorActionListener { _, _, _ ->
+            custom_edit_text_developer.requestFocus()
+            true
+        }
+        custom_edit_text_developer.edit_text.setOnEditorActionListener { _, _, _ ->
+            custom_edit_text_players.requestFocus()
+            true
+        }
+        custom_edit_text_players.edit_text.setOnEditorActionListener { _, _, _ ->
+            custom_edit_text_price.requestFocus()
+            true
+        }
+        custom_edit_text_price.edit_text.setOnEditorActionListener { _, _, _ ->
+            custom_edit_text_loaned.requestFocus()
+            true
+        }
+        custom_edit_text_loaned.edit_text.setOnEditorActionListener { _, _, _ ->
+            custom_edit_text_video_url.requestFocus()
+            true
+        }
+        custom_edit_text_video_url.edit_text.setOnEditorActionListener { _, _, _ ->
+            custom_edit_text_observations.requestFocus()
+            true
+        }
+
+        showData(game)
+        setEdition(enabled)
     }
 
     private fun setupBindings() {

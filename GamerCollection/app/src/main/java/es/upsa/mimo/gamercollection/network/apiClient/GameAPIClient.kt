@@ -1,8 +1,11 @@
 package es.upsa.mimo.gamercollection.network.apiClient
 
+import es.upsa.mimo.gamercollection.models.rawg.RawgGameListResponse
+import es.upsa.mimo.gamercollection.models.rawg.RawgGameResponse
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.network.apiService.GameAPIService
+import es.upsa.mimo.gamercollection.network.apiService.RawgGameApiService
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
@@ -14,6 +17,7 @@ class GameAPIClient @Inject constructor(
     // MARK: - Private properties
 
     private val api = APIClient.retrofit.create(GameAPIService::class.java)
+    private val apiRawg = APIClient.retrofitRawg.create(RawgGameApiService::class.java)
 
     // MARK: - Public methods
 
@@ -49,7 +53,11 @@ class GameAPIClient @Inject constructor(
         }, failure)
     }
 
-    fun setGame(game: GameResponse, success: (GameResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
+    fun setGame(
+        game: GameResponse,
+        success: (GameResponse) -> Unit,
+        failure: (ErrorResponse) -> Unit
+    ) {
 
         val headers: MutableMap<String, String> = HashMap()
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
@@ -69,5 +77,28 @@ class GameAPIClient @Inject constructor(
         APIClient.sendServer(request, {
             success()
         }, failure)
+    }
+
+    fun getRawgGames(page: Int, query: String?, success: (RawgGameListResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        val params: MutableMap<String, String> = java.util.HashMap()
+        params[Constants.KEY_PARAM] = Constants.KEY_VALUE
+        params[Constants.PAGE_PARAM] = page.toString()
+        params[Constants.PAGE_SIZE_PARAM] = Constants.PAGE_SIZE.toString()
+        query?.let {
+            params[Constants.SEARCH_PARAM] = it
+        }
+        val request = apiRawg.getGames(params)
+
+        APIClient.sendServer(request, success, failure)
+    }
+
+    fun getRawgGame(gameId: Int, success: (RawgGameResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
+
+        val params: MutableMap<String, String> = java.util.HashMap()
+        params[Constants.KEY_PARAM] = Constants.KEY_VALUE
+        val request = apiRawg.getGame(gameId, params)
+
+        APIClient.sendServer(request, success, failure)
     }
 }

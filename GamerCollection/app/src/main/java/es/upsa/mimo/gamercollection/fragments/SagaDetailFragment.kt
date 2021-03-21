@@ -10,6 +10,7 @@ import android.view.*
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import es.upsa.mimo.gamercollection.R
@@ -33,6 +34,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
     private var menu: Menu? = null
     private var sagaGames: List<GameResponse> = arrayListOf()
     private var newGames: ArrayList<GameResponse> = arrayListOf()
+    private val goBack = MutableLiveData<Boolean>()
 
     // MARK: - Lifecycle methods
 
@@ -108,7 +110,11 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
         }
     }
 
-    override fun onSubItemClick(id: Int) {}
+    override fun onSubItemClick(id: Int) {
+    }
+
+    override fun onLoadMoreItemsClick() {
+    }
 
     //MARK: - Private methods
 
@@ -135,15 +141,16 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
             }
         })
 
+        viewModel.sagaDetailSuccessMessage.observe(viewLifecycleOwner, {
+
+            val message = resources.getString(it)
+            showPopupDialog(message, goBack)
+        })
+
         viewModel.sagaDetailError.observe(viewLifecycleOwner, { error ->
 
-            if (error == null) {
-                activity?.finish()
-            } else {
-
-                hideLoading()
-                manageError(error)
-            }
+            hideLoading()
+            manageError(error)
         })
 
         viewModel.saga.observe(viewLifecycleOwner, { saga ->
@@ -154,6 +161,10 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
 
             showData(saga)
             enableEdition(saga == null)
+        })
+
+        goBack.observe(viewLifecycleOwner, {
+            activity?.finish()
         })
     }
 

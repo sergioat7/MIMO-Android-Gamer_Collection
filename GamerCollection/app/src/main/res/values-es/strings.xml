@@ -35,10 +35,15 @@
     <string name="games_filter_button_title_in_progress">En Progreso</string>
     <string name="games_filter_button_title_finished">Terminados</string>
     <plurals name="games_number_title">
-        <item quantity="one">%d juego</item>
-        <item quantity="other">%d juegos</item>
+        <item quantity="one">%s juego</item>
+        <item quantity="other">%s juegos</item>
     </plurals>
     <string name="new_game">Nuevo</string>
+
+    // Game search
+    <string name="game_search">Búsqueda</string>
+    <string name="load_more">Cargar más</string>
+    <string name="search_games">Buscar juegos</string>
 
     // Game detail
     <string name="game_detail_placeholder_name">Añade un nombre</string>
@@ -78,6 +83,8 @@
     <string name="game_detail_songs_title">Canciones</string>
     <string name="game_detail_delete_confirmation">¿Estás seguro de que quieres borrar este juego? Esta acción no se puede deshacer</string>
     <string name="turn_on_location">Activa la localización</string>
+    <string name="game_created">¡Juego añadido!</string>
+    <string name="game_removed">¡Juego eliminado!</string>
 
     // Sagas
     <string name="sagas">Mis Sagas</string>
@@ -91,6 +98,8 @@
     <string name="saga_detail_placeholder_name">Añade un nombre</string>
     <string name="saga_detail_games_title">Juegos</string>
     <string name="saga_detail_delete_confirmation">¿Estás seguro de que quieres borrar esta saga? Esta acción no se puede deshacer</string>
+    <string name="saga_created">¡Saga creada!</string>
+    <string name="saga_removed">¡Saga eliminada!</string>
 
     // Profile
     <string name="profile">Mi Perfil</string>
