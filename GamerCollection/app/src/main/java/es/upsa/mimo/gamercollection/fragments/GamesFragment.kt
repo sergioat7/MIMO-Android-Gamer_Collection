@@ -103,11 +103,15 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
 
     override fun onItemClick(id: Int) {
         
-        val params = mapOf(Constants.GAME_ID to id)
+        val params = mapOf(Constants.GAME_ID to id, Constants.IS_RAWG_GAME to false)
         launchActivityWithExtras(GameDetailActivity::class.java, params)
     }
 
-    override fun onSubItemClick(id: Int) {}
+    override fun onSubItemClick(id: Int) {
+    }
+
+    override fun onLoadMoreItemsClick() {
+    }
 
     override fun filter(filters: FilterModel?) {
 
@@ -139,7 +143,7 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
         }
 
         swipe_refresh_layout.isEnabled = viewModel.swipeRefresh
-        swipe_refresh_layout.setColorSchemeResources(R.color.colorFinished)
+        swipe_refresh_layout.setColorSchemeResources(R.color.colorPrimary)
         swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
         swipe_refresh_layout.setOnRefreshListener {
             viewModel.loadGames()
@@ -328,7 +332,11 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
 
     private fun setTitle(gamesCount: Int) {
 
-        val title = resources.getQuantityString(R.plurals.games_number_title, gamesCount, gamesCount)
+        val title = resources.getQuantityString(
+            R.plurals.games_number_title,
+            gamesCount,
+            Constants.getFormattedNumber(gamesCount)
+        )
         (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
 

@@ -43,6 +43,14 @@ class APIClient {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
 
+        val retrofitRawg: Retrofit =
+            Retrofit
+                .Builder()
+                .baseUrl(Constants.BASE_ENDPOINT_RAWG)
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build()
+
         inline fun <reified T, reified U> sendServer(request: Call<T>, crossinline success: (T) -> Unit, crossinline failure: (U) -> Unit) {
 
             request.enqueue(object : Callback<T> {

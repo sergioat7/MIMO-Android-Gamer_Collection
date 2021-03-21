@@ -1,18 +1,21 @@
 package es.upsa.mimo.gamercollection.utils
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.SpinnerAdapter
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,6 +30,7 @@ class Constants {
         const val EMPTY_VALUE = ""
         const val POINT_UP = 0f
         const val POINT_DOWN = -180f
+        const val NEXT_VALUE_SEPARATOR = ", "
 
         fun getAdapter(context: Context, data: List<String>, firstOptionEnabled: Boolean = false): SpinnerAdapter {
 
@@ -39,6 +43,15 @@ class Constants {
 
             val mode = context?.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)
             return mode == Configuration.UI_MODE_NIGHT_YES
+        }
+
+        fun hideSoftKeyboard(activity: Activity) {
+
+            activity.currentFocus?.let { currentFocus ->
+
+                val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
+            } ?: return
         }
 
         // MARK: - Database constants
@@ -62,9 +75,16 @@ class Constants {
         // MARK: - Retrofit constants
 
         const val BASE_ENDPOINT = "https://videogames-collection-services.herokuapp.com/"
+        const val BASE_ENDPOINT_RAWG = "https://api.rawg.io/api/"
         const val ACCEPT_LANGUAGE_HEADER = "Accept-Language"
         const val AUTHORIZATION_HEADER = "Authorization"
         const val OTHER_VALUE = "OTHER"
+        const val KEY_PARAM = "key"
+        const val KEY_VALUE = "747a7639039d4134a4370852b0f6b282"
+        const val PAGE_PARAM = "page"
+        const val PAGE_SIZE_PARAM = "page_size"
+        const val PAGE_SIZE = 20
+        const val SEARCH_PARAM = "search"
 
         // MARK: - State constants
 
@@ -109,7 +129,7 @@ class Constants {
                     SimpleDateFormat(dateFormat, locale).format(it)
                 } catch (e: Exception) {
 
-                    Log.e("Constants", e.message ?: Constants.EMPTY_VALUE)
+                    Log.e("Constants", e.message ?: EMPTY_VALUE)
                     null
                 }
             } ?: run {
@@ -136,13 +156,21 @@ class Constants {
                     SimpleDateFormat(dateFormat, locale).parse(it)
                 } catch (e: Exception) {
 
-                    Log.e("Constants", e.message ?: Constants.EMPTY_VALUE)
+                    Log.e("Constants", e.message ?: EMPTY_VALUE)
                     null
                 }
             } ?: run {
                 Log.e("Constants", "dateString null")
                 return null
             }
+        }
+
+        // MARK: Number format
+
+        fun getFormattedNumber(number: Int): String {
+
+            val formatter = DecimalFormat("#,###")
+            return formatter.format(number)
         }
 
         // MARK: Notifications
@@ -153,14 +181,13 @@ class Constants {
         // MARK: Game
 
         const val GAME_ID = "gameId"
+        const val IS_RAWG_GAME = "isRawgGame"
         const val NO_VALUE = "-"
 
         fun getPegiImage(pegi: String?, context: Context): Drawable? {
 
             return when(pegi) {
                 "+3" -> ContextCompat.getDrawable(context, R.drawable.pegi3)
-                "+4" -> ContextCompat.getDrawable(context, R.drawable.pegi4)
-                "+6" -> ContextCompat.getDrawable(context, R.drawable.pegi6)
                 "+7" -> ContextCompat.getDrawable(context, R.drawable.pegi7)
                 "+12" -> ContextCompat.getDrawable(context, R.drawable.pegi12)
                 "+16" -> ContextCompat.getDrawable(context, R.drawable.pegi16)

@@ -5,10 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.MutableLiveData
 import es.upsa.mimo.gamercollection.R
 import kotlinx.android.synthetic.main.fragment_popup_error_dialog.*
 
-class PopupErrorDialogFragment(private val message: String) : DialogFragment() {
+class PopupErrorDialogFragment(
+    private val message: String,
+    private val goBack: MutableLiveData<Boolean>? = null
+) : DialogFragment() {
 
     // MARK: - Lifecycle methods
 
@@ -28,6 +32,12 @@ class PopupErrorDialogFragment(private val message: String) : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         error_text_view.text = message
-        button_accept.setOnClickListener { dismiss() }
+        button_accept.setOnClickListener {
+
+            dismiss()
+            goBack?.let {
+                it.value = true
+            }
+        }
     }
 }

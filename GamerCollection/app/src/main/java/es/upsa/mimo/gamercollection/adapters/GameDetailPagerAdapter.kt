@@ -28,7 +28,7 @@ class GameDetailPagerAdapter(
     override fun createFragment(position: Int): Fragment {
 
         val fragment = if (position == 0) {
-            gameDataFragment = GameDataFragment(currentGame)
+            gameDataFragment = GameDataFragment(currentGame, enabled)
             gameDataFragment
         } else {
             gameSongsFragment = GameSongsFragment(currentGame, enabled)
@@ -39,14 +39,15 @@ class GameDetailPagerAdapter(
 
     // MARK: Public methods
 
-    fun enableEdition(enable: Boolean) {
-
-        this.enabled = enable
-        gameSongsFragment?.enableEdition(enable)
+    fun showData(game: GameResponse?) {
+        gameDataFragment?.showData(game)
     }
 
-    fun showData(game: GameResponse?, enabled: Boolean) {
-        gameDataFragment?.showData(game, enabled)
+    fun setEdition(editable: Boolean) {
+
+        enabled = editable
+        gameDataFragment?.setEdition(editable)
+        gameSongsFragment?.setEdition(editable)
     }
 
     fun getGameData(): GameResponse? {
