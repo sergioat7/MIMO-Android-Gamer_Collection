@@ -111,5 +111,5 @@
     <style name="LoadMoreButton.Image">
         <item name="android:drawableStart">@drawable/ic_add_circle_light</item>
     </style>
-    
+
 </resources>
