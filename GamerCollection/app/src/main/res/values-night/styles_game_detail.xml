@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.GamerCollection.NoActionBar.GameDetail" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:minHeight">?attr/actionBarSize</item>
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_light</item>
-    </style>
-
     <style name="AddImage">
         <item name="android:layout_marginStart">@dimen/margin_medium</item>
         <item name="android:adjustViewBounds">true</item>
