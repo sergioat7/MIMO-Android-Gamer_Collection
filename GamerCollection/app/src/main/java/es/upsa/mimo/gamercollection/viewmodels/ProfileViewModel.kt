@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.viewmodels
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -50,12 +51,13 @@ class ProfileViewModel @Inject constructor(
         resetDatabase()
     }
 
-    fun save (newPassword: String, newLanguage: String, newSortParam: String, newSwipeRefresh: Boolean) {
+    fun save (newPassword: String, newLanguage: String, newSortParam: String, newSwipeRefresh: Boolean, themeMode: Int) {
 
         val changePassword = newPassword != sharedPreferencesHandler.getUserData().password
         val changeLanguage = newLanguage != sharedPreferencesHandler.getLanguage()
         val changeSortParam = newSortParam != sharedPreferencesHandler.getSortingKey()
         val changeSwipeRefresh = newSwipeRefresh != sharedPreferencesHandler.getSwipeRefresh()
+        val changeThemeMode = themeMode != sharedPreferencesHandler.getThemeMode()
 
         if (changePassword) {
             _profileLoading.value = true
@@ -92,6 +94,16 @@ class ProfileViewModel @Inject constructor(
             sharedPreferencesHandler.setLanguage(newLanguage)
             if (!changePassword) {
                 reloadData()
+            }
+        }
+
+        if (changeThemeMode) {
+
+            sharedPreferencesHandler.setThemeMode(themeMode)
+            when (themeMode) {
+                1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }
         }
     }

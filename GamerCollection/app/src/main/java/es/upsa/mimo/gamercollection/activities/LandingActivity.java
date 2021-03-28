@@ -39,6 +39,7 @@ public class LandingActivity extends BaseActivity {
         createNotificationChannel();
 
         viewModel.checkVersion();
+        viewModel.checkTheme();
     }
 
     private void setupBindings() {
