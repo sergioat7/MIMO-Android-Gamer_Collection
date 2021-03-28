@@ -10,14 +10,16 @@ import es.upsa.mimo.gamercollection.models.base.BaseModel
 import es.upsa.mimo.gamercollection.models.responses.*
 import es.upsa.mimo.gamercollection.utils.Constants
 
-@Database(entities = [
-    FormatResponse::class,
-    GameResponse::class,
-    GenreResponse::class,
-    PlatformResponse::class,
-    SagaResponse::class,
-    SongResponse::class,
-    StateResponse::class], version = 1)
+@Database(
+    entities = [
+        FormatResponse::class,
+        GameResponse::class,
+        GenreResponse::class,
+        PlatformResponse::class,
+        SagaResponse::class,
+        SongResponse::class,
+        StateResponse::class], version = 1
+)
 @TypeConverters(ListConverter::class, DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -47,7 +49,10 @@ abstract class AppDatabase : RoomDatabase() {
             return instance!!
         }
 
-        fun <T> getDisabledContent(currentValues: List<BaseModel<T>>, newValues: List<BaseModel<T>>): List<BaseModel<T>> {
+        fun <T> getDisabledContent(
+            currentValues: List<BaseModel<T>>,
+            newValues: List<BaseModel<T>>
+        ): List<BaseModel<T>> {
 
             val disabledContent = arrayListOf<BaseModel<T>>()
             for (currentValue in currentValues) {

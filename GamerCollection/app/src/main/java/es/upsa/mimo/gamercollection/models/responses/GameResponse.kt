@@ -1,6 +1,8 @@
 package es.upsa.mimo.gamercollection.models.responses
 
-import androidx.room.*
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import es.upsa.mimo.gamercollection.models.base.BaseModel
 import java.util.*
@@ -53,4 +55,4 @@ data class GameResponse(
     var saga: SagaResponse?,
     @SerializedName("songs")
     var songs: List<SongResponse>
-): BaseModel<Int>
+) : BaseModel<Int>

@@ -36,6 +36,7 @@ data class GameWithSaga(
             game.loanedTo,
             game.observations,
             saga,
-            game.songs)
+            game.songs
+        )
     }
 }

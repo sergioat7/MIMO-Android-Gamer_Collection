@@ -60,7 +60,7 @@ class GameSongsFragment(
 
         enabled = editable
         songsAdapter.setEditable(editable)
-        button_add_song?.visibility = if(editable) View.VISIBLE else View.GONE
+        button_add_song?.visibility = if (editable) View.VISIBLE else View.GONE
     }
 
     fun getSongs(): List<SongResponse> {
@@ -72,7 +72,9 @@ class GameSongsFragment(
     private fun initializeUI() {
 
         val application = activity?.application
-        viewModel = ViewModelProvider(this, GameSongsViewModelFactory(application, game)).get(GameSongsViewModel::class.java)
+        viewModel = ViewModelProvider(this, GameSongsViewModelFactory(application, game)).get(
+            GameSongsViewModel::class.java
+        )
         setupBindings()
 
         recycler_view_songs.layoutManager = LinearLayoutManager(requireContext())
@@ -80,11 +82,12 @@ class GameSongsFragment(
             ArrayList(),
             enabled,
             requireContext(),
-            this)
+            this
+        )
         recycler_view_songs.adapter = songsAdapter
 
         button_add_song.setOnClickListener { showNewSongPopup() }
-        button_add_song?.visibility = if(enabled) View.VISIBLE else View.GONE
+        button_add_song?.visibility = if (enabled) View.VISIBLE else View.GONE
     }
 
     private fun setupBindings() {

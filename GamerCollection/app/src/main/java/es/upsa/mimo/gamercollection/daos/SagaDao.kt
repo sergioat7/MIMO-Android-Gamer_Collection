@@ -1,8 +1,8 @@
 package es.upsa.mimo.gamercollection.daos
 
 import androidx.room.*
-import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.models.SagaWithGames
+import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 
 @Dao
 interface SagaDao {

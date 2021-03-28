@@ -41,7 +41,10 @@ class RegisterFragment : BaseFragment() {
     private fun initializeUI() {
 
         val application = activity?.application
-        viewModel = ViewModelProvider(this, RegisterViewModelFactory(application)).get(RegisterViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            RegisterViewModelFactory(application)
+        ).get(RegisterViewModel::class.java)
         setupBindings()
 
         edit_text_user.afterTextChanged {
@@ -63,7 +66,11 @@ class RegisterFragment : BaseFragment() {
         }
 
         image_button_password.setOnClickListener {
-            Constants.showOrHidePassword(edit_text_password, image_button_password, Constants.isDarkMode(context))
+            Constants.showOrHidePassword(
+                edit_text_password,
+                image_button_password,
+                Constants.isDarkMode(context)
+            )
         }
 
         edit_text_repeatPassword.afterTextChanged {
@@ -74,10 +81,14 @@ class RegisterFragment : BaseFragment() {
         }
 
         image_button_confirm_password.setOnClickListener {
-            Constants.showOrHidePassword(edit_text_password, image_button_password, Constants.isDarkMode(context))
+            Constants.showOrHidePassword(
+                edit_text_password,
+                image_button_password,
+                Constants.isDarkMode(context)
+            )
         }
 
-        register_button.setOnClickListener {register()}
+        register_button.setOnClickListener { register() }
     }
 
     private fun setupBindings() {

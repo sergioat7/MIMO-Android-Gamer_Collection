@@ -62,7 +62,7 @@ class GameDataFragment(
         game?.genre?.let { genreId ->
             val genreName = viewModel.genres.firstOrNull { it.id == genreId }?.name
             val pos = genreValues.indexOf(genreName)
-            genrePosition = if(pos > 0) pos else 0
+            genrePosition = if (pos > 0) pos else 0
         }
         spinner_genres.setSelection(genrePosition)
 
@@ -70,7 +70,7 @@ class GameDataFragment(
         game?.format?.let { formatId ->
             val formatName = viewModel.formats.firstOrNull { it.id == formatId }?.name
             val pos = formatValues.indexOf(formatName)
-            formatPosition = if(pos > 0) pos else 0
+            formatPosition = if (pos > 0) pos else 0
         }
         spinner_formats.setSelection(formatPosition)
 
@@ -186,7 +186,7 @@ class GameDataFragment(
         spinner_genres.isEnabled = editable
 
         linear_layout_hidden.visibility =
-            if(editable) View.VISIBLE
+            if (editable) View.VISIBLE
             else View.GONE
 
         custom_edit_text_distributor.setReadOnly(!editable, backgroundColor)
@@ -202,21 +202,29 @@ class GameDataFragment(
 
     fun getGameData(): GameResponse? {
 
-        val pegi = resources.getStringArray(R.array.pegis).firstOrNull { it == spinner_pegis.selectedItem.toString() }
+        val pegi = resources.getStringArray(R.array.pegis)
+            .firstOrNull { it == spinner_pegis.selectedItem.toString() }
         val releaseDate = Constants.stringToDate(
             custom_edit_text_release_date.getText(),
             Constants.getDateFormatToShow(viewModel.language),
             viewModel.language
         )
-        val format = viewModel.formats.firstOrNull { it.name == spinner_formats.selectedItem.toString() }?.id
-        val genre = viewModel.genres.firstOrNull { it.name == spinner_genres.selectedItem.toString() }?.id
-        val state = if(button_pending.isSelected) Constants.PENDING_STATE else if (button_in_progress.isSelected) Constants.IN_PROGRESS_STATE else if (button_finished.isSelected) Constants.FINISHED_STATE else null
+        val format =
+            viewModel.formats.firstOrNull { it.name == spinner_formats.selectedItem.toString() }?.id
+        val genre =
+            viewModel.genres.firstOrNull { it.name == spinner_genres.selectedItem.toString() }?.id
+        val state =
+            if (button_pending.isSelected) Constants.PENDING_STATE else if (button_in_progress.isSelected) Constants.IN_PROGRESS_STATE else if (button_finished.isSelected) Constants.FINISHED_STATE else null
         val purchaseDate = Constants.stringToDate(
             custom_edit_text_purchase_date.getText(),
             Constants.getDateFormatToShow(viewModel.language),
             viewModel.language
         )
-        val price = try { custom_edit_text_price.getText().toDouble() } catch (e: NumberFormatException) { 0.0 }
+        val price = try {
+            custom_edit_text_price.getText().toDouble()
+        } catch (e: NumberFormatException) {
+            0.0
+        }
 
         return viewModel.getGameData(
             pegi,
@@ -242,7 +250,9 @@ class GameDataFragment(
     private fun initializeUI() {
 
         val application = activity?.application
-        viewModel = ViewModelProvider(this, GameDataViewModelFactory(application, game)).get(GameDataViewModel::class.java)
+        viewModel = ViewModelProvider(this, GameDataViewModelFactory(application, game)).get(
+            GameDataViewModel::class.java
+        )
         setupBindings()
 
         button_pending.setOnClickListener {
@@ -269,8 +279,10 @@ class GameDataFragment(
         spinner_genres.adapter = Constants.getAdapter(requireContext(), genreValues)
 
         spinner_pegis.backgroundTintList = ColorStateList.valueOf(
-            ContextCompat.getColor(requireContext(),
-                R.color.colorPrimary)
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.colorPrimary
+            )
         )
         val pegis = ArrayList<String>()
         pegis.run {
@@ -356,8 +368,8 @@ class GameDataFragment(
 
     private fun buttonClicked(it: View) {
 
-        button_pending.isSelected = if(it == button_pending) !it.isSelected else false
-        button_in_progress.isSelected = if(it == button_in_progress) !it.isSelected else false
-        button_finished.isSelected = if(it == button_finished) !it.isSelected else false
+        button_pending.isSelected = if (it == button_pending) !it.isSelected else false
+        button_in_progress.isSelected = if (it == button_in_progress) !it.isSelected else false
+        button_finished.isSelected = if (it == button_finished) !it.isSelected else false
     }
 }

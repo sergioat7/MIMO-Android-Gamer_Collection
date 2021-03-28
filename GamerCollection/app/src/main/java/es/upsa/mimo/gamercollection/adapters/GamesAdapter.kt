@@ -21,7 +21,7 @@ class GamesAdapter(
     private val sagaId: Int?,
     private val context: Context,
     private var onItemClickListener: OnItemClickListener
-): RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
 
     //MARK: - Lifecycle methods
 

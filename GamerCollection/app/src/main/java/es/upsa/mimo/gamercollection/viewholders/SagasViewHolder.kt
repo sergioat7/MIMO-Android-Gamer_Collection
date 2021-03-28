@@ -19,15 +19,22 @@ class SagasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val gamesCount = saga.games.size
         val title = if (gamesCount > 0) {
-            context.resources.getQuantityString(R.plurals.saga_title, gamesCount, saga.name, gamesCount)
+            context.resources.getQuantityString(
+                R.plurals.saga_title,
+                gamesCount,
+                saga.name,
+                gamesCount
+            )
         } else {
             saga.name
         }
         itemView.edit_text_name.setText(title)
         itemView.edit_text_name.setReadOnly(true, InputType.TYPE_NULL, 0)
-        val imageId = if (Constants.isDarkMode(context)) R.drawable.ic_triangle_up_dark else R.drawable.ic_triangle_up_light
+        val imageId =
+            if (Constants.isDarkMode(context)) R.drawable.ic_triangle_up_dark else R.drawable.ic_triangle_up_light
         itemView.image_view_arrow.setImageDrawable(ContextCompat.getDrawable(context, imageId))
-        itemView.image_view_arrow.visibility = if (saga.games.isNotEmpty()) View.VISIBLE else View.GONE
+        itemView.image_view_arrow.visibility =
+            if (saga.games.isNotEmpty()) View.VISIBLE else View.GONE
     }
 
     fun rotateArrow(value: Float) {

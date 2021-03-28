@@ -14,7 +14,7 @@ class PopupSyncAppViewModel @Inject constructor(
     private val platformRepository: PlatformRepository,
     private val sagaRepository: SagaRepository,
     private val stateRepository: StateRepository
-): ViewModel() {
+) : ViewModel() {
 
     //MARK: - Private properties
 

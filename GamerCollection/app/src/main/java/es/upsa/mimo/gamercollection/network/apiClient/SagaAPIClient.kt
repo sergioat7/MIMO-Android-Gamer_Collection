@@ -39,7 +39,11 @@ class SagaAPIClient @Inject constructor(
         }, failure)
     }
 
-    fun setSaga(saga: SagaResponse, success: (SagaResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
+    fun setSaga(
+        saga: SagaResponse,
+        success: (SagaResponse) -> Unit,
+        failure: (ErrorResponse) -> Unit
+    ) {
 
         val headers: MutableMap<String, String> = HashMap()
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()

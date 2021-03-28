@@ -13,25 +13,29 @@ import javax.inject.Inject
 
 class PopupFilterViewModelFactory(
     private val application: Application?
-): ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
 
     //MARK: - Public properties
 
     @Inject
     lateinit var sharedPrefHandler: SharedPreferencesHandler
+
     @Inject
     lateinit var formatRepository: FormatRepository
+
     @Inject
     lateinit var genreRepository: GenreRepository
+
     @Inject
     lateinit var platformRepository: PlatformRepository
+
     @Inject
     lateinit var popupFilterViewModel: PopupFilterViewModel
 
     //MARK: - Lifecycle methods
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T: ViewModel> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(PopupFilterViewModel::class.java)) {
 
             (application as GamerCollectionApplication).appComponent.inject(this)

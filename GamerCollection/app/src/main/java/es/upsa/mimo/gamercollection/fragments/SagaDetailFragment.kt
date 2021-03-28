@@ -65,7 +65,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.action_edit -> {
 
                 editSaga()
@@ -122,7 +122,9 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
 
         val application = activity?.application
         val sagaId = this.arguments?.getInt(Constants.SAGA_ID)
-        viewModel = ViewModelProvider(this, SagaDetailViewModelFactory(application, sagaId)).get(SagaDetailViewModel::class.java)
+        viewModel = ViewModelProvider(this, SagaDetailViewModelFactory(application, sagaId)).get(
+            SagaDetailViewModel::class.java
+        )
         setupBindings()
 
         button_add_game.setOnClickListener { addGame() }
@@ -193,7 +195,10 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
 
             val tvGame = TextView(requireContext())
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) tvGame.setTextAppearance(R.style.Widget_GamerCollection_EditText_Regular)
-            else tvGame.setTextAppearance(requireContext(), R.style.Widget_GamerCollection_EditText_Regular)
+            else tvGame.setTextAppearance(
+                requireContext(),
+                R.style.Widget_GamerCollection_EditText_Regular
+            )
             tvGame.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18F)
 
             tvGame.text = "- ${game.name}"
@@ -207,7 +212,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
         val backgroundColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
 
         edit_text_name.setReadOnly(!enable, inputTypeText, backgroundColor)
-        button_add_game.visibility = if(enable) View.VISIBLE else View.GONE
+        button_add_game.visibility = if (enable) View.VISIBLE else View.GONE
     }
 
     private fun addGame() {
@@ -228,8 +233,10 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
                 this
             )
         }
-        dialogView.recycler_view_games.visibility = if (orderedGames.isNotEmpty()) View.VISIBLE else View.GONE
-        dialogView.layout_empty_list.visibility = if (orderedGames.isNotEmpty()) View.GONE else View.VISIBLE
+        dialogView.recycler_view_games.visibility =
+            if (orderedGames.isNotEmpty()) View.VISIBLE else View.GONE
+        dialogView.layout_empty_list.visibility =
+            if (orderedGames.isNotEmpty()) View.GONE else View.VISIBLE
 
         dialogView.button_accept.setOnClickListener {
 
@@ -241,13 +248,13 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
         dialogBuilder.show()
     }
 
-    private fun editSaga(){
+    private fun editSaga() {
 
         showEditButton(true)
         enableEdition(true)
     }
 
-    private fun cancelEdition(){
+    private fun cancelEdition() {
 
         showEditButton(false)
         showData(viewModel.saga.value)

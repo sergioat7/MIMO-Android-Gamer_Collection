@@ -22,7 +22,7 @@
     <style name="Widget.GamerCollection.RadioButton">
         <item name="android:layout_weight">1</item>
         <item name="android:buttonTint">@color/colorPrimary</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/textPrimary</item>
     </style>
 
     <style name="Widget.GamerCollection.GamesEmptyLayout">

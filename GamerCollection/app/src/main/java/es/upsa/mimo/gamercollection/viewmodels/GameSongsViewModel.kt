@@ -13,7 +13,7 @@ import javax.inject.Inject
 class GameSongsViewModel @Inject constructor(
     private val songAPIClient: SongAPIClient,
     private val gameRepository: GameRepository
-): ViewModel() {
+) : ViewModel() {
 
     //MARK: - Private properties
 

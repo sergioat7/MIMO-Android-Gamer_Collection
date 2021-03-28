@@ -16,7 +16,10 @@ interface GameAPIService {
         "Accept:application/json"
     )
     @GET("game/{gameId}")
-    fun getGame(@HeaderMap headers: Map<String, String>, @Path(value = "gameId") gameId: Int): Call<GameResponse>
+    fun getGame(
+        @HeaderMap headers: Map<String, String>,
+        @Path(value = "gameId") gameId: Int
+    ): Call<GameResponse>
 
     @Headers(
         "Content-Type:application/json"
@@ -28,8 +31,15 @@ interface GameAPIService {
         "Content-Type:application/json"
     )
     @PATCH("game/{gameId}")
-    fun setGame(@HeaderMap headers: Map<String, String>, @Path(value = "gameId") gameId: Int, @Body body: GameResponse): Call<GameResponse>
+    fun setGame(
+        @HeaderMap headers: Map<String, String>,
+        @Path(value = "gameId") gameId: Int,
+        @Body body: GameResponse
+    ): Call<GameResponse>
 
     @DELETE("game/{gameId}")
-    fun deleteGame(@HeaderMap headers: Map<String, String>, @Path(value = "gameId") gameId: Int): Call<Void>
+    fun deleteGame(
+        @HeaderMap headers: Map<String, String>,
+        @Path(value = "gameId") gameId: Int
+    ): Call<Void>
 }

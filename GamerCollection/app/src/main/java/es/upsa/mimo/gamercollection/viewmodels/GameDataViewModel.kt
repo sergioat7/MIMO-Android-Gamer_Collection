@@ -20,7 +20,7 @@ class GameDataViewModel @Inject constructor(
     private val formatRepository: FormatRepository,
     private val gameRepository: GameRepository,
     private val genreRepository: GenreRepository
-): ViewModel() {
+) : ViewModel() {
 
     //MARK: - Private properties
 
@@ -45,21 +45,23 @@ class GameDataViewModel @Inject constructor(
         this.game = game
     }
 
-    fun getGameData(pegi: String?,
-                    distributor: String,
-                    developer: String,
-                    players: String,
-                    releaseDate: Date?,
-                    goty: Boolean,
-                    format: String?,
-                    genre: String?,
-                    state: String?,
-                    purchaseDate: Date?,
-                    purchaseLocation: String,
-                    price: Double,
-                    videoUrl: String,
-                    loanedTo: String,
-                    observations: String): GameResponse? {
+    fun getGameData(
+        pegi: String?,
+        distributor: String,
+        developer: String,
+        players: String,
+        releaseDate: Date?,
+        goty: Boolean,
+        format: String?,
+        genre: String?,
+        state: String?,
+        purchaseDate: Date?,
+        purchaseLocation: String,
+        price: Double,
+        videoUrl: String,
+        loanedTo: String,
+        observations: String
+    ): GameResponse? {
 
         if (pegi == null &&
             distributor.isEmpty() &&
@@ -75,7 +77,8 @@ class GameDataViewModel @Inject constructor(
             price == 0.0 &&
             videoUrl.isEmpty() &&
             loanedTo.isEmpty() &&
-            observations.isEmpty()) {
+            observations.isEmpty()
+        ) {
             return null
         } else {
             return GameResponse(
@@ -100,7 +103,8 @@ class GameDataViewModel @Inject constructor(
                 loanedTo,
                 observations,
                 game?.saga,
-                ArrayList())
+                ArrayList()
+            )
         }
     }
 }

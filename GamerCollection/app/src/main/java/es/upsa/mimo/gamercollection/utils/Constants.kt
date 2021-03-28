@@ -32,7 +32,11 @@ class Constants {
         const val POINT_DOWN = -180f
         const val NEXT_VALUE_SEPARATOR = ", "
 
-        fun getAdapter(context: Context, data: List<String>, firstOptionEnabled: Boolean = false): SpinnerAdapter {
+        fun getAdapter(
+            context: Context,
+            data: List<String>,
+            firstOptionEnabled: Boolean = false
+        ): SpinnerAdapter {
 
             val arrayAdapter = SpinnerAdapter(context, data, firstOptionEnabled)
             arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
@@ -41,7 +45,8 @@ class Constants {
 
         fun isDarkMode(context: Context?): Boolean {
 
-            val mode = context?.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)
+            val mode =
+                context?.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)
             return mode == Configuration.UI_MODE_NIGHT_YES
         }
 
@@ -49,7 +54,8 @@ class Constants {
 
             activity.currentFocus?.let { currentFocus ->
 
-                val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val inputMethodManager =
+                    activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
             } ?: return
         }
@@ -99,7 +105,7 @@ class Constants {
 
         fun getDateFormatToShow(language: String): String {
 
-            return when(language) {
+            return when (language) {
                 SPANISH_LANGUAGE_KEY -> "d MMMM yyyy"
                 else -> "MMMM d, yyyy"
             }
@@ -107,16 +113,18 @@ class Constants {
 
         fun getFilterDateFormat(language: String): String {
 
-            return when(language) {
+            return when (language) {
                 SPANISH_LANGUAGE_KEY -> "dd/MM/yyyy"
                 else -> "MM/dd/yyyy"
             }
         }
 
         @SuppressLint("SimpleDateFormat")
-        fun dateToString(date: Date?,
-                         format: String? = null,
-                         language: String? = null): String? {
+        fun dateToString(
+            date: Date?,
+            format: String? = null,
+            language: String? = null
+        ): String? {
 
             val dateFormat = format ?: DATE_FORMAT
             val locale = language?.let {
@@ -141,9 +149,11 @@ class Constants {
         }
 
         @SuppressLint("SimpleDateFormat")
-        fun stringToDate(dateString: String?,
-                         format: String? = null,
-                         language: String? = null): Date? {
+        fun stringToDate(
+            dateString: String?,
+            format: String? = null,
+            language: String? = null
+        ): Date? {
 
             val dateFormat = format ?: DATE_FORMAT
             val locale = language?.let {
@@ -187,7 +197,7 @@ class Constants {
 
         fun getPegiImage(pegi: String?, context: Context): Drawable? {
 
-            return when(pegi) {
+            return when (pegi) {
                 "+3" -> ContextCompat.getDrawable(context, R.drawable.pegi3)
                 "+7" -> ContextCompat.getDrawable(context, R.drawable.pegi7)
                 "+12" -> ContextCompat.getDrawable(context, R.drawable.pegi12)
@@ -219,12 +229,14 @@ class Constants {
 
             if (editText.transformationMethod is HideReturnsTransformationMethod) {
 
-                val image = if (isDarkMode) R.drawable.ic_show_password_dark else R.drawable.ic_show_password_light
+                val image =
+                    if (isDarkMode) R.drawable.ic_show_password_dark else R.drawable.ic_show_password_light
                 imageButton.setImageResource(image)
                 editText.transformationMethod = PasswordTransformationMethod.getInstance()
             } else {
 
-                val image = if (isDarkMode) R.drawable.ic_hide_password_dark else R.drawable.ic_hide_password_light
+                val image =
+                    if (isDarkMode) R.drawable.ic_hide_password_dark else R.drawable.ic_hide_password_light
                 imageButton.setImageResource(image)
                 editText.transformationMethod = HideReturnsTransformationMethod.getInstance()
             }

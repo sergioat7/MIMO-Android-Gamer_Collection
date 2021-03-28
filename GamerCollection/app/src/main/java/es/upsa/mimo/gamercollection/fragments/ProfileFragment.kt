@@ -46,7 +46,7 @@ class ProfileFragment : BaseFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.action_delete -> {
 
                 showPopupConfirmationDialog(resources.getString(R.string.profile_delete_confirmation)) {
@@ -70,7 +70,10 @@ class ProfileFragment : BaseFragment() {
     private fun initializeUI() {
 
         val application = activity?.application
-        viewModel = ViewModelProvider(this, ProfileViewModelFactory(application)).get(ProfileViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            ProfileViewModelFactory(application)
+        ).get(ProfileViewModel::class.java)
         setupBindings()
 
         edit_text_user.setText(viewModel.userData.username)
@@ -82,19 +85,25 @@ class ProfileFragment : BaseFragment() {
         }
 
         image_button_password.setOnClickListener {
-            Constants.showOrHidePassword(edit_text_password, image_button_password, Constants.isDarkMode(context))
+            Constants.showOrHidePassword(
+                edit_text_password,
+                image_button_password,
+                Constants.isDarkMode(context)
+            )
         }
 
         radio_button_en.isChecked = viewModel.language == Constants.ENGLISH_LANGUAGE_KEY
         radio_button_es.isChecked = viewModel.language == Constants.SPANISH_LANGUAGE_KEY
 
-        spinner_sorting_keys.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+        spinner_sorting_keys.backgroundTintList =
+            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
         spinner_sorting_keys.adapter = Constants.getAdapter(
             requireContext(),
             resources.getStringArray(R.array.sorting_keys).toList(),
             true
         )
-        val position = resources.getStringArray(R.array.sorting_keys_ids).indexOf(viewModel.sortingKey)
+        val position =
+            resources.getStringArray(R.array.sorting_keys_ids).indexOf(viewModel.sortingKey)
         spinner_sorting_keys.setSelection(position)
 
         switch_swipe_refresh.isChecked = viewModel.swipeRefresh
@@ -108,8 +117,10 @@ class ProfileFragment : BaseFragment() {
 
         button_save.setOnClickListener {
 
-            val language = if(radio_button_en.isChecked) Constants.ENGLISH_LANGUAGE_KEY else Constants.SPANISH_LANGUAGE_KEY
-            val sortingKey = resources.getStringArray(R.array.sorting_keys_ids)[spinner_sorting_keys.selectedItemPosition]
+            val language =
+                if (radio_button_en.isChecked) Constants.ENGLISH_LANGUAGE_KEY else Constants.SPANISH_LANGUAGE_KEY
+            val sortingKey =
+                resources.getStringArray(R.array.sorting_keys_ids)[spinner_sorting_keys.selectedItemPosition]
             val themeMode =
                 resources.getStringArray(R.array.app_theme_values)
                     .indexOf(text_view_app_theme_value.text.toString())
