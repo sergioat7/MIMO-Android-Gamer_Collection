@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="1"
-        style="@style/NewSongNameEditText"
+        style="@style/Widget.GamerCollection.CustomEditText.NewSong.Name"
         />
 
     <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="@+id/custom_edit_text_name"
         app:layout_constraintStart_toStartOf="@+id/custom_edit_text_name"
         app:layout_constraintTop_toBottomOf="@+id/custom_edit_text_name"
-        style="@style/NewSongSingerEditText"
+        style="@style/Widget.GamerCollection.CustomEditText.NewSong.Singer"
         />
 
     <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -36,7 +36,7 @@
         app:layout_constraintEnd_toEndOf="@+id/custom_edit_text_singer"
         app:layout_constraintStart_toStartOf="@+id/custom_edit_text_singer"
         app:layout_constraintTop_toBottomOf="@+id/custom_edit_text_singer"
-        style="@style/NewSongUrlEditText"
+        style="@style/Widget.GamerCollection.CustomEditText.NewSong.Url"
         />
 
     <Button
@@ -48,7 +48,7 @@
         app:layout_constraintTop_toBottomOf="@+id/custom_edit_text_url"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintWidth_percent="0.5"
-        style="@style/PopupAcceptButton"
+        style="@style/Widget.GamerCollection.Button.Rounded.Action.Popup"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

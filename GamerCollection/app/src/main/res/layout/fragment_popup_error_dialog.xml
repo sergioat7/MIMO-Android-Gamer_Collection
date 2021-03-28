@@ -33,7 +33,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                style="@style/ErrorTextView"
+                style="@style/Widget.GamerCollection.TextView.Error"
                 />
 
             <Button
@@ -45,7 +45,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/error_text_view"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintWidth_percent="0.5"
-                style="@style/PopupAcceptButton"
+                style="@style/Widget.GamerCollection.Button.Rounded.Action.Popup"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="ErrorTextView">
+    <style name="Widget.GamerCollection.TextView.Error" parent="Widget.MaterialComponents.TextView">
         <item name="android:layout_marginTop">@dimen/margin_medium</item>
         <item name="android:layout_marginBottom">@dimen/margin_medium</item>
         <item name="android:layout_marginStart">@dimen/margin_medium</item>

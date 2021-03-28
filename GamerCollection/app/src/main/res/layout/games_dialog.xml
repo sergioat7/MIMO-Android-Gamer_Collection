@@ -15,7 +15,7 @@
         app:layout_constraintHeight_percent="0.875"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        style="@style/GamesSelectorContainerView"
+        style="@style/Widget.GamerCollection.GamesSelectorContent"
         >
 
         <androidx.recyclerview.widget.RecyclerView
@@ -38,7 +38,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/GamesEmptyLayout"
+            style="@style/Widget.GamerCollection.GamesEmptyLayout"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -53,7 +53,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_container"
         app:layout_constraintWidth_percent="0.5"
-        style="@style/GamesSelectorAcceptButton"
+        style="@style/Widget.GamerCollection.Button.Rounded.Action.Popup"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

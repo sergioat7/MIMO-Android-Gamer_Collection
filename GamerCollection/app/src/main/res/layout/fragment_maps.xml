@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/map"
             app:layout_constraintEnd_toEndOf="@+id/map"
-            style="@style/LocationButton"
+            style="@style/Widget.GamerCollection.LocationButton"
             />
 
         <Button
@@ -42,7 +42,7 @@
             app:layout_constraintTop_toBottomOf="@+id/map"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintWidth_percent="0.5"
-            style="@style/PopupAcceptButton"
+            style="@style/Widget.GamerCollection.Button.Rounded.Action.Popup"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="GamesEmptyLayout">
+    <style name="Widget.GamerCollection.GamesEmptyLayout">
         <item name="emptyListLayout_image">@drawable/ic_games_light</item>
     </style>
 
-    <style name="SagasEmptyLayout">
+    <style name="Widget.GamerCollection.SagasEmptyLayout">
         <item name="emptyListLayout_image">@drawable/ic_sagas_light</item>
     </style>
 
