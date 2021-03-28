@@ -59,26 +59,18 @@ class GamesViewHolder(
 
         itemView.image_view_goty.visibility = if (game.goty) View.VISIBLE else View.GONE
 
-        game.name?.let {
-            itemView.text_view_name.text = it
-            itemView.text_view_name.visibility = View.VISIBLE
-        } ?: run {
-            itemView.text_view_name.visibility = View.GONE
-        }
+        itemView.text_view_name.text = game.name
+        itemView.text_view_name.visibility = if (game.name != null) View.VISIBLE else View.GONE
 
         val platform = platforms.firstOrNull { it.id == game.platform }
-        platform?.let {
-            itemView.text_view_platform.text = it.name
-            itemView.text_view_platform.visibility = View.VISIBLE
-        } ?: run {
-            itemView.text_view_platform.visibility = View.GONE
-        }
+        itemView.text_view_platform.text = platform?.name
+        itemView.text_view_platform.visibility = if (platform != null && sagaId == null) View.VISIBLE else View.GONE
 
         val rating = game.score
         itemView.rating_bar.rating = rating.toFloat() / 2
         itemView.text_view_rating.text = rating.toInt().toString()
-        itemView.linear_layout_rating.visibility = if (rating > 0) View.VISIBLE else View.GONE
-        itemView.text_view_new.visibility = if (rating > 0) View.GONE else View.VISIBLE
+        itemView.linear_layout_rating.visibility = if (rating > 0 && sagaId == null) View.VISIBLE else View.GONE
+        itemView.text_view_new.visibility = if (rating <= 0 && sagaId == null) View.VISIBLE else View.GONE
 
         itemView.check_box.visibility = if(sagaId != null) View.VISIBLE else View.GONE
         itemView.check_box.isChecked = game.saga?.id  == sagaId
