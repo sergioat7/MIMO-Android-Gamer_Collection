@@ -1,9 +1,11 @@
 package es.upsa.mimo.gamercollection.fragments
 
+import android.app.AlertDialog
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.InputType
 import android.view.*
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
@@ -97,7 +99,13 @@ class ProfileFragment : BaseFragment() {
 
         switch_swipe_refresh.isChecked = viewModel.swipeRefresh
 
-        button_change_password.setOnClickListener {
+        val themeMode = getThemeMode()
+        text_view_app_theme_value.text = resources.getStringArray(R.array.app_theme_values)[themeMode]
+        text_view_app_theme_value.setOnClickListener {
+            chooseThemeDialog()
+        }
+
+        button_save.setOnClickListener {
 
             val language = if(radio_button_en.isChecked) Constants.ENGLISH_LANGUAGE_KEY else Constants.SPANISH_LANGUAGE_KEY
             val sortingKey = resources.getStringArray(R.array.sorting_keys_ids)[spinner_sorting_keys.selectedItemPosition]
@@ -133,5 +141,42 @@ class ProfileFragment : BaseFragment() {
                 manageError(error)
             }
         })
+    }
+
+    private fun chooseThemeDialog() {
+
+        val styles = resources.getStringArray(R.array.app_theme_values)
+        val themeMode = getThemeMode()
+
+        AlertDialog.Builder(context)
+            .setTitle(resources.getString(R.string.choose_a_theme))
+            .setSingleChoiceItems(styles, themeMode) { dialog, value ->
+
+                when (value) {
+                    0 -> {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                        text_view_app_theme_value.text = styles[0]
+                    }
+                    1 -> {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                        text_view_app_theme_value.text = styles[1]
+                    }
+                    2 -> {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                        text_view_app_theme_value.text = styles[2]
+                    }
+                }
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun getThemeMode(): Int {
+
+        return when (AppCompatDelegate.getDefaultNightMode()) {
+            AppCompatDelegate.MODE_NIGHT_NO ->  1
+            AppCompatDelegate.MODE_NIGHT_YES -> 2
+            else -> 0
+        }
     }
 }
