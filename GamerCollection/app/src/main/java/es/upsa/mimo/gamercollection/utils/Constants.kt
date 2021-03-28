@@ -71,6 +71,7 @@ class Constants {
         const val SWIPE_REFRESH_PREFERENCES_NAME = "swipeRefreshEnabled"
         const val GAME_NOTIFICATION_PREFERENCES_NAME = "gameNotificationLaunched_"
         const val VERSION_PREFERENCE_NAME = "version"
+        const val THEME_MODE_PREFERENCE_NAME = "themeMode"
 
         // MARK: - Retrofit constants
 

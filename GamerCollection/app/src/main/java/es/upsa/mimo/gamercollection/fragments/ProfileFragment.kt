@@ -100,7 +100,8 @@ class ProfileFragment : BaseFragment() {
         switch_swipe_refresh.isChecked = viewModel.swipeRefresh
 
         val themeMode = getThemeMode()
-        text_view_app_theme_value.text = resources.getStringArray(R.array.app_theme_values)[themeMode]
+        text_view_app_theme_value.text =
+            resources.getStringArray(R.array.app_theme_values)[themeMode]
         text_view_app_theme_value.setOnClickListener {
             chooseThemeDialog()
         }
@@ -109,11 +110,15 @@ class ProfileFragment : BaseFragment() {
 
             val language = if(radio_button_en.isChecked) Constants.ENGLISH_LANGUAGE_KEY else Constants.SPANISH_LANGUAGE_KEY
             val sortingKey = resources.getStringArray(R.array.sorting_keys_ids)[spinner_sorting_keys.selectedItemPosition]
+            val themeMode =
+                resources.getStringArray(R.array.app_theme_values)
+                    .indexOf(text_view_app_theme_value.text.toString())
             viewModel.save(
                 edit_text_password.text.toString(),
                 language,
                 sortingKey,
-                switch_swipe_refresh.isChecked
+                switch_swipe_refresh.isChecked,
+                themeMode
             )
         }
     }
@@ -152,19 +157,10 @@ class ProfileFragment : BaseFragment() {
             .setTitle(resources.getString(R.string.choose_a_theme))
             .setSingleChoiceItems(styles, themeMode) { dialog, value ->
 
-                when (value) {
-                    0 -> {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-                        text_view_app_theme_value.text = styles[0]
-                    }
-                    1 -> {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                        text_view_app_theme_value.text = styles[1]
-                    }
-                    2 -> {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                        text_view_app_theme_value.text = styles[2]
-                    }
+                text_view_app_theme_value.text = when (value) {
+                    1 -> styles[1]
+                    2 -> styles[2]
+                    else -> styles[0]
                 }
                 dialog.dismiss()
             }
@@ -174,7 +170,7 @@ class ProfileFragment : BaseFragment() {
     private fun getThemeMode(): Int {
 
         return when (AppCompatDelegate.getDefaultNightMode()) {
-            AppCompatDelegate.MODE_NIGHT_NO ->  1
+            AppCompatDelegate.MODE_NIGHT_NO -> 1
             AppCompatDelegate.MODE_NIGHT_YES -> 2
             else -> 0
         }
