@@ -17,7 +17,7 @@ import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.android.synthetic.main.custom_edit_text.view.*
 
-class CustomEditText: ConstraintLayout {
+class CustomEditText : ConstraintLayout {
 
     // MARK: - Private properties
 
@@ -35,7 +35,11 @@ class CustomEditText: ConstraintLayout {
         setAttributes(attrs)
     }
 
-    constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int) : super(context, attrs, defStyle) {
+    constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int) : super(
+        context,
+        attrs,
+        defStyle
+    ) {
 
         LayoutInflater.from(context).inflate(R.layout.custom_edit_text, this, true)
         setAttributes(attrs)
@@ -61,7 +65,7 @@ class CustomEditText: ConstraintLayout {
             if (notEditable) {
                 InputType.TYPE_NULL
             } else {
-                when(inputType) {
+                when (inputType) {
                     EditTextType.EMAIL -> InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
                     EditTextType.PASSWORD -> InputType.TYPE_TEXT_VARIATION_PASSWORD
                     EditTextType.TEXT -> InputType.TYPE_CLASS_TEXT
@@ -72,7 +76,7 @@ class CustomEditText: ConstraintLayout {
                 }
             }
         edit_text.setReadOnly(notEditable, type, lineColor)
-        image_button.visibility = if(!notEditable) View.VISIBLE else View.GONE
+        image_button.visibility = if (!notEditable) View.VISIBLE else View.GONE
     }
 
     override fun setOnClickListener(l: OnClickListener?) {
@@ -91,12 +95,22 @@ class CustomEditText: ConstraintLayout {
         attrs?.let {
 
             val typed = context.obtainStyledAttributes(it, R.styleable.CustomEditText, 0, 0)
-            inputType = EditTextType.valueOf(typed.getString(R.styleable.CustomEditText_customEditText_type) ?: "TEXT")
-            val hint = typed.getString(R.styleable.CustomEditText_customEditText_placeholder) ?: Constants.EMPTY_VALUE
+            inputType = EditTextType.valueOf(
+                typed.getString(R.styleable.CustomEditText_customEditText_type) ?: "TEXT"
+            )
+            val hint = typed.getString(R.styleable.CustomEditText_customEditText_placeholder)
+                ?: Constants.EMPTY_VALUE
             val font = typed.getResourceId(R.styleable.CustomEditText_customEditText_font, 0)
-            val textSize = resources.getDimension(typed.getResourceId(R.styleable.CustomEditText_customEditText_text_size, 0))
+            val textSize = resources.getDimension(
+                typed.getResourceId(
+                    R.styleable.CustomEditText_customEditText_text_size,
+                    0
+                )
+            )
             val icon = typed.getDrawable(R.styleable.CustomEditText_customEditText_icon)
-            val imeOption = EditTextImeOption.valueOf(typed.getString(R.styleable.CustomEditText_customEditText_ime_option) ?: "NONE")
+            val imeOption = EditTextImeOption.valueOf(
+                typed.getString(R.styleable.CustomEditText_customEditText_ime_option) ?: "NONE"
+            )
 
             edit_text.hint = hint
             edit_text.typeface = ResourcesCompat.getFont(context, font)
@@ -119,7 +133,7 @@ class CustomEditText: ConstraintLayout {
                 edit_text.showDatePicker(context)
             }
 
-            val type = when(inputType) {
+            val type = when (inputType) {
                 EditTextType.EMAIL -> InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
                 EditTextType.PASSWORD -> InputType.TYPE_TEXT_VARIATION_PASSWORD
                 EditTextType.TEXT -> InputType.TYPE_CLASS_TEXT
@@ -130,7 +144,7 @@ class CustomEditText: ConstraintLayout {
             }
             edit_text.setRawInputType(type)
 
-            val option = when(imeOption) {
+            val option = when (imeOption) {
                 EditTextImeOption.NEXT -> EditorInfo.IME_ACTION_NEXT
                 EditTextImeOption.DONE -> EditorInfo.IME_ACTION_DONE
                 EditTextImeOption.NONE -> EditorInfo.IME_ACTION_NONE
@@ -139,9 +153,11 @@ class CustomEditText: ConstraintLayout {
         }
     }
 }
+
 enum class EditTextType {
     EMAIL, PASSWORD, TEXT, NUMBER, URL, DATE, NONE
 }
+
 enum class EditTextImeOption {
     NEXT, DONE, NONE
 }

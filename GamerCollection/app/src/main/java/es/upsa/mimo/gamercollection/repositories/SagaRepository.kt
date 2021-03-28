@@ -1,8 +1,8 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import es.upsa.mimo.gamercollection.models.SagaWithGames
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
-import es.upsa.mimo.gamercollection.models.SagaWithGames
 import es.upsa.mimo.gamercollection.network.apiClient.SagaAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import kotlinx.coroutines.*
@@ -35,7 +35,11 @@ class SagaRepository @Inject constructor(
         }, failure)
     }
 
-    fun createSaga(saga: SagaResponse, success: (SagaResponse?) -> Unit, failure: (ErrorResponse) -> Unit) {
+    fun createSaga(
+        saga: SagaResponse,
+        success: (SagaResponse?) -> Unit,
+        failure: (ErrorResponse) -> Unit
+    ) {
 
         sagaAPIClient.createSaga(saga, {
             loadSagas({
@@ -53,7 +57,11 @@ class SagaRepository @Inject constructor(
         }, failure)
     }
 
-    fun setSaga(saga: SagaResponse, success: (SagaResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
+    fun setSaga(
+        saga: SagaResponse,
+        success: (SagaResponse) -> Unit,
+        failure: (ErrorResponse) -> Unit
+    ) {
 
         sagaAPIClient.setSaga(saga, {
 

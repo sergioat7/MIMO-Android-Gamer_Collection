@@ -79,7 +79,12 @@ class GameAPIClient @Inject constructor(
         }, failure)
     }
 
-    fun getRawgGames(page: Int, query: String?, success: (RawgGameListResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
+    fun getRawgGames(
+        page: Int,
+        query: String?,
+        success: (RawgGameListResponse) -> Unit,
+        failure: (ErrorResponse) -> Unit
+    ) {
 
         val params: MutableMap<String, String> = java.util.HashMap()
         params[Constants.KEY_PARAM] = Constants.KEY_VALUE
@@ -93,7 +98,11 @@ class GameAPIClient @Inject constructor(
         APIClient.sendServer(request, success, failure)
     }
 
-    fun getRawgGame(gameId: Int, success: (RawgGameResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
+    fun getRawgGame(
+        gameId: Int,
+        success: (RawgGameResponse) -> Unit,
+        failure: (ErrorResponse) -> Unit
+    ) {
 
         val params: MutableMap<String, String> = java.util.HashMap()
         params[Constants.KEY_PARAM] = Constants.KEY_VALUE

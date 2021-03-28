@@ -45,7 +45,9 @@ class PopupSyncAppDialogFragment : DialogFragment() {
     private fun initializeUI() {
 
         val application = activity?.application
-        viewModel = ViewModelProvider(this, PopupSyncAppViewModelFactory(application)).get(PopupSyncAppViewModel::class.java)
+        viewModel = ViewModelProvider(this, PopupSyncAppViewModelFactory(application)).get(
+            PopupSyncAppViewModel::class.java
+        )
         setupBindings()
 
         viewModel.loadContent()

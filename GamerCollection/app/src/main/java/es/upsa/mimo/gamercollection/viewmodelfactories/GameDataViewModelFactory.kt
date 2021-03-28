@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
-import es.upsa.mimo.gamercollection.network.apiClient.*
+import es.upsa.mimo.gamercollection.network.apiClient.FormatAPIClient
+import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
+import es.upsa.mimo.gamercollection.network.apiClient.GenreAPIClient
 import es.upsa.mimo.gamercollection.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.GenreRepository
@@ -16,31 +18,38 @@ import javax.inject.Inject
 class GameDataViewModelFactory(
     private val application: Application?,
     private val game: GameResponse?
-): ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
 
     //MARK: - Public properties
 
     @Inject
     lateinit var sharedPrefHandler: SharedPreferencesHandler
+
     @Inject
     lateinit var formatAPIClient: FormatAPIClient
+
     @Inject
     lateinit var gameAPIClient: GameAPIClient
+
     @Inject
     lateinit var genreAPIClient: GenreAPIClient
+
     @Inject
     lateinit var formatRepository: FormatRepository
+
     @Inject
     lateinit var gameRepository: GameRepository
+
     @Inject
     lateinit var genreRepository: GenreRepository
+
     @Inject
     lateinit var gameDataViewModel: GameDataViewModel
 
     //MARK: - Lifecycle methods
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T: ViewModel> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(GameDataViewModel::class.java)) {
 
             (application as GamerCollectionApplication).appComponent.inject(this)

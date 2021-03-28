@@ -42,14 +42,19 @@ class MapsFragment(
 
     // MARK: - Lifecycle methods
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity as GameDetailActivity)
+        fusedLocationClient =
+            LocationServices.getFusedLocationProviderClient(activity as GameDetailActivity)
 
         initializeUI()
     }
@@ -82,7 +87,11 @@ class MapsFragment(
 
     override fun onMarkerDrag(p0: Marker?) {}
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -108,12 +117,25 @@ class MapsFragment(
 
     private fun checkPermissions(): Boolean {
 
-        return ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        return ActivityCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun requestPermissions() {
-        ActivityCompat.requestPermissions(activity as GameDetailActivity, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), 1)
+        ActivityCompat.requestPermissions(
+            activity as GameDetailActivity,
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
+            1
+        )
     }
 
     private fun isLocationEnabled(): Boolean {
@@ -132,7 +154,11 @@ class MapsFragment(
             if (isLocationEnabled()) {
                 getUserLocation()
             } else {
-                Toast.makeText(requireContext(), resources.getString(R.string.turn_on_location), Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    resources.getString(R.string.turn_on_location),
+                    Toast.LENGTH_LONG
+                ).show()
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 startActivity(intent)
             }
@@ -144,7 +170,7 @@ class MapsFragment(
     @SuppressLint("MissingPermission")
     private fun getUserLocation() {
 
-        fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
 
             location?.let {
                 addMarker(LatLng(it.latitude, it.longitude))
@@ -173,13 +199,13 @@ class MapsFragment(
         }, Looper.myLooper())
     }
 
-    private fun addMarker(position: LatLng){
+    private fun addMarker(position: LatLng) {
 
         googleMap.clear()
         googleMap.addMarker(
             MarkerOptions()
-            .position(position)
-            .draggable(true)
+                .position(position)
+                .draggable(true)
         )
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(position))
         location = position

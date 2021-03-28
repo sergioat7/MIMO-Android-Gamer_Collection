@@ -20,7 +20,7 @@ class PopupFilterViewModel @Inject constructor(
     private val formatRepository: FormatRepository,
     private val genreRepository: GenreRepository,
     private val platformRepository: PlatformRepository
-): ViewModel() {
+) : ViewModel() {
 
     //MARK: - Public properties
 
@@ -37,7 +37,12 @@ class PopupFilterViewModel @Inject constructor(
 
     fun getRoundedSelectorButton(id: String, text: String, context: Context): Button {
 
-        val button = Button(context, null, R.style.Widget_GamerCollection_RoundedSelectorButton, R.style.Widget_GamerCollection_RoundedSelectorButton)
+        val button = Button(
+            context,
+            null,
+            R.style.Widget_GamerCollection_RoundedSelectorButton,
+            R.style.Widget_GamerCollection_RoundedSelectorButton
+        )
         button.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.MATCH_PARENT

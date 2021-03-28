@@ -138,7 +138,8 @@ open class BaseFragment : Fragment() {
                 null,
                 null
             )
-            searchView.findViewById<AppCompatImageView>(searchIconId)?.imageTintList = ColorStateList.valueOf(color)
+            searchView.findViewById<AppCompatImageView>(searchIconId)?.imageTintList =
+                ColorStateList.valueOf(color)
 
             val searchPlateId = searchView.context.resources.getIdentifier(
                 "android:id/search_plate",
@@ -165,7 +166,8 @@ open class BaseFragment : Fragment() {
                     null,
                     null
                 )
-                searchPlate.findViewById<AppCompatImageView>(searchCloseId)?.imageTintList = ColorStateList.valueOf(color)
+                searchPlate.findViewById<AppCompatImageView>(searchCloseId)?.imageTintList =
+                    ColorStateList.valueOf(color)
             }
         }
     }

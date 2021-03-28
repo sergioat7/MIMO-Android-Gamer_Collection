@@ -26,7 +26,7 @@ class SharedPreferencesHandler @Inject constructor(
 
     fun getUserData(): UserData {
 
-        val userDataJson = sharedPreferences?.getString(Constants.USER_DATA_PREFERENCES_NAME,null)
+        val userDataJson = sharedPreferences?.getString(Constants.USER_DATA_PREFERENCES_NAME, null)
         return if (userDataJson != null) {
             gson.fromJson(userDataJson, UserData::class.java)
         } else {
@@ -37,7 +37,7 @@ class SharedPreferencesHandler @Inject constructor(
     fun storeUserData(userData: UserData) {
 
         if (sharedPreferences != null) {
-            with (sharedPreferences.edit()) {
+            with(sharedPreferences.edit()) {
                 val userDataJson = gson.toJson(userData)
                 putString(Constants.USER_DATA_PREFERENCES_NAME, userDataJson)
                 commit()
@@ -66,7 +66,7 @@ class SharedPreferencesHandler @Inject constructor(
 
     fun getCredentials(): AuthData {
 
-        val authDataJson = sharedPreferences?.getString(Constants.AUTH_DATA_PREFERENCES_NAME,null)
+        val authDataJson = sharedPreferences?.getString(Constants.AUTH_DATA_PREFERENCES_NAME, null)
         return if (authDataJson != null) {
             gson.fromJson(authDataJson, AuthData::class.java)
         } else {
@@ -77,7 +77,7 @@ class SharedPreferencesHandler @Inject constructor(
     fun storeCredentials(authData: AuthData) {
 
         if (sharedPreferences != null) {
-            with (sharedPreferences.edit()) {
+            with(sharedPreferences.edit()) {
                 val authDataJson = gson.toJson(authData)
                 putString(Constants.AUTH_DATA_PREFERENCES_NAME, authDataJson)
                 commit()
@@ -103,7 +103,7 @@ class SharedPreferencesHandler @Inject constructor(
     fun setLanguage(language: String) {
 
         if (sharedPreferences != null) {
-            with (sharedPreferences.edit()) {
+            with(sharedPreferences.edit()) {
                 putString(Constants.LANGUAGE_PREFERENCES_NAME, language)
                 commit()
             }
@@ -111,13 +111,14 @@ class SharedPreferencesHandler @Inject constructor(
     }
 
     fun getSortingKey(): String {
-        return sharedPreferences?.getString(Constants.SORTING_KEY_PREFERENCES_NAME, null) ?: Constants.DEFAULT_SORTING_KEY
+        return sharedPreferences?.getString(Constants.SORTING_KEY_PREFERENCES_NAME, null)
+            ?: Constants.DEFAULT_SORTING_KEY
     }
 
     fun setSortingKey(sortingKey: String) {
 
         if (sharedPreferences != null) {
-            with (sharedPreferences.edit()) {
+            with(sharedPreferences.edit()) {
                 putString(Constants.SORTING_KEY_PREFERENCES_NAME, sortingKey)
                 commit()
             }
@@ -131,7 +132,7 @@ class SharedPreferencesHandler @Inject constructor(
     fun setSwipeRefresh(swipeRefresh: Boolean) {
 
         if (sharedPreferences != null) {
-            with (sharedPreferences.edit()) {
+            with(sharedPreferences.edit()) {
                 putBoolean(Constants.SWIPE_REFRESH_PREFERENCES_NAME, swipeRefresh)
                 commit()
             }
@@ -139,13 +140,16 @@ class SharedPreferencesHandler @Inject constructor(
     }
 
     fun notificationLaunched(gameId: Int): Boolean {
-        return sharedPreferences?.getBoolean("${Constants.GAME_NOTIFICATION_PREFERENCES_NAME}${gameId}", false) ?: false
+        return sharedPreferences?.getBoolean(
+            "${Constants.GAME_NOTIFICATION_PREFERENCES_NAME}${gameId}",
+            false
+        ) ?: false
     }
 
     fun setNotificationLaunched(gameId: Int, value: Boolean) {
 
         if (sharedPreferences != null) {
-            with (sharedPreferences.edit()) {
+            with(sharedPreferences.edit()) {
                 putBoolean("${Constants.GAME_NOTIFICATION_PREFERENCES_NAME}$gameId", value)
                 commit()
             }

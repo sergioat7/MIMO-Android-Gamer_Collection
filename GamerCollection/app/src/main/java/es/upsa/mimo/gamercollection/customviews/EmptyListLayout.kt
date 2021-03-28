@@ -8,7 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import es.upsa.mimo.gamercollection.R
 import kotlinx.android.synthetic.main.layout_empty_list.view.*
 
-class EmptyListLayout: ConstraintLayout {
+class EmptyListLayout : ConstraintLayout {
 
     // MARK: - Lifecycle methods
 
@@ -22,7 +22,11 @@ class EmptyListLayout: ConstraintLayout {
         setAttributes(attrs)
     }
 
-    constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int) : super(context, attrs, defStyle) {
+    constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int) : super(
+        context,
+        attrs,
+        defStyle
+    ) {
 
         LayoutInflater.from(context).inflate(R.layout.layout_empty_list, this, true)
         setAttributes(attrs)

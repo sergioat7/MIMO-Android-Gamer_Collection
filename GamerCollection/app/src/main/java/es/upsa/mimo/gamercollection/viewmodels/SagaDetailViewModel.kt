@@ -18,7 +18,7 @@ class SagaDetailViewModel @Inject constructor(
     private val platformRepository: PlatformRepository,
     private val sagaRepository: SagaRepository,
     private val stateRepository: StateRepository
-): ViewModel() {
+) : ViewModel() {
 
     //MARK: - Private properties
 
@@ -57,7 +57,7 @@ class SagaDetailViewModel @Inject constructor(
 
     fun getOrderedGames(games: List<GameResponse>): List<GameResponse> {
 
-        return when(sharedPreferencesHandler.getSortingKey()) {
+        return when (sharedPreferencesHandler.getSortingKey()) {
             "platform" -> games.sortedBy { it.platform }
             "releaseDate" -> games.sortedBy { it.releaseDate }
             "purchaseDate" -> games.sortedBy { it.purchaseDate }

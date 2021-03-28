@@ -59,10 +59,11 @@ class GameDetailActivity : BaseActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
         this.menu = menu
-        menu?.let{
+        menu?.let {
 
             it.clear()
-            val menuRes = if (isRawgGame) R.menu.rawg_game_toolbar_menu else R.menu.game_toolbar_menu
+            val menuRes =
+                if (isRawgGame) R.menu.rawg_game_toolbar_menu else R.menu.game_toolbar_menu
             menuInflater.inflate(menuRes, menu)
             if (!isRawgGame) {
 
@@ -77,7 +78,7 @@ class GameDetailActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when(item.itemId) {
+        when (item.itemId) {
             android.R.id.home -> {
                 NavUtils.navigateUpFromSameTask(this)
             }
@@ -111,10 +112,12 @@ class GameDetailActivity : BaseActivity() {
 
     private fun initializeUI() {
 
-        viewModel = ViewModelProvider(this, GameDetailViewModelFactory(
-            application,
-            gameId,
-            isRawgGame)
+        viewModel = ViewModelProvider(
+            this, GameDetailViewModelFactory(
+                application,
+                gameId,
+                isRawgGame
+            )
         ).get(GameDetailViewModel::class.java)
         setupBindings()
 
@@ -137,7 +140,10 @@ class GameDetailActivity : BaseActivity() {
         )
         viewPager2.adapter = pagerAdapter
         TabLayoutMediator(tab_layout, viewPager2) { tab, position ->
-            tab.text = if(position == 0) resources.getString(R.string.game_detail_title) else resources.getString(R.string.game_detail_songs_title)
+            tab.text =
+                if (position == 0) resources.getString(R.string.game_detail_title) else resources.getString(
+                    R.string.game_detail_songs_title
+                )
         }.attach()
     }
 
@@ -181,7 +187,8 @@ class GameDetailActivity : BaseActivity() {
         imageUrl = game?.imageUrl
 
         val image = imageUrl ?: Constants.NO_VALUE
-        val errorImage = if (Constants.isDarkMode(this)) R.drawable.ic_add_image_light else R.drawable.ic_add_image_dark
+        val errorImage =
+            if (Constants.isDarkMode(this)) R.drawable.ic_add_image_light else R.drawable.ic_add_image_dark
         progress_bar_loading.visibility = View.VISIBLE
         Picasso
             .get()
@@ -210,7 +217,7 @@ class GameDetailActivity : BaseActivity() {
                 }
             })
 
-        image_view_goty.visibility = if(game?.goty == true) View.VISIBLE else View.GONE
+        image_view_goty.visibility = if (game?.goty == true) View.VISIBLE else View.GONE
 
         rating_button.text = (game?.score ?: 0).toString()
 
@@ -227,7 +234,7 @@ class GameDetailActivity : BaseActivity() {
 
             val platformName = viewModel.platforms.firstOrNull { it.id == platformId }?.name
             val pos = platformValues.indexOf(platformName)
-            platformPosition = if(pos > 0) pos else 0
+            platformPosition = if (pos > 0) pos else 0
         }
         spinner_platforms.setSelection(platformPosition)
 
@@ -272,7 +279,8 @@ class GameDetailActivity : BaseActivity() {
         dialogView.button_accept.setOnClickListener {
 
             val url = dialogView.custom_edit_text_url.getText()
-            val errorImage = if (Constants.isDarkMode(this)) R.drawable.ic_add_image_light else R.drawable.ic_add_image_dark
+            val errorImage =
+                if (Constants.isDarkMode(this)) R.drawable.ic_add_image_light else R.drawable.ic_add_image_dark
             if (url.isNotEmpty()) {
 
                 Picasso.get()
@@ -282,6 +290,7 @@ class GameDetailActivity : BaseActivity() {
                         override fun onSuccess() {
                             imageUrl = url
                         }
+
                         override fun onError(e: Exception?) {
                             imageUrl = null
                             showPopupDialog(resources.getString(R.string.error_image_url))
@@ -315,7 +324,8 @@ class GameDetailActivity : BaseActivity() {
 
         val id = gameId ?: 0
         val name = custom_edit_text_name.getText()
-        val platform = viewModel.platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
+        val platform =
+            viewModel.platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
         val score = rating_button.text.toString().toDouble()
 
         return pagerAdapter.getGameData()?.let {
@@ -349,7 +359,8 @@ class GameDetailActivity : BaseActivity() {
                 null,
                 null,
                 null,
-                ArrayList())
+                ArrayList()
+            )
         }
     }
 }

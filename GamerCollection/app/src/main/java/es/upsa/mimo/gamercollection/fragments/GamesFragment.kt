@@ -69,7 +69,7 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.action_synchronize -> {
 
                 openSyncPopup()
@@ -102,7 +102,7 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
     //MARK: - Interface methods
 
     override fun onItemClick(id: Int) {
-        
+
         val params = mapOf(Constants.GAME_ID to id, Constants.IS_RAWG_GAME to false)
         launchActivityWithExtras(GameDetailActivity::class.java, params)
     }
@@ -116,7 +116,7 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
     override fun filter(filters: FilterModel?) {
 
         viewModel.filters = filters
-        menu?.let{
+        menu?.let {
             it.findItem(R.id.action_filter).isVisible = filters == null
             it.findItem(R.id.action_filter_on).isVisible = filters != null
         }
@@ -129,7 +129,10 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
     private fun initializeUI() {
 
         val application = activity?.application
-        viewModel = ViewModelProvider(this, GamesViewModelFactory(application)).get(GamesViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            GamesViewModelFactory(application)
+        ).get(GamesViewModel::class.java)
         setupBindings()
 
         button_pending.setOnClickListener {
@@ -159,7 +162,7 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
             this
         )
         recycler_view_games.adapter = gamesAdapter
-        recycler_view_games.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        recycler_view_games.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -212,7 +215,8 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
             gamesAdapter.setGames(it)
             layout_empty_list.visibility = if (it.isNotEmpty()) View.GONE else View.VISIBLE
             swipe_refresh_layout.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
-            scrollPosition.value = if (it.isNotEmpty()) scrollPosition.value else ScrollPosition.NONE
+            scrollPosition.value =
+                if (it.isNotEmpty()) scrollPosition.value else ScrollPosition.NONE
 
             val today = Constants.stringToDate(
                 Constants.dateToString(
@@ -238,8 +242,10 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
 
         scrollPosition.observe(viewLifecycleOwner, {
 
-            floating_action_button_start_list.visibility = if (it == ScrollPosition.TOP || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
-            floating_action_button_end_list.visibility = if (it == ScrollPosition.END || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
+            floating_action_button_start_list.visibility =
+                if (it == ScrollPosition.TOP || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
+            floating_action_button_end_list.visibility =
+                if (it == ScrollPosition.END || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
         })
     }
 
@@ -265,14 +271,24 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
             val intent = Intent(requireContext(), GameDetailActivity::class.java).apply {
                 putExtra(Constants.GAME_ID, game.id)
             }
-            val pendingIntent = PendingIntent.getActivity(requireContext(), game.id, intent, PendingIntent.FLAG_ONE_SHOT)
+            val pendingIntent = PendingIntent.getActivity(
+                requireContext(),
+                game.id,
+                intent,
+                PendingIntent.FLAG_ONE_SHOT
+            )
 
-            if(!viewModel.isNotificationLaunched(game.id)) {
+            if (!viewModel.isNotificationLaunched(game.id)) {
 
                 notifications[game.id] =
                     NotificationCompat.Builder(requireContext(), Constants.CHANNEL_ID)
                         .setSmallIcon(R.drawable.app_icon)
-                        .setContentTitle(resources.getString(R.string.notification_title, game.name))
+                        .setContentTitle(
+                            resources.getString(
+                                R.string.notification_title,
+                                game.name
+                            )
+                        )
                         .setContentText(
                             resources.getString(
                                 R.string.notification_description,
@@ -301,7 +317,12 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
             .setSmallIcon(R.drawable.app_icon)
             .setStyle(
                 NotificationCompat.InboxStyle()
-                    .setBigContentTitle(resources.getString(R.string.summary_notifications_title, games.size))
+                    .setBigContentTitle(
+                        resources.getString(
+                            R.string.summary_notifications_title,
+                            games.size
+                        )
+                    )
                     .setSummaryText(gameNames)
             )
             .setGroup(Constants.CHANNEL_GROUP)
@@ -350,15 +371,16 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
 
     private fun buttonClicked(it: View, newState: String) {
 
-        button_pending.isSelected = if(it == button_pending) !it.isSelected else false
-        button_in_progress.isSelected = if(it == button_in_progress) !it.isSelected else false
-        button_finished.isSelected = if(it == button_finished) !it.isSelected else false
+        button_pending.isSelected = if (it == button_pending) !it.isSelected else false
+        button_in_progress.isSelected = if (it == button_in_progress) !it.isSelected else false
+        button_finished.isSelected = if (it == button_finished) !it.isSelected else false
         swipe_refresh_layout.isEnabled = !it.isSelected && viewModel.swipeRefresh
         viewModel.state = if (it.isSelected) newState else null
         scrollPosition.value = ScrollPosition.TOP
         viewModel.getGames()
     }
 }
+
 enum class ScrollPosition {
     TOP, MIDDLE, END, NONE
 }

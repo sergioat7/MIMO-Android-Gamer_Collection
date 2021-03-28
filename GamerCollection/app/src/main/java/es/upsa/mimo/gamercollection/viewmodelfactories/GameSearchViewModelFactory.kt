@@ -16,31 +16,38 @@ import javax.inject.Inject
 
 class GameSearchViewModelFactory(
     private val application: Application?
-): ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
 
     //MARK: - Public properties
 
     @Inject
     lateinit var sharedPrefHandler: SharedPreferencesHandler
+
     @Inject
     lateinit var gameAPIClient: GameAPIClient
+
     @Inject
     lateinit var platformAPIClient: PlatformAPIClient
+
     @Inject
     lateinit var stateAPIClient: StateAPIClient
+
     @Inject
     lateinit var gameRepository: GameRepository
+
     @Inject
     lateinit var platformRepository: PlatformRepository
+
     @Inject
     lateinit var stateRepository: StateRepository
+
     @Inject
     lateinit var gameSearchViewModel: GameSearchViewModel
 
     //MARK: - Lifecycle methods
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T: ViewModel> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(GameSearchViewModel::class.java)) {
 
             (application as GamerCollectionApplication).appComponent.inject(this)

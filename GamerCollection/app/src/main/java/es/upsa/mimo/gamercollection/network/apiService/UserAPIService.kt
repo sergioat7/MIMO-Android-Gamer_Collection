@@ -1,8 +1,8 @@
 package es.upsa.mimo.gamercollection.network.apiService
 
 import es.upsa.mimo.gamercollection.models.requests.LoginCredentials
-import es.upsa.mimo.gamercollection.models.responses.LoginResponse
 import es.upsa.mimo.gamercollection.models.requests.NewPassword
+import es.upsa.mimo.gamercollection.models.responses.LoginResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -12,7 +12,10 @@ interface UserAPIService {
         "Content-Type:application/json"
     )
     @POST("users/login")
-    fun login(@HeaderMap headers: Map<String, String>, @Body body: LoginCredentials): Call<LoginResponse>
+    fun login(
+        @HeaderMap headers: Map<String, String>,
+        @Body body: LoginCredentials
+    ): Call<LoginResponse>
 
     @Headers(
         "Content-Type:application/json"

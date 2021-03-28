@@ -7,7 +7,7 @@ class DateConverter {
 
     @TypeConverter
     fun toDate(dateLong: Long?): Date? {
-        return if(dateLong == null) null else Date(dateLong)
+        return if (dateLong == null) null else Date(dateLong)
     }
 
     @TypeConverter

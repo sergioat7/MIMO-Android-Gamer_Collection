@@ -6,11 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
+
 import es.upsa.mimo.gamercollection.R;
 
 public class SpinnerAdapter extends ArrayAdapter {
@@ -24,7 +28,7 @@ public class SpinnerAdapter extends ArrayAdapter {
     //MARK: - Lifecycle methods
 
     public SpinnerAdapter(Context context, List<String> values, boolean firstOptionEnabled) {
-        super(context, 0 , values);
+        super(context, 0, values);
         this.context = context;
         this.values = values;
         this.firstOptionEnabled = firstOptionEnabled;
@@ -35,8 +39,8 @@ public class SpinnerAdapter extends ArrayAdapter {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         View listItem = convertView;
-        if(listItem == null)
-            listItem = LayoutInflater.from(context).inflate(R.layout.spinner_item,parent,false);
+        if (listItem == null)
+            listItem = LayoutInflater.from(context).inflate(R.layout.spinner_item, parent, false);
 
         String currentValue = values.get(position);
 

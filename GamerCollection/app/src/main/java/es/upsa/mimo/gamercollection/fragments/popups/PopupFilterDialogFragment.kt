@@ -48,17 +48,35 @@ class PopupFilterDialogFragment(
     private fun initializeUI() {
 
         val application = activity?.application
-        viewModel = ViewModelProvider(this, PopupFilterViewModelFactory(application)).get(PopupFilterViewModel::class.java)
+        viewModel = ViewModelProvider(this, PopupFilterViewModelFactory(application)).get(
+            PopupFilterViewModel::class.java
+        )
 
         fillPlatforms()
         fillGenres()
         fillFormats()
 
-        custom_edit_text_release_date_min.setDatePickerFormat(Constants.getFilterDateFormat(viewModel.language))
-        custom_edit_text_release_date_max.setDatePickerFormat(Constants.getFilterDateFormat(viewModel.language))
+        custom_edit_text_release_date_min.setDatePickerFormat(
+            Constants.getFilterDateFormat(
+                viewModel.language
+            )
+        )
+        custom_edit_text_release_date_max.setDatePickerFormat(
+            Constants.getFilterDateFormat(
+                viewModel.language
+            )
+        )
 
-        custom_edit_text_purchase_date_min.setDatePickerFormat(Constants.getFilterDateFormat(viewModel.language))
-        custom_edit_text_purchase_date_max.setDatePickerFormat(Constants.getFilterDateFormat(viewModel.language))
+        custom_edit_text_purchase_date_min.setDatePickerFormat(
+            Constants.getFilterDateFormat(
+                viewModel.language
+            )
+        )
+        custom_edit_text_purchase_date_max.setDatePickerFormat(
+            Constants.getFilterDateFormat(
+                viewModel.language
+            )
+        )
 
         button_cancel.setOnClickListener { cancel() }
         button_reset.setOnClickListener { reset() }
@@ -293,11 +311,13 @@ class PopupFilterDialogFragment(
         var minPrice = 0.0
         try {
             minPrice = custom_edit_text_price_min.getText().toDouble()
-        } catch (e: Exception){}
+        } catch (e: Exception) {
+        }
         var maxPrice = 0.0
         try {
             maxPrice = custom_edit_text_price_max.getText().toDouble()
-        } catch (e: Exception){}
+        } catch (e: Exception) {
+        }
 
         val isGoty = radio_button_goty_yes.isChecked
 
@@ -340,7 +360,8 @@ class PopupFilterDialogFragment(
             !isGoty &&
             !isLoaned &&
             !hasSaga &&
-            !hasSongs) {
+            !hasSongs
+        ) {
             currentFilters = null
         } else {
             currentFilters = filters

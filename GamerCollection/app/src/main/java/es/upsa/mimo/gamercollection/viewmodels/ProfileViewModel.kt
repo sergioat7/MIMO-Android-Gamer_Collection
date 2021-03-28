@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.models.login.AuthData
-import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.login.UserData
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.network.apiClient.UserAPIClient
 import es.upsa.mimo.gamercollection.repositories.*
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
@@ -21,7 +21,7 @@ class ProfileViewModel @Inject constructor(
     private val platformRepository: PlatformRepository,
     private val sagaRepository: SagaRepository,
     private val stateRepository: StateRepository
-): ViewModel() {
+) : ViewModel() {
 
     //MARK: - Private properties
 
@@ -51,12 +51,18 @@ class ProfileViewModel @Inject constructor(
         resetDatabase()
     }
 
-    fun save (newPassword: String, newLanguage: String, newSortParam: String, newSwipeRefresh: Boolean, themeMode: Int) {
+    fun save(
+        newPassword: String,
+        newLanguage: String,
+        newSortParam: String,
+        newSwipeRefresh: Boolean,
+        themeMode: Int
+    ) {
 
-        val changePassword = newPassword != sharedPreferencesHandler.getUserData().password
-        val changeLanguage = newLanguage != sharedPreferencesHandler.getLanguage()
-        val changeSortParam = newSortParam != sharedPreferencesHandler.getSortingKey()
-        val changeSwipeRefresh = newSwipeRefresh != sharedPreferencesHandler.getSwipeRefresh()
+        val changePassword = newPassword != userData.password
+        val changeLanguage = newLanguage != language
+        val changeSortParam = newSortParam != sortingKey
+        val changeSwipeRefresh = newSwipeRefresh != swipeRefresh
         val changeThemeMode = themeMode != sharedPreferencesHandler.getThemeMode()
 
         if (changePassword) {
