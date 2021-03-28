@@ -188,7 +188,7 @@ class GameDetailActivity : BaseActivity() {
 
         val image = imageUrl ?: Constants.NO_VALUE
         val errorImage =
-            if (Constants.isDarkMode(this)) R.drawable.ic_add_image_light else R.drawable.ic_add_image_dark
+            if (Constants.isDarkMode(this)) R.drawable.ic_add_image_dark else R.drawable.ic_add_image_light
         progress_bar_loading.visibility = View.VISIBLE
         Picasso
             .get()
