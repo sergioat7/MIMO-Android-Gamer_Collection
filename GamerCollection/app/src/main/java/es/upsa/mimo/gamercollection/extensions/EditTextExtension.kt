@@ -13,7 +13,7 @@ import java.util.*
 
 fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
 
-    this.addTextChangedListener(object: TextWatcher {
+    this.addTextChangedListener(object : TextWatcher {
 
         override fun afterTextChanged(editable: Editable?) {
             afterTextChanged.invoke(editable.toString())
@@ -44,7 +44,8 @@ fun EditText.setReadOnly(value: Boolean, inputType: Int, lineColor: Int) {
     isFocusableInTouchMode = !value
     isEnabled = !value
     this.setRawInputType(inputType)
-    this.backgroundTintList = if (value) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(lineColor)
+    this.backgroundTintList =
+        if (value) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(lineColor)
 }
 
 fun EditText.showDatePicker(context: Context, dateFormat: String? = null) {
@@ -76,7 +77,7 @@ private fun getPicker(editText: EditText, context: Context, dateFormat: String?)
     return DatePickerDialog(context, { _, year, month, day ->
 
         val newDay = if (day < 10) "0${day}" else day.toString()
-        val newMonth = if (month < 9) "0${month+1}" else (month+1).toString()
+        val newMonth = if (month < 9) "0${month + 1}" else (month + 1).toString()
         val newDate = "${year}-${newMonth}-${newDay}"
 
         val sharedPreferencesHandler = SharedPreferencesHandler(

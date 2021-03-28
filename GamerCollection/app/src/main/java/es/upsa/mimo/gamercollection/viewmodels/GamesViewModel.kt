@@ -10,7 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.models.*
+import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
@@ -26,7 +26,7 @@ class GamesViewModel @Inject constructor(
     private val gameRepository: GameRepository,
     private val platformRepository: PlatformRepository,
     private val stateRepository: StateRepository
-): ViewModel() {
+) : ViewModel() {
 
     //MARK: - Private properties
 
@@ -94,8 +94,13 @@ class GamesViewModel @Inject constructor(
         val dialogView = LinearLayout(context)
         dialogView.orientation = LinearLayout.HORIZONTAL
 
-        val ascendingPicker = getPicker(arrayOf(resources.getString(R.string.ascending), resources.getString(R.string.descending)), context)
-        ascendingPicker.value = if(sortAscending) 0 else 1
+        val ascendingPicker = getPicker(
+            arrayOf(
+                resources.getString(R.string.ascending),
+                resources.getString(R.string.descending)
+            ), context
+        )
+        ascendingPicker.value = if (sortAscending) 0 else 1
         val ascendingPickerParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT

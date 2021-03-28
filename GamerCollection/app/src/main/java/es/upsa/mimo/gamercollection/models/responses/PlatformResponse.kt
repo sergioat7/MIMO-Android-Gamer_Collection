@@ -12,4 +12,4 @@ data class PlatformResponse(
     override val id: String,
     @SerializedName("name")
     val name: String
-): BaseModel<String>
+) : BaseModel<String>

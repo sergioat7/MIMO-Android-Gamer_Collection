@@ -52,7 +52,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_loading"
-                style="@style/LoadingProgressBar"
+                style="@style/Widget.GamerCollection.LoadingProgressBar"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

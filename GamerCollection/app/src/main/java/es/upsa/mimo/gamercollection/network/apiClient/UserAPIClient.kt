@@ -1,8 +1,8 @@
 package es.upsa.mimo.gamercollection.network.apiClient
 
-import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.requests.LoginCredentials
 import es.upsa.mimo.gamercollection.models.requests.NewPassword
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.network.apiService.UserAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
@@ -18,7 +18,12 @@ class UserAPIClient @Inject constructor(
 
     // MARK: - Public methods
 
-    fun login(username: String, password: String, success: (String) -> Unit, failure: (ErrorResponse) -> Unit) {
+    fun login(
+        username: String,
+        password: String,
+        success: (String) -> Unit,
+        failure: (ErrorResponse) -> Unit
+    ) {
 
         val loginCredentials = LoginCredentials(username, password)
 
@@ -31,7 +36,12 @@ class UserAPIClient @Inject constructor(
         }, failure)
     }
 
-    fun register(username: String, password: String, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+    fun register(
+        username: String,
+        password: String,
+        success: () -> Unit,
+        failure: (ErrorResponse) -> Unit
+    ) {
 
         val loginCredentials = LoginCredentials(username, password)
 

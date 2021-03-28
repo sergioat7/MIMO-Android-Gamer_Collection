@@ -17,7 +17,12 @@ class SongAPIClient @Inject constructor(
 
     // MARK: - Public methods
 
-    fun createSong(gameId: Int, song: SongResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+    fun createSong(
+        gameId: Int,
+        song: SongResponse,
+        success: () -> Unit,
+        failure: (ErrorResponse) -> Unit
+    ) {
 
         val headers: MutableMap<String, String> = HashMap()
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
@@ -29,7 +34,12 @@ class SongAPIClient @Inject constructor(
         }, failure)
     }
 
-    fun deleteSong(gameId: Int, songId: Int, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+    fun deleteSong(
+        gameId: Int,
+        songId: Int,
+        success: () -> Unit,
+        failure: (ErrorResponse) -> Unit
+    ) {
 
         val headers: MutableMap<String, String> = HashMap()
         headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()

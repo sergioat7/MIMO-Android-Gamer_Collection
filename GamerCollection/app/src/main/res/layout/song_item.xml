@@ -11,7 +11,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        style="@style/SongInfoImage"
+        style="@style/Widget.GamerCollection.ImageViewSongInfo"
         />
 
     <LinearLayout
@@ -21,7 +21,7 @@
         app:layout_constraintEnd_toStartOf="@+id/image_view_remove"
         app:layout_constraintStart_toEndOf="@+id/image_view_song"
         app:layout_constraintTop_toTopOf="parent"
-        style="@style/SongInfoContainerView"
+        style="@style/Widget.GamerCollection.ViewSongInfoContainer"
         >
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/font_large"
-            style="@style/CustomTextView.Bold"
+            style="@style/Widget.GamerCollection.TextView.Bold"
             />
 
         <TextView
@@ -38,14 +38,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_mini"
             android:layout_marginBottom="@dimen/margin_mini"
-            style="@style/CustomTextView.Regular"
+            style="@style/Widget.GamerCollection.TextView.Regular"
             />
 
         <TextView
             android:id="@+id/text_view_url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/CustomTextView.Regular"
+            style="@style/Widget.GamerCollection.TextView.Regular"
             />
 
     </LinearLayout>

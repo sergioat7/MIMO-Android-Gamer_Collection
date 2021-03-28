@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="@+id/swipe_refresh_layout"
             app:layout_constraintTop_toTopOf="@+id/swipe_refresh_layout"
-            style="@style/StartListButton.Image"
+            style="@style/Widget.GamerCollection.ImageButton.PositionList.Start.Image"
             />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/swipe_refresh_layout"
             app:layout_constraintEnd_toEndOf="@+id/swipe_refresh_layout"
-            style="@style/EndListButton.Image"
+            style="@style/Widget.GamerCollection.ImageButton.PositionList.End.Image"
             />
 
         <es.upsa.mimo.gamercollection.customviews.EmptyListLayout
@@ -57,7 +57,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/SagasEmptyLayout"
+            style="@style/Widget.GamerCollection.SagasEmptyLayout"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

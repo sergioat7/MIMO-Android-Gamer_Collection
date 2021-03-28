@@ -17,7 +17,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="@dimen/margin_medium"
-            app:layout_constraintBottom_toTopOf="@+id/button_change_password"
+            app:layout_constraintBottom_toTopOf="@+id/button_save"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -37,7 +37,7 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    style="@style/UsernameEditText"
+                    style="@style/Widget.GamerCollection.EditText.Credentials.Username"
                     />
 
                 <ImageButton
@@ -46,7 +46,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/edit_text_user"
                     app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
                     app:layout_constraintTop_toTopOf="@+id/edit_text_user"
-                    style="@style/UsernameInfoButton"
+                    style="@style/Widget.GamerCollection.ImageButton.EditText.Username"
                     />
 
                 <EditText
@@ -56,7 +56,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
                     app:layout_constraintStart_toStartOf="@+id/edit_text_user"
                     app:layout_constraintTop_toBottomOf="@+id/edit_text_user"
-                    style="@style/PasswordEditText"
+                    style="@style/Widget.GamerCollection.EditText.Credentials.Password"
                     />
 
                 <ImageButton
@@ -65,7 +65,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/edit_text_password"
                     app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
                     app:layout_constraintTop_toTopOf="@+id/edit_text_password"
-                    style="@style/PasswordEyeButton"
+                    style="@style/Widget.GamerCollection.ImageButton.EditText.Password"
                     />
 
                 <TextView
@@ -77,7 +77,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/radio_group_language"
                     app:layout_constraintStart_toStartOf="@+id/radio_group_language"
                     app:layout_constraintTop_toBottomOf="@+id/edit_text_password"
-                    style="@style/ProfileSectionTitleTextView"
+                    style="@style/Widget.GamerCollection.TitleTextView.ProfileSection"
                     />
 
                 <RadioGroup
@@ -95,7 +95,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/english"
-                        style="@style/CustomRadioButton"
+                        style="@style/Widget.GamerCollection.RadioButton"
                         />
 
                     <RadioButton
@@ -103,7 +103,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/spanish"
-                        style="@style/CustomRadioButton"
+                        style="@style/Widget.GamerCollection.RadioButton"
                         />
 
                 </RadioGroup>
@@ -117,7 +117,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/spinner_sorting_keys"
                     app:layout_constraintStart_toStartOf="@+id/spinner_sorting_keys"
                     app:layout_constraintTop_toBottomOf="@+id/radio_group_language"
-                    style="@style/ProfileSectionTitleTextView"
+                    style="@style/Widget.GamerCollection.TitleTextView.ProfileSection"
                     />
 
                 <Spinner
@@ -127,7 +127,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/radio_group_language"
                     app:layout_constraintStart_toStartOf="@+id/radio_group_language"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_sort_keys"
-                    style="@style/CustomSpinner"
+                    style="@style/Widget.GamerCollection.Spinner"
                     />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -136,11 +136,33 @@
                     android:layout_height="wrap_content"
                     android:text="@string/swipe_refresh_enabled_title"
                     android:checked="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/spinner_sorting_keys"
                     app:layout_constraintStart_toStartOf="@+id/spinner_sorting_keys"
                     app:layout_constraintTop_toBottomOf="@+id/spinner_sorting_keys"
-                    style="@style/ProfileSwitch"
+                    style="@style/Widget.GamerCollection.Switch.Profile"
+                    />
+
+                <TextView
+                    android:id="@+id/text_view_app_theme_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_theme"
+                    app:layout_constraintBottom_toTopOf="@+id/text_view_app_theme_value"
+                    app:layout_constraintEnd_toEndOf="@+id/text_view_app_theme_value"
+                    app:layout_constraintStart_toStartOf="@+id/text_view_app_theme_value"
+                    app:layout_constraintTop_toBottomOf="@+id/switch_swipe_refresh"
+                    style="@style/Widget.GamerCollection.TitleTextView.ProfileSection"
+                    />
+
+                <TextView
+                    android:id="@+id/text_view_app_theme_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/switch_swipe_refresh"
+                    app:layout_constraintStart_toStartOf="@+id/switch_swipe_refresh"
+                    app:layout_constraintTop_toBottomOf="@+id/switch_swipe_refresh"
+                    style="@style/Widget.GamerCollection.TextView.Regular.AppTheme"
                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -148,14 +170,14 @@
         </ScrollView>
 
         <Button
-            android:id="@+id/button_change_password"
+            android:id="@+id/button_save"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_medium"
             android:text="@string/save"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            style="@style/RoundedButton.Action"
+            style="@style/Widget.GamerCollection.Button.Rounded.Action"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

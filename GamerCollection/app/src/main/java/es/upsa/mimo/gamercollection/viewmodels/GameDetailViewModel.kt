@@ -14,7 +14,7 @@ import javax.inject.Inject
 class GameDetailViewModel @Inject constructor(
     private val gameRepository: GameRepository,
     private val platformRepository: PlatformRepository
-): ViewModel() {
+) : ViewModel() {
 
     //MARK: - Private properties
 

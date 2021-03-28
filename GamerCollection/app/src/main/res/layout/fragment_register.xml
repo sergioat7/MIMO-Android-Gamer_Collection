@@ -21,7 +21,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/MainImageView"
+            style="@style/Widget.GamerCollection.ImageViewLogo"
             />
 
         <EditText
@@ -32,7 +32,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            style="@style/UsernameEditText"
+            style="@style/Widget.GamerCollection.EditText.Credentials.Username"
             />
 
         <ImageButton
@@ -41,7 +41,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/edit_text_user"
             app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
             app:layout_constraintTop_toTopOf="@+id/edit_text_user"
-            style="@style/UsernameInfoButton"
+            style="@style/Widget.GamerCollection.ImageButton.EditText.Username"
             />
 
         <EditText
@@ -52,7 +52,7 @@
             app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
             app:layout_constraintStart_toStartOf="@+id/edit_text_user"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/PasswordEditText"
+            style="@style/Widget.GamerCollection.EditText.Credentials.Password"
             />
 
         <ImageButton
@@ -61,7 +61,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/edit_text_password"
             app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
             app:layout_constraintTop_toTopOf="@+id/edit_text_password"
-            style="@style/PasswordEyeButton"
+            style="@style/Widget.GamerCollection.ImageButton.EditText.Password"
             />
 
         <EditText
@@ -72,7 +72,7 @@
             app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
             app:layout_constraintStart_toStartOf="@+id/edit_text_password"
             app:layout_constraintTop_toBottomOf="@+id/edit_text_password"
-            style="@style/PasswordEditText"
+            style="@style/Widget.GamerCollection.EditText.Credentials.Password"
             />
 
         <ImageButton
@@ -81,7 +81,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/edit_text_repeatPassword"
             app:layout_constraintEnd_toEndOf="@+id/edit_text_repeatPassword"
             app:layout_constraintTop_toTopOf="@+id/edit_text_repeatPassword"
-            style="@style/PasswordEyeButton"
+            style="@style/Widget.GamerCollection.ImageButton.EditText.Password"
             />
 
         <Button
@@ -93,7 +93,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_text_repeatPassword"
-            style="@style/RegisterButton"
+            style="@style/Widget.GamerCollection.Button.Rounded.Action.Register"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

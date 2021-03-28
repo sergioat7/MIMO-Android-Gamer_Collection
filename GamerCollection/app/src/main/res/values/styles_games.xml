@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="StateButtonsContainerView">
+    <style name="Widget.GamerCollection.ViewStateButtonsContainer">
         <item name="android:background">#000000</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:padding">@dimen/margin_tiny</item>
     </style>
 
-    <style name="GotyImage">
+    <style name="Widget.GamerCollection.ImageViewGoty">
         <item name="android:visibility">gone</item>
         <item name="android:adjustViewBounds">true</item>
         <item name="srcCompat">@drawable/goty_label</item>
     </style>
 
-    <style name="GameInfoContainerView">
+    <style name="Widget.GamerCollection.ViewGameInfoContainer">
         <item name="android:layout_marginTop">@dimen/margin_tiny</item>
         <item name="android:layout_marginBottom">@dimen/margin_tiny</item>
         <item name="android:layout_marginStart">@dimen/margin_medium</item>
         <item name="android:orientation">vertical</item>
     </style>
 
-    <style name="GameNameTextView">
+    <style name="Widget.GamerCollection.TextView.GameName">
         <item name="android:layout_marginBottom">@dimen/margin_small</item>
-        <item name="android:textColor">@color/textPrimary</item>
         <item name="android:textSize">@dimen/font_extra_large</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="android:maxLines">3</item>
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="GamePlatformTextView">
+    <style name="Widget.GamerCollection.TextView.GamePlatform">
         <item name="android:layout_marginBottom">@dimen/margin_tiny</item>
         <item name="android:textColor">@color/textTertiary</item>
         <item name="android:textSize">@dimen/font_medium</item>
@@ -39,7 +38,7 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="GameScoreRatingBar" parent="@style/CustomRatingBar">
+    <style name="Widget.GamerCollection.RatingBar.GameScore">
         <item name="android:layout_height">@dimen/size_large</item>
         <item name="android:layout_weight">1</item>
         <item name="android:isIndicator">true</item>
@@ -47,28 +46,29 @@
         <item name="android:stepSize">0.5</item>
     </style>
 
-    <style name="GameScoreRatingTextView">
+    <style name="Widget.GamerCollection.TextView.Rating">
+        <item name="android:textColor">@color/colorInProgress</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextView.Rating.GameScore">
         <item name="android:layout_marginStart">@dimen/margin_small</item>
         <item name="android:layout_marginBottom">@dimen/margin_mini</item>
         <item name="android:gravity">bottom</item>
-        <item name="android:textColor">@color/colorInProgress</item>
         <item name="android:textSize">@dimen/font_large</item>
-        <item name="android:fontFamily">@font/roboto_bold</item>
     </style>
 
-    <style name="NoRatingTextView">
+    <style name="Widget.GamerCollection.TextView.Rating.None">
         <item name="android:text">@string/new_game</item>
-        <item name="android:textColor">@color/colorInProgress</item>
-        <item name="android:textSize">24sp</item>
-        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">@dimen/font_extra_large</item>
     </style>
 
-    <style name="SeparatorLineView">
+    <style name="Widget.GamerCollection.ViewSeparatorLine">
         <item name="android:layout_marginTop">@dimen/margin_small</item>
         <item name="android:background">@color/colorPrimaryLight</item>
     </style>
 
-    <style name="PositionListButton">
+    <style name="Widget.GamerCollection.ImageButton.PositionList">
         <item name="android:backgroundTint">@color/buttonPrimary</item>
         <item name="android:tint">@color/colorSecondary</item>
         <item name="android:scaleType">center</item>
@@ -79,25 +79,25 @@
         <item name="fabSize">mini</item>
     </style>
 
-    <style name="StartListButton" parent="PositionListButton">
+    <style name="Widget.GamerCollection.ImageButton.PositionList.Start">
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginEnd">10dp</item>
     </style>
 
-    <style name="StartListButton.Image">
+    <style name="Widget.GamerCollection.ImageButton.PositionList.Start.Image">
         <item name="android:src">@drawable/ic_double_arrow_up_light</item>
     </style>
 
-    <style name="EndListButton" parent="PositionListButton">
+    <style name="Widget.GamerCollection.ImageButton.PositionList.End">
         <item name="android:layout_marginBottom">10dp</item>
         <item name="android:layout_marginEnd">10dp</item>
     </style>
 
-    <style name="EndListButton.Image">
+    <style name="Widget.GamerCollection.ImageButton.PositionList.End.Image">
         <item name="android:src">@drawable/ic_double_arrow_down_light</item>
     </style>
 
-    <style name="LoadMoreButton">
+    <style name="Widget.GamerCollection.Button.LoadMore">
         <item name="android:layout_margin">@dimen/margin_small</item>
         <item name="android:gravity">center</item>
         <item name="android:paddingStart">@dimen/margin_small</item>
@@ -108,8 +108,8 @@
         <item name="android:textColor">@color/colorSecondary</item>
     </style>
 
-    <style name="LoadMoreButton.Image">
+    <style name="Widget.GamerCollection.Button.LoadMore.Image">
         <item name="android:drawableStart">@drawable/ic_add_circle_light</item>
     </style>
-    
+
 </resources>

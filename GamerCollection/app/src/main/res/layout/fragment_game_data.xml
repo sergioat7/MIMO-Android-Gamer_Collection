@@ -20,7 +20,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/GameDataContentView"
+            style="@style/Widget.GamerCollection.ScrollViewContent.GameData"
             >
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -80,7 +80,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linear_layout_state_buttons"
-                    style="@style/HiddenContentView"
+                    style="@style/Widget.GamerCollection.ViewHiddenContent"
                     >
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -100,7 +100,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintVertical_bias="0.0"
-                            style="@style/GameDataTitleTextView"
+                            style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                             />
 
                         <Spinner
@@ -111,7 +111,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
-                            style="@style/CustomSpinner"
+                            style="@style/Widget.GamerCollection.Spinner"
                             />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -135,7 +135,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintVertical_bias="0.0"
-                            style="@style/GameDataTitleTextView"
+                            style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                             />
 
                         <RadioGroup
@@ -155,7 +155,7 @@
                                 android:layout_height="wrap_content"
                                 android:checked="true"
                                 android:text="@string/no"
-                                style="@style/CustomRadioButton"
+                                style="@style/Widget.GamerCollection.RadioButton"
                                 />
 
                             <RadioButton
@@ -163,7 +163,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/yes"
-                                style="@style/CustomRadioButton"
+                                style="@style/Widget.GamerCollection.RadioButton"
                                 />
 
                         </RadioGroup>
@@ -193,14 +193,14 @@
                         <TextView
                             android:layout_height="wrap_content"
                             android:text="@string/game_detail_genre"
-                            style="@style/GameDataTitleTextView"
+                            style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                             />
 
                         <Spinner
                             android:id="@+id/spinner_genres"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            style="@style/CustomSpinner"
+                            style="@style/Widget.GamerCollection.Spinner"
                             />
 
                     </LinearLayout>
@@ -214,14 +214,14 @@
                         <TextView
                             android:layout_height="wrap_content"
                             android:text="@string/game_detail_release_date"
-                            style="@style/GameDataTitleTextView"
+                            style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                             />
 
                         <es.upsa.mimo.gamercollection.customviews.CustomEditText
                             android:id="@+id/custom_edit_text_release_date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            style="@style/ReleaseDateEditText"
+                            style="@style/Widget.GamerCollection.CustomEditText.GameDetail.WithRemoveImage.ReleaseDate"
                             />
 
                     </LinearLayout>
@@ -236,14 +236,14 @@
                         <TextView
                             android:layout_height="wrap_content"
                             android:text="@string/game_detail_format"
-                            style="@style/GameDataTitleTextView"
+                            style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                             />
 
                         <Spinner
                             android:id="@+id/spinner_formats"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            style="@style/CustomSpinner"
+                            style="@style/Widget.GamerCollection.Spinner"
                             />
 
                     </LinearLayout>
@@ -257,7 +257,7 @@
                         <TextView
                             android:layout_height="wrap_content"
                             android:text="@string/game_detail_distributor"
-                            style="@style/GameDataTitleTextView"
+                            style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                             />
 
                         <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -267,7 +267,7 @@
                             app:customEditText_type="TEXT"
                             app:customEditText_placeholder="@string/game_detail_placeholder_distributor"
                             app:customEditText_ime_option="NEXT"
-                            style="@style/GameDetailEditText"
+                            style="@style/Widget.GamerCollection.CustomEditText.GameDetail"
                             />
 
                     </LinearLayout>
@@ -281,7 +281,7 @@
                         <TextView
                             android:layout_height="wrap_content"
                             android:text="@string/game_detail_developer"
-                            style="@style/GameDataTitleTextView"
+                            style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                             />
 
                         <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -291,7 +291,7 @@
                             app:customEditText_type="TEXT"
                             app:customEditText_placeholder="@string/game_detail_placeholder_developer"
                             app:customEditText_ime_option="NEXT"
-                            style="@style/GameDetailEditText"
+                            style="@style/Widget.GamerCollection.CustomEditText.GameDetail"
                             />
 
                     </LinearLayout>
@@ -305,7 +305,7 @@
                         <TextView
                             android:layout_height="wrap_content"
                             android:text="@string/game_detail_players"
-                            style="@style/GameDataTitleTextView"
+                            style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                             />
 
                         <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -315,7 +315,7 @@
                             app:customEditText_type="TEXT"
                             app:customEditText_placeholder="@string/game_detail_placeholder_players"
                             app:customEditText_ime_option="NEXT"
-                            style="@style/GameDetailEditText"
+                            style="@style/Widget.GamerCollection.CustomEditText.GameDetail"
                             />
 
                     </LinearLayout>
@@ -330,7 +330,7 @@
                             android:id="@+id/text_view_price"
                             android:layout_height="wrap_content"
                             android:text="@string/game_detail_price"
-                            style="@style/GameDataTitleTextView"
+                            style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                             />
 
                         <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -340,7 +340,7 @@
                             app:customEditText_type="NUMBER"
                             app:customEditText_placeholder="@string/game_detail_placeholder_price"
                             app:customEditText_ime_option="NEXT"
-                            style="@style/GameDetailEditText"
+                            style="@style/Widget.GamerCollection.CustomEditText.GameDetail"
                             />
 
                     </LinearLayout>
@@ -355,14 +355,14 @@
                             android:id="@+id/text_view_purchase_date"
                             android:layout_height="wrap_content"
                             android:text="@string/game_detail_purchase_date"
-                            style="@style/GameDataTitleTextView"
+                            style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                             />
 
                         <es.upsa.mimo.gamercollection.customviews.CustomEditText
                             android:id="@+id/custom_edit_text_purchase_date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            style="@style/PurchaseDateEditText"
+                            style="@style/Widget.GamerCollection.CustomEditText.GameDetail.WithRemoveImage.PurchaseDate"
                             />
 
                     </LinearLayout>
@@ -377,14 +377,14 @@
                             android:id="@+id/text_view_purchase_location"
                             android:layout_height="wrap_content"
                             android:text="@string/game_detail_purchase_location"
-                            style="@style/GameDataTitleTextView"
+                            style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                             />
 
                         <es.upsa.mimo.gamercollection.customviews.CustomEditText
                             android:id="@+id/custom_edit_text_purchase_location"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            style="@style/PurchaseLocationEditText"
+                            style="@style/Widget.GamerCollection.CustomEditText.GameDetail.WithRemoveImage.PurchaseLocation"
                             />
 
                     </LinearLayout>
@@ -399,7 +399,7 @@
                             android:id="@+id/text_view_loaned"
                             android:layout_height="wrap_content"
                             android:text="@string/game_detail_loaned_to"
-                            style="@style/GameDataTitleTextView"
+                            style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                             />
 
                         <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -409,7 +409,7 @@
                             app:customEditText_type="TEXT"
                             app:customEditText_placeholder="@string/game_detail_placeholder_loaned_to"
                             app:customEditText_ime_option="NEXT"
-                            style="@style/GameDetailEditText"
+                            style="@style/Widget.GamerCollection.CustomEditText.GameDetail"
                             />
 
                     </LinearLayout>
@@ -424,7 +424,7 @@
                             android:id="@+id/text_view_video_url"
                             android:layout_height="wrap_content"
                             android:text="@string/game_detail_video_url"
-                            style="@style/GameDataTitleTextView"
+                            style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                             />
 
                         <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -434,7 +434,7 @@
                             app:customEditText_type="URL"
                             app:customEditText_placeholder="@string/game_detail_placeholder_video_url"
                             app:customEditText_ime_option="NEXT"
-                            style="@style/GameDetailEditText"
+                            style="@style/Widget.GamerCollection.CustomEditText.GameDetail"
                             />
 
                     </LinearLayout>
@@ -449,7 +449,7 @@
                             android:id="@+id/text_view_observations"
                             android:layout_height="wrap_content"
                             android:text="@string/game_detail_observations"
-                            style="@style/GameDataTitleTextView"
+                            style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                             />
 
                         <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -459,7 +459,7 @@
                             app:customEditText_type="TEXT"
                             app:customEditText_placeholder="@string/game_detail_placeholder_observations"
                             app:customEditText_ime_option="DONE"
-                            style="@style/GameDetailEditText"
+                            style="@style/Widget.GamerCollection.CustomEditText.GameDetail"
                             />
 
                     </LinearLayout>
@@ -474,7 +474,7 @@
                             android:id="@+id/text_view_saga"
                             android:layout_height="wrap_content"
                             android:text="@string/game_detail_saga"
-                            style="@style/GameDataTitleTextView"
+                            style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                             />
 
                         <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -482,7 +482,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:customEditText_type="NONE"
-                            style="@style/GameDetailEditText"
+                            style="@style/Widget.GamerCollection.CustomEditText.GameDetail"
                             />
 
                     </LinearLayout>

@@ -4,7 +4,7 @@ import android.os.Bundle
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.base.BaseActivity
 
-class LoginActivity: BaseActivity() {
+class LoginActivity : BaseActivity() {
 
     // MARK: - Lifecycle methods
 

@@ -70,7 +70,10 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
     private fun initializeUI() {
 
         val application = activity?.application
-        viewModel = ViewModelProvider(this, GameSearchViewModelFactory(application)).get(GameSearchViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            GameSearchViewModelFactory(application)
+        ).get(GameSearchViewModel::class.java)
         setupBindings()
 
         swipe_refresh_layout.isEnabled = viewModel.swipeRefresh
@@ -92,7 +95,7 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
             this
         )
         recycler_view_games.adapter = gamesAdapter
-        recycler_view_games.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        recycler_view_games.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -196,7 +199,7 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
         this.searchView?.let { searchView ->
 
             searchView.queryHint = resources.getString(R.string.search_games)
-            searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
                 override fun onQueryTextChange(newText: String): Boolean {
                     return true

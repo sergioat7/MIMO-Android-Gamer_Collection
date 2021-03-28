@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        style="@style/SetImageTitleTextView"
+        style="@style/Widget.GamerCollection.TextView.SetImageTitle"
         />
 
     <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -24,7 +24,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_view_title"
-        style="@style/SetImageEditText"
+        style="@style/Widget.GamerCollection.CustomEditText.SetImage"
         />
 
     <Button
@@ -36,7 +36,7 @@
         app:layout_constraintTop_toBottomOf="@+id/custom_edit_text_url"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintWidth_percent="0.5"
-        style="@style/PopupAcceptButton"
+        style="@style/Widget.GamerCollection.Button.Rounded.Action.Popup"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,8 +10,16 @@ interface SongAPIService {
         "Content-Type:application/json"
     )
     @POST("songs/{gameId}")
-    fun createSong(@HeaderMap headers: Map<String, String>, @Path(value = "gameId") gameId: Int, @Body body: SongResponse): Call<Void>
+    fun createSong(
+        @HeaderMap headers: Map<String, String>,
+        @Path(value = "gameId") gameId: Int,
+        @Body body: SongResponse
+    ): Call<Void>
 
     @DELETE("songs/{gameId}/{songId}")
-    fun deleteSong(@HeaderMap headers: Map<String, String>, @Path(value = "gameId") gameId: Int, @Path(value = "songId") songId: Int): Call<Void>
+    fun deleteSong(
+        @HeaderMap headers: Map<String, String>,
+        @Path(value = "gameId") gameId: Int,
+        @Path(value = "songId") songId: Int
+    ): Call<Void>
 }
