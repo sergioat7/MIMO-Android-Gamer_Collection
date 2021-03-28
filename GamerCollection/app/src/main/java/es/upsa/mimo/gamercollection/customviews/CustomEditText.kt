@@ -6,11 +6,12 @@ import android.text.InputType
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.LayoutInflater
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
+import androidx.databinding.DataBindingUtil
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.databinding.CustomEditTextBinding
 import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.extensions.showDatePicker
@@ -21,17 +22,28 @@ class CustomEditText : ConstraintLayout {
 
     // MARK: - Private properties
 
+    private var binding: CustomEditTextBinding
     private lateinit var inputType: EditTextType
 
     // MARK: - Lifecycle methods
 
     constructor(context: Context) : super(context) {
-        LayoutInflater.from(context).inflate(R.layout.custom_edit_text, this, true)
+        binding = DataBindingUtil.inflate(
+            LayoutInflater.from(context),
+            R.layout.custom_edit_text,
+            this,
+            true
+        )
     }
 
     constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
 
-        LayoutInflater.from(context).inflate(R.layout.custom_edit_text, this, true)
+        binding = DataBindingUtil.inflate(
+            LayoutInflater.from(context),
+            R.layout.custom_edit_text,
+            this,
+            true
+        )
         setAttributes(attrs)
     }
 
@@ -41,25 +53,26 @@ class CustomEditText : ConstraintLayout {
         defStyle
     ) {
 
-        LayoutInflater.from(context).inflate(R.layout.custom_edit_text, this, true)
+        binding = DataBindingUtil.inflate(
+            LayoutInflater.from(context),
+            R.layout.custom_edit_text,
+            this,
+            true
+        )
         setAttributes(attrs)
     }
 
     // MARK: - Public methods
 
     fun getText(): String {
-        return edit_text.getValue()
+        return binding.editText.getValue()
     }
 
     fun setText(text: String?) {
-        edit_text.setText(text)
+        binding.text = text
     }
 
     fun setReadOnly(notEditable: Boolean, lineColor: Int) {
-
-        if (edit_text.text.toString() == Constants.NO_VALUE && !notEditable) {
-            edit_text.text = null
-        }
 
         val type =
             if (notEditable) {
@@ -75,16 +88,23 @@ class CustomEditText : ConstraintLayout {
                     EditTextType.NONE -> InputType.TYPE_NULL
                 }
             }
-        edit_text.setReadOnly(notEditable, type, lineColor)
-        image_button.visibility = if (!notEditable) View.VISIBLE else View.GONE
+
+        with(binding) {
+
+            if (text == Constants.NO_VALUE && !notEditable) {
+                text = null
+            }
+            editText.setReadOnly(notEditable, type, lineColor)
+            editable = !notEditable
+        }
     }
 
     override fun setOnClickListener(l: OnClickListener?) {
-        edit_text.setOnClickListener(l)
+        binding.editText.setOnClickListener(l)
     }
 
     fun setDatePickerFormat(dateFormat: String) {
-        edit_text.showDatePicker(context, dateFormat)
+        binding.editText.showDatePicker(context, dateFormat)
     }
 
     // MARK: - Private methods
@@ -111,27 +131,9 @@ class CustomEditText : ConstraintLayout {
             val imeOption = EditTextImeOption.valueOf(
                 typed.getString(R.styleable.CustomEditText_customEditText_ime_option) ?: "NONE"
             )
-
-            edit_text.hint = hint
-            edit_text.typeface = ResourcesCompat.getFont(context, font)
-            edit_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
             val paddingEnd =
                 if (icon != null) (resources.getDimension(R.dimen.margin_larger) / resources.displayMetrics.density).toInt()
                 else edit_text.paddingRight
-            edit_text.setPadding(
-                edit_text.paddingLeft,
-                edit_text.paddingTop,
-                paddingEnd,
-                edit_text.paddingBottom
-            )
-            image_button.setImageDrawable(icon)
-            image_button.setOnClickListener {
-                edit_text.setText(Constants.EMPTY_VALUE)
-            }
-
-            if (inputType == EditTextType.DATE) {
-                edit_text.showDatePicker(context)
-            }
 
             val type = when (inputType) {
                 EditTextType.EMAIL -> InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
@@ -142,14 +144,37 @@ class CustomEditText : ConstraintLayout {
                 EditTextType.DATE -> InputType.TYPE_NULL
                 EditTextType.NONE -> InputType.TYPE_NULL
             }
-            edit_text.setRawInputType(type)
 
             val option = when (imeOption) {
                 EditTextImeOption.NEXT -> EditorInfo.IME_ACTION_NEXT
                 EditTextImeOption.DONE -> EditorInfo.IME_ACTION_DONE
                 EditTextImeOption.NONE -> EditorInfo.IME_ACTION_NONE
             }
-            edit_text.imeOptions = option
+
+            with(binding) {
+
+                if (inputType == EditTextType.DATE) {
+                    editText.showDatePicker(context)
+                }
+                editText.hint = hint
+                editText.typeface = ResourcesCompat.getFont(context, font)
+                editText.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
+                editText.setPadding(
+                    editText.paddingLeft,
+                    editText.paddingTop,
+                    paddingEnd,
+                    editText.paddingBottom
+                )
+                editText.setRawInputType(type)
+                editText.imeOptions = option
+
+                imageButton.setImageDrawable(icon)
+                imageButton.setOnClickListener {
+                    text = Constants.EMPTY_VALUE
+                }
+
+                editable = true
+            }
         }
     }
 }
