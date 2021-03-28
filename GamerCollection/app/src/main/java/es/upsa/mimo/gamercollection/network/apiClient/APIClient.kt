@@ -51,7 +51,11 @@ class APIClient {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
 
-        inline fun <reified T, reified U> sendServer(request: Call<T>, crossinline success: (T) -> Unit, crossinline failure: (U) -> Unit) {
+        inline fun <reified T, reified U> sendServer(
+            request: Call<T>,
+            crossinline success: (T) -> Unit,
+            crossinline failure: (U) -> Unit
+        ) {
 
             request.enqueue(object : Callback<T> {
                 override fun onResponse(call: Call<T>?, response: Response<T>) {
@@ -61,7 +65,7 @@ class APIClient {
                     val body = response.body()
                     val errorBody = response.errorBody()
 
-                    if ( isSuccessful && (code == 204 || T::class == Void::class) ) {
+                    if (isSuccessful && (code == 204 || T::class == Void::class)) {
 
                         if (T::class == Void::class) {
                             val result = gson.fromJson(Constants.EMPTY_VALUE, T::class.java)
@@ -73,13 +77,15 @@ class APIClient {
                             val result = gson.fromJson("{}", T::class.java)
                             success(result)
                             return
-                        } catch (e: Exception){}
+                        } catch (e: Exception) {
+                        }
 
                         try {
                             val result = gson.fromJson("[]", T::class.java)
                             success(result)
                             return
-                        } catch (e: Exception){}
+                        } catch (e: Exception) {
+                        }
 
                         val error = ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server) as U
                         failure(error)

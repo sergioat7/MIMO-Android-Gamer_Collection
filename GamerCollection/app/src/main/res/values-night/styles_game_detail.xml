@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.GamerCollection.NoActionBar.GameDetail" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:minHeight">?attr/actionBarSize</item>
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_light</item>
-    </style>
-
-    <style name="AddImage">
+    <style name="Widget.GamerCollection.ImageViewNew">
         <item name="android:layout_marginStart">@dimen/margin_medium</item>
         <item name="android:adjustViewBounds">true</item>
         <item name="srcCompat">@drawable/ic_add_image_dark</item>
     </style>
 
-    <style name="GameDetailEditTextWithRemoveImage" parent="GameDetailEditText">
+    <style name="Widget.GamerCollection.CustomEditText.GameDetail.WithRemoveImage">
         <item name="customEditText_icon">@drawable/ic_remove_text_dark</item>
     </style>
 
-    <style name="SongsEmptyLayout">
+    <style name="Widget.GamerCollection.SongsEmptyLayout">
         <item name="emptyListLayout_image">@drawable/ic_song_dark</item>
     </style>
 
-    <style name="SetImageEditText">
+    <style name="Widget.GamerCollection.CustomEditText.SetImage">
         <item name="android:layout_marginTop">@dimen/margin_small</item>
         <item name="android:layout_marginStart">@dimen/margin_small</item>
         <item name="android:layout_marginEnd">@dimen/margin_small</item>
@@ -32,7 +26,7 @@
         <item name="customEditText_ime_option">"DONE"</item>
     </style>
 
-    <style name="SongInfoImage">
+    <style name="Widget.GamerCollection.ImageViewSongInfo">
         <item name="android:layout_width">@dimen/size_big</item>
         <item name="android:layout_height">@dimen/size_big</item>
         <item name="android:layout_marginTop">@dimen/margin_small</item>
@@ -40,7 +34,7 @@
         <item name="srcCompat">@drawable/ic_song_dark</item>
     </style>
 
-    <style name="NewSongCustomEditText">
+    <style name="Widget.GamerCollection.CustomEditText.NewSong">
         <item name="customEditText_font">@font/roboto_regular</item>
         <item name="customEditText_text_size">@dimen/font_large</item>
         <item name="customEditText_icon">@drawable/ic_remove_text_dark</item>

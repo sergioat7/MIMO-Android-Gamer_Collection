@@ -11,7 +11,7 @@ class GameDetailPagerAdapter(
     activity: AppCompatActivity,
     private val itemsCount: Int,
     private val currentGame: GameResponse?
-): FragmentStateAdapter(activity) {
+) : FragmentStateAdapter(activity) {
 
     //MARK: - Private properties
 

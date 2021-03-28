@@ -6,10 +6,13 @@ import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.login.AuthData
 import es.upsa.mimo.gamercollection.models.login.LoginFormState
-import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.login.UserData
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.network.apiClient.UserAPIClient
-import es.upsa.mimo.gamercollection.repositories.*
+import es.upsa.mimo.gamercollection.repositories.FormatRepository
+import es.upsa.mimo.gamercollection.repositories.GenreRepository
+import es.upsa.mimo.gamercollection.repositories.PlatformRepository
+import es.upsa.mimo.gamercollection.repositories.StateRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
@@ -21,7 +24,7 @@ class RegisterViewModel @Inject constructor(
     private val genreRepository: GenreRepository,
     private val platformRepository: PlatformRepository,
     private val stateRepository: StateRepository
-): ViewModel() {
+) : ViewModel() {
 
     //MARK: - Private properties
 

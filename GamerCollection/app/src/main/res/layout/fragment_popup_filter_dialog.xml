@@ -32,7 +32,7 @@
                 app:layout_constraintHeight_percent="0.875"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                style="@style/ModalFilterContentView"
+                style="@style/Widget.GamerCollection.ScrollViewContent.ModalFilter"
                 >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,7 +47,7 @@
                         android:text="@string/modal_filter_platform"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        style="@style/ModalFilterTitle"
+                        style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
                         />
 
                     <HorizontalScrollView
@@ -57,7 +57,7 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/text_view_platform_title"
-                        style="@style/ModalFilterHorizontalContentView"
+                        style="@style/Widget.GamerCollection.ScrollViewContent.HorizontalModalFilter"
                         >
 
                         <LinearLayout
@@ -76,7 +76,7 @@
                         android:text="@string/modal_filter_genre"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/scroll_platforms"
-                        style="@style/ModalFilterTitle"
+                        style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
                         />
 
                     <HorizontalScrollView
@@ -86,7 +86,7 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/text_view_genre_title"
-                        style="@style/ModalFilterHorizontalContentView"
+                        style="@style/Widget.GamerCollection.ScrollViewContent.HorizontalModalFilter"
                         >
 
                         <LinearLayout
@@ -105,7 +105,7 @@
                         android:text="@string/modal_filter_format"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/scroll_genres"
-                        style="@style/ModalFilterTitle"
+                        style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
                         />
 
                     <HorizontalScrollView
@@ -115,7 +115,7 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/text_view_format_title"
-                        style="@style/ModalFilterHorizontalContentView"
+                        style="@style/Widget.GamerCollection.ScrollViewContent.HorizontalModalFilter"
                         >
 
                         <LinearLayout
@@ -133,7 +133,7 @@
                         android:text="@string/modal_filter_score"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/scroll_formats"
-                        style="@style/ModalFilterTitle"
+                        style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
                         />
 
                     <LinearLayout
@@ -143,7 +143,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/text_view_score_title"
-                        style="@style/RatingLayout"
+                        style="@style/Widget.GamerCollection.RatingLayout"
                         >
 
                         <me.zhanghai.android.materialratingbar.MaterialRatingBar
@@ -151,7 +151,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:rating="0"
-                            style="@style/ModalFilterRatingBar"
+                            style="@style/Widget.GamerCollection.RatingBar.ModalFilter"
                             />
 
                         <TextView
@@ -160,7 +160,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/margin_small"
                             android:text="@string/min"
-                            style="@style/CustomTextView.Regular"
+                            style="@style/Widget.GamerCollection.TextView.Regular"
                             />
 
                     </LinearLayout>
@@ -172,7 +172,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linear_layout_min_rating"
-                        style="@style/RatingLayout"
+                        style="@style/Widget.GamerCollection.RatingLayout"
                         >
 
                         <me.zhanghai.android.materialratingbar.MaterialRatingBar
@@ -180,7 +180,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:rating="5"
-                            style="@style/ModalFilterRatingBar"
+                            style="@style/Widget.GamerCollection.RatingBar.ModalFilter"
                             />
 
                         <TextView
@@ -189,7 +189,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/margin_small"
                             android:text="@string/max"
-                            style="@style/CustomTextView.Regular"
+                            style="@style/Widget.GamerCollection.TextView.Regular"
                             />
 
                     </LinearLayout>
@@ -201,7 +201,7 @@
                         android:text="@string/modal_filter_release_date"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linear_layout_max_rating"
-                        style="@style/ModalFilterTitle"
+                        style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
                         />
 
                     <LinearLayout
@@ -245,7 +245,7 @@
                         android:text="@string/modal_filter_purchase_date"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linear_layout_release_dates"
-                        style="@style/ModalFilterTitle"
+                        style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
                         />
 
                     <LinearLayout
@@ -289,7 +289,7 @@
                         android:text="@string/modal_filter_price"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linear_layout_purchase_dates"
-                        style="@style/ModalFilterTitle"
+                        style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
                         />
 
                     <LinearLayout
@@ -333,7 +333,7 @@
                         android:text="@string/modal_filter_goty"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linear_layout_prices"
-                        style="@style/ModalFilterTitle"
+                        style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
                         />
 
                     <RadioGroup
@@ -352,7 +352,7 @@
                             android:layout_height="wrap_content"
                             android:checked="true"
                             android:text="@string/no"
-                            style="@style/CustomRadioButton"
+                            style="@style/Widget.GamerCollection.RadioButton"
                             />
 
                         <RadioButton
@@ -360,7 +360,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/yes"
-                            style="@style/CustomRadioButton"
+                            style="@style/Widget.GamerCollection.RadioButton"
                             />
 
                     </RadioGroup>
@@ -372,7 +372,7 @@
                         android:text="@string/modal_filter_loaned"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/radio_group_goty"
-                        style="@style/ModalFilterTitle"
+                        style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
                         />
 
                     <RadioGroup
@@ -391,7 +391,7 @@
                             android:layout_height="wrap_content"
                             android:checked="true"
                             android:text="@string/no"
-                            style="@style/CustomRadioButton"
+                            style="@style/Widget.GamerCollection.RadioButton"
                             />
 
                         <RadioButton
@@ -399,7 +399,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/yes"
-                            style="@style/CustomRadioButton"
+                            style="@style/Widget.GamerCollection.RadioButton"
                             />
 
                     </RadioGroup>
@@ -411,7 +411,7 @@
                         android:text="@string/modal_filter_has_saga"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/radio_group_loaned"
-                        style="@style/ModalFilterTitle"
+                        style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
                         />
 
                     <RadioGroup
@@ -430,7 +430,7 @@
                             android:layout_height="wrap_content"
                             android:checked="true"
                             android:text="@string/no"
-                            style="@style/CustomRadioButton"
+                            style="@style/Widget.GamerCollection.RadioButton"
                             />
 
                         <RadioButton
@@ -438,7 +438,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/yes"
-                            style="@style/CustomRadioButton"
+                            style="@style/Widget.GamerCollection.RadioButton"
                             />
 
                     </RadioGroup>
@@ -450,7 +450,7 @@
                         android:text="@string/modal_filter_has_songs"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/radio_group_saga"
-                        style="@style/ModalFilterTitle"
+                        style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
                         />
 
                     <RadioGroup
@@ -471,7 +471,7 @@
                             android:layout_height="wrap_content"
                             android:checked="true"
                             android:text="@string/no"
-                            style="@style/CustomRadioButton"
+                            style="@style/Widget.GamerCollection.RadioButton"
                             />
 
                         <RadioButton
@@ -479,7 +479,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/yes"
-                            style="@style/CustomRadioButton"
+                            style="@style/Widget.GamerCollection.RadioButton"
                             />
 
                     </RadioGroup>
@@ -505,7 +505,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                style="@style/FilterButtonsContentView"
+                style="@style/Widget.GamerCollection.FilterButtonsContent"
                 >
 
                 <Button
@@ -514,13 +514,13 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorPending"
                     android:text="@string/cancel"
-                    style="@style/FilterButton"
+                    style="@style/Widget.GamerCollection.FilterButton"
                     />
 
                 <View
                     android:id="@+id/line_view_left"
                     android:layout_height="match_parent"
-                    style="@style/FilterButtonSeparatorView"
+                    style="@style/Widget.GamerCollection.FilterButtonSeparator"
                     />
 
                 <Button
@@ -529,13 +529,13 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorInProgress"
                     android:text="@string/reset"
-                    style="@style/FilterButton"
+                    style="@style/Widget.GamerCollection.FilterButton"
                     />
 
                 <View
                     android:id="@+id/line_view_right"
                     android:layout_height="match_parent"
-                    style="@style/FilterButtonSeparatorView"
+                    style="@style/Widget.GamerCollection.FilterButtonSeparator"
                     />
 
                 <Button
@@ -544,7 +544,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorFinished"
                     android:text="@string/save"
-                    style="@style/FilterButton"
+                    style="@style/Widget.GamerCollection.FilterButton"
                     />
 
             </LinearLayout>

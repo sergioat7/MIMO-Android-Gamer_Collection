@@ -19,7 +19,7 @@ class GameSearchViewModel @Inject constructor(
     private val gameRepository: GameRepository,
     private val platformRepository: PlatformRepository,
     private val stateRepository: StateRepository
-): ViewModel() {
+) : ViewModel() {
 
     //MARK: - Private properties
 
@@ -51,7 +51,7 @@ class GameSearchViewModel @Inject constructor(
 
         _gamesLoading.value = true
         gameRepository.getRawgGames(page, query, { newGames, gamesCount, next ->
-            
+
             _gamesLoading.value = false
             addGames(newGames, next)
             if (page == 1) {
@@ -81,30 +81,32 @@ class GameSearchViewModel @Inject constructor(
         }
         currentGames.addAll(newGames)
         if (next) {
-            currentGames.add(GameResponse(
-                0,
-                null,
-                null,
-                0.0,
-                null,
-                null,
-                null,
-                null,
-                null,
-                false,
-                null,
-                null,
-                null,
-                null,
-                null,
-                0.0,
-                null,
-                null,
-                null,
-                null,
-                null,
-                listOf()
-            ))
+            currentGames.add(
+                GameResponse(
+                    0,
+                    null,
+                    null,
+                    0.0,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    false,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    0.0,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    listOf()
+                )
+            )
         }
         _games.value = currentGames
     }

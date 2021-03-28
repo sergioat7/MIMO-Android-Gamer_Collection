@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.lifecycle.ViewModelProvider;
+
 import java.util.Locale;
+
 import es.upsa.mimo.gamercollection.R;
 import es.upsa.mimo.gamercollection.activities.base.BaseActivity;
 import es.upsa.mimo.gamercollection.utils.Constants;
@@ -39,6 +42,7 @@ public class LandingActivity extends BaseActivity {
         createNotificationChannel();
 
         viewModel.checkVersion();
+        viewModel.checkTheme();
     }
 
     private void setupBindings() {

@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        style="@style/LoadMoreButton.Image"
+        style="@style/Widget.GamerCollection.Button.LoadMore.Image"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

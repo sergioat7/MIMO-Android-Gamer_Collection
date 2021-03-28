@@ -5,10 +5,12 @@ import es.upsa.mimo.gamercollection.injection.modules.AppDatabaseModule
 import es.upsa.mimo.gamercollection.injection.modules.SharedPreferencesModule
 import es.upsa.mimo.gamercollection.viewmodelfactories.*
 
-@Component(modules = [
-    AppDatabaseModule::class,
-    SharedPreferencesModule::class
-])
+@Component(
+    modules = [
+        AppDatabaseModule::class,
+        SharedPreferencesModule::class
+    ]
+)
 interface AppComponent {
 
     fun inject(gameDataViewModelFactory: GameDataViewModelFactory)

@@ -103,6 +103,24 @@
 
     // Profile
     <string name="profile">Mi Perfil</string>
+    <string name="app_language">Idioma de la aplicación</string>
+    <string name="english">Inglés</string>
+    <string name="spanish">Español</string>
+    <string name="games_sorting_parameter">Parámetro de ordenación de los juegos</string>
+    <string name="name">Nombre</string>
+    <string name="platform">Plataforma</string>
+    <string name="release_date">Fecha de publicación</string>
+    <string name="purchase_date">Fecha de compra</string>
+    <string name="price">Precio</string>
+    <string name="score">Puntuación</string>
+    <string name="swipe_refresh_enabled_title">Habilitar actualización de lista</string>
+    <string name="app_theme">Tema</string>
+    <string name="choose_a_theme">Elige un tema</string>
+    <string-array name="app_theme_values">
+        <item>Predeterminado por el sistema</item>
+        <item>Claro</item>
+        <item>Oscuro</item>
+    </string-array>
     <string name="profile_logout_confirmation">¿Estás seguro de que quieres salir?</string>
     <string name="profile_delete_confirmation">¿Estás seguro de que quieres borrar tu usuario? Perderás toda la información almacenada sobre los juegos</string>
 
@@ -130,19 +148,6 @@
 
     // Sort picker
     <string name="sort_title">Ordenar por</string>
-
-    // Settings
-    <string name="app_language">Idioma de la aplicación</string>
-    <string name="english">Inglés</string>
-    <string name="spanish">Español</string>
-    <string name="games_sorting_parameter">Parámetro de ordenación de los juegos</string>
-    <string name="name">Nombre</string>
-    <string name="platform">Plataforma</string>
-    <string name="release_date">Fecha de publicación</string>
-    <string name="purchase_date">Fecha de compra</string>
-    <string name="price">Precio</string>
-    <string name="score">Puntuación</string>
-    <string name="swipe_refresh_enabled_title">Habilitar actualización de lista</string>
 
     // Notifications
     <string name="channel_name">Aviso de lanzamiento</string>

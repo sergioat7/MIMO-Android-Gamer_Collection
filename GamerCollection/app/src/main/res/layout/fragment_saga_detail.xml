@@ -21,7 +21,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/SagaTitleEditText"
+            style="@style/Widget.GamerCollection.EditText.Bold.SagaTitle"
             />
 
         <TextView
@@ -32,14 +32,14 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/line_view"
             app:layout_constraintTop_toBottomOf="@+id/edit_text_name"
-            style="@style/AddGameTitleTextView"
+            style="@style/Widget.GamerCollection.TextView.Bold.AddGameTitle"
             />
 
         <Button
             android:id="@+id/button_add_game"
             app:layout_constraintBottom_toBottomOf="@+id/text_view_games_title"
             app:layout_constraintEnd_toEndOf="@+id/line_view"
-            style="@style/AddGameButton"
+            style="@style/Widget.GamerCollection.ImageButton.AddGame"
             />
 
         <View
@@ -48,7 +48,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_view_games_title"
-            style="@style/AddGameSeparatorView"
+            style="@style/Widget.GamerCollection.AddGameSeparator"
             />
 
         <ScrollView
@@ -58,7 +58,7 @@
             app:layout_constraintEnd_toEndOf="@+id/line_view"
             app:layout_constraintStart_toStartOf="@+id/text_view_games_title"
             app:layout_constraintTop_toBottomOf="@+id/line_view"
-            style="@style/SagaGamesContentView"
+            style="@style/Widget.GamerCollection.ScrollViewContent.SagaGames"
             >
 
             <LinearLayout

@@ -1,7 +1,8 @@
 package es.upsa.mimo.gamercollection.repositories
 
 import androidx.sqlite.db.SimpleSQLiteQuery
-import es.upsa.mimo.gamercollection.models.*
+import es.upsa.mimo.gamercollection.models.FilterModel
+import es.upsa.mimo.gamercollection.models.GameWithSaga
 import es.upsa.mimo.gamercollection.models.rawg.RawgDeveloperResponse
 import es.upsa.mimo.gamercollection.models.rawg.RawgEsrbResponse
 import es.upsa.mimo.gamercollection.models.rawg.RawgGameResponse
@@ -49,7 +50,11 @@ class GameRepository @Inject constructor(
         }, failure)
     }
 
-    fun setGame(game: GameResponse, success: (GameResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
+    fun setGame(
+        game: GameResponse,
+        success: (GameResponse) -> Unit,
+        failure: (ErrorResponse) -> Unit
+    ) {
 
         gameAPIClient.setGame(game, {
 
@@ -67,14 +72,16 @@ class GameRepository @Inject constructor(
         }, failure)
     }
 
-    fun getGamesDatabase(state: String? = null,
-                         filters: FilterModel? = null,
-                         sortKey: String? = null,
-                         ascending: Boolean = true): List<GameResponse> {
+    fun getGamesDatabase(
+        state: String? = null,
+        filters: FilterModel? = null,
+        sortKey: String? = null,
+        ascending: Boolean = true
+    ): List<GameResponse> {
 
         var queryString = "SELECT * FROM Game"
 
-        var queryConditions = when(state) {
+        var queryConditions = when (state) {
             Constants.PENDING_STATE -> " WHERE state == '${Constants.PENDING_STATE}' AND "
             Constants.IN_PROGRESS_STATE -> " WHERE state == '${Constants.IN_PROGRESS_STATE}' AND "
             Constants.FINISHED_STATE -> " WHERE state == '${Constants.FINISHED_STATE}' AND "
@@ -97,7 +104,7 @@ class GameRepository @Inject constructor(
 
             var queryGenres = Constants.EMPTY_VALUE
             val genres = filtersVar.genres
-            if (genres.isNotEmpty()){
+            if (genres.isNotEmpty()) {
                 queryGenres += "("
                 for (genre in genres) {
                     queryGenres += "genre == '${genre}' OR "
@@ -107,7 +114,7 @@ class GameRepository @Inject constructor(
 
             var queryFormats = Constants.EMPTY_VALUE
             val formats = filtersVar.formats
-            if (formats.isNotEmpty()){
+            if (formats.isNotEmpty()) {
                 queryFormats += "("
                 for (format in formats) {
                     queryFormats += "format == '${format}' OR "
@@ -160,7 +167,7 @@ class GameRepository @Inject constructor(
 
         queryString += " ORDER BY "
         sortKey.let {
-            val order = if(ascending) "ASC"  else "DESC"
+            val order = if (ascending) "ASC" else "DESC"
             queryString += "$sortKey $order, "
         }
         queryString += "name ASC"
@@ -202,7 +209,7 @@ class GameRepository @Inject constructor(
 
         val newSagaGames = saga.games
         val allGames = getGamesDatabase()
-        val oldSagaGames = allGames.filter { it.saga?.id  == saga.id }
+        val oldSagaGames = allGames.filter { it.saga?.id == saga.id }
 
         for (oldSagaGame in oldSagaGames) {
             if (newSagaGames.firstOrNull { it.id == oldSagaGame.id } == null) {
@@ -233,7 +240,8 @@ class GameRepository @Inject constructor(
     fun updateGameSongs(
         gameId: Int,
         success: (GameResponse) -> Unit,
-        failure: (ErrorResponse) -> Unit) {
+        failure: (ErrorResponse) -> Unit
+    ) {
 
         gameAPIClient.getGame(gameId, {
 
@@ -254,7 +262,8 @@ class GameRepository @Inject constructor(
         page: Int,
         query: String?,
         success: (List<GameResponse>, Int, Boolean) -> Unit,
-        failure: (ErrorResponse) -> Unit) {
+        failure: (ErrorResponse) -> Unit
+    ) {
 
         gameAPIClient.getRawgGames(page, query, {
 
@@ -263,7 +272,11 @@ class GameRepository @Inject constructor(
         }, failure)
     }
 
-    fun getRawgGame(gameId: Int, success: (GameResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
+    fun getRawgGame(
+        gameId: Int,
+        success: (GameResponse) -> Unit,
+        failure: (ErrorResponse) -> Unit
+    ) {
         gameAPIClient.getRawgGame(gameId, {
             success(mapRawgGame(it))
         }, failure)
@@ -350,7 +363,12 @@ class GameRepository @Inject constructor(
             }
         }
         return if (result.isNotBlank()) {
-            StringBuilder(result.substring(0, result.length - Constants.NEXT_VALUE_SEPARATOR.length)).toString()
+            StringBuilder(
+                result.substring(
+                    0,
+                    result.length - Constants.NEXT_VALUE_SEPARATOR.length
+                )
+            ).toString()
         } else {
             null
         }
@@ -366,7 +384,12 @@ class GameRepository @Inject constructor(
             }
         }
         return if (result.isNotBlank()) {
-            StringBuilder(result.substring(0, result.length - Constants.NEXT_VALUE_SEPARATOR.length)).toString()
+            StringBuilder(
+                result.substring(
+                    0,
+                    result.length - Constants.NEXT_VALUE_SEPARATOR.length
+                )
+            ).toString()
         } else {
             null
         }

@@ -42,7 +42,10 @@ class LoginFragment : BaseFragment() {
     private fun initializeUI() {
 
         val application = activity?.application
-        viewModel = ViewModelProvider(this, LoginViewModelFactory(application)).get(LoginViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            LoginViewModelFactory(application)
+        ).get(LoginViewModel::class.java)
         setupBindings()
 
         val username = viewModel.username
@@ -66,7 +69,11 @@ class LoginFragment : BaseFragment() {
         }
 
         image_button_password.setOnClickListener {
-            Constants.showOrHidePassword(edit_text_password, image_button_password, Constants.isDarkMode(context))
+            Constants.showOrHidePassword(
+                edit_text_password,
+                image_button_password,
+                Constants.isDarkMode(context)
+            )
         }
 
         login_button.setOnClickListener {

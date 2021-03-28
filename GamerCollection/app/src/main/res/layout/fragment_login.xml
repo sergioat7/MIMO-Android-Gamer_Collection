@@ -21,7 +21,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/MainImageView"
+            style="@style/Widget.GamerCollection.ImageViewLogo"
             />
 
         <EditText
@@ -32,7 +32,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            style="@style/UsernameEditText"
+            style="@style/Widget.GamerCollection.EditText.Credentials.Username"
             />
 
         <EditText
@@ -44,7 +44,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/edit_text_user"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/PasswordEditText"
+            style="@style/Widget.GamerCollection.EditText.Credentials.Password"
             />
 
         <ImageButton
@@ -53,7 +53,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/edit_text_password"
             app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
             app:layout_constraintTop_toTopOf="@+id/edit_text_password"
-            style="@style/PasswordEyeButton"
+            style="@style/Widget.GamerCollection.ImageButton.EditText.Password"
             />
 
         <Button
@@ -66,7 +66,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_text_password"
             app:layout_constraintVertical_bias="1.0"
-            style="@style/LoginButton"
+            style="@style/Widget.GamerCollection.Button.Rounded.Action.Login"
             />
 
         <LinearLayout
@@ -84,14 +84,14 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/NoAccountText"
+                style="@style/Widget.GamerCollection.TextView.NoAccount"
                 />
 
             <Button
                 android:id="@+id/register_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/NoAccountButton"
+                style="@style/Widget.GamerCollection.Button.NoAccount"
                 />
 
         </LinearLayout>

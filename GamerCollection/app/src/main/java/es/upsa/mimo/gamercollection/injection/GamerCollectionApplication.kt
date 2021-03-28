@@ -6,7 +6,7 @@ import es.upsa.mimo.gamercollection.injection.components.DaggerAppComponent
 import es.upsa.mimo.gamercollection.injection.modules.AppDatabaseModule
 import es.upsa.mimo.gamercollection.injection.modules.SharedPreferencesModule
 
-class GamerCollectionApplication: Application() {
+class GamerCollectionApplication : Application() {
 
     //MARK: - Public properties
 

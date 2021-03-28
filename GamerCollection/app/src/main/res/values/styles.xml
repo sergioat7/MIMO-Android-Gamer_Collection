@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<!-- View   -->
+
+    <style name="Widget" />
+
+    <style name="Widget.GamerCollection" />
+
+    <style name="Widget.GamerCollection.BottomMenu">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="itemTextColor">@color/colorSecondary</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="menu">@menu/bottom_nav_menu</item>
+    </style>
+
+    <style name="Widget.GamerCollection.LoadingProgressBar">
+        <item name="android:indeterminate">true</item>
+        <item name="android:indeterminateTint">@color/colorPrimary</item>
+    </style>
+
+    <style name="Widget.GamerCollection.RadioButton">
+        <item name="android:layout_weight">1</item>
+        <item name="android:buttonTint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/textPrimary</item>
+    </style>
+
+    <style name="Widget.GamerCollection.GamesEmptyLayout">
+        <item name="emptyListLayout_image">@drawable/ic_games_dark</item>
+    </style>
+
+    <style name="Widget.GamerCollection.SagasEmptyLayout">
+        <item name="emptyListLayout_image">@drawable/ic_sagas_dark</item>
+    </style>
+
+    <style name="Widget.GamerCollection.ScrollViewContent">
+        <item name="android:scrollbars">none</item>
+    </style>
+
+<!--  Button  -->
+
+    <style name="Widget.GamerCollection.Button" parent="Widget.AppCompat.Button">
+        <item name="textAllCaps">false</item>
+        <item name="maxLines">1</item>
+    </style>
+
+    <style name="Widget.GamerCollection.Button.Rounded">
+        <item name="android:layout_width">@dimen/size_semi_huge</item>
+        <item name="android:gravity">center</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/textSecondary</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="Widget.GamerCollection.Button.Rounded.Action">
+        <item name="android:background">@drawable/rounded_button_primary</item>
+    </style>
+
+    <style name="Widget.GamerCollection.Button.Rounded.Action.Popup">
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:text">@string/accept</item>
+    </style>
+
+<!--  ImageButton  -->
+
+    <style name="Widget.GamerCollection.ImageButton" parent="Widget.AppCompat.ImageButton" />
+
+<!--  EditText  -->
+
+    <style name="Widget.GamerCollection.EditText" parent="Widget.AppCompat.EditText">
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textColorHint">@color/textPrimaryLight</item>
+        <item name="android:textIsSelectable">true</item>
+    </style>
+
+    <style name="Widget.GamerCollection.EditText.Regular">
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="Widget.GamerCollection.EditText.Bold">
+        <item name="fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="Widget.GamerCollection.CustomEditText" />
+
+<!--  TextView  -->
+
+    <style name="Widget.GamerCollection.TextView" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textIsSelectable">true</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextView.Bold">
+        <item name="fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextView.Regular">
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
+<!--  RatingBar  -->
+
+    <style name="Widget.GamerCollection.RatingBar" parent="Widget.MaterialRatingBar.RatingBar">
+        <item name="android:progressTint">@color/colorInProgress</item>
+        <item name="android:progressBackgroundTint">@color/colorInProgressLight</item>
+        <item name="android:secondaryProgressTint">@color/colorInProgressLight</item>
+        <item name="mrb_fillBackgroundStars">false</item>
+    </style>
+
+<!-- Spinner   -->
+
+    <style name="Widget.GamerCollection.Spinner" parent="Widget.AppCompat.Spinner.Underlined">
+        <item name="android:spinnerMode">dropdown</item>
+        <item name="android:backgroundTint">@android:color/transparent</item>
+        <item name="android:minHeight">@dimen/size_large</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
+</resources>

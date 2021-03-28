@@ -61,7 +61,7 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.action_synchronize -> {
 
                 openSyncPopup()
@@ -98,7 +98,10 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
     private fun initializeUI() {
 
         val application = activity?.application
-        viewModel = ViewModelProvider(this, SagasViewModelFactory(application)).get(SagasViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            SagasViewModelFactory(application)
+        ).get(SagasViewModel::class.java)
         setupBindings()
 
         swipe_refresh_layout.isEnabled = viewModel.swipeRefresh
@@ -118,7 +121,7 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
             this
         )
         recycler_view_sagas.adapter = sagasAdapter
-        recycler_view_sagas.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        recycler_view_sagas.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -177,8 +180,10 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
 
         scrollPosition.observe(viewLifecycleOwner, {
 
-            floating_action_button_start_list.visibility = if (it == ScrollPosition.TOP || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
-            floating_action_button_end_list.visibility = if (it == ScrollPosition.END || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
+            floating_action_button_start_list.visibility =
+                if (it == ScrollPosition.TOP || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
+            floating_action_button_end_list.visibility =
+                if (it == ScrollPosition.END || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
         })
     }
 
@@ -205,7 +210,8 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
 
     private fun setTitle(sagasCount: Int) {
 
-        val title = resources.getQuantityString(R.plurals.sagas_number_title, sagasCount, sagasCount)
+        val title =
+            resources.getQuantityString(R.plurals.sagas_number_title, sagasCount, sagasCount)
         (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
 }

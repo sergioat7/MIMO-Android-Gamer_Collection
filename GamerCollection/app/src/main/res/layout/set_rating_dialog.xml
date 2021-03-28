@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        style="@style/CustomRatingBar"
+        style="@style/Widget.GamerCollection.RatingBar"
         />
 
     <Button
@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/rating_bar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintWidth_percent="0.5"
-        style="@style/PopupAcceptButton"
+        style="@style/Widget.GamerCollection.Button.Rounded.Action.Popup"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
