@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="LocationButton">
+    <style name="Widget.GamerCollection.LocationButton" parent="Widget.AppCompat.Button">
         <item name="android:layout_marginBottom">@dimen/margin_small</item>
         <item name="android:layout_marginEnd">@dimen/margin_small</item>
         <item name="android:background">@android:color/transparent</item>

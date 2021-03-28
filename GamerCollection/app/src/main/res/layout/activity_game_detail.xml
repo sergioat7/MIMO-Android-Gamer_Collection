@@ -37,7 +37,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintWidth_percent="0.4"
-        style="@style/AddImage"
+        style="@style/Widget.GamerCollection.ImageViewNew"
         />
 
     <ProgressBar
@@ -49,7 +49,7 @@
         app:layout_constraintEnd_toEndOf="@+id/image_view_game"
         app:layout_constraintStart_toStartOf="@+id/image_view_game"
         app:layout_constraintTop_toTopOf="@+id/constraint_layout_main_details"
-        style="@style/LoadingProgressBar"
+        style="@style/Widget.GamerCollection.LoadingProgressBar"
         />
 
     <ImageView
@@ -59,7 +59,7 @@
         app:layout_constraintEnd_toEndOf="@+id/image_view_game"
         app:layout_constraintStart_toStartOf="@+id/image_view_game"
         app:layout_constraintTop_toBottomOf="@+id/image_view_game"
-        style="@style/GotyImage"
+        style="@style/Widget.GamerCollection.ImageViewGoty"
         />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -80,7 +80,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/GameTitleEditText"
+            style="@style/Widget.GamerCollection.CustomEditText.GameTitle"
             />
 
         <Spinner
@@ -90,7 +90,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/custom_edit_text_name"
-            style="@style/CustomSpinner"
+            style="@style/Widget.GamerCollection.Spinner"
             />
 
         <Button
@@ -102,7 +102,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinner_platforms"
             app:layout_constraintVertical_bias="0.0"
-            style="@style/RatingButton"
+            style="@style/Widget.GamerCollection.Button.Rating"
             />
 
         <ImageView
@@ -112,7 +112,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinner_platforms"
-            style="@style/PegiImage"
+            style="@style/Widget.GamerCollection.ImageViewPegi"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -144,7 +144,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/barrier"
-        style="@style/GameDetailTabLayout"
+        style="@style/Widget.GamerCollection.TabLayout.GameDetail"
         >
 
         <com.google.android.material.tabs.TabItem

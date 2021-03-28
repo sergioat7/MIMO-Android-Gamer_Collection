@@ -57,7 +57,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/image_view_game"
-                style="@style/GotyImage"
+                style="@style/Widget.GamerCollection.ImageViewGoty"
                 />
 
             <ProgressBar
@@ -69,7 +69,7 @@
                 app:layout_constraintStart_toStartOf="@+id/image_view_game"
                 app:layout_constraintTop_toTopOf="@+id/image_view_game"
                 tools:visibility="gone"
-                style="@style/LoadingProgressBar"
+                style="@style/Widget.GamerCollection.LoadingProgressBar"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -82,21 +82,21 @@
             app:layout_constraintEnd_toStartOf="@+id/check_box"
             app:layout_constraintStart_toEndOf="@+id/layout_images"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/GameInfoContainerView"
+            style="@style/Widget.GamerCollection.ViewGameInfoContainer"
             >
 
             <TextView
                 android:id="@+id/text_view_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/GameNameTextView"
+                style="@style/Widget.GamerCollection.TextView.GameName"
                 />
 
             <TextView
                 android:id="@+id/text_view_platform"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/GamePlatformTextView"
+                style="@style/Widget.GamerCollection.TextView.GamePlatform"
                 />
 
             <LinearLayout
@@ -111,14 +111,14 @@
                 <me.zhanghai.android.materialratingbar.MaterialRatingBar
                     android:id="@+id/rating_bar"
                     android:layout_width="wrap_content"
-                    style="@style/GameScoreRatingBar"
+                    style="@style/Widget.GamerCollection.RatingBar.GameScore"
                     />
 
                 <TextView
                     android:id="@+id/text_view_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    style="@style/GameScoreRatingTextView"
+                    style="@style/Widget.GamerCollection.TextView.Rating.GameScore"
                     />
 
             </LinearLayout>
@@ -129,7 +129,7 @@
                 android:layout_height="match_parent"
                 android:gravity="bottom"
                 android:visibility="gone"
-                style="@style/NoRatingTextView"
+                style="@style/Widget.GamerCollection.TextView.Rating.None"
                 />
 
         </LinearLayout>
@@ -157,7 +157,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/constraint_layout"
         app:layout_constraintBottom_toBottomOf="parent"
-        style="@style/SeparatorLineView"
+        style="@style/Widget.GamerCollection.ViewSeparatorLine"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

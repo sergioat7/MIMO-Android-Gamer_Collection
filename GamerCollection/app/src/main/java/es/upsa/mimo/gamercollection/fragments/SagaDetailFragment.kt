@@ -192,8 +192,8 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
         for (game in games.sortedBy { it.releaseDate }) {
 
             val tvGame = TextView(requireContext())
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) tvGame.setTextAppearance(R.style.CustomEditText_Regular)
-            else tvGame.setTextAppearance(requireContext(), R.style.CustomEditText_Regular)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) tvGame.setTextAppearance(R.style.Widget_GamerCollection_EditText_Regular)
+            else tvGame.setTextAppearance(requireContext(), R.style.Widget_GamerCollection_EditText_Regular)
             tvGame.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18F)
 
             tvGame.text = "- ${game.name}"
