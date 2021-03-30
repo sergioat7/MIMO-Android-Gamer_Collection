@@ -3,27 +3,25 @@ package es.upsa.mimo.gamercollection.fragments
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.model.LatLng
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnLocationSelected
-import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.databinding.FragmentGameDataBinding
+import es.upsa.mimo.gamercollection.fragments.base.BindingFragment
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameDataViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameDataViewModel
 import kotlinx.android.synthetic.main.custom_edit_text.view.*
-import kotlinx.android.synthetic.main.fragment_game_data.*
 
 class GameDataFragment(
     private var game: GameResponse? = null,
     private var enabled: Boolean
-) : BaseFragment(), OnLocationSelected {
+) : BindingFragment<FragmentGameDataBinding>(), OnLocationSelected {
 
     //MARK: - Private properties
 
@@ -32,13 +30,6 @@ class GameDataFragment(
     private var formatValues = ArrayList<String>()
 
     // MARK: - Lifecycle methods
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_game_data, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,7 +44,7 @@ class GameDataFragment(
         location?.let {
             locationText = "${it.latitude},${it.longitude}"
         }
-        custom_edit_text_purchase_location.setText(locationText)
+        binding.customEditTextPurchaseLocation.setText(locationText)
     }
 
     fun showData(game: GameResponse?) {
@@ -64,7 +55,7 @@ class GameDataFragment(
             val pos = genreValues.indexOf(genreName)
             genrePosition = if (pos > 0) pos else 0
         }
-        spinner_genres.setSelection(genrePosition)
+        binding.spinnerGenres.setSelection(genrePosition)
 
         var formatPosition = 0
         game?.format?.let { formatId ->
@@ -72,89 +63,64 @@ class GameDataFragment(
             val pos = formatValues.indexOf(formatName)
             formatPosition = if (pos > 0) pos else 0
         }
-        spinner_formats.setSelection(formatPosition)
+        binding.spinnerFormats.setSelection(formatPosition)
 
         game?.state?.let {
-            button_pending.isSelected = it == Constants.PENDING_STATE
-            button_in_progress.isSelected = it == Constants.IN_PROGRESS_STATE
-            button_finished.isSelected = it == Constants.FINISHED_STATE
+            binding.buttonPending.isSelected = it == Constants.PENDING_STATE
+            binding.buttonInProgress.isSelected = it == Constants.IN_PROGRESS_STATE
+            binding.buttonFinished.isSelected = it == Constants.FINISHED_STATE
         }
 
-        val releaseDate = Constants.dateToString(
-            game?.releaseDate,
-            Constants.getDateFormatToShow(viewModel.language),
-            viewModel.language
-        ) ?: Constants.EMPTY_VALUE
-        custom_edit_text_release_date.setText(
-            if (releaseDate.isNotBlank()) releaseDate
-            else Constants.NO_VALUE
+        val releaseDate = getText(
+            Constants.dateToString(
+                game?.releaseDate,
+                Constants.getDateFormatToShow(viewModel.language),
+                viewModel.language
+            )
         )
+        binding.customEditTextReleaseDate.setText(releaseDate)
 
-        var distributor = Constants.NO_VALUE
-        if (game?.distributor != null && game.distributor.isNotBlank()) {
-            distributor = game.distributor
-        }
-        custom_edit_text_distributor.setText(distributor)
+        val distributor = getText(game?.distributor)
+        binding.customEditTextDistributor.setText(distributor)
 
-        var developer = Constants.NO_VALUE
-        if (game?.developer != null && game.developer.isNotBlank()) {
-            developer = game.developer
-        }
-        custom_edit_text_developer.setText(developer)
+        val developer = getText(game?.developer)
+        binding.customEditTextDeveloper.setText(developer)
 
         game?.pegi?.let { pegi ->
             val pos = resources.getStringArray(R.array.pegis).indexOf(pegi)
-            spinner_pegis.setSelection(pos + 1)
+            binding.spinnerPegis.setSelection(pos + 1)
         }
 
-        var players = Constants.NO_VALUE
-        if (game?.players != null && game.players.isNotBlank()) {
-            players = game.players
-        }
-        custom_edit_text_players.setText(players)
+        val players = getText(game?.players)
+        binding.customEditTextPlayers.setText(players)
 
         val price = game?.price ?: 0
-        custom_edit_text_price.setText(price.toString())
+        binding.customEditTextPrice.setText(price.toString())
 
-        val purchaseDate = Constants.dateToString(
-            game?.purchaseDate,
-            Constants.getDateFormatToShow(viewModel.language),
-            viewModel.language
-        ) ?: Constants.EMPTY_VALUE
-        custom_edit_text_purchase_date.setText(
-            if (purchaseDate.isNotBlank()) purchaseDate
-            else Constants.NO_VALUE
+        val purchaseDate = getText(
+            Constants.dateToString(
+                game?.purchaseDate,
+                Constants.getDateFormatToShow(viewModel.language),
+                viewModel.language
+            )
         )
+        binding.customEditTextPurchaseDate.setText(purchaseDate)
 
-        val purchaseLocation = game?.purchaseLocation ?: Constants.EMPTY_VALUE
-        custom_edit_text_purchase_location.setText(
-            if (purchaseLocation.isNotBlank()) purchaseLocation
-            else Constants.NO_VALUE
-        )
+        val purchaseLocation = getText(game?.purchaseLocation)
+        binding.customEditTextPurchaseLocation.setText(purchaseLocation)
 
-        val goty = game?.goty == true
-        radio_button_yes.isChecked = goty
-        radio_button_no.isChecked = !goty
+        val loaned = getText(game?.loanedTo)
+        binding.customEditTextLoaned.setText(loaned)
 
-        val loaned = game?.loanedTo ?: Constants.EMPTY_VALUE
-        custom_edit_text_loaned.setText(
-            if (loaned.isNotBlank()) loaned
-            else Constants.NO_VALUE
-        )
+        val videoUrl = getText(game?.videoUrl)
+        binding.customEditTextVideoUrl.setText(videoUrl)
 
-        val videoUrl = game?.videoUrl ?: Constants.EMPTY_VALUE
-        custom_edit_text_video_url.setText(
-            if (videoUrl.isNotBlank()) videoUrl
-            else Constants.NO_VALUE
-        )
+        val observations = getText(game?.observations)
+        binding.customEditTextObservations.setText(observations)
 
-        val observations = game?.observations ?: Constants.EMPTY_VALUE
-        custom_edit_text_observations.setText(
-            if (observations.isNotBlank()) observations
-            else Constants.NO_VALUE
-        )
+        binding.customEditTextSaga.setText(game?.saga?.name)
 
-        custom_edit_text_saga.setText(game?.saga?.name)
+        binding.game = game
     }
 
     fun setEdition(editable: Boolean) {
@@ -163,85 +129,83 @@ class GameDataFragment(
 
         val backgroundColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
 
-        linear_layout_formats.visibility =
-            if (editable || spinner_formats.selectedItemPosition > 0) View.VISIBLE
+        binding.linearLayoutFormats.visibility =
+            if (editable || binding.spinnerFormats.selectedItemPosition > 0) View.VISIBLE
             else View.GONE
 
-        linear_layout_genres.visibility =
-            if (editable || spinner_genres.selectedItemPosition > 0) View.VISIBLE
+        binding.linearLayoutGenres.visibility =
+            if (editable || binding.spinnerGenres.selectedItemPosition > 0) View.VISIBLE
             else View.GONE
 
-        button_pending.isEnabled = editable
-        button_in_progress.isEnabled = editable
-        button_finished.isEnabled = editable
+        binding.buttonPending.isEnabled = editable
+        binding.buttonInProgress.isEnabled = editable
+        binding.buttonFinished.isEnabled = editable
 
-        custom_edit_text_release_date.setReadOnly(!editable, backgroundColor)
-        spinner_formats.backgroundTintList =
+        binding.spinnerFormats.backgroundTintList =
             if (!editable) ColorStateList.valueOf(Color.TRANSPARENT)
             else ColorStateList.valueOf(backgroundColor)
-        spinner_formats.isEnabled = editable
-        spinner_genres.backgroundTintList =
+        binding.spinnerFormats.isEnabled = editable
+        binding.spinnerGenres.backgroundTintList =
             if (!editable) ColorStateList.valueOf(Color.TRANSPARENT)
             else ColorStateList.valueOf(backgroundColor)
-        spinner_genres.isEnabled = editable
+        binding.spinnerGenres.isEnabled = editable
 
-        linear_layout_hidden.visibility =
-            if (editable) View.VISIBLE
-            else View.GONE
+        binding.customEditTextReleaseDate.setReadOnly(!editable, backgroundColor)
+        binding.customEditTextDistributor.setReadOnly(!editable, backgroundColor)
+        binding.customEditTextDeveloper.setReadOnly(!editable, backgroundColor)
+        binding.customEditTextPlayers.setReadOnly(!editable, backgroundColor)
+        binding.customEditTextPrice.setReadOnly(!editable, backgroundColor)
+        binding.customEditTextPurchaseDate.setReadOnly(!editable, backgroundColor)
+        binding.customEditTextPurchaseLocation.setReadOnly(!editable, backgroundColor)
+        binding.customEditTextLoaned.setReadOnly(!editable, backgroundColor)
+        binding.customEditTextVideoUrl.setReadOnly(!editable, backgroundColor)
+        binding.customEditTextObservations.setReadOnly(!editable, backgroundColor)
 
-        custom_edit_text_distributor.setReadOnly(!editable, backgroundColor)
-        custom_edit_text_developer.setReadOnly(!editable, backgroundColor)
-        custom_edit_text_players.setReadOnly(!editable, backgroundColor)
-        custom_edit_text_price.setReadOnly(!editable, backgroundColor)
-        custom_edit_text_purchase_date.setReadOnly(!editable, backgroundColor)
-        custom_edit_text_purchase_location.setReadOnly(!editable, backgroundColor)
-        custom_edit_text_loaned.setReadOnly(!editable, backgroundColor)
-        custom_edit_text_video_url.setReadOnly(!editable, backgroundColor)
-        custom_edit_text_observations.setReadOnly(!editable, backgroundColor)
+        binding.editable = editable
     }
 
     fun getGameData(): GameResponse? {
 
         val pegi = resources.getStringArray(R.array.pegis)
-            .firstOrNull { it == spinner_pegis.selectedItem.toString() }
+            .firstOrNull { it == binding.spinnerPegis.selectedItem.toString() }
         val releaseDate = Constants.stringToDate(
-            custom_edit_text_release_date.getText(),
+            binding.customEditTextReleaseDate.getText(),
             Constants.getDateFormatToShow(viewModel.language),
             viewModel.language
         )
         val format =
-            viewModel.formats.firstOrNull { it.name == spinner_formats.selectedItem.toString() }?.id
+            viewModel.formats.firstOrNull { it.name == binding.spinnerFormats.selectedItem.toString() }?.id
         val genre =
-            viewModel.genres.firstOrNull { it.name == spinner_genres.selectedItem.toString() }?.id
+            viewModel.genres.firstOrNull { it.name == binding.spinnerGenres.selectedItem.toString() }?.id
         val state =
-            if (button_pending.isSelected) Constants.PENDING_STATE else if (button_in_progress.isSelected) Constants.IN_PROGRESS_STATE else if (button_finished.isSelected) Constants.FINISHED_STATE else null
+            if (binding.buttonPending.isSelected) Constants.PENDING_STATE else if (binding.buttonInProgress.isSelected) Constants.IN_PROGRESS_STATE else if (binding.buttonFinished.isSelected) Constants.FINISHED_STATE else null
         val purchaseDate = Constants.stringToDate(
-            custom_edit_text_purchase_date.getText(),
+            binding.customEditTextPurchaseDate.getText(),
             Constants.getDateFormatToShow(viewModel.language),
             viewModel.language
         )
         val price = try {
-            custom_edit_text_price.getText().toDouble()
+            binding.customEditTextPrice.getText().toDouble()
         } catch (e: NumberFormatException) {
             0.0
         }
 
         return viewModel.getGameData(
             pegi,
-            custom_edit_text_distributor.getText(),
-            custom_edit_text_developer.getText(),
-            custom_edit_text_players.getText(),
+            binding.customEditTextDistributor.getText(),
+            binding.customEditTextDeveloper.getText(),
+            binding.customEditTextPlayers.getText(),
             releaseDate,
-            radio_button_yes.isChecked,
+            binding.radioButtonYes.isChecked,
             format,
             genre,
             state,
             purchaseDate,
-            custom_edit_text_purchase_location.getText(),
+            binding.customEditTextPurchaseLocation.getText(),
             price,
-            custom_edit_text_video_url.getText(),
-            custom_edit_text_loaned.getText(),
-            custom_edit_text_observations.getText()
+            binding.customEditTextVideoUrl.getText(),
+            binding.customEditTextLoaned.getText(),
+            binding.customEditTextObservations.getText()
         )
     }
 
@@ -255,13 +219,13 @@ class GameDataFragment(
         )
         setupBindings()
 
-        button_pending.setOnClickListener {
+        binding.buttonPending.setOnClickListener {
             buttonClicked(it)
         }
-        button_in_progress.setOnClickListener {
+        binding.buttonInProgress.setOnClickListener {
             buttonClicked(it)
         }
-        button_finished.setOnClickListener {
+        binding.buttonFinished.setOnClickListener {
             buttonClicked(it)
         }
 
@@ -270,15 +234,15 @@ class GameDataFragment(
             this.add(resources.getString((R.string.game_detail_select_format)))
             this.addAll(viewModel.formats.map { it.name })
         }
-        spinner_formats.adapter = Constants.getAdapter(requireContext(), formatValues)
+        binding.spinnerFormats.adapter = Constants.getAdapter(requireContext(), formatValues)
         genreValues = ArrayList()
         genreValues.run {
             this.add(resources.getString((R.string.game_detail_select_genre)))
             this.addAll(viewModel.genres.map { it.name })
         }
-        spinner_genres.adapter = Constants.getAdapter(requireContext(), genreValues)
+        binding.spinnerGenres.adapter = Constants.getAdapter(requireContext(), genreValues)
 
-        spinner_pegis.backgroundTintList = ColorStateList.valueOf(
+        binding.spinnerPegis.backgroundTintList = ColorStateList.valueOf(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.colorPrimary
@@ -289,35 +253,35 @@ class GameDataFragment(
             this.add(resources.getString(R.string.game_detail_select_pegi))
             this.addAll(resources.getStringArray(R.array.pegis).toList())
         }
-        spinner_pegis.adapter = Constants.getAdapter(requireContext(), pegis)
+        binding.spinnerPegis.adapter = Constants.getAdapter(requireContext(), pegis)
 
-        custom_edit_text_purchase_location.setOnClickListener {
+        binding.customEditTextPurchaseLocation.setOnClickListener {
             showMap()
         }
-        custom_edit_text_saga.setReadOnly(true, 0)
+        binding.customEditTextSaga.setReadOnly(true, 0)
 
-        custom_edit_text_distributor.edit_text.setOnEditorActionListener { _, _, _ ->
-            custom_edit_text_developer.requestFocus()
+        binding.customEditTextDistributor.edit_text.setOnEditorActionListener { _, _, _ ->
+            binding.customEditTextDeveloper.requestFocus()
             true
         }
-        custom_edit_text_developer.edit_text.setOnEditorActionListener { _, _, _ ->
-            custom_edit_text_players.requestFocus()
+        binding.customEditTextDeveloper.edit_text.setOnEditorActionListener { _, _, _ ->
+            binding.customEditTextPlayers.requestFocus()
             true
         }
-        custom_edit_text_players.edit_text.setOnEditorActionListener { _, _, _ ->
-            custom_edit_text_price.requestFocus()
+        binding.customEditTextPlayers.edit_text.setOnEditorActionListener { _, _, _ ->
+            binding.customEditTextPrice.requestFocus()
             true
         }
-        custom_edit_text_price.edit_text.setOnEditorActionListener { _, _, _ ->
-            custom_edit_text_loaned.requestFocus()
+        binding.customEditTextPrice.edit_text.setOnEditorActionListener { _, _, _ ->
+            binding.customEditTextLoaned.requestFocus()
             true
         }
-        custom_edit_text_loaned.edit_text.setOnEditorActionListener { _, _, _ ->
-            custom_edit_text_video_url.requestFocus()
+        binding.customEditTextLoaned.edit_text.setOnEditorActionListener { _, _, _ ->
+            binding.customEditTextVideoUrl.requestFocus()
             true
         }
-        custom_edit_text_video_url.edit_text.setOnEditorActionListener { _, _, _ ->
-            custom_edit_text_observations.requestFocus()
+        binding.customEditTextVideoUrl.edit_text.setOnEditorActionListener { _, _, _ ->
+            binding.customEditTextObservations.requestFocus()
             true
         }
 
@@ -368,8 +332,18 @@ class GameDataFragment(
 
     private fun buttonClicked(it: View) {
 
-        button_pending.isSelected = if (it == button_pending) !it.isSelected else false
-        button_in_progress.isSelected = if (it == button_in_progress) !it.isSelected else false
-        button_finished.isSelected = if (it == button_finished) !it.isSelected else false
+        binding.buttonPending.isSelected =
+            if (it == binding.buttonPending) !it.isSelected else false
+        binding.buttonInProgress.isSelected =
+            if (it == binding.buttonInProgress) !it.isSelected else false
+        binding.buttonFinished.isSelected =
+            if (it == binding.buttonFinished) !it.isSelected else false
+    }
+
+    private fun getText(value: String?): String {
+
+        val newValue = value ?: Constants.EMPTY_VALUE
+        return if (newValue.isNotBlank()) newValue
+        else Constants.NO_VALUE
     }
 }
