@@ -18,47 +18,23 @@ import es.upsa.mimo.gamercollection.extensions.showDatePicker
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.android.synthetic.main.custom_edit_text.view.*
 
-class CustomEditText : ConstraintLayout {
+class CustomEditText @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     // MARK: - Private properties
 
-    private var binding: CustomEditTextBinding
+    private val binding: CustomEditTextBinding = DataBindingUtil.inflate(
+        LayoutInflater.from(context),
+        R.layout.custom_edit_text,
+        this,
+        true
+    )
     private lateinit var inputType: EditTextType
 
     // MARK: - Lifecycle methods
 
-    constructor(context: Context) : super(context) {
-        binding = DataBindingUtil.inflate(
-            LayoutInflater.from(context),
-            R.layout.custom_edit_text,
-            this,
-            true
-        )
-    }
-
-    constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
-
-        binding = DataBindingUtil.inflate(
-            LayoutInflater.from(context),
-            R.layout.custom_edit_text,
-            this,
-            true
-        )
-        setAttributes(attrs)
-    }
-
-    constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int) : super(
-        context,
-        attrs,
-        defStyle
-    ) {
-
-        binding = DataBindingUtil.inflate(
-            LayoutInflater.from(context),
-            R.layout.custom_edit_text,
-            this,
-            true
-        )
+    init {
         setAttributes(attrs)
     }
 
