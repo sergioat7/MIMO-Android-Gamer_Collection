@@ -2,26 +2,24 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SongsAdapter
-import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.databinding.FragmentGameSongsBinding
+import es.upsa.mimo.gamercollection.fragments.base.BindingFragment
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SongResponse
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameSongsViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameSongsViewModel
-import kotlinx.android.synthetic.main.fragment_game_songs.*
 import kotlinx.android.synthetic.main.new_song_dialog.view.*
 
 class GameSongsFragment(
     private var game: GameResponse?,
     private var enabled: Boolean
-) : BaseFragment(), OnItemClickListener {
+) : BindingFragment<FragmentGameSongsBinding>(), OnItemClickListener {
 
     //MARK: - Private properties
 
@@ -29,13 +27,6 @@ class GameSongsFragment(
     private lateinit var songsAdapter: SongsAdapter
 
     // MARK: - Lifecycle methods
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_game_songs, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,9 +49,8 @@ class GameSongsFragment(
 
     fun setEdition(editable: Boolean) {
 
-        enabled = editable
+        binding.editable = editable
         songsAdapter.setEditable(editable)
-        button_add_song?.visibility = if (editable) View.VISIBLE else View.GONE
     }
 
     fun getSongs(): List<SongResponse> {
@@ -77,17 +67,20 @@ class GameSongsFragment(
         )
         setupBindings()
 
-        recycler_view_songs.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewSongs.layoutManager = LinearLayoutManager(requireContext())
         songsAdapter = SongsAdapter(
             ArrayList(),
             enabled,
             requireContext(),
             this
         )
-        recycler_view_songs.adapter = songsAdapter
+        binding.recyclerViewSongs.adapter = songsAdapter
 
-        button_add_song.setOnClickListener { showNewSongPopup() }
-        button_add_song?.visibility = if (enabled) View.VISIBLE else View.GONE
+        binding.buttonAddSong.setOnClickListener {
+            showNewSongPopup()
+        }
+
+        binding.editable = enabled
     }
 
     private fun setupBindings() {
@@ -108,8 +101,7 @@ class GameSongsFragment(
         viewModel.songs.observe(viewLifecycleOwner, {
 
             songsAdapter.setSongs(it)
-            recycler_view_songs.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
-            layout_empty_list.visibility = if (it.isNotEmpty()) View.GONE else View.VISIBLE
+            binding.songs = it
         })
     }
 
