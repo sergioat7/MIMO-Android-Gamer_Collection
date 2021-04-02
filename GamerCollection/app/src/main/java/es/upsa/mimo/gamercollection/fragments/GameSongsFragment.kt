@@ -24,7 +24,6 @@ class GameSongsFragment(
     //MARK: - Private properties
 
     private lateinit var viewModel: GameSongsViewModel
-    private lateinit var songsAdapter: SongsAdapter
 
     // MARK: - Lifecycle methods
 
@@ -48,9 +47,7 @@ class GameSongsFragment(
     // MARK: Public methods
 
     fun setEdition(editable: Boolean) {
-
         binding.editable = editable
-        songsAdapter.setEditable(editable)
     }
 
     fun getSongs(): List<SongResponse> {
@@ -67,20 +64,25 @@ class GameSongsFragment(
         )
         setupBindings()
 
-        binding.recyclerViewSongs.layoutManager = LinearLayoutManager(requireContext())
-        songsAdapter = SongsAdapter(
-            ArrayList(),
-            enabled,
-            requireContext(),
-            this
-        )
-        binding.recyclerViewSongs.adapter = songsAdapter
+        with(binding) {
 
-        binding.buttonAddSong.setOnClickListener {
-            showNewSongPopup()
+            recyclerViewSongs.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = SongsAdapter(
+                    listOf(),
+                    enabled,
+                    this@GameSongsFragment
+                )
+            }
+
+            buttonAddSong.setOnClickListener {
+                showNewSongPopup()
+            }
+
+            viewModel = this@GameSongsFragment.viewModel
+            lifecycleOwner = this@GameSongsFragment
+            editable = enabled
         }
-
-        binding.editable = enabled
     }
 
     private fun setupBindings() {
@@ -96,12 +98,6 @@ class GameSongsFragment(
 
         viewModel.gameSongsError.observe(viewLifecycleOwner, { error ->
             manageError(error)
-        })
-
-        viewModel.songs.observe(viewLifecycleOwner, {
-
-            songsAdapter.setSongs(it)
-            binding.songs = it
         })
     }
 
