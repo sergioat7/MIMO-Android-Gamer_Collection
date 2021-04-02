@@ -7,17 +7,9 @@
             type="android.view.View"
             />
 
-        <import
-            type="java.util.List"
-            />
-
-        <import
-            type="es.upsa.mimo.gamercollection.models.responses.SongResponse"
-            />
-
         <variable
-            name="songs"
-            type="List&lt;SongResponse>"
+            name="viewModel"
+            type="es.upsa.mimo.gamercollection.viewmodels.GameSongsViewModel"
             />
 
         <variable
@@ -46,11 +38,14 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginBottom="@dimen/margin_small"
-                android:visibility="@{songs.empty ? View.GONE : View.VISIBLE}"
+                android:visibility="@{viewModel.songs.empty ? View.GONE : View.VISIBLE}"
+                app:songs="@{viewModel.songs}"
+                app:editable="@{editable}"
                 app:layout_constraintBottom_toTopOf="@+id/button_add_song"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/song_item"
                 />
 
             <es.upsa.mimo.gamercollection.customviews.EmptyListLayout
@@ -58,7 +53,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginBottom="@dimen/margin_small"
-                android:visibility="@{songs.empty ? View.VISIBLE : View.GONE}"
+                android:visibility="@{viewModel.songs.empty ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toTopOf="@+id/button_add_song"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
