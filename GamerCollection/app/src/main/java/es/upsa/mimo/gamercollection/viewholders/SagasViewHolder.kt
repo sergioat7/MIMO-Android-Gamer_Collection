@@ -1,25 +1,24 @@
 package es.upsa.mimo.gamercollection.viewholders
 
-import android.content.Context
 import android.text.InputType
-import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
+import es.upsa.mimo.gamercollection.databinding.SagaItemBinding
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.utils.Constants
-import kotlinx.android.synthetic.main.saga_item.view.*
 
-class SagasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class SagasViewHolder(private val binding: SagaItemBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
     // MARK: - Public methods
 
-    fun fillData(saga: SagaResponse, context: Context) {
+    fun bind(saga: SagaResponse, onItemClickListener: OnItemClickListener) {
 
         val gamesCount = saga.games.size
         val title = if (gamesCount > 0) {
-            context.resources.getQuantityString(
+            binding.root.context.resources.getQuantityString(
                 R.plurals.saga_title,
                 gamesCount,
                 saga.name,
@@ -28,16 +27,20 @@ class SagasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         } else {
             saga.name
         }
-        itemView.edit_text_name.setText(title)
-        itemView.edit_text_name.setReadOnly(true, InputType.TYPE_NULL, 0)
-        val imageId =
-            if (Constants.isDarkMode(context)) R.drawable.ic_triangle_up_dark else R.drawable.ic_triangle_up_light
-        itemView.image_view_arrow.setImageDrawable(ContextCompat.getDrawable(context, imageId))
-        itemView.image_view_arrow.visibility =
-            if (saga.games.isNotEmpty()) View.VISIBLE else View.GONE
+
+        with(binding) {
+
+            editTextName.setText(title)
+            editTextName.setReadOnly(true, InputType.TYPE_NULL, 0)
+
+            darkMode = Constants.isDarkMode(root.context)
+            this.saga = saga
+            this.onItemClickListener = onItemClickListener
+        }
+
     }
 
     fun rotateArrow(value: Float) {
-        itemView.image_view_arrow.animate().setDuration(500).rotation(value).start()
+        binding.imageViewArrow.animate().setDuration(500).rotation(value).start()
     }
 }
