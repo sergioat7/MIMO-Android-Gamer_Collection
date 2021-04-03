@@ -51,15 +51,6 @@ open class BaseFragment : Fragment() {
         startActivity(intent)
     }
 
-    fun <T> launchActivityWithExtras(activity: Class<T>, params: Map<String, Serializable>) {
-
-        val intent = Intent(context, activity).apply {}
-        for (param in params) {
-            intent.putExtra(param.key, param.value)
-        }
-        startActivity(intent)
-    }
-
     fun showLoading() {
 
         val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
@@ -94,27 +85,5 @@ open class BaseFragment : Fragment() {
                 dialog.dismiss()
             }
             .show()
-    }
-
-    fun openSyncPopup() {
-
-        showPopupConfirmationDialog(resources.getString(R.string.sync_confirmation)) {
-            showSyncPopup()
-        }
-    }
-
-    //MARK - Private methods
-
-    private fun showSyncPopup() {
-
-        val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
-        val prev = activity?.supportFragmentManager?.findFragmentByTag(Constants.SYNC_DIALOG)
-        if (prev != null) {
-            ft.remove(prev)
-        }
-        ft.addToBackStack(null)
-        val dialogFragment = PopupSyncAppDialogFragment()
-        dialogFragment.isCancelable = false
-        dialogFragment.show(ft, Constants.SYNC_DIALOG)
     }
 }
