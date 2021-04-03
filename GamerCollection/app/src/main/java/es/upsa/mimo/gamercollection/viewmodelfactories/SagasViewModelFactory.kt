@@ -7,7 +7,6 @@ import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.network.apiClient.SagaAPIClient
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.repositories.SagaRepository
-import es.upsa.mimo.gamercollection.repositories.StateRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import es.upsa.mimo.gamercollection.viewmodels.SagasViewModel
 import javax.inject.Inject
@@ -29,9 +28,6 @@ class SagasViewModelFactory(
 
     @Inject
     lateinit var sagaRepository: SagaRepository
-
-    @Inject
-    lateinit var stateRepository: StateRepository
 
     @Inject
     lateinit var sagasViewModel: SagasViewModel

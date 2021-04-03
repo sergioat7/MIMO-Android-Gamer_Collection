@@ -116,8 +116,6 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
             viewModel.sagas.value?.toMutableList() ?: mutableListOf(),
             mutableListOf(),
             viewModel.platforms,
-            viewModel.states,
-            requireContext(),
             this
         )
         recycler_view_sagas.adapter = sagasAdapter
