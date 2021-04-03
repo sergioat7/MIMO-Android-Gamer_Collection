@@ -8,8 +8,8 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,26 +18,27 @@ import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnFiltersSelected
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
-import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.databinding.FragmentGamesBinding
+import es.upsa.mimo.gamercollection.fragments.base.BindingFragment
 import es.upsa.mimo.gamercollection.fragments.popups.PopupFilterDialogFragment
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.GamesViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GamesViewModel
-import kotlinx.android.synthetic.main.fragment_games.*
 import kotlinx.android.synthetic.main.state_button.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
+class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListener,
+    OnFiltersSelected {
 
     //MARK: - Private properties
 
     private lateinit var viewModel: GamesViewModel
     private lateinit var gamesAdapter: GamesAdapter
     private var menu: Menu? = null
-    private val scrollPosition = MutableLiveData<ScrollPosition>()
+    private val scrollPosition = ObservableField<ScrollPosition>()
 
     // MARK: - Lifecycle methods
 
@@ -46,7 +47,7 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_games, container, false)
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -120,8 +121,50 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
             it.findItem(R.id.action_filter).isVisible = filters == null
             it.findItem(R.id.action_filter_on).isVisible = filters != null
         }
-        scrollPosition.value = ScrollPosition.TOP
+        scrollPosition.set(ScrollPosition.TOP)
         viewModel.getGames()
+    }
+
+    //MARK: - Public methods
+
+    fun buttonClicked(it: View) {
+
+        scrollPosition.set(ScrollPosition.TOP)
+        with(binding) {
+
+            swipeRefreshLayout.isEnabled =
+                !it.isSelected && this@GamesFragment.viewModel.swipeRefresh
+            buttonPending.isSelected = if (it == buttonPending) !it.isSelected else false
+            buttonInProgress.isSelected = if (it == buttonInProgress) !it.isSelected else false
+            buttonFinished.isSelected = if (it == buttonFinished) !it.isSelected else false
+            val newState = when (it) {
+                buttonPending -> Constants.PENDING_STATE
+                buttonInProgress -> Constants.IN_PROGRESS_STATE
+                buttonFinished -> Constants.FINISHED_STATE
+                else -> null
+            }
+            this@GamesFragment.viewModel.state = if (it.isSelected) newState else null
+        }
+        viewModel.getGames()
+    }
+
+    fun goToStartEndList(view: View) {
+
+        with(binding) {
+            when (view) {
+                floatingActionButtonStartList -> {
+
+                    recyclerViewGames.scrollToPosition(0)
+                    scrollPosition.set(ScrollPosition.TOP)
+                }
+                floatingActionButtonEndList -> {
+
+                    val position: Int = gamesAdapter.itemCount - 1
+                    recyclerViewGames.scrollToPosition(position)
+                    scrollPosition.set(ScrollPosition.END)
+                }
+            }
+        }
     }
 
     //MARK: - Private methods
@@ -135,61 +178,51 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
         ).get(GamesViewModel::class.java)
         setupBindings()
 
-        button_pending.setOnClickListener {
-            buttonClicked(it, Constants.PENDING_STATE)
-        }
-        button_in_progress.setOnClickListener {
-            buttonClicked(it, Constants.IN_PROGRESS_STATE)
-        }
-        button_finished.setOnClickListener {
-            buttonClicked(it, Constants.FINISHED_STATE)
-        }
+        with(binding) {
 
-        swipe_refresh_layout.isEnabled = viewModel.swipeRefresh
-        swipe_refresh_layout.setColorSchemeResources(R.color.colorPrimary)
-        swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
-        swipe_refresh_layout.setOnRefreshListener {
-            viewModel.loadGames()
-        }
-
-        recycler_view_games.layoutManager = LinearLayoutManager(requireContext())
-        gamesAdapter = GamesAdapter(
-            viewModel.games.value ?: listOf(),
-            viewModel.platforms,
-            null,
-            this
-        )
-        recycler_view_games.adapter = gamesAdapter
-        recycler_view_games.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                scrollPosition.value =
-                    if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        ScrollPosition.TOP
-                    } else if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        ScrollPosition.END
-                    } else {
-                        ScrollPosition.MIDDLE
-                    }
+            swipeRefreshLayout.apply {
+                isEnabled = this@GamesFragment.viewModel.swipeRefresh
+                setColorSchemeResources(R.color.colorPrimary)
+                setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
+                setOnRefreshListener {
+                    this@GamesFragment.viewModel.loadGames()
+                }
             }
-        })
 
-        scrollPosition.value = ScrollPosition.TOP
+            gamesAdapter = GamesAdapter(
+                this@GamesFragment.viewModel.games.value ?: listOf(),
+                this@GamesFragment.viewModel.platforms,
+                null,
+                this@GamesFragment
+            )
+            recyclerViewGames.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = gamesAdapter
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
-        floating_action_button_start_list.setOnClickListener {
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
 
-            recycler_view_games.scrollToPosition(0)
-            scrollPosition.value = ScrollPosition.TOP
+                        scrollPosition.set(
+                            if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                                ScrollPosition.TOP
+                            } else if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                                ScrollPosition.END
+                            } else {
+                                ScrollPosition.MIDDLE
+                            }
+                        )
+                    }
+                })
+            }
+
+            fragment = this@GamesFragment
+            viewModel = this@GamesFragment.viewModel
+            lifecycleOwner = this@GamesFragment
+            position = scrollPosition
         }
 
-        floating_action_button_end_list.setOnClickListener {
-
-            val position: Int = gamesAdapter.itemCount - 1
-            recycler_view_games.scrollToPosition(position)
-            scrollPosition.value = ScrollPosition.END
-        }
+        scrollPosition.set(ScrollPosition.TOP)
     }
 
     private fun setupBindings() {
@@ -209,12 +242,6 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
         })
 
         viewModel.games.observe(viewLifecycleOwner, {
-
-            gamesAdapter.setGames(it)
-            layout_empty_list.visibility = if (it.isNotEmpty()) View.GONE else View.VISIBLE
-            swipe_refresh_layout.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
-            scrollPosition.value =
-                if (it.isNotEmpty()) scrollPosition.value else ScrollPosition.NONE
 
             val today = Constants.stringToDate(
                 Constants.dateToString(
@@ -236,14 +263,6 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
         viewModel.gamesCount.observe(viewLifecycleOwner, {
             setGamesCount(it)
             setTitle(it.size)
-        })
-
-        scrollPosition.observe(viewLifecycleOwner, {
-
-            floating_action_button_start_list.visibility =
-                if (it == ScrollPosition.TOP || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
-            floating_action_button_end_list.visibility =
-                if (it == ScrollPosition.END || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
         })
     }
 
@@ -344,9 +363,11 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
         val inProgressGamesCount = filteredGames.filter { it == Constants.IN_PROGRESS_STATE }.size
         val finishedGamesCount = filteredGames.filter { it == Constants.FINISHED_STATE }.size
 
-        button_pending.text_view_subtitle.text = "$pendingGamesCount"
-        button_in_progress.text_view_subtitle.text = "$inProgressGamesCount"
-        button_finished.text_view_subtitle.text = "$finishedGamesCount"
+        with(binding) {
+            buttonPending.text_view_subtitle.text = "$pendingGamesCount"
+            buttonInProgress.text_view_subtitle.text = "$inProgressGamesCount"
+            buttonFinished.text_view_subtitle.text = "$finishedGamesCount"
+        }
     }
 
     private fun setTitle(gamesCount: Int) {
@@ -360,22 +381,13 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
     }
 
     private fun enableStateButtons(enable: Boolean) {
+        with(binding) {
 
-        swipe_refresh_layout.isRefreshing = !enable
-        button_pending.isEnabled = enable
-        button_in_progress.isEnabled = enable
-        button_finished.isEnabled = enable
-    }
-
-    private fun buttonClicked(it: View, newState: String) {
-
-        button_pending.isSelected = if (it == button_pending) !it.isSelected else false
-        button_in_progress.isSelected = if (it == button_in_progress) !it.isSelected else false
-        button_finished.isSelected = if (it == button_finished) !it.isSelected else false
-        swipe_refresh_layout.isEnabled = !it.isSelected && viewModel.swipeRefresh
-        viewModel.state = if (it.isSelected) newState else null
-        scrollPosition.value = ScrollPosition.TOP
-        viewModel.getGames()
+            swipeRefreshLayout.isRefreshing = !enable
+            buttonPending.isEnabled = enable
+            buttonInProgress.isEnabled = enable
+            buttonFinished.isEnabled = enable
+        }
     }
 }
 
