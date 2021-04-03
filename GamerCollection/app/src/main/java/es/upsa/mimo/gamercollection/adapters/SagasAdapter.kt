@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.databinding.GameItemBinding
 import es.upsa.mimo.gamercollection.models.base.BaseModel
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
@@ -33,7 +34,14 @@ class SagasAdapter(
         val itemView = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
         return when (viewType) {
             R.layout.saga_item -> SagasViewHolder(itemView)
-            R.layout.game_item -> GamesViewHolder(itemView, platforms, states)
+            R.layout.game_item -> GamesViewHolder(
+                GameItemBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ),
+                platforms
+            )
             else -> throw Throwable("Unsupported type")
         }
     }
@@ -91,11 +99,7 @@ class SagasAdapter(
         } else if (holder is GamesViewHolder) {
 
             val game = items[position] as GameResponse
-            holder.fillData(game, context, null)
-
-            holder.itemView.check_box.setOnClickListener {
-                onItemClickListener.onSubItemClick(game.id)
-            }
+            holder.bind(game, null, onItemClickListener)
 
             holder.itemView.setOnClickListener {
                 holder.itemView.check_box.isChecked = !holder.itemView.check_box.isChecked

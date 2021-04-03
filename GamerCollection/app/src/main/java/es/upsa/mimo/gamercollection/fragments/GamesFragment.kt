@@ -156,9 +156,7 @@ class GamesFragment : BaseFragment(), OnItemClickListener, OnFiltersSelected {
         gamesAdapter = GamesAdapter(
             viewModel.games.value ?: listOf(),
             viewModel.platforms,
-            viewModel.states,
             null,
-            requireContext(),
             this
         )
         recycler_view_games.adapter = gamesAdapter
