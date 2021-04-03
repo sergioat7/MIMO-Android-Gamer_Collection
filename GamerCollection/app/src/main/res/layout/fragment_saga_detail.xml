@@ -1,75 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.SagaDetailFragment"
-    >
+<layout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+
+        <import
+            type="android.view.View"
+            />
+
+        <variable
+            name="sagaName"
+            type="String"
+            />
+
+        <variable
+            name="editable"
+            type="Boolean"
+            />
+
+        <variable
+            name="fragment"
+            type="es.upsa.mimo.gamercollection.fragments.SagaDetailFragment"
+            />
+
+    </data>
+
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:context=".fragments.SagaDetailFragment"
         >
 
-        <EditText
-            android:id="@+id/edit_text_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/Widget.GamerCollection.EditText.Bold.SagaTitle"
-            />
-
-        <TextView
-            android:id="@+id/text_view_games_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/line_view"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_name"
-            style="@style/Widget.GamerCollection.TextView.Bold.AddGameTitle"
-            />
-
-        <Button
-            android:id="@+id/button_add_game"
-            app:layout_constraintBottom_toBottomOf="@+id/text_view_games_title"
-            app:layout_constraintEnd_toEndOf="@+id/line_view"
-            style="@style/Widget.GamerCollection.ImageButton.AddGame"
-            />
-
-        <View
-            android:id="@+id/line_view"
-            android:layout_width="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_games_title"
-            style="@style/Widget.GamerCollection.AddGameSeparator"
-            />
-
-        <ScrollView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/line_view"
-            app:layout_constraintStart_toStartOf="@+id/text_view_games_title"
-            app:layout_constraintTop_toBottomOf="@+id/line_view"
-            style="@style/Widget.GamerCollection.ScrollViewContent.SagaGames"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             >
 
-            <LinearLayout
-                android:id="@+id/linear_layout_games"
-                android:layout_width="match_parent"
+            <EditText
+                android:id="@+id/edit_text_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@{sagaName}"
+                style="@style/Widget.GamerCollection.EditText.Bold.SagaTitle"
                 />
 
-        </ScrollView>
+            <TextView
+                android:id="@+id/text_view_games_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/line_view"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_name"
+                style="@style/Widget.GamerCollection.TextView.Bold.AddGameTitle"
+                />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/button_add_game"
+                app:layout_constraintBottom_toBottomOf="@+id/text_view_games_title"
+                app:layout_constraintEnd_toEndOf="@+id/line_view"
+                android:visibility="@{editable ? View.VISIBLE : View.GONE}"
+                android:onClick="@{() -> fragment.addGame()}"
+                style="@style/Widget.GamerCollection.ImageButton.AddGame"
+                />
 
-</FrameLayout>
+            <View
+                android:id="@+id/line_view"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_games_title"
+                style="@style/Widget.GamerCollection.AddGameSeparator"
+                />
+
+            <ScrollView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/line_view"
+                app:layout_constraintStart_toStartOf="@+id/text_view_games_title"
+                app:layout_constraintTop_toBottomOf="@+id/line_view"
+                style="@style/Widget.GamerCollection.ScrollViewContent.SagaGames"
+                >
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_games"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    />
+
+            </ScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+</layout>
