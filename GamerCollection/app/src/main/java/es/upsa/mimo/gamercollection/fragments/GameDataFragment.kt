@@ -209,6 +209,36 @@ class GameDataFragment(
         )
     }
 
+    fun buttonClicked(it: View) {
+
+        binding.buttonPending.isSelected =
+            if (it == binding.buttonPending) !it.isSelected else false
+        binding.buttonInProgress.isSelected =
+            if (it == binding.buttonInProgress) !it.isSelected else false
+        binding.buttonFinished.isSelected =
+            if (it == binding.buttonFinished) !it.isSelected else false
+    }
+
+    fun showMap() {
+
+        val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
+        val prev = activity?.supportFragmentManager?.findFragmentByTag("mapDialog")
+        if (prev != null) {
+            ft.remove(prev)
+        }
+        ft.addToBackStack(null)
+
+        var location: LatLng? = null
+        val purchaseLocation = game?.purchaseLocation
+        if (purchaseLocation != null && purchaseLocation.isNotEmpty()) {
+            val latLng = purchaseLocation.split(",")
+            location = LatLng(latLng[0].toDouble(), latLng[1].toDouble())
+        }
+
+        val dialogFragment = MapsFragment(location, this)
+        dialogFragment.show(ft, "mapDialog")
+    }
+
     //MARK: - Private methods
 
     private fun initializeUI() {
@@ -219,70 +249,64 @@ class GameDataFragment(
         )
         setupBindings()
 
-        binding.buttonPending.setOnClickListener {
-            buttonClicked(it)
-        }
-        binding.buttonInProgress.setOnClickListener {
-            buttonClicked(it)
-        }
-        binding.buttonFinished.setOnClickListener {
-            buttonClicked(it)
-        }
-
         formatValues = ArrayList()
         formatValues.run {
             this.add(resources.getString((R.string.game_detail_select_format)))
             this.addAll(viewModel.formats.map { it.name })
         }
-        binding.spinnerFormats.adapter = Constants.getAdapter(requireContext(), formatValues)
         genreValues = ArrayList()
         genreValues.run {
             this.add(resources.getString((R.string.game_detail_select_genre)))
             this.addAll(viewModel.genres.map { it.name })
         }
-        binding.spinnerGenres.adapter = Constants.getAdapter(requireContext(), genreValues)
-
-        binding.spinnerPegis.backgroundTintList = ColorStateList.valueOf(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.colorPrimary
-            )
-        )
         val pegis = ArrayList<String>()
         pegis.run {
             this.add(resources.getString(R.string.game_detail_select_pegi))
             this.addAll(resources.getStringArray(R.array.pegis).toList())
         }
-        binding.spinnerPegis.adapter = Constants.getAdapter(requireContext(), pegis)
 
-        binding.customEditTextPurchaseLocation.setOnClickListener {
-            showMap()
-        }
-        binding.customEditTextSaga.setReadOnly(true, 0)
+        with(binding) {
 
-        binding.customEditTextDistributor.edit_text.setOnEditorActionListener { _, _, _ ->
-            binding.customEditTextDeveloper.requestFocus()
-            true
-        }
-        binding.customEditTextDeveloper.edit_text.setOnEditorActionListener { _, _, _ ->
-            binding.customEditTextPlayers.requestFocus()
-            true
-        }
-        binding.customEditTextPlayers.edit_text.setOnEditorActionListener { _, _, _ ->
-            binding.customEditTextPrice.requestFocus()
-            true
-        }
-        binding.customEditTextPrice.edit_text.setOnEditorActionListener { _, _, _ ->
-            binding.customEditTextLoaned.requestFocus()
-            true
-        }
-        binding.customEditTextLoaned.edit_text.setOnEditorActionListener { _, _, _ ->
-            binding.customEditTextVideoUrl.requestFocus()
-            true
-        }
-        binding.customEditTextVideoUrl.edit_text.setOnEditorActionListener { _, _, _ ->
-            binding.customEditTextObservations.requestFocus()
-            true
+            spinnerFormats.adapter = Constants.getAdapter(requireContext(), formatValues)
+            spinnerGenres.adapter = Constants.getAdapter(requireContext(), genreValues)
+            spinnerPegis.apply {
+                backgroundTintList = ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorPrimary
+                    )
+                )
+                adapter = Constants.getAdapter(requireContext(), pegis)
+            }
+
+            customEditTextSaga.setReadOnly(true, 0)
+
+            customEditTextDistributor.edit_text.setOnEditorActionListener { _, _, _ ->
+                customEditTextDeveloper.requestFocus()
+                true
+            }
+            customEditTextDeveloper.edit_text.setOnEditorActionListener { _, _, _ ->
+                customEditTextPlayers.requestFocus()
+                true
+            }
+            customEditTextPlayers.edit_text.setOnEditorActionListener { _, _, _ ->
+                customEditTextPrice.requestFocus()
+                true
+            }
+            customEditTextPrice.edit_text.setOnEditorActionListener { _, _, _ ->
+                customEditTextLoaned.requestFocus()
+                true
+            }
+            customEditTextLoaned.edit_text.setOnEditorActionListener { _, _, _ ->
+                customEditTextVideoUrl.requestFocus()
+                true
+            }
+            customEditTextVideoUrl.edit_text.setOnEditorActionListener { _, _, _ ->
+                customEditTextObservations.requestFocus()
+                true
+            }
+
+            fragment = this@GameDataFragment
         }
 
         showData(game)
@@ -308,36 +332,6 @@ class GameDataFragment(
                 manageError(error)
             }
         })
-    }
-
-    private fun showMap() {
-
-        val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
-        val prev = activity?.supportFragmentManager?.findFragmentByTag("mapDialog")
-        if (prev != null) {
-            ft.remove(prev)
-        }
-        ft.addToBackStack(null)
-
-        var location: LatLng? = null
-        val purchaseLocation = game?.purchaseLocation
-        if (purchaseLocation != null && purchaseLocation.isNotEmpty()) {
-            val latLng = purchaseLocation.split(",")
-            location = LatLng(latLng[0].toDouble(), latLng[1].toDouble())
-        }
-
-        val dialogFragment = MapsFragment(location, this)
-        dialogFragment.show(ft, "mapDialog")
-    }
-
-    private fun buttonClicked(it: View) {
-
-        binding.buttonPending.isSelected =
-            if (it == binding.buttonPending) !it.isSelected else false
-        binding.buttonInProgress.isSelected =
-            if (it == binding.buttonInProgress) !it.isSelected else false
-        binding.buttonFinished.isSelected =
-            if (it == binding.buttonFinished) !it.isSelected else false
     }
 
     private fun getText(value: String?): String {

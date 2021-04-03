@@ -8,16 +8,17 @@
             />
 
         <import
-            type="es.upsa.mimo.gamercollection.models.responses.GameResponse"
+            type="android.graphics.drawable.Drawable"
             />
 
-        <import
-            type="android.graphics.drawable.Drawable"
+        <variable
+            name="activity"
+            type="es.upsa.mimo.gamercollection.activities.GameDetailActivity"
             />
         
         <variable
             name="game"
-            type="GameResponse"
+            type="es.upsa.mimo.gamercollection.models.responses.GameResponse"
             />
 
         <variable
@@ -67,6 +68,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:enabled="@{editable}"
+            android:onClick="@{() -> activity.setImage()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:layout_constraintWidth_percent="0.4"
@@ -133,6 +135,7 @@
                 android:layout_width="wrap_content"
                 android:text="@{String.valueOf(game.score)}"
                 android:enabled="@{editable}"
+                android:onClick="@{() -> activity.setRating()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/image_view_pegi"
                 app:layout_constraintHorizontal_bias="0.0"

@@ -112,6 +112,57 @@ class GameDetailActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    //MARK: - Public methods
+
+    fun setImage() {
+
+        val dialogBuilder = AlertDialog.Builder(this).create()
+        val dialogView = this.layoutInflater.inflate(R.layout.set_image_dialog, null)
+
+        dialogView.button_accept.setOnClickListener {
+
+            val url = dialogView.custom_edit_text_url.getText()
+            val errorImage =
+                if (Constants.isDarkMode(this)) R.drawable.ic_add_image_light else R.drawable.ic_add_image_dark
+            if (url.isNotEmpty()) {
+
+                Picasso.get()
+                    .load(url)
+                    .error(errorImage)
+                    .into(binding.imageViewGame, object : Callback {
+                        override fun onSuccess() {
+                            imageUrl = url
+                        }
+
+                        override fun onError(e: Exception?) {
+                            imageUrl = null
+                            showPopupDialog(resources.getString(R.string.error_image_url))
+                        }
+                    })
+            }
+            dialogBuilder.dismiss()
+        }
+
+        dialogBuilder.setView(dialogView)
+        dialogBuilder.show()
+    }
+
+    fun setRating() {
+
+        val dialogBuilder = AlertDialog.Builder(this).create()
+        val dialogView = this.layoutInflater.inflate(R.layout.set_rating_dialog, null)
+
+        dialogView.rating_bar.rating = binding.ratingButton.text.toString().toFloat() / 2
+        dialogView.button_rate.setOnClickListener {
+
+            binding.ratingButton.text = (dialogView.rating_bar.rating * 2).toString()
+            dialogBuilder.dismiss()
+        }
+
+        dialogBuilder.setView(dialogView)
+        dialogBuilder.show()
+    }
+
     //MARK: - Private methods
 
     private fun initializeUI() {
@@ -125,19 +176,12 @@ class GameDetailActivity : BaseActivity() {
         ).get(GameDetailViewModel::class.java)
         setupBindings()
 
-        binding.imageViewGame.setOnClickListener {
-            setImage()
-        }
         platformValues = ArrayList()
         platformValues.run {
             this.add(resources.getString((R.string.game_detail_select_platform)))
             this.addAll(viewModel.platforms.map { it.name })
         }
         binding.spinnerPlatforms.adapter = Constants.getAdapter(this, platformValues)
-
-        binding.ratingButton.setOnClickListener {
-            setRating()
-        }
 
         pagerAdapter = GameDetailPagerAdapter(
             this,
@@ -151,6 +195,8 @@ class GameDetailActivity : BaseActivity() {
                     R.string.game_detail_songs_title
                 )
         }.attach()
+
+        binding.activity = this
     }
 
     private fun setupBindings() {
@@ -270,55 +316,6 @@ class GameDetailActivity : BaseActivity() {
 
         binding.editable = editable
         pagerAdapter.setEdition(editable)
-    }
-
-    private fun setImage() {
-
-        val dialogBuilder = AlertDialog.Builder(this).create()
-        val dialogView = this.layoutInflater.inflate(R.layout.set_image_dialog, null)
-
-        dialogView.button_accept.setOnClickListener {
-
-            val url = dialogView.custom_edit_text_url.getText()
-            val errorImage =
-                if (Constants.isDarkMode(this)) R.drawable.ic_add_image_light else R.drawable.ic_add_image_dark
-            if (url.isNotEmpty()) {
-
-                Picasso.get()
-                    .load(url)
-                    .error(errorImage)
-                    .into(binding.imageViewGame, object : Callback {
-                        override fun onSuccess() {
-                            imageUrl = url
-                        }
-
-                        override fun onError(e: Exception?) {
-                            imageUrl = null
-                            showPopupDialog(resources.getString(R.string.error_image_url))
-                        }
-                    })
-            }
-            dialogBuilder.dismiss()
-        }
-
-        dialogBuilder.setView(dialogView)
-        dialogBuilder.show()
-    }
-
-    private fun setRating() {
-
-        val dialogBuilder = AlertDialog.Builder(this).create()
-        val dialogView = this.layoutInflater.inflate(R.layout.set_rating_dialog, null)
-
-        dialogView.rating_bar.rating = binding.ratingButton.text.toString().toFloat() / 2
-        dialogView.button_rate.setOnClickListener {
-
-            binding.ratingButton.text = (dialogView.rating_bar.rating * 2).toString()
-            dialogBuilder.dismiss()
-        }
-
-        dialogBuilder.setView(dialogView)
-        dialogBuilder.show()
     }
 
     private fun getGameData(): GameResponse {
