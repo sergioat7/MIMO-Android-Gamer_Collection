@@ -9,7 +9,6 @@ import es.upsa.mimo.gamercollection.databinding.GameItemBinding
 import es.upsa.mimo.gamercollection.databinding.LayoutLoadMoreItemsBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
-import es.upsa.mimo.gamercollection.models.responses.SongResponse
 import es.upsa.mimo.gamercollection.viewholders.GamesViewHolder
 import es.upsa.mimo.gamercollection.viewholders.LoadMoreItemsViewHolder
 import kotlinx.android.synthetic.main.game_item.view.*
@@ -98,10 +97,19 @@ class GamesAdapter(
 }
 
 @BindingAdapter("games")
-fun setRecyclerViewGames(recyclerView: RecyclerView?, games: MutableList<GameResponse>?) {
+fun setRecyclerViewGames(recyclerView: RecyclerView?, games: List<GameResponse>?) {
 
     val adapter = recyclerView?.adapter
     if (adapter is GamesAdapter && games != null) {
-        adapter.addGames(games)
+        adapter.setGames(games)
+    }
+}
+
+@BindingAdapter("newGames")
+fun addRecyclerViewGames(recyclerView: RecyclerView?, newGames: MutableList<GameResponse>?) {
+
+    val adapter = recyclerView?.adapter
+    if (adapter is GamesAdapter && newGames != null) {
+        adapter.addGames(newGames)
     }
 }
