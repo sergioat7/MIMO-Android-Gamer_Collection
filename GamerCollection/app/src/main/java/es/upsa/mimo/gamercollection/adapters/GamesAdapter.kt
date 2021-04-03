@@ -2,12 +2,14 @@ package es.upsa.mimo.gamercollection.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.databinding.GameItemBinding
 import es.upsa.mimo.gamercollection.databinding.LayoutLoadMoreItemsBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
+import es.upsa.mimo.gamercollection.models.responses.SongResponse
 import es.upsa.mimo.gamercollection.viewholders.GamesViewHolder
 import es.upsa.mimo.gamercollection.viewholders.LoadMoreItemsViewHolder
 import kotlinx.android.synthetic.main.game_item.view.*
@@ -92,5 +94,14 @@ class GamesAdapter(
 
         games = ArrayList()
         notifyDataSetChanged()
+    }
+}
+
+@BindingAdapter("games")
+fun setRecyclerViewGames(recyclerView: RecyclerView?, games: MutableList<GameResponse>?) {
+
+    val adapter = recyclerView?.adapter
+    if (adapter is GamesAdapter && games != null) {
+        adapter.addGames(games)
     }
 }
