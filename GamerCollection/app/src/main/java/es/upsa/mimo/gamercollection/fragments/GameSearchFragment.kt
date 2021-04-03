@@ -89,9 +89,7 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
         gamesAdapter = GamesAdapter(
             viewModel.games.value ?: listOf(),
             viewModel.platforms,
-            viewModel.states,
             null,
-            requireContext(),
             this
         )
         recycler_view_games.adapter = gamesAdapter

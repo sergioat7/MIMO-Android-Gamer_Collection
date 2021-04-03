@@ -14,18 +14,15 @@ import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
-import es.upsa.mimo.gamercollection.models.responses.StateResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
-import es.upsa.mimo.gamercollection.repositories.StateRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
 
 class GamesViewModel @Inject constructor(
     private val sharedPreferencesHandler: SharedPreferencesHandler,
     private val gameRepository: GameRepository,
-    private val platformRepository: PlatformRepository,
-    private val stateRepository: StateRepository
+    private val platformRepository: PlatformRepository
 ) : ViewModel() {
 
     //MARK: - Private properties
@@ -45,8 +42,6 @@ class GamesViewModel @Inject constructor(
         get() = sharedPreferencesHandler.getSwipeRefresh()
     val platforms: List<PlatformResponse>
         get() = platformRepository.getPlatformsDatabase()
-    val states: List<StateResponse>
-        get() = stateRepository.getStatesDatabase()
     val gamesLoading: LiveData<Boolean> = _gamesLoading
     val gamesError: LiveData<ErrorResponse> = _gamesError
     val games: LiveData<List<GameResponse>> = _games

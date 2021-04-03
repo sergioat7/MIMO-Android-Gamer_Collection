@@ -227,9 +227,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
             dialogView.recycler_view_games.adapter = GamesAdapter(
                 orderedGames,
                 viewModel.platforms,
-                viewModel.states,
                 viewModel.saga.value?.id ?: 0,
-                requireContext(),
                 this
             )
         }

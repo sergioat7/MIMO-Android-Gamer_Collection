@@ -1,14 +1,13 @@
 package es.upsa.mimo.gamercollection.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.databinding.GameItemBinding
+import es.upsa.mimo.gamercollection.databinding.LayoutLoadMoreItemsBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
-import es.upsa.mimo.gamercollection.models.responses.StateResponse
 import es.upsa.mimo.gamercollection.viewholders.GamesViewHolder
 import es.upsa.mimo.gamercollection.viewholders.LoadMoreItemsViewHolder
 import kotlinx.android.synthetic.main.game_item.view.*
@@ -17,9 +16,7 @@ import java.util.*
 class GamesAdapter(
     private var games: List<GameResponse>,
     private val platforms: List<PlatformResponse>,
-    private val states: List<StateResponse>,
     private val sagaId: Int?,
-    private val context: Context,
     private var onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
 
@@ -36,15 +33,23 @@ class GamesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        val itemView: View = LayoutInflater.from(parent.context).inflate(
-            viewType,
-            parent,
-            false
-        )
         return if (viewType == R.layout.game_item) {
-            GamesViewHolder(itemView, platforms, states)
+            GamesViewHolder(
+                GameItemBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ),
+                platforms
+            )
         } else {
-            LoadMoreItemsViewHolder(itemView)
+            LoadMoreItemsViewHolder(
+                LayoutLoadMoreItemsBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
         }
     }
 
@@ -57,18 +62,14 @@ class GamesAdapter(
         if (holder is GamesViewHolder) {
 
             val game = games[position]
-            holder.fillData(game, context, sagaId)
-            holder.itemView.check_box.setOnClickListener {
-                onItemClickListener.onItemClick(game.id)
-            }
+            holder.bind(game, sagaId, onItemClickListener)
+
             holder.itemView.setOnClickListener {
                 holder.itemView.check_box.isChecked = !holder.itemView.check_box.isChecked
                 onItemClickListener.onItemClick(game.id)
             }
         } else {
-
-            val loadMoreItemsViewHolder = holder as LoadMoreItemsViewHolder
-            loadMoreItemsViewHolder.fillData(onItemClickListener)
+            (holder as LoadMoreItemsViewHolder).bind(onItemClickListener)
         }
     }
 
