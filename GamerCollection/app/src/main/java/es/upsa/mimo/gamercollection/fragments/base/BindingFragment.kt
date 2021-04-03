@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.fragments.base
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
+import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.fragments.popups.PopupErrorDialogFragment
 import es.upsa.mimo.gamercollection.fragments.popups.PopupLoadingDialogFragment
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
@@ -97,6 +99,21 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
             error.append(resources.getString(errorResponse.errorKey))
         }
         showPopupDialog(error.toString())
+    }
+
+    fun showPopupConfirmationDialog(message: String, acceptHandler: () -> Unit) {
+
+        AlertDialog.Builder(context)
+            .setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
+                acceptHandler()
+                dialog.dismiss()
+            }
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
     //endregion
 }
