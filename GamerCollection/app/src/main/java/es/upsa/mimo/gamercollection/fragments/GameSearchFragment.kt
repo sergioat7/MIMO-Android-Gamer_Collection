@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.MutableLiveData
+import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,19 +12,19 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
-import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.databinding.FragmentGameSearchBinding
+import es.upsa.mimo.gamercollection.fragments.base.BindingFragment
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameSearchViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameSearchViewModel
-import kotlinx.android.synthetic.main.fragment_game_search.*
 
-class GameSearchFragment : BaseFragment(), OnItemClickListener {
+class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemClickListener {
 
     //MARK: - Private properties
 
     private lateinit var viewModel: GameSearchViewModel
     private lateinit var gamesAdapter: GamesAdapter
-    private val scrollPosition = MutableLiveData<ScrollPosition>()
+    private val scrollPosition = ObservableField<ScrollPosition>()
 
     // MARK: - Lifecycle methods
 
@@ -33,7 +33,7 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_game_search, container, false)
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,12 +57,34 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
         launchActivityWithExtras(GameDetailActivity::class.java, params)
     }
 
-    override fun onSubItemClick(id: Int) {}
+    override fun onSubItemClick(id: Int) {
+    }
 
     override fun onLoadMoreItemsClick() {
 
         viewModel.loadGames()
-        scrollPosition.value = ScrollPosition.MIDDLE
+        scrollPosition.set(ScrollPosition.MIDDLE)
+    }
+
+    //MARK: - Public methods
+
+    fun goToStartEndList(view: View) {
+
+        with(binding) {
+            when (view) {
+                floatingActionButtonStartList -> {
+
+                    recyclerViewGames.scrollToPosition(0)
+                    scrollPosition.set(ScrollPosition.TOP)
+                }
+                floatingActionButtonEndList -> {
+
+                    val position: Int = gamesAdapter.itemCount - 1
+                    recyclerViewGames.scrollToPosition(position)
+                    scrollPosition.set(ScrollPosition.END)
+                }
+            }
+        }
     }
 
     //MARK: - Private methods
@@ -76,53 +98,53 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
         ).get(GameSearchViewModel::class.java)
         setupBindings()
 
-        swipe_refresh_layout.isEnabled = viewModel.swipeRefresh
-        swipe_refresh_layout.setColorSchemeResources(R.color.colorPrimary)
-        swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
-        swipe_refresh_layout.setOnRefreshListener {
+        with(binding) {
 
-            viewModel.query = null
-            reset()
-        }
+            swipeRefreshLayout.apply {
+                isEnabled = this@GameSearchFragment.viewModel.swipeRefresh
+                setColorSchemeResources(R.color.colorPrimary)
+                setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
+                setOnRefreshListener {
 
-        recycler_view_games.layoutManager = LinearLayoutManager(requireContext())
-        gamesAdapter = GamesAdapter(
-            viewModel.games.value ?: listOf(),
-            viewModel.platforms,
-            null,
-            this
-        )
-        recycler_view_games.adapter = gamesAdapter
-        recycler_view_games.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                scrollPosition.value =
-                    if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        ScrollPosition.TOP
-                    } else if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        ScrollPosition.END
-                    } else {
-                        ScrollPosition.MIDDLE
-                    }
+                    this@GameSearchFragment.viewModel.query = null
+                    reset()
+                }
             }
-        })
 
-        scrollPosition.value = ScrollPosition.TOP
+            gamesAdapter = GamesAdapter(
+                this@GameSearchFragment.viewModel.games.value ?: listOf(),
+                this@GameSearchFragment.viewModel.platforms,
+                null,
+                this@GameSearchFragment
+            )
+            recyclerViewGames.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = gamesAdapter
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
-        floating_action_button_start_list.setOnClickListener {
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
 
-            recycler_view_games.scrollToPosition(0)
-            scrollPosition.value = ScrollPosition.TOP
+                        scrollPosition.set(
+                            if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                                ScrollPosition.TOP
+                            } else if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                                ScrollPosition.END
+                            } else {
+                                ScrollPosition.MIDDLE
+                            }
+                        )
+                    }
+                })
+            }
+
+            fragment = this@GameSearchFragment
+            viewModel = this@GameSearchFragment.viewModel
+            lifecycleOwner = this@GameSearchFragment
+            position = scrollPosition
         }
 
-        floating_action_button_end_list.setOnClickListener {
-
-            val position: Int = gamesAdapter.itemCount - 1
-            recycler_view_games.scrollToPosition(position)
-            scrollPosition.value = ScrollPosition.END
-        }
+        scrollPosition.set(ScrollPosition.TOP)
     }
 
     private fun setupBindings() {
@@ -140,36 +162,12 @@ class GameSearchFragment : BaseFragment(), OnItemClickListener {
             manageError(error)
         })
 
-        viewModel.games.observe(viewLifecycleOwner, {
-
-            gamesAdapter.addGames(it)
-            if (it.isNotEmpty()) {
-
-                layout_empty_list.visibility = View.GONE
-                swipe_refresh_layout.visibility = View.VISIBLE
-                scrollPosition.value = scrollPosition.value
-            } else {
-
-                layout_empty_list.visibility = View.VISIBLE
-                swipe_refresh_layout.visibility = View.GONE
-                scrollPosition.value = ScrollPosition.NONE
-            }
-        })
-
         viewModel.gamesCount.observe(viewLifecycleOwner, {
             setTitle(it)
         })
 
         viewModel.scrollPosition.observe(viewLifecycleOwner, {
-            scrollPosition.value = it
-        })
-
-        scrollPosition.observe(viewLifecycleOwner, {
-
-            floating_action_button_start_list.visibility =
-                if (it == ScrollPosition.TOP || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
-            floating_action_button_end_list.visibility =
-                if (it == ScrollPosition.END || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
+            scrollPosition.set(it)
         })
     }
 
