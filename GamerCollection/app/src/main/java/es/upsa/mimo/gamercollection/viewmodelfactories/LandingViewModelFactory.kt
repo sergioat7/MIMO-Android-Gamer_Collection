@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.network.apiClient.*
 import es.upsa.mimo.gamercollection.repositories.*
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import es.upsa.mimo.gamercollection.viewmodels.LandingViewModel
 import javax.inject.Inject
 
@@ -15,27 +14,6 @@ class LandingViewModelFactory(
 ) : ViewModelProvider.Factory {
 
     //region Public properties
-    @Inject
-    lateinit var sharedPrefHandler: SharedPreferencesHandler
-
-    @Inject
-    lateinit var formatAPIClient: FormatAPIClient
-
-    @Inject
-    lateinit var gameAPIClient: GameAPIClient
-
-    @Inject
-    lateinit var genreAPIClient: GenreAPIClient
-
-    @Inject
-    lateinit var platformAPIClient: PlatformAPIClient
-
-    @Inject
-    lateinit var sagaAPIClient: SagaAPIClient
-
-    @Inject
-    lateinit var stateAPIClient: StateAPIClient
-
     @Inject
     lateinit var formatRepository: FormatRepository
 

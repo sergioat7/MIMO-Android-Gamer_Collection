@@ -7,7 +7,6 @@ import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.network.apiClient.SagaAPIClient
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.repositories.SagaRepository
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import es.upsa.mimo.gamercollection.viewmodels.SagasViewModel
 import javax.inject.Inject
 
@@ -16,12 +15,6 @@ class SagasViewModelFactory(
 ) : ViewModelProvider.Factory {
 
     //region Public properties
-    @Inject
-    lateinit var sharedPrefHandler: SharedPreferencesHandler
-
-    @Inject
-    lateinit var sagaAPIClient: SagaAPIClient
-
     @Inject
     lateinit var platformRepository: PlatformRepository
 

@@ -9,7 +9,6 @@ import es.upsa.mimo.gamercollection.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.repositories.StateRepository
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import es.upsa.mimo.gamercollection.viewmodels.RegisterViewModel
 import javax.inject.Inject
 
@@ -18,24 +17,6 @@ class RegisterViewModelFactory(
 ) : ViewModelProvider.Factory {
 
     //region Public properties
-    @Inject
-    lateinit var sharedPrefHandler: SharedPreferencesHandler
-
-    @Inject
-    lateinit var formatAPIClient: FormatAPIClient
-
-    @Inject
-    lateinit var genreAPIClient: GenreAPIClient
-
-    @Inject
-    lateinit var platformAPIClient: PlatformAPIClient
-
-    @Inject
-    lateinit var stateAPIClient: StateAPIClient
-
-    @Inject
-    lateinit var userAPIClient: UserAPIClient
-
     @Inject
     lateinit var formatRepository: FormatRepository
 

@@ -18,8 +18,6 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
 
 class RegisterViewModel @Inject constructor(
-    private val sharedPreferencesHandler: SharedPreferencesHandler,
-    private val userAPIClient: UserAPIClient,
     private val formatRepository: FormatRepository,
     private val genreRepository: GenreRepository,
     private val platformRepository: PlatformRepository,
@@ -27,6 +25,7 @@ class RegisterViewModel @Inject constructor(
 ) : ViewModel() {
 
     //region Private properties
+    private val userAPIClient = UserAPIClient()
     private val _registerForm = MutableLiveData<LoginFormState>()
     private val _registerLoading = MutableLiveData<Boolean>()
     private val _registerError = MutableLiveData<ErrorResponse>()
@@ -47,7 +46,7 @@ class RegisterViewModel @Inject constructor(
 
                 val userData = UserData(username, password, false)
                 val authData = AuthData(token)
-                sharedPreferencesHandler.run {
+                SharedPreferencesHandler.run {
                     storeUserData(userData)
                     storeCredentials(authData)
                 }
@@ -91,7 +90,7 @@ class RegisterViewModel @Inject constructor(
                     stateRepository.loadStates({
 
                         userData.isLoggedIn = true
-                        sharedPreferencesHandler.storeUserData(userData)
+                        SharedPreferencesHandler.storeUserData(userData)
 
                         _registerLoading.value = false
                         _registerError.value = null

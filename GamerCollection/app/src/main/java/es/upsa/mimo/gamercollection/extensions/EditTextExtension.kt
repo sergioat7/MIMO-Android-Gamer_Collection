@@ -80,10 +80,7 @@ private fun getPicker(editText: EditText, context: Context, dateFormat: String?)
         val newMonth = if (month < 9) "0${month + 1}" else (month + 1).toString()
         val newDate = "${year}-${newMonth}-${newDay}"
 
-        val sharedPreferencesHandler = SharedPreferencesHandler(
-            context.getSharedPreferences(Preferences.PREFERENCES_NAME, Context.MODE_PRIVATE)
-        )
-        val language = sharedPreferencesHandler.getLanguage()
+        val language = SharedPreferencesHandler.getLanguage()
         val dateFormatToShow = dateFormat ?: Constants.getDateFormatToShow(language)
 
         val date = Constants.stringToDate(

@@ -5,11 +5,8 @@ import es.upsa.mimo.gamercollection.models.responses.StateResponse
 import es.upsa.mimo.gamercollection.network.apiService.StateAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
-import javax.inject.Inject
 
-class StateAPIClient @Inject constructor(
-    private val sharedPrefHandler: SharedPreferencesHandler
-) {
+class StateAPIClient {
 
     //region Private properties
     private val api = APIClient.retrofit.create(StateAPIService::class.java)
@@ -19,7 +16,7 @@ class StateAPIClient @Inject constructor(
     fun getStates(success: (List<StateResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHandler.getLanguage()
         val request = api.getStates(headers)
 
         APIClient.sendServer(request, success, failure)

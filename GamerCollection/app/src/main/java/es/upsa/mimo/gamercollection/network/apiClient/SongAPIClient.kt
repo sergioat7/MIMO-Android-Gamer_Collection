@@ -5,11 +5,8 @@ import es.upsa.mimo.gamercollection.models.responses.SongResponse
 import es.upsa.mimo.gamercollection.network.apiService.SongAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
-import javax.inject.Inject
 
-class SongAPIClient @Inject constructor(
-    private val sharedPrefHandler: SharedPreferencesHandler
-) {
+class SongAPIClient {
 
     //region Private properties
     private val api = APIClient.retrofit.create(SongAPIService::class.java)
@@ -24,8 +21,8 @@ class SongAPIClient @Inject constructor(
     ) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
-        headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHandler.getLanguage()
+        headers[Constants.AUTHORIZATION_HEADER] = SharedPreferencesHandler.getCredentials().token
         val request = api.createSong(headers, gameId, song)
 
         APIClient.sendServer(request, {
@@ -41,8 +38,8 @@ class SongAPIClient @Inject constructor(
     ) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
-        headers[Constants.AUTHORIZATION_HEADER] = sharedPrefHandler.getCredentials().token
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHandler.getLanguage()
+        headers[Constants.AUTHORIZATION_HEADER] = SharedPreferencesHandler.getCredentials().token
         val request = api.deleteSong(headers, gameId, songId)
 
         APIClient.sendServer(request, {

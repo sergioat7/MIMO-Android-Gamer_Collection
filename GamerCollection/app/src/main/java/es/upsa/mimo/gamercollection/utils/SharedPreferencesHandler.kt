@@ -1,189 +1,193 @@
 package es.upsa.mimo.gamercollection.utils
 
-import android.content.SharedPreferences
+import android.content.Context
 import com.google.gson.Gson
+import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.login.AuthData
 import es.upsa.mimo.gamercollection.models.login.UserData
 import java.util.*
-import javax.inject.Inject
 
-class SharedPreferencesHandler @Inject constructor(
-    private val sharedPreferences: SharedPreferences?
-) {
+class SharedPreferencesHandler {
+    companion object {
 
-    //region Private properties
-    private val gson = Gson()
-    //endregion
+        //region Private properties
+        private val appPreferences = GamerCollectionApplication.context.getSharedPreferences(
+            Preferences.PREFERENCES_NAME,
+            Context.MODE_PRIVATE
+        )
+        private val gson = Gson()
+        //endregion
 
-    //region Public methods
-    fun isLoggedIn(): Boolean {
+        //region Public methods
+        fun isLoggedIn(): Boolean {
 
-        val userData = getUserData()
-        val authData = getCredentials()
-        return userData.isLoggedIn && authData.token.isNotEmpty()
-    }
-
-    fun getUserData(): UserData {
-
-        val userDataJson =
-            sharedPreferences?.getString(Preferences.USER_DATA_PREFERENCES_NAME, null)
-        return if (userDataJson != null) {
-            gson.fromJson(userDataJson, UserData::class.java)
-        } else {
-            UserData(Constants.EMPTY_VALUE, Constants.EMPTY_VALUE, false)
+            val userData = getUserData()
+            val authData = getCredentials()
+            return userData.isLoggedIn && authData.token.isNotEmpty()
         }
-    }
 
-    fun storeUserData(userData: UserData) {
+        fun getUserData(): UserData {
 
-        if (sharedPreferences != null) {
-            with(sharedPreferences.edit()) {
-                val userDataJson = gson.toJson(userData)
-                putString(Preferences.USER_DATA_PREFERENCES_NAME, userDataJson)
-                commit()
+            val userDataJson =
+                appPreferences?.getString(Preferences.USER_DATA_PREFERENCES_NAME, null)
+            return if (userDataJson != null) {
+                gson.fromJson(userDataJson, UserData::class.java)
+            } else {
+                UserData(Constants.EMPTY_VALUE, Constants.EMPTY_VALUE, false)
             }
         }
-    }
 
-    fun storePassword(password: String) {
+        fun storeUserData(userData: UserData) {
 
-        val userData = getUserData()
-        userData.password = password
-        storeUserData(userData)
-    }
-
-    fun removeUserData() {
-        sharedPreferences?.edit()?.remove(Preferences.USER_DATA_PREFERENCES_NAME)?.apply()
-    }
-
-    fun removePassword() {
-
-        val userData = getUserData()
-        userData.password = Constants.EMPTY_VALUE
-        userData.isLoggedIn = false
-        storeUserData(userData)
-    }
-
-    fun getCredentials(): AuthData {
-
-        val authDataJson =
-            sharedPreferences?.getString(Preferences.AUTH_DATA_PREFERENCES_NAME, null)
-        return if (authDataJson != null) {
-            gson.fromJson(authDataJson, AuthData::class.java)
-        } else {
-            AuthData(Constants.EMPTY_VALUE)
-        }
-    }
-
-    fun storeCredentials(authData: AuthData) {
-
-        if (sharedPreferences != null) {
-            with(sharedPreferences.edit()) {
-                val authDataJson = gson.toJson(authData)
-                putString(Preferences.AUTH_DATA_PREFERENCES_NAME, authDataJson)
-                commit()
+            if (appPreferences != null) {
+                with(appPreferences.edit()) {
+                    val userDataJson = gson.toJson(userData)
+                    putString(Preferences.USER_DATA_PREFERENCES_NAME, userDataJson)
+                    commit()
+                }
             }
         }
-    }
 
-    fun removeCredentials() {
-        sharedPreferences?.edit()?.remove(Preferences.AUTH_DATA_PREFERENCES_NAME)?.apply()
-    }
+        fun storePassword(password: String) {
 
-    fun getLanguage(): String {
-
-        sharedPreferences?.getString(Preferences.LANGUAGE_PREFERENCES_NAME, null)?.let {
-            return it
-        } ?: run {
-            val locale = Locale.getDefault().language
-            setLanguage(locale)
-            return locale
+            val userData = getUserData()
+            userData.password = password
+            storeUserData(userData)
         }
-    }
 
-    fun setLanguage(language: String) {
+        fun removeUserData() {
+            appPreferences?.edit()?.remove(Preferences.USER_DATA_PREFERENCES_NAME)?.apply()
+        }
 
-        if (sharedPreferences != null) {
-            with(sharedPreferences.edit()) {
-                putString(Preferences.LANGUAGE_PREFERENCES_NAME, language)
-                commit()
+        fun removePassword() {
+
+            val userData = getUserData()
+            userData.password = Constants.EMPTY_VALUE
+            userData.isLoggedIn = false
+            storeUserData(userData)
+        }
+
+        fun getCredentials(): AuthData {
+
+            val authDataJson =
+                appPreferences.getString(Preferences.AUTH_DATA_PREFERENCES_NAME, null)
+            return if (authDataJson != null) {
+                gson.fromJson(authDataJson, AuthData::class.java)
+            } else {
+                AuthData(Constants.EMPTY_VALUE)
             }
         }
-    }
 
-    fun getSortingKey(): String {
-        return sharedPreferences?.getString(Preferences.SORTING_KEY_PREFERENCES_NAME, null)
-            ?: Preferences.DEFAULT_SORTING_KEY
-    }
+        fun storeCredentials(authData: AuthData) {
 
-    fun setSortingKey(sortingKey: String) {
-
-        if (sharedPreferences != null) {
-            with(sharedPreferences.edit()) {
-                putString(Preferences.SORTING_KEY_PREFERENCES_NAME, sortingKey)
-                commit()
+            if (appPreferences != null) {
+                with(appPreferences.edit()) {
+                    val authDataJson = gson.toJson(authData)
+                    putString(Preferences.AUTH_DATA_PREFERENCES_NAME, authDataJson)
+                    commit()
+                }
             }
         }
-    }
 
-    fun getSwipeRefresh(): Boolean {
-        return sharedPreferences?.getBoolean(Preferences.SWIPE_REFRESH_PREFERENCES_NAME, true)
-            ?: true
-    }
+        fun removeCredentials() {
+            appPreferences?.edit()?.remove(Preferences.AUTH_DATA_PREFERENCES_NAME)?.apply()
+        }
 
-    fun setSwipeRefresh(swipeRefresh: Boolean) {
+        fun getLanguage(): String {
 
-        if (sharedPreferences != null) {
-            with(sharedPreferences.edit()) {
-                putBoolean(Preferences.SWIPE_REFRESH_PREFERENCES_NAME, swipeRefresh)
-                commit()
+            appPreferences?.getString(Preferences.LANGUAGE_PREFERENCES_NAME, null)?.let {
+                return it
+            } ?: run {
+                val locale = Locale.getDefault().language
+                setLanguage(locale)
+                return locale
             }
         }
-    }
 
-    fun notificationLaunched(gameId: Int): Boolean {
-        return sharedPreferences?.getBoolean(
-            "${Preferences.GAME_NOTIFICATION_PREFERENCES_NAME}${gameId}",
-            false
-        ) ?: false
-    }
+        fun setLanguage(language: String) {
 
-    fun setNotificationLaunched(gameId: Int, value: Boolean) {
-
-        if (sharedPreferences != null) {
-            with(sharedPreferences.edit()) {
-                putBoolean("${Preferences.GAME_NOTIFICATION_PREFERENCES_NAME}$gameId", value)
-                commit()
+            if (appPreferences != null) {
+                with(appPreferences.edit()) {
+                    putString(Preferences.LANGUAGE_PREFERENCES_NAME, language)
+                    commit()
+                }
             }
         }
-    }
 
-    fun getVersion(): Int {
-        return sharedPreferences?.getInt(Preferences.VERSION_PREFERENCE_NAME, 0) ?: 0
-    }
+        fun getSortingKey(): String {
+            return appPreferences?.getString(Preferences.SORTING_KEY_PREFERENCES_NAME, null)
+                ?: Preferences.DEFAULT_SORTING_KEY
+        }
 
-    fun setVersion(version: Int) {
+        fun setSortingKey(sortingKey: String) {
 
-        sharedPreferences?.let {
-            with(it.edit()) {
-                putInt(Preferences.VERSION_PREFERENCE_NAME, version)
-                commit()
+            if (appPreferences != null) {
+                with(appPreferences.edit()) {
+                    putString(Preferences.SORTING_KEY_PREFERENCES_NAME, sortingKey)
+                    commit()
+                }
             }
         }
-    }
 
-    fun getThemeMode(): Int {
-        return sharedPreferences?.getInt(Preferences.THEME_MODE_PREFERENCE_NAME, 0) ?: 0
-    }
+        fun getSwipeRefresh(): Boolean {
+            return appPreferences?.getBoolean(Preferences.SWIPE_REFRESH_PREFERENCES_NAME, true)
+                ?: true
+        }
 
-    fun setThemeMode(themeMode: Int) {
+        fun setSwipeRefresh(swipeRefresh: Boolean) {
 
-        sharedPreferences?.let {
-            with(it.edit()) {
-                putInt(Preferences.THEME_MODE_PREFERENCE_NAME, themeMode)
-                commit()
+            if (appPreferences != null) {
+                with(appPreferences.edit()) {
+                    putBoolean(Preferences.SWIPE_REFRESH_PREFERENCES_NAME, swipeRefresh)
+                    commit()
+                }
             }
         }
+
+        fun notificationLaunched(gameId: Int): Boolean {
+            return appPreferences?.getBoolean(
+                "${Preferences.GAME_NOTIFICATION_PREFERENCES_NAME}${gameId}",
+                false
+            ) ?: false
+        }
+
+        fun setNotificationLaunched(gameId: Int, value: Boolean) {
+
+            if (appPreferences != null) {
+                with(appPreferences.edit()) {
+                    putBoolean("${Preferences.GAME_NOTIFICATION_PREFERENCES_NAME}$gameId", value)
+                    commit()
+                }
+            }
+        }
+
+        fun getVersion(): Int {
+            return appPreferences?.getInt(Preferences.VERSION_PREFERENCE_NAME, 0) ?: 0
+        }
+
+        fun setVersion(version: Int) {
+
+            appPreferences?.let {
+                with(it.edit()) {
+                    putInt(Preferences.VERSION_PREFERENCE_NAME, version)
+                    commit()
+                }
+            }
+        }
+
+        fun getThemeMode(): Int {
+            return appPreferences?.getInt(Preferences.THEME_MODE_PREFERENCE_NAME, 0) ?: 0
+        }
+
+        fun setThemeMode(themeMode: Int) {
+
+            appPreferences?.let {
+                with(it.edit()) {
+                    putInt(Preferences.THEME_MODE_PREFERENCE_NAME, themeMode)
+                    commit()
+                }
+            }
+        }
+        //endregion
     }
-    //endregion
 }

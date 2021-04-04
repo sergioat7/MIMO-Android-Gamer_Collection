@@ -11,11 +11,11 @@ import es.upsa.mimo.gamercollection.repositories.GameRepository
 import javax.inject.Inject
 
 class GameSongsViewModel @Inject constructor(
-    private val songAPIClient: SongAPIClient,
     private val gameRepository: GameRepository
 ) : ViewModel() {
 
     //region Private properties
+    private val songAPIClient = SongAPIClient()
     private var game: GameResponse? = null
     private val _gameSongsLoading = MutableLiveData<Boolean>()
     private val _gameSongsError = MutableLiveData<ErrorResponse>()

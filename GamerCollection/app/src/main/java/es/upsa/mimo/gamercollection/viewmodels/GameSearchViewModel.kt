@@ -13,7 +13,6 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
 
 class GameSearchViewModel @Inject constructor(
-    private val sharedPreferencesHandler: SharedPreferencesHandler,
     private val gameRepository: GameRepository,
     private val platformRepository: PlatformRepository
 ) : ViewModel() {
@@ -30,7 +29,7 @@ class GameSearchViewModel @Inject constructor(
     //region Public properties
     var query: String? = null
     val swipeRefresh: Boolean
-        get() = sharedPreferencesHandler.getSwipeRefresh()
+        get() = SharedPreferencesHandler.getSwipeRefresh()
     val platforms: List<PlatformResponse>
         get() = platformRepository.getPlatformsDatabase()
     val gamesLoading: LiveData<Boolean> = _gamesLoading

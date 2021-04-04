@@ -18,11 +18,11 @@ import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class GameRepository @Inject constructor(
-    private val database: AppDatabase,
-    private val gameAPIClient: GameAPIClient
+    private val database: AppDatabase
 ) {
 
     //region Private properties
+    private val gameAPIClient = GameAPIClient()
     private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
     //endregion
 
