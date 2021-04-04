@@ -10,8 +10,7 @@ import kotlinx.android.synthetic.main.layout_empty_list.view.*
 
 class EmptyListLayout : ConstraintLayout {
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     constructor(context: Context) : super(context) {
         LayoutInflater.from(context).inflate(R.layout.layout_empty_list, this, true)
     }
@@ -31,9 +30,9 @@ class EmptyListLayout : ConstraintLayout {
         LayoutInflater.from(context).inflate(R.layout.layout_empty_list, this, true)
         setAttributes(attrs)
     }
+    //endregion
 
-    // MARK: - Private methods
-
+    //region Private methods
     @SuppressLint("Recycle")
     private fun setAttributes(attrs: AttributeSet?) {
 
@@ -45,4 +44,5 @@ class EmptyListLayout : ConstraintLayout {
             image_view_empty_list.setImageDrawable(image)
         }
     }
+    //endregion
 }

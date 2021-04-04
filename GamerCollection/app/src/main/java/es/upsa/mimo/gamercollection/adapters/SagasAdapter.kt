@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.base.BaseModel
 import es.upsa.mimo.gamercollection.databinding.GameItemBinding
 import es.upsa.mimo.gamercollection.databinding.SagaItemBinding
-import es.upsa.mimo.gamercollection.models.base.BaseModel
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
@@ -24,8 +24,7 @@ class SagasAdapter(
     private var onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<ViewHolder?>() {
 
-    //MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return when (viewType) {
@@ -106,9 +105,9 @@ class SagasAdapter(
             }
         }
     }
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun setItems(newItems: MutableList<BaseModel<Int>>) {
         this.items = newItems
     }
@@ -126,4 +125,5 @@ class SagasAdapter(
         this.items = mutableListOf()
         notifyDataSetChanged()
     }
+    //endregion
 }

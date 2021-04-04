@@ -21,13 +21,12 @@ class PopupFilterDialogFragment(
     private val onFiltersSelected: OnFiltersSelected
 ) : DialogFragment() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private lateinit var binding: FragmentPopupFilterDialogBinding
     private lateinit var viewModel: PopupFilterViewModel
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_TITLE, R.style.Theme_GamerCollection_DialogTransparent)
@@ -50,9 +49,9 @@ class PopupFilterDialogFragment(
         super.onViewCreated(view, savedInstanceState)
         initializeUI()
     }
+    //endregion
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun cancel() {
         dismiss()
     }
@@ -198,9 +197,9 @@ class PopupFilterDialogFragment(
         onFiltersSelected.filter(currentFilters)
         dismiss()
     }
+    //endregion
 
-    //MARK: - Private methods
-
+    //region Description
     private fun initializeUI() {
 
         val application = activity?.application
@@ -371,4 +370,5 @@ class PopupFilterDialogFragment(
         }
         binding.linearLayoutFormats.removeViewAt(binding.linearLayoutFormats.childCount - 1)
     }
+    //endregion
 }

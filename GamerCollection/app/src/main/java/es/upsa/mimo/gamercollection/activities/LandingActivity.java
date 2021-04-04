@@ -12,27 +12,26 @@ import androidx.lifecycle.ViewModelProvider;
 import java.util.Locale;
 
 import es.upsa.mimo.gamercollection.R;
-import es.upsa.mimo.gamercollection.activities.base.BaseActivity;
+import es.upsa.mimo.gamercollection.base.BaseActivity;
 import es.upsa.mimo.gamercollection.utils.Constants;
 import es.upsa.mimo.gamercollection.viewmodelfactories.LandingViewModelFactory;
 import es.upsa.mimo.gamercollection.viewmodels.LandingViewModel;
 
 public class LandingActivity extends BaseActivity {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private LandingViewModel viewModel;
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeUI();
     }
+    //endregion
 
-    //MARK: - Private methods
-
+    //region Private methods
     private void initializeUI() {
 
         viewModel = new ViewModelProvider(this, new LandingViewModelFactory(getApplication())).get(LandingViewModel.class);
@@ -76,4 +75,5 @@ public class LandingActivity extends BaseActivity {
             if (notificationManager != null) notificationManager.createNotificationChannel(channel);
         }
     }
+    //endregion
 }

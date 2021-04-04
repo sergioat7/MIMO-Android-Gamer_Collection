@@ -15,12 +15,11 @@ class PopupErrorDialogFragment(
     private val goBack: MutableLiveData<Boolean>? = null
 ) : DialogFragment() {
 
-    // MARK: - Private properties methods
-
+    //region Private properties
     private lateinit var binding: FragmentPopupErrorDialogBinding
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_TITLE, R.style.Theme_GamerCollection_DialogTransparent)
@@ -45,9 +44,9 @@ class PopupErrorDialogFragment(
         binding.text = message
         binding.fragment = this
     }
+    //endregion
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun close() {
 
         dismiss()
@@ -55,4 +54,5 @@ class PopupErrorDialogFragment(
             it.value = true
         }
     }
+    //endregion
 }

@@ -12,8 +12,7 @@ import es.upsa.mimo.gamercollection.utils.Constants
 class SagasViewHolder(private val binding: SagaItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun bind(saga: SagaResponse, onItemClickListener: OnItemClickListener) {
 
         val gamesCount = saga.games.size
@@ -43,4 +42,5 @@ class SagasViewHolder(private val binding: SagaItemBinding) :
     fun rotateArrow(value: Float) {
         binding.imageViewArrow.animate().setDuration(500).rotation(value).start()
     }
+    //endregion
 }

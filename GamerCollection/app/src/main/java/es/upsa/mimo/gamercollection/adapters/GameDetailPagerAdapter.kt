@@ -13,14 +13,13 @@ class GameDetailPagerAdapter(
     private val currentGame: GameResponse?
 ) : FragmentStateAdapter(activity) {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private var gameDataFragment: GameDataFragment? = null
     private var gameSongsFragment: GameSongsFragment? = null
     private var enabled = false
+    //endregion
 
-    //MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun getItemCount(): Int {
         return itemsCount
     }
@@ -36,9 +35,9 @@ class GameDetailPagerAdapter(
         }
         return fragment ?: Fragment()
     }
+    //endregion
 
-    // MARK: Public methods
-
+    //region Public methods
     fun showData(game: GameResponse?) {
         gameDataFragment?.showData(game)
     }
@@ -58,4 +57,5 @@ class GameDetailPagerAdapter(
         }
         return game
     }
+    //endregion
 }
