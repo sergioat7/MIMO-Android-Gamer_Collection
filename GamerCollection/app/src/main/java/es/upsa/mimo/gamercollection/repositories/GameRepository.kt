@@ -13,6 +13,7 @@ import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.State
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
@@ -81,9 +82,9 @@ class GameRepository @Inject constructor(
         var queryString = "SELECT * FROM Game"
 
         var queryConditions = when (state) {
-            Constants.PENDING_STATE -> " WHERE state == '${Constants.PENDING_STATE}' AND "
-            Constants.IN_PROGRESS_STATE -> " WHERE state == '${Constants.IN_PROGRESS_STATE}' AND "
-            Constants.FINISHED_STATE -> " WHERE state == '${Constants.FINISHED_STATE}' AND "
+            State.PENDING_STATE -> " WHERE state == '${State.PENDING_STATE}' AND "
+            State.IN_PROGRESS_STATE -> " WHERE state == '${State.IN_PROGRESS_STATE}' AND "
+            State.FINISHED_STATE -> " WHERE state == '${State.FINISHED_STATE}' AND "
             else -> Constants.EMPTY_VALUE
         }
 

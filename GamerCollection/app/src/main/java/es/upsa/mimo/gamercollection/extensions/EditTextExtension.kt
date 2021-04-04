@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.Preferences
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import java.util.*
 
@@ -80,7 +81,7 @@ private fun getPicker(editText: EditText, context: Context, dateFormat: String?)
         val newDate = "${year}-${newMonth}-${newDay}"
 
         val sharedPreferencesHandler = SharedPreferencesHandler(
-            context.getSharedPreferences(Constants.PREFERENCES_NAME, Context.MODE_PRIVATE)
+            context.getSharedPreferences(Preferences.PREFERENCES_NAME, Context.MODE_PRIVATE)
         )
         val language = sharedPreferencesHandler.getLanguage()
         val dateFormatToShow = dateFormat ?: Constants.getDateFormatToShow(language)

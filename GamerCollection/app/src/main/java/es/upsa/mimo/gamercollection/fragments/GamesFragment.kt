@@ -24,6 +24,8 @@ import es.upsa.mimo.gamercollection.fragments.popups.PopupFilterDialogFragment
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.Notifications
+import es.upsa.mimo.gamercollection.utils.State
 import es.upsa.mimo.gamercollection.viewmodelfactories.GamesViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GamesViewModel
 import kotlinx.android.synthetic.main.state_button.view.*
@@ -137,9 +139,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             buttonInProgress.isSelected = if (it == buttonInProgress) !it.isSelected else false
             buttonFinished.isSelected = if (it == buttonFinished) !it.isSelected else false
             val newState = when (it) {
-                buttonPending -> Constants.PENDING_STATE
-                buttonInProgress -> Constants.IN_PROGRESS_STATE
-                buttonFinished -> Constants.FINISHED_STATE
+                buttonPending -> State.PENDING_STATE
+                buttonInProgress -> State.IN_PROGRESS_STATE
+                buttonFinished -> State.FINISHED_STATE
                 else -> null
             }
             this@GamesFragment.viewModel.state = if (it.isSelected) newState else null
@@ -297,7 +299,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             if (!viewModel.isNotificationLaunched(game.id)) {
 
                 notifications[game.id] =
-                    NotificationCompat.Builder(requireContext(), Constants.CHANNEL_ID)
+                    NotificationCompat.Builder(requireContext(), Notifications.CHANNEL_ID)
                         .setSmallIcon(R.drawable.app_icon)
                         .setContentTitle(
                             resources.getString(
@@ -320,30 +322,36 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
                         .setCategory(NotificationCompat.CATEGORY_REMINDER)
-                        .setGroup(Constants.CHANNEL_GROUP)
+                        .setGroup(Notifications.CHANNEL_GROUP)
                         .build()
                 gameNames += game.name + ", "
             }
         }
         gameNames = gameNames.dropLast(2)
 
-        val summaryNotification = NotificationCompat.Builder(requireContext(), Constants.CHANNEL_ID)
-            .setContentTitle(resources.getString(R.string.summary_notifications_title, games.size))
-            .setContentText(gameNames)
-            .setSmallIcon(R.drawable.app_icon)
-            .setStyle(
-                NotificationCompat.InboxStyle()
-                    .setBigContentTitle(
-                        resources.getString(
-                            R.string.summary_notifications_title,
-                            games.size
-                        )
+        val summaryNotification =
+            NotificationCompat.Builder(requireContext(), Notifications.CHANNEL_ID)
+                .setContentTitle(
+                    resources.getString(
+                        R.string.summary_notifications_title,
+                        games.size
                     )
-                    .setSummaryText(gameNames)
-            )
-            .setGroup(Constants.CHANNEL_GROUP)
-            .setGroupSummary(true)
-            .build()
+                )
+                .setContentText(gameNames)
+                .setSmallIcon(R.drawable.app_icon)
+                .setStyle(
+                    NotificationCompat.InboxStyle()
+                        .setBigContentTitle(
+                            resources.getString(
+                                R.string.summary_notifications_title,
+                                games.size
+                            )
+                        )
+                        .setSummaryText(gameNames)
+                )
+                .setGroup(Notifications.CHANNEL_GROUP)
+                .setGroupSummary(true)
+                .build()
 
         with(NotificationManagerCompat.from(requireContext())) {
             for (notification in notifications) {
@@ -358,9 +366,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     private fun setGamesCount(games: List<GameResponse>) {
 
         val filteredGames = games.mapNotNull { it.state }
-        val pendingGamesCount = filteredGames.filter { it == Constants.PENDING_STATE }.size
-        val inProgressGamesCount = filteredGames.filter { it == Constants.IN_PROGRESS_STATE }.size
-        val finishedGamesCount = filteredGames.filter { it == Constants.FINISHED_STATE }.size
+        val pendingGamesCount = filteredGames.filter { it == State.PENDING_STATE }.size
+        val inProgressGamesCount = filteredGames.filter { it == State.IN_PROGRESS_STATE }.size
+        val finishedGamesCount = filteredGames.filter { it == State.FINISHED_STATE }.size
 
         with(binding) {
             buttonPending.text_view_subtitle.text = "$pendingGamesCount"
