@@ -14,6 +14,7 @@ import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentGameDataBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.State
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameDataViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameDataViewModel
 import kotlinx.android.synthetic.main.custom_edit_text.view.*
@@ -65,9 +66,9 @@ class GameDataFragment(
         binding.spinnerFormats.setSelection(formatPosition)
 
         game?.state?.let {
-            binding.buttonPending.isSelected = it == Constants.PENDING_STATE
-            binding.buttonInProgress.isSelected = it == Constants.IN_PROGRESS_STATE
-            binding.buttonFinished.isSelected = it == Constants.FINISHED_STATE
+            binding.buttonPending.isSelected = it == State.PENDING_STATE
+            binding.buttonInProgress.isSelected = it == State.IN_PROGRESS_STATE
+            binding.buttonFinished.isSelected = it == State.FINISHED_STATE
         }
 
         val releaseDate = getText(
@@ -177,7 +178,7 @@ class GameDataFragment(
         val genre =
             viewModel.genres.firstOrNull { it.name == binding.spinnerGenres.selectedItem.toString() }?.id
         val state =
-            if (binding.buttonPending.isSelected) Constants.PENDING_STATE else if (binding.buttonInProgress.isSelected) Constants.IN_PROGRESS_STATE else if (binding.buttonFinished.isSelected) Constants.FINISHED_STATE else null
+            if (binding.buttonPending.isSelected) State.PENDING_STATE else if (binding.buttonInProgress.isSelected) State.IN_PROGRESS_STATE else if (binding.buttonFinished.isSelected) State.FINISHED_STATE else null
         val purchaseDate = Constants.stringToDate(
             binding.customEditTextPurchaseDate.getText(),
             Constants.getDateFormatToShow(viewModel.language),

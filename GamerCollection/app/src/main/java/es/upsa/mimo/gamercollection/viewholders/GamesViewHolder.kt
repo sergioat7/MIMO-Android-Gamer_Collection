@@ -12,6 +12,7 @@ import es.upsa.mimo.gamercollection.databinding.GameItemBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.State
 
 class GamesViewHolder(
     private val binding: GameItemBinding,
@@ -23,19 +24,19 @@ class GamesViewHolder(
 
         val color = game.state?.let {
             when (it) {
-                Constants.PENDING_STATE ->
+                State.PENDING_STATE ->
                     ContextCompat.getColor(
                         binding.root.context,
                         R.color.colorPending
                     )
 
-                Constants.IN_PROGRESS_STATE ->
+                State.IN_PROGRESS_STATE ->
                     ContextCompat.getColor(
                         binding.root.context,
                         R.color.colorInProgress
                     )
 
-                Constants.FINISHED_STATE ->
+                State.FINISHED_STATE ->
                     ContextCompat.getColor(
                         binding.root.context,
                         R.color.colorFinished
