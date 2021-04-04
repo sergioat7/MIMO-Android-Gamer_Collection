@@ -23,13 +23,12 @@ class ProfileViewModel @Inject constructor(
     private val stateRepository: StateRepository
 ) : ViewModel() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private val _profileLoading = MutableLiveData<Boolean>()
     private val _profileError = MutableLiveData<ErrorResponse>()
+    //endregion
 
-    //MARK: - Public properties
-
+    //region Public properties
     val userData: UserData
         get() = sharedPreferencesHandler.getUserData()
     val language: String
@@ -40,9 +39,9 @@ class ProfileViewModel @Inject constructor(
         get() = sharedPreferencesHandler.getSwipeRefresh()
     val profileLoading: LiveData<Boolean> = _profileLoading
     val profileError: LiveData<ErrorResponse> = _profileError
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun logout() {
 
         _profileLoading.value = true
@@ -126,9 +125,9 @@ class ProfileViewModel @Inject constructor(
             _profileError.value = it
         })
     }
+    //endregion
 
-    //MARK: - Private methods
-
+    //region Private methods
     private fun reloadData() {
 
         _profileLoading.value = true
@@ -162,4 +161,5 @@ class ProfileViewModel @Inject constructor(
         _profileLoading.value = false
         _profileError.value = null
     }
+    //endregion
 }

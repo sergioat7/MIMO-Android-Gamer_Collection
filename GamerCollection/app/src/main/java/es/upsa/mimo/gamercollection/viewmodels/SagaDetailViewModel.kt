@@ -4,11 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.models.responses.*
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
+import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.repositories.SagaRepository
-import es.upsa.mimo.gamercollection.repositories.StateRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
 
@@ -16,33 +18,29 @@ class SagaDetailViewModel @Inject constructor(
     private val sharedPreferencesHandler: SharedPreferencesHandler,
     private val gameRepository: GameRepository,
     private val platformRepository: PlatformRepository,
-    private val sagaRepository: SagaRepository,
-    private val stateRepository: StateRepository
+    private val sagaRepository: SagaRepository
 ) : ViewModel() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private var sagaId: Int? = null
     private val _sagaDetailLoading = MutableLiveData<Boolean>()
     private val _sagaDetailSuccessMessage = MutableLiveData<Int>()
     private val _sagaDetailError = MutableLiveData<ErrorResponse>()
     private val _saga = MutableLiveData<SagaResponse?>()
+    //endregion
 
-    //MARK: - Public properties
-
+    //region Public properties
     val games: List<GameResponse>
         get() = gameRepository.getGamesDatabase()
     val platforms: List<PlatformResponse>
         get() = platformRepository.getPlatformsDatabase()
-    val states: List<StateResponse>
-        get() = stateRepository.getStatesDatabase()
     val sagaDetailLoading: LiveData<Boolean> = _sagaDetailLoading
     val sagaDetailSuccessMessage: LiveData<Int> = _sagaDetailSuccessMessage
     val sagaDetailError: LiveData<ErrorResponse> = _sagaDetailError
     val saga: LiveData<SagaResponse?> = _saga
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun getSaga() {
 
         sagaId?.let {
@@ -102,9 +100,9 @@ class SagaDetailViewModel @Inject constructor(
     fun setSagaId(sagaId: Int?) {
         this.sagaId = sagaId
     }
+    //endregion
 
-    // MARK: Private methods
-
+    //region Private methods
     private fun createSaga(saga: SagaResponse) {
 
         _sagaDetailLoading.value = true
@@ -135,4 +133,5 @@ class SagaDetailViewModel @Inject constructor(
             _sagaDetailError.value = it
         })
     }
+    //endregion
 }

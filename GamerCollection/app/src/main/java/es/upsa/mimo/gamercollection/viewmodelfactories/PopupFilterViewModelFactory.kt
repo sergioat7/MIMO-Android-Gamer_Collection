@@ -15,8 +15,7 @@ class PopupFilterViewModelFactory(
     private val application: Application?
 ) : ViewModelProvider.Factory {
 
-    //MARK: - Public properties
-
+    //region Public properties
     @Inject
     lateinit var sharedPrefHandler: SharedPreferencesHandler
 
@@ -31,9 +30,9 @@ class PopupFilterViewModelFactory(
 
     @Inject
     lateinit var popupFilterViewModel: PopupFilterViewModel
+    //endregion
 
-    //MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(PopupFilterViewModel::class.java)) {
@@ -43,4 +42,5 @@ class PopupFilterViewModelFactory(
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
+    //endregion
 }

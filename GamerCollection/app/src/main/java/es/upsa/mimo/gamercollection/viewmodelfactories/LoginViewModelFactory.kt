@@ -14,8 +14,7 @@ class LoginViewModelFactory(
     private val application: Application?
 ) : ViewModelProvider.Factory {
 
-    //MARK: - Public properties
-
+    //region Public properties
     @Inject
     lateinit var sharedPrefHandler: SharedPreferencesHandler
 
@@ -60,9 +59,9 @@ class LoginViewModelFactory(
 
     @Inject
     lateinit var loginViewModel: LoginViewModel
+    //endregion
 
-    //MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
@@ -72,4 +71,5 @@ class LoginViewModelFactory(
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
+    //endregion
 }

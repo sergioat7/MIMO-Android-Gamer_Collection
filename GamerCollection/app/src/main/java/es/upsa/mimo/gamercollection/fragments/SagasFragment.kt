@@ -3,7 +3,7 @@ package es.upsa.mimo.gamercollection.fragments
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.MutableLiveData
+import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,30 +12,29 @@ import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.activities.SagaDetailActivity
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SagasAdapter
-import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
-import es.upsa.mimo.gamercollection.models.base.BaseModel
+import es.upsa.mimo.gamercollection.base.BaseModel
+import es.upsa.mimo.gamercollection.base.BindingFragment
+import es.upsa.mimo.gamercollection.databinding.FragmentSagasBinding
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.SagasViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.SagasViewModel
-import kotlinx.android.synthetic.main.fragment_sagas.*
 
-class SagasFragment : BaseFragment(), OnItemClickListener {
+class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListener {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private lateinit var viewModel: SagasViewModel
     private lateinit var sagasAdapter: SagasAdapter
-    private val scrollPosition = MutableLiveData<ScrollPosition>()
+    private val scrollPosition = ObservableField<ScrollPosition>()
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_sagas, container, false)
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,9 +74,9 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
         }
         return super.onOptionsItemSelected(item)
     }
+    //endregion
 
-    //MARK: - Interface methods
-
+    //region Interface methods
     override fun onItemClick(id: Int) {
 
         val params = mapOf(Constants.SAGA_ID to id)
@@ -92,9 +91,30 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
 
     override fun onLoadMoreItemsClick() {
     }
+    //endregion
 
-    //MARK: - Private methods
+    //region Public methods
+    fun goToStartEndList(view: View) {
 
+        with(binding) {
+            when (view) {
+                floatingActionButtonStartList -> {
+
+                    recyclerViewSagas.scrollToPosition(0)
+                    scrollPosition.set(ScrollPosition.TOP)
+                }
+                floatingActionButtonEndList -> {
+
+                    val position: Int = sagasAdapter.itemCount - 1
+                    recyclerViewSagas.scrollToPosition(position)
+                    scrollPosition.set(ScrollPosition.END)
+                }
+            }
+        }
+    }
+    //endregion
+
+    //region Private methods
     private fun initializeUI() {
 
         val application = activity?.application
@@ -104,53 +124,51 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
         ).get(SagasViewModel::class.java)
         setupBindings()
 
-        swipe_refresh_layout.isEnabled = viewModel.swipeRefresh
-        swipe_refresh_layout.setColorSchemeResources(R.color.colorFinished)
-        swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
-        swipe_refresh_layout.setOnRefreshListener {
-            viewModel.loadSagas()
-        }
+        with(binding) {
 
-        recycler_view_sagas.layoutManager = LinearLayoutManager(requireContext())
-        sagasAdapter = SagasAdapter(
-            viewModel.sagas.value?.toMutableList() ?: mutableListOf(),
-            mutableListOf(),
-            viewModel.platforms,
-            viewModel.states,
-            requireContext(),
-            this
-        )
-        recycler_view_sagas.adapter = sagasAdapter
-        recycler_view_sagas.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                scrollPosition.value =
-                    if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        ScrollPosition.TOP
-                    } else if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        ScrollPosition.END
-                    } else {
-                        ScrollPosition.MIDDLE
-                    }
+            swipeRefreshLayout.apply {
+                isEnabled = this@SagasFragment.viewModel.swipeRefresh
+                setColorSchemeResources(R.color.colorFinished)
+                setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
+                setOnRefreshListener {
+                    this@SagasFragment.viewModel.loadSagas()
+                }
             }
-        })
 
-        scrollPosition.value = ScrollPosition.TOP
+            sagasAdapter = SagasAdapter(
+                this@SagasFragment.viewModel.sagas.value?.toMutableList() ?: mutableListOf(),
+                mutableListOf(),
+                this@SagasFragment.viewModel.platforms,
+                this@SagasFragment
+            )
+            recyclerViewSagas.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = sagasAdapter
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
-        floating_action_button_start_list.setOnClickListener {
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
 
-            recycler_view_sagas.scrollToPosition(0)
-            scrollPosition.value = ScrollPosition.TOP
+                        scrollPosition.set(
+                            if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                                ScrollPosition.TOP
+                            } else if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                                ScrollPosition.END
+                            } else {
+                                ScrollPosition.MIDDLE
+                            }
+                        )
+                    }
+                })
+            }
+
+            fragment = this@SagasFragment
+            viewModel = this@SagasFragment.viewModel
+            lifecycleOwner = this@SagasFragment
+            position = scrollPosition
         }
 
-        floating_action_button_end_list.setOnClickListener {
-
-            val position: Int = sagasAdapter.itemCount - 1
-            recycler_view_sagas.scrollToPosition(position)
-            scrollPosition.value = ScrollPosition.END
-        }
+        scrollPosition.set(ScrollPosition.TOP)
     }
 
     private fun setupBindings() {
@@ -161,7 +179,7 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
                 showLoading()
             } else {
 
-                swipe_refresh_layout.isRefreshing = false
+                binding.swipeRefreshLayout.isRefreshing = false
                 hideLoading()
             }
         })
@@ -176,14 +194,6 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
 
             showData(it)
             setTitle(it.size)
-        })
-
-        scrollPosition.observe(viewLifecycleOwner, {
-
-            floating_action_button_start_list.visibility =
-                if (it == ScrollPosition.TOP || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
-            floating_action_button_end_list.visibility =
-                if (it == ScrollPosition.END || it == ScrollPosition.NONE) View.GONE else View.VISIBLE
         })
     }
 
@@ -202,10 +212,6 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
         sagasAdapter.setItems(items)
         sagasAdapter.setExpandedIds(viewModel.expandedIds)
         sagasAdapter.notifyDataSetChanged()
-
-        layout_empty_list.visibility = if (sagas.isNotEmpty()) View.GONE else View.VISIBLE
-        swipe_refresh_layout.visibility = if (sagas.isNotEmpty()) View.VISIBLE else View.GONE
-        scrollPosition.value = if (sagas.isNotEmpty()) scrollPosition.value else ScrollPosition.NONE
     }
 
     private fun setTitle(sagasCount: Int) {
@@ -214,4 +220,5 @@ class SagasFragment : BaseFragment(), OnItemClickListener {
             resources.getQuantityString(R.plurals.sagas_number_title, sagasCount, sagasCount)
         (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
+    //endregion
 }

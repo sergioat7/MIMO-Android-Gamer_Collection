@@ -14,8 +14,7 @@ class ProfileViewModelFactory(
     private val application: Application?
 ) : ViewModelProvider.Factory {
 
-    //MARK: - Public properties
-
+    //region Public properties
     @Inject
     lateinit var sharedPrefHandler: SharedPreferencesHandler
 
@@ -57,9 +56,9 @@ class ProfileViewModelFactory(
 
     @Inject
     lateinit var profileViewModel: ProfileViewModel
+    //endregion
 
-    //MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
@@ -69,4 +68,5 @@ class ProfileViewModelFactory(
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
+    //endregion
 }

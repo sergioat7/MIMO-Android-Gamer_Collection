@@ -1,16 +1,16 @@
 package es.upsa.mimo.gamercollection.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.models.base.BaseModel
+import es.upsa.mimo.gamercollection.base.BaseModel
+import es.upsa.mimo.gamercollection.databinding.GameItemBinding
+import es.upsa.mimo.gamercollection.databinding.SagaItemBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
-import es.upsa.mimo.gamercollection.models.responses.StateResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewholders.GamesViewHolder
 import es.upsa.mimo.gamercollection.viewholders.SagasViewHolder
@@ -21,19 +21,28 @@ class SagasAdapter(
     private var items: MutableList<BaseModel<Int>>,
     private var expandedIds: MutableList<Int>,
     private val platforms: List<PlatformResponse>,
-    private val states: List<StateResponse>,
-    private val context: Context,
     private var onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<ViewHolder?>() {
 
-    //MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
-        val itemView = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
         return when (viewType) {
-            R.layout.saga_item -> SagasViewHolder(itemView)
-            R.layout.game_item -> GamesViewHolder(itemView, platforms, states)
+            R.layout.saga_item -> SagasViewHolder(
+                SagaItemBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+            R.layout.game_item -> GamesViewHolder(
+                GameItemBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ),
+                platforms
+            )
             else -> throw Throwable("Unsupported type")
         }
     }
@@ -56,10 +65,11 @@ class SagasAdapter(
         if (holder is SagasViewHolder) {
 
             val saga = items[position] as SagaResponse
-            holder.fillData(saga, context)
+            holder.bind(saga, onItemClickListener)
 
             val rotation =
-                if (expandedIds.contains(saga.id)) Constants.POINT_DOWN else Constants.POINT_UP
+                if (expandedIds.contains(saga.id)) Constants.POINT_DOWN
+                else Constants.POINT_UP
             holder.rotateArrow(rotation)
 
             holder.itemView.image_view_arrow.setOnClickListener {
@@ -84,18 +94,10 @@ class SagasAdapter(
                 }
             }
 
-            holder.itemView.image_view_edit.setOnClickListener {
-                onItemClickListener.onItemClick(saga.id)
-            }
-
         } else if (holder is GamesViewHolder) {
 
             val game = items[position] as GameResponse
-            holder.fillData(game, context, null)
-
-            holder.itemView.check_box.setOnClickListener {
-                onItemClickListener.onSubItemClick(game.id)
-            }
+            holder.bind(game, null, onItemClickListener)
 
             holder.itemView.setOnClickListener {
                 holder.itemView.check_box.isChecked = !holder.itemView.check_box.isChecked
@@ -103,9 +105,9 @@ class SagasAdapter(
             }
         }
     }
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun setItems(newItems: MutableList<BaseModel<Int>>) {
         this.items = newItems
     }
@@ -123,4 +125,5 @@ class SagasAdapter(
         this.items = mutableListOf()
         notifyDataSetChanged()
     }
+    //endregion
 }

@@ -11,12 +11,11 @@ class GenreAPIClient @Inject constructor(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    // MARK: - Private properties
-
+    //region Private properties
     private val api = APIClient.retrofit.create(GenreAPIService::class.java)
+    //endregion
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun getGenres(success: (List<GenreResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
@@ -25,4 +24,5 @@ class GenreAPIClient @Inject constructor(
 
         APIClient.sendServer(request, success, failure)
     }
+    //endregion
 }

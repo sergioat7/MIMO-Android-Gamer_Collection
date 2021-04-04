@@ -9,8 +9,11 @@ import java.util.*
 
 class ListConverter {
 
+    //region Private properties
     private val gson = Gson()
+    //endregion
 
+    //region Public methods
     @TypeConverter
     fun stringToSongList(data: String?): List<SongResponse?>? {
         if (data == null) {
@@ -40,4 +43,5 @@ class ListConverter {
     fun gameListToString(games: List<GameResponse?>?): String? {
         return gson.toJson(games)
     }
+    //endregion
 }

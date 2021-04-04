@@ -4,14 +4,13 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.core.app.NavUtils
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.activities.base.BaseActivity
+import es.upsa.mimo.gamercollection.base.BaseActivity
 import es.upsa.mimo.gamercollection.fragments.SagaDetailFragment
 import es.upsa.mimo.gamercollection.utils.Constants
 
 class SagaDetailActivity : BaseActivity() {
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -41,4 +40,5 @@ class SagaDetailActivity : BaseActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+    //endregion
 }

@@ -66,8 +66,7 @@ fun EditText.getValue(): String {
     return this.text.toString().trimStart().trimEnd()
 }
 
-// MARK - Private functions
-
+//region Private functions
 private fun getPicker(editText: EditText, context: Context, dateFormat: String?): DatePickerDialog {
 
     val calendar = Calendar.getInstance()
@@ -100,3 +99,4 @@ private fun getPicker(editText: EditText, context: Context, dateFormat: String?)
         editText.setText(dateString)
     }, currentYear, currentMonth, currentDay)
 }
+//endregion

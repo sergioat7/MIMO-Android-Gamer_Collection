@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.activities.base
+package es.upsa.mimo.gamercollection.base
 
 import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -12,8 +12,11 @@ import es.upsa.mimo.gamercollection.utils.Constants
 
 open class BaseActivity : AppCompatActivity() {
 
+    //region Private properties
     private var loadingFragment: PopupLoadingDialogFragment? = null
+    //endregion
 
+    //region Public methods
     fun manageError(errorResponse: ErrorResponse) {
 
         hideLoading()
@@ -73,4 +76,5 @@ open class BaseActivity : AppCompatActivity() {
             }
             .show()
     }
+    //endregion
 }

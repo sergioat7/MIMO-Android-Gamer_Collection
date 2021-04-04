@@ -22,8 +22,7 @@ class PopupFilterViewModel @Inject constructor(
     private val platformRepository: PlatformRepository
 ) : ViewModel() {
 
-    //MARK: - Public properties
-
+    //region Public properties
     val language: String
         get() = sharedPreferencesHandler.getLanguage()
     val formats: List<FormatResponse>
@@ -32,9 +31,9 @@ class PopupFilterViewModel @Inject constructor(
         get() = genreRepository.getGenresDatabase()
     val platforms: List<PlatformResponse>
         get() = platformRepository.getPlatformsDatabase()
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun getRoundedSelectorButton(id: String, text: String, context: Context): Button {
 
         val button = Button(
@@ -52,10 +51,11 @@ class PopupFilterViewModel @Inject constructor(
         button.setOnClickListener { selectButton(it) }
         return button
     }
+    //endregion
 
-    //MARK: - Private methods
-
+    //region Private methods
     private fun selectButton(button: View) {
         button.isSelected = !button.isSelected
     }
+    //endregion
 }

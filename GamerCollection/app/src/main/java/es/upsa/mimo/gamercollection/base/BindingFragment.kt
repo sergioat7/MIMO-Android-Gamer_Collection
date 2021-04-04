@@ -1,15 +1,19 @@
-package es.upsa.mimo.gamercollection.fragments.base
+package es.upsa.mimo.gamercollection.base
 
 import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
@@ -20,31 +24,52 @@ import es.upsa.mimo.gamercollection.fragments.popups.PopupSyncAppDialogFragment
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import java.io.Serializable
+import java.lang.reflect.ParameterizedType
 
-open class BaseFragment : Fragment() {
+abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
 
-    // MARK: - Private properties
-
-    private var loadingFragment: PopupLoadingDialogFragment? = null
-
-    //MARK: - Public properties
-
+    //region Public properties
     var searchView: SearchView? = null
+    //endregion
 
-    // MARK: - Public methods
+    //region Private properties
+    private var loadingFragment: PopupLoadingDialogFragment? = null
+    //endregion
 
-    fun manageError(errorResponse: ErrorResponse) {
+    //region Protected properties
+    protected lateinit var binding: Binding
+        private set
+    //endregion
 
-        hideLoading()
-        val error = StringBuilder()
-        if (errorResponse.error.isNotEmpty()) {
-            error.append(errorResponse.error)
-        } else {
-            error.append(resources.getString(errorResponse.errorKey))
-        }
-        showPopupDialog(error.toString())
+    //region Lifecycle methods
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val bindingType =
+            (this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments
+                .firstOrNull {
+                    (it as? Class<*>)?.let { clazz ->
+                        ViewDataBinding::class.java.isAssignableFrom(
+                            clazz
+                        )
+                    } == true
+                }
+                ?: error("Class is not parametrized with ViewDataBinding subclass")
+        val inflateMethod = (bindingType as Class<*>).getMethod(
+            "inflate",
+            LayoutInflater::class.java,
+            ViewGroup::class.java,
+            Boolean::class.javaPrimitiveType
+        )
+        @Suppress("UNCHECKED_CAST")
+        binding = inflateMethod.invoke(null, inflater, container, false) as Binding
+        return binding.root
     }
+    //endregion
 
+    //region Public methods
     fun showPopupDialog(message: String, goBack: MutableLiveData<Boolean>? = null) {
 
         val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
@@ -55,21 +80,6 @@ open class BaseFragment : Fragment() {
         ft.addToBackStack(null)
         val dialogFragment = PopupErrorDialogFragment(message, goBack)
         dialogFragment.show(ft, Constants.POPUP_DIALOG)
-    }
-
-    fun <T> launchActivity(activity: Class<T>) {
-
-        val intent = Intent(context, activity).apply {}
-        startActivity(intent)
-    }
-
-    fun <T> launchActivityWithExtras(activity: Class<T>, params: Map<String, Serializable>) {
-
-        val intent = Intent(context, activity).apply {}
-        for (param in params) {
-            intent.putExtra(param.key, param.value)
-        }
-        startActivity(intent)
     }
 
     fun showLoading() {
@@ -93,6 +103,18 @@ open class BaseFragment : Fragment() {
         loadingFragment = null
     }
 
+    fun manageError(errorResponse: ErrorResponse) {
+
+        hideLoading()
+        val error = StringBuilder()
+        if (errorResponse.error.isNotEmpty()) {
+            error.append(errorResponse.error)
+        } else {
+            error.append(resources.getString(errorResponse.errorKey))
+        }
+        showPopupDialog(error.toString())
+    }
+
     fun showPopupConfirmationDialog(message: String, acceptHandler: () -> Unit) {
 
         AlertDialog.Builder(context)
@@ -108,11 +130,19 @@ open class BaseFragment : Fragment() {
             .show()
     }
 
-    fun openSyncPopup() {
+    fun <T> launchActivity(activity: Class<T>) {
 
-        showPopupConfirmationDialog(resources.getString(R.string.sync_confirmation)) {
-            showSyncPopup()
+        val intent = Intent(context, activity).apply {}
+        startActivity(intent)
+    }
+
+    fun <T> launchActivityWithExtras(activity: Class<T>, params: Map<String, Serializable>) {
+
+        val intent = Intent(context, activity).apply {}
+        for (param in params) {
+            intent.putExtra(param.key, param.value)
         }
+        startActivity(intent)
     }
 
     fun setupSearchView(query: String) {
@@ -172,8 +202,15 @@ open class BaseFragment : Fragment() {
         }
     }
 
-    //MARK - Private methods
+    fun openSyncPopup() {
 
+        showPopupConfirmationDialog(resources.getString(R.string.sync_confirmation)) {
+            showSyncPopup()
+        }
+    }
+    //endregion
+
+    //region Private methods
     private fun showSyncPopup() {
 
         val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
@@ -186,4 +223,5 @@ open class BaseFragment : Fragment() {
         dialogFragment.isCancelable = false
         dialogFragment.show(ft, Constants.SYNC_DIALOG)
     }
+    //endregion
 }

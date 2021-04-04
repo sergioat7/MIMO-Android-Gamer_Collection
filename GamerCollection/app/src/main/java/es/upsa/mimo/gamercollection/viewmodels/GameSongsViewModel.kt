@@ -15,21 +15,20 @@ class GameSongsViewModel @Inject constructor(
     private val gameRepository: GameRepository
 ) : ViewModel() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private var game: GameResponse? = null
     private val _gameSongsLoading = MutableLiveData<Boolean>()
     private val _gameSongsError = MutableLiveData<ErrorResponse>()
     private val _songs = MutableLiveData<List<SongResponse>>()
+    //endregion
 
-    //MARK: - Public properties
-
+    //region Public properties
     val gameSongsLoading: LiveData<Boolean> = _gameSongsLoading
     val gameSongsError: LiveData<ErrorResponse> = _gameSongsError
     val songs: LiveData<List<SongResponse>> = _songs
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun createSong(song: SongResponse) {
 
         game?.let { game ->
@@ -75,4 +74,5 @@ class GameSongsViewModel @Inject constructor(
         this.game = game
         _songs.value = game?.songs ?: ArrayList()
     }
+    //endregion
 }

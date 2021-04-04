@@ -14,13 +14,12 @@ class GameAPIClient @Inject constructor(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    // MARK: - Private properties
-
+    //region Private properties
     private val api = APIClient.retrofit.create(GameAPIService::class.java)
     private val apiRawg = APIClient.retrofitRawg.create(RawgGameApiService::class.java)
+    //endregion
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun getGames(success: (List<GameResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
@@ -110,4 +109,5 @@ class GameAPIClient @Inject constructor(
 
         APIClient.sendServer(request, success, failure)
     }
+    //endregion
 }

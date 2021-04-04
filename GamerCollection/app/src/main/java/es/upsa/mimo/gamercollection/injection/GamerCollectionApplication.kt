@@ -8,12 +8,11 @@ import es.upsa.mimo.gamercollection.injection.modules.SharedPreferencesModule
 
 class GamerCollectionApplication : Application() {
 
-    //MARK: - Public properties
-
+    //region Public properties
     lateinit var appComponent: AppComponent
+    //endregion
 
-    //MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreate() {
         super.onCreate()
 
@@ -26,4 +25,5 @@ class GamerCollectionApplication : Application() {
             )
             .build()
     }
+    //endregion
 }

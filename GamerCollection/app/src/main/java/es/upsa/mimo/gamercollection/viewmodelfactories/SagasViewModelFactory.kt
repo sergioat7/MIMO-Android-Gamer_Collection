@@ -7,7 +7,6 @@ import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.network.apiClient.SagaAPIClient
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.repositories.SagaRepository
-import es.upsa.mimo.gamercollection.repositories.StateRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import es.upsa.mimo.gamercollection.viewmodels.SagasViewModel
 import javax.inject.Inject
@@ -16,8 +15,7 @@ class SagasViewModelFactory(
     private val application: Application?
 ) : ViewModelProvider.Factory {
 
-    //MARK: - Public properties
-
+    //region Public properties
     @Inject
     lateinit var sharedPrefHandler: SharedPreferencesHandler
 
@@ -31,13 +29,10 @@ class SagasViewModelFactory(
     lateinit var sagaRepository: SagaRepository
 
     @Inject
-    lateinit var stateRepository: StateRepository
-
-    @Inject
     lateinit var sagasViewModel: SagasViewModel
+    //endregion
 
-    //MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SagasViewModel::class.java)) {
@@ -47,4 +42,5 @@ class SagasViewModelFactory(
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
+    //endregion
 }

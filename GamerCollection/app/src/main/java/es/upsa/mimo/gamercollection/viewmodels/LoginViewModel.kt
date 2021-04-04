@@ -25,22 +25,21 @@ class LoginViewModel @Inject constructor(
     private val stateRepository: StateRepository
 ) : ViewModel() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private val _loginForm = MutableLiveData<LoginFormState>()
     private val _loginLoading = MutableLiveData<Boolean>()
     private val _loginError = MutableLiveData<ErrorResponse>()
+    //endregion
 
-    //MARK: - Public properties
-
+    //region Public properties
     val username: String
         get() = sharedPreferencesHandler.getUserData().username
     val loginFormState: LiveData<LoginFormState> = _loginForm
     val loginLoading: LiveData<Boolean> = _loginLoading
     val loginError: LiveData<ErrorResponse> = _loginError
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun login(username: String, password: String) {
 
         _loginLoading.value = true
@@ -74,9 +73,9 @@ class LoginViewModel @Inject constructor(
         }
         _loginForm.value = LoginFormState(usernameError, passwordError, isDataValid)
     }
+    //endregion
 
-    //MARK: - Private methods
-
+    //region Private methods
     private fun loadContent(userData: UserData) {
 
         formatRepository.loadFormats({
@@ -110,4 +109,5 @@ class LoginViewModel @Inject constructor(
             _loginError.value = it
         })
     }
+    //endregion
 }

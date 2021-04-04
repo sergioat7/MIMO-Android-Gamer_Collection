@@ -2,48 +2,37 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SongsAdapter
-import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
+import es.upsa.mimo.gamercollection.base.BindingFragment
+import es.upsa.mimo.gamercollection.databinding.FragmentGameSongsBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SongResponse
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameSongsViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameSongsViewModel
-import kotlinx.android.synthetic.main.fragment_game_songs.*
 import kotlinx.android.synthetic.main.new_song_dialog.view.*
 
 class GameSongsFragment(
     private var game: GameResponse?,
     private var enabled: Boolean
-) : BaseFragment(), OnItemClickListener {
+) : BindingFragment<FragmentGameSongsBinding>(), OnItemClickListener {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private lateinit var viewModel: GameSongsViewModel
-    private lateinit var songsAdapter: SongsAdapter
+    //endregion
 
-    // MARK: - Lifecycle methods
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_game_songs, container, false)
-    }
-
+    //region Lifecycle methods
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeUI()
     }
+    //endregion
 
-    // MARK: - Interface methods
-
+    //region Interface methods
     override fun onItemClick(id: Int) {
         viewModel.deleteSong(id)
     }
@@ -53,22 +42,19 @@ class GameSongsFragment(
 
     override fun onLoadMoreItemsClick() {
     }
+    //endregion
 
-    // MARK: Public methods
-
+    //region Public methods
     fun setEdition(editable: Boolean) {
-
-        enabled = editable
-        songsAdapter.setEditable(editable)
-        button_add_song?.visibility = if (editable) View.VISIBLE else View.GONE
+        binding.editable = editable
     }
 
     fun getSongs(): List<SongResponse> {
         return viewModel.songs.value ?: ArrayList()
     }
+    //endregion
 
-    // MARK: Private methods
-
+    //region Private methods
     private fun initializeUI() {
 
         val application = activity?.application
@@ -77,17 +63,25 @@ class GameSongsFragment(
         )
         setupBindings()
 
-        recycler_view_songs.layoutManager = LinearLayoutManager(requireContext())
-        songsAdapter = SongsAdapter(
-            ArrayList(),
-            enabled,
-            requireContext(),
-            this
-        )
-        recycler_view_songs.adapter = songsAdapter
+        with(binding) {
 
-        button_add_song.setOnClickListener { showNewSongPopup() }
-        button_add_song?.visibility = if (enabled) View.VISIBLE else View.GONE
+            recyclerViewSongs.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = SongsAdapter(
+                    listOf(),
+                    enabled,
+                    this@GameSongsFragment
+                )
+            }
+
+            buttonAddSong.setOnClickListener {
+                showNewSongPopup()
+            }
+
+            viewModel = this@GameSongsFragment.viewModel
+            lifecycleOwner = this@GameSongsFragment
+            editable = enabled
+        }
     }
 
     private fun setupBindings() {
@@ -103,13 +97,6 @@ class GameSongsFragment(
 
         viewModel.gameSongsError.observe(viewLifecycleOwner, { error ->
             manageError(error)
-        })
-
-        viewModel.songs.observe(viewLifecycleOwner, {
-
-            songsAdapter.setSongs(it)
-            recycler_view_songs.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
-            layout_empty_list.visibility = if (it.isNotEmpty()) View.GONE else View.VISIBLE
         })
     }
 
@@ -139,4 +126,5 @@ class GameSongsFragment(
         dialogBuilder.setView(dialogView)
         dialogBuilder.show()
     }
+    //endregion
 }

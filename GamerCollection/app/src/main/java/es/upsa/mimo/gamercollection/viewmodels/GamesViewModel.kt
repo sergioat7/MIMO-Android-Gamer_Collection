@@ -14,48 +14,42 @@ import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
-import es.upsa.mimo.gamercollection.models.responses.StateResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
-import es.upsa.mimo.gamercollection.repositories.StateRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
 
 class GamesViewModel @Inject constructor(
     private val sharedPreferencesHandler: SharedPreferencesHandler,
     private val gameRepository: GameRepository,
-    private val platformRepository: PlatformRepository,
-    private val stateRepository: StateRepository
+    private val platformRepository: PlatformRepository
 ) : ViewModel() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private val _gamesLoading = MutableLiveData<Boolean>()
     private val _gamesError = MutableLiveData<ErrorResponse>()
     private val _games = MutableLiveData<List<GameResponse>>()
     private val _gamesCount = MutableLiveData<List<GameResponse>>()
     private var sortKey: String = sharedPreferencesHandler.getSortingKey()
     private var sortAscending = true
+    //endregion
 
-    //MARK: - Public properties
-
+    //region Public properties
     val language: String
         get() = sharedPreferencesHandler.getLanguage()
     val swipeRefresh: Boolean
         get() = sharedPreferencesHandler.getSwipeRefresh()
     val platforms: List<PlatformResponse>
         get() = platformRepository.getPlatformsDatabase()
-    val states: List<StateResponse>
-        get() = stateRepository.getStatesDatabase()
     val gamesLoading: LiveData<Boolean> = _gamesLoading
     val gamesError: LiveData<ErrorResponse> = _gamesError
     val games: LiveData<List<GameResponse>> = _games
     val gamesCount: LiveData<List<GameResponse>> = _gamesCount
     var state: String? = null
     var filters: FilterModel? = null
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun loadGames() {
 
         _gamesLoading.value = true
@@ -146,9 +140,9 @@ class GamesViewModel @Inject constructor(
     fun setNotificationLaunched(gameId: Int, value: Boolean) {
         sharedPreferencesHandler.setNotificationLaunched(gameId, value)
     }
+    //endregion
 
-    // MARK: Private methods
-
+    //region Private methods
     private fun getPicker(values: Array<String>, context: Context): NumberPicker {
 
         val picker = NumberPicker(context)
@@ -167,4 +161,5 @@ class GamesViewModel @Inject constructor(
         sortAscending = true
         filters = null
     }
+    //endregion
 }

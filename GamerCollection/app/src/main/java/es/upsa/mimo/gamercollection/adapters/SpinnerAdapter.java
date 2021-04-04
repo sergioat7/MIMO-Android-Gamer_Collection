@@ -19,14 +19,13 @@ import es.upsa.mimo.gamercollection.R;
 
 public class SpinnerAdapter extends ArrayAdapter {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private Context context;
     private List<String> values;
     private boolean firstOptionEnabled;
+    //endregion
 
-    //MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     public SpinnerAdapter(Context context, List<String> values, boolean firstOptionEnabled) {
         super(context, 0, values);
         this.context = context;
@@ -66,4 +65,5 @@ public class SpinnerAdapter extends ArrayAdapter {
         tvValue.setTextColor(ContextCompat.getColor(context, colorId));
         return tvValue;
     }
+    //endregion
 }

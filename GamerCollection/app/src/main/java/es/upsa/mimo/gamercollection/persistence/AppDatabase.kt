@@ -5,8 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import es.upsa.mimo.gamercollection.base.BaseModel
 import es.upsa.mimo.gamercollection.daos.*
-import es.upsa.mimo.gamercollection.models.base.BaseModel
 import es.upsa.mimo.gamercollection.models.responses.*
 import es.upsa.mimo.gamercollection.utils.Constants
 
@@ -32,8 +32,11 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
 
+        //region Private properties
         private var instance: AppDatabase? = null
+        //endregion
 
+        //region Public methods
         fun getAppDatabase(context: Context): AppDatabase {
 
             if (instance == null) {
@@ -63,5 +66,6 @@ abstract class AppDatabase : RoomDatabase() {
             }
             return disabledContent
         }
+        //endregion
     }
 }

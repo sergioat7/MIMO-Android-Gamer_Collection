@@ -20,8 +20,7 @@ class GameDataViewModelFactory(
     private val game: GameResponse?
 ) : ViewModelProvider.Factory {
 
-    //MARK: - Public properties
-
+    //region Public properties
     @Inject
     lateinit var sharedPrefHandler: SharedPreferencesHandler
 
@@ -45,9 +44,9 @@ class GameDataViewModelFactory(
 
     @Inject
     lateinit var gameDataViewModel: GameDataViewModel
+    //endregion
 
-    //MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(GameDataViewModel::class.java)) {
@@ -58,4 +57,5 @@ class GameDataViewModelFactory(
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
+    //endregion
 }
