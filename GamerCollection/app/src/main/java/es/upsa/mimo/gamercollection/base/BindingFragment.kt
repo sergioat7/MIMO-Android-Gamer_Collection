@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.fragments.base
+package es.upsa.mimo.gamercollection.base
 
 import android.app.AlertDialog
 import android.app.SearchManager

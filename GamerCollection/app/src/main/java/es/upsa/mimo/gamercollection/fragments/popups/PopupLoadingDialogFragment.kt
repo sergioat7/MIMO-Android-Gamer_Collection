@@ -10,8 +10,7 @@ import es.upsa.mimo.gamercollection.R
 
 class PopupLoadingDialogFragment : DialogFragment() {
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_TITLE, R.style.Theme_GamerCollection_DialogTransparent)
@@ -23,4 +22,5 @@ class PopupLoadingDialogFragment : DialogFragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_popup_loading_dialog, container, false)
     }
+    //endregion
 }

@@ -19,7 +19,7 @@ import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnFiltersSelected
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.databinding.FragmentGamesBinding
-import es.upsa.mimo.gamercollection.fragments.base.BindingFragment
+import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.fragments.popups.PopupFilterDialogFragment
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.GameResponse

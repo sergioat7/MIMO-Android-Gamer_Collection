@@ -7,9 +7,9 @@ import es.upsa.mimo.gamercollection.databinding.LayoutLoadMoreItemsBinding
 class LoadMoreItemsViewHolder(val binding: LayoutLoadMoreItemsBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun bind(onItemClickListener: OnItemClickListener) {
         binding.onItemClickListener = onItemClickListener
     }
+    //endregion
 }

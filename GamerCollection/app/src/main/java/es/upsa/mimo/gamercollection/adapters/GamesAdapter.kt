@@ -21,8 +21,7 @@ class GamesAdapter(
     private var onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
 
-    //MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun getItemViewType(position: Int): Int {
 
         return if (games[position].id > 0) {
@@ -73,9 +72,9 @@ class GamesAdapter(
             (holder as LoadMoreItemsViewHolder).bind(onItemClickListener)
         }
     }
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun setGames(newGames: List<GameResponse>) {
 
         this.games = newGames
@@ -94,6 +93,7 @@ class GamesAdapter(
         games = ArrayList()
         notifyDataSetChanged()
     }
+    //endregion
 }
 
 @BindingAdapter("games")

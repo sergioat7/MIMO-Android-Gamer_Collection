@@ -1,26 +1,22 @@
-package es.upsa.mimo.gamercollection.fragments.base
+package es.upsa.mimo.gamercollection.base
 
 import android.app.AlertDialog
-import android.content.Intent
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.fragments.popups.PopupErrorDialogFragment
 import es.upsa.mimo.gamercollection.fragments.popups.PopupLoadingDialogFragment
-import es.upsa.mimo.gamercollection.fragments.popups.PopupSyncAppDialogFragment
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.utils.Constants
-import java.io.Serializable
 
-open class BaseFragment : Fragment() {
+open class BaseActivity : AppCompatActivity() {
 
-    // MARK: - Private properties
-
+    //region Private properties
     private var loadingFragment: PopupLoadingDialogFragment? = null
+    //endregion
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun manageError(errorResponse: ErrorResponse) {
 
         hideLoading()
@@ -35,8 +31,8 @@ open class BaseFragment : Fragment() {
 
     fun showPopupDialog(message: String, goBack: MutableLiveData<Boolean>? = null) {
 
-        val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
-        val prev = activity?.supportFragmentManager?.findFragmentByTag(Constants.POPUP_DIALOG)
+        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+        val prev = supportFragmentManager.findFragmentByTag(Constants.POPUP_DIALOG)
         if (prev != null) {
             ft.remove(prev)
         }
@@ -45,16 +41,10 @@ open class BaseFragment : Fragment() {
         dialogFragment.show(ft, Constants.POPUP_DIALOG)
     }
 
-    fun <T> launchActivity(activity: Class<T>) {
-
-        val intent = Intent(context, activity).apply {}
-        startActivity(intent)
-    }
-
     fun showLoading() {
 
-        val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
-        val prev = activity?.supportFragmentManager?.findFragmentByTag(Constants.LOADING_DIALOG)
+        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+        val prev = supportFragmentManager.findFragmentByTag(Constants.LOADING_DIALOG)
         if (prev != null) {
             ft.remove(prev)
         }
@@ -74,7 +64,7 @@ open class BaseFragment : Fragment() {
 
     fun showPopupConfirmationDialog(message: String, acceptHandler: () -> Unit) {
 
-        AlertDialog.Builder(context)
+        AlertDialog.Builder(this)
             .setMessage(message)
             .setCancelable(false)
             .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
@@ -86,4 +76,5 @@ open class BaseFragment : Fragment() {
             }
             .show()
     }
+    //endregion
 }

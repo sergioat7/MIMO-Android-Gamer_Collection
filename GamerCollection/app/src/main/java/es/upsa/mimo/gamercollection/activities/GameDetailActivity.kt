@@ -16,8 +16,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.activities.base.BaseActivity
 import es.upsa.mimo.gamercollection.adapters.GameDetailPagerAdapter
+import es.upsa.mimo.gamercollection.base.BaseActivity
 import es.upsa.mimo.gamercollection.databinding.ActivityGameDetailBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
@@ -28,8 +28,7 @@ import kotlinx.android.synthetic.main.set_rating_dialog.view.*
 
 class GameDetailActivity : BaseActivity() {
 
-    //MARK: - Private properties
-
+    //region  - Private properties
     private var gameId: Int? = null
     private var isRawgGame: Boolean = false
     private lateinit var binding: ActivityGameDetailBinding
@@ -40,9 +39,9 @@ class GameDetailActivity : BaseActivity() {
     private var platformValues = ArrayList<String>()
     private var imageUrl: String? = null
     private val goBack = MutableLiveData<Boolean>()
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -111,9 +110,9 @@ class GameDetailActivity : BaseActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun setImage() {
 
         val dialogBuilder = AlertDialog.Builder(this).create()
@@ -162,9 +161,9 @@ class GameDetailActivity : BaseActivity() {
         dialogBuilder.setView(dialogView)
         dialogBuilder.show()
     }
+    //endregion
 
-    //MARK: - Private methods
-
+    //region Private methods
     private fun initializeUI() {
 
         viewModel = ViewModelProvider(
@@ -361,4 +360,5 @@ class GameDetailActivity : BaseActivity() {
             )
         }
     }
+    //endregion
 }

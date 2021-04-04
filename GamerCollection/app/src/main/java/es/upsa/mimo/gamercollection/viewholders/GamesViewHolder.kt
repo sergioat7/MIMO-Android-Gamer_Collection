@@ -18,8 +18,7 @@ class GamesViewHolder(
     private val platforms: List<PlatformResponse>
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun bind(game: GameResponse, sagaId: Int?, onItemClickListener: OnItemClickListener) {
 
         val color = game.state?.let {
@@ -88,4 +87,5 @@ class GamesViewHolder(
             this.onItemClickListener = onItemClickListener
         }
     }
+    //endregion
 }

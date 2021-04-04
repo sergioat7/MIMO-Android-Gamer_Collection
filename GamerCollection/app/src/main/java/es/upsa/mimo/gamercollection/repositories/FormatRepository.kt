@@ -13,12 +13,11 @@ class FormatRepository @Inject constructor(
     private val formatAPIClient: FormatAPIClient
 ) {
 
-    // MARK: - Private properties
-
+    //region Private properties
     private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
+    //endregion
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun loadFormats(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         formatAPIClient.getFormats({ newFormats ->
@@ -61,9 +60,9 @@ class FormatRepository @Inject constructor(
             deleteFormatDatabase(format)
         }
     }
+    //endregion
 
-    // MARK: - Private methods
-
+    //region Private methods
     private fun insertFormatDatabase(format: FormatResponse) {
 
         runBlocking {
@@ -83,4 +82,5 @@ class FormatRepository @Inject constructor(
             job.join()
         }
     }
+    //endregion
 }

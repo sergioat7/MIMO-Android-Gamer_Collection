@@ -14,8 +14,7 @@ class SongsAdapter(
     private var onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<SongsAdapter.SongsViewHolder?>() {
 
-    //MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongsViewHolder {
         return SongsViewHolder(
             SongItemBinding.inflate(
@@ -33,9 +32,9 @@ class SongsAdapter(
     override fun onBindViewHolder(holder: SongsViewHolder, position: Int) {
         holder.bind(songs[position])
     }
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun setSongs(newSongs: List<SongResponse>) {
 
         this.songs = newSongs
@@ -47,6 +46,7 @@ class SongsAdapter(
         this.editable = editable
         notifyDataSetChanged()
     }
+    //endregion
 
     inner class SongsViewHolder(val binding: SongItemBinding) :
         RecyclerView.ViewHolder(binding.root) {

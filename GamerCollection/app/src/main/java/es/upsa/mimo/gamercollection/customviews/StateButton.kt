@@ -12,8 +12,7 @@ import kotlinx.android.synthetic.main.state_button.view.*
 
 class StateButton : ConstraintLayout {
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     constructor(context: Context) : super(context) {
         LayoutInflater.from(context).inflate(R.layout.state_button, this, true)
     }
@@ -33,9 +32,9 @@ class StateButton : ConstraintLayout {
         LayoutInflater.from(context).inflate(R.layout.state_button, this, true)
         setAttributes(attrs)
     }
+    //endregion
 
-    // MARK: - Private methods
-
+    //region Private methods
     @SuppressLint("Recycle")
     private fun setAttributes(attrs: AttributeSet?) {
 
@@ -57,4 +56,5 @@ class StateButton : ConstraintLayout {
             layout_state_button.background = background
         }
     }
+    //endregion
 }

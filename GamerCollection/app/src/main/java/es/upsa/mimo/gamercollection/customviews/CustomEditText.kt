@@ -22,8 +22,7 @@ class CustomEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    // MARK: - Private properties
-
+    //region Private properties
     private val binding: CustomEditTextBinding = DataBindingUtil.inflate(
         LayoutInflater.from(context),
         R.layout.custom_edit_text,
@@ -31,15 +30,21 @@ class CustomEditText @JvmOverloads constructor(
         true
     )
     private lateinit var inputType: EditTextType
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     init {
         setAttributes(attrs)
     }
+    //endregion
 
-    // MARK: - Public methods
+    //region Interface methods
+    override fun setOnClickListener(l: OnClickListener?) {
+        binding.editText.setOnClickListener(l)
+    }
+    //endregion
 
+    //region Public methods
     fun getText(): String {
         return binding.editText.getValue()
     }
@@ -75,16 +80,12 @@ class CustomEditText @JvmOverloads constructor(
         }
     }
 
-    override fun setOnClickListener(l: OnClickListener?) {
-        binding.editText.setOnClickListener(l)
-    }
-
     fun setDatePickerFormat(dateFormat: String) {
         binding.editText.showDatePicker(context, dateFormat)
     }
+    //endregion
 
-    // MARK: - Private methods
-
+    //region Private methods
     @SuppressLint("Recycle")
     private fun setAttributes(attrs: AttributeSet?) {
 
@@ -153,6 +154,7 @@ class CustomEditText @JvmOverloads constructor(
             }
         }
     }
+    //endregion
 }
 
 enum class EditTextType {

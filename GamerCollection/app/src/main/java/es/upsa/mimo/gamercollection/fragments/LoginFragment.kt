@@ -8,7 +8,7 @@ import es.upsa.mimo.gamercollection.activities.RegisterActivity
 import es.upsa.mimo.gamercollection.databinding.FragmentLoginBinding
 import es.upsa.mimo.gamercollection.extensions.afterTextChanged
 import es.upsa.mimo.gamercollection.extensions.onFocusChange
-import es.upsa.mimo.gamercollection.fragments.base.BindingFragment
+import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Environment
 import es.upsa.mimo.gamercollection.viewmodelfactories.LoginViewModelFactory

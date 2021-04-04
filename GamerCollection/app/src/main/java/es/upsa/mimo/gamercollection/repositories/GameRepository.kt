@@ -21,12 +21,11 @@ class GameRepository @Inject constructor(
     private val gameAPIClient: GameAPIClient
 ) {
 
-    // MARK: - Private properties
-
+    //region Private properties
     private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
+    //endregion
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun loadGames(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         gameAPIClient.getGames({ newGames ->
@@ -281,9 +280,9 @@ class GameRepository @Inject constructor(
             success(mapRawgGame(it))
         }, failure)
     }
+    //endregion
 
-    // MARK: - Private methods
-
+    //region Private methods
     private fun insertGameDatabase(game: GameResponse) {
 
         runBlocking {
@@ -406,4 +405,5 @@ class GameRepository @Inject constructor(
             else -> null
         }
     }
+    //endregion
 }

@@ -11,12 +11,11 @@ class SharedPreferencesHandler @Inject constructor(
     private val sharedPreferences: SharedPreferences?
 ) {
 
-    // MARK: - Private properties
-
+    //region Private properties
     private val gson = Gson()
+    //endregion
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun isLoggedIn(): Boolean {
 
         val userData = getUserData()
@@ -183,4 +182,5 @@ class SharedPreferencesHandler @Inject constructor(
             }
         }
     }
+    //endregion
 }

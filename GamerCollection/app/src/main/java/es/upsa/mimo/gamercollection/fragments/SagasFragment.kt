@@ -13,8 +13,8 @@ import es.upsa.mimo.gamercollection.activities.SagaDetailActivity
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SagasAdapter
 import es.upsa.mimo.gamercollection.databinding.FragmentSagasBinding
-import es.upsa.mimo.gamercollection.fragments.base.BindingFragment
-import es.upsa.mimo.gamercollection.models.base.BaseModel
+import es.upsa.mimo.gamercollection.base.BindingFragment
+import es.upsa.mimo.gamercollection.base.BaseModel
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.SagasViewModelFactory
