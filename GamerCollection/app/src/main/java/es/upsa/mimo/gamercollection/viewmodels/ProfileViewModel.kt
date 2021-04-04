@@ -13,8 +13,6 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
-    private val sharedPreferencesHandler: SharedPreferencesHandler,
-    private val userAPIClient: UserAPIClient,
     private val formatRepository: FormatRepository,
     private val gameRepository: GameRepository,
     private val genreRepository: GenreRepository,
@@ -24,19 +22,20 @@ class ProfileViewModel @Inject constructor(
 ) : ViewModel() {
 
     //region Private properties
+    private val userAPIClient = UserAPIClient()
     private val _profileLoading = MutableLiveData<Boolean>()
     private val _profileError = MutableLiveData<ErrorResponse>()
     //endregion
 
     //region Public properties
     val userData: UserData
-        get() = sharedPreferencesHandler.getUserData()
+        get() = SharedPreferencesHandler.getUserData()
     val language: String
-        get() = sharedPreferencesHandler.getLanguage()
+        get() = SharedPreferencesHandler.getLanguage()
     val sortingKey: String
-        get() = sharedPreferencesHandler.getSortingKey()
+        get() = SharedPreferencesHandler.getSortingKey()
     val swipeRefresh: Boolean
-        get() = sharedPreferencesHandler.getSwipeRefresh()
+        get() = SharedPreferencesHandler.getSwipeRefresh()
     val profileLoading: LiveData<Boolean> = _profileLoading
     val profileError: LiveData<ErrorResponse> = _profileError
     //endregion
@@ -46,7 +45,7 @@ class ProfileViewModel @Inject constructor(
 
         _profileLoading.value = true
         userAPIClient.logout()
-        sharedPreferencesHandler.removePassword()
+        SharedPreferencesHandler.removePassword()
         resetDatabase()
     }
 
@@ -62,18 +61,18 @@ class ProfileViewModel @Inject constructor(
         val changeLanguage = newLanguage != language
         val changeSortParam = newSortParam != sortingKey
         val changeSwipeRefresh = newSwipeRefresh != swipeRefresh
-        val changeThemeMode = themeMode != sharedPreferencesHandler.getThemeMode()
+        val changeThemeMode = themeMode != SharedPreferencesHandler.getThemeMode()
 
         if (changePassword) {
             _profileLoading.value = true
             userAPIClient.updatePassword(newPassword, {
 
-                sharedPreferencesHandler.storePassword(newPassword)
-                val userData = sharedPreferencesHandler.getUserData()
+                SharedPreferencesHandler.storePassword(newPassword)
+                val userData = SharedPreferencesHandler.getUserData()
                 userAPIClient.login(userData.username, userData.password, {
 
                     val authData = AuthData(it)
-                    sharedPreferencesHandler.storeCredentials(authData)
+                    SharedPreferencesHandler.storeCredentials(authData)
                     _profileLoading.value = false
                     if (changeLanguage) {
                         reloadData()
@@ -87,16 +86,16 @@ class ProfileViewModel @Inject constructor(
         }
 
         if (changeSortParam) {
-            sharedPreferencesHandler.setSortingKey(newSortParam)
+            SharedPreferencesHandler.setSortingKey(newSortParam)
         }
 
         if (changeSwipeRefresh) {
-            sharedPreferencesHandler.setSwipeRefresh(newSwipeRefresh)
+            SharedPreferencesHandler.setSwipeRefresh(newSwipeRefresh)
         }
 
         if (changeLanguage) {
 
-            sharedPreferencesHandler.setLanguage(newLanguage)
+            SharedPreferencesHandler.setLanguage(newLanguage)
             if (!changePassword) {
                 reloadData()
             }
@@ -104,7 +103,7 @@ class ProfileViewModel @Inject constructor(
 
         if (changeThemeMode) {
 
-            sharedPreferencesHandler.setThemeMode(themeMode)
+            SharedPreferencesHandler.setThemeMode(themeMode)
             when (themeMode) {
                 1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -118,8 +117,8 @@ class ProfileViewModel @Inject constructor(
         _profileLoading.value = true
         userAPIClient.deleteUser({
 
-            sharedPreferencesHandler.removeUserData()
-            sharedPreferencesHandler.removeCredentials()
+            SharedPreferencesHandler.removeUserData()
+            SharedPreferencesHandler.removeCredentials()
             resetDatabase()
         }, {
             _profileError.value = it

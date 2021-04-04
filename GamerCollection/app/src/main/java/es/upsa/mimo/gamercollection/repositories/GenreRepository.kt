@@ -9,11 +9,11 @@ import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class GenreRepository @Inject constructor(
-    private val database: AppDatabase,
-    private val genreAPIClient: GenreAPIClient
+    private val database: AppDatabase
 ) {
 
     //region Private properties
+    private val genreAPIClient = GenreAPIClient()
     private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
     //endregion
 

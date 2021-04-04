@@ -15,7 +15,6 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
 
 class SagaDetailViewModel @Inject constructor(
-    private val sharedPreferencesHandler: SharedPreferencesHandler,
     private val gameRepository: GameRepository,
     private val platformRepository: PlatformRepository,
     private val sagaRepository: SagaRepository
@@ -55,7 +54,7 @@ class SagaDetailViewModel @Inject constructor(
 
     fun getOrderedGames(games: List<GameResponse>): List<GameResponse> {
 
-        return when (sharedPreferencesHandler.getSortingKey()) {
+        return when (SharedPreferencesHandler.getSortingKey()) {
             "platform" -> games.sortedBy { it.platform }
             "releaseDate" -> games.sortedBy { it.releaseDate }
             "purchaseDate" -> games.sortedBy { it.purchaseDate }

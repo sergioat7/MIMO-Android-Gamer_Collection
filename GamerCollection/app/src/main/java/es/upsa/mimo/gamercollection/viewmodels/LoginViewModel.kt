@@ -15,8 +15,6 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
-    private val sharedPreferencesHandler: SharedPreferencesHandler,
-    private val userAPIClient: UserAPIClient,
     private val formatRepository: FormatRepository,
     private val gameRepository: GameRepository,
     private val genreRepository: GenreRepository,
@@ -26,6 +24,7 @@ class LoginViewModel @Inject constructor(
 ) : ViewModel() {
 
     //region Private properties
+    private val userAPIClient = UserAPIClient()
     private val _loginForm = MutableLiveData<LoginFormState>()
     private val _loginLoading = MutableLiveData<Boolean>()
     private val _loginError = MutableLiveData<ErrorResponse>()
@@ -33,7 +32,7 @@ class LoginViewModel @Inject constructor(
 
     //region Public properties
     val username: String
-        get() = sharedPreferencesHandler.getUserData().username
+        get() = SharedPreferencesHandler.getUserData().username
     val loginFormState: LiveData<LoginFormState> = _loginForm
     val loginLoading: LiveData<Boolean> = _loginLoading
     val loginError: LiveData<ErrorResponse> = _loginError
@@ -47,7 +46,7 @@ class LoginViewModel @Inject constructor(
 
             val userData = UserData(username, password, false)
             val authData = AuthData(token)
-            sharedPreferencesHandler.run {
+            SharedPreferencesHandler.run {
                 storeUserData(userData)
                 storeCredentials(authData)
             }
@@ -86,7 +85,7 @@ class LoginViewModel @Inject constructor(
                             stateRepository.loadStates({
 
                                 userData.isLoggedIn = true
-                                sharedPreferencesHandler.storeUserData(userData)
+                                SharedPreferencesHandler.storeUserData(userData)
 
                                 _loginError.value = null
                                 _loginLoading.value = false

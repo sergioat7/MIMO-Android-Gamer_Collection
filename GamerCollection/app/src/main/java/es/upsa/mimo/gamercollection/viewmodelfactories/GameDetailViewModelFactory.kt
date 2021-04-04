@@ -8,7 +8,6 @@ import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
 import es.upsa.mimo.gamercollection.network.apiClient.PlatformAPIClient
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import es.upsa.mimo.gamercollection.viewmodels.GameDetailViewModel
 import javax.inject.Inject
 
@@ -19,15 +18,6 @@ class GameDetailViewModelFactory(
 ) : ViewModelProvider.Factory {
 
     //region Public properties
-    @Inject
-    lateinit var sharedPrefHandler: SharedPreferencesHandler
-
-    @Inject
-    lateinit var gameAPIClient: GameAPIClient
-
-    @Inject
-    lateinit var platformAPIClient: PlatformAPIClient
-
     @Inject
     lateinit var gameRepository: GameRepository
 

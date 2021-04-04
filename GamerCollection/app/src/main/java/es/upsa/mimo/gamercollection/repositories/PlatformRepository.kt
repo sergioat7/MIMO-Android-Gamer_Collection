@@ -9,11 +9,11 @@ import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class PlatformRepository @Inject constructor(
-    private val database: AppDatabase,
-    private val platformAPIClient: PlatformAPIClient
+    private val database: AppDatabase
 ) {
 
     //region Private properties
+    private val platformAPIClient = PlatformAPIClient()
     private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
     //endregion
 

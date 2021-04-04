@@ -7,9 +7,7 @@ import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
 
-class FormatAPIClient @Inject constructor(
-    private val sharedPrefHandler: SharedPreferencesHandler
-) {
+class FormatAPIClient {
 
     //region Private properties
     private val api = APIClient.retrofit.create(FormatAPIService::class.java)
@@ -19,7 +17,7 @@ class FormatAPIClient @Inject constructor(
     fun getFormats(success: (List<FormatResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.ACCEPT_LANGUAGE_HEADER] = sharedPrefHandler.getLanguage()
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHandler.getLanguage()
         val request = api.getFormats(headers)
 
         APIClient.sendServer(request, success, failure)

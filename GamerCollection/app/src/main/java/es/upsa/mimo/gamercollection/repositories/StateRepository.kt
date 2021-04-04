@@ -9,11 +9,11 @@ import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class StateRepository @Inject constructor(
-    private val database: AppDatabase,
-    private val stateAPIClient: StateAPIClient
+    private val database: AppDatabase
 ) {
 
     //region Private properties
+    private val stateAPIClient = StateAPIClient()
     private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
     //endregion
 

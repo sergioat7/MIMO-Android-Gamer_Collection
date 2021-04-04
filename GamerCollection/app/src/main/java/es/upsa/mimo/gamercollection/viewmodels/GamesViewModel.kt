@@ -20,7 +20,6 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import javax.inject.Inject
 
 class GamesViewModel @Inject constructor(
-    private val sharedPreferencesHandler: SharedPreferencesHandler,
     private val gameRepository: GameRepository,
     private val platformRepository: PlatformRepository
 ) : ViewModel() {
@@ -30,15 +29,15 @@ class GamesViewModel @Inject constructor(
     private val _gamesError = MutableLiveData<ErrorResponse>()
     private val _games = MutableLiveData<List<GameResponse>>()
     private val _gamesCount = MutableLiveData<List<GameResponse>>()
-    private var sortKey: String = sharedPreferencesHandler.getSortingKey()
+    private var sortKey: String = SharedPreferencesHandler.getSortingKey()
     private var sortAscending = true
     //endregion
 
     //region Public properties
     val language: String
-        get() = sharedPreferencesHandler.getLanguage()
+        get() = SharedPreferencesHandler.getLanguage()
     val swipeRefresh: Boolean
-        get() = sharedPreferencesHandler.getSwipeRefresh()
+        get() = SharedPreferencesHandler.getSwipeRefresh()
     val platforms: List<PlatformResponse>
         get() = platformRepository.getPlatformsDatabase()
     val gamesLoading: LiveData<Boolean> = _gamesLoading
@@ -134,11 +133,11 @@ class GamesViewModel @Inject constructor(
     }
 
     fun isNotificationLaunched(gameId: Int): Boolean {
-        return sharedPreferencesHandler.notificationLaunched(gameId)
+        return SharedPreferencesHandler.notificationLaunched(gameId)
     }
 
     fun setNotificationLaunched(gameId: Int, value: Boolean) {
-        sharedPreferencesHandler.setNotificationLaunched(gameId, value)
+        SharedPreferencesHandler.setNotificationLaunched(gameId, value)
     }
     //endregion
 
@@ -157,7 +156,7 @@ class GamesViewModel @Inject constructor(
     private fun resetProperties() {
 
         state = null
-        sortKey = sharedPreferencesHandler.getSortingKey()
+        sortKey = SharedPreferencesHandler.getSortingKey()
         sortAscending = true
         filters = null
     }

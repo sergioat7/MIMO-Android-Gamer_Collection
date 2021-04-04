@@ -8,7 +8,6 @@ import es.upsa.mimo.gamercollection.models.responses.FormatResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.GenreResponse
 import es.upsa.mimo.gamercollection.repositories.FormatRepository
-import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
 import java.util.*
@@ -16,9 +15,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 class GameDataViewModel @Inject constructor(
-    private val sharedPreferencesHandler: SharedPreferencesHandler,
     private val formatRepository: FormatRepository,
-    private val gameRepository: GameRepository,
     private val genreRepository: GenreRepository
 ) : ViewModel() {
 
@@ -30,7 +27,7 @@ class GameDataViewModel @Inject constructor(
 
     //region Public properties
     val language: String
-        get() = sharedPreferencesHandler.getLanguage()
+        get() = SharedPreferencesHandler.getLanguage()
     val formats: List<FormatResponse>
         get() = formatRepository.getFormatsDatabase()
     val genres: List<GenreResponse>

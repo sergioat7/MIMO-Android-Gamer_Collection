@@ -9,11 +9,11 @@ import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class SagaRepository @Inject constructor(
-    private val database: AppDatabase,
-    private val sagaAPIClient: SagaAPIClient
+    private val database: AppDatabase
 ) {
 
     //region Private properties
+    private val sagaAPIClient = SagaAPIClient()
     private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
     //endregion
 

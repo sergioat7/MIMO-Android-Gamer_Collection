@@ -9,11 +9,11 @@ import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class FormatRepository @Inject constructor(
-    private val database: AppDatabase,
-    private val formatAPIClient: FormatAPIClient
+    private val database: AppDatabase
 ) {
 
     //region Private properties
+    private val formatAPIClient = FormatAPIClient()
     private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
     //endregion
 
