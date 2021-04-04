@@ -14,8 +14,7 @@ class PopupSyncAppViewModelFactory(
     private val application: Application?
 ) : ViewModelProvider.Factory {
 
-    //MARK: - Public properties
-
+    //region Public properties
     @Inject
     lateinit var sharedPrefHandler: SharedPreferencesHandler
 
@@ -57,9 +56,9 @@ class PopupSyncAppViewModelFactory(
 
     @Inject
     lateinit var popupSyncAppViewModel: PopupSyncAppViewModel
+    //endregion
 
-    //MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(PopupSyncAppViewModel::class.java)) {
@@ -69,4 +68,5 @@ class PopupSyncAppViewModelFactory(
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
+    //endregion
 }

@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SongsAdapter
-import es.upsa.mimo.gamercollection.databinding.FragmentGameSongsBinding
 import es.upsa.mimo.gamercollection.base.BindingFragment
+import es.upsa.mimo.gamercollection.databinding.FragmentGameSongsBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SongResponse
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameSongsViewModelFactory
@@ -21,19 +21,18 @@ class GameSongsFragment(
     private var enabled: Boolean
 ) : BindingFragment<FragmentGameSongsBinding>(), OnItemClickListener {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private lateinit var viewModel: GameSongsViewModel
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeUI()
     }
+    //endregion
 
-    // MARK: - Interface methods
-
+    //region Interface methods
     override fun onItemClick(id: Int) {
         viewModel.deleteSong(id)
     }
@@ -43,9 +42,9 @@ class GameSongsFragment(
 
     override fun onLoadMoreItemsClick() {
     }
+    //endregion
 
-    // MARK: Public methods
-
+    //region Public methods
     fun setEdition(editable: Boolean) {
         binding.editable = editable
     }
@@ -53,9 +52,9 @@ class GameSongsFragment(
     fun getSongs(): List<SongResponse> {
         return viewModel.songs.value ?: ArrayList()
     }
+    //endregion
 
-    // MARK: Private methods
-
+    //region Private methods
     private fun initializeUI() {
 
         val application = activity?.application
@@ -127,4 +126,5 @@ class GameSongsFragment(
         dialogBuilder.setView(dialogView)
         dialogBuilder.show()
     }
+    //endregion
 }

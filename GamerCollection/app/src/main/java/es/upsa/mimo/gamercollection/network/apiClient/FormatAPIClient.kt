@@ -11,12 +11,11 @@ class FormatAPIClient @Inject constructor(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    // MARK: - Private properties
-
+    //region Private properties
     private val api = APIClient.retrofit.create(FormatAPIService::class.java)
+    //endregion
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun getFormats(success: (List<FormatResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
@@ -25,4 +24,5 @@ class FormatAPIClient @Inject constructor(
 
         APIClient.sendServer(request, success, failure)
     }
+    //endregion
 }

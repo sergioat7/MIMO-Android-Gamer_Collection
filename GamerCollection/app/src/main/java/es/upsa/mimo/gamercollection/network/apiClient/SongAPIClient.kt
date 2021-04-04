@@ -11,12 +11,11 @@ class SongAPIClient @Inject constructor(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    // MARK: - Private properties
-
+    //region Private properties
     private val api = APIClient.retrofit.create(SongAPIService::class.java)
+    //endregion
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun createSong(
         gameId: Int,
         song: SongResponse,
@@ -50,4 +49,5 @@ class SongAPIClient @Inject constructor(
             success()
         }, failure)
     }
+    //endregion
 }

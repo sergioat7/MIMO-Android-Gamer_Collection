@@ -21,16 +21,15 @@ class SagaDetailViewModel @Inject constructor(
     private val sagaRepository: SagaRepository
 ) : ViewModel() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private var sagaId: Int? = null
     private val _sagaDetailLoading = MutableLiveData<Boolean>()
     private val _sagaDetailSuccessMessage = MutableLiveData<Int>()
     private val _sagaDetailError = MutableLiveData<ErrorResponse>()
     private val _saga = MutableLiveData<SagaResponse?>()
+    //endregion
 
-    //MARK: - Public properties
-
+    //region Public properties
     val games: List<GameResponse>
         get() = gameRepository.getGamesDatabase()
     val platforms: List<PlatformResponse>
@@ -39,9 +38,9 @@ class SagaDetailViewModel @Inject constructor(
     val sagaDetailSuccessMessage: LiveData<Int> = _sagaDetailSuccessMessage
     val sagaDetailError: LiveData<ErrorResponse> = _sagaDetailError
     val saga: LiveData<SagaResponse?> = _saga
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun getSaga() {
 
         sagaId?.let {
@@ -101,9 +100,9 @@ class SagaDetailViewModel @Inject constructor(
     fun setSagaId(sagaId: Int?) {
         this.sagaId = sagaId
     }
+    //endregion
 
-    // MARK: Private methods
-
+    //region Private methods
     private fun createSaga(saga: SagaResponse) {
 
         _sagaDetailLoading.value = true
@@ -134,4 +133,5 @@ class SagaDetailViewModel @Inject constructor(
             _sagaDetailError.value = it
         })
     }
+    //endregion
 }

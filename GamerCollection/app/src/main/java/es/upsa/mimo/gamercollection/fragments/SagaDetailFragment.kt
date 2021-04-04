@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
+import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentSagaDetailBinding
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
-import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.utils.Constants
@@ -28,16 +28,15 @@ import kotlinx.android.synthetic.main.games_dialog.view.*
 
 class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemClickListener {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private lateinit var viewModel: SagaDetailViewModel
     private var menu: Menu? = null
     private var sagaGames: List<GameResponse> = arrayListOf()
     private var newGames: ArrayList<GameResponse> = arrayListOf()
     private val goBack = MutableLiveData<Boolean>()
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -91,9 +90,9 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
         }
         return super.onOptionsItemSelected(item)
     }
+    //endregion
 
-    //MARK: - Interface methods
-
+    //region Interface methods
     override fun onItemClick(id: Int) {
 
         val selectedGame = viewModel.games.firstOrNull { it.id == id }
@@ -115,9 +114,9 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
 
     override fun onLoadMoreItemsClick() {
     }
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun addGame() {
 
         val dialogBuilder = AlertDialog.Builder(requireContext()).create()
@@ -148,9 +147,9 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
         dialogBuilder.setView(dialogView)
         dialogBuilder.show()
     }
+    //endregion
 
-    //MARK: - Private methods
-
+    //region Private methods
     private fun initializeUI() {
 
         val application = activity?.application
@@ -270,4 +269,5 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
             it.findItem(R.id.action_cancel).isVisible = hidden
         }
     }
+    //endregion
 }

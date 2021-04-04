@@ -10,9 +10,9 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.LandingActivity
+import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentProfileBinding
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
-import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.ProfileViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.ProfileViewModel
@@ -20,12 +20,11 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private lateinit var viewModel: ProfileViewModel
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,9 +64,9 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
         }
         return super.onOptionsItemSelected(item)
     }
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun showMessage(message: String) {
         showPopupDialog(message)
     }
@@ -108,9 +107,9 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
             themeMode
         )
     }
+    //endregion
 
-    //MARK: - Private methods
-
+    //region Private methods
     private fun initializeUI() {
 
         val application = activity?.application
@@ -132,8 +131,10 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
                 )
             }
 
-            radioButtonEn.isChecked = this@ProfileFragment.viewModel.language == Constants.ENGLISH_LANGUAGE_KEY
-            radioButtonEs.isChecked = this@ProfileFragment.viewModel.language == Constants.SPANISH_LANGUAGE_KEY
+            radioButtonEn.isChecked =
+                this@ProfileFragment.viewModel.language == Constants.ENGLISH_LANGUAGE_KEY
+            radioButtonEs.isChecked =
+                this@ProfileFragment.viewModel.language == Constants.SPANISH_LANGUAGE_KEY
 
             spinnerSortingKeys.apply {
                 backgroundTintList =
@@ -196,4 +197,5 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
             else -> 0
         }
     }
+    //endregion
 }

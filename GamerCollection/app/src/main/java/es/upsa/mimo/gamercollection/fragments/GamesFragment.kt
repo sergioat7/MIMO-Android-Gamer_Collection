@@ -18,8 +18,8 @@ import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnFiltersSelected
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
-import es.upsa.mimo.gamercollection.databinding.FragmentGamesBinding
 import es.upsa.mimo.gamercollection.base.BindingFragment
+import es.upsa.mimo.gamercollection.databinding.FragmentGamesBinding
 import es.upsa.mimo.gamercollection.fragments.popups.PopupFilterDialogFragment
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
@@ -33,15 +33,14 @@ import kotlin.collections.ArrayList
 class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListener,
     OnFiltersSelected {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private lateinit var viewModel: GamesViewModel
     private lateinit var gamesAdapter: GamesAdapter
     private var menu: Menu? = null
     private val scrollPosition = ObservableField<ScrollPosition>()
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -99,9 +98,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         }
         return super.onOptionsItemSelected(item)
     }
+    //endregion
 
-    //MARK: - Interface methods
-
+    //region Interface methods
     override fun onItemClick(id: Int) {
 
         val params = mapOf(Constants.GAME_ID to id, Constants.IS_RAWG_GAME to false)
@@ -124,9 +123,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         scrollPosition.set(ScrollPosition.TOP)
         viewModel.getGames()
     }
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun buttonClicked(it: View) {
 
         scrollPosition.set(ScrollPosition.TOP)
@@ -166,9 +165,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             }
         }
     }
+    //endregion
 
-    //MARK: - Private methods
-
+    //region Private methods
     private fun initializeUI() {
 
         val application = activity?.application
@@ -389,6 +388,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             buttonFinished.isEnabled = enable
         }
     }
+    //endregion
 }
 
 enum class ScrollPosition {
