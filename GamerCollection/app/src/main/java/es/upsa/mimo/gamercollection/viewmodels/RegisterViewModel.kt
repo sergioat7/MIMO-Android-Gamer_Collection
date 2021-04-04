@@ -26,20 +26,19 @@ class RegisterViewModel @Inject constructor(
     private val stateRepository: StateRepository
 ) : ViewModel() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private val _registerForm = MutableLiveData<LoginFormState>()
     private val _registerLoading = MutableLiveData<Boolean>()
     private val _registerError = MutableLiveData<ErrorResponse>()
+    //endregion
 
-    //MARK: - Public properties
-
+    //region Public properties
     val registerFormState: LiveData<LoginFormState> = _registerForm
     val registerLoading: LiveData<Boolean> = _registerLoading
     val registerError: LiveData<ErrorResponse> = _registerError
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun register(username: String, password: String) {
 
         _registerLoading.value = true
@@ -81,9 +80,9 @@ class RegisterViewModel @Inject constructor(
         }
         _registerForm.value = LoginFormState(usernameError, passwordError, isDataValid)
     }
+    //endregion
 
-    //MARK: - Private methods
-
+    //region Private methods
     private fun loadContent(userData: UserData) {
 
         formatRepository.loadFormats({
@@ -109,4 +108,5 @@ class RegisterViewModel @Inject constructor(
             _registerError.value = it
         })
     }
+    //endregion
 }

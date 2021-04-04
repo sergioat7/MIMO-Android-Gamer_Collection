@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -27,27 +28,28 @@ import com.google.android.gms.maps.model.MarkerOptions
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.OnLocationSelected
+import es.upsa.mimo.gamercollection.databinding.FragmentMapsBinding
 import es.upsa.mimo.gamercollection.utils.Constants
-import kotlinx.android.synthetic.main.fragment_maps.*
 
 class MapsFragment(
     private var location: LatLng?,
     private val onLocationSelected: OnLocationSelected
 ) : DialogFragment(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener {
 
-    //MARK: - Private properties
-
+    //region Private properties
+    private lateinit var binding: FragmentMapsBinding
     private lateinit var googleMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_maps, container, false)
+    ): View {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_maps, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,11 +58,14 @@ class MapsFragment(
         fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(activity as GameDetailActivity)
 
-        initializeUI()
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(this)
+
+        binding.fragment = this
     }
+    //endregion
 
-    // MARK: - Interface methods
-
+    //region Interface methods
     override fun onMapReady(googleMap: GoogleMap) {
 
         this.googleMap = googleMap
@@ -99,22 +104,36 @@ class MapsFragment(
             }
         }
     }
+    //endregion
 
-    // MARK: - Private methods
+    //region Public methods
+    fun locateUser() {
 
-    private fun initializeUI() {
-
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(this)
-
-        button_location.setOnClickListener { locateUser() }
-
-        button_accept.setOnClickListener {
-            onLocationSelected.setLocation(location)
-            dismiss()
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
+                getUserLocation()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    resources.getString(R.string.turn_on_location),
+                    Toast.LENGTH_LONG
+                ).show()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
+        } else {
+            requestPermissions()
         }
     }
 
+    fun setLocation() {
+
+        onLocationSelected.setLocation(location)
+        dismiss()
+    }
+    //endregion
+
+    //region Private methods
     private fun checkPermissions(): Boolean {
 
         return ActivityCompat.checkSelfPermission(
@@ -146,25 +165,6 @@ class MapsFragment(
                     locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
         }
         return false
-    }
-
-    private fun locateUser() {
-
-        if (checkPermissions()) {
-            if (isLocationEnabled()) {
-                getUserLocation()
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    resources.getString(R.string.turn_on_location),
-                    Toast.LENGTH_LONG
-                ).show()
-                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivity(intent)
-            }
-        } else {
-            requestPermissions()
-        }
     }
 
     @SuppressLint("MissingPermission")
@@ -210,4 +210,5 @@ class MapsFragment(
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(position))
         location = position
     }
+    //endregion
 }

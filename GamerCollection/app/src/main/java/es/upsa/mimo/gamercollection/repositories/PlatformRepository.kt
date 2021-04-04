@@ -13,12 +13,11 @@ class PlatformRepository @Inject constructor(
     private val platformAPIClient: PlatformAPIClient
 ) {
 
-    // MARK: - Private properties
-
+    //region Private properties
     private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
+    //endregion
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun loadPlatforms(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         platformAPIClient.getPlatforms({ newPlatforms ->
@@ -59,9 +58,9 @@ class PlatformRepository @Inject constructor(
             deletePlatformDatabase(platform)
         }
     }
+    //endregion
 
-    // MARK: - Private methods
-
+    //region Private methods
     private fun insertPlatformDatabase(platform: PlatformResponse) {
 
         runBlocking {
@@ -81,4 +80,5 @@ class PlatformRepository @Inject constructor(
             job.join()
         }
     }
+    //endregion
 }

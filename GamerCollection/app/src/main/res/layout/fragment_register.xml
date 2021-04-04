@@ -1,101 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.RegisterFragment"
-    >
+<layout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:context=".fragments.RegisterFragment"
         >
 
-        <ImageView
-            android:id="@+id/image_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/edit_text_user"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/Widget.GamerCollection.ImageViewLogo"
-            />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
 
-        <EditText
-            android:id="@+id/edit_text_user"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/edit_text_password"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            style="@style/Widget.GamerCollection.EditText.Credentials.Username"
-            />
+            <ImageView
+                android:id="@+id/image_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/edit_text_user"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/Widget.GamerCollection.ImageViewLogo"
+                />
 
-        <ImageButton
-            android:id="@+id/image_button_info"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/edit_text_user"
-            app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
-            app:layout_constraintTop_toTopOf="@+id/edit_text_user"
-            style="@style/Widget.GamerCollection.ImageButton.EditText.Username"
-            />
+            <EditText
+                android:id="@+id/edit_text_user"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/edit_text_password"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                style="@style/Widget.GamerCollection.EditText.Credentials.Username"
+                />
 
-        <EditText
-            android:id="@+id/edit_text_password"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
-            app:layout_constraintStart_toStartOf="@+id/edit_text_user"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/Widget.GamerCollection.EditText.Credentials.Password"
-            />
+            <ImageButton
+                android:id="@+id/image_button_info"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@+id/edit_text_user"
+                app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
+                app:layout_constraintTop_toTopOf="@+id/edit_text_user"
+                style="@style/Widget.GamerCollection.ImageButton.EditText.Username"
+                />
 
-        <ImageButton
-            android:id="@+id/image_button_password"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/edit_text_password"
-            app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
-            app:layout_constraintTop_toTopOf="@+id/edit_text_password"
-            style="@style/Widget.GamerCollection.ImageButton.EditText.Password"
-            />
+            <EditText
+                android:id="@+id/edit_text_password"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
+                app:layout_constraintStart_toStartOf="@+id/edit_text_user"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/Widget.GamerCollection.EditText.Credentials.Password"
+                />
 
-        <EditText
-            android:id="@+id/edit_text_repeatPassword"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/registration_repeat_password"
-            app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
-            app:layout_constraintStart_toStartOf="@+id/edit_text_password"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_password"
-            style="@style/Widget.GamerCollection.EditText.Credentials.Password"
-            />
+            <ImageButton
+                android:id="@+id/image_button_password"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@+id/edit_text_password"
+                app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
+                app:layout_constraintTop_toTopOf="@+id/edit_text_password"
+                style="@style/Widget.GamerCollection.ImageButton.EditText.Password"
+                />
 
-        <ImageButton
-            android:id="@+id/image_button_confirm_password"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/edit_text_repeatPassword"
-            app:layout_constraintEnd_toEndOf="@+id/edit_text_repeatPassword"
-            app:layout_constraintTop_toTopOf="@+id/edit_text_repeatPassword"
-            style="@style/Widget.GamerCollection.ImageButton.EditText.Password"
-            />
+            <EditText
+                android:id="@+id/edit_text_repeatPassword"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/registration_repeat_password"
+                app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
+                app:layout_constraintStart_toStartOf="@+id/edit_text_password"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_password"
+                style="@style/Widget.GamerCollection.EditText.Credentials.Password"
+                />
 
-        <Button
-            android:id="@+id/register_button"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_repeatPassword"
-            style="@style/Widget.GamerCollection.Button.Rounded.Action.Register"
-            />
+            <ImageButton
+                android:id="@+id/image_button_confirm_password"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@+id/edit_text_repeatPassword"
+                app:layout_constraintEnd_toEndOf="@+id/edit_text_repeatPassword"
+                app:layout_constraintTop_toTopOf="@+id/edit_text_repeatPassword"
+                style="@style/Widget.GamerCollection.ImageButton.EditText.Password"
+                />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/register_button"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_repeatPassword"
+                style="@style/Widget.GamerCollection.Button.Rounded.Action.Register"
+                />
 
-</FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+</layout>

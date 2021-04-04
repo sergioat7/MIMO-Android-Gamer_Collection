@@ -11,12 +11,11 @@ class StateAPIClient @Inject constructor(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    // MARK: - Private properties
-
+    //region Private properties
     private val api = APIClient.retrofit.create(StateAPIService::class.java)
+    //endregion
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun getStates(success: (List<StateResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
@@ -25,4 +24,5 @@ class StateAPIClient @Inject constructor(
 
         APIClient.sendServer(request, success, failure)
     }
+    //endregion
 }

@@ -3,7 +3,7 @@ package es.upsa.mimo.gamercollection.models.responses
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-import es.upsa.mimo.gamercollection.models.base.BaseModel
+import es.upsa.mimo.gamercollection.base.BaseModel
 
 @Entity(tableName = "Saga")
 data class SagaResponse(

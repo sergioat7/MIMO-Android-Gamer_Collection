@@ -13,12 +13,11 @@ class StateRepository @Inject constructor(
     private val stateAPIClient: StateAPIClient
 ) {
 
-    // MARK: - Private properties
-
+    //region Private properties
     private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
+    //endregion
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun loadStates(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         stateAPIClient.getStates({ newStates ->
@@ -35,7 +34,18 @@ class StateRepository @Inject constructor(
         }, failure)
     }
 
-    fun getStatesDatabase(): List<StateResponse> {
+    fun resetTable() {
+
+        val states = getStatesDatabase()
+        for (state in states) {
+            deleteStateDatabase(state)
+        }
+    }
+    //endregion
+
+
+    //region Private methods
+    private fun getStatesDatabase(): List<StateResponse> {
 
         var states = mutableListOf<StateResponse>()
         runBlocking {
@@ -53,16 +63,6 @@ class StateRepository @Inject constructor(
         }
         return states
     }
-
-    fun resetTable() {
-
-        val states = getStatesDatabase()
-        for (state in states) {
-            deleteStateDatabase(state)
-        }
-    }
-
-    // MARK: - Private methods
 
     private fun insertStateDatabase(state: StateResponse) {
 
@@ -83,4 +83,5 @@ class StateRepository @Inject constructor(
             job.join()
         }
     }
+    //endregion
 }

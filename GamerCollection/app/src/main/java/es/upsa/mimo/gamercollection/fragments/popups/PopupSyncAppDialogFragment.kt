@@ -17,12 +17,11 @@ import es.upsa.mimo.gamercollection.viewmodels.PopupSyncAppViewModel
 
 class PopupSyncAppDialogFragment : DialogFragment() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private lateinit var viewModel: PopupSyncAppViewModel
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_TITLE, R.style.Theme_GamerCollection_DialogTransparent)
@@ -39,9 +38,9 @@ class PopupSyncAppDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         initializeUI()
     }
+    //endregion
 
-    //MARK: - Private methods
-
+    //region Private methods
     private fun initializeUI() {
 
         val application = activity?.application
@@ -90,4 +89,5 @@ class PopupSyncAppDialogFragment : DialogFragment() {
         val dialogFragment = PopupErrorDialogFragment(message)
         dialogFragment.show(ft, Constants.POPUP_DIALOG)
     }
+    //endregion
 }

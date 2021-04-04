@@ -11,12 +11,11 @@ class SagaAPIClient @Inject constructor(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    // MARK: - Private properties
-
+    //region Private properties
     private val api = APIClient.retrofit.create(SagaAPIService::class.java)
+    //endregion
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun getSagas(success: (List<SagaResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
@@ -64,4 +63,5 @@ class SagaAPIClient @Inject constructor(
             success()
         }, failure)
     }
+    //endregion
 }

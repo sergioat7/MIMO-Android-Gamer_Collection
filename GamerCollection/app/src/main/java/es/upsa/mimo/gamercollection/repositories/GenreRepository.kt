@@ -13,12 +13,11 @@ class GenreRepository @Inject constructor(
     private val genreAPIClient: GenreAPIClient
 ) {
 
-    // MARK: - Private properties
-
+    //region Private properties
     private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
+    //endregion
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun loadGenres(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         genreAPIClient.getGenres({ newGenres ->
@@ -61,9 +60,9 @@ class GenreRepository @Inject constructor(
             deleteGenreDatabase(genre)
         }
     }
+    //endregion
 
-    // MARK: - Private methods
-
+    //region Private methods
     private fun insertGenreDatabase(genre: GenreResponse) {
 
         runBlocking {
@@ -83,4 +82,5 @@ class GenreRepository @Inject constructor(
             job.join()
         }
     }
+    //endregion
 }

@@ -16,34 +16,33 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
+import es.upsa.mimo.gamercollection.base.BindingFragment
+import es.upsa.mimo.gamercollection.databinding.FragmentSagaDetailBinding
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
-import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.SagaDetailViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.SagaDetailViewModel
-import kotlinx.android.synthetic.main.fragment_saga_detail.*
 import kotlinx.android.synthetic.main.games_dialog.view.*
 
-class SagaDetailFragment : BaseFragment(), OnItemClickListener {
+class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemClickListener {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private lateinit var viewModel: SagaDetailViewModel
     private var menu: Menu? = null
     private var sagaGames: List<GameResponse> = arrayListOf()
     private var newGames: ArrayList<GameResponse> = arrayListOf()
     private val goBack = MutableLiveData<Boolean>()
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_saga_detail, container, false)
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -80,7 +79,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
             }
             R.id.action_save -> {
 
-                viewModel.saveSaga(edit_text_name.text.toString(), newGames)
+                viewModel.saveSaga(binding.editTextName.text.toString(), newGames)
                 return true
             }
             R.id.action_cancel -> {
@@ -91,9 +90,9 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
         }
         return super.onOptionsItemSelected(item)
     }
+    //endregion
 
-    //MARK: - Interface methods
-
+    //region Interface methods
     override fun onItemClick(id: Int) {
 
         val selectedGame = viewModel.games.firstOrNull { it.id == id }
@@ -115,9 +114,42 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
 
     override fun onLoadMoreItemsClick() {
     }
+    //endregion
 
-    //MARK: - Private methods
+    //region Public methods
+    fun addGame() {
 
+        val dialogBuilder = AlertDialog.Builder(requireContext()).create()
+        val dialogView = this.layoutInflater.inflate(R.layout.games_dialog, null)
+
+        dialogView.recycler_view_games.layoutManager = LinearLayoutManager(requireContext())
+        val orderedGames = viewModel.getOrderedGames(viewModel.games)
+        if (orderedGames.isNotEmpty()) {
+
+            dialogView.recycler_view_games.adapter = GamesAdapter(
+                orderedGames,
+                viewModel.platforms,
+                viewModel.saga.value?.id ?: 0,
+                this
+            )
+        }
+        dialogView.recycler_view_games.visibility =
+            if (orderedGames.isNotEmpty()) View.VISIBLE else View.GONE
+        dialogView.layout_empty_list.visibility =
+            if (orderedGames.isNotEmpty()) View.GONE else View.VISIBLE
+
+        dialogView.button_accept.setOnClickListener {
+
+            showGames(newGames)
+            dialogBuilder.dismiss()
+        }
+
+        dialogBuilder.setView(dialogView)
+        dialogBuilder.show()
+    }
+    //endregion
+
+    //region Private methods
     private fun initializeUI() {
 
         val application = activity?.application
@@ -127,7 +159,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
         )
         setupBindings()
 
-        button_add_game.setOnClickListener { addGame() }
+        binding.fragment = this
     }
 
     private fun setupBindings() {
@@ -174,7 +206,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
 
         saga?.let {
 
-            edit_text_name.setText(saga.name)
+            binding.sagaName = saga.name
             newGames.clear()
             newGames.addAll(saga.games)
             showGames(newGames)
@@ -184,7 +216,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
     @SuppressLint("SetTextI18n")
     private fun showGames(games: List<GameResponse>) {
 
-        linear_layout_games.removeAllViews()
+        binding.linearLayoutGames.removeAllViews()
 
         val layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
@@ -202,7 +234,7 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
             tvGame.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18F)
 
             tvGame.text = "- ${game.name}"
-            linear_layout_games.addView(tvGame, layoutParams)
+            binding.linearLayoutGames.addView(tvGame, layoutParams)
         }
     }
 
@@ -211,41 +243,8 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
         val inputTypeText = if (enable) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
         val backgroundColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
 
-        edit_text_name.setReadOnly(!enable, inputTypeText, backgroundColor)
-        button_add_game.visibility = if (enable) View.VISIBLE else View.GONE
-    }
-
-    private fun addGame() {
-
-        val dialogBuilder = AlertDialog.Builder(requireContext()).create()
-        val dialogView = this.layoutInflater.inflate(R.layout.games_dialog, null)
-
-        dialogView.recycler_view_games.layoutManager = LinearLayoutManager(requireContext())
-        val orderedGames = viewModel.getOrderedGames(viewModel.games)
-        if (orderedGames.isNotEmpty()) {
-
-            dialogView.recycler_view_games.adapter = GamesAdapter(
-                orderedGames,
-                viewModel.platforms,
-                viewModel.states,
-                viewModel.saga.value?.id ?: 0,
-                requireContext(),
-                this
-            )
-        }
-        dialogView.recycler_view_games.visibility =
-            if (orderedGames.isNotEmpty()) View.VISIBLE else View.GONE
-        dialogView.layout_empty_list.visibility =
-            if (orderedGames.isNotEmpty()) View.GONE else View.VISIBLE
-
-        dialogView.button_accept.setOnClickListener {
-
-            showGames(newGames)
-            dialogBuilder.dismiss()
-        }
-
-        dialogBuilder.setView(dialogView)
-        dialogBuilder.show()
+        binding.editTextName.setReadOnly(!enable, inputTypeText, backgroundColor)
+        binding.editable = enable
     }
 
     private fun editSaga() {
@@ -270,4 +269,5 @@ class SagaDetailFragment : BaseFragment(), OnItemClickListener {
             it.findItem(R.id.action_cancel).isVisible = hidden
         }
     }
+    //endregion
 }

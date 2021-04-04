@@ -13,12 +13,11 @@ class SagaRepository @Inject constructor(
     private val sagaAPIClient: SagaAPIClient
 ) {
 
-    // MARK: - Private properties
-
+    //region Private properties
     private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
+    //endregion
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun loadSagas(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         sagaAPIClient.getSagas({ newSagas ->
@@ -116,9 +115,9 @@ class SagaRepository @Inject constructor(
             deleteSagaDatabase(saga)
         }
     }
+    //endregion
 
-    // MARK: - Private methods
-
+    //region Private methods
     private fun insertSagaDatabase(saga: SagaResponse) {
 
         runBlocking {
@@ -148,4 +147,5 @@ class SagaRepository @Inject constructor(
             job.join()
         }
     }
+    //endregion
 }

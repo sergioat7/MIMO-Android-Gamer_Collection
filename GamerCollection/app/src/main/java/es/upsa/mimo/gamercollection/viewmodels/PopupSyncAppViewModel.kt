@@ -16,16 +16,15 @@ class PopupSyncAppViewModel @Inject constructor(
     private val stateRepository: StateRepository
 ) : ViewModel() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private val _popupSyncAppError = MutableLiveData<ErrorResponse>()
+    //endregion
 
-    //MARK: - Public properties
-
+    //region Public properties
     val popupSyncAppError: LiveData<ErrorResponse> = _popupSyncAppError
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun loadContent() {
 
         formatRepository.loadFormats({
@@ -55,4 +54,5 @@ class PopupSyncAppViewModel @Inject constructor(
             _popupSyncAppError.value = it
         })
     }
+    //endregion
 }

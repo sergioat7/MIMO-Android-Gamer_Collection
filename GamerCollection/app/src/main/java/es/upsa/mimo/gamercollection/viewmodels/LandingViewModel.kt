@@ -20,18 +20,17 @@ class LandingViewModel @Inject constructor(
     private val stateRepository: StateRepository
 ) : ViewModel() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private val _landingClassToStart = MutableLiveData<Class<*>>()
+    //endregion
 
-    //MARK: - Public properties
-
+    //region Public properties
     val language: String
         get() = sharedPreferencesHandler.getLanguage()
     val landingClassToStart = _landingClassToStart
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun checkVersion() {
 
         val currentVersion = sharedPreferencesHandler.getVersion()
@@ -61,9 +60,9 @@ class LandingViewModel @Inject constructor(
             else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         }
     }
+    //endregion
 
-    //MARK: - Private methods
-
+    //region Private methods
     private fun resetDatabase() {
 
         formatRepository.resetTable()
@@ -73,4 +72,5 @@ class LandingViewModel @Inject constructor(
         sagaRepository.resetTable()
         stateRepository.resetTable()
     }
+    //endregion
 }

@@ -16,26 +16,25 @@ class GameDetailViewModel @Inject constructor(
     private val platformRepository: PlatformRepository
 ) : ViewModel() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private var gameId: Int? = null
     private var isRawgGame: Boolean = false
     private val _gameDetailLoading = MutableLiveData<Boolean>()
     private val _gameDetailSuccessMessage = MutableLiveData<Int>()
     private val _gameDetailError = MutableLiveData<ErrorResponse>()
     private val _game = MutableLiveData<GameResponse?>()
+    //endregion
 
-    //MARK: - Public properties
-
+    //region Public properties
     val platforms: List<PlatformResponse>
         get() = platformRepository.getPlatformsDatabase()
     val gameDetailLoading: LiveData<Boolean> = _gameDetailLoading
     val gameDetailSuccessMessage: LiveData<Int> = _gameDetailSuccessMessage
     val gameDetailError: LiveData<ErrorResponse> = _gameDetailError
     val game: LiveData<GameResponse?> = _game
+    //endregio
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun getGame() {
 
         gameId?.let { id ->
@@ -104,4 +103,5 @@ class GameDetailViewModel @Inject constructor(
     fun setIsRawgGame(isRawgGame: Boolean) {
         this.isRawgGame = isRawgGame
     }
+    //endregion
 }

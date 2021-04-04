@@ -9,28 +9,29 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.activities.base.BaseActivity
 import es.upsa.mimo.gamercollection.adapters.GameDetailPagerAdapter
+import es.upsa.mimo.gamercollection.base.BaseActivity
+import es.upsa.mimo.gamercollection.databinding.ActivityGameDetailBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameDetailViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameDetailViewModel
-import kotlinx.android.synthetic.main.activity_game_detail.*
 import kotlinx.android.synthetic.main.set_image_dialog.view.*
 import kotlinx.android.synthetic.main.set_rating_dialog.view.*
 
 class GameDetailActivity : BaseActivity() {
 
-    //MARK: - Private properties
-
+    //region  - Private properties
     private var gameId: Int? = null
     private var isRawgGame: Boolean = false
+    private lateinit var binding: ActivityGameDetailBinding
     private lateinit var viewModel: GameDetailViewModel
     private var menu: Menu? = null
     private lateinit var pagerAdapter: GameDetailPagerAdapter
@@ -38,15 +39,17 @@ class GameDetailActivity : BaseActivity() {
     private var platformValues = ArrayList<String>()
     private var imageUrl: String? = null
     private val goBack = MutableLiveData<Boolean>()
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_game_detail)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_game_detail)
+        setContentView(binding.root)
+
         title = Constants.EMPTY_VALUE
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val id = intent.getIntExtra(Constants.GAME_ID, 0)
@@ -107,9 +110,60 @@ class GameDetailActivity : BaseActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+    //endregion
 
-    //MARK: - Private methods
+    //region Public methods
+    fun setImage() {
 
+        val dialogBuilder = AlertDialog.Builder(this).create()
+        val dialogView = this.layoutInflater.inflate(R.layout.set_image_dialog, null)
+
+        dialogView.button_accept.setOnClickListener {
+
+            val url = dialogView.custom_edit_text_url.getText()
+            val errorImage =
+                if (Constants.isDarkMode(this)) R.drawable.ic_add_image_light else R.drawable.ic_add_image_dark
+            if (url.isNotEmpty()) {
+
+                Picasso.get()
+                    .load(url)
+                    .error(errorImage)
+                    .into(binding.imageViewGame, object : Callback {
+                        override fun onSuccess() {
+                            imageUrl = url
+                        }
+
+                        override fun onError(e: Exception?) {
+                            imageUrl = null
+                            showPopupDialog(resources.getString(R.string.error_image_url))
+                        }
+                    })
+            }
+            dialogBuilder.dismiss()
+        }
+
+        dialogBuilder.setView(dialogView)
+        dialogBuilder.show()
+    }
+
+    fun setRating() {
+
+        val dialogBuilder = AlertDialog.Builder(this).create()
+        val dialogView = this.layoutInflater.inflate(R.layout.set_rating_dialog, null)
+
+        dialogView.rating_bar.rating = binding.ratingButton.text.toString().toFloat() / 2
+        dialogView.button_rate.setOnClickListener {
+
+            binding.ratingButton.text = (dialogView.rating_bar.rating * 2).toString()
+            dialogBuilder.dismiss()
+        }
+
+        dialogBuilder.setView(dialogView)
+        dialogBuilder.show()
+    }
+    //endregion
+
+    //region Private methods
     private fun initializeUI() {
 
         viewModel = ViewModelProvider(
@@ -121,30 +175,27 @@ class GameDetailActivity : BaseActivity() {
         ).get(GameDetailViewModel::class.java)
         setupBindings()
 
-        image_view_game.setOnClickListener {
-            setImage()
-        }
         platformValues = ArrayList()
         platformValues.run {
             this.add(resources.getString((R.string.game_detail_select_platform)))
             this.addAll(viewModel.platforms.map { it.name })
         }
-        spinner_platforms.adapter = Constants.getAdapter(this, platformValues)
-
-        rating_button.setOnClickListener { setRating() }
+        binding.spinnerPlatforms.adapter = Constants.getAdapter(this, platformValues)
 
         pagerAdapter = GameDetailPagerAdapter(
             this,
             2,
             viewModel.game.value
         )
-        viewPager2.adapter = pagerAdapter
-        TabLayoutMediator(tab_layout, viewPager2) { tab, position ->
+        binding.viewPagerGame.adapter = pagerAdapter
+        TabLayoutMediator(binding.tabLayout, binding.viewPagerGame) { tab, position ->
             tab.text =
                 if (position == 0) resources.getString(R.string.game_detail_title) else resources.getString(
                     R.string.game_detail_songs_title
                 )
         }.attach()
+
+        binding.activity = this
     }
 
     private fun setupBindings() {
@@ -189,42 +240,38 @@ class GameDetailActivity : BaseActivity() {
         val image = imageUrl ?: Constants.NO_VALUE
         val errorImage =
             if (Constants.isDarkMode(this)) R.drawable.ic_add_image_dark else R.drawable.ic_add_image_light
-        progress_bar_loading.visibility = View.VISIBLE
+        binding.progressBarLoading.visibility = View.VISIBLE
         Picasso
             .get()
             .load(image)
             .error(errorImage)
-            .into(image_view_game, object : Callback {
+            .into(binding.imageViewGame, object : Callback {
 
                 override fun onSuccess() {
-                    progress_bar_loading.visibility = View.GONE
+                    binding.progressBarLoading.visibility = View.GONE
                 }
 
                 override fun onError(e: Exception?) {
-                    progress_bar_loading.visibility = View.GONE
+                    binding.progressBarLoading.visibility = View.GONE
                 }
             })
         Picasso
             .get()
             .load(image)
-            .into(image_view_blurred, object : Callback {
+            .into(binding.imageViewBlurred, object : Callback {
 
                 override fun onSuccess() {
-                    image_view_blurred.setBlur(5)
+                    binding.imageViewBlurred.setBlur(5)
                 }
 
                 override fun onError(e: Exception?) {
                 }
             })
 
-        image_view_goty.visibility = if (game?.goty == true) View.VISIBLE else View.GONE
-
-        rating_button.text = (game?.score ?: 0).toString()
-
-        image_view_pegi.setImageDrawable(Constants.getPegiImage(game?.pegi, this))
+        binding.imagePegi = Constants.getPegiImage(game?.pegi, this)
 
         val name = game?.name ?: Constants.EMPTY_VALUE
-        custom_edit_text_name.setText(
+        binding.customEditTextName.setText(
             if (name.isNotBlank()) name
             else Constants.NO_VALUE
         )
@@ -236,8 +283,9 @@ class GameDetailActivity : BaseActivity() {
             val pos = platformValues.indexOf(platformName)
             platformPosition = if (pos > 0) pos else 0
         }
-        spinner_platforms.setSelection(platformPosition)
+        binding.spinnerPlatforms.setSelection(platformPosition)
 
+        binding.game = game
         pagerAdapter.showData(game)
     }
 
@@ -257,76 +305,25 @@ class GameDetailActivity : BaseActivity() {
 
         val backgroundColor = ContextCompat.getColor(this, R.color.colorPrimary)
 
-        spinner_platforms.visibility =
-            if (editable || spinner_platforms.selectedItemPosition > 0) View.VISIBLE
+        binding.customEditTextName.setReadOnly(!editable, backgroundColor)
+        binding.spinnerPlatforms.visibility =
+            if (editable || binding.spinnerPlatforms.selectedItemPosition > 0) View.VISIBLE
             else View.GONE
-        image_view_game.isEnabled = editable
-        custom_edit_text_name.setReadOnly(!editable, backgroundColor)
-        spinner_platforms.backgroundTintList =
+        binding.spinnerPlatforms.backgroundTintList =
             if (!editable) ColorStateList.valueOf(Color.TRANSPARENT)
             else ColorStateList.valueOf(backgroundColor)
-        spinner_platforms.isEnabled = editable
-        rating_button.isEnabled = editable
 
+        binding.editable = editable
         pagerAdapter.setEdition(editable)
-    }
-
-    private fun setImage() {
-
-        val dialogBuilder = AlertDialog.Builder(this).create()
-        val dialogView = this.layoutInflater.inflate(R.layout.set_image_dialog, null)
-
-        dialogView.button_accept.setOnClickListener {
-
-            val url = dialogView.custom_edit_text_url.getText()
-            val errorImage =
-                if (Constants.isDarkMode(this)) R.drawable.ic_add_image_light else R.drawable.ic_add_image_dark
-            if (url.isNotEmpty()) {
-
-                Picasso.get()
-                    .load(url)
-                    .error(errorImage)
-                    .into(image_view_game, object : Callback {
-                        override fun onSuccess() {
-                            imageUrl = url
-                        }
-
-                        override fun onError(e: Exception?) {
-                            imageUrl = null
-                            showPopupDialog(resources.getString(R.string.error_image_url))
-                        }
-                    })
-            }
-            dialogBuilder.dismiss()
-        }
-
-        dialogBuilder.setView(dialogView)
-        dialogBuilder.show()
-    }
-
-    private fun setRating() {
-
-        val dialogBuilder = AlertDialog.Builder(this).create()
-        val dialogView = this.layoutInflater.inflate(R.layout.set_rating_dialog, null)
-
-        dialogView.rating_bar.rating = rating_button.text.toString().toFloat() / 2
-        dialogView.button_rate.setOnClickListener {
-
-            rating_button.text = (dialogView.rating_bar.rating * 2).toString()
-            dialogBuilder.dismiss()
-        }
-
-        dialogBuilder.setView(dialogView)
-        dialogBuilder.show()
     }
 
     private fun getGameData(): GameResponse {
 
         val id = gameId ?: 0
-        val name = custom_edit_text_name.getText()
+        val name = binding.customEditTextName.getText()
         val platform =
-            viewModel.platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
-        val score = rating_button.text.toString().toDouble()
+            viewModel.platforms.firstOrNull { it.name == binding.spinnerPlatforms.selectedItem.toString() }?.id
+        val score = binding.ratingButton.text.toString().toDouble()
 
         return pagerAdapter.getGameData()?.let {
 
@@ -363,4 +360,5 @@ class GameDetailActivity : BaseActivity() {
             )
         }
     }
+    //endregion
 }

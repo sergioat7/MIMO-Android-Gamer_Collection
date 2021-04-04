@@ -10,27 +10,27 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.LandingActivity
+import es.upsa.mimo.gamercollection.base.BindingFragment
+import es.upsa.mimo.gamercollection.databinding.FragmentProfileBinding
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
-import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.ProfileViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.ProfileViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
 
-class ProfileFragment : BaseFragment() {
+class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private lateinit var viewModel: ProfileViewModel
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,9 +64,52 @@ class ProfileFragment : BaseFragment() {
         }
         return super.onOptionsItemSelected(item)
     }
+    //endregion
 
-    //MARK: - Private methods
+    //region Public methods
+    fun showMessage(message: String) {
+        showPopupDialog(message)
+    }
 
+    fun chooseThemeDialog() {
+
+        val styles = resources.getStringArray(R.array.app_theme_values)
+        val themeMode = getThemeMode()
+
+        AlertDialog.Builder(context)
+            .setTitle(resources.getString(R.string.choose_a_theme))
+            .setSingleChoiceItems(styles, themeMode) { dialog, value ->
+
+                text_view_app_theme_value.text = when (value) {
+                    1 -> styles[1]
+                    2 -> styles[2]
+                    else -> styles[0]
+                }
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    fun save() {
+
+        val language =
+            if (radio_button_en.isChecked) Constants.ENGLISH_LANGUAGE_KEY else Constants.SPANISH_LANGUAGE_KEY
+        val sortingKey =
+            resources.getStringArray(R.array.sorting_keys_ids)[spinner_sorting_keys.selectedItemPosition]
+        val themeMode =
+            resources.getStringArray(R.array.app_theme_values)
+                .indexOf(text_view_app_theme_value.text.toString())
+        viewModel.save(
+            edit_text_password.text.toString(),
+            language,
+            sortingKey,
+            switch_swipe_refresh.isChecked,
+            themeMode
+        )
+    }
+    //endregion
+
+    //region Private methods
     private fun initializeUI() {
 
         val application = activity?.application
@@ -76,61 +119,48 @@ class ProfileFragment : BaseFragment() {
         ).get(ProfileViewModel::class.java)
         setupBindings()
 
-        edit_text_user.setText(viewModel.userData.username)
-        edit_text_user.setReadOnly(true, InputType.TYPE_NULL, 0)
-        edit_text_password.setText(viewModel.userData.password)
+        with(binding) {
 
-        image_button_info.setOnClickListener {
-            showPopupDialog(resources.getString(R.string.username_info))
-        }
+            editTextUser.setReadOnly(true, InputType.TYPE_NULL, 0)
 
-        image_button_password.setOnClickListener {
-            Constants.showOrHidePassword(
-                edit_text_password,
-                image_button_password,
-                Constants.isDarkMode(context)
-            )
-        }
+            imageButtonPassword.setOnClickListener {
+                Constants.showOrHidePassword(
+                    edit_text_password,
+                    image_button_password,
+                    Constants.isDarkMode(context)
+                )
+            }
 
-        radio_button_en.isChecked = viewModel.language == Constants.ENGLISH_LANGUAGE_KEY
-        radio_button_es.isChecked = viewModel.language == Constants.SPANISH_LANGUAGE_KEY
+            radioButtonEn.isChecked =
+                this@ProfileFragment.viewModel.language == Constants.ENGLISH_LANGUAGE_KEY
+            radioButtonEs.isChecked =
+                this@ProfileFragment.viewModel.language == Constants.SPANISH_LANGUAGE_KEY
 
-        spinner_sorting_keys.backgroundTintList =
-            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
-        spinner_sorting_keys.adapter = Constants.getAdapter(
-            requireContext(),
-            resources.getStringArray(R.array.sorting_keys).toList(),
-            true
-        )
-        val position =
-            resources.getStringArray(R.array.sorting_keys_ids).indexOf(viewModel.sortingKey)
-        spinner_sorting_keys.setSelection(position)
+            spinnerSortingKeys.apply {
+                backgroundTintList =
+                    ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.colorPrimary
+                        )
+                    )
+                adapter = Constants.getAdapter(
+                    requireContext(),
+                    resources.getStringArray(R.array.sorting_keys).toList(),
+                    true
+                )
+                setSelection(
+                    resources.getStringArray(R.array.sorting_keys_ids)
+                        .indexOf(this@ProfileFragment.viewModel.sortingKey)
+                )
+            }
 
-        switch_swipe_refresh.isChecked = viewModel.swipeRefresh
+            textViewAppThemeValue.text =
+                resources.getStringArray(R.array.app_theme_values)[getThemeMode()]
 
-        val themeMode = getThemeMode()
-        text_view_app_theme_value.text =
-            resources.getStringArray(R.array.app_theme_values)[themeMode]
-        text_view_app_theme_value.setOnClickListener {
-            chooseThemeDialog()
-        }
-
-        button_save.setOnClickListener {
-
-            val language =
-                if (radio_button_en.isChecked) Constants.ENGLISH_LANGUAGE_KEY else Constants.SPANISH_LANGUAGE_KEY
-            val sortingKey =
-                resources.getStringArray(R.array.sorting_keys_ids)[spinner_sorting_keys.selectedItemPosition]
-            val themeMode =
-                resources.getStringArray(R.array.app_theme_values)
-                    .indexOf(text_view_app_theme_value.text.toString())
-            viewModel.save(
-                edit_text_password.text.toString(),
-                language,
-                sortingKey,
-                switch_swipe_refresh.isChecked,
-                themeMode
-            )
+            fragment = this@ProfileFragment
+            viewModel = this@ProfileFragment.viewModel
+            lifecycleOwner = this@ProfileFragment
         }
     }
 
@@ -159,25 +189,6 @@ class ProfileFragment : BaseFragment() {
         })
     }
 
-    private fun chooseThemeDialog() {
-
-        val styles = resources.getStringArray(R.array.app_theme_values)
-        val themeMode = getThemeMode()
-
-        AlertDialog.Builder(context)
-            .setTitle(resources.getString(R.string.choose_a_theme))
-            .setSingleChoiceItems(styles, themeMode) { dialog, value ->
-
-                text_view_app_theme_value.text = when (value) {
-                    1 -> styles[1]
-                    2 -> styles[2]
-                    else -> styles[0]
-                }
-                dialog.dismiss()
-            }
-            .show()
-    }
-
     private fun getThemeMode(): Int {
 
         return when (AppCompatDelegate.getDefaultNightMode()) {
@@ -186,4 +197,5 @@ class ProfileFragment : BaseFragment() {
             else -> 0
         }
     }
+    //endregion
 }
