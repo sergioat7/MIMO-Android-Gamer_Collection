@@ -1,185 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.ProfileFragment"
-    >
+<layout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+    <data>
 
-        <ScrollView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="@dimen/margin_medium"
-            app:layout_constraintBottom_toTopOf="@+id/button_save"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            >
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-
-                <EditText
-                    android:id="@+id/edit_text_user"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_larger"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    style="@style/Widget.GamerCollection.EditText.Credentials.Username"
-                    />
-
-                <ImageButton
-                    android:id="@+id/image_button_info"
-                    android:layout_height="0dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/edit_text_user"
-                    app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
-                    app:layout_constraintTop_toTopOf="@+id/edit_text_user"
-                    style="@style/Widget.GamerCollection.ImageButton.EditText.Username"
-                    />
-
-                <EditText
-                    android:id="@+id/edit_text_password"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
-                    app:layout_constraintStart_toStartOf="@+id/edit_text_user"
-                    app:layout_constraintTop_toBottomOf="@+id/edit_text_user"
-                    style="@style/Widget.GamerCollection.EditText.Credentials.Password"
-                    />
-
-                <ImageButton
-                    android:id="@+id/image_button_password"
-                    android:layout_height="0dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/edit_text_password"
-                    app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
-                    app:layout_constraintTop_toTopOf="@+id/edit_text_password"
-                    style="@style/Widget.GamerCollection.ImageButton.EditText.Password"
-                    />
-
-                <TextView
-                    android:id="@+id/text_view_language_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/app_language"
-                    app:layout_constraintBottom_toTopOf="@+id/radio_group_language"
-                    app:layout_constraintEnd_toEndOf="@+id/radio_group_language"
-                    app:layout_constraintStart_toStartOf="@+id/radio_group_language"
-                    app:layout_constraintTop_toBottomOf="@+id/edit_text_password"
-                    style="@style/Widget.GamerCollection.TitleTextView.ProfileSection"
-                    />
-
-                <RadioGroup
-                    android:id="@+id/radio_group_language"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
-                    app:layout_constraintStart_toStartOf="@+id/edit_text_password"
-                    app:layout_constraintTop_toBottomOf="@+id/text_view_language_title"
-                    >
-
-                    <RadioButton
-                        android:id="@+id/radio_button_en"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/english"
-                        style="@style/Widget.GamerCollection.RadioButton"
-                        />
-
-                    <RadioButton
-                        android:id="@+id/radio_button_es"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/spanish"
-                        style="@style/Widget.GamerCollection.RadioButton"
-                        />
-
-                </RadioGroup>
-
-                <TextView
-                    android:id="@+id/text_view_sort_keys"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/games_sorting_parameter"
-                    app:layout_constraintBottom_toTopOf="@+id/spinner_sorting_keys"
-                    app:layout_constraintEnd_toEndOf="@+id/spinner_sorting_keys"
-                    app:layout_constraintStart_toStartOf="@+id/spinner_sorting_keys"
-                    app:layout_constraintTop_toBottomOf="@+id/radio_group_language"
-                    style="@style/Widget.GamerCollection.TitleTextView.ProfileSection"
-                    />
-
-                <Spinner
-                    android:id="@+id/spinner_sorting_keys"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="@+id/radio_group_language"
-                    app:layout_constraintStart_toStartOf="@+id/radio_group_language"
-                    app:layout_constraintTop_toBottomOf="@+id/text_view_sort_keys"
-                    style="@style/Widget.GamerCollection.Spinner"
-                    />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switch_swipe_refresh"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/swipe_refresh_enabled_title"
-                    android:checked="true"
-                    app:layout_constraintEnd_toEndOf="@+id/spinner_sorting_keys"
-                    app:layout_constraintStart_toStartOf="@+id/spinner_sorting_keys"
-                    app:layout_constraintTop_toBottomOf="@+id/spinner_sorting_keys"
-                    style="@style/Widget.GamerCollection.Switch.Profile"
-                    />
-
-                <TextView
-                    android:id="@+id/text_view_app_theme_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/app_theme"
-                    app:layout_constraintBottom_toTopOf="@+id/text_view_app_theme_value"
-                    app:layout_constraintEnd_toEndOf="@+id/text_view_app_theme_value"
-                    app:layout_constraintStart_toStartOf="@+id/text_view_app_theme_value"
-                    app:layout_constraintTop_toBottomOf="@+id/switch_swipe_refresh"
-                    style="@style/Widget.GamerCollection.TitleTextView.ProfileSection"
-                    />
-
-                <TextView
-                    android:id="@+id/text_view_app_theme_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/switch_swipe_refresh"
-                    app:layout_constraintStart_toStartOf="@+id/switch_swipe_refresh"
-                    app:layout_constraintTop_toBottomOf="@+id/switch_swipe_refresh"
-                    style="@style/Widget.GamerCollection.TextView.Regular.AppTheme"
-                    />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </ScrollView>
-
-        <Button
-            android:id="@+id/button_save"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_medium"
-            android:text="@string/save"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            style="@style/Widget.GamerCollection.Button.Rounded.Action"
+        <variable
+            name="fragment"
+            type="es.upsa.mimo.gamercollection.fragments.ProfileFragment"
             />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <variable
+            name="viewModel"
+            type="es.upsa.mimo.gamercollection.viewmodels.ProfileViewModel"
+            />
 
-</FrameLayout>
+    </data>
+
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.ProfileFragment"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <ScrollView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/margin_medium"
+                app:layout_constraintBottom_toTopOf="@+id/button_save"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <EditText
+                        android:id="@+id/edit_text_user"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_larger"
+                        android:text="@{viewModel.userData.username}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        style="@style/Widget.GamerCollection.EditText.Credentials.Username"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/image_button_info"
+                        android:layout_height="0dp"
+                        android:onClick="@{() -> fragment.showMessage(@string/username_info)}"
+                        app:layout_constraintBottom_toBottomOf="@+id/edit_text_user"
+                        app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
+                        app:layout_constraintTop_toTopOf="@+id/edit_text_user"
+                        style="@style/Widget.GamerCollection.ImageButton.EditText.Username"
+                        />
+
+                    <EditText
+                        android:id="@+id/edit_text_password"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.userData.password}"
+                        app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
+                        app:layout_constraintStart_toStartOf="@+id/edit_text_user"
+                        app:layout_constraintTop_toBottomOf="@+id/edit_text_user"
+                        style="@style/Widget.GamerCollection.EditText.Credentials.Password"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/image_button_password"
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/edit_text_password"
+                        app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
+                        app:layout_constraintTop_toTopOf="@+id/edit_text_password"
+                        style="@style/Widget.GamerCollection.ImageButton.EditText.Password"
+                        />
+
+                    <TextView
+                        android:id="@+id/text_view_language_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/app_language"
+                        app:layout_constraintBottom_toTopOf="@+id/radio_group_language"
+                        app:layout_constraintEnd_toEndOf="@+id/radio_group_language"
+                        app:layout_constraintStart_toStartOf="@+id/radio_group_language"
+                        app:layout_constraintTop_toBottomOf="@+id/edit_text_password"
+                        style="@style/Widget.GamerCollection.TitleTextView.ProfileSection"
+                        />
+
+                    <RadioGroup
+                        android:id="@+id/radio_group_language"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
+                        app:layout_constraintStart_toStartOf="@+id/edit_text_password"
+                        app:layout_constraintTop_toBottomOf="@+id/text_view_language_title"
+                        >
+
+                        <RadioButton
+                            android:id="@+id/radio_button_en"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/english"
+                            style="@style/Widget.GamerCollection.RadioButton"
+                            />
+
+                        <RadioButton
+                            android:id="@+id/radio_button_es"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/spanish"
+                            style="@style/Widget.GamerCollection.RadioButton"
+                            />
+
+                    </RadioGroup>
+
+                    <TextView
+                        android:id="@+id/text_view_sort_keys"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/games_sorting_parameter"
+                        app:layout_constraintBottom_toTopOf="@+id/spinner_sorting_keys"
+                        app:layout_constraintEnd_toEndOf="@+id/spinner_sorting_keys"
+                        app:layout_constraintStart_toStartOf="@+id/spinner_sorting_keys"
+                        app:layout_constraintTop_toBottomOf="@+id/radio_group_language"
+                        style="@style/Widget.GamerCollection.TitleTextView.ProfileSection"
+                        />
+
+                    <Spinner
+                        android:id="@+id/spinner_sorting_keys"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="@+id/radio_group_language"
+                        app:layout_constraintStart_toStartOf="@+id/radio_group_language"
+                        app:layout_constraintTop_toBottomOf="@+id/text_view_sort_keys"
+                        style="@style/Widget.GamerCollection.Spinner"
+                        />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switch_swipe_refresh"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/swipe_refresh_enabled_title"
+                        android:checked="@{viewModel.swipeRefresh}"
+                        app:layout_constraintEnd_toEndOf="@+id/spinner_sorting_keys"
+                        app:layout_constraintStart_toStartOf="@+id/spinner_sorting_keys"
+                        app:layout_constraintTop_toBottomOf="@+id/spinner_sorting_keys"
+                        style="@style/Widget.GamerCollection.Switch.Profile"
+                        />
+
+                    <TextView
+                        android:id="@+id/text_view_app_theme_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/app_theme"
+                        app:layout_constraintBottom_toTopOf="@+id/text_view_app_theme_value"
+                        app:layout_constraintEnd_toEndOf="@+id/text_view_app_theme_value"
+                        app:layout_constraintStart_toStartOf="@+id/text_view_app_theme_value"
+                        app:layout_constraintTop_toBottomOf="@+id/switch_swipe_refresh"
+                        style="@style/Widget.GamerCollection.TitleTextView.ProfileSection"
+                        />
+
+                    <TextView
+                        android:id="@+id/text_view_app_theme_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{() -> fragment.chooseThemeDialog()}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/switch_swipe_refresh"
+                        app:layout_constraintStart_toStartOf="@+id/switch_swipe_refresh"
+                        app:layout_constraintTop_toBottomOf="@+id/switch_swipe_refresh"
+                        style="@style/Widget.GamerCollection.TextView.Regular.AppTheme"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </ScrollView>
+
+            <Button
+                android:id="@+id/button_save"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:text="@string/save"
+                android:onClick="@{() -> fragment.save()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                style="@style/Widget.GamerCollection.Button.Rounded.Action"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+</layout>
