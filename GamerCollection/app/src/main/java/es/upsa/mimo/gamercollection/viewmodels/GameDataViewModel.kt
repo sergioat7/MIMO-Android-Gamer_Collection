@@ -9,7 +9,7 @@ import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.GenreResponse
 import es.upsa.mimo.gamercollection.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.repositories.GenreRepository
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -27,7 +27,7 @@ class GameDataViewModel @Inject constructor(
 
     //region Public properties
     val language: String
-        get() = SharedPreferencesHandler.getLanguage()
+        get() = SharedPreferencesHelper.getLanguage()
     val formats: List<FormatResponse>
         get() = formatRepository.getFormatsDatabase()
     val genres: List<GenreResponse>

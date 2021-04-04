@@ -21,6 +21,7 @@ import java.util.*
 
 object Preferences {
     const val PREFERENCES_NAME = "preferences"
+    const val ENCRYPTED_PREFERENCES_NAME = "encryptedPreferences"
     const val USER_DATA_PREFERENCES_NAME = "userData"
     const val AUTH_DATA_PREFERENCES_NAME = "authData"
     const val LANGUAGE_PREFERENCES_NAME = "language"

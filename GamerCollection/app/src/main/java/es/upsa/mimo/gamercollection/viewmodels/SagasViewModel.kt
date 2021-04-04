@@ -8,7 +8,7 @@ import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.repositories.SagaRepository
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
 class SagasViewModel @Inject constructor(
@@ -24,7 +24,7 @@ class SagasViewModel @Inject constructor(
 
     //region Public properties
     val swipeRefresh: Boolean
-        get() = SharedPreferencesHandler.getSwipeRefresh()
+        get() = SharedPreferencesHelper.getSwipeRefresh()
     val platforms: List<PlatformResponse>
         get() = platformRepository.getPlatformsDatabase()
     val sagasLoading: LiveData<Boolean> = _sagasLoading
