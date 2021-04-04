@@ -36,14 +36,13 @@ class MapsFragment(
     private val onLocationSelected: OnLocationSelected
 ) : DialogFragment(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private lateinit var binding: FragmentMapsBinding
     private lateinit var googleMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,9 +63,9 @@ class MapsFragment(
 
         binding.fragment = this
     }
+    //endregion
 
-    // MARK: - Interface methods
-
+    //region Interface methods
     override fun onMapReady(googleMap: GoogleMap) {
 
         this.googleMap = googleMap
@@ -105,9 +104,9 @@ class MapsFragment(
             }
         }
     }
+    //endregion
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun locateUser() {
 
         if (checkPermissions()) {
@@ -132,9 +131,9 @@ class MapsFragment(
         onLocationSelected.setLocation(location)
         dismiss()
     }
+    //endregion
 
-    // MARK: - Private methods
-
+    //region Private methods
     private fun checkPermissions(): Boolean {
 
         return ActivityCompat.checkSelfPermission(
@@ -211,4 +210,5 @@ class MapsFragment(
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(position))
         location = position
     }
+    //endregion
 }

@@ -25,17 +25,16 @@ class GamesViewModel @Inject constructor(
     private val platformRepository: PlatformRepository
 ) : ViewModel() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private val _gamesLoading = MutableLiveData<Boolean>()
     private val _gamesError = MutableLiveData<ErrorResponse>()
     private val _games = MutableLiveData<List<GameResponse>>()
     private val _gamesCount = MutableLiveData<List<GameResponse>>()
     private var sortKey: String = sharedPreferencesHandler.getSortingKey()
     private var sortAscending = true
+    //endregion
 
-    //MARK: - Public properties
-
+    //region Public properties
     val language: String
         get() = sharedPreferencesHandler.getLanguage()
     val swipeRefresh: Boolean
@@ -48,9 +47,9 @@ class GamesViewModel @Inject constructor(
     val gamesCount: LiveData<List<GameResponse>> = _gamesCount
     var state: String? = null
     var filters: FilterModel? = null
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun loadGames() {
 
         _gamesLoading.value = true
@@ -141,9 +140,9 @@ class GamesViewModel @Inject constructor(
     fun setNotificationLaunched(gameId: Int, value: Boolean) {
         sharedPreferencesHandler.setNotificationLaunched(gameId, value)
     }
+    //endregion
 
-    // MARK: Private methods
-
+    //region Private methods
     private fun getPicker(values: Array<String>, context: Context): NumberPicker {
 
         val picker = NumberPicker(context)
@@ -162,4 +161,5 @@ class GamesViewModel @Inject constructor(
         sortAscending = true
         filters = null
     }
+    //endregion
 }

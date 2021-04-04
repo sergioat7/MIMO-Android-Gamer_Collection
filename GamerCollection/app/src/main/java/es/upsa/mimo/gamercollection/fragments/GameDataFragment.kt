@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.model.LatLng
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnLocationSelected
-import es.upsa.mimo.gamercollection.databinding.FragmentGameDataBinding
 import es.upsa.mimo.gamercollection.base.BindingFragment
+import es.upsa.mimo.gamercollection.databinding.FragmentGameDataBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameDataViewModelFactory
@@ -23,21 +23,20 @@ class GameDataFragment(
     private var enabled: Boolean
 ) : BindingFragment<FragmentGameDataBinding>(), OnLocationSelected {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private lateinit var viewModel: GameDataViewModel
     private var genreValues = ArrayList<String>()
     private var formatValues = ArrayList<String>()
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeUI()
     }
+    //endregion
 
-    // MARK: - Public methods
-
+    //region Public methods
     override fun setLocation(location: LatLng?) {
 
         var locationText = Constants.EMPTY_VALUE
@@ -238,9 +237,9 @@ class GameDataFragment(
         val dialogFragment = MapsFragment(location, this)
         dialogFragment.show(ft, "mapDialog")
     }
+    //endregion
 
-    //MARK: - Private methods
-
+    //region Private methods
     private fun initializeUI() {
 
         val application = activity?.application
@@ -340,4 +339,5 @@ class GameDataFragment(
         return if (newValue.isNotBlank()) newValue
         else Constants.NO_VALUE
     }
+    //endregion
 }

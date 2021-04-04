@@ -12,9 +12,9 @@ import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.activities.SagaDetailActivity
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SagasAdapter
-import es.upsa.mimo.gamercollection.databinding.FragmentSagasBinding
-import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.base.BaseModel
+import es.upsa.mimo.gamercollection.base.BindingFragment
+import es.upsa.mimo.gamercollection.databinding.FragmentSagasBinding
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.SagasViewModelFactory
@@ -22,14 +22,13 @@ import es.upsa.mimo.gamercollection.viewmodels.SagasViewModel
 
 class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListener {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private lateinit var viewModel: SagasViewModel
     private lateinit var sagasAdapter: SagasAdapter
     private val scrollPosition = ObservableField<ScrollPosition>()
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -75,9 +74,9 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
         }
         return super.onOptionsItemSelected(item)
     }
+    //endregion
 
-    //MARK: - Interface methods
-
+    //region Interface methods
     override fun onItemClick(id: Int) {
 
         val params = mapOf(Constants.SAGA_ID to id)
@@ -92,9 +91,9 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
 
     override fun onLoadMoreItemsClick() {
     }
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun goToStartEndList(view: View) {
 
         with(binding) {
@@ -113,9 +112,9 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
             }
         }
     }
+    //endregion
 
-    //MARK: - Private methods
-
+    //region Private methods
     private fun initializeUI() {
 
         val application = activity?.application
@@ -221,4 +220,5 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
             resources.getQuantityString(R.plurals.sagas_number_title, sagasCount, sagasCount)
         (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
+    //endregion
 }

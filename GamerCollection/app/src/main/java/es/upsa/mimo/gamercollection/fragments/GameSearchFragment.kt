@@ -12,22 +12,21 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
-import es.upsa.mimo.gamercollection.databinding.FragmentGameSearchBinding
 import es.upsa.mimo.gamercollection.base.BindingFragment
+import es.upsa.mimo.gamercollection.databinding.FragmentGameSearchBinding
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameSearchViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameSearchViewModel
 
 class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemClickListener {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private lateinit var viewModel: GameSearchViewModel
     private lateinit var gamesAdapter: GamesAdapter
     private val scrollPosition = ObservableField<ScrollPosition>()
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,9 +47,9 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
         inflater.inflate(R.menu.game_search_toolbar_menu, menu)
         setupSearchView(menu)
     }
+    //endregion
 
-    //MARK: - Interface methods
-
+    //region Interface methods
     override fun onItemClick(id: Int) {
 
         val params = mapOf(Constants.GAME_ID to id, Constants.IS_RAWG_GAME to true)
@@ -65,9 +64,9 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
         viewModel.loadGames()
         scrollPosition.set(ScrollPosition.MIDDLE)
     }
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun goToStartEndList(view: View) {
 
         with(binding) {
@@ -86,9 +85,9 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
             }
         }
     }
+    //endregion
 
-    //MARK: - Private methods
-
+    //region Private methods
     private fun initializeUI() {
 
         val application = activity?.application
@@ -218,4 +217,5 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
         reset()
         Constants.hideSoftKeyboard(requireActivity())
     }
+    //endregion
 }

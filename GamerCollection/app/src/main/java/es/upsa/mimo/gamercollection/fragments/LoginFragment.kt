@@ -5,10 +5,10 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.activities.RegisterActivity
+import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentLoginBinding
 import es.upsa.mimo.gamercollection.extensions.afterTextChanged
 import es.upsa.mimo.gamercollection.extensions.onFocusChange
-import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Environment
 import es.upsa.mimo.gamercollection.viewmodelfactories.LoginViewModelFactory
@@ -16,19 +16,18 @@ import es.upsa.mimo.gamercollection.viewmodels.LoginViewModel
 
 class LoginFragment : BindingFragment<FragmentLoginBinding>() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private lateinit var viewModel: LoginViewModel
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeUI()
     }
+    //endregion
 
-    //MARK: - Private methods
-
+    //region Private methods
     private fun initializeUI() {
 
         val application = activity?.application
@@ -126,4 +125,5 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
             binding.editTextPassword.text.toString()
         )
     }
+    //endregion
 }

@@ -15,8 +15,7 @@ class SagasViewModelFactory(
     private val application: Application?
 ) : ViewModelProvider.Factory {
 
-    //MARK: - Public properties
-
+    //region Public properties
     @Inject
     lateinit var sharedPrefHandler: SharedPreferencesHandler
 
@@ -31,9 +30,9 @@ class SagasViewModelFactory(
 
     @Inject
     lateinit var sagasViewModel: SagasViewModel
+    //endregion
 
-    //MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SagasViewModel::class.java)) {
@@ -43,4 +42,5 @@ class SagasViewModelFactory(
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
+    //endregion
 }

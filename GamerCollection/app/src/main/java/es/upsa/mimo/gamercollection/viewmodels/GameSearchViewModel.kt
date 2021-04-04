@@ -18,17 +18,16 @@ class GameSearchViewModel @Inject constructor(
     private val platformRepository: PlatformRepository
 ) : ViewModel() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private var page: Int = 1
     private val _gamesLoading = MutableLiveData<Boolean>()
     private val _gamesError = MutableLiveData<ErrorResponse>()
     private val _games = MutableLiveData<MutableList<GameResponse>>()
     private val _gamesCount = MutableLiveData<Int>()
     private val _scrollPosition = MutableLiveData(ScrollPosition.TOP)
+    //endregion
 
-    //MARK: - Public properties
-
+    //region Public properties
     var query: String? = null
     val swipeRefresh: Boolean
         get() = sharedPreferencesHandler.getSwipeRefresh()
@@ -39,9 +38,9 @@ class GameSearchViewModel @Inject constructor(
     val games: LiveData<MutableList<GameResponse>> = _games
     val gamesCount: LiveData<Int> = _gamesCount
     val scrollPosition: LiveData<ScrollPosition> = _scrollPosition
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun loadGames() {
 
         _gamesLoading.value = true
@@ -65,9 +64,9 @@ class GameSearchViewModel @Inject constructor(
         page = 1
         _games.value = mutableListOf()
     }
+    //endregion
 
-    //MARK: - Private methods
-
+    //region Private methods
     private fun addGames(newGames: List<GameResponse>, next: Boolean) {
 
         val currentGames = _games.value ?: mutableListOf()
@@ -105,4 +104,5 @@ class GameSearchViewModel @Inject constructor(
         }
         _games.value = currentGames
     }
+    //endregion
 }

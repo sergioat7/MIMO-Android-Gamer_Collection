@@ -12,12 +12,11 @@ class UserAPIClient @Inject constructor(
     private val sharedPrefHandler: SharedPreferencesHandler
 ) {
 
-    // MARK: - Private properties
-
+    //region Private properties
     private val api = APIClient.retrofit.create(UserAPIService::class.java)
+    //endregion
 
-    // MARK: - Public methods
-
+    //region Public methods
     fun login(
         username: String,
         password: String,
@@ -88,4 +87,5 @@ class UserAPIClient @Inject constructor(
             success()
         }, failure)
     }
+    //endregion
 }

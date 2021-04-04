@@ -22,14 +22,13 @@ class GameDataViewModel @Inject constructor(
     private val genreRepository: GenreRepository
 ) : ViewModel() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private var game: GameResponse? = null
     private val _gameDataLoading = MutableLiveData<Boolean>()
     private val _gameDataError = MutableLiveData<ErrorResponse>()
+    //endregion
 
-    //MARK: - Public properties
-
+    //region Public properties
     val language: String
         get() = sharedPreferencesHandler.getLanguage()
     val formats: List<FormatResponse>
@@ -38,9 +37,9 @@ class GameDataViewModel @Inject constructor(
         get() = genreRepository.getGenresDatabase()
     val gameDataLoading: LiveData<Boolean> = _gameDataLoading
     val gameDataError: LiveData<ErrorResponse> = _gameDataError
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun setGame(game: GameResponse?) {
         this.game = game
     }
@@ -107,4 +106,5 @@ class GameDataViewModel @Inject constructor(
             )
         }
     }
+    //endregion
 }

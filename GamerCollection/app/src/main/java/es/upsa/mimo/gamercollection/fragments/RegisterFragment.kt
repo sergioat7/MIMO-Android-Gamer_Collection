@@ -5,30 +5,29 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
+import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentRegisterBinding
 import es.upsa.mimo.gamercollection.extensions.afterTextChanged
 import es.upsa.mimo.gamercollection.extensions.clearErrors
 import es.upsa.mimo.gamercollection.extensions.onFocusChange
-import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.RegisterViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.RegisterViewModel
 
 class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private lateinit var viewModel: RegisterViewModel
+    //endregion
 
-    // MARK: - Lifecycle methods
-
+    //region Lifecycle methods
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeUI()
     }
+    //endregion
 
-    //MARK: - Private methods
-
+    //region Private methods
     private fun initializeUI() {
 
         val application = activity?.application
@@ -160,4 +159,5 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
 
         viewModel.register(username, password)
     }
+    //endregion
 }

@@ -17,14 +17,13 @@ class SagasViewModel @Inject constructor(
     private val sagaRepository: SagaRepository
 ) : ViewModel() {
 
-    //MARK: - Private properties
-
+    //region Private properties
     private val _sagasLoading = MutableLiveData<Boolean>()
     private val _sagasError = MutableLiveData<ErrorResponse>()
     private val _sagas = MutableLiveData<List<SagaResponse>>()
+    //endregion
 
-    //MARK: - Public properties
-
+    //region Public properties
     val swipeRefresh: Boolean
         get() = sharedPreferencesHandler.getSwipeRefresh()
     val platforms: List<PlatformResponse>
@@ -33,9 +32,9 @@ class SagasViewModel @Inject constructor(
     val sagasError: LiveData<ErrorResponse> = _sagasError
     val sagas: LiveData<List<SagaResponse>> = _sagas
     var expandedIds: MutableList<Int> = mutableListOf()
+    //endregion
 
-    //MARK: - Public methods
-
+    //region Public methods
     fun getSagas() {
         _sagas.value = sagaRepository.getSagasDatabase().sortedBy { it.name }
     }
@@ -53,4 +52,5 @@ class SagasViewModel @Inject constructor(
             _sagasLoading.value = false
         })
     }
+    //endregion
 }
