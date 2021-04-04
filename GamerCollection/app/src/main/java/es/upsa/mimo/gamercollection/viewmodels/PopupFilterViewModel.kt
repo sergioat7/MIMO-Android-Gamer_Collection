@@ -12,7 +12,7 @@ import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
 class PopupFilterViewModel @Inject constructor(
@@ -23,7 +23,7 @@ class PopupFilterViewModel @Inject constructor(
 
     //region Public properties
     val language: String
-        get() = SharedPreferencesHandler.getLanguage()
+        get() = SharedPreferencesHelper.getLanguage()
     val formats: List<FormatResponse>
         get() = formatRepository.getFormatsDatabase()
     val genres: List<GenreResponse>

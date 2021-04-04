@@ -7,7 +7,7 @@ import es.upsa.mimo.gamercollection.BuildConfig
 import es.upsa.mimo.gamercollection.activities.LoginActivity
 import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.repositories.*
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
 class LandingViewModel @Inject constructor(
@@ -25,25 +25,25 @@ class LandingViewModel @Inject constructor(
 
     //region Public properties
     val language: String
-        get() = SharedPreferencesHandler.getLanguage()
+        get() = SharedPreferencesHelper.getLanguage()
     val landingClassToStart = _landingClassToStart
     //endregion
 
     //region Public methods
     fun checkVersion() {
 
-        val currentVersion = SharedPreferencesHandler.getVersion()
+        val currentVersion = SharedPreferencesHelper.getVersion()
         val newVersion = BuildConfig.VERSION_CODE
         if (newVersion > currentVersion) {
 
-            SharedPreferencesHandler.setVersion(newVersion)
-            SharedPreferencesHandler.removePassword()
-            SharedPreferencesHandler.removeCredentials()
+            SharedPreferencesHelper.setVersion(newVersion)
+            SharedPreferencesHelper.removePassword()
+            SharedPreferencesHelper.removeCredentials()
             resetDatabase()
             _landingClassToStart.value = LoginActivity::class.java
         } else {
 
-            _landingClassToStart.value = if (SharedPreferencesHandler.isLoggedIn()) {
+            _landingClassToStart.value = if (SharedPreferencesHelper.isLoggedIn()) {
                 MainActivity::class.java
             } else {
                 LoginActivity::class.java
@@ -53,7 +53,7 @@ class LandingViewModel @Inject constructor(
 
     fun checkTheme() {
 
-        when (SharedPreferencesHandler.getThemeMode()) {
+        when (SharedPreferencesHelper.getThemeMode()) {
             1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)

@@ -4,7 +4,7 @@ import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.StateResponse
 import es.upsa.mimo.gamercollection.network.apiService.StateAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 
 class StateAPIClient {
 
@@ -16,7 +16,7 @@ class StateAPIClient {
     fun getStates(success: (List<StateResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHandler.getLanguage()
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
         val request = api.getStates(headers)
 
         APIClient.sendServer(request, success, failure)

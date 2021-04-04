@@ -16,7 +16,7 @@ import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
 class GamesViewModel @Inject constructor(
@@ -29,15 +29,15 @@ class GamesViewModel @Inject constructor(
     private val _gamesError = MutableLiveData<ErrorResponse>()
     private val _games = MutableLiveData<List<GameResponse>>()
     private val _gamesCount = MutableLiveData<List<GameResponse>>()
-    private var sortKey: String = SharedPreferencesHandler.getSortingKey()
+    private var sortKey: String = SharedPreferencesHelper.getSortingKey()
     private var sortAscending = true
     //endregion
 
     //region Public properties
     val language: String
-        get() = SharedPreferencesHandler.getLanguage()
+        get() = SharedPreferencesHelper.getLanguage()
     val swipeRefresh: Boolean
-        get() = SharedPreferencesHandler.getSwipeRefresh()
+        get() = SharedPreferencesHelper.getSwipeRefresh()
     val platforms: List<PlatformResponse>
         get() = platformRepository.getPlatformsDatabase()
     val gamesLoading: LiveData<Boolean> = _gamesLoading
@@ -133,11 +133,11 @@ class GamesViewModel @Inject constructor(
     }
 
     fun isNotificationLaunched(gameId: Int): Boolean {
-        return SharedPreferencesHandler.notificationLaunched(gameId)
+        return SharedPreferencesHelper.notificationLaunched(gameId)
     }
 
     fun setNotificationLaunched(gameId: Int, value: Boolean) {
-        SharedPreferencesHandler.setNotificationLaunched(gameId, value)
+        SharedPreferencesHelper.setNotificationLaunched(gameId, value)
     }
     //endregion
 
@@ -156,7 +156,7 @@ class GamesViewModel @Inject constructor(
     private fun resetProperties() {
 
         state = null
-        sortKey = SharedPreferencesHandler.getSortingKey()
+        sortKey = SharedPreferencesHelper.getSortingKey()
         sortAscending = true
         filters = null
     }

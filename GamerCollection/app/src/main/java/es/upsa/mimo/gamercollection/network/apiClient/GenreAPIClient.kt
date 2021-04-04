@@ -4,7 +4,7 @@ import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GenreResponse
 import es.upsa.mimo.gamercollection.network.apiService.GenreAPIService
 import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 
 class GenreAPIClient {
 
@@ -16,7 +16,7 @@ class GenreAPIClient {
     fun getGenres(success: (List<GenreResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHandler.getLanguage()
+        headers[Constants.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
         val request = api.getGenres(headers)
 
         APIClient.sendServer(request, success, failure)

@@ -115,6 +115,9 @@ dependencies {
     kapt 'androidx.room:room-compiler:2.2.6'
     implementation 'androidx.room:room-ktx:2.2.6'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
+
+    //Security
+    implementation 'androidx.security:security-crypto:1.0.0-rc04'
     
     //Test
     testImplementation 'junit:junit:4.13.1'

@@ -14,7 +14,7 @@ import es.upsa.mimo.gamercollection.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.repositories.StateRepository
 import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
 class RegisterViewModel @Inject constructor(
@@ -46,7 +46,7 @@ class RegisterViewModel @Inject constructor(
 
                 val userData = UserData(username, password, false)
                 val authData = AuthData(token)
-                SharedPreferencesHandler.run {
+                SharedPreferencesHelper.run {
                     storeUserData(userData)
                     storeCredentials(authData)
                 }
@@ -90,7 +90,7 @@ class RegisterViewModel @Inject constructor(
                     stateRepository.loadStates({
 
                         userData.isLoggedIn = true
-                        SharedPreferencesHandler.storeUserData(userData)
+                        SharedPreferencesHelper.storeUserData(userData)
 
                         _registerLoading.value = false
                         _registerError.value = null
