@@ -2,9 +2,9 @@ package es.upsa.mimo.gamercollection.repositories
 
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
+import es.upsa.mimo.gamercollection.network.apiClient.ApiManager
 import es.upsa.mimo.gamercollection.network.apiClient.PlatformAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
-import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
@@ -42,7 +42,7 @@ class PlatformRepository @Inject constructor(
             val result = GlobalScope.async { database.platformDao().getPlatforms() }
             platforms = result.await().toMutableList()
             platforms.sortBy { it.name }
-            val other = platforms.firstOrNull { it.id == Constants.OTHER_VALUE }
+            val other = platforms.firstOrNull { it.id == ApiManager.OTHER_VALUE }
             platforms.remove(other)
             other?.let {
                 platforms.add(it)

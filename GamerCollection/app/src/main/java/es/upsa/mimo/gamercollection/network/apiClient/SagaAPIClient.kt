@@ -9,28 +9,28 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 class SagaAPIClient {
 
     //region Private properties
-    private val api = APIClient.retrofit.create(SagaAPIService::class.java)
+    private val api = ApiManager.getService<SagaAPIService>(ApiManager.BASE_ENDPOINT)
     //endregion
 
     //region Public methods
     fun getSagas(success: (List<SagaResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
-        headers[Constants.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
+        headers[ApiManager.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
+        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
         val request = api.getSagas(headers)
 
-        APIClient.sendServer(request, success, failure)
+        ApiManager.sendServer(request, success, failure)
     }
 
     fun createSaga(saga: SagaResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
-        headers[Constants.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
+        headers[ApiManager.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
+        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
         val request = api.createSaga(headers, saga)
 
-        APIClient.sendServer(request, {
+        ApiManager.sendServer(request, {
             success()
         }, failure)
     }
@@ -42,21 +42,21 @@ class SagaAPIClient {
     ) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
-        headers[Constants.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
+        headers[ApiManager.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
+        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
         val request = api.setSaga(headers, saga.id, saga)
 
-        APIClient.sendServer(request, success, failure)
+        ApiManager.sendServer(request, success, failure)
     }
 
     fun deleteSaga(sagaId: Int, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
-        headers[Constants.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
+        headers[ApiManager.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
+        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
         val request = api.deleteSaga(headers, sagaId)
 
-        APIClient.sendServer(request, {
+        ApiManager.sendServer(request, {
             success()
         }, failure)
     }

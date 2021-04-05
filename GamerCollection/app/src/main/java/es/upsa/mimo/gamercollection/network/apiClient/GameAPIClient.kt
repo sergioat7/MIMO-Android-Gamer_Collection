@@ -12,39 +12,39 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 class GameAPIClient {
 
     //region Private properties
-    private val api = APIClient.retrofit.create(GameAPIService::class.java)
-    private val apiRawg = APIClient.retrofitRawg.create(RawgGameApiService::class.java)
+    private val api = ApiManager.getService<GameAPIService>(ApiManager.BASE_ENDPOINT)
+    private val apiRawg = ApiManager.getService<RawgGameApiService>(ApiManager.BASE_ENDPOINT_RAWG)
     //endregion
 
     //region Public methods
     fun getGames(success: (List<GameResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
-        headers[Constants.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
+        headers[ApiManager.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
+        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
         val request = api.getGames(headers)
 
-        APIClient.sendServer(request, success, failure)
+        ApiManager.sendServer(request, success, failure)
     }
 
     fun getGame(gameId: Int, success: (GameResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
-        headers[Constants.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
+        headers[ApiManager.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
+        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
         val request = api.getGame(headers, gameId)
 
-        APIClient.sendServer(request, success, failure)
+        ApiManager.sendServer(request, success, failure)
     }
 
     fun createGame(game: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
-        headers[Constants.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
+        headers[ApiManager.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
+        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
         val request = api.createGame(headers, game)
 
-        APIClient.sendServer(request, {
+        ApiManager.sendServer(request, {
             success()
         }, failure)
     }
@@ -56,21 +56,21 @@ class GameAPIClient {
     ) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
-        headers[Constants.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
+        headers[ApiManager.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
+        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
         val request = api.setGame(headers, game.id, game)
 
-        APIClient.sendServer(request, success, failure)
+        ApiManager.sendServer(request, success, failure)
     }
 
     fun deleteGame(gameId: Int, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
-        headers[Constants.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
+        headers[ApiManager.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
+        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
         val request = api.deleteGame(headers, gameId)
 
-        APIClient.sendServer(request, {
+        ApiManager.sendServer(request, {
             success()
         }, failure)
     }
@@ -83,15 +83,15 @@ class GameAPIClient {
     ) {
 
         val params: MutableMap<String, String> = java.util.HashMap()
-        params[Constants.KEY_PARAM] = Constants.KEY_VALUE
-        params[Constants.PAGE_PARAM] = page.toString()
-        params[Constants.PAGE_SIZE_PARAM] = Constants.PAGE_SIZE.toString()
+        params[ApiManager.KEY_PARAM] = ApiManager.KEY_VALUE
+        params[ApiManager.PAGE_PARAM] = page.toString()
+        params[ApiManager.PAGE_SIZE_PARAM] = ApiManager.PAGE_SIZE.toString()
         query?.let {
-            params[Constants.SEARCH_PARAM] = it
+            params[ApiManager.SEARCH_PARAM] = it
         }
         val request = apiRawg.getGames(params)
 
-        APIClient.sendServer(request, success, failure)
+        ApiManager.sendServer(request, success, failure)
     }
 
     fun getRawgGame(
@@ -101,10 +101,10 @@ class GameAPIClient {
     ) {
 
         val params: MutableMap<String, String> = java.util.HashMap()
-        params[Constants.KEY_PARAM] = Constants.KEY_VALUE
+        params[ApiManager.KEY_PARAM] = ApiManager.KEY_VALUE
         val request = apiRawg.getGame(gameId, params)
 
-        APIClient.sendServer(request, success, failure)
+        ApiManager.sendServer(request, success, failure)
     }
     //endregion
 }

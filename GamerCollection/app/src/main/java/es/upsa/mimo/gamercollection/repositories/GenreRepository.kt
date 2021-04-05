@@ -2,9 +2,9 @@ package es.upsa.mimo.gamercollection.repositories
 
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GenreResponse
+import es.upsa.mimo.gamercollection.network.apiClient.ApiManager
 import es.upsa.mimo.gamercollection.network.apiClient.GenreAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
-import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
@@ -44,7 +44,7 @@ class GenreRepository @Inject constructor(
             }
             genres = result.await().toMutableList()
             genres.sortBy { it.name }
-            val other = genres.firstOrNull { it.id == Constants.OTHER_VALUE }
+            val other = genres.firstOrNull { it.id == ApiManager.OTHER_VALUE }
             genres.remove(other)
             other?.let {
                 genres.add(it)
