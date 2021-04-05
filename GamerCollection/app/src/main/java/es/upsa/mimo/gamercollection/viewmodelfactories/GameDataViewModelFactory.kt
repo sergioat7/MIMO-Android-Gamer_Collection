@@ -3,10 +3,8 @@ package es.upsa.mimo.gamercollection.viewmodelfactories
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
+import es.upsa.mimo.gamercollection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
-import es.upsa.mimo.gamercollection.network.apiClient.FormatAPIClient
-import es.upsa.mimo.gamercollection.network.apiClient.GenreAPIClient
 import es.upsa.mimo.gamercollection.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.viewmodels.GameDataViewModel

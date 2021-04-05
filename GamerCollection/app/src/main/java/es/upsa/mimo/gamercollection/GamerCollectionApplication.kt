@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.injection
+package es.upsa.mimo.gamercollection
 
 import android.app.Application
 import android.content.Context

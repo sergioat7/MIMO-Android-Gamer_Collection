@@ -3,8 +3,7 @@ package es.upsa.mimo.gamercollection.viewmodelfactories
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
-import es.upsa.mimo.gamercollection.network.apiClient.*
+import es.upsa.mimo.gamercollection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.repositories.*
 import es.upsa.mimo.gamercollection.viewmodels.LoginViewModel
 import javax.inject.Inject
