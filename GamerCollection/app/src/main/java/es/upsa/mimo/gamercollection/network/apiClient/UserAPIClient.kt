@@ -4,7 +4,6 @@ import es.upsa.mimo.gamercollection.models.requests.LoginCredentials
 import es.upsa.mimo.gamercollection.models.requests.NewPassword
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.network.apiService.UserAPIService
-import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 
 class UserAPIClient {
@@ -23,10 +22,7 @@ class UserAPIClient {
 
         val loginCredentials = LoginCredentials(username, password)
 
-        val headers: MutableMap<String, String> = HashMap()
-        headers[ApiManager.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
-        val request = api.login(headers, loginCredentials)
-
+        val request = api.login(loginCredentials)
         ApiManager.sendServer(request, {
             success(it.token)
         }, failure)
@@ -41,10 +37,7 @@ class UserAPIClient {
 
         val loginCredentials = LoginCredentials(username, password)
 
-        val headers: MutableMap<String, String> = HashMap()
-        headers[ApiManager.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
-        val request = api.register(headers, loginCredentials)
-
+        val request = api.register(loginCredentials)
         ApiManager.sendServer(request, {
             success()
         }, failure)
@@ -53,7 +46,6 @@ class UserAPIClient {
     fun logout() {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[ApiManager.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
         headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
         val request = api.logout(headers)
 
@@ -64,7 +56,6 @@ class UserAPIClient {
 
         val newPasword = NewPassword(password)
         val headers: MutableMap<String, String> = HashMap()
-        headers[ApiManager.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
         headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
         val request = api.updatePassword(headers, newPasword)
 
@@ -76,7 +67,6 @@ class UserAPIClient {
     fun deleteUser(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[ApiManager.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
         headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
         val request = api.deleteUser(headers)
 

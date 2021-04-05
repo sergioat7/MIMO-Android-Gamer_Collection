@@ -5,7 +5,10 @@ import es.upsa.mimo.gamercollection.BuildConfig
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
@@ -62,6 +65,7 @@ object ApiManager {
             val clientBuilder =
                 OkHttpClient.Builder()
                     .addInterceptor(logInterceptor)
+                    .addInterceptor(TokenInterceptor())
                     .connectTimeout(1, TimeUnit.MINUTES)
                     .readTimeout(30, TimeUnit.SECONDS)
                     .writeTimeout(15, TimeUnit.SECONDS)
@@ -147,6 +151,21 @@ object ApiManager {
                 failure(error)
             }
         })
+    }
+    //endregion
+
+    //region TokenInterceptor
+    class TokenInterceptor : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): Response {
+
+            val original = chain.request()
+
+            val request = original.newBuilder()
+                .addHeader(ACCEPT_LANGUAGE_HEADER, SharedPreferencesHelper.getLanguage())
+                .build()
+
+            return chain.proceed(request)
+        }
     }
     //endregion
 }

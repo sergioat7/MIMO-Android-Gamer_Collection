@@ -12,16 +12,13 @@ interface UserAPIService {
         "Content-Type:application/json"
     )
     @POST("users/login")
-    fun login(
-        @HeaderMap headers: Map<String, String>,
-        @Body body: LoginCredentials
-    ): Call<LoginResponse>
+    fun login(@Body body: LoginCredentials): Call<LoginResponse>
 
     @Headers(
         "Content-Type:application/json"
     )
     @POST("users/register")
-    fun register(@HeaderMap headers: Map<String, String>, @Body body: LoginCredentials): Call<Void>
+    fun register(@Body body: LoginCredentials): Call<Void>
 
     @DELETE("users/logout")
     fun logout(@HeaderMap headers: Map<String, String>): Call<Void>

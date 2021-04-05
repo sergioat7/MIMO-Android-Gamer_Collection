@@ -3,7 +3,6 @@ package es.upsa.mimo.gamercollection.network.apiClient
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.SongResponse
 import es.upsa.mimo.gamercollection.network.apiService.SongAPIService
-import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 
 class SongAPIClient {
@@ -21,7 +20,6 @@ class SongAPIClient {
     ) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[ApiManager.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
         headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
         val request = api.createSong(headers, gameId, song)
 
@@ -38,7 +36,6 @@ class SongAPIClient {
     ) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[ApiManager.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
         headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
         val request = api.deleteSong(headers, gameId, songId)
 
