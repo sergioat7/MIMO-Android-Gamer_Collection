@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import com.google.gson.Gson
-import es.upsa.mimo.gamercollection.injection.GamerCollectionApplication
+import es.upsa.mimo.gamercollection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.login.AuthData
 import es.upsa.mimo.gamercollection.models.login.UserData
 import java.util.*
