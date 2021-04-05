@@ -9,17 +9,17 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 class PlatformAPIClient {
 
     //region Private properties
-    private val api = APIClient.retrofit.create(PlatformAPIService::class.java)
+    private val api = ApiManager.getService<PlatformAPIService>(ApiManager.BASE_ENDPOINT)
     //endregion
 
     //region Public methods
     fun getPlatforms(success: (List<PlatformResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
         val headers: MutableMap<String, String> = HashMap()
-        headers[Constants.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
+        headers[ApiManager.ACCEPT_LANGUAGE_HEADER] = SharedPreferencesHelper.getLanguage()
         val request = api.getPlatforms(headers)
 
-        APIClient.sendServer(request, success, failure)
+        ApiManager.sendServer(request, success, failure)
     }
     //endregion
 }

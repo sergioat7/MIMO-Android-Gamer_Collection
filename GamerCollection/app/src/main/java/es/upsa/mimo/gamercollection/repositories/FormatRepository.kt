@@ -2,9 +2,9 @@ package es.upsa.mimo.gamercollection.repositories
 
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.FormatResponse
+import es.upsa.mimo.gamercollection.network.apiClient.ApiManager
 import es.upsa.mimo.gamercollection.network.apiClient.FormatAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
-import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
@@ -44,7 +44,7 @@ class FormatRepository @Inject constructor(
             }
             formats = result.await().toMutableList()
             formats.sortBy { it.name }
-            val other = formats.firstOrNull { it.id == Constants.OTHER_VALUE }
+            val other = formats.firstOrNull { it.id == ApiManager.OTHER_VALUE }
             formats.remove(other)
             other?.let {
                 formats.add(it)
