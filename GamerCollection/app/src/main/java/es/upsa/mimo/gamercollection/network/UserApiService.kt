@@ -1,13 +1,12 @@
-package es.upsa.mimo.gamercollection.network.apiService
+package es.upsa.mimo.gamercollection.network
 
 import es.upsa.mimo.gamercollection.models.requests.LoginCredentials
 import es.upsa.mimo.gamercollection.models.requests.NewPassword
 import es.upsa.mimo.gamercollection.models.responses.LoginResponse
-import es.upsa.mimo.gamercollection.network.apiClient.ApiManager
 import retrofit2.Call
 import retrofit2.http.*
 
-interface UserAPIService {
+interface UserApiService {
 
     @Headers(
         "Content-Type:application/json"

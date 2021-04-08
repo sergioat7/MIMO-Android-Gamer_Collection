@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.network.apiService
+package es.upsa.mimo.gamercollection.network
 
 import es.upsa.mimo.gamercollection.models.rawg.RawgGameListResponse
 import es.upsa.mimo.gamercollection.models.rawg.RawgGameResponse

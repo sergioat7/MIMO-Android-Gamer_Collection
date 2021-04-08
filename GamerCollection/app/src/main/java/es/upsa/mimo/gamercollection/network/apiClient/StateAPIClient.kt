@@ -2,12 +2,13 @@ package es.upsa.mimo.gamercollection.network.apiClient
 
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.StateResponse
-import es.upsa.mimo.gamercollection.network.apiService.StateAPIService
+import es.upsa.mimo.gamercollection.network.ApiManager
+import es.upsa.mimo.gamercollection.network.StateApiService
 
 class StateAPIClient {
 
     //region Private properties
-    private val api = ApiManager.getService<StateAPIService>(ApiManager.BASE_ENDPOINT)
+    private val api = ApiManager.getService<StateApiService>(ApiManager.BASE_ENDPOINT)
     //endregion
 
     //region Public methods

@@ -2,12 +2,13 @@ package es.upsa.mimo.gamercollection.network.apiClient
 
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.SongResponse
-import es.upsa.mimo.gamercollection.network.apiService.SongAPIService
+import es.upsa.mimo.gamercollection.network.ApiManager
+import es.upsa.mimo.gamercollection.network.SongApiService
 
 class SongAPIClient {
 
     //region Private properties
-    private val api = ApiManager.getService<SongAPIService>(ApiManager.BASE_ENDPOINT)
+    private val api = ApiManager.getService<SongApiService>(ApiManager.BASE_ENDPOINT)
     //endregion
 
     //region Public methods

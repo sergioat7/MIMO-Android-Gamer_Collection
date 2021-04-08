@@ -4,13 +4,14 @@ import es.upsa.mimo.gamercollection.models.rawg.RawgGameListResponse
 import es.upsa.mimo.gamercollection.models.rawg.RawgGameResponse
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
-import es.upsa.mimo.gamercollection.network.apiService.GameAPIService
-import es.upsa.mimo.gamercollection.network.apiService.RawgGameApiService
+import es.upsa.mimo.gamercollection.network.ApiManager
+import es.upsa.mimo.gamercollection.network.GameApiService
+import es.upsa.mimo.gamercollection.network.RawgGameApiService
 
 class GameAPIClient {
 
     //region Private properties
-    private val api = ApiManager.getService<GameAPIService>(ApiManager.BASE_ENDPOINT)
+    private val api = ApiManager.getService<GameApiService>(ApiManager.BASE_ENDPOINT)
     private val apiRawg = ApiManager.getService<RawgGameApiService>(ApiManager.BASE_ENDPOINT_RAWG)
     //endregion
 

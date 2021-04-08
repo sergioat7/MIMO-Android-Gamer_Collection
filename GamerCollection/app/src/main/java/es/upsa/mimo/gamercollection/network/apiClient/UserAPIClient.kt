@@ -3,12 +3,13 @@ package es.upsa.mimo.gamercollection.network.apiClient
 import es.upsa.mimo.gamercollection.models.requests.LoginCredentials
 import es.upsa.mimo.gamercollection.models.requests.NewPassword
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
-import es.upsa.mimo.gamercollection.network.apiService.UserAPIService
+import es.upsa.mimo.gamercollection.network.ApiManager
+import es.upsa.mimo.gamercollection.network.UserApiService
 
 class UserAPIClient {
 
     //region Private properties
-    private val api = ApiManager.getService<UserAPIService>(ApiManager.BASE_ENDPOINT)
+    private val api = ApiManager.getService<UserApiService>(ApiManager.BASE_ENDPOINT)
     //endregion
 
     //region Public methods

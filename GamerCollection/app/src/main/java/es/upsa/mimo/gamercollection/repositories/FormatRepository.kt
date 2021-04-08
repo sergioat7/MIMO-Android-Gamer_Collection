@@ -2,7 +2,7 @@ package es.upsa.mimo.gamercollection.repositories
 
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.FormatResponse
-import es.upsa.mimo.gamercollection.network.apiClient.ApiManager
+import es.upsa.mimo.gamercollection.network.ApiManager
 import es.upsa.mimo.gamercollection.network.apiClient.FormatAPIClient
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import kotlinx.coroutines.*

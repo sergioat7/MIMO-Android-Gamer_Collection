@@ -2,12 +2,13 @@ package es.upsa.mimo.gamercollection.network.apiClient
 
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GenreResponse
-import es.upsa.mimo.gamercollection.network.apiService.GenreAPIService
+import es.upsa.mimo.gamercollection.network.ApiManager
+import es.upsa.mimo.gamercollection.network.GenreApiService
 
 class GenreAPIClient {
 
     //region Private properties
-    private val api = ApiManager.getService<GenreAPIService>(ApiManager.BASE_ENDPOINT)
+    private val api = ApiManager.getService<GenreApiService>(ApiManager.BASE_ENDPOINT)
     //endregion
 
     //region Public methods

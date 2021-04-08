@@ -1,11 +1,10 @@
-package es.upsa.mimo.gamercollection.network.apiService
+package es.upsa.mimo.gamercollection.network
 
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
-import es.upsa.mimo.gamercollection.network.apiClient.ApiManager
 import retrofit2.Call
 import retrofit2.http.*
 
-interface SagaAPIService {
+interface SagaApiService {
 
     @Headers(
         "Accept:application/json",
