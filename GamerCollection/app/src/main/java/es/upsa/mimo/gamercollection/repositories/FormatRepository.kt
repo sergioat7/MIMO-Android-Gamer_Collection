@@ -3,7 +3,8 @@ package es.upsa.mimo.gamercollection.repositories
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.FormatResponse
 import es.upsa.mimo.gamercollection.network.ApiManager
-import es.upsa.mimo.gamercollection.network.apiClient.FormatAPIClient
+import es.upsa.mimo.gamercollection.network.FormatApiService
+import es.upsa.mimo.gamercollection.network.RequestResult
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -13,25 +14,32 @@ class FormatRepository @Inject constructor(
 ) {
 
     //region Private properties
-    private val formatAPIClient = FormatAPIClient()
-    private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
+    private val api = ApiManager.getService<FormatApiService>(ApiManager.BASE_ENDPOINT)
+    private val databaseScope =
+        CoroutineScope(Job() + Dispatchers.IO)//TODO: inject scope (see best practices for coroutines)
     //endregion
 
     //region Public methods
     fun loadFormats(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
-        formatAPIClient.getFormats({ newFormats ->
+        databaseScope.async {//TODO: change scope
+            when (val response = ApiManager.validateResponse(api.getFormats())) {
+                is RequestResult.JsonSuccess -> {
 
-            for (newFormat in newFormats) {
-                insertFormatDatabase(newFormat)
+                    val newFormats = response.body ?: listOf()
+                    for (newFormat in newFormats) {
+                        insertFormatDatabase(newFormat)
+                    }
+                    val currentFormats = getFormatsDatabase()
+                    val formatsToRemove = AppDatabase.getDisabledContent(currentFormats, newFormats)
+                    for (format in formatsToRemove) {
+                        deleteFormatDatabase(format as FormatResponse)
+                    }
+                    success()
+                }
+                is RequestResult.Failure -> failure(response.error)
             }
-            val currentFormats = getFormatsDatabase()
-            val formatsToRemove = AppDatabase.getDisabledContent(currentFormats, newFormats)
-            for (format in formatsToRemove) {
-                deleteFormatDatabase(format as FormatResponse)
-            }
-            success()
-        }, failure)
+        }
     }
 
     fun getFormatsDatabase(): List<FormatResponse> {
