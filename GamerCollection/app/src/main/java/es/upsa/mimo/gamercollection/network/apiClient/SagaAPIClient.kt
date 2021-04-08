@@ -2,12 +2,13 @@ package es.upsa.mimo.gamercollection.network.apiClient
 
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
-import es.upsa.mimo.gamercollection.network.apiService.SagaAPIService
+import es.upsa.mimo.gamercollection.network.ApiManager
+import es.upsa.mimo.gamercollection.network.SagaApiService
 
 class SagaAPIClient {
 
     //region Private properties
-    private val api = ApiManager.getService<SagaAPIService>(ApiManager.BASE_ENDPOINT)
+    private val api = ApiManager.getService<SagaApiService>(ApiManager.BASE_ENDPOINT)
     //endregion
 
     //region Public methods

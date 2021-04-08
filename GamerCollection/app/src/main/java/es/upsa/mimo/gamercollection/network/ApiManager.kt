@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.network.apiClient
+package es.upsa.mimo.gamercollection.network
 
 import com.google.gson.*
 import es.upsa.mimo.gamercollection.BuildConfig
@@ -77,7 +77,7 @@ object ApiManager {
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build()
 
-            this.retrofits[T::class] = retrofit
+            retrofits[T::class] = retrofit
             retrofit
         }()
     }

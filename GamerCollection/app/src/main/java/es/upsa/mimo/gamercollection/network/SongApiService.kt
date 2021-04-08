@@ -1,11 +1,10 @@
-package es.upsa.mimo.gamercollection.network.apiService
+package es.upsa.mimo.gamercollection.network
 
 import es.upsa.mimo.gamercollection.models.responses.SongResponse
-import es.upsa.mimo.gamercollection.network.apiClient.ApiManager
 import retrofit2.Call
 import retrofit2.http.*
 
-interface SongAPIService {
+interface SongApiService {
 
     @Headers(
         "Content-Type:application/json",
