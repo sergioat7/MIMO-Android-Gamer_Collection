@@ -90,6 +90,37 @@ object ApiManager {
         }()
     }
 
+    inline fun <reified T : Any> validateResponse(response: retrofit2.Response<T>): RequestResult<T> {
+
+        return when {
+            response.isSuccessful -> {
+                when {
+                    T::class == Void::class -> RequestResult.Success
+                    response.code() == 204 -> getEmptyResponse() ?: RequestResult.Failure(
+                        ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server)
+                    )
+                    else -> RequestResult.JsonSuccess(response.body())
+                }
+            }
+            response.code() < 500 && response.errorBody() != null -> {
+                RequestResult.Failure(
+                    gson.fromJson(
+                        response.errorBody()?.charStream(),
+                        ErrorResponse::class.java
+                    )
+                )
+            }
+            else -> {
+                RequestResult.Failure(
+                    ErrorResponse(
+                        Constants.EMPTY_VALUE,
+                        R.string.error_server
+                    )
+                )
+            }
+        }
+    }
+
     inline fun <reified T, reified U> sendServer(
         request: Call<T>,
         crossinline success: (T) -> Unit,
@@ -151,6 +182,21 @@ object ApiManager {
                 failure(error)
             }
         })
+    }
+
+    inline fun <reified T : Any> getEmptyResponse(): RequestResult<T>? {
+
+        try {
+            return RequestResult.JsonSuccess(gson.fromJson("{}", T::class.java))
+        } catch (e: Exception) {
+        }
+
+        try {
+            return RequestResult.JsonSuccess(gson.fromJson("[]", T::class.java))
+        } catch (e: Exception) {
+        }
+
+        return null
     }
     //endregion
 
