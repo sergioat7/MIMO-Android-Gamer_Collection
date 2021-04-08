@@ -158,11 +158,21 @@ object ApiManager {
     class TokenInterceptor : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
 
+            val authRequirement = chain.request().header(AUTHORIZATION_HEADER)
             val original = chain.request()
 
-            val request = original.newBuilder()
-                .addHeader(ACCEPT_LANGUAGE_HEADER, SharedPreferencesHelper.getLanguage())
-                .build()
+            val request = if (authRequirement != null) {
+
+                val accessToken = SharedPreferencesHelper.getCredentials().token
+                original.newBuilder()
+                    .addHeader(ACCEPT_LANGUAGE_HEADER, SharedPreferencesHelper.getLanguage())
+                    .header(AUTHORIZATION_HEADER, accessToken)
+                    .build()
+            } else {
+                original.newBuilder()
+                    .addHeader(ACCEPT_LANGUAGE_HEADER, SharedPreferencesHelper.getLanguage())
+                    .build()
+            }
 
             return chain.proceed(request)
         }

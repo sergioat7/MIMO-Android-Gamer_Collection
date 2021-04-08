@@ -4,7 +4,6 @@ import es.upsa.mimo.gamercollection.models.requests.LoginCredentials
 import es.upsa.mimo.gamercollection.models.requests.NewPassword
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.network.apiService.UserAPIService
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 
 class UserAPIClient {
 
@@ -45,20 +44,13 @@ class UserAPIClient {
 
     fun logout() {
 
-        val headers: MutableMap<String, String> = HashMap()
-        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
-        val request = api.logout(headers)
-
+        val request = api.logout()
         ApiManager.sendServer<Void, ErrorResponse>(request, {}, {})
     }
 
     fun updatePassword(password: String, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
-        val newPasword = NewPassword(password)
-        val headers: MutableMap<String, String> = HashMap()
-        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
-        val request = api.updatePassword(headers, newPasword)
-
+        val request = api.updatePassword(NewPassword(password))
         ApiManager.sendServer(request, {
             success()
         }, failure)
@@ -66,10 +58,7 @@ class UserAPIClient {
 
     fun deleteUser(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
-        val headers: MutableMap<String, String> = HashMap()
-        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
-        val request = api.deleteUser(headers)
-
+        val request = api.deleteUser()
         ApiManager.sendServer(request, {
             success()
         }, failure)

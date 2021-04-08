@@ -1,36 +1,39 @@
 package es.upsa.mimo.gamercollection.network.apiService
 
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
+import es.upsa.mimo.gamercollection.network.apiClient.ApiManager
 import retrofit2.Call
 import retrofit2.http.*
 
 interface SagaAPIService {
 
     @Headers(
-        "Accept:application/json"
+        "Accept:application/json",
+        "${ApiManager.AUTHORIZATION_HEADER}:_"
     )
     @GET("sagas")
-    fun getSagas(@HeaderMap headers: Map<String, String>): Call<List<SagaResponse>>
+    fun getSagas(): Call<List<SagaResponse>>
 
     @Headers(
-        "Content-Type:application/json"
+        "Content-Type:application/json",
+        "${ApiManager.AUTHORIZATION_HEADER}:_"
     )
     @POST("saga")
-    fun createSaga(@HeaderMap headers: Map<String, String>, @Body body: SagaResponse): Call<Void>
+    fun createSaga(@Body body: SagaResponse): Call<Void>
 
     @Headers(
-        "Content-Type:application/json"
+        "Content-Type:application/json",
+        "${ApiManager.AUTHORIZATION_HEADER}:_"
     )
     @PATCH("saga/{sagaId}")
     fun setSaga(
-        @HeaderMap headers: Map<String, String>,
         @Path(value = "sagaId") sagaId: Int,
         @Body body: SagaResponse
     ): Call<SagaResponse>
 
+    @Headers(
+        "${ApiManager.AUTHORIZATION_HEADER}:_"
+    )
     @DELETE("saga/{sagaId}")
-    fun deleteSaga(
-        @HeaderMap headers: Map<String, String>,
-        @Path(value = "sagaId") sagaId: Int
-    ): Call<Void>
+    fun deleteSaga(@Path(value = "sagaId") sagaId: Int): Call<Void>
 }

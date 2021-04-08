@@ -3,7 +3,6 @@ package es.upsa.mimo.gamercollection.network.apiClient
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.network.apiService.SagaAPIService
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 
 class SagaAPIClient {
 
@@ -14,19 +13,13 @@ class SagaAPIClient {
     //region Public methods
     fun getSagas(success: (List<SagaResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
-        val headers: MutableMap<String, String> = HashMap()
-        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
-        val request = api.getSagas(headers)
-
+        val request = api.getSagas()
         ApiManager.sendServer(request, success, failure)
     }
 
     fun createSaga(saga: SagaResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
-        val headers: MutableMap<String, String> = HashMap()
-        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
-        val request = api.createSaga(headers, saga)
-
+        val request = api.createSaga(saga)
         ApiManager.sendServer(request, {
             success()
         }, failure)
@@ -38,19 +31,13 @@ class SagaAPIClient {
         failure: (ErrorResponse) -> Unit
     ) {
 
-        val headers: MutableMap<String, String> = HashMap()
-        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
-        val request = api.setSaga(headers, saga.id, saga)
-
+        val request = api.setSaga(saga.id, saga)
         ApiManager.sendServer(request, success, failure)
     }
 
     fun deleteSaga(sagaId: Int, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
-        val headers: MutableMap<String, String> = HashMap()
-        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
-        val request = api.deleteSaga(headers, sagaId)
-
+        val request = api.deleteSaga(sagaId)
         ApiManager.sendServer(request, {
             success()
         }, failure)

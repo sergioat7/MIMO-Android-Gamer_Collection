@@ -6,7 +6,6 @@ import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.network.apiService.GameAPIService
 import es.upsa.mimo.gamercollection.network.apiService.RawgGameApiService
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 
 class GameAPIClient {
 
@@ -18,28 +17,19 @@ class GameAPIClient {
     //region Public methods
     fun getGames(success: (List<GameResponse>) -> Unit, failure: (ErrorResponse) -> Unit) {
 
-        val headers: MutableMap<String, String> = HashMap()
-        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
-        val request = api.getGames(headers)
-
+        val request = api.getGames()
         ApiManager.sendServer(request, success, failure)
     }
 
     fun getGame(gameId: Int, success: (GameResponse) -> Unit, failure: (ErrorResponse) -> Unit) {
 
-        val headers: MutableMap<String, String> = HashMap()
-        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
-        val request = api.getGame(headers, gameId)
-
+        val request = api.getGame(gameId)
         ApiManager.sendServer(request, success, failure)
     }
 
     fun createGame(game: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
-        val headers: MutableMap<String, String> = HashMap()
-        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
-        val request = api.createGame(headers, game)
-
+        val request = api.createGame(game)
         ApiManager.sendServer(request, {
             success()
         }, failure)
@@ -51,19 +41,13 @@ class GameAPIClient {
         failure: (ErrorResponse) -> Unit
     ) {
 
-        val headers: MutableMap<String, String> = HashMap()
-        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
-        val request = api.setGame(headers, game.id, game)
-
+        val request = api.setGame(game.id, game)
         ApiManager.sendServer(request, success, failure)
     }
 
     fun deleteGame(gameId: Int, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
 
-        val headers: MutableMap<String, String> = HashMap()
-        headers[ApiManager.AUTHORIZATION_HEADER] = SharedPreferencesHelper.getCredentials().token
-        val request = api.deleteGame(headers, gameId)
-
+        val request = api.deleteGame(gameId)
         ApiManager.sendServer(request, {
             success()
         }, failure)
