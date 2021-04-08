@@ -3,6 +3,7 @@ package es.upsa.mimo.gamercollection.network.apiService
 import es.upsa.mimo.gamercollection.models.requests.LoginCredentials
 import es.upsa.mimo.gamercollection.models.requests.NewPassword
 import es.upsa.mimo.gamercollection.models.responses.LoginResponse
+import es.upsa.mimo.gamercollection.network.apiClient.ApiManager
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -20,15 +21,22 @@ interface UserAPIService {
     @POST("users/register")
     fun register(@Body body: LoginCredentials): Call<Void>
 
+    @Headers(
+        "${ApiManager.AUTHORIZATION_HEADER}:_"
+    )
     @DELETE("users/logout")
-    fun logout(@HeaderMap headers: Map<String, String>): Call<Void>
+    fun logout(): Call<Void>
 
     @Headers(
-        "Content-Type:application/json"
+        "Content-Type:application/json",
+        "${ApiManager.AUTHORIZATION_HEADER}:_"
     )
     @PUT("users/updatePassword")
-    fun updatePassword(@HeaderMap headers: Map<String, String>, @Body body: NewPassword): Call<Void>
+    fun updatePassword(@Body body: NewPassword): Call<Void>
 
+    @Headers(
+        "${ApiManager.AUTHORIZATION_HEADER}:_"
+    )
     @DELETE("users/user")
-    fun deleteUser(@HeaderMap headers: Map<String, String>): Call<Void>
+    fun deleteUser(): Call<Void>
 }
