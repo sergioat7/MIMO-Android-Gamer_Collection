@@ -66,9 +66,9 @@ object ApiManager {
                 OkHttpClient.Builder()
                     .addInterceptor(logInterceptor)
                     .addInterceptor(TokenInterceptor())
-                    .connectTimeout(1, TimeUnit.MINUTES)
-                    .readTimeout(30, TimeUnit.SECONDS)
-                    .writeTimeout(15, TimeUnit.SECONDS)
+                    .connectTimeout(2, TimeUnit.MINUTES)
+                    .readTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
 
             val retrofit =
                 Retrofit.Builder()
