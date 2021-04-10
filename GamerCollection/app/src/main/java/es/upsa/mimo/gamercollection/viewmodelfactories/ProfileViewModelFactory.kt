@@ -32,6 +32,9 @@ class ProfileViewModelFactory(
     lateinit var stateRepository: StateRepository
 
     @Inject
+    lateinit var userRepository: UserRepository
+
+    @Inject
     lateinit var profileViewModel: ProfileViewModel
     //endregion
 

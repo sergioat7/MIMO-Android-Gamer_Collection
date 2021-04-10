@@ -8,7 +8,6 @@ import es.upsa.mimo.gamercollection.models.login.AuthData
 import es.upsa.mimo.gamercollection.models.login.LoginFormState
 import es.upsa.mimo.gamercollection.models.login.UserData
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
-import es.upsa.mimo.gamercollection.network.apiClient.UserAPIClient
 import es.upsa.mimo.gamercollection.repositories.*
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
@@ -20,11 +19,11 @@ class LoginViewModel @Inject constructor(
     private val genreRepository: GenreRepository,
     private val platformRepository: PlatformRepository,
     private val sagaRepository: SagaRepository,
-    private val stateRepository: StateRepository
+    private val stateRepository: StateRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     //region Private properties
-    private val userAPIClient = UserAPIClient()
     private val _loginForm = MutableLiveData<LoginFormState>()
     private val _loginLoading = MutableLiveData<Boolean>()
     private val _loginError = MutableLiveData<ErrorResponse>()
@@ -42,7 +41,7 @@ class LoginViewModel @Inject constructor(
     fun login(username: String, password: String) {
 
         _loginLoading.value = true
-        userAPIClient.login(username, password, { token ->
+        userRepository.login(username, password, { token ->
 
             val userData = UserData(username, password, false)
             val authData = AuthData(token)

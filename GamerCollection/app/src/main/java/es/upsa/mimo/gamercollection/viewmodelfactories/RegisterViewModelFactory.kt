@@ -4,10 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.GamerCollectionApplication
-import es.upsa.mimo.gamercollection.repositories.FormatRepository
-import es.upsa.mimo.gamercollection.repositories.GenreRepository
-import es.upsa.mimo.gamercollection.repositories.PlatformRepository
-import es.upsa.mimo.gamercollection.repositories.StateRepository
+import es.upsa.mimo.gamercollection.repositories.*
 import es.upsa.mimo.gamercollection.viewmodels.RegisterViewModel
 import javax.inject.Inject
 
@@ -27,6 +24,9 @@ class RegisterViewModelFactory(
 
     @Inject
     lateinit var stateRepository: StateRepository
+
+    @Inject
+    lateinit var userRepository: UserRepository
 
     @Inject
     lateinit var registerViewModel: RegisterViewModel
