@@ -1,7 +1,7 @@
 package es.upsa.mimo.gamercollection.network
 
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface SagaApiService {
@@ -11,28 +11,28 @@ interface SagaApiService {
         "${ApiManager.AUTHORIZATION_HEADER}:_"
     )
     @GET("sagas")
-    fun getSagas(): Call<List<SagaResponse>>
+    suspend fun getSagas(): Response<List<SagaResponse>>
 
     @Headers(
         "Content-Type:application/json",
         "${ApiManager.AUTHORIZATION_HEADER}:_"
     )
     @POST("saga")
-    fun createSaga(@Body body: SagaResponse): Call<Void>
+    suspend fun createSaga(@Body body: SagaResponse): Response<Unit>
 
     @Headers(
         "Content-Type:application/json",
         "${ApiManager.AUTHORIZATION_HEADER}:_"
     )
     @PATCH("saga/{sagaId}")
-    fun setSaga(
+    suspend fun setSaga(
         @Path(value = "sagaId") sagaId: Int,
         @Body body: SagaResponse
-    ): Call<SagaResponse>
+    ): Response<SagaResponse>
 
     @Headers(
         "${ApiManager.AUTHORIZATION_HEADER}:_"
     )
     @DELETE("saga/{sagaId}")
-    fun deleteSaga(@Path(value = "sagaId") sagaId: Int): Call<Void>
+    suspend fun deleteSaga(@Path(value = "sagaId") sagaId: Int): Response<Unit>
 }
