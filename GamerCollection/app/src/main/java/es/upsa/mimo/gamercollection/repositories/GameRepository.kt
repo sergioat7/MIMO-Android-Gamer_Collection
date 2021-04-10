@@ -1,6 +1,8 @@
 package es.upsa.mimo.gamercollection.repositories
 
 import androidx.sqlite.db.SimpleSQLiteQuery
+import es.upsa.mimo.gamercollection.injection.modules.IoDispatcher
+import es.upsa.mimo.gamercollection.injection.modules.MainDispatcher
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.GameWithSaga
 import es.upsa.mimo.gamercollection.models.rawg.RawgDeveloperResponse
@@ -10,7 +12,10 @@ import es.upsa.mimo.gamercollection.models.rawg.RawgPublisherResponse
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
-import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
+import es.upsa.mimo.gamercollection.network.ApiManager
+import es.upsa.mimo.gamercollection.network.GameApiService
+import es.upsa.mimo.gamercollection.network.RawgGameApiService
+import es.upsa.mimo.gamercollection.network.RequestResult
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.State
@@ -18,36 +23,49 @@ import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class GameRepository @Inject constructor(
-    private val database: AppDatabase
+    private val api: GameApiService,
+    private val apiRawg: RawgGameApiService,
+    private val database: AppDatabase,
+    @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
     //region Private properties
-    private val gameAPIClient = GameAPIClient()
-    private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
+    private val externalScope = CoroutineScope(Job() + mainDispatcher)
+    private val databaseScope = CoroutineScope(Job() + ioDispatcher)
     //endregion
 
     //region Public methods
     fun loadGames(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+        externalScope.launch {
 
-        gameAPIClient.getGames({ newGames ->
+            when (val response = ApiManager.validateResponse(api.getGames())) {
+                is RequestResult.JsonSuccess -> {
 
-            for (newGame in newGames) {
-                insertGameDatabase(newGame)
+                    val newGames = response.body
+                    for (newGame in newGames) {
+                        insertGameDatabase(newGame)
+                    }
+                    val currentGames = getGamesDatabase()
+                    val gamesToRemove = AppDatabase.getDisabledContent(currentGames, newGames)
+                    for (game in gamesToRemove) {
+                        deleteGameDatabase(game as GameResponse)
+                    }
+                    success()
+                }
+                is RequestResult.Failure -> failure(response.error)
             }
-            val currentGames = getGamesDatabase()
-            val gamesToRemove = AppDatabase.getDisabledContent(currentGames, newGames)
-            for (game in gamesToRemove) {
-                deleteGameDatabase(game as GameResponse)
-            }
-            success()
-        }, failure)
+        }
     }
 
     fun createGame(game: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+        externalScope.launch {
 
-        gameAPIClient.createGame(game, {
-            loadGames(success, failure)
-        }, failure)
+            when (val response = ApiManager.validateResponse(api.createGame(game))) {
+                is RequestResult.Success -> loadGames(success, failure)
+                is RequestResult.Failure -> failure(response.error)
+            }
+        }
     }
 
     fun setGame(
@@ -55,21 +73,29 @@ class GameRepository @Inject constructor(
         success: (GameResponse) -> Unit,
         failure: (ErrorResponse) -> Unit
     ) {
+        externalScope.launch {
 
-        gameAPIClient.setGame(game, {
-
-            updateGameDatabase(it)
-            success(it)
-        }, failure)
+            when (val response = ApiManager.validateResponse(api.setGame(game.id, game))) {
+                is RequestResult.JsonSuccess -> {
+                    updateGameDatabase(response.body)
+                    success(response.body)
+                }
+                is RequestResult.Failure -> failure(response.error)
+            }
+        }
     }
 
     fun deleteGame(game: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+        externalScope.launch {
 
-        gameAPIClient.deleteGame(game.id, {
-
-            deleteGameDatabase(game)
-            success()
-        }, failure)
+            when (val response = ApiManager.validateResponse(api.deleteGame(game.id))) {
+                is RequestResult.Success -> {
+                    deleteGameDatabase(game)
+                    success()
+                }
+                is RequestResult.Failure -> failure(response.error)
+            }
+        }
     }
 
     fun getGamesDatabase(
@@ -242,12 +268,16 @@ class GameRepository @Inject constructor(
         success: (GameResponse) -> Unit,
         failure: (ErrorResponse) -> Unit
     ) {
+        externalScope.launch {
 
-        gameAPIClient.getGame(gameId, {
-
-            updateGameDatabase(it)
-            success(it)
-        }, failure)
+            when (val response = ApiManager.validateResponse(api.getGame(gameId))) {
+                is RequestResult.JsonSuccess -> {
+                    updateGameDatabase(response.body)
+                    success(response.body)
+                }
+                is RequestResult.Failure -> failure(response.error)
+            }
+        }
     }
 
     fun resetTable() {
@@ -264,12 +294,23 @@ class GameRepository @Inject constructor(
         success: (List<GameResponse>, Int, Boolean) -> Unit,
         failure: (ErrorResponse) -> Unit
     ) {
+        externalScope.launch {
 
-        gameAPIClient.getRawgGames(page, query, {
-
-            val games = mapRawgGames(it.results)
-            success(games, it.count, it.next != null)
-        }, failure)
+            val params: MutableMap<String, String> = java.util.HashMap()
+            params[ApiManager.KEY_PARAM] = ApiManager.KEY_VALUE
+            params[ApiManager.PAGE_PARAM] = page.toString()
+            params[ApiManager.PAGE_SIZE_PARAM] = ApiManager.PAGE_SIZE.toString()
+            query?.let {
+                params[ApiManager.SEARCH_PARAM] = it
+            }
+            when (val response = ApiManager.validateResponse(apiRawg.getGames(params))) {
+                is RequestResult.JsonSuccess -> {
+                    val games = mapRawgGames(response.body.results)
+                    success(games, response.body.count, response.body.next != null)
+                }
+                is RequestResult.Failure -> failure(response.error)
+            }
+        }
     }
 
     fun getRawgGame(
@@ -277,9 +318,15 @@ class GameRepository @Inject constructor(
         success: (GameResponse) -> Unit,
         failure: (ErrorResponse) -> Unit
     ) {
-        gameAPIClient.getRawgGame(gameId, {
-            success(mapRawgGame(it))
-        }, failure)
+        externalScope.launch {
+
+            val params: MutableMap<String, String> = java.util.HashMap()
+            params[ApiManager.KEY_PARAM] = ApiManager.KEY_VALUE
+            when (val response = ApiManager.validateResponse(apiRawg.getGame(gameId, params))) {
+                is RequestResult.JsonSuccess -> success(mapRawgGame(response.body))
+                is RequestResult.Failure -> failure(response.error)
+            }
+        }
     }
     //endregion
 
