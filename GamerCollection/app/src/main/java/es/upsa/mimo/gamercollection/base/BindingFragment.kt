@@ -79,6 +79,7 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
         }
         ft.addToBackStack(null)
         val dialogFragment = PopupErrorDialogFragment(message, goBack)
+        dialogFragment.isCancelable = false
         dialogFragment.show(ft, Constants.POPUP_DIALOG)
     }
 
