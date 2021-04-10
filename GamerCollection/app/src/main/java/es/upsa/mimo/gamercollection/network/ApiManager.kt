@@ -92,20 +92,24 @@ object ApiManager {
 
     inline fun <reified T : Any> validateResponse(response: retrofit2.Response<T>): RequestResult<T> {
 
+        val isSuccessful = response.isSuccessful
+        val code = response.code()
+        val body = response.body()
+        val error = response.errorBody()
         return when {
-            response.isSuccessful -> {
+            isSuccessful -> {
                 when {
-                    T::class == Void::class -> RequestResult.Success
-                    response.code() == 204 -> getEmptyResponse() ?: RequestResult.Failure(
+                    T::class == Unit::class -> RequestResult.Success
+                    body != null && code != 204 -> RequestResult.JsonSuccess(body)
+                    else -> getEmptyResponse() ?: RequestResult.Failure(
                         ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server)
                     )
-                    else -> RequestResult.JsonSuccess(response.body())
                 }
             }
-            response.code() < 500 && response.errorBody() != null -> {
+            code < 500 && error != null -> {
                 RequestResult.Failure(
                     gson.fromJson(
-                        response.errorBody()?.charStream(),
+                        error.charStream(),
                         ErrorResponse::class.java
                     )
                 )
