@@ -1,7 +1,7 @@
 package es.upsa.mimo.gamercollection.network
 
 import es.upsa.mimo.gamercollection.models.responses.SongResponse
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface SongApiService {
@@ -11,17 +11,17 @@ interface SongApiService {
         "${ApiManager.AUTHORIZATION_HEADER}:_"
     )
     @POST("songs/{gameId}")
-    fun createSong(
+    suspend fun createSong(
         @Path(value = "gameId") gameId: Int,
         @Body body: SongResponse
-    ): Call<Void>
+    ): Response<Unit>
 
     @Headers(
         "${ApiManager.AUTHORIZATION_HEADER}:_"
     )
     @DELETE("songs/{gameId}/{songId}")
-    fun deleteSong(
+    suspend fun deleteSong(
         @Path(value = "gameId") gameId: Int,
         @Path(value = "songId") songId: Int
-    ): Call<Void>
+    ): Response<Unit>
 }

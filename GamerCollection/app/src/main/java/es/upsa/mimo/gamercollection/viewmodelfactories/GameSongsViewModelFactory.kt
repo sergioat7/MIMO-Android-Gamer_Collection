@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
+import es.upsa.mimo.gamercollection.repositories.SongRepository
 import es.upsa.mimo.gamercollection.viewmodels.GameSongsViewModel
 import javax.inject.Inject
 
@@ -17,6 +18,9 @@ class GameSongsViewModelFactory(
     //region Public properties
     @Inject
     lateinit var gameRepository: GameRepository
+
+    @Inject
+    lateinit var songRepository: SongRepository
 
     @Inject
     lateinit var gameSongsViewModel: GameSongsViewModel
