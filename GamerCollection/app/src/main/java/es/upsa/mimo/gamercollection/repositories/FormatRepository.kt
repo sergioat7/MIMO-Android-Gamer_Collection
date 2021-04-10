@@ -1,5 +1,7 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import es.upsa.mimo.gamercollection.injection.modules.IoDispatcher
+import es.upsa.mimo.gamercollection.injection.modules.MainDispatcher
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.FormatResponse
 import es.upsa.mimo.gamercollection.network.ApiManager
@@ -10,23 +12,25 @@ import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class FormatRepository @Inject constructor(
-    private val database: AppDatabase
+    private val api: FormatApiService,
+    private val database: AppDatabase,
+    @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
     //region Private properties
-    private val api = ApiManager.getService<FormatApiService>(ApiManager.BASE_ENDPOINT)
-    private val databaseScope =
-        CoroutineScope(Job() + Dispatchers.IO)//TODO: inject scope (see best practices for coroutines)
+    private val externalScope = CoroutineScope(Job() + mainDispatcher)
+    private val databaseScope = CoroutineScope(Job() + ioDispatcher)
     //endregion
 
     //region Public methods
     fun loadFormats(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+        externalScope.launch {
 
-        databaseScope.async {//TODO: change scope
             when (val response = ApiManager.validateResponse(api.getFormats())) {
                 is RequestResult.JsonSuccess -> {
 
-                    val newFormats = response.body ?: listOf()
+                    val newFormats = response.body
                     for (newFormat in newFormats) {
                         insertFormatDatabase(newFormat)
                     }
