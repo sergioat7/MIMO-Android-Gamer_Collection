@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.models.login.AuthData
 import es.upsa.mimo.gamercollection.models.login.UserData
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
-import es.upsa.mimo.gamercollection.network.apiClient.UserAPIClient
 import es.upsa.mimo.gamercollection.repositories.*
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
@@ -18,11 +17,11 @@ class ProfileViewModel @Inject constructor(
     private val genreRepository: GenreRepository,
     private val platformRepository: PlatformRepository,
     private val sagaRepository: SagaRepository,
-    private val stateRepository: StateRepository
+    private val stateRepository: StateRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     //region Private properties
-    private val userAPIClient = UserAPIClient()
     private val _profileLoading = MutableLiveData<Boolean>()
     private val _profileError = MutableLiveData<ErrorResponse>()
     //endregion
@@ -44,7 +43,7 @@ class ProfileViewModel @Inject constructor(
     fun logout() {
 
         _profileLoading.value = true
-        userAPIClient.logout()
+        userRepository.logout()
         SharedPreferencesHelper.removePassword()
         resetDatabase()
     }
@@ -65,11 +64,11 @@ class ProfileViewModel @Inject constructor(
 
         if (changePassword) {
             _profileLoading.value = true
-            userAPIClient.updatePassword(newPassword, {
+            userRepository.updatePassword(newPassword, {
 
                 SharedPreferencesHelper.storePassword(newPassword)
                 val userData = SharedPreferencesHelper.getUserData()
-                userAPIClient.login(userData.username, userData.password, {
+                userRepository.login(userData.username, userData.password, {
 
                     val authData = AuthData(it)
                     SharedPreferencesHelper.storeCredentials(authData)
@@ -115,7 +114,7 @@ class ProfileViewModel @Inject constructor(
     fun deleteUser() {
 
         _profileLoading.value = true
-        userAPIClient.deleteUser({
+        userRepository.deleteUser({
 
             SharedPreferencesHelper.removeUserData()
             SharedPreferencesHelper.removeCredentials()

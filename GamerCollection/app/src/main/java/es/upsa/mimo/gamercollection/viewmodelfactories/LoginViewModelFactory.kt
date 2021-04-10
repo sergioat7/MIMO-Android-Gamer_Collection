@@ -32,6 +32,9 @@ class LoginViewModelFactory(
     lateinit var stateRepository: StateRepository
 
     @Inject
+    lateinit var userRepository: UserRepository
+
+    @Inject
     lateinit var loginViewModel: LoginViewModel
     //endregion
 
