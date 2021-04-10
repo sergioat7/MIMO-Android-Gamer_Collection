@@ -6,16 +6,16 @@ import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SongResponse
-import es.upsa.mimo.gamercollection.network.apiClient.SongAPIClient
 import es.upsa.mimo.gamercollection.repositories.GameRepository
+import es.upsa.mimo.gamercollection.repositories.SongRepository
 import javax.inject.Inject
 
 class GameSongsViewModel @Inject constructor(
-    private val gameRepository: GameRepository
+    private val gameRepository: GameRepository,
+    private val songRepository: SongRepository
 ) : ViewModel() {
 
     //region Private properties
-    private val songAPIClient = SongAPIClient()
     private var game: GameResponse? = null
     private val _gameSongsLoading = MutableLiveData<Boolean>()
     private val _gameSongsError = MutableLiveData<ErrorResponse>()
@@ -34,7 +34,7 @@ class GameSongsViewModel @Inject constructor(
         game?.let { game ->
 
             _gameSongsLoading.value = true
-            songAPIClient.createSong(game.id, song, {
+            songRepository.createSong(game.id, song, {
                 gameRepository.updateGameSongs(game.id, {
 
                     this.game = it
@@ -54,7 +54,7 @@ class GameSongsViewModel @Inject constructor(
         game?.let { game ->
 
             _gameSongsLoading.value = true
-            songAPIClient.deleteSong(game.id, songId, {
+            songRepository.deleteSong(game.id, songId, {
                 gameRepository.updateGameSongs(game.id, {
 
                     this.game = it
