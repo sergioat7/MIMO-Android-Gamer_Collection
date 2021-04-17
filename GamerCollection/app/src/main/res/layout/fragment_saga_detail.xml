@@ -18,6 +18,11 @@
             />
 
         <variable
+            name="addGamesEnabled"
+            type="Boolean"
+            />
+
+        <variable
             name="fragment"
             type="es.upsa.mimo.gamercollection.fragments.SagaDetailFragment"
             />
@@ -65,7 +70,7 @@
                 android:id="@+id/button_add_game"
                 app:layout_constraintBottom_toBottomOf="@+id/text_view_games_title"
                 app:layout_constraintEnd_toEndOf="@+id/line_view"
-                android:visibility="@{editable ? View.VISIBLE : View.GONE}"
+                android:visibility="@{editable &amp;&amp; addGamesEnabled ? View.VISIBLE : View.GONE}"
                 android:onClick="@{() -> fragment.addGame()}"
                 style="@style/Widget.GamerCollection.ImageButton.AddGame"
                 />
