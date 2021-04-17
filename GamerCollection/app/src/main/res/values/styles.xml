@@ -89,7 +89,6 @@
 
     <style name="Widget.GamerCollection.TextView" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/textPrimary</item>
-        <item name="android:textIsSelectable">true</item>
     </style>
 
     <style name="Widget.GamerCollection.TextView.Bold">

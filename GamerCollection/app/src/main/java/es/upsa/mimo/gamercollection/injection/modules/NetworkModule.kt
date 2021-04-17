@@ -3,7 +3,6 @@ package es.upsa.mimo.gamercollection.injection.modules
 import dagger.Module
 import dagger.Provides
 import es.upsa.mimo.gamercollection.network.*
-import javax.inject.Qualifier
 
 @Module
 class NetworkModule {
@@ -29,7 +28,7 @@ class NetworkModule {
 
     @Provides
     fun providesRawgGameApiService(): RawgGameApiService = ApiManager.getService(
-        ApiManager.BASE_ENDPOINT
+        ApiManager.BASE_ENDPOINT_RAWG
     )
 
     @Provides
