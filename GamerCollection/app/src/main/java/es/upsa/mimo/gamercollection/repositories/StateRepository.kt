@@ -1,37 +1,49 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import es.upsa.mimo.gamercollection.injection.modules.IoDispatcher
+import es.upsa.mimo.gamercollection.injection.modules.MainDispatcher
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.StateResponse
-import es.upsa.mimo.gamercollection.network.apiClient.StateAPIClient
+import es.upsa.mimo.gamercollection.network.ApiManager
+import es.upsa.mimo.gamercollection.network.RequestResult
+import es.upsa.mimo.gamercollection.network.StateApiService
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
-import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class StateRepository @Inject constructor(
+    private val api: StateApiService,
     private val database: AppDatabase,
-    private val stateAPIClient: StateAPIClient
+    @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
     //region Private properties
-    private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
+    private val externalScope = CoroutineScope(Job() + mainDispatcher)
+    private val databaseScope = CoroutineScope(Job() + ioDispatcher)
     //endregion
 
     //region Public methods
     fun loadStates(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+        externalScope.launch {
 
-        stateAPIClient.getStates({ newStates ->
+            when (val response = ApiManager.validateResponse(api.getStates())) {
+                is RequestResult.JsonSuccess -> {
 
-            for (newState in newStates) {
-                insertStateDatabase(newState)
+                    val newStates = response.body
+                    for (newState in newStates) {
+                        insertStateDatabase(newState)
+                    }
+                    val currentStates = getStatesDatabase()
+                    val statesToRemove = AppDatabase.getDisabledContent(currentStates, newStates)
+                    for (state in statesToRemove) {
+                        deleteStateDatabase(state as StateResponse)
+                    }
+                    success()
+                }
+                is RequestResult.Failure -> failure(response.error)
             }
-            val currentStates = getStatesDatabase()
-            val statesToRemove = AppDatabase.getDisabledContent(currentStates, newStates)
-            for (state in statesToRemove) {
-                deleteStateDatabase(state as StateResponse)
-            }
-            success()
-        }, failure)
+        }
     }
 
     fun resetTable() {
@@ -55,7 +67,7 @@ class StateRepository @Inject constructor(
             }
             states = result.await().toMutableList()
             states.sortBy { it.name }
-            val other = states.firstOrNull { it.id == Constants.OTHER_VALUE }
+            val other = states.firstOrNull { it.id == ApiManager.OTHER_VALUE }
             states.remove(other)
             other?.let {
                 states.add(it)

@@ -1,8 +1,8 @@
-package es.upsa.mimo.gamercollection.network.apiService
+package es.upsa.mimo.gamercollection.network
 
 import es.upsa.mimo.gamercollection.models.rawg.RawgGameListResponse
 import es.upsa.mimo.gamercollection.models.rawg.RawgGameResponse
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Path
@@ -12,12 +12,12 @@ interface RawgGameApiService {
 
     @Headers("User-Agent:GamerCollection")
     @GET("games")
-    fun getGames(@QueryMap queryParams: Map<String, String>): Call<RawgGameListResponse>
+    suspend fun getGames(@QueryMap queryParams: Map<String, String>): Response<RawgGameListResponse>
 
     @Headers("User-Agent:GamerDB")
     @GET("games/{gameId}")
-    fun getGame(
+    suspend fun getGame(
         @Path(value = "gameId") gameId: Int,
         @QueryMap queryParams: Map<String, String>
-    ): Call<RawgGameResponse>
+    ): Response<RawgGameResponse>
 }

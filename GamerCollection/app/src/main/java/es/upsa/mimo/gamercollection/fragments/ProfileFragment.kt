@@ -14,6 +14,7 @@ import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentProfileBinding
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.Preferences
 import es.upsa.mimo.gamercollection.viewmodelfactories.ProfileViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.ProfileViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -93,7 +94,8 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
     fun save() {
 
         val language =
-            if (radio_button_en.isChecked) Constants.ENGLISH_LANGUAGE_KEY else Constants.SPANISH_LANGUAGE_KEY
+            if (radio_button_en.isChecked) Preferences.ENGLISH_LANGUAGE_KEY
+            else Preferences.SPANISH_LANGUAGE_KEY
         val sortingKey =
             resources.getStringArray(R.array.sorting_keys_ids)[spinner_sorting_keys.selectedItemPosition]
         val themeMode =
@@ -132,9 +134,9 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
             }
 
             radioButtonEn.isChecked =
-                this@ProfileFragment.viewModel.language == Constants.ENGLISH_LANGUAGE_KEY
+                this@ProfileFragment.viewModel.language == Preferences.ENGLISH_LANGUAGE_KEY
             radioButtonEs.isChecked =
-                this@ProfileFragment.viewModel.language == Constants.SPANISH_LANGUAGE_KEY
+                this@ProfileFragment.viewModel.language == Preferences.SPANISH_LANGUAGE_KEY
 
             spinnerSortingKeys.apply {
                 backgroundTintList =

@@ -8,22 +8,17 @@ import es.upsa.mimo.gamercollection.models.login.AuthData
 import es.upsa.mimo.gamercollection.models.login.LoginFormState
 import es.upsa.mimo.gamercollection.models.login.UserData
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
-import es.upsa.mimo.gamercollection.network.apiClient.UserAPIClient
-import es.upsa.mimo.gamercollection.repositories.FormatRepository
-import es.upsa.mimo.gamercollection.repositories.GenreRepository
-import es.upsa.mimo.gamercollection.repositories.PlatformRepository
-import es.upsa.mimo.gamercollection.repositories.StateRepository
+import es.upsa.mimo.gamercollection.repositories.*
 import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
 class RegisterViewModel @Inject constructor(
-    private val sharedPreferencesHandler: SharedPreferencesHandler,
-    private val userAPIClient: UserAPIClient,
     private val formatRepository: FormatRepository,
     private val genreRepository: GenreRepository,
     private val platformRepository: PlatformRepository,
-    private val stateRepository: StateRepository
+    private val stateRepository: StateRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     //region Private properties
@@ -42,12 +37,12 @@ class RegisterViewModel @Inject constructor(
     fun register(username: String, password: String) {
 
         _registerLoading.value = true
-        userAPIClient.register(username, password, {
-            userAPIClient.login(username, password, { token ->
+        userRepository.register(username, password, {
+            userRepository.login(username, password, { token ->
 
                 val userData = UserData(username, password, false)
                 val authData = AuthData(token)
-                sharedPreferencesHandler.run {
+                SharedPreferencesHelper.run {
                     storeUserData(userData)
                     storeCredentials(authData)
                 }
@@ -91,7 +86,7 @@ class RegisterViewModel @Inject constructor(
                     stateRepository.loadStates({
 
                         userData.isLoggedIn = true
-                        sharedPreferencesHandler.storeUserData(userData)
+                        SharedPreferencesHelper.storeUserData(userData)
 
                         _registerLoading.value = false
                         _registerError.value = null

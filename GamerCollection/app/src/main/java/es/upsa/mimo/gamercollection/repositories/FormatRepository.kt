@@ -1,37 +1,49 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import es.upsa.mimo.gamercollection.injection.modules.IoDispatcher
+import es.upsa.mimo.gamercollection.injection.modules.MainDispatcher
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.FormatResponse
-import es.upsa.mimo.gamercollection.network.apiClient.FormatAPIClient
+import es.upsa.mimo.gamercollection.network.ApiManager
+import es.upsa.mimo.gamercollection.network.FormatApiService
+import es.upsa.mimo.gamercollection.network.RequestResult
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
-import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class FormatRepository @Inject constructor(
+    private val api: FormatApiService,
     private val database: AppDatabase,
-    private val formatAPIClient: FormatAPIClient
+    @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
     //region Private properties
-    private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
+    private val externalScope = CoroutineScope(Job() + mainDispatcher)
+    private val databaseScope = CoroutineScope(Job() + ioDispatcher)
     //endregion
 
     //region Public methods
     fun loadFormats(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+        externalScope.launch {
 
-        formatAPIClient.getFormats({ newFormats ->
+            when (val response = ApiManager.validateResponse(api.getFormats())) {
+                is RequestResult.JsonSuccess -> {
 
-            for (newFormat in newFormats) {
-                insertFormatDatabase(newFormat)
+                    val newFormats = response.body
+                    for (newFormat in newFormats) {
+                        insertFormatDatabase(newFormat)
+                    }
+                    val currentFormats = getFormatsDatabase()
+                    val formatsToRemove = AppDatabase.getDisabledContent(currentFormats, newFormats)
+                    for (format in formatsToRemove) {
+                        deleteFormatDatabase(format as FormatResponse)
+                    }
+                    success()
+                }
+                is RequestResult.Failure -> failure(response.error)
             }
-            val currentFormats = getFormatsDatabase()
-            val formatsToRemove = AppDatabase.getDisabledContent(currentFormats, newFormats)
-            for (format in formatsToRemove) {
-                deleteFormatDatabase(format as FormatResponse)
-            }
-            success()
-        }, failure)
+        }
     }
 
     fun getFormatsDatabase(): List<FormatResponse> {
@@ -44,7 +56,7 @@ class FormatRepository @Inject constructor(
             }
             formats = result.await().toMutableList()
             formats.sortBy { it.name }
-            val other = formats.firstOrNull { it.id == Constants.OTHER_VALUE }
+            val other = formats.firstOrNull { it.id == ApiManager.OTHER_VALUE }
             formats.remove(other)
             other?.let {
                 formats.add(it)

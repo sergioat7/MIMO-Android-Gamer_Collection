@@ -13,7 +13,7 @@ import java.util.Locale;
 
 import es.upsa.mimo.gamercollection.R;
 import es.upsa.mimo.gamercollection.base.BaseActivity;
-import es.upsa.mimo.gamercollection.utils.Constants;
+import es.upsa.mimo.gamercollection.utils.Notifications;
 import es.upsa.mimo.gamercollection.viewmodelfactories.LandingViewModelFactory;
 import es.upsa.mimo.gamercollection.viewmodels.LandingViewModel;
 
@@ -69,7 +69,7 @@ public class LandingActivity extends BaseActivity {
             String description = getString(R.string.channel_description);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
 
-            NotificationChannel channel = new NotificationChannel(Constants.CHANNEL_ID, name, importance);
+            NotificationChannel channel = new NotificationChannel(Notifications.CHANNEL_ID, name, importance);
             channel.setDescription(description);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             if (notificationManager != null) notificationManager.createNotificationChannel(channel);
