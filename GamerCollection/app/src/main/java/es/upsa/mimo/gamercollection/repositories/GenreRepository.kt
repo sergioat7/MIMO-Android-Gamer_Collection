@@ -1,37 +1,49 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import es.upsa.mimo.gamercollection.injection.modules.IoDispatcher
+import es.upsa.mimo.gamercollection.injection.modules.MainDispatcher
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GenreResponse
-import es.upsa.mimo.gamercollection.network.apiClient.GenreAPIClient
+import es.upsa.mimo.gamercollection.network.ApiManager
+import es.upsa.mimo.gamercollection.network.GenreApiService
+import es.upsa.mimo.gamercollection.network.RequestResult
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
-import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class GenreRepository @Inject constructor(
+    private val api: GenreApiService,
     private val database: AppDatabase,
-    private val genreAPIClient: GenreAPIClient
+    @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
     //region Private properties
-    private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
+    private val externalScope = CoroutineScope(Job() + mainDispatcher)
+    private val databaseScope = CoroutineScope(Job() + ioDispatcher)
     //endregion
 
     //region Public methods
     fun loadGenres(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+        externalScope.launch {
 
-        genreAPIClient.getGenres({ newGenres ->
+            when (val response = ApiManager.validateResponse(api.getGenres())) {
+                is RequestResult.JsonSuccess -> {
 
-            for (newGenre in newGenres) {
-                insertGenreDatabase(newGenre)
+                    val newGenres = response.body
+                    for (newGenre in newGenres) {
+                        insertGenreDatabase(newGenre)
+                    }
+                    val currentGenres = getGenresDatabase()
+                    val genresToRemove = AppDatabase.getDisabledContent(currentGenres, newGenres)
+                    for (genre in genresToRemove) {
+                        deleteGenreDatabase(genre as GenreResponse)
+                    }
+                    success()
+                }
+                is RequestResult.Failure -> failure(response.error)
             }
-            val currentGenres = getGenresDatabase()
-            val genresToRemove = AppDatabase.getDisabledContent(currentGenres, newGenres)
-            for (genre in genresToRemove) {
-                deleteGenreDatabase(genre as GenreResponse)
-            }
-            success()
-        }, failure)
+        }
     }
 
     fun getGenresDatabase(): List<GenreResponse> {
@@ -44,7 +56,7 @@ class GenreRepository @Inject constructor(
             }
             genres = result.await().toMutableList()
             genres.sortBy { it.name }
-            val other = genres.firstOrNull { it.id == Constants.OTHER_VALUE }
+            val other = genres.firstOrNull { it.id == ApiManager.OTHER_VALUE }
             genres.remove(other)
             other?.let {
                 genres.add(it)

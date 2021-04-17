@@ -159,6 +159,8 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
         )
         setupBindings()
 
+        binding.addGamesEnabled = viewModel.saga.value != null
+
         binding.fragment = this
     }
 

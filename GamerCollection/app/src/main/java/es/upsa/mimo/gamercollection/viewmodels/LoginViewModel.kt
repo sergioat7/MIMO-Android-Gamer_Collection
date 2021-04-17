@@ -8,21 +8,19 @@ import es.upsa.mimo.gamercollection.models.login.AuthData
 import es.upsa.mimo.gamercollection.models.login.LoginFormState
 import es.upsa.mimo.gamercollection.models.login.UserData
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
-import es.upsa.mimo.gamercollection.network.apiClient.UserAPIClient
 import es.upsa.mimo.gamercollection.repositories.*
 import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
-    private val sharedPreferencesHandler: SharedPreferencesHandler,
-    private val userAPIClient: UserAPIClient,
     private val formatRepository: FormatRepository,
     private val gameRepository: GameRepository,
     private val genreRepository: GenreRepository,
     private val platformRepository: PlatformRepository,
     private val sagaRepository: SagaRepository,
-    private val stateRepository: StateRepository
+    private val stateRepository: StateRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     //region Private properties
@@ -33,7 +31,7 @@ class LoginViewModel @Inject constructor(
 
     //region Public properties
     val username: String
-        get() = sharedPreferencesHandler.getUserData().username
+        get() = SharedPreferencesHelper.getUserData().username
     val loginFormState: LiveData<LoginFormState> = _loginForm
     val loginLoading: LiveData<Boolean> = _loginLoading
     val loginError: LiveData<ErrorResponse> = _loginError
@@ -43,11 +41,11 @@ class LoginViewModel @Inject constructor(
     fun login(username: String, password: String) {
 
         _loginLoading.value = true
-        userAPIClient.login(username, password, { token ->
+        userRepository.login(username, password, { token ->
 
             val userData = UserData(username, password, false)
             val authData = AuthData(token)
-            sharedPreferencesHandler.run {
+            SharedPreferencesHelper.run {
                 storeUserData(userData)
                 storeCredentials(authData)
             }
@@ -86,7 +84,7 @@ class LoginViewModel @Inject constructor(
                             stateRepository.loadStates({
 
                                 userData.isLoggedIn = true
-                                sharedPreferencesHandler.storeUserData(userData)
+                                SharedPreferencesHelper.storeUserData(userData)
 
                                 _loginError.value = null
                                 _loginLoading.value = false

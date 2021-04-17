@@ -1,37 +1,50 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import es.upsa.mimo.gamercollection.injection.modules.IoDispatcher
+import es.upsa.mimo.gamercollection.injection.modules.MainDispatcher
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
-import es.upsa.mimo.gamercollection.network.apiClient.PlatformAPIClient
+import es.upsa.mimo.gamercollection.network.ApiManager
+import es.upsa.mimo.gamercollection.network.PlatformApiService
+import es.upsa.mimo.gamercollection.network.RequestResult
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
-import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class PlatformRepository @Inject constructor(
+    private val api: PlatformApiService,
     private val database: AppDatabase,
-    private val platformAPIClient: PlatformAPIClient
+    @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
     //region Private properties
-    private val databaseScope = CoroutineScope(Job() + Dispatchers.IO)
+    private val externalScope = CoroutineScope(Job() + mainDispatcher)
+    private val databaseScope = CoroutineScope(Job() + ioDispatcher)
     //endregion
 
     //region Public methods
     fun loadPlatforms(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+        externalScope.launch {
 
-        platformAPIClient.getPlatforms({ newPlatforms ->
+            when (val response = ApiManager.validateResponse(api.getPlatforms())) {
+                is RequestResult.JsonSuccess -> {
 
-            for (newPlatform in newPlatforms) {
-                insertPlatformDatabase(newPlatform)
+                    val newPlatforms = response.body
+                    for (newPlatform in newPlatforms) {
+                        insertPlatformDatabase(newPlatform)
+                    }
+                    val currentPlatforms = getPlatformsDatabase()
+                    val platformsToRemove =
+                        AppDatabase.getDisabledContent(currentPlatforms, newPlatforms)
+                    for (platform in platformsToRemove) {
+                        deletePlatformDatabase(platform as PlatformResponse)
+                    }
+                    success()
+                }
+                is RequestResult.Failure -> failure(response.error)
             }
-            val currentPlatforms = getPlatformsDatabase()
-            val platformsToRemove = AppDatabase.getDisabledContent(currentPlatforms, newPlatforms)
-            for (platform in platformsToRemove) {
-                deletePlatformDatabase(platform as PlatformResponse)
-            }
-            success()
-        }, failure)
+        }
     }
 
     fun getPlatformsDatabase(): List<PlatformResponse> {
@@ -39,10 +52,12 @@ class PlatformRepository @Inject constructor(
         var platforms = mutableListOf<PlatformResponse>()
         runBlocking {
 
-            val result = GlobalScope.async { database.platformDao().getPlatforms() }
+            val result = databaseScope.async {
+                database.platformDao().getPlatforms()
+            }
             platforms = result.await().toMutableList()
             platforms.sortBy { it.name }
-            val other = platforms.firstOrNull { it.id == Constants.OTHER_VALUE }
+            val other = platforms.firstOrNull { it.id == ApiManager.OTHER_VALUE }
             platforms.remove(other)
             other?.let {
                 platforms.add(it)

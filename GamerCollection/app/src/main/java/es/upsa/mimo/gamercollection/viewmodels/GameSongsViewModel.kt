@@ -3,16 +3,18 @@ package es.upsa.mimo.gamercollection.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SongResponse
-import es.upsa.mimo.gamercollection.network.apiClient.SongAPIClient
 import es.upsa.mimo.gamercollection.repositories.GameRepository
+import es.upsa.mimo.gamercollection.repositories.SongRepository
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class GameSongsViewModel @Inject constructor(
-    private val songAPIClient: SongAPIClient,
-    private val gameRepository: GameRepository
+    private val gameRepository: GameRepository,
+    private val songRepository: SongRepository
 ) : ViewModel() {
 
     //region Private properties
@@ -34,18 +36,20 @@ class GameSongsViewModel @Inject constructor(
         game?.let { game ->
 
             _gameSongsLoading.value = true
-            songAPIClient.createSong(game.id, song, {
-                gameRepository.updateGameSongs(game.id, {
+            viewModelScope.launch {
+                songRepository.createSong(game.id, song, {
+                    gameRepository.updateGameSongs(game.id, {
 
-                    this.game = it
-                    _songs.value = it.songs
-                    _gameSongsLoading.value = false
+                        this@GameSongsViewModel.game = it
+                        _songs.value = it.songs
+                        _gameSongsLoading.value = false
+                    }, {
+                        _gameSongsError.value = it
+                    })
                 }, {
                     _gameSongsError.value = it
                 })
-            }, {
-                _gameSongsError.value = it
-            })
+            }
         }
     }
 
@@ -54,18 +58,20 @@ class GameSongsViewModel @Inject constructor(
         game?.let { game ->
 
             _gameSongsLoading.value = true
-            songAPIClient.deleteSong(game.id, songId, {
-                gameRepository.updateGameSongs(game.id, {
+            viewModelScope.launch {
+                songRepository.deleteSong(game.id, songId, {
+                    gameRepository.updateGameSongs(game.id, {
 
-                    this.game = it
-                    _songs.value = it.songs
-                    _gameSongsLoading.value = false
+                        this@GameSongsViewModel.game = it
+                        _songs.value = it.songs
+                        _gameSongsLoading.value = false
+                    }, {
+                        _gameSongsError.value = it
+                    })
                 }, {
                     _gameSongsError.value = it
                 })
-            }, {
-                _gameSongsError.value = it
-            })
+            }
         }
     }
 
