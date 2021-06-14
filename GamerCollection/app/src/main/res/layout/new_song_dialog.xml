@@ -1,57 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/white_bordered_view">
+    android:background="@drawable/white_bordered_view"
+    >
 
-    <EditText
-        android:id="@+id/edit_text_name"
-        style="@style/WhiteEditText.Regular"
+    <es.upsa.mimo.gamercollection.customviews.CustomEditText
+        android:id="@+id/custom_edit_text_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        android:hint="@string/MODAL_SONG_PLACEHOLDER_NAME"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="1" />
+        app:layout_constraintWidth_percent="1"
+        style="@style/Widget.GamerCollection.CustomEditText.NewSong.Name"
+        />
 
-    <EditText
-        android:id="@+id/edit_text_singer"
-        style="@style/WhiteEditText.Regular"
+    <es.upsa.mimo.gamercollection.customviews.CustomEditText
+        android:id="@+id/custom_edit_text_singer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:hint="@string/MODAL_SONG_PLACEHOLDER_SINGER"
-        app:layout_constraintEnd_toEndOf="@+id/edit_text_name"
-        app:layout_constraintStart_toStartOf="@+id/edit_text_name"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_name" />
+        app:layout_constraintEnd_toEndOf="@+id/custom_edit_text_name"
+        app:layout_constraintStart_toStartOf="@+id/custom_edit_text_name"
+        app:layout_constraintTop_toBottomOf="@+id/custom_edit_text_name"
+        style="@style/Widget.GamerCollection.CustomEditText.NewSong.Singer"
+        />
 
-    <EditText
-        android:id="@+id/edit_text_url"
-        style="@style/WhiteEditText.Regular"
+    <es.upsa.mimo.gamercollection.customviews.CustomEditText
+        android:id="@+id/custom_edit_text_url"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:hint="@string/MODAL_SONG_PLACEHOLDER_URL"
-        app:layout_constraintEnd_toEndOf="@+id/edit_text_singer"
-        app:layout_constraintStart_toStartOf="@+id/edit_text_singer"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_singer" />
+        app:layout_constraintEnd_toEndOf="@+id/custom_edit_text_singer"
+        app:layout_constraintStart_toStartOf="@+id/custom_edit_text_singer"
+        app:layout_constraintTop_toBottomOf="@+id/custom_edit_text_singer"
+        style="@style/Widget.GamerCollection.CustomEditText.NewSong.Url"
+        />
 
     <Button
         android:id="@+id/button_accept"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/ACCEPT"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_url"
-        app:layout_constraintWidth_percent="0.5" />
+        app:layout_constraintTop_toBottomOf="@+id/custom_edit_text_url"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintWidth_percent="0.5"
+        style="@style/Widget.GamerCollection.Button.Rounded.Action.Popup"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

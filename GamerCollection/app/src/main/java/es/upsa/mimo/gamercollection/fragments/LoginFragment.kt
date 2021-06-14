@@ -1,133 +1,129 @@
 package es.upsa.mimo.gamercollection.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import es.upsa.mimo.gamercollection.R
+import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.activities.RegisterActivity
-import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
-import es.upsa.mimo.gamercollection.models.*
-import es.upsa.mimo.gamercollection.network.apiClient.*
+import es.upsa.mimo.gamercollection.base.BindingFragment
+import es.upsa.mimo.gamercollection.databinding.FragmentLoginBinding
+import es.upsa.mimo.gamercollection.extensions.afterTextChanged
+import es.upsa.mimo.gamercollection.extensions.onFocusChange
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Environment
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
-import kotlinx.android.synthetic.main.fragment_login.*
+import es.upsa.mimo.gamercollection.viewmodelfactories.LoginViewModelFactory
+import es.upsa.mimo.gamercollection.viewmodels.LoginViewModel
 
-class LoginFragment : BaseFragment() {
+class LoginFragment : BindingFragment<FragmentLoginBinding>() {
 
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var formatAPIClient: FormatAPIClient
-    private lateinit var genreAPIClient: GenreAPIClient
-    private lateinit var platformAPIClient: PlatformAPIClient
-    private lateinit var stateAPIClient: StateAPIClient
-    private lateinit var gameAPIClient: GameAPIClient
-    private lateinit var sagaAPIClient: SagaAPIClient
-    private lateinit var userAPIClient: UserAPIClient
+    //region Private properties
+    private lateinit var viewModel: LoginViewModel
+    //endregion
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_login, container, false)
-    }
-
+    //region Lifecycle methods
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        sharedPrefHandler = SharedPreferencesHandler(context)
-        formatAPIClient = FormatAPIClient(resources, sharedPrefHandler)
-        genreAPIClient = GenreAPIClient(resources, sharedPrefHandler)
-        platformAPIClient = PlatformAPIClient(resources, sharedPrefHandler)
-        stateAPIClient = StateAPIClient(resources, sharedPrefHandler)
-        gameAPIClient = GameAPIClient(resources, sharedPrefHandler)
-        sagaAPIClient = SagaAPIClient(resources, sharedPrefHandler)
-        userAPIClient = UserAPIClient(resources, sharedPrefHandler)
-
         initializeUI()
     }
+    //endregion
 
-    //MARK: - Private functions
-
+    //region Private methods
     private fun initializeUI() {
 
-        val username = sharedPrefHandler.getUserData().username
+        val application = activity?.application
+        viewModel = ViewModelProvider(
+            this,
+            LoginViewModelFactory(application)
+        ).get(LoginViewModel::class.java)
+        setupBindings()
+
+        val username = viewModel.username
         val user = if (username.isEmpty()) Environment.getUsername() else username
-        edit_text_user.setText(user)
-        val password = if (username.isEmpty()) Environment.getPassword() else ""
-        edit_text_password.setText(password)
+        val password = if (username.isEmpty()) Environment.getPassword() else Constants.EMPTY_VALUE
 
-        login_button.setOnClickListener {login()}
-        register_button.setOnClickListener {register()}
-    }
+        with(binding) {
 
-    private fun login() {
-
-        val username = edit_text_user.text.toString()
-        val password = edit_text_password.text.toString()
-
-        if (username.isEmpty() || password.isEmpty()) {
-            showPopupDialog(resources.getString(R.string.ERROR_REGISTRATION_EMPTY_DATA))
-            return
-        }
-
-        showLoading()
-        userAPIClient.login(username, password, { token ->
-
-            val userData = UserData(username, password, false)
-            val authData = AuthData(token)
-            sharedPrefHandler.run {
-                storeUserData(userData)
-                storeCredentials(authData)
+            editTextUser.setText(user)
+            editTextUser.afterTextChanged {
+                loginDataChanged()
             }
-            syncApp(userData)
-        }, {
-            manageError(it)
+            editTextUser.onFocusChange {
+                loginDataChanged()
+            }
+
+            editTextPassword.setText(password)
+            editTextPassword.afterTextChanged {
+                loginDataChanged()
+            }
+            editTextPassword.onFocusChange {
+                loginDataChanged()
+            }
+
+            imageButtonPassword.setOnClickListener {
+                Constants.showOrHidePassword(
+                    editTextPassword,
+                    imageButtonPassword,
+                    Constants.isDarkMode(context)
+                )
+            }
+
+            loginButton.setOnClickListener {
+
+                viewModel.login(
+                    editTextUser.text.toString(),
+                    editTextPassword.text.toString()
+                )
+            }
+
+            registerButton.setOnClickListener {
+                launchActivity(RegisterActivity::class.java)
+            }
+        }
+    }
+
+    private fun setupBindings() {
+
+        viewModel.loginFormState.observe(viewLifecycleOwner, {
+
+            val loginState = it ?: return@observe
+
+            binding.loginButton.isEnabled = loginState.isDataValid
+
+            if (loginState.usernameError != null) {
+                binding.editTextUser.error = getString(loginState.usernameError)
+            }
+            if (loginState.passwordError != null) {
+                binding.editTextPassword.error = getString(loginState.passwordError)
+            }
+        })
+
+        viewModel.loginLoading.observe(viewLifecycleOwner, { isLoading ->
+
+            if (isLoading) {
+                showLoading()
+            } else {
+                hideLoading()
+            }
+        })
+
+        viewModel.loginError.observe(viewLifecycleOwner, { error ->
+
+            if (error == null) {
+                launchActivity(MainActivity::class.java)
+            } else {
+
+                hideLoading()
+                manageError(error)
+            }
         })
     }
 
-    private fun register() {
-        launchActivity(RegisterActivity::class.java)
+    private fun loginDataChanged() {
+
+        viewModel.loginDataChanged(
+            binding.editTextUser.text.toString(),
+            binding.editTextPassword.text.toString()
+        )
     }
-
-    private fun syncApp(userData: UserData) {
-
-        formatAPIClient.getFormats({ formats ->
-            genreAPIClient.getGenres({ genres ->
-                platformAPIClient.getPlatforms({ platforms ->
-                    stateAPIClient.getStates({ states ->
-                        gameAPIClient.getGames({ games ->
-                            sagaAPIClient.getSagas({ sagas ->
-
-                                Constants.manageFormats(requireContext(), formats)
-                                Constants.manageGenres(requireContext(), genres)
-                                Constants.managePlatforms(requireContext(), platforms)
-                                Constants.manageStates(requireContext(), states)
-                                Constants.manageGames(requireContext(), games)
-                                Constants.manageSagas(requireContext(), sagas)
-
-                                userData.isLoggedIn = true
-                                sharedPrefHandler.storeUserData(userData)
-                                launchActivity(MainActivity::class.java)
-                                hideLoading()
-                            }, {
-                                manageError(it)
-                            })
-                        }, {
-                            manageError(it)
-                        })
-                    }, {
-                        manageError(it)
-                    })
-                }, {
-                    manageError(it)
-                })
-            }, {
-                manageError(it)
-            })
-        }, {
-            manageError(it)
-        })
-    }
+    //endregion
 }

@@ -1,153 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/color2</item>
-        <item name="android:colorBackground">@color/color1</item>
-        <item name="titleTextColor">@color/color1</item>
-        <item name="dialogCornerRadius">5dp</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_keyboard_backspace_black_24dp</item>
+<!-- View   -->
+
+    <style name="Widget" />
+
+    <style name="Widget.GamerCollection" />
+
+    <style name="Widget.GamerCollection.BottomMenu">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="itemTextColor">@color/colorSecondary</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="menu">@menu/bottom_nav_menu</item>
     </style>
 
-    <style name="AppThemeDialogTransparent" parent="Theme.AppCompat.Light.Dialog">
-        <item name="android:windowBackground">@android:color/transparent</item>
+    <style name="Widget.GamerCollection.LoadingProgressBar">
+        <item name="android:indeterminate">true</item>
+        <item name="android:indeterminateTint">@color/colorPrimary</item>
     </style>
 
-    <style name="AppThemeSettings" parent="AppTheme">
-        <item name="android:colorBackground">@color/color2</item>
+    <style name="Widget.GamerCollection.RadioButton">
+        <item name="android:layout_weight">1</item>
+        <item name="android:buttonTint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/textPrimary</item>
     </style>
 
-    <style name="AppThemeGame" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/color2</item>
-        <item name="android:colorBackground">@color/color1</item>
-        <item name="titleTextColor">@color/color1</item>
-        <item name="dialogCornerRadius">5dp</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_keyboard_backspace_white_24dp</item>
+    <style name="Widget.GamerCollection.GamesEmptyLayout">
+        <item name="emptyListLayout_image">@drawable/ic_games_dark</item>
     </style>
 
-    <style name="AppThemeNoActionBar" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@color/color2</item>
-        <item name="android:colorBackground">@color/color1</item>
-        <item name="titleTextColor">@color/color1</item>
-        <item name="dialogCornerRadius">5dp</item>
+    <style name="Widget.GamerCollection.SagasEmptyLayout">
+        <item name="emptyListLayout_image">@drawable/ic_sagas_dark</item>
     </style>
 
-    <style name="WhiteEditText" parent="Widget.AppCompat.EditText">
-        <item name="backgroundTint">@color/color2</item>
-        <item name="android:textColor">@color/color2</item>
-        <item name="android:textColorHint">@color/color2Light</item>
-        <item name="android:textIsSelectable">true</item>
+    <style name="Widget.GamerCollection.ScrollViewContent">
+        <item name="android:scrollbars">none</item>
     </style>
 
-    <style name="WhiteEditText.Regular" parent="WhiteEditText">
-        <item name="fontFamily">@font/roboto_regular</item>
+<!--  Button  -->
+
+    <style name="Widget.GamerCollection.Button" parent="Widget.AppCompat.Button">
+        <item name="textAllCaps">false</item>
+        <item name="maxLines">1</item>
     </style>
 
-    <style name="WhiteEditText.Bold" parent="WhiteEditText">
-        <item name="fontFamily">@font/roboto_bold</item>
-    </style>
-
-    <style name="WhiteEditText.GameDetails" parent="WhiteEditText.Regular">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:minHeight">50dp</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-
-    <style name="WhiteEditText.GameDetailsTitle" parent="WhiteEditText.Bold">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">20dp</item>
-        <item name="android:layout_marginStart">50dp</item>
-        <item name="android:layout_marginEnd">50dp</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:textSize">24sp</item>
-    </style>
-
-    <style name="WhiteTextView" parent="Widget.AppCompat.TextView">
-        <item name="android:textColor">@color/color2</item>
-        <item name="android:textIsSelectable">true</item>
-    </style>
-
-    <style name="WhiteTextView.Bold" parent="WhiteTextView">
-        <item name="fontFamily">@font/roboto_bold</item>
-    </style>
-
-    <style name="WhiteTextView.Regular" parent="WhiteTextView">
-        <item name="fontFamily">@font/roboto_regular</item>
-    </style>
-
-    <style name="WhiteTextView.GameDetails" parent="WhiteTextView.Bold">
-        <item name="android:layout_width">125dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center_vertical|start</item>
-        <item name="android:layout_marginEnd">10dp</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-    
-    <style name="RoundedButton" parent="android:style/Widget.Button">
-        <item name="android:layout_width">200dp</item>
-        <item name="android:textColor">@color/color2</item>
-        <item name="android:fontFamily">@font/roboto_bold</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:maxLines">1</item>
+    <style name="Widget.GamerCollection.Button.Rounded">
+        <item name="android:layout_width">@dimen/size_semi_huge</item>
         <item name="android:gravity">center</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/textSecondary</item>
+        <item name="android:textSize">@dimen/font_medium</item>
     </style>
 
-    <style name="RoundedButton.Action">
-        <item name="android:background">@drawable/rounded_button_green</item>
+    <style name="Widget.GamerCollection.Button.Rounded.Action">
+        <item name="android:background">@drawable/rounded_button_primary</item>
     </style>
 
-    <style name="RoundedButton.Delete">
-        <item name="android:background">@drawable/rounded_button_red</item>
+    <style name="Widget.GamerCollection.Button.Rounded.Action.Popup">
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+        <item name="android:text">@string/accept</item>
     </style>
 
-    <style name="CustomRatingBar" parent="Widget.AppCompat.RatingBar.Indicator">
-        <item name="android:progressTint">@color/color5</item>
+<!--  ImageButton  -->
+
+    <style name="Widget.GamerCollection.ImageButton" parent="Widget.AppCompat.ImageButton" />
+
+<!--  EditText  -->
+
+    <style name="Widget.GamerCollection.EditText" parent="Widget.AppCompat.EditText">
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textColorHint">@color/textPrimaryLight</item>
+        <item name="android:textIsSelectable">true</item>
     </style>
 
-    <style name="CustomRatingBar.LightBackground" parent="CustomRatingBar">
-        <item name="android:progressBackgroundTint">@color/color1Light</item>
-        <item name="android:secondaryProgressTint">@android:color/transparent</item>
+    <style name="Widget.GamerCollection.EditText.Regular">
+        <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
-    <style name="CustomRatingBar.DarkBackground" parent="CustomRatingBar">
-        <item name="android:progressBackgroundTint">@color/color2Light</item>
-        <item name="android:secondaryProgressTint">@android:color/transparent</item>
+    <style name="Widget.GamerCollection.EditText.Bold">
+        <item name="fontFamily">@font/roboto_bold</item>
     </style>
 
-    <style name="CustomSpinner" parent="Widget.AppCompat.Spinner.Underlined">
+    <style name="Widget.GamerCollection.CustomEditText" />
+
+<!--  TextView  -->
+
+    <style name="Widget.GamerCollection.TextView" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/textPrimary</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextView.Bold">
+        <item name="fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextView.Regular">
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
+<!--  RatingBar  -->
+
+    <style name="Widget.GamerCollection.RatingBar" parent="Widget.MaterialRatingBar.RatingBar">
+        <item name="android:progressTint">@color/colorInProgress</item>
+        <item name="android:progressBackgroundTint">@color/colorInProgressLight</item>
+        <item name="android:secondaryProgressTint">@color/colorInProgressLight</item>
+        <item name="mrb_fillBackgroundStars">false</item>
+    </style>
+
+<!-- Spinner   -->
+
+    <style name="Widget.GamerCollection.Spinner" parent="Widget.AppCompat.Spinner.Underlined">
         <item name="android:spinnerMode">dropdown</item>
-        <item name="android:backgroundTint">@color/color2</item>
-        <item name="android:minHeight">30dp</item>
+        <item name="android:backgroundTint">@android:color/transparent</item>
+        <item name="android:minHeight">@dimen/size_large</item>
         <item name="fontFamily">@font/roboto_regular</item>
-    </style>
-
-    <style name="FilterButton" parent="android:style/Widget.Button">
-        <item name="android:textColor">@color/color1</item>
-        <item name="fontFamily">@font/roboto_bold</item>
-        <item name="android:textSize">18dp</item>
-    </style>
-
-    <style name="WhiteTextView.Bold.ModalFilterTitle" parent="WhiteTextView.Bold">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">20dp</item>
-    </style>
-
-    <style name="RoundedSelectorButton" parent="android:style/Widget.Button">
-        <item name="android:background">@drawable/rounded_filter_selector_button</item>
-        <item name="android:textColor">@drawable/state_button_text_color</item>
-        <item name="android:maxLines">1</item>
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">14dp</item>
-    </style>
-
-    <style name="MapButton" parent="android:style/Widget.Button">
-        <item name="android:textColor">@color/color1</item>
-        <item name="fontFamily">@font/roboto_bold</item>
-        <item name="android:textSize">18dp</item>
     </style>
 
 </resources>

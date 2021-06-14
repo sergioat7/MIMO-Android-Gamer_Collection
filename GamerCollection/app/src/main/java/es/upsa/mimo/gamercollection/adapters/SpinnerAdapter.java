@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -13,16 +14,20 @@ import androidx.core.content.ContextCompat;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+
 import es.upsa.mimo.gamercollection.R;
 
 public class SpinnerAdapter extends ArrayAdapter {
 
+    //region Private properties
     private Context context;
     private List<String> values;
     private boolean firstOptionEnabled;
+    //endregion
 
+    //region Lifecycle methods
     public SpinnerAdapter(Context context, List<String> values, boolean firstOptionEnabled) {
-        super(context, 0 , values);
+        super(context, 0, values);
         this.context = context;
         this.values = values;
         this.firstOptionEnabled = firstOptionEnabled;
@@ -33,15 +38,15 @@ public class SpinnerAdapter extends ArrayAdapter {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         View listItem = convertView;
-        if(listItem == null)
-            listItem = LayoutInflater.from(context).inflate(R.layout.spinner_item,parent,false);
+        if (listItem == null)
+            listItem = LayoutInflater.from(context).inflate(R.layout.spinner_item, parent, false);
 
         String currentValue = values.get(position);
 
         TextView tvValue = listItem.findViewById(R.id.text_view_value);
         tvValue.setText(currentValue);
 
-        int colorId = position == 0 && !firstOptionEnabled ? R.color.color2Light : R.color.color2;
+        int colorId = position == 0 && !firstOptionEnabled ? R.color.textPrimaryLight : R.color.textPrimary;
         tvValue.setTextColor(ContextCompat.getColor(context, colorId));
 
         return listItem;
@@ -56,8 +61,9 @@ public class SpinnerAdapter extends ArrayAdapter {
     public View getDropDownView(int position, View convertView, @NotNull ViewGroup parent) {
 
         TextView tvValue = (TextView) super.getDropDownView(position, convertView, parent);
-        int colorId = position == 0 && !firstOptionEnabled ? R.color.color2Light : R.color.color2;
+        int colorId = position == 0 && !firstOptionEnabled ? R.color.textPrimaryLight : R.color.textPrimary;
         tvValue.setTextColor(ContextCompat.getColor(context, colorId));
         return tvValue;
     }
+    //endregion
 }

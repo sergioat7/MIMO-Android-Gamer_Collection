@@ -2,52 +2,54 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.ObservableField
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import es.upsa.mimo.gamercollection.BuildConfig
+import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.activities.SagaDetailActivity
+import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SagasAdapter
-import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
-import es.upsa.mimo.gamercollection.models.base.BaseModel
-import es.upsa.mimo.gamercollection.network.apiClient.SagaAPIClient
-import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.SagaRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.StateRepository
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
-import kotlinx.android.synthetic.main.fragment_sagas.*
+import es.upsa.mimo.gamercollection.base.BaseModel
+import es.upsa.mimo.gamercollection.base.BindingFragment
+import es.upsa.mimo.gamercollection.databinding.FragmentSagasBinding
+import es.upsa.mimo.gamercollection.models.responses.SagaResponse
+import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.viewmodelfactories.SagasViewModelFactory
+import es.upsa.mimo.gamercollection.viewmodels.SagasViewModel
 
-class SagasFragment : BaseFragment(), SagasAdapter.OnItemClickListener {
+class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListener {
 
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var sagaAPIClient: SagaAPIClient
-    private lateinit var sagaRepository: SagaRepository
-    private lateinit var platformRepository: PlatformRepository
-    private lateinit var stateRepository: StateRepository
+    //region Private properties
+    private lateinit var viewModel: SagasViewModel
+    private lateinit var sagasAdapter: SagasAdapter
+    private val scrollPosition = ObservableField<ScrollPosition>()
+    //endregion
 
+    //region Lifecycle methods
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_sagas, container, false)
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        sharedPrefHandler = SharedPreferencesHandler(context)
-        sagaAPIClient = SagaAPIClient(resources, sharedPrefHandler)
-        sagaRepository = SagaRepository(requireContext())
-        platformRepository = PlatformRepository(requireContext())
-        stateRepository = StateRepository(requireContext())
-
         initializeUI()
     }
 
     override fun onResume() {
         super.onResume()
-        getContent()
+        viewModel.getSagas()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.expandedIds = sagasAdapter.getExpandedIds()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -58,92 +60,165 @@ class SagasFragment : BaseFragment(), SagasAdapter.OnItemClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.action_synchronize -> {
+
                 openSyncPopup()
                 return true
             }
             R.id.action_add -> {
-                add()
+
+                launchActivity(SagaDetailActivity::class.java)
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
     }
+    //endregion
 
-    override fun onItemClick(sagaId: Int) {
+    //region Interface methods
+    override fun onItemClick(id: Int) {
 
-        if (BuildConfig.IS_EDITABLE) {
-            val params = mapOf("sagaId" to sagaId)
-            launchActivityWithExtras(SagaDetailActivity::class.java, params)
-        } else {
-            showPopupDialog(resources.getString(R.string.ERROR_EDITION_FREE_VERSION))
-        }
+        val params = mapOf(Constants.SAGA_ID to id)
+        launchActivityWithExtras(SagaDetailActivity::class.java, params)
     }
 
-    override fun onGameItemClick(gameId: Int) {
+    override fun onSubItemClick(id: Int) {
 
-        val params = mapOf("gameId" to gameId)
+        val params = mapOf(Constants.GAME_ID to id)
         launchActivityWithExtras(GameDetailActivity::class.java, params)
     }
 
-    //MARK: - Private functions
+    override fun onLoadMoreItemsClick() {
+    }
+    //endregion
 
+    //region Public methods
+    fun goToStartEndList(view: View) {
+
+        with(binding) {
+            when (view) {
+                floatingActionButtonStartList -> {
+
+                    recyclerViewSagas.scrollToPosition(0)
+                    scrollPosition.set(ScrollPosition.TOP)
+                }
+                floatingActionButtonEndList -> {
+
+                    val position: Int = sagasAdapter.itemCount - 1
+                    recyclerViewSagas.scrollToPosition(position)
+                    scrollPosition.set(ScrollPosition.END)
+                }
+            }
+        }
+    }
+    //endregion
+
+    //region Private methods
     private fun initializeUI() {
 
-        swipe_refresh_layout.isEnabled = sharedPrefHandler.getSwipeRefresh()
-        swipe_refresh_layout.setColorSchemeResources(R.color.color3)
-        swipe_refresh_layout.setProgressBackgroundColorSchemeResource(R.color.color2)
-        swipe_refresh_layout.setOnRefreshListener {
-            loadSagas()
+        val application = activity?.application
+        viewModel = ViewModelProvider(
+            this,
+            SagasViewModelFactory(application)
+        ).get(SagasViewModel::class.java)
+        setupBindings()
+
+        with(binding) {
+
+            swipeRefreshLayout.apply {
+                isEnabled = this@SagasFragment.viewModel.swipeRefresh
+                setColorSchemeResources(R.color.colorFinished)
+                setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
+                setOnRefreshListener {
+                    this@SagasFragment.viewModel.loadSagas()
+                }
+            }
+
+            sagasAdapter = SagasAdapter(
+                this@SagasFragment.viewModel.sagas.value?.toMutableList() ?: mutableListOf(),
+                mutableListOf(),
+                this@SagasFragment.viewModel.platforms,
+                this@SagasFragment
+            )
+            recyclerViewSagas.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = sagasAdapter
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
+
+                        scrollPosition.set(
+                            if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                                ScrollPosition.TOP
+                            } else if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                                ScrollPosition.END
+                            } else {
+                                ScrollPosition.MIDDLE
+                            }
+                        )
+                    }
+                })
+            }
+
+            fragment = this@SagasFragment
+            viewModel = this@SagasFragment.viewModel
+            lifecycleOwner = this@SagasFragment
+            position = scrollPosition
         }
 
-        recycler_view_sagas.layoutManager = LinearLayoutManager(requireContext())
-        val platforms = platformRepository.getPlatforms()
-        val states = stateRepository.getStates()
-        recycler_view_sagas.adapter = SagasAdapter(requireContext(), ArrayList(), ArrayList(), platforms, states, this)
+        scrollPosition.set(ScrollPosition.TOP)
     }
 
-    private fun getContent() {
+    private fun setupBindings() {
 
-        val sagas = sagaRepository.getSagas().sortedBy { it.name }
+        viewModel.sagasLoading.observe(viewLifecycleOwner, { isLoading ->
 
-        val adapter = recycler_view_sagas.adapter
-        if (adapter != null && adapter is SagasAdapter) {
-            val items = ArrayList<BaseModel<Int>>()
-            val expandedIds = ArrayList<Int>()
-            for (saga in sagas) {
-                items.add(saga)
-                items.addAll(saga.games.sortedBy { it.releaseDate })
-                expandedIds.add(saga.id)
+            if (isLoading) {
+                showLoading()
+            } else {
+
+                binding.swipeRefreshLayout.isRefreshing = false
+                hideLoading()
             }
-            adapter.items = items
-            adapter.expandedIds = expandedIds
-            adapter.notifyDataSetChanged()
-        }
-        layout_empty_list.visibility = if (sagas.isNotEmpty()) View.GONE else View.VISIBLE
-        swipe_refresh_layout.visibility = if (sagas.isNotEmpty()) View.VISIBLE else View.GONE
-    }
+        })
 
-    private fun add(){
-        launchActivity(SagaDetailActivity::class.java)
-    }
+        viewModel.sagasError.observe(viewLifecycleOwner, { error ->
 
-    private fun loadSagas() {
+            hideLoading()
+            manageError(error)
+        })
 
-        sagaAPIClient.getSagas({
+        viewModel.sagas.observe(viewLifecycleOwner, {
 
-
-            for (saga in it) {
-                sagaRepository.insertSaga(saga)
-            }
-            sagaRepository.removeDisableContent(it)
-            getContent()
-            swipe_refresh_layout.isRefreshing = false
-        },{
-
-            manageError(it)
-            swipe_refresh_layout.isRefreshing = false
+            showData(it)
+            setTitle(it.size)
         })
     }
+
+    private fun showData(sagas: List<SagaResponse>) {
+
+        sagasAdapter.resetList()
+
+        val items = mutableListOf<BaseModel<Int>>()
+        for (saga in sagas) {
+
+            items.add(saga)
+            if (viewModel.expandedIds.contains(saga.id)) {
+                items.addAll(saga.games.sortedBy { it.releaseDate })
+            }
+        }
+        sagasAdapter.setItems(items)
+        sagasAdapter.setExpandedIds(viewModel.expandedIds)
+        sagasAdapter.notifyDataSetChanged()
+    }
+
+    private fun setTitle(sagasCount: Int) {
+
+        val title =
+            resources.getQuantityString(R.plurals.sagas_number_title, sagasCount, sagasCount)
+        (activity as AppCompatActivity?)?.supportActionBar?.title = title
+    }
+    //endregion
 }

@@ -4,23 +4,25 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.core.app.NavUtils
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.activities.base.BaseActivity
+import es.upsa.mimo.gamercollection.base.BaseActivity
 import es.upsa.mimo.gamercollection.fragments.SagaDetailFragment
+import es.upsa.mimo.gamercollection.utils.Constants
 
 class SagaDetailActivity : BaseActivity() {
 
+    //region Lifecycle methods
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setTitle(R.string.SAGA_DETAIL)
-        val sagaId = intent.getIntExtra("sagaId", 0)
+        setTitle(R.string.saga_detail)
+        val sagaId = intent.getIntExtra(Constants.SAGA_ID, 0)
         setContentView(R.layout.activity_saga_detail)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val sagaDetailFragment = SagaDetailFragment()
         if (sagaId > 0) {
             val bundle = Bundle()
-            bundle.putInt("sagaId", sagaId)
+            bundle.putInt(Constants.SAGA_ID, sagaId)
             sagaDetailFragment.arguments = bundle
         }
         val transaction = supportFragmentManager.beginTransaction()
@@ -30,7 +32,7 @@ class SagaDetailActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when(item.itemId) {
+        when (item.itemId) {
             android.R.id.home -> {
                 NavUtils.navigateUpFromSameTask(this)
                 return true
@@ -38,4 +40,5 @@ class SagaDetailActivity : BaseActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+    //endregion
 }

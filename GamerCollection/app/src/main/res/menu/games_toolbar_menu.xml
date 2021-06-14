@@ -1,26 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <item
         android:id="@+id/action_synchronize"
-        android:icon="@drawable/ic_loop_black_24dp"
+        android:icon="@drawable/ic_synchronize_light"
         android:title=""
-        app:showAsAction="always"/>
+        app:showAsAction="always"
+        />
 
     <item android:id="@+id/action_filter"
-        android:icon="@drawable/ic_filter"
+        android:icon="@drawable/ic_filter_light"
         android:title=""
-        app:showAsAction="always"/>
+        app:showAsAction="always"
+        />
 
     <item android:id="@+id/action_filter_on"
-        android:icon="@drawable/ic_filter_on"
+        android:icon="@drawable/ic_filter_on_light"
         android:title=""
         android:visible="false"
-        app:showAsAction="always"/>
+        app:showAsAction="always"
+        />
+
+    <item android:id="@+id/action_sort_on"
+        android:icon="@drawable/ic_sort_light"
+        android:title=""
+        app:showAsAction="always"
+        />
 
     <item android:id="@+id/action_add"
-        android:icon="@drawable/ic_add_black_24dp"
+        android:icon="@drawable/ic_add_game_dark"
         android:title=""
-        app:showAsAction="always"/>
+        app:showAsAction="always"
+        />
+
 </menu>

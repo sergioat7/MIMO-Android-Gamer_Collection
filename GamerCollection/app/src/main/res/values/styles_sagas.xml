@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.GamerCollection.ViewSagaNameContainer">
+        <item name="android:paddingTop">@dimen/margin_tiny</item>
+        <item name="android:paddingBottom">@dimen/margin_tiny</item>
+        <item name="android:paddingStart">@dimen/margin_medium</item>
+        <item name="android:paddingEnd">@dimen/margin_large</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <style name="Widget.GamerCollection.EditTextSaga" parent="Widget.AppCompat.EditText">
+        <item name="android:gravity">center|start</item>
+        <item name="android:paddingEnd">@dimen/margin_small</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/textSecondary</item>
+    </style>
+
+    <style name="Widget.GamerCollection.ImageViewAddGameToSaga">
+        <item name="android:layout_marginTop">@dimen/margin_normal</item>
+        <item name="android:layout_marginBottom">@dimen/margin_normal</item>
+        <item name="android:layout_marginStart">@dimen/margin_large_negative</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="srcCompat">@drawable/ic_edit_dark</item>
+    </style>
+
+</resources>

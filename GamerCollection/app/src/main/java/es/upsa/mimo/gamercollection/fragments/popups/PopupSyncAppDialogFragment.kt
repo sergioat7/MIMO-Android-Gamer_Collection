@@ -7,21 +7,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
-import es.upsa.mimo.gamercollection.network.apiClient.*
+import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
+import es.upsa.mimo.gamercollection.viewmodelfactories.PopupSyncAppViewModelFactory
+import es.upsa.mimo.gamercollection.viewmodels.PopupSyncAppViewModel
 
 class PopupSyncAppDialogFragment : DialogFragment() {
 
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var formatAPIClient: FormatAPIClient
-    private lateinit var genreAPIClient: GenreAPIClient
-    private lateinit var platformAPIClient: PlatformAPIClient
-    private lateinit var stateAPIClient: StateAPIClient
-    private lateinit var gameAPIClient: GameAPIClient
-    private lateinit var sagaAPIClient: SagaAPIClient
+    //region Private properties
+    private lateinit var viewModel: PopupSyncAppViewModel
+    //endregion
+
+    //region Lifecycle methods
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_TITLE, R.style.Theme_GamerCollection_DialogTransparent)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,79 +36,58 @@ class PopupSyncAppDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initializeUI()
+    }
+    //endregion
 
-        sharedPrefHandler = SharedPreferencesHandler(context)
-        formatAPIClient = FormatAPIClient(resources, sharedPrefHandler)
-        genreAPIClient = GenreAPIClient(resources, sharedPrefHandler)
-        platformAPIClient = PlatformAPIClient(resources, sharedPrefHandler)
-        stateAPIClient = StateAPIClient(resources, sharedPrefHandler)
-        gameAPIClient = GameAPIClient(resources, sharedPrefHandler)
-        sagaAPIClient = SagaAPIClient(resources, sharedPrefHandler)
+    //region Private methods
+    private fun initializeUI() {
 
-        syncApp()
+        val application = activity?.application
+        viewModel = ViewModelProvider(this, PopupSyncAppViewModelFactory(application)).get(
+            PopupSyncAppViewModel::class.java
+        )
+        setupBindings()
+
+        viewModel.loadContent()
     }
 
-    //MARK: - Private functions
+    private fun setupBindings() {
 
-    private fun syncApp() {
+        viewModel.popupSyncAppError.observe(viewLifecycleOwner, { error ->
 
-        formatAPIClient.getFormats({ formats ->
-            genreAPIClient.getGenres({ genres ->
-                platformAPIClient.getPlatforms({ platforms ->
-                    stateAPIClient.getStates({ states ->
-                        gameAPIClient.getGames({ games ->
-                            sagaAPIClient.getSagas({ sagas ->
-
-                                Constants.manageFormats(requireContext(), formats)
-                                Constants.manageGenres(requireContext(), genres)
-                                Constants.managePlatforms(requireContext(), platforms)
-                                Constants.manageStates(requireContext(), states)
-                                Constants.manageGames(requireContext(), games)
-                                Constants.manageSagas(requireContext(), sagas)
-
-                                goToMainView()
-                                dismiss()
-                            }, {
-                                dismiss()
-                                showPopupDialog(it.error)
-                            })
-                        }, {
-                            dismiss()
-                            showPopupDialog(it.error)
-                        })
-                    }, {
-                        dismiss()
-                        showPopupDialog(it.error)
-                    })
-                }, {
-                    dismiss()
-                    showPopupDialog(it.error)
-                })
-            }, {
-                dismiss()
-                showPopupDialog(it.error)
-            })
-        }, {
             dismiss()
-            showPopupDialog(it.error)
+            if (error == null) {
+
+                val intent = Intent(context, MainActivity::class.java).apply {}
+                startActivity(intent)
+            } else {
+                manageError(error)
+            }
         })
     }
 
-    private fun goToMainView() {
+    private fun manageError(errorResponse: ErrorResponse) {
 
-        val intent = Intent(context, MainActivity::class.java).apply {}
-        startActivity(intent)
+        val error = StringBuilder()
+        if (errorResponse.error.isNotEmpty()) {
+            error.append(errorResponse.error)
+        } else {
+            error.append(resources.getString(errorResponse.errorKey))
+        }
+        showPopupDialog(error.toString())
     }
 
     private fun showPopupDialog(message: String) {
 
         val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
-        val prev = activity?.supportFragmentManager?.findFragmentByTag("popupDialog")
+        val prev = activity?.supportFragmentManager?.findFragmentByTag(Constants.POPUP_DIALOG)
         if (prev != null) {
             ft.remove(prev)
         }
         ft.addToBackStack(null)
         val dialogFragment = PopupErrorDialogFragment(message)
-        dialogFragment.show(ft, "popupDialog")
+        dialogFragment.show(ft, Constants.POPUP_DIALOG)
     }
+    //endregion
 }

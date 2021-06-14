@@ -2,6 +2,8 @@ package es.upsa.mimo.gamercollection.models
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 
 data class GameWithSaga(
     @Embedded val game: GameResponse,
@@ -34,6 +36,7 @@ data class GameWithSaga(
             game.loanedTo,
             game.observations,
             saga,
-            game.songs)
+            game.songs
+        )
     }
 }

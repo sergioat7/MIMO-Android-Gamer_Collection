@@ -1,42 +1,41 @@
 package es.upsa.mimo.gamercollection.fragments
 
+import android.app.AlertDialog
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.InputType
 import android.view.*
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.activities.LoginActivity
+import es.upsa.mimo.gamercollection.activities.LandingActivity
+import es.upsa.mimo.gamercollection.base.BindingFragment
+import es.upsa.mimo.gamercollection.databinding.FragmentProfileBinding
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
-import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
-import es.upsa.mimo.gamercollection.models.AuthData
-import es.upsa.mimo.gamercollection.network.apiClient.UserAPIClient
-import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.SagaRepository
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
+import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.Preferences
+import es.upsa.mimo.gamercollection.viewmodelfactories.ProfileViewModelFactory
+import es.upsa.mimo.gamercollection.viewmodels.ProfileViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
 
-class ProfileFragment : BaseFragment() {
+class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
 
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var userAPIClient: UserAPIClient
-    private lateinit var gameRepository: GameRepository
-    private lateinit var sagaRepository: SagaRepository
+    //region Private properties
+    private lateinit var viewModel: ProfileViewModel
+    //endregion
 
+    //region Lifecycle methods
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        sharedPrefHandler = SharedPreferencesHandler(context)
-        userAPIClient = UserAPIClient(resources, sharedPrefHandler)
-        gameRepository = GameRepository(requireContext())
-        sagaRepository = SagaRepository(requireContext())
-
         initializeUI()
     }
 
@@ -48,102 +47,157 @@ class ProfileFragment : BaseFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when(item.itemId) {
-            R.id.action_synchronize -> {
-                openSyncPopup()
+        when (item.itemId) {
+            R.id.action_delete -> {
+
+                showPopupConfirmationDialog(resources.getString(R.string.profile_delete_confirmation)) {
+                    viewModel.deleteUser()
+                }
                 return true
             }
             R.id.action_logout -> {
-                logout()
+
+                showPopupConfirmationDialog(resources.getString(R.string.profile_logout_confirmation)) {
+                    viewModel.logout()
+                }
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
     }
+    //endregion
 
-    //MARK: - Private functions
-
-    private fun initializeUI() {
-
-        val userData = sharedPrefHandler.getUserData()
-        edit_text_user.setText(userData.username)
-        edit_text_password.setText(userData.password)
-
-        edit_text_user.setReadOnly(true, InputType.TYPE_NULL, 0)
-
-        button_change_password.setOnClickListener { updatePassword() }
-        button_delete_user.setOnClickListener { deleteUser() }
+    //region Public methods
+    fun showMessage(message: String) {
+        showPopupDialog(message)
     }
 
-    private fun logout() {
+    fun chooseThemeDialog() {
 
-        showPopupConfirmationDialog(resources.getString(R.string.PROFILE_LOGOUT_CONFIRMATION)) {
+        val styles = resources.getStringArray(R.array.app_theme_values)
+        val themeMode = getThemeMode()
 
-            showLoading()
-            userAPIClient.logout({
+        AlertDialog.Builder(context)
+            .setTitle(resources.getString(R.string.choose_a_theme))
+            .setSingleChoiceItems(styles, themeMode) { dialog, value ->
 
-                sharedPrefHandler.removePassword()
-                removeData()
-            }, {
+                text_view_app_theme_value.text = when (value) {
+                    1 -> styles[1]
+                    2 -> styles[2]
+                    else -> styles[0]
+                }
+                dialog.dismiss()
+            }
+            .show()
+    }
 
-                sharedPrefHandler.removePassword()
-                removeData()
-            })
+    fun save() {
+
+        val language =
+            if (radio_button_en.isChecked) Preferences.ENGLISH_LANGUAGE_KEY
+            else Preferences.SPANISH_LANGUAGE_KEY
+        val sortingKey =
+            resources.getStringArray(R.array.sorting_keys_ids)[spinner_sorting_keys.selectedItemPosition]
+        val themeMode =
+            resources.getStringArray(R.array.app_theme_values)
+                .indexOf(text_view_app_theme_value.text.toString())
+        viewModel.save(
+            edit_text_password.text.toString(),
+            language,
+            sortingKey,
+            switch_swipe_refresh.isChecked,
+            themeMode
+        )
+    }
+    //endregion
+
+    //region Private methods
+    private fun initializeUI() {
+
+        val application = activity?.application
+        viewModel = ViewModelProvider(
+            this,
+            ProfileViewModelFactory(application)
+        ).get(ProfileViewModel::class.java)
+        setupBindings()
+
+        with(binding) {
+
+            editTextUser.setReadOnly(true, InputType.TYPE_NULL, 0)
+
+            imageButtonPassword.setOnClickListener {
+                Constants.showOrHidePassword(
+                    edit_text_password,
+                    image_button_password,
+                    Constants.isDarkMode(context)
+                )
+            }
+
+            radioButtonEn.isChecked =
+                this@ProfileFragment.viewModel.language == Preferences.ENGLISH_LANGUAGE_KEY
+            radioButtonEs.isChecked =
+                this@ProfileFragment.viewModel.language == Preferences.SPANISH_LANGUAGE_KEY
+
+            spinnerSortingKeys.apply {
+                backgroundTintList =
+                    ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.colorPrimary
+                        )
+                    )
+                adapter = Constants.getAdapter(
+                    requireContext(),
+                    resources.getStringArray(R.array.sorting_keys).toList(),
+                    true
+                )
+                setSelection(
+                    resources.getStringArray(R.array.sorting_keys_ids)
+                        .indexOf(this@ProfileFragment.viewModel.sortingKey)
+                )
+            }
+
+            textViewAppThemeValue.text =
+                resources.getStringArray(R.array.app_theme_values)[getThemeMode()]
+
+            fragment = this@ProfileFragment
+            viewModel = this@ProfileFragment.viewModel
+            lifecycleOwner = this@ProfileFragment
         }
     }
 
-    private fun updatePassword() {
+    private fun setupBindings() {
 
-        val currentPassword = sharedPrefHandler.getUserData().password
-        val newPassword = edit_text_password.text.toString()
+        viewModel.profileLoading.observe(viewLifecycleOwner, { isLoading ->
 
-        if (currentPassword == newPassword) return
-
-        showLoading()
-        userAPIClient.updatePassword(newPassword, {
-            sharedPrefHandler.storePassword(newPassword)
-            val userData = sharedPrefHandler.getUserData()
-            userAPIClient.login(userData.username, userData.password, {
-
-                val authData = AuthData(it)
-                sharedPrefHandler.storeCredentials(authData)
+            if (isLoading) {
+                showLoading()
+            } else {
                 hideLoading()
-            }, {
-                manageError(it)
-            })
-        }, {
-            manageError(it)
+            }
+        })
+
+        viewModel.profileError.observe(viewLifecycleOwner, { error ->
+
+            if (error == null) {
+
+                launchActivity(LandingActivity::class.java)
+                activity?.finish()
+            } else {
+
+                hideLoading()
+                manageError(error)
+            }
         })
     }
 
-    private fun deleteUser() {
+    private fun getThemeMode(): Int {
 
-        showPopupConfirmationDialog(resources.getString(R.string.PROFILE_DELETE_CONFIRMATION)) {
-
-            showLoading()
-            userAPIClient.deleteUser({
-
-                sharedPrefHandler.removeUserData()
-                removeData()
-            }, {
-                manageError(it)
-            })
+        return when (AppCompatDelegate.getDefaultNightMode()) {
+            AppCompatDelegate.MODE_NIGHT_NO -> 1
+            AppCompatDelegate.MODE_NIGHT_YES -> 2
+            else -> 0
         }
     }
-
-    private fun removeData() {
-
-        sharedPrefHandler.removeCredentials()
-        val games = gameRepository.getGames()
-        for (game in games) {
-            gameRepository.deleteGame(game)
-        }
-        val sagas = sagaRepository.getSagas()
-        for (saga in sagas) {
-            sagaRepository.deleteSaga(saga)
-        }
-
-        hideLoading()
-        launchActivity(LoginActivity::class.java)
-    }
+    //endregion
 }
