@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -26,36 +27,52 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
-import kotlinx.android.synthetic.main.fragment_maps.*
+import es.upsa.mimo.gamercollection.adapters.OnLocationSelected
+import es.upsa.mimo.gamercollection.databinding.FragmentMapsBinding
+import es.upsa.mimo.gamercollection.utils.Constants
 
 class MapsFragment(
     private var location: LatLng?,
     private val onLocationSelected: OnLocationSelected
 ) : DialogFragment(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener {
 
-    private val madrid = LatLng(40.4169019, -3.7056721)
+    //region Private properties
+    private lateinit var binding: FragmentMapsBinding
     private lateinit var googleMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    //endregion
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_maps, container, false)
+    //region Lifecycle methods
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_maps, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity as GameDetailActivity)
+        fusedLocationClient =
+            LocationServices.getFusedLocationProviderClient(activity as GameDetailActivity)
 
-        initializeUI()
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(this)
+
+        binding.fragment = this
     }
+    //endregion
 
+    //region Interface methods
     override fun onMapReady(googleMap: GoogleMap) {
 
         this.googleMap = googleMap
         location?.let {
             addMarker(it)
         } ?: run {
-            addMarker(madrid)
+            addMarker(Constants.DEFAULT_LOCATION)
             if (checkPermissions()) {
                 if (isLocationEnabled()) {
                     getUserLocation()
@@ -75,7 +92,11 @@ class MapsFragment(
 
     override fun onMarkerDrag(p0: Marker?) {}
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -83,34 +104,57 @@ class MapsFragment(
             }
         }
     }
+    //endregion
 
-    // MARK: - Private functions
+    //region Public methods
+    fun locateUser() {
 
-    private fun initializeUI() {
-
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(this)
-
-        button_location.setOnClickListener { locateUser() }
-
-        button_save.setOnClickListener {
-            onLocationSelected.setLocation(location)
-            dismiss()
-        }
-        button_remove.setOnClickListener {
-            onLocationSelected.setLocation(null)
-            dismiss()
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
+                getUserLocation()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    resources.getString(R.string.turn_on_location),
+                    Toast.LENGTH_LONG
+                ).show()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
+        } else {
+            requestPermissions()
         }
     }
 
+    fun setLocation() {
+
+        onLocationSelected.setLocation(location)
+        dismiss()
+    }
+    //endregion
+
+    //region Private methods
     private fun checkPermissions(): Boolean {
 
-        return ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        return ActivityCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun requestPermissions() {
-        ActivityCompat.requestPermissions(activity as GameDetailActivity, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), 1)
+        ActivityCompat.requestPermissions(
+            activity as GameDetailActivity,
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
+            1
+        )
     }
 
     private fun isLocationEnabled(): Boolean {
@@ -123,25 +167,10 @@ class MapsFragment(
         return false
     }
 
-    private fun locateUser() {
-
-        if (checkPermissions()) {
-            if (isLocationEnabled()) {
-                getUserLocation()
-            } else {
-                Toast.makeText(requireContext(), "Turn on location", Toast.LENGTH_LONG).show()
-                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivity(intent)
-            }
-        } else {
-            requestPermissions()
-        }
-    }
-
     @SuppressLint("MissingPermission")
     private fun getUserLocation() {
 
-        fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
 
             location?.let {
                 addMarker(LatLng(it.latitude, it.longitude))
@@ -170,18 +199,16 @@ class MapsFragment(
         }, Looper.myLooper())
     }
 
-    private fun addMarker(position: LatLng){
+    private fun addMarker(position: LatLng) {
 
         googleMap.clear()
         googleMap.addMarker(
             MarkerOptions()
-            .position(position)
-            .draggable(true)
+                .position(position)
+                .draggable(true)
         )
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(position))
         location = position
     }
-}
-interface OnLocationSelected {
-    fun setLocation(location: LatLng?)
+    //endregion
 }

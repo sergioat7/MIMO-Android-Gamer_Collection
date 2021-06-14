@@ -1,103 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.LoginFragment">
+<layout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".fragments.LoginFragment"
+        >
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
 
-        <ImageView
-            android:id="@+id/app_name_image_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/app_name_white"
-            app:layout_constraintBottom_toTopOf="@+id/edit_text_user"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/image_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/edit_text_user"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/Widget.GamerCollection.ImageViewLogo"
+                />
 
-        <EditText
-            android:id="@+id/edit_text_user"
-            style="@style/WhiteEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="10dp"
-            android:ems="10"
-            android:hint="@string/LOGIN_USERNAME"
-            android:inputType="text"
-            app:layout_constraintBottom_toTopOf="@+id/edit_text_password"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <EditText
-            android:id="@+id/edit_text_password"
-            style="@style/WhiteEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:ems="10"
-            android:hint="@string/LOGIN_PASSWORD"
-            android:inputType="textPassword"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/login_button"
-            style="@style/RoundedButton.Action"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="30dp"
-            android:text="@string/LOGIN_ACCESS"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="20dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/edit_text_user"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="5dp"
-                android:fontFamily="@font/roboto_regular"
-                android:text="@string/LOGIN_NOT_ACCOUNT" />
+                app:layout_constraintBottom_toTopOf="@+id/edit_text_password"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                style="@style/Widget.GamerCollection.EditText.Credentials.Username"
+                />
+
+            <EditText
+                android:id="@+id/edit_text_password"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/edit_text_user"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/Widget.GamerCollection.EditText.Credentials.Password"
+                />
+
+            <ImageButton
+                android:id="@+id/image_button_password"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@+id/edit_text_password"
+                app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
+                app:layout_constraintTop_toTopOf="@+id/edit_text_password"
+                style="@style/Widget.GamerCollection.ImageButton.EditText.Password"
+                />
 
             <Button
-                android:id="@+id/register_button"
+                android:id="@+id/login_button"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_password"
+                app:layout_constraintVertical_bias="1.0"
+                style="@style/Widget.GamerCollection.Button.Rounded.Action.Login"
+                />
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="#00000000"
-                android:fontFamily="@font/roboto_regular"
-                android:text="@string/LOGIN_REGISTER"
-                android:textAllCaps="false"
-                android:textColor="@color/color5" />
-        </LinearLayout>
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                >
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.GamerCollection.TextView.NoAccount"
+                    />
+
+                <Button
+                    android:id="@+id/register_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.GamerCollection.Button.NoAccount"
+                    />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+</layout>

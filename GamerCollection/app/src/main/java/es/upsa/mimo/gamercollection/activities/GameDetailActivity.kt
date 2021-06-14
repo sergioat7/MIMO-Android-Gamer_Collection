@@ -4,239 +4,138 @@ import android.app.AlertDialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import es.upsa.mimo.gamercollection.BuildConfig
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.activities.base.BaseActivity
 import es.upsa.mimo.gamercollection.adapters.GameDetailPagerAdapter
-import es.upsa.mimo.gamercollection.extensions.setReadOnly
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.models.PlatformResponse
-import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
-import es.upsa.mimo.gamercollection.network.apiClient.SongAPIClient
-import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.GenreRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
+import es.upsa.mimo.gamercollection.base.BaseActivity
+import es.upsa.mimo.gamercollection.databinding.ActivityGameDetailBinding
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
-import kotlinx.android.synthetic.main.activity_game_detail.*
+import es.upsa.mimo.gamercollection.viewmodelfactories.GameDetailViewModelFactory
+import es.upsa.mimo.gamercollection.viewmodels.GameDetailViewModel
 import kotlinx.android.synthetic.main.set_image_dialog.view.*
 import kotlinx.android.synthetic.main.set_rating_dialog.view.*
-import java.lang.Exception
 
 class GameDetailActivity : BaseActivity() {
 
+    //region  - Private properties
     private var gameId: Int? = null
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var formatRepository: FormatRepository
-    private lateinit var genreRepository: GenreRepository
-    private lateinit var platformRepository: PlatformRepository
-    private lateinit var gameRepository: GameRepository
-    private lateinit var gameAPIClient: GameAPIClient
-    private lateinit var songAPIClient: SongAPIClient
+    private var isRawgGame: Boolean = false
+    private lateinit var binding: ActivityGameDetailBinding
+    private lateinit var viewModel: GameDetailViewModel
     private var menu: Menu? = null
     private lateinit var pagerAdapter: GameDetailPagerAdapter
-    private lateinit var platforms: List<PlatformResponse>
+    private var game: GameResponse? = null
     private var platformValues = ArrayList<String>()
-    private var currentGame: GameResponse? = null
     private var imageUrl: String? = null
+    private val goBack = MutableLiveData<Boolean>()
+    //endregion
 
+    //region Lifecycle methods
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_game_detail)
-        title = ""
-        setSupportActionBar(toolbar)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_game_detail)
+        setContentView(binding.root)
+
+        title = Constants.EMPTY_VALUE
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val gameId = intent.getIntExtra("gameId", 0)
-        if (gameId > 0) this.gameId = gameId
-
-        sharedPrefHandler = SharedPreferencesHandler(this)
-        formatRepository = FormatRepository(this)
-        genreRepository = GenreRepository(this)
-        platformRepository = PlatformRepository(this)
-        gameRepository = GameRepository(this)
-        gameAPIClient = GameAPIClient(resources, sharedPrefHandler)
-        songAPIClient = SongAPIClient(resources, sharedPrefHandler)
+        val id = intent.getIntExtra(Constants.GAME_ID, 0)
+        gameId = if (id > 0) id else null
+        isRawgGame = intent.getBooleanExtra(Constants.IS_RAWG_GAME, false)
 
         initializeUI()
-        loadData()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
         this.menu = menu
-        menu?.let{
+        menu?.let {
+
             it.clear()
-            menuInflater.inflate(R.menu.game_toolbar_menu, menu)
-            it.findItem(R.id.action_edit).isVisible = currentGame != null
-            it.findItem(R.id.action_save).isVisible = currentGame == null
-            it.findItem(R.id.action_cancel).isVisible = false
+            val menuRes =
+                if (isRawgGame) R.menu.rawg_game_toolbar_menu else R.menu.game_toolbar_menu
+            menuInflater.inflate(menuRes, menu)
+            if (!isRawgGame) {
+
+                menu.findItem(R.id.action_edit).isVisible = game != null
+                menu.findItem(R.id.action_remove).isVisible = game != null
+                menu.findItem(R.id.action_save).isVisible = game == null
+                it.findItem(R.id.action_cancel).isVisible = false
+            }
         }
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when(item.itemId) {
+        when (item.itemId) {
             android.R.id.home -> {
                 NavUtils.navigateUpFromSameTask(this)
-                return true
             }
-            R.id.action_edit -> {
-                editGame()
-                return true
+            R.id.action_edit -> setEdition(true)
+            R.id.action_remove -> {
+
+                showPopupConfirmationDialog(resources.getString(R.string.game_detail_delete_confirmation)) {
+                    viewModel.deleteGame()
+                }
             }
             R.id.action_save -> {
-                saveGame()
-                return true
+
+                if (isRawgGame || game == null) {
+                    viewModel.createGame(getGameData())
+                } else {
+
+                    viewModel.setGame(getGameData())
+                    setEdition(false)
+                }
             }
             R.id.action_cancel -> {
-                cancelEdition()
-                return true
+
+                showData(game)
+                setEdition(false)
             }
         }
         return super.onOptionsItemSelected(item)
     }
+    //endregion
 
-    // MARK: Private functions
-
-    private fun initializeUI() {
-
-        image_view_game.setOnClickListener { setImage() }
-        platforms = platformRepository.getPlatforms()
-        platformValues = ArrayList()
-        platformValues.run {
-            this.add(resources.getString((R.string.GAME_DETAIL_SELECT_PLATFORM)))
-            this.addAll(platforms.map { it.name })
-        }
-        spinner_platforms.adapter = Constants.getAdapter(this, platformValues)
-
-        rating_button.setOnClickListener { setRating() }
-    }
-
-    private fun loadData() {
-
-        gameId?.let {
-
-            showLoading()
-            currentGame = gameRepository.getGame(it)
-            hideLoading()
-        }
-
-        pagerAdapter = GameDetailPagerAdapter(this, 2, currentGame)
-        viewPager2.adapter = pagerAdapter
-        TabLayoutMediator(tab_layout, viewPager2) { tab, position ->
-            tab.text = if(position == 0) resources.getString(R.string.GAME_DETAIL_TITLE) else resources.getString(R.string.GAME_DETAIL_SONGS_TITLE)
-        }.attach()
-
-        showData(currentGame, currentGame == null)
-    }
-
-    private fun showData(game: GameResponse?, enabled: Boolean) {
-
-        val inputTypeText = if (enabled) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
-        val backgroundColor = ContextCompat.getColor(this, R.color.color2)
-
-        var name: String? = null
-        var platformPosition = 0
-
-        currentGame = game
-        game?.let {
-
-            imageUrl = game.imageUrl
-            imageUrl?.let { url ->
-
-                progress_bar_loading.visibility = View.VISIBLE
-                Picasso.get()
-                    .load(url)
-                    .error(R.drawable.add_photo)
-                    .into(image_view_game, object : Callback {
-                        override fun onSuccess() {
-                            progress_bar_loading.visibility = View.GONE
-                        }
-                        override fun onError(e: Exception?) {
-                            progress_bar_loading.visibility = View.GONE
-                        }
-                })
-                Picasso.get()
-                    .load(url)
-                    .into(image_view_blurred, object : Callback {
-                        override fun onSuccess() {
-                            image_view_blurred.setBlur(5)
-                        }
-                        override fun onError(e: Exception?) {}
-                    })
-            }
-
-            image_view_goty.visibility = if(game.goty) View.VISIBLE else View.GONE
-
-            name = if (game.name != null && game.name!!.isNotEmpty()) game.name else if (enabled) "" else "-"
-
-            game.platform?.let { platformId ->
-                val platformName = platformRepository.getPlatforms().firstOrNull { it.id == platformId }?.name
-                val pos = platformValues.indexOf(platformName)
-                platformPosition = if(pos > 0) pos else 0
-            }
-
-            rating_button.text = game.score.toString()
-
-            when(game.pegi) {
-                "+3" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi3))
-                "+4" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi4))
-                "+6" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi6))
-                "+7" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi7))
-                "+12" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi12))
-                "+16" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi16))
-                "+18" -> image_view_pegi.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pegi18))
-                else -> image_view_pegi.setImageDrawable(null)
-            }
-        } ?: run {
-
-            name = if (enabled) "" else "-"
-        }
-
-        edit_text_name.setText(name)
-        spinner_platforms.setSelection(platformPosition)
-        spinner_platforms.visibility = if (enabled || platformPosition > 0) View.VISIBLE else View.GONE
-
-        image_view_game.isEnabled = enabled
-        edit_text_name.setReadOnly(!enabled, inputTypeText, backgroundColor)
-        spinner_platforms.backgroundTintList = if (!enabled) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(backgroundColor)
-        spinner_platforms.isEnabled = enabled
-        rating_button.isEnabled = enabled
-    }
-
-    private fun setImage() {
+    //region Public methods
+    fun setImage() {
 
         val dialogBuilder = AlertDialog.Builder(this).create()
         val dialogView = this.layoutInflater.inflate(R.layout.set_image_dialog, null)
 
         dialogView.button_accept.setOnClickListener {
 
-            val url = dialogView.edit_text_url.text.toString()
+            val url = dialogView.custom_edit_text_url.getText()
+            val errorImage =
+                if (Constants.isDarkMode(this)) R.drawable.ic_add_image_light else R.drawable.ic_add_image_dark
             if (url.isNotEmpty()) {
 
                 Picasso.get()
                     .load(url)
-                    .error(R.drawable.add_photo)
-                    .into(image_view_game, object : Callback {
+                    .error(errorImage)
+                    .into(binding.imageViewGame, object : Callback {
                         override fun onSuccess() {
                             imageUrl = url
                         }
+
                         override fun onError(e: Exception?) {
                             imageUrl = null
-                            showPopupDialog(resources.getString(R.string.ERROR_IMAGE_URL))
+                            showPopupDialog(resources.getString(R.string.error_image_url))
                         }
                     })
             }
@@ -247,52 +146,196 @@ class GameDetailActivity : BaseActivity() {
         dialogBuilder.show()
     }
 
-    private fun setRating() {
+    fun setRating() {
 
         val dialogBuilder = AlertDialog.Builder(this).create()
         val dialogView = this.layoutInflater.inflate(R.layout.set_rating_dialog, null)
 
-        dialogView.rating_bar.rating = rating_button.text.toString().toFloat()
+        dialogView.rating_bar.rating = binding.ratingButton.text.toString().toFloat() / 2
         dialogView.button_rate.setOnClickListener {
 
-            rating_button.text = dialogView.rating_bar.rating.toString()
+            binding.ratingButton.text = (dialogView.rating_bar.rating * 2).toString()
             dialogBuilder.dismiss()
         }
 
         dialogBuilder.setView(dialogView)
         dialogBuilder.show()
     }
+    //endregion
 
-    private fun editGame(){
+    //region Private methods
+    private fun initializeUI() {
 
-        if (BuildConfig.IS_EDITABLE) {
-            showEditButton(true)
-            showData(currentGame, true)
-            pagerAdapter.showData(currentGame, true)
-            pagerAdapter.enableEdition(true)
-        } else {
-            showPopupDialog(resources.getString(R.string.ERROR_EDITION_FREE_VERSION))
+        viewModel = ViewModelProvider(
+            this, GameDetailViewModelFactory(
+                application,
+                gameId,
+                isRawgGame
+            )
+        ).get(GameDetailViewModel::class.java)
+        setupBindings()
+
+        platformValues = ArrayList()
+        platformValues.run {
+            this.add(resources.getString((R.string.game_detail_select_platform)))
+            this.addAll(viewModel.platforms.map { it.name })
         }
+        binding.spinnerPlatforms.adapter = Constants.getAdapter(this, platformValues)
+
+        pagerAdapter = GameDetailPagerAdapter(
+            this,
+            2,
+            viewModel.game.value
+        )
+        binding.viewPagerGame.adapter = pagerAdapter
+        TabLayoutMediator(binding.tabLayout, binding.viewPagerGame) { tab, position ->
+            tab.text =
+                if (position == 0) resources.getString(R.string.game_detail_title) else resources.getString(
+                    R.string.game_detail_songs_title
+                )
+        }.attach()
+
+        binding.activity = this
     }
 
-    private fun saveGame() {
+    private fun setupBindings() {
 
-        val name = edit_text_name.text.toString()
-        val platform = platforms.firstOrNull { it.name == spinner_platforms.selectedItem.toString() }?.id
-        val score = rating_button.text.toString().toDouble()
-        val gameData = pagerAdapter.getGameData()
+        viewModel.gameDetailLoading.observe(this, { isLoading ->
 
-        if (name.isEmpty() && platform == null && score == 0.0 && imageUrl == null && gameData == null) return
+            if (isLoading) {
+                showLoading()
+            } else {
+                hideLoading()
+            }
+        })
 
-        val newGame = gameData?.let {
+        viewModel.gameDetailSuccessMessage.observe(this, {
+
+            val message = resources.getString(it)
+            showPopupDialog(message, goBack)
+        })
+
+        viewModel.gameDetailError.observe(this, { error ->
+
+            hideLoading()
+            manageError(error)
+        })
+
+        viewModel.game.observe(this, {
+
+            game = it
+            showData(it)
+            makeFieldsEditable(isRawgGame || it == null)
+        })
+
+        goBack.observe(this, {
+            finish()
+        })
+    }
+
+    private fun showData(game: GameResponse?) {
+
+        imageUrl = game?.imageUrl
+
+        val image = imageUrl ?: Constants.NO_VALUE
+        val errorImage =
+            if (Constants.isDarkMode(this)) R.drawable.ic_add_image_dark else R.drawable.ic_add_image_light
+        binding.progressBarLoading.visibility = View.VISIBLE
+        Picasso
+            .get()
+            .load(image)
+            .error(errorImage)
+            .into(binding.imageViewGame, object : Callback {
+
+                override fun onSuccess() {
+                    binding.progressBarLoading.visibility = View.GONE
+                }
+
+                override fun onError(e: Exception?) {
+                    binding.progressBarLoading.visibility = View.GONE
+                }
+            })
+        Picasso
+            .get()
+            .load(image)
+            .into(binding.imageViewBlurred, object : Callback {
+
+                override fun onSuccess() {
+                    binding.imageViewBlurred.setBlur(5)
+                }
+
+                override fun onError(e: Exception?) {
+                }
+            })
+
+        binding.imagePegi = Constants.getPegiImage(game?.pegi, this)
+
+        val name = game?.name ?: Constants.EMPTY_VALUE
+        binding.customEditTextName.setText(
+            if (name.isNotBlank()) name
+            else Constants.NO_VALUE
+        )
+
+        var platformPosition = 0
+        game?.platform?.let { platformId ->
+
+            val platformName = viewModel.platforms.firstOrNull { it.id == platformId }?.name
+            val pos = platformValues.indexOf(platformName)
+            platformPosition = if (pos > 0) pos else 0
+        }
+        binding.spinnerPlatforms.setSelection(platformPosition)
+
+        binding.game = game
+        pagerAdapter.showData(game)
+    }
+
+    private fun setEdition(editable: Boolean) {
+
+        menu?.let {
+            it.findItem(R.id.action_edit).isVisible = !editable
+            it.findItem(R.id.action_remove).isVisible = !editable
+            it.findItem(R.id.action_save).isVisible = editable
+            it.findItem(R.id.action_cancel).isVisible = editable
+        }
+
+        makeFieldsEditable(editable)
+    }
+
+    private fun makeFieldsEditable(editable: Boolean) {
+
+        val backgroundColor = ContextCompat.getColor(this, R.color.colorPrimary)
+
+        binding.customEditTextName.setReadOnly(!editable, backgroundColor)
+        binding.spinnerPlatforms.visibility =
+            if (editable || binding.spinnerPlatforms.selectedItemPosition > 0) View.VISIBLE
+            else View.GONE
+        binding.spinnerPlatforms.backgroundTintList =
+            if (!editable) ColorStateList.valueOf(Color.TRANSPARENT)
+            else ColorStateList.valueOf(backgroundColor)
+
+        binding.editable = editable
+        pagerAdapter.setEdition(editable)
+    }
+
+    private fun getGameData(): GameResponse {
+
+        val id = gameId ?: 0
+        val name = binding.customEditTextName.getText()
+        val platform =
+            viewModel.platforms.firstOrNull { it.name == binding.spinnerPlatforms.selectedItem.toString() }?.id
+        val score = binding.ratingButton.text.toString().toDouble()
+
+        return pagerAdapter.getGameData()?.let {
+
             it.name = name
             it.platform = platform
             it.imageUrl = imageUrl
             it.score = score
             it
         } ?: run {
+
             GameResponse(
-                currentGame?.id ?: 0,
+                id,
                 name,
                 platform,
                 score,
@@ -313,54 +356,9 @@ class GameDetailActivity : BaseActivity() {
                 null,
                 null,
                 null,
-                ArrayList())
-        }
-
-        showLoading()
-        if (currentGame != null) {
-
-            gameAPIClient.setGame(newGame, {
-                gameRepository.updateGame(it)
-
-                currentGame = it
-                cancelEdition()
-                hideLoading()
-            }, {
-                manageError(it)
-            })
-        } else {
-
-            gameAPIClient.createGame(newGame, {
-                gameAPIClient.getGames({ games ->
-
-                    for (game in games) {
-                        gameRepository.insertGame(game)
-                    }
-                    hideLoading()
-                    finish()
-                }, {
-                    manageError(it)
-                })
-            }, {
-                manageError(it)
-            })
+                ArrayList()
+            )
         }
     }
-
-    private fun cancelEdition(){
-
-        showEditButton(false)
-        showData(currentGame, false)
-        pagerAdapter.showData(currentGame, false)
-        pagerAdapter.enableEdition(false)
-    }
-
-    private fun showEditButton(hidden: Boolean) {
-
-        menu?.let {
-            it.findItem(R.id.action_edit).isVisible = !hidden
-            it.findItem(R.id.action_save).isVisible = hidden
-            it.findItem(R.id.action_cancel).isVisible = hidden
-        }
-    }
+    //endregion
 }

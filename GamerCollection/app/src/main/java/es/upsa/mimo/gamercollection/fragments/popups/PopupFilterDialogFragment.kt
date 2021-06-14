@@ -1,266 +1,158 @@
 package es.upsa.mimo.gamercollection.fragments.popups
 
 import android.os.Bundle
-import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.core.view.children
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.extensions.showDatePicker
+import es.upsa.mimo.gamercollection.adapters.OnFiltersSelected
+import es.upsa.mimo.gamercollection.databinding.FragmentPopupFilterDialogBinding
 import es.upsa.mimo.gamercollection.models.FilterModel
-import es.upsa.mimo.gamercollection.persistence.repositories.FormatRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.GenreRepository
-import es.upsa.mimo.gamercollection.persistence.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
-import kotlinx.android.synthetic.main.fragment_popup_filter_dialog.*
+import es.upsa.mimo.gamercollection.viewmodelfactories.PopupFilterViewModelFactory
+import es.upsa.mimo.gamercollection.viewmodels.PopupFilterViewModel
 
 class PopupFilterDialogFragment(
-    filters: FilterModel?,
+    private var currentFilters: FilterModel?,
     private val onFiltersSelected: OnFiltersSelected
 ) : DialogFragment() {
 
-    private var currentFilters = filters
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var formatRepository: FormatRepository
-    private lateinit var genreRepository: GenreRepository
-    private lateinit var platformRepository: PlatformRepository
+    //region Private properties
+    private lateinit var binding: FragmentPopupFilterDialogBinding
+    private lateinit var viewModel: PopupFilterViewModel
+    //endregion
+
+    //region Lifecycle methods
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_TITLE, R.style.Theme_GamerCollection_DialogTransparent)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_popup_filter_dialog, container, false)
+    ): View {
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_popup_filter_dialog,
+            container,
+            false
+        )
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        sharedPrefHandler = SharedPreferencesHandler(context)
-        formatRepository = FormatRepository(requireContext())
-        genreRepository = GenreRepository(requireContext())
-        platformRepository = PlatformRepository(requireContext())
-
         initializeUI()
-        configFilters(currentFilters)
     }
+    //endregion
 
-    //MARK: - Private functions
-
-    private fun initializeUI() {
-
-        fillPlatforms()
-        fillGenres()
-        fillFormats()
-
-        edit_text_release_date_min.showDatePicker(requireContext())
-        edit_text_release_date_min.setRawInputType(InputType.TYPE_NULL)
-        edit_text_release_date_max.showDatePicker(requireContext())
-        edit_text_release_date_max.setRawInputType(InputType.TYPE_NULL)
-
-        edit_text_purchase_date_min.showDatePicker(requireContext())
-        edit_text_purchase_date_min.setRawInputType(InputType.TYPE_NULL)
-        edit_text_purchase_date_max.showDatePicker(requireContext())
-        edit_text_purchase_date_max.setRawInputType(InputType.TYPE_NULL)
-
-        button_cancel.setOnClickListener { cancel() }
-        button_reset.setOnClickListener { reset() }
-        button_save.setOnClickListener { save() }
-    }
-
-    private fun configFilters(filters: FilterModel?) {
-
-        filters?.let {
-
-            val platforms = filters.platforms
-            if (platforms.isNotEmpty()) {
-                for (child in linear_layout_platforms.children) {
-                    child.isSelected = platforms.firstOrNull { it == child.tag } != null
-                }
-            }
-
-            val genres = filters.genres
-            if (genres.isNotEmpty()) {
-                for (child in linear_layout_genres.children) {
-                    child.isSelected = genres.firstOrNull { it == child.tag } != null
-                }
-            }
-
-            val formats = filters.formats
-            if (formats.isNotEmpty()) {
-                for (child in linear_layout_formats.children) {
-                    child.isSelected = formats.firstOrNull { it == child.tag } != null
-                }
-            }
-
-            rating_bar_min.rating = (filters.minScore / 2).toFloat()
-            rating_bar_max.rating = (filters.maxScore / 2).toFloat()
-
-            edit_text_release_date_min.setText(Constants.dateToString(filters.minReleaseDate, sharedPrefHandler))
-            edit_text_release_date_max.setText(Constants.dateToString(filters.maxReleaseDate, sharedPrefHandler))
-
-            edit_text_purchase_date_min.setText(Constants.dateToString(filters.minPurchaseDate, sharedPrefHandler))
-            edit_text_purchase_date_max.setText(Constants.dateToString(filters.maxPurchaseDate, sharedPrefHandler))
-
-            if (filters.minPrice > 0) edit_text_price_min.setText(filters.minPrice.toString())
-            if (filters.maxPrice > 0) edit_text_price_max.setText(filters.maxPrice.toString())
-
-            radio_button_goty_yes.isChecked = filters.isGoty
-
-            radio_button_loaned_yes.isChecked = filters.isLoaned
-
-            radio_button_saga_yes.isChecked = filters.hasSaga
-
-            radio_button_songs_yes.isChecked = filters.hasSongs
-        }
-    }
-
-    private fun fillPlatforms() {
-
-        linear_layout_platforms.removeAllViews()
-        val platforms = platformRepository.getPlatforms()
-        for (platform in platforms) {
-
-            val button = getRoundedSelectorButton(platform.id, platform.name)
-
-            val view = View(requireContext())
-            view.layoutParams = ViewGroup.LayoutParams(
-                20,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-
-            linear_layout_platforms.addView(button)
-            linear_layout_platforms.addView(view)
-        }
-        linear_layout_platforms.removeViewAt(linear_layout_platforms.childCount - 1)
-    }
-
-    private fun fillGenres() {
-
-        linear_layout_genres.removeAllViews()
-        val genres = genreRepository.getGenres()
-        for (genre in genres) {
-
-            val button = getRoundedSelectorButton(genre.id, genre.name)
-
-            val view = View(requireContext())
-            view.layoutParams = ViewGroup.LayoutParams(
-                20,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-
-            linear_layout_genres.addView(button)
-            linear_layout_genres.addView(view)
-        }
-        linear_layout_genres.removeViewAt(linear_layout_genres.childCount - 1)
-    }
-
-    private fun fillFormats() {
-
-        linear_layout_formats.removeAllViews()
-        val formats = formatRepository.getFormats()
-        for (format in formats) {
-
-            val button = getRoundedSelectorButton(format.id, format.name)
-
-            val view = View(requireContext())
-            view.layoutParams = ViewGroup.LayoutParams(
-                20,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-
-            linear_layout_formats.addView(button)
-            linear_layout_formats.addView(view)
-        }
-        linear_layout_formats.removeViewAt(linear_layout_formats.childCount - 1)
-    }
-
-    private fun cancel() {
+    //region Public methods
+    fun cancel() {
         dismiss()
     }
 
-    private fun reset() {
+    fun reset() {
 
-        for (child in linear_layout_platforms.children) {
+        for (child in binding.linearLayoutPlatforms.children) {
             child.isSelected = false
         }
 
-        for (child in linear_layout_genres.children) {
+        for (child in binding.linearLayoutGenres.children) {
             child.isSelected = false
         }
 
-        for (child in linear_layout_formats.children) {
+        for (child in binding.linearLayoutFormats.children) {
             child.isSelected = false
         }
 
-        rating_bar_min.rating = 0F
-        rating_bar_max.rating = 5F
+        binding.ratingBarMin.rating = 0F
+        binding.ratingBarMax.rating = 5F
 
-        edit_text_release_date_min.setText("")
-        edit_text_release_date_max.setText("")
+        binding.customEditTextReleaseDateMin.setText(Constants.EMPTY_VALUE)
+        binding.customEditTextReleaseDateMax.setText(Constants.EMPTY_VALUE)
 
-        edit_text_purchase_date_min.setText("")
-        edit_text_purchase_date_max.setText("")
+        binding.customEditTextPurchaseDateMin.setText(Constants.EMPTY_VALUE)
+        binding.customEditTextPurchaseDateMax.setText(Constants.EMPTY_VALUE)
 
-        edit_text_price_min.setText("")
-        edit_text_price_max.setText("")
+        binding.customEditTextPriceMin.setText(Constants.EMPTY_VALUE)
+        binding.customEditTextPriceMax.setText(Constants.EMPTY_VALUE)
 
-        radio_button_goty_no.isChecked = true
+        binding.radioButtonGotyNo.isChecked = true
 
-        radio_button_loaned_no.isChecked = true
+        binding.radioButtonLoanedNo.isChecked = true
 
-        radio_button_saga_no.isChecked = true
+        binding.radioButtonSagaNo.isChecked = true
 
-        radio_button_songs_no.isChecked = true
+        binding.radioButtonSongsNo.isChecked = true
 
         currentFilters = null
     }
 
-    private fun save() {
+    fun save() {
 
         val platforms: ArrayList<String> = arrayListOf()
-        for (child in linear_layout_platforms.children) {
+        for (child in binding.linearLayoutPlatforms.children) {
             if (child.isSelected) platforms.add("${child.tag}")
         }
 
         val genres: ArrayList<String> = arrayListOf()
-        for (child in linear_layout_genres.children) {
+        for (child in binding.linearLayoutGenres.children) {
             if (child.isSelected) genres.add("${child.tag}")
         }
 
         val formats: ArrayList<String> = arrayListOf()
-        for (child in linear_layout_formats.children) {
+        for (child in binding.linearLayoutFormats.children) {
             if (child.isSelected) formats.add("${child.tag}")
         }
 
-        val minScore = (rating_bar_min.rating * 2).toDouble()
-        val maxScore = (rating_bar_max.rating * 2).toDouble()
+        val minScore = (binding.ratingBarMin.rating * 2).toDouble()
+        val maxScore = (binding.ratingBarMax.rating * 2).toDouble()
 
-        val minReleaseDate = Constants.stringToDate(edit_text_release_date_min.text.toString(), sharedPrefHandler)
-        val maxReleaseDate = Constants.stringToDate(edit_text_release_date_max.text.toString(), sharedPrefHandler)
+        val minReleaseDate = Constants.stringToDate(
+            binding.customEditTextReleaseDateMin.getText(),
+            Constants.getFilterDateFormat(viewModel.language),
+            viewModel.language
+        )
+        val maxReleaseDate = Constants.stringToDate(
+            binding.customEditTextReleaseDateMax.getText(),
+            Constants.getFilterDateFormat(viewModel.language),
+            viewModel.language
+        )
 
-        val minPurchaseDate = Constants.stringToDate(edit_text_purchase_date_min.text.toString(), sharedPrefHandler)
-        val maxPurchaseDate = Constants.stringToDate(edit_text_purchase_date_max.text.toString(), sharedPrefHandler)
+        val minPurchaseDate = Constants.stringToDate(
+            binding.customEditTextPurchaseDateMin.getText(),
+            Constants.getFilterDateFormat(viewModel.language),
+            viewModel.language
+        )
+        val maxPurchaseDate = Constants.stringToDate(
+            binding.customEditTextPurchaseDateMax.getText(),
+            Constants.getFilterDateFormat(viewModel.language),
+            viewModel.language
+        )
 
         var minPrice = 0.0
         try {
-            minPrice = edit_text_price_min.text.toString().toDouble()
-        } catch (e: Exception){}
+            minPrice = binding.customEditTextPriceMin.getText().toDouble()
+        } catch (e: Exception) {
+        }
         var maxPrice = 0.0
         try {
-            maxPrice = edit_text_price_max.text.toString().toDouble()
-        } catch (e: Exception){}
+            maxPrice = binding.customEditTextPriceMax.getText().toDouble()
+        } catch (e: Exception) {
+        }
 
-        val isGoty = radio_button_goty_yes.isChecked
+        val isGoty = binding.radioButtonGotyYes.isChecked
 
-        val isLoaned = radio_button_loaned_yes.isChecked
+        val isLoaned = binding.radioButtonLoanedYes.isChecked
 
-        val hasSaga = radio_button_saga_yes.isChecked
+        val hasSaga = binding.radioButtonSagaYes.isChecked
 
-        val hasSongs = radio_button_songs_yes.isChecked
+        val hasSongs = binding.radioButtonSongsYes.isChecked
 
         val filters = FilterModel(
             platforms,
@@ -295,7 +187,8 @@ class PopupFilterDialogFragment(
             !isGoty &&
             !isLoaned &&
             !hasSaga &&
-            !hasSongs) {
+            !hasSongs
+        ) {
             currentFilters = null
         } else {
             currentFilters = filters
@@ -304,25 +197,178 @@ class PopupFilterDialogFragment(
         onFiltersSelected.filter(currentFilters)
         dismiss()
     }
+    //endregion
 
-    private fun getRoundedSelectorButton(id: String, text: String): Button {
+    //region Description
+    private fun initializeUI() {
 
-        val button = Button(requireContext(), null, R.style.RoundedSelectorButton, R.style.RoundedSelectorButton)
-        button.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
+        val application = activity?.application
+        viewModel = ViewModelProvider(this, PopupFilterViewModelFactory(application)).get(
+            PopupFilterViewModel::class.java
         )
-        button.tag = id
-        button.text = text
-        button.setOnClickListener { selectButton(it) }
-        return button
+
+        fillPlatforms()
+        fillGenres()
+        fillFormats()
+
+        binding.customEditTextReleaseDateMin.setDatePickerFormat(
+            Constants.getFilterDateFormat(
+                viewModel.language
+            )
+        )
+        binding.customEditTextReleaseDateMax.setDatePickerFormat(
+            Constants.getFilterDateFormat(
+                viewModel.language
+            )
+        )
+
+        binding.customEditTextPurchaseDateMin.setDatePickerFormat(
+            Constants.getFilterDateFormat(
+                viewModel.language
+            )
+        )
+        binding.customEditTextPurchaseDateMax.setDatePickerFormat(
+            Constants.getFilterDateFormat(
+                viewModel.language
+            )
+        )
+
+        configFilters(currentFilters)
+
+        binding.fragment = this
+        binding.filter = currentFilters
     }
 
-    private fun selectButton(button: View) {
-        button.isSelected = !button.isSelected
-    }
-}
+    private fun configFilters(filters: FilterModel?) {
 
-interface OnFiltersSelected {
-    fun filter(filters: FilterModel?)
+        filters?.let {
+
+            val platforms = filters.platforms
+            if (platforms.isNotEmpty()) {
+                for (child in binding.linearLayoutPlatforms.children) {
+                    child.isSelected = platforms.firstOrNull { it == child.tag } != null
+                }
+            }
+
+            val genres = filters.genres
+            if (genres.isNotEmpty()) {
+                for (child in binding.linearLayoutGenres.children) {
+                    child.isSelected = genres.firstOrNull { it == child.tag } != null
+                }
+            }
+
+            val formats = filters.formats
+            if (formats.isNotEmpty()) {
+                for (child in binding.linearLayoutFormats.children) {
+                    child.isSelected = formats.firstOrNull { it == child.tag } != null
+                }
+            }
+
+            binding.ratingBarMin.rating = (filters.minScore / 2).toFloat()
+            binding.ratingBarMax.rating = (filters.maxScore / 2).toFloat()
+
+            binding.customEditTextReleaseDateMin.setText(
+                Constants.dateToString(
+                    filters.minReleaseDate,
+                    Constants.getFilterDateFormat(viewModel.language),
+                    viewModel.language
+                )
+            )
+            binding.customEditTextReleaseDateMax.setText(
+                Constants.dateToString(
+                    filters.maxReleaseDate,
+                    Constants.getFilterDateFormat(viewModel.language),
+                    viewModel.language
+                )
+            )
+
+            binding.customEditTextPurchaseDateMin.setText(
+                Constants.dateToString(
+                    filters.minPurchaseDate,
+                    Constants.getFilterDateFormat(viewModel.language),
+                    viewModel.language
+                )
+            )
+            binding.customEditTextPurchaseDateMax.setText(
+                Constants.dateToString(
+                    filters.maxPurchaseDate,
+                    Constants.getFilterDateFormat(viewModel.language),
+                    viewModel.language
+                )
+            )
+
+            if (filters.minPrice > 0) binding.customEditTextPriceMin.setText(filters.minPrice.toString())
+            if (filters.maxPrice > 0) binding.customEditTextPriceMax.setText(filters.maxPrice.toString())
+        }
+    }
+
+    private fun fillPlatforms() {
+
+        binding.linearLayoutPlatforms.removeAllViews()
+        for (platform in viewModel.platforms) {
+
+            val button = viewModel.getRoundedSelectorButton(
+                platform.id,
+                platform.name,
+                requireContext()
+            )
+
+            val view = View(requireContext())
+            view.layoutParams = ViewGroup.LayoutParams(
+                20,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+
+            binding.linearLayoutPlatforms.addView(button)
+            binding.linearLayoutPlatforms.addView(view)
+        }
+        binding.linearLayoutPlatforms.removeViewAt(binding.linearLayoutPlatforms.childCount - 1)
+    }
+
+    private fun fillGenres() {
+
+        binding.linearLayoutGenres.removeAllViews()
+        for (genre in viewModel.genres) {
+
+            val button = viewModel.getRoundedSelectorButton(
+                genre.id,
+                genre.name,
+                requireContext()
+            )
+
+            val view = View(requireContext())
+            view.layoutParams = ViewGroup.LayoutParams(
+                20,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+
+            binding.linearLayoutGenres.addView(button)
+            binding.linearLayoutGenres.addView(view)
+        }
+        binding.linearLayoutGenres.removeViewAt(binding.linearLayoutGenres.childCount - 1)
+    }
+
+    private fun fillFormats() {
+
+        binding.linearLayoutFormats.removeAllViews()
+        for (format in viewModel.formats) {
+
+            val button = viewModel.getRoundedSelectorButton(
+                format.id,
+                format.name,
+                requireContext()
+            )
+
+            val view = View(requireContext())
+            view.layoutParams = ViewGroup.LayoutParams(
+                20,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+
+            binding.linearLayoutFormats.addView(button)
+            binding.linearLayoutFormats.addView(view)
+        }
+        binding.linearLayoutFormats.removeViewAt(binding.linearLayoutFormats.childCount - 1)
+    }
+    //endregion
 }

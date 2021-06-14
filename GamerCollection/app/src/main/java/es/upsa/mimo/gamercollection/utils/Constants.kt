@@ -1,157 +1,212 @@
 package es.upsa.mimo.gamercollection.utils
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
+import android.graphics.drawable.Drawable
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
+import android.util.Log
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import android.widget.ImageButton
+import androidx.core.content.ContextCompat
+import com.google.android.gms.maps.model.LatLng
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.SpinnerAdapter
-import es.upsa.mimo.gamercollection.models.*
-import es.upsa.mimo.gamercollection.persistence.repositories.*
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class Constants {
-    companion object {
+object Preferences {
+    const val PREFERENCES_NAME = "preferences"
+    const val ENCRYPTED_PREFERENCES_NAME = "encryptedPreferences"
+    const val USER_DATA_PREFERENCES_NAME = "userData"
+    const val AUTH_DATA_PREFERENCES_NAME = "authData"
+    const val LANGUAGE_PREFERENCES_NAME = "language"
+    const val ENGLISH_LANGUAGE_KEY = "en"
+    const val SPANISH_LANGUAGE_KEY = "es"
+    const val SORTING_KEY_PREFERENCES_NAME = "sortingKey"
+    const val DEFAULT_SORTING_KEY = "name"
+    const val SWIPE_REFRESH_PREFERENCES_NAME = "swipeRefreshEnabled"
+    const val GAME_NOTIFICATION_PREFERENCES_NAME = "gameNotificationLaunched_"
+    const val VERSION_PREFERENCE_NAME = "version"
+    const val THEME_MODE_PREFERENCE_NAME = "themeMode"
+}
 
-        // MARK: - Database constants
+object Constants {
+    const val POPUP_DIALOG = "popupDialog"
+    const val LOADING_DIALOG = "loadingDialog"
+    const val SYNC_DIALOG = "syncDialog"
+    const val EMPTY_VALUE = ""
+    const val POINT_UP = 0f
+    const val POINT_DOWN = -180f
+    const val NEXT_VALUE_SEPARATOR = ", "
+    const val DATABASE_NAME = "GamerCollection"
 
-        const val databaseName = "GamerCollection"
+    fun getAdapter(
+        context: Context,
+        data: List<String>,
+        firstOptionEnabled: Boolean = false
+    ): SpinnerAdapter {
 
-        fun manageFormats(context: Context, formats: List<FormatResponse>) {
-
-            val formatRepository = FormatRepository(context)
-            for (format in formats) {
-                formatRepository.insertFormat(format)
-            }
-            formatRepository.removeDisableContent(formats)
-        }
-
-        fun manageGenres(context: Context, genres: List<GenreResponse>) {
-
-            val genreRepository = GenreRepository(context)
-            for (genre in genres) {
-                genreRepository.insertGenre(genre)
-            }
-            genreRepository.removeDisableContent(genres)
-        }
-
-        fun managePlatforms(context: Context, platforms: List<PlatformResponse>) {
-
-            val platformRepository = PlatformRepository(context)
-            for (platform in platforms) {
-                platformRepository.insertPlatform(platform)
-            }
-            platformRepository.removeDisableContent(platforms)
-        }
-
-        fun manageStates(context: Context, states: List<StateResponse>) {
-
-            val stateRepository = StateRepository(context)
-            for (state in states) {
-                stateRepository.insertState(state)
-            }
-            stateRepository.removeDisableContent(states)
-        }
-
-        fun manageGames(context: Context, games: List<GameResponse>) {
-
-            val gameRepository = GameRepository(context)
-            for (game in games) {
-                gameRepository.insertGame(game)
-            }
-            gameRepository.removeDisableContent(games)
-        }
-
-        fun manageSagas(context: Context, sagas: List<SagaResponse>) {
-
-            val sagaRepository = SagaRepository(context)
-            for (saga in sagas) {
-                sagaRepository.insertSaga(saga)
-            }
-            sagaRepository.removeDisableContent(sagas)
-        }
-
-        // MARK: - SharedPref constants
-
-        const val preferencesName = "preferences"
-        const val userDataPrefName = "userData"
-        const val authDataPrefName = "authData"
-        const val languagePrefName = "language"
-        const val sortingKeyPrefName = "sorting_key"
-        const val swipeRefreshPrefName = "swipe_refresh_enabled"
-        const val gameNotificationPrefName = "game_notification_launched_"
-
-        // MARK: - Retrofit constants
-
-        const val baseEndpoint = "https://videogames-collection-services.herokuapp.com/"
-        const val acceptLanguageHeader = "Accept-Language"
-        const val authorizationHeader = "Authorization"
-
-        // MARK: - State constants
-
-        const val pending = "PENDING"
-        const val inProgress = "IN_PROGRESS"
-        const val finished = "FINISHED"
-
-        // MARK: - Spinner adapter
-
-        fun getAdapter(context: Context, data: List<String>, firstOptionEnabled: Boolean = false): SpinnerAdapter {
-
-            val arrayAdapter = SpinnerAdapter(context, data, firstOptionEnabled)
-            arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-            return arrayAdapter
-        }
-
-        // MARK: Date format
-
-        fun getDateFormat(sharedPrefHandler: SharedPreferencesHandler): String {
-            return if (sharedPrefHandler.getLanguage() == "es") "dd-MM-yyyy" else "MM-dd-yyyy"
-        }
-
-        @SuppressLint("SimpleDateFormat")
-        fun dateToString(date: Date?, sharedPrefHandler: SharedPreferencesHandler): String? {
-
-            date?.let {
-                return try {
-                    SimpleDateFormat(getDateFormat(sharedPrefHandler)).format(it)
-                } catch (e: Exception) {
-                    null
-                }
-            } ?: run {
-                return null
-            }
-        }
-
-        @SuppressLint("SimpleDateFormat")
-        fun stringToDate(dateString: String?, sharedPrefHandler: SharedPreferencesHandler): Date? {
-
-            dateString?.let {
-                return try {
-                    SimpleDateFormat(getDateFormat(sharedPrefHandler)).parse(it)
-                } catch (e: Exception) {
-                    null
-                }
-            } ?: run {
-                return null
-            }
-        }
-
-        // MARK: Game ordering
-
-        fun orderGamesBy(games: List<GameResponse>, sortingKey: String): List<GameResponse> {
-
-            return when(sortingKey) {
-                "platform" -> games.sortedBy { it.platform }
-                "releaseDate" -> games.sortedBy { it.releaseDate }
-                "purchaseDate" -> games.sortedBy { it.purchaseDate }
-                "price" -> games.sortedBy { it.price }
-                else -> games.sortedBy { it.name }
-            }
-        }
-
-        // MARK: Notifications
-
-        const val channelId = "GAMER_COLLECTION_NOTIFICATIONS_CHANNEL_ID"
-
-        const val channelGroup = "GAMER_COLLECTION_NOTIFICATIONS_CHANNEL_GROUP"
+        val arrayAdapter = SpinnerAdapter(context, data, firstOptionEnabled)
+        arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+        return arrayAdapter
     }
+
+    fun isDarkMode(context: Context?): Boolean {
+
+        val mode =
+            context?.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)
+        return mode == Configuration.UI_MODE_NIGHT_YES
+    }
+
+    fun hideSoftKeyboard(activity: Activity) {
+
+        activity.currentFocus?.let { currentFocus ->
+
+            val inputMethodManager =
+                activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
+        } ?: return
+    }
+
+    const val DATE_FORMAT = "yyyy-MM-dd"
+
+    fun getDateFormatToShow(language: String): String {
+
+        return when (language) {
+            Preferences.SPANISH_LANGUAGE_KEY -> "d MMMM yyyy"
+            else -> "MMMM d, yyyy"
+        }
+    }
+
+    fun getFilterDateFormat(language: String): String {
+
+        return when (language) {
+            Preferences.SPANISH_LANGUAGE_KEY -> "dd/MM/yyyy"
+            else -> "MM/dd/yyyy"
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun dateToString(
+        date: Date?,
+        format: String? = null,
+        language: String? = null
+    ): String? {
+
+        val dateFormat = format ?: DATE_FORMAT
+        val locale = language?.let {
+            Locale.forLanguageTag(it)
+        } ?: run {
+            Locale.getDefault()
+        }
+        date?.let {
+
+            return try {
+                SimpleDateFormat(dateFormat, locale).format(it)
+            } catch (e: Exception) {
+
+                Log.e("Constants", e.message ?: EMPTY_VALUE)
+                null
+            }
+        } ?: run {
+
+            Log.e("Constants", "date null")
+            return null
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun stringToDate(
+        dateString: String?,
+        format: String? = null,
+        language: String? = null
+    ): Date? {
+
+        val dateFormat = format ?: DATE_FORMAT
+        val locale = language?.let {
+            Locale.forLanguageTag(it)
+        } ?: run {
+            Locale.getDefault()
+        }
+        dateString?.let {
+
+            return try {
+                SimpleDateFormat(dateFormat, locale).parse(it)
+            } catch (e: Exception) {
+
+                Log.e("Constants", e.message ?: EMPTY_VALUE)
+                null
+            }
+        } ?: run {
+            Log.e("Constants", "dateString null")
+            return null
+        }
+    }
+
+    fun getFormattedNumber(number: Int): String {
+
+        val formatter = DecimalFormat("#,###")
+        return formatter.format(number)
+    }
+
+    const val GAME_ID = "gameId"
+    const val IS_RAWG_GAME = "isRawgGame"
+    const val NO_VALUE = "-"
+
+    fun getPegiImage(pegi: String?, context: Context): Drawable? {
+
+        return when (pegi) {
+            "+3" -> ContextCompat.getDrawable(context, R.drawable.pegi3)
+            "+7" -> ContextCompat.getDrawable(context, R.drawable.pegi7)
+            "+12" -> ContextCompat.getDrawable(context, R.drawable.pegi12)
+            "+16" -> ContextCompat.getDrawable(context, R.drawable.pegi16)
+            "+18" -> ContextCompat.getDrawable(context, R.drawable.pegi18)
+            else -> null
+        }
+    }
+
+    const val SAGA_ID = "sagaId"
+
+    val DEFAULT_LOCATION = LatLng(40.4169019, -3.7056721)
+
+    fun isUserNameValid(username: String): Boolean {
+        return username.isNotBlank()
+    }
+
+    fun isPasswordValid(password: String): Boolean {
+        return password.length > 3
+    }
+
+    fun showOrHidePassword(editText: EditText, imageButton: ImageButton, isDarkMode: Boolean) {
+
+        if (editText.transformationMethod is HideReturnsTransformationMethod) {
+
+            val image =
+                if (isDarkMode) R.drawable.ic_show_password_dark else R.drawable.ic_show_password_light
+            imageButton.setImageResource(image)
+            editText.transformationMethod = PasswordTransformationMethod.getInstance()
+        } else {
+
+            val image =
+                if (isDarkMode) R.drawable.ic_hide_password_dark else R.drawable.ic_hide_password_light
+            imageButton.setImageResource(image)
+            editText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+        }
+    }
+}
+
+object State {
+    const val PENDING_STATE = "PENDING"
+    const val IN_PROGRESS_STATE = "IN_PROGRESS"
+    const val FINISHED_STATE = "FINISHED"
+}
+
+object Notifications {
+    const val CHANNEL_ID = "GAMER_COLLECTION_NOTIFICATIONS_CHANNEL_ID"
+    const val CHANNEL_GROUP = "GAMER_COLLECTION_NOTIFICATIONS_CHANNEL_GROUP"
 }

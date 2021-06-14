@@ -2,90 +2,102 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SongsAdapter
-import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.models.SongResponse
-import es.upsa.mimo.gamercollection.network.apiClient.GameAPIClient
-import es.upsa.mimo.gamercollection.network.apiClient.SongAPIClient
-import es.upsa.mimo.gamercollection.persistence.repositories.GameRepository
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
-import kotlinx.android.synthetic.main.fragment_game_songs.*
+import es.upsa.mimo.gamercollection.base.BindingFragment
+import es.upsa.mimo.gamercollection.databinding.FragmentGameSongsBinding
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.SongResponse
+import es.upsa.mimo.gamercollection.viewmodelfactories.GameSongsViewModelFactory
+import es.upsa.mimo.gamercollection.viewmodels.GameSongsViewModel
 import kotlinx.android.synthetic.main.new_song_dialog.view.*
 
 class GameSongsFragment(
-    private var currentGame: GameResponse?,
+    private var game: GameResponse?,
     private var enabled: Boolean
-) : BaseFragment(), SongsAdapter.OnItemClickListener {
+) : BindingFragment<FragmentGameSongsBinding>(), OnItemClickListener {
 
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var gameRepository: GameRepository
-    private lateinit var gameAPIClient: GameAPIClient
-    private lateinit var songAPIClient: SongAPIClient
+    //region Private properties
+    private lateinit var viewModel: GameSongsViewModel
+    //endregion
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_game_songs, container, false)
-    }
-
+    //region Lifecycle methods
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        sharedPrefHandler = SharedPreferencesHandler(context)
-        gameRepository = GameRepository(requireContext())
-        gameAPIClient = GameAPIClient(resources, sharedPrefHandler)
-        songAPIClient = SongAPIClient(resources, sharedPrefHandler)
-
         initializeUI()
     }
+    //endregion
 
-    override fun onItemClick(songId: Int) {
-
-        currentGame?.let { game ->
-
-            showLoading()
-            songAPIClient.deleteSong(game.id, songId, {
-                updateData()
-            }, {
-                manageError(it)
-            })
-        }
+    //region Interface methods
+    override fun onItemClick(id: Int) {
+        viewModel.deleteSong(id)
     }
 
-    fun enableEdition(enable: Boolean) {
+    override fun onSubItemClick(id: Int) {
+    }
 
-        val adapter = recycler_view_songs?.adapter as? SongsAdapter
-        if (adapter != null) {
-            adapter.editable = enable
-            adapter.notifyDataSetChanged()
-        }
-        button_add_song?.visibility = if(enable) View.VISIBLE else View.GONE
+    override fun onLoadMoreItemsClick() {
+    }
+    //endregion
+
+    //region Public methods
+    fun setEdition(editable: Boolean) {
+        binding.editable = editable
     }
 
     fun getSongs(): List<SongResponse> {
-        return currentGame?.songs ?: ArrayList()
+        return viewModel.songs.value ?: ArrayList()
     }
+    //endregion
 
-    // MARK: Private functions
-
+    //region Private methods
     private fun initializeUI() {
 
-        recycler_view_songs.layoutManager = LinearLayoutManager(requireContext())
-        val songs = currentGame?.songs ?: ArrayList()
-        if (songs.isNotEmpty()) {
-            recycler_view_songs.adapter = SongsAdapter(songs, enabled, this)
+        val application = activity?.application
+        viewModel = ViewModelProvider(this, GameSongsViewModelFactory(application, game)).get(
+            GameSongsViewModel::class.java
+        )
+        setupBindings()
+
+        with(binding) {
+
+            recyclerViewSongs.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = SongsAdapter(
+                    listOf(),
+                    enabled,
+                    this@GameSongsFragment
+                )
+            }
+
+            buttonAddSong.setOnClickListener {
+                showNewSongPopup()
+            }
+
+            viewModel = this@GameSongsFragment.viewModel
+            lifecycleOwner = this@GameSongsFragment
+            editable = enabled
         }
-        recycler_view_songs.visibility = if (songs.isNotEmpty()) View.VISIBLE else View.GONE
-        layout_empty_list.visibility = if (songs.isNotEmpty()) View.GONE else View.VISIBLE
-        button_add_song.setOnClickListener { showNewSongPopup() }
-        button_add_song?.visibility = if(enabled) View.VISIBLE else View.GONE
+    }
+
+    private fun setupBindings() {
+
+        viewModel.gameSongsLoading.observe(viewLifecycleOwner, { isLoading ->
+
+            if (isLoading) {
+                showLoading()
+            } else {
+                hideLoading()
+            }
+        })
+
+        viewModel.gameSongsError.observe(viewLifecycleOwner, { error ->
+            manageError(error)
+        })
     }
 
     private fun showNewSongPopup() {
@@ -95,55 +107,24 @@ class GameSongsFragment(
 
         dialogView.button_accept.setOnClickListener {
 
-            val name = dialogView.edit_text_name.text.toString()
-            val singer = dialogView.edit_text_singer.text.toString()
-            val url = dialogView.edit_text_url.text.toString()
-            val song = SongResponse(0, name, singer, url)
-            addSong(song)
+            val name = dialogView.custom_edit_text_name.getText()
+            val singer = dialogView.custom_edit_text_singer.getText()
+            val url = dialogView.custom_edit_text_url.getText()
+
+            if (name.isNotBlank() || singer.isNotBlank() || url.isNotBlank()) {
+                val song = SongResponse(
+                    0,
+                    name,
+                    singer,
+                    url
+                )
+                viewModel.createSong(song)
+            }
             dialogBuilder.dismiss()
         }
 
         dialogBuilder.setView(dialogView)
         dialogBuilder.show()
     }
-
-    private fun addSong(song: SongResponse) {
-
-        currentGame?.let { game ->
-
-            showLoading()
-            songAPIClient.createSong(game.id, song, {
-                updateData()
-            }, {
-                manageError(it)
-            })
-        }
-    }
-
-    private fun updateData() {
-
-        currentGame?.let { game ->
-            gameAPIClient.getGame(game.id, {
-                gameRepository.updateGame(it)
-
-                currentGame = it
-                showSongs(it)
-                hideLoading()
-            }, {
-                manageError(it)
-            })
-        }
-    }
-
-    private fun showSongs(game: GameResponse?) {
-
-        val songs = game?.songs ?: ArrayList()
-        val adapter = recycler_view_songs?.adapter as? SongsAdapter
-        if (adapter != null) {
-            adapter.songs = songs
-            adapter.notifyDataSetChanged()
-        }
-        recycler_view_songs.visibility = if (songs.isNotEmpty()) View.VISIBLE else View.GONE
-        layout_empty_list.visibility = if (songs.isNotEmpty()) View.GONE else View.VISIBLE
-    }
+    //endregion
 }

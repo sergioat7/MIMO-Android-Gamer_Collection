@@ -1,119 +1,163 @@
 package es.upsa.mimo.gamercollection.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
-import es.upsa.mimo.gamercollection.fragments.base.BaseFragment
-import es.upsa.mimo.gamercollection.models.*
-import es.upsa.mimo.gamercollection.network.apiClient.*
+import es.upsa.mimo.gamercollection.base.BindingFragment
+import es.upsa.mimo.gamercollection.databinding.FragmentRegisterBinding
+import es.upsa.mimo.gamercollection.extensions.afterTextChanged
+import es.upsa.mimo.gamercollection.extensions.clearErrors
+import es.upsa.mimo.gamercollection.extensions.onFocusChange
 import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHandler
-import kotlinx.android.synthetic.main.fragment_register.*
+import es.upsa.mimo.gamercollection.viewmodelfactories.RegisterViewModelFactory
+import es.upsa.mimo.gamercollection.viewmodels.RegisterViewModel
 
-class RegisterFragment : BaseFragment() {
+class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
 
-    private lateinit var sharedPrefHandler: SharedPreferencesHandler
-    private lateinit var formatAPIClient: FormatAPIClient
-    private lateinit var genreAPIClient: GenreAPIClient
-    private lateinit var platformAPIClient: PlatformAPIClient
-    private lateinit var stateAPIClient: StateAPIClient
-    private lateinit var userAPIClient: UserAPIClient
+    //region Private properties
+    private lateinit var viewModel: RegisterViewModel
+    //endregion
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_register, container, false)
-    }
-
+    //region Lifecycle methods
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        sharedPrefHandler = SharedPreferencesHandler(context)
-        formatAPIClient = FormatAPIClient(resources, sharedPrefHandler)
-        genreAPIClient = GenreAPIClient(resources, sharedPrefHandler)
-        platformAPIClient = PlatformAPIClient(resources, sharedPrefHandler)
-        stateAPIClient = StateAPIClient(resources, sharedPrefHandler)
-        userAPIClient = UserAPIClient(resources, sharedPrefHandler)
-
         initializeUI()
     }
+    //endregion
 
-    //MARK: - Private functions
-
+    //region Private methods
     private fun initializeUI() {
-        register_button.setOnClickListener {register()}
+
+        val application = activity?.application
+        viewModel = ViewModelProvider(
+            this,
+            RegisterViewModelFactory(application)
+        ).get(RegisterViewModel::class.java)
+        setupBindings()
+
+        with(binding) {
+
+            editTextUser.afterTextChanged {
+                registerDataChanged()
+            }
+            editTextUser.onFocusChange {
+                registerDataChanged()
+            }
+
+            imageButtonInfo.setOnClickListener {
+                showPopupDialog(resources.getString(R.string.username_info))
+            }
+
+            editTextPassword.afterTextChanged {
+                registerDataChanged()
+            }
+            editTextPassword.onFocusChange {
+                registerDataChanged()
+            }
+
+            imageButtonPassword.setOnClickListener {
+                Constants.showOrHidePassword(
+                    editTextPassword,
+                    imageButtonPassword,
+                    Constants.isDarkMode(context)
+                )
+            }
+
+            editTextRepeatPassword.afterTextChanged {
+                registerDataChanged()
+            }
+            editTextRepeatPassword.onFocusChange {
+                registerDataChanged()
+            }
+
+            imageButtonConfirmPassword.setOnClickListener {
+                Constants.showOrHidePassword(
+                    editTextRepeatPassword,
+                    imageButtonConfirmPassword,
+                    Constants.isDarkMode(context)
+                )
+            }
+
+            registerButton.setOnClickListener {
+                register()
+            }
+        }
+    }
+
+    private fun setupBindings() {
+
+        viewModel.registerFormState.observe(viewLifecycleOwner, {
+
+            val registerState = it ?: return@observe
+
+            with(binding) {
+
+                editTextUser.clearErrors()
+                editTextPassword.clearErrors()
+                editTextRepeatPassword.clearErrors()
+
+                registerButton.isEnabled = registerState.isDataValid
+
+                if (registerState.usernameError != null) {
+                    editTextUser.error = getString(registerState.usernameError)
+                }
+                if (registerState.passwordError != null) {
+
+                    editTextPassword.error = getString(registerState.passwordError)
+                    editTextRepeatPassword.error = getString(registerState.passwordError)
+                }
+            }
+        })
+
+        viewModel.registerLoading.observe(viewLifecycleOwner, { isLoading ->
+
+            if (isLoading) {
+                showLoading()
+            } else {
+                hideLoading()
+            }
+        })
+
+        viewModel.registerError.observe(viewLifecycleOwner, { error ->
+
+            if (error == null) {
+                launchActivity(MainActivity::class.java)
+            } else {
+
+                hideLoading()
+                manageError(error)
+            }
+        })
+    }
+
+    private fun registerDataChanged() {
+
+        viewModel.registerDataChanged(
+            binding.editTextUser.text.toString(),
+            binding.editTextPassword.text.toString(),
+            binding.editTextRepeatPassword.text.toString()
+        )
     }
 
     private fun register() {
 
-        val username = edit_text_user.text.toString()
-        val password = edit_text_password.text.toString()
-        val repeatPassword = edit_text_repeatPassword.text.toString()
+        val username = binding.editTextUser.text.toString()
+        val password = binding.editTextPassword.text.toString()
+        val repeatPassword = binding.editTextRepeatPassword.text.toString()
 
         if (username.isEmpty() || password.isEmpty() || repeatPassword.isEmpty()) {
-            showPopupDialog(resources.getString(R.string.ERROR_REGISTRATION_EMPTY_DATA))
+            showPopupDialog(resources.getString(R.string.error_registration_empty_data))
             return
         }
 
         if (password != repeatPassword) {
-            showPopupDialog(resources.getString(R.string.ERROR_REGISTRATION_DIFFERENT_PASSWORDS))
+            showPopupDialog(resources.getString(R.string.error_registration_different_passwords))
             return
         }
 
-        showLoading()
-        userAPIClient.register(username, password, {
-            userAPIClient.login(username, password, { token ->
-
-                val userData = UserData(username, password, false)
-                val authData = AuthData(token)
-                sharedPrefHandler.run {
-                    storeUserData(userData)
-                    storeCredentials(authData)
-                }
-                syncApp(userData)
-            }, {
-                manageError(it)
-            })
-        }, {
-            manageError(it)
-        })
+        viewModel.register(username, password)
     }
-
-    private fun syncApp(userData: UserData) {
-
-        formatAPIClient.getFormats({ formats ->
-            genreAPIClient.getGenres({ genres ->
-                platformAPIClient.getPlatforms({ platforms ->
-                    stateAPIClient.getStates({ states ->
-
-                        Constants.manageFormats(requireContext(), formats)
-                        Constants.manageGenres(requireContext(), genres)
-                        Constants.managePlatforms(requireContext(), platforms)
-                        Constants.manageStates(requireContext(), states)
-
-                        userData.isLoggedIn = true
-                        sharedPrefHandler.storeUserData(userData)
-                        goToMainView()
-                        hideLoading()
-                    }, {
-                        manageError(it)
-                    })
-                }, {
-                    manageError(it)
-                })
-            }, {
-                manageError(it)
-            })
-        }, {
-            manageError(it)
-        })
-    }
-
-    private fun goToMainView() {
-        launchActivity(MainActivity::class.java)
-    }
+    //endregion
 }
