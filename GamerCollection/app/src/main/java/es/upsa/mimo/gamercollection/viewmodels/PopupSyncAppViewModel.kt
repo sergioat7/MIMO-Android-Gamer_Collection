@@ -17,11 +17,11 @@ class PopupSyncAppViewModel @Inject constructor(
 ) : ViewModel() {
 
     //region Private properties
-    private val _popupSyncAppError = MutableLiveData<ErrorResponse>()
+    private val _popupSyncAppError = MutableLiveData<ErrorResponse?>()
     //endregion
 
     //region Public properties
-    val popupSyncAppError: LiveData<ErrorResponse> = _popupSyncAppError
+    val popupSyncAppError: LiveData<ErrorResponse?> = _popupSyncAppError
     //endregion
 
     //region Public methods
