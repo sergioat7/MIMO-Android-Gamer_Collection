@@ -23,7 +23,7 @@ class ProfileViewModel @Inject constructor(
 
     //region Private properties
     private val _profileLoading = MutableLiveData<Boolean>()
-    private val _profileError = MutableLiveData<ErrorResponse>()
+    private val _profileError = MutableLiveData<ErrorResponse?>()
     //endregion
 
     //region Public properties
@@ -36,7 +36,7 @@ class ProfileViewModel @Inject constructor(
     val swipeRefresh: Boolean
         get() = SharedPreferencesHelper.getSwipeRefresh()
     val profileLoading: LiveData<Boolean> = _profileLoading
-    val profileError: LiveData<ErrorResponse> = _profileError
+    val profileError: LiveData<ErrorResponse?> = _profileError
     //endregion
 
     //region Public methods

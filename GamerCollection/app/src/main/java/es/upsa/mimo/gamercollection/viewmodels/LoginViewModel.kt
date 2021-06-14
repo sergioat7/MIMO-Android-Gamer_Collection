@@ -26,7 +26,7 @@ class LoginViewModel @Inject constructor(
     //region Private properties
     private val _loginForm = MutableLiveData<LoginFormState>()
     private val _loginLoading = MutableLiveData<Boolean>()
-    private val _loginError = MutableLiveData<ErrorResponse>()
+    private val _loginError = MutableLiveData<ErrorResponse?>()
     //endregion
 
     //region Public properties
@@ -34,7 +34,7 @@ class LoginViewModel @Inject constructor(
         get() = SharedPreferencesHelper.getUserData().username
     val loginFormState: LiveData<LoginFormState> = _loginForm
     val loginLoading: LiveData<Boolean> = _loginLoading
-    val loginError: LiveData<ErrorResponse> = _loginError
+    val loginError: LiveData<ErrorResponse?> = _loginError
     //endregion
 
     //region Public methods

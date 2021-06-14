@@ -186,7 +186,9 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
         viewModel.sagaDetailError.observe(viewLifecycleOwner, { error ->
 
             hideLoading()
-            manageError(error)
+            error?.let {
+                manageError(it)
+            }
         })
 
         viewModel.saga.observe(viewLifecycleOwner, { saga ->
