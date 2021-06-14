@@ -20,9 +20,9 @@ import es.upsa.mimo.gamercollection.R;
 public class SpinnerAdapter extends ArrayAdapter {
 
     //region Private properties
-    private Context context;
-    private List<String> values;
-    private boolean firstOptionEnabled;
+    private final Context context;
+    private final List<String> values;
+    private final boolean firstOptionEnabled;
     //endregion
 
     //region Lifecycle methods

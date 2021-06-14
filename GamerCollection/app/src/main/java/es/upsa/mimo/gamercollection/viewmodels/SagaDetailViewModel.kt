@@ -24,7 +24,7 @@ class SagaDetailViewModel @Inject constructor(
     private var sagaId: Int? = null
     private val _sagaDetailLoading = MutableLiveData<Boolean>()
     private val _sagaDetailSuccessMessage = MutableLiveData<Int>()
-    private val _sagaDetailError = MutableLiveData<ErrorResponse>()
+    private val _sagaDetailError = MutableLiveData<ErrorResponse?>()
     private val _saga = MutableLiveData<SagaResponse?>()
     //endregion
 
@@ -35,7 +35,7 @@ class SagaDetailViewModel @Inject constructor(
         get() = platformRepository.getPlatformsDatabase()
     val sagaDetailLoading: LiveData<Boolean> = _sagaDetailLoading
     val sagaDetailSuccessMessage: LiveData<Int> = _sagaDetailSuccessMessage
-    val sagaDetailError: LiveData<ErrorResponse> = _sagaDetailError
+    val sagaDetailError: LiveData<ErrorResponse?> = _sagaDetailError
     val saga: LiveData<SagaResponse?> = _saga
     //endregion
 

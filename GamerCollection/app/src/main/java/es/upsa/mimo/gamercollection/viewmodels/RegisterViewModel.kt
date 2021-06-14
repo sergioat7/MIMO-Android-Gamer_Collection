@@ -24,13 +24,13 @@ class RegisterViewModel @Inject constructor(
     //region Private properties
     private val _registerForm = MutableLiveData<LoginFormState>()
     private val _registerLoading = MutableLiveData<Boolean>()
-    private val _registerError = MutableLiveData<ErrorResponse>()
+    private val _registerError = MutableLiveData<ErrorResponse?>()
     //endregion
 
     //region Public properties
     val registerFormState: LiveData<LoginFormState> = _registerForm
     val registerLoading: LiveData<Boolean> = _registerLoading
-    val registerError: LiveData<ErrorResponse> = _registerError
+    val registerError: LiveData<ErrorResponse?> = _registerError
     //endregion
 
     //region Public methods
