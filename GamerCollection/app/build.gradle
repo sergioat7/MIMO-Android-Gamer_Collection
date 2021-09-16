@@ -3,6 +3,8 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -52,7 +54,7 @@ android {
         //but I include it because I want to set the suffix
         debug {
             applicationIdSuffix ".debug"
-            versionNameSuffix '-debug'
+            versionNameSuffix '.debug'
             debuggable true//This is always true in debug type
         }
     }
@@ -119,6 +121,11 @@ dependencies {
 
     //Security
     implementation 'androidx.security:security-crypto:1.0.0-rc04'
+
+    //Firebase
+    implementation platform('com.google.firebase:firebase-bom:28.4.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
     
     //Test
     testImplementation 'junit:junit:4.13.2'
