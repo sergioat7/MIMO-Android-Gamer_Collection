@@ -58,7 +58,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
     override fun onResume() {
         super.onResume()
-        viewModel.getGames()
+        viewModel.fetchGames()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -123,7 +123,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             it.findItem(R.id.action_filter_on).isVisible = filters != null
         }
         scrollPosition.set(ScrollPosition.TOP)
-        viewModel.getGames()
+        viewModel.fetchGames()
     }
     //endregion
 
@@ -146,7 +146,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             }
             this@GamesFragment.viewModel.state = if (it.isSelected) newState else null
         }
-        viewModel.getGames()
+        viewModel.fetchGames()
     }
 
     fun goToStartEndList(view: View) {

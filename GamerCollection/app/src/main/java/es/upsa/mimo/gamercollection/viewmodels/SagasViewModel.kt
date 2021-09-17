@@ -34,7 +34,7 @@ class SagasViewModel @Inject constructor(
     //endregion
 
     //region Public methods
-    fun getSagas() {
+    fun fetchSagas() {
         _sagas.value = sagaRepository.getSagasDatabase().sortedBy { it.name }
     }
 
@@ -43,7 +43,7 @@ class SagasViewModel @Inject constructor(
         _sagasLoading.value = true
         sagaRepository.loadSagas({
 
-            getSagas()
+            fetchSagas()
             _sagasLoading.value = false
         }, {
 

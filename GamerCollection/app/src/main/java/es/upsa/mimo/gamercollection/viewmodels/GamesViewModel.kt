@@ -55,7 +55,7 @@ class GamesViewModel @Inject constructor(
         gameRepository.loadGames({
 
             resetProperties()
-            getGames()
+            fetchGames()
             _gamesLoading.value = false
         }, {
 
@@ -64,7 +64,7 @@ class GamesViewModel @Inject constructor(
         })
     }
 
-    fun getGames() {
+    fun fetchGames() {
 
         val games = gameRepository.getGamesDatabase(
             state,
@@ -123,7 +123,7 @@ class GamesViewModel @Inject constructor(
 
                 sortKey = sortingKeys[sortKeysPicker.value]
                 sortAscending = ascendingPicker.value == 0
-                getGames()
+                fetchGames()
                 dialog.dismiss()
             }
             .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
