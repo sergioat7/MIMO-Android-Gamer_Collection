@@ -44,7 +44,7 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
 
     override fun onResume() {
         super.onResume()
-        viewModel.getSagas()
+        viewModel.fetchSagas()
     }
 
     override fun onPause() {
