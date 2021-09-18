@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.BindingAdapter
@@ -75,6 +76,7 @@ class GamesAdapter(
     //endregion
 
     //region Public methods
+    @SuppressLint("NotifyDataSetChanged")
     fun setGames(newGames: List<GameResponse>) {
 
         this.games = newGames
@@ -88,6 +90,7 @@ class GamesAdapter(
         notifyItemInserted(position)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun resetList() {
 
         games = ArrayList()

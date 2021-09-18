@@ -34,6 +34,7 @@
             android:minHeight="@dimen/size_bigger"
             android:enabled="@{editable}"
             android:text="@{text}"
+            android:inputType="none"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

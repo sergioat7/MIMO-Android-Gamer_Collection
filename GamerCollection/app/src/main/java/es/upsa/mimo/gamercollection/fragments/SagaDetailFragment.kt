@@ -2,7 +2,6 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.util.TypedValue
@@ -230,11 +229,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
         for (game in games.sortedBy { it.releaseDate }) {
 
             val tvGame = TextView(requireContext())
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) tvGame.setTextAppearance(R.style.Widget_GamerCollection_EditText_Regular)
-            else tvGame.setTextAppearance(
-                requireContext(),
-                R.style.Widget_GamerCollection_EditText_Regular
-            )
+            tvGame.setTextAppearance(R.style.Widget_GamerCollection_EditText_Regular)
             tvGame.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18F)
 
             tvGame.text = "- ${game.name}"

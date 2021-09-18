@@ -32,7 +32,7 @@ class GameDetailViewModel @Inject constructor(
     val gameDetailSuccessMessage: LiveData<Int> = _gameDetailSuccessMessage
     val gameDetailError: LiveData<ErrorResponse> = _gameDetailError
     val game: LiveData<GameResponse?> = _game
-    //endregio
+    //endregion
 
     //region Public methods
     fun getGame() {

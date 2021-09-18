@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
@@ -197,6 +198,7 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
         })
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun showData(sagas: List<SagaResponse>) {
 
         sagasAdapter.resetList()

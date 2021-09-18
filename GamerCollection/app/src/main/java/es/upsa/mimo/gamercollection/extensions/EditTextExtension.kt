@@ -8,7 +8,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.Preferences
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import java.util.*
 
