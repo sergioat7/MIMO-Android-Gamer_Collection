@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.fragments
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.PendingIntent
 import android.content.Intent
@@ -280,6 +281,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         dialogFragment.show(ft, "filterPopup")
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     private fun launchNotification(games: List<GameResponse>) {
 
         val notifications = mutableMapOf<Int, Notification>()
@@ -332,8 +334,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         val summaryNotification =
             NotificationCompat.Builder(requireContext(), Notifications.CHANNEL_ID)
                 .setContentTitle(
-                    resources.getString(
-                        R.string.summary_notifications_title,
+                    resources.getQuantityString(
+                        R.plurals.summary_notifications_title,
+                        games.size,
                         games.size
                     )
                 )
@@ -342,8 +345,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 .setStyle(
                     NotificationCompat.InboxStyle()
                         .setBigContentTitle(
-                            resources.getString(
-                                R.string.summary_notifications_title,
+                            resources.getQuantityString(
+                                R.plurals.summary_notifications_title,
+                                games.size,
                                 games.size
                             )
                         )
@@ -400,5 +404,5 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 }
 
 enum class ScrollPosition {
-    TOP, MIDDLE, END, NONE
+    TOP, MIDDLE, END
 }

@@ -154,7 +154,10 @@
     <string name="channel_description">Aviso el día del lanzamiento de un juego pendiente</string>
     <string name="notification_title">%s ya a la venta</string>
     <string name="notification_description">Hoy, %s, se ha puesto a la venta el juego %s</string>
-    <string name="summary_notifications_title">%d nuevos juegos lanzados</string>
+    <plurals name="summary_notifications_title">
+        <item quantity="one">%d nuevo juego lanzado</item>
+        <item quantity="other">%d nuevos juegos lanzados</item>
+    </plurals>
 
     // Errors
     <string name="error_server">Hubo un error al recuperar los datos. Por favor, inténtalo otra vez</string>

@@ -2,6 +2,7 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     >
 
     <item
@@ -9,6 +10,7 @@
         android:icon="@drawable/ic_edit_light"
         android:title=""
         app:showAsAction="always"
+        tools:ignore="AlwaysShowAction"
         />
 
     <item
@@ -16,6 +18,7 @@
         android:icon="@drawable/ic_remove_game_light"
         android:title=""
         app:showAsAction="always"
+        tools:ignore="AlwaysShowAction"
         />
 
     <item
@@ -23,6 +26,7 @@
         android:icon="@drawable/ic_cancel_changes_light"
         android:title=""
         app:showAsAction="always"
+        tools:ignore="AlwaysShowAction"
         />
 
     <item
