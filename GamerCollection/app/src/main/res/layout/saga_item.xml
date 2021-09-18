@@ -59,6 +59,7 @@
                         android:id="@+id/edit_text_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:inputType="none"
                         style="@style/Widget.GamerCollection.EditTextSaga"
                         />
 

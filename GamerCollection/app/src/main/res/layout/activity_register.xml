@@ -8,7 +8,7 @@
     tools:context=".activities.RegisterActivity"
     >
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_register"
         android:name="es.upsa.mimo.gamercollection.fragments.RegisterFragment"
         android:layout_width="0dp"
