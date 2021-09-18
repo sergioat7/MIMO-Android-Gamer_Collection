@@ -52,6 +52,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:text="@{sagaName}"
+                android:inputType="textMultiLine"
                 style="@style/Widget.GamerCollection.EditText.Bold.SagaTitle"
                 />
 
