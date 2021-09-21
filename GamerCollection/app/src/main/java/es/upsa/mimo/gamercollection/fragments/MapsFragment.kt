@@ -92,6 +92,14 @@ class MapsFragment(
                 addMarker(p0.position)
             }
         })
+
+        googleMap.setOnPoiClickListener {
+            addMarker(it.latLng)
+        }
+
+        googleMap.setOnMapLongClickListener {
+            addMarker(it)
+        }
     }
 
     override fun onRequestPermissionsResult(
