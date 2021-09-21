@@ -275,6 +275,12 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             setGamesCount(it)
             setTitle(it.size)
         })
+
+        viewModel.gameDeleted.observe(viewLifecycleOwner, { position ->
+            position?.let {
+                gamesAdapter.notifyItemRemoved(position)
+            }
+        })
     }
 
     private fun filter() {
