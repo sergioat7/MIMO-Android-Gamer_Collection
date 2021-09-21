@@ -28,7 +28,7 @@
         tools:ignore="AlwaysShowAction"
         />
 
-    <item android:id="@+id/action_sort_on"
+    <item android:id="@+id/action_sort"
         android:icon="@drawable/ic_sort_light"
         android:title=""
         app:showAsAction="always"

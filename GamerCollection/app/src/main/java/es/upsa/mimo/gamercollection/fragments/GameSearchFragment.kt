@@ -190,9 +190,9 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
 
     private fun setupSearchView(menu: Menu) {
 
-        val menuItem = menu.findItem(R.id.action_search)
-        this.searchView = menuItem.actionView as SearchView
-        this.searchView?.let { searchView ->
+        val menuItem = menu.findItem(R.id.action_search_rawg)
+        searchView = menuItem.actionView as SearchView
+        searchView?.let { searchView ->
 
             searchView.queryHint = resources.getString(R.string.search_games)
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -209,7 +209,7 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
                 }
             })
         }
-        this.setupSearchView(viewModel.query ?: Constants.EMPTY_VALUE)
+        setupSearchView(viewModel.query ?: Constants.EMPTY_VALUE)
     }
 
     private fun searchGames(query: String) {
