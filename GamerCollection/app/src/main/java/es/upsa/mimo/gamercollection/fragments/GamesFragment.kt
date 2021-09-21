@@ -401,8 +401,8 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         }
     }
     //endregion
-}
 
-enum class ScrollPosition {
-    TOP, MIDDLE, END
+    enum class ScrollPosition {
+        TOP, MIDDLE, END
+    }
 }

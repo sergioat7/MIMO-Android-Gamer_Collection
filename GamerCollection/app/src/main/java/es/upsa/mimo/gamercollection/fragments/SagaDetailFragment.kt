@@ -71,9 +71,9 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
             }
             R.id.action_remove -> {
 
-                showPopupConfirmationDialog(resources.getString(R.string.saga_detail_delete_confirmation)) {
+                showPopupConfirmationDialog(resources.getString(R.string.saga_detail_delete_confirmation), {
                     viewModel.deleteSaga()
-                }
+                })
                 return true
             }
             R.id.action_save -> {

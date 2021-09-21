@@ -12,7 +12,7 @@
             />
 
         <import
-            type="es.upsa.mimo.gamercollection.fragments.ScrollPosition"
+            type="es.upsa.mimo.gamercollection.fragments.GamesFragment.ScrollPosition"
             />
 
         <variable
