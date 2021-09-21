@@ -16,6 +16,7 @@ import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
+import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
@@ -79,7 +80,7 @@ class GamesViewModel @Inject constructor(
         _originalGames.value = games
         if (!query.isNullOrBlank()) {
             _games.value = games.filter { game ->
-                game.name?.contains(query ?: "", true) ?: false
+                game.name?.contains(query ?: Constants.EMPTY_VALUE, true) ?: false
             }
         } else {
             _games.value = games

@@ -11,6 +11,14 @@
         app:showAsAction="ifRoom"
         />
 
+    <item
+        android:id="@+id/action_search_sagas"
+        android:icon="@drawable/ic_search_light"
+        android:title=""
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="collapseActionView|always"
+        />
+
     <item android:id="@+id/action_add"
         android:icon="@drawable/ic_add_saga_light"
         android:title=""

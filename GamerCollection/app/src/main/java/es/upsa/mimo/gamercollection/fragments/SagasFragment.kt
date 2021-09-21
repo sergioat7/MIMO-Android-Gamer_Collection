@@ -3,6 +3,7 @@ package es.upsa.mimo.gamercollection.fragments
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModelProvider
@@ -56,8 +57,10 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
+
         menu.clear()
         inflater.inflate(R.menu.sagas_toolbar_menu, menu)
+        setupSearchView(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -222,6 +225,32 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
         val title =
             resources.getQuantityString(R.plurals.sagas_number_title, sagasCount, sagasCount)
         (activity as AppCompatActivity?)?.supportActionBar?.title = title
+    }
+
+    private fun setupSearchView(menu: Menu) {
+
+        val menuItem = menu.findItem(R.id.action_search_sagas)
+        searchView = menuItem.actionView as SearchView
+        searchView?.let { searchView ->
+
+            searchView.queryHint = resources.getString(R.string.search_sagas)
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+                override fun onQueryTextChange(newText: String): Boolean {
+
+                    viewModel.searchSagas(newText)
+                    return true
+                }
+
+                override fun onQueryTextSubmit(query: String): Boolean {
+
+                    menuItem.collapseActionView()
+                    Constants.hideSoftKeyboard(requireActivity())
+                    return true
+                }
+            })
+        }
+        setupSearchView(Constants.EMPTY_VALUE)
     }
     //endregion
 }
