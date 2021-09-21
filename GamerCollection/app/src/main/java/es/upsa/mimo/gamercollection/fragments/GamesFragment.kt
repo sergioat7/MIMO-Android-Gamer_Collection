@@ -66,6 +66,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
     override fun onResume() {
         super.onResume()
+        searchView?.setQuery(Constants.EMPTY_VALUE, false)
         viewModel.fetchGames()
     }
 

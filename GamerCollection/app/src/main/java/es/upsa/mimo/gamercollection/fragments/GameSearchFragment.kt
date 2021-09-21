@@ -41,6 +41,11 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
         initializeUI()
     }
 
+    override fun onResume() {
+        super.onResume()
+        searchView?.setQuery(Constants.EMPTY_VALUE, false)
+    }
+
     override fun onStop() {
         super.onStop()
         searchView?.setQuery(Constants.EMPTY_VALUE, false)
