@@ -94,7 +94,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 filter()
                 return true
             }
-            R.id.action_sort_on -> {
+            R.id.action_sort -> {
 
                 viewModel.sortGames(requireContext(), resources)
                 return true
