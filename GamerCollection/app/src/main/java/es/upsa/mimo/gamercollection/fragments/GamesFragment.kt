@@ -9,6 +9,7 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.os.Bundle
 import android.view.*
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -68,12 +69,18 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         viewModel.fetchGames()
     }
 
+    override fun onStop() {
+        super.onStop()
+        searchView?.setQuery(Constants.EMPTY_VALUE, false)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
 
         this.menu = menu
         menu.clear()
         inflater.inflate(R.menu.games_toolbar_menu, menu)
+        setupSearchView(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -97,11 +104,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             R.id.action_sort -> {
 
                 viewModel.sortGames(requireContext(), resources)
-                return true
-            }
-            R.id.action_add -> {
-
-                launchActivity(GameDetailActivity::class.java)
                 return true
             }
         }
@@ -153,7 +155,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             }
             this@GamesFragment.viewModel.state = if (it.isSelected) newState else null
         }
-        viewModel.fetchGames()
+        viewModel.fetchGames(false)
     }
 
     fun goToStartEndList(view: View) {
@@ -194,6 +196,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
                 setOnRefreshListener {
                     this@GamesFragment.viewModel.loadGames()
+                    searchView?.setQuery(Constants.EMPTY_VALUE, false)
                 }
             }
 
@@ -412,6 +415,32 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             buttonInProgress.isEnabled = enable
             buttonFinished.isEnabled = enable
         }
+    }
+
+    private fun setupSearchView(menu: Menu) {
+
+        val menuItem = menu.findItem(R.id.action_search)
+        searchView = menuItem.actionView as SearchView
+        searchView?.let { searchView ->
+
+            searchView.queryHint = resources.getString(R.string.search_games)
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+                override fun onQueryTextChange(newText: String): Boolean {
+
+                    viewModel.searchGames(newText)
+                    return true
+                }
+
+                override fun onQueryTextSubmit(query: String): Boolean {
+
+                    menuItem.collapseActionView()
+                    Constants.hideSoftKeyboard(requireActivity())
+                    return true
+                }
+            })
+        }
+        setupSearchView(Constants.EMPTY_VALUE)
     }
     //endregion
 
