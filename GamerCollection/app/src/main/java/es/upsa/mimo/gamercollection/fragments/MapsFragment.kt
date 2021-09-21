@@ -207,7 +207,8 @@ class MapsFragment(
                 .position(position)
                 .draggable(true)
         )
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(position))
+        val zoom = max(googleMap.cameraPosition.zoom, 10F)
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, zoom))
         location = position
     }
     //endregion
