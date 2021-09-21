@@ -50,16 +50,16 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
         when (item.itemId) {
             R.id.action_delete -> {
 
-                showPopupConfirmationDialog(resources.getString(R.string.profile_delete_confirmation)) {
+                showPopupConfirmationDialog(resources.getString(R.string.profile_delete_confirmation), {
                     viewModel.deleteUser()
-                }
+                })
                 return true
             }
             R.id.action_logout -> {
 
-                showPopupConfirmationDialog(resources.getString(R.string.profile_logout_confirmation)) {
+                showPopupConfirmationDialog(resources.getString(R.string.profile_logout_confirmation), {
                     viewModel.logout()
-                }
+                })
                 return true
             }
         }
