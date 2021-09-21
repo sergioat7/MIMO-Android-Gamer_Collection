@@ -27,11 +27,13 @@ class GamesViewModel @Inject constructor(
     //region Private properties
     private val _gamesLoading = MutableLiveData<Boolean>()
     private val _gamesError = MutableLiveData<ErrorResponse>()
+    private val _originalGames = MutableLiveData<List<GameResponse>>()
     private val _games = MutableLiveData<List<GameResponse>>()
     private val _gamesCount = MutableLiveData<List<GameResponse>>()
     private val _gameDeleted = MutableLiveData<Int?>()
     private var sortKey: String = SharedPreferencesHelper.getSortingKey()
     private var sortAscending = true
+    private var query: String? = null
     //endregion
 
     //region Public properties
@@ -66,7 +68,7 @@ class GamesViewModel @Inject constructor(
         })
     }
 
-    fun fetchGames() {
+    fun fetchGames(setCount: Boolean? = true) {
 
         val games = gameRepository.getGamesDatabase(
             state,
@@ -74,10 +76,17 @@ class GamesViewModel @Inject constructor(
             sortKey,
             sortAscending
         )
-        _games.value = games
+        _originalGames.value = games
+        if (!query.isNullOrBlank()) {
+            _games.value = games.filter { game ->
+                game.name?.contains(query ?: "", true) ?: false
+            }
+        } else {
+            _games.value = games
+        }
 
-        if (_gamesCount.value == null) {
-            _gamesCount.value = games
+        if (setCount == true) {
+            _gamesCount.value = _games.value
         }
     }
 
@@ -161,6 +170,15 @@ class GamesViewModel @Inject constructor(
             })
         }
     }
+
+    fun searchGames(query: String) {
+
+        this.query = query
+        _games.value = _originalGames.value?.filter { game ->
+            game.name?.contains(query, true) ?: false
+        } ?: listOf()
+        _gamesCount.value = _games.value
+    }
     //endregion
 
     //region Private methods
@@ -181,6 +199,7 @@ class GamesViewModel @Inject constructor(
         sortKey = SharedPreferencesHelper.getSortingKey()
         sortAscending = true
         filters = null
+        query = null
     }
     //endregion
 }
