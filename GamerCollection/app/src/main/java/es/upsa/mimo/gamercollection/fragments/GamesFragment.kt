@@ -32,14 +32,12 @@ import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Notifications
 import es.upsa.mimo.gamercollection.utils.State
-import es.upsa.mimo.gamercollection.viewholders.GamesViewHolder
 import es.upsa.mimo.gamercollection.viewmodelfactories.GamesViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GamesViewModel
 import kotlinx.android.synthetic.main.state_button.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.max
-import kotlin.math.min
 
 class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListener,
     OnFiltersSelected {
