@@ -30,11 +30,12 @@ import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.OnLocationSelected
 import es.upsa.mimo.gamercollection.databinding.FragmentMapsBinding
 import es.upsa.mimo.gamercollection.utils.Constants
+import kotlin.math.max
 
 class MapsFragment(
     private var location: LatLng?,
     private val onLocationSelected: OnLocationSelected
-) : DialogFragment(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener {
+) : DialogFragment(), OnMapReadyCallback {
 
     //region Private properties
     private lateinit var binding: FragmentMapsBinding
@@ -56,7 +57,7 @@ class MapsFragment(
         super.onViewCreated(view, savedInstanceState)
 
         fusedLocationClient =
-            LocationServices.getFusedLocationProviderClient(activity as GameDetailActivity)
+            LocationServices.getFusedLocationProviderClient(requireActivity())
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
@@ -66,9 +67,9 @@ class MapsFragment(
     //endregion
 
     //region Interface methods
-    override fun onMapReady(googleMap: GoogleMap) {
+    override fun onMapReady(map: GoogleMap) {
 
-        this.googleMap = googleMap
+        this.googleMap = map
         location?.let {
             addMarker(it)
         } ?: run {
@@ -79,29 +80,27 @@ class MapsFragment(
                 }
             }
         }
-        googleMap.setOnMarkerDragListener(this)
+
+        googleMap.setOnMarkerDragListener(object : GoogleMap.OnMarkerDragListener {
+            override fun onMarkerDragStart(p0: Marker) {
+            }
+
+            override fun onMarkerDrag(p0: Marker) {
+            }
+
+            override fun onMarkerDragEnd(p0: Marker) {
+                addMarker(p0.position)
+            }
+        })
     }
-
-    override fun onMarkerDragEnd(p0: Marker?) {
-
-        googleMap.animateCamera(CameraUpdateFactory.newLatLng(p0?.position))
-        location = p0?.position
-    }
-
-    override fun onMarkerDragStart(p0: Marker?) {}
-
-    override fun onMarkerDrag(p0: Marker?) {}
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 1) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                locateUser()
-            }
+        if (requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            locateUser()
         }
     }
     //endregion
@@ -169,7 +168,6 @@ class MapsFragment(
 
     @SuppressLint("MissingPermission")
     private fun getUserLocation() {
-
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
 
             location?.let {
