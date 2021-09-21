@@ -29,6 +29,7 @@ class GamesViewModel @Inject constructor(
     private val _gamesError = MutableLiveData<ErrorResponse>()
     private val _games = MutableLiveData<List<GameResponse>>()
     private val _gamesCount = MutableLiveData<List<GameResponse>>()
+    private val _gameDeleted = MutableLiveData<Int?>()
     private var sortKey: String = SharedPreferencesHelper.getSortingKey()
     private var sortAscending = true
     //endregion
@@ -44,6 +45,7 @@ class GamesViewModel @Inject constructor(
     val gamesError: LiveData<ErrorResponse> = _gamesError
     val games: LiveData<List<GameResponse>> = _games
     val gamesCount: LiveData<List<GameResponse>> = _gamesCount
+    val gameDeleted: LiveData<Int?> = _gameDeleted
     var state: String? = null
     var filters: FilterModel? = null
     //endregion
@@ -138,6 +140,26 @@ class GamesViewModel @Inject constructor(
 
     fun setNotificationLaunched(gameId: Int, value: Boolean) {
         SharedPreferencesHelper.setNotificationLaunched(gameId, value)
+    }
+
+    fun deleteGame(position: Int) {
+        _games.value?.get(position)?.let { game ->
+
+            _gamesLoading.value = true
+            gameRepository.deleteGame(game, {
+
+                _games.value?.first { it.id == game.id }?.let { removed ->
+                    _games.value = _games.value?.minus(removed)
+                }
+                _gameDeleted.value = position
+                _gameDeleted.value = null
+                _gamesLoading.value = false
+            }, {
+
+                _gamesLoading.value = false
+                _gameDeleted.value = null
+            })
+        }
     }
     //endregion
 

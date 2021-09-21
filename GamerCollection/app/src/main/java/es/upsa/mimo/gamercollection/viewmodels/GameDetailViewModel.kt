@@ -84,11 +84,12 @@ class GameDetailViewModel @Inject constructor(
     }
 
     fun deleteGame() {
-
         _game.value?.let { game ->
+
+            _gameDetailLoading.value = true
             gameRepository.deleteGame(game, {
 
-                _gameDetailLoading.value = true
+                _gameDetailLoading.value = false
                 _gameDetailSuccessMessage.value = R.string.game_removed
             }, {
                 _gameDetailError.value = it
