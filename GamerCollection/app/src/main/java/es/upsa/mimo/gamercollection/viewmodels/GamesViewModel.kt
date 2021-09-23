@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.fragments.GamesFragment
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
@@ -33,6 +34,7 @@ class GamesViewModel @Inject constructor(
     private val _gamesCount = MutableLiveData<List<GameResponse>>()
     private val _gameDeleted = MutableLiveData<Int?>()
     private var _state = MutableLiveData<String?>(null)
+    private var _scrollPosition = MutableLiveData(GamesFragment.ScrollPosition.TOP)
     private var sortKey: String = SharedPreferencesHelper.getSortingKey()
     private var sortAscending = true
     private var query: String? = null
@@ -52,6 +54,7 @@ class GamesViewModel @Inject constructor(
     val gameDeleted: LiveData<Int?> = _gameDeleted
     var filters: FilterModel? = null
     val state: LiveData<String?> = _state
+    val scrollPosition: LiveData<GamesFragment.ScrollPosition> = _scrollPosition
     //endregion
 
     //region Public methods
@@ -90,6 +93,8 @@ class GamesViewModel @Inject constructor(
         if (setCount == true) {
             _gamesCount.value = _games.value
         }
+
+        _scrollPosition.value = GamesFragment.ScrollPosition.TOP
     }
 
     fun sortGames(context: Context, resources: Resources) {
@@ -184,6 +189,10 @@ class GamesViewModel @Inject constructor(
 
     fun setState(newState: String?) {
         _state.value = newState
+    }
+
+    fun setPosition(newPosition: GamesFragment.ScrollPosition) {
+        _scrollPosition.value = newPosition
     }
     //endregion
 

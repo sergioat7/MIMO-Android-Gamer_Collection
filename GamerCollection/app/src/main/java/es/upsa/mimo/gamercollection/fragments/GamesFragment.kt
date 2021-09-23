@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -47,7 +46,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     private lateinit var viewModel: GamesViewModel
     private lateinit var gamesAdapter: GamesAdapter
     private var menu: Menu? = null
-    private val scrollPosition = ObservableField<ScrollPosition>()
     //endregion
 
     //region Lifecycle methods
@@ -132,7 +130,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             it.findItem(R.id.action_filter).isVisible = filters == null
             it.findItem(R.id.action_filter_on).isVisible = filters != null
         }
-        scrollPosition.set(ScrollPosition.TOP)
         viewModel.fetchGames()
     }
     //endregion
@@ -151,20 +148,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
     fun goToStartEndList(view: View) {
 
-        with(binding) {
-            when (view) {
-                floatingActionButtonStartList -> {
-
-                    recyclerViewGames.scrollToPosition(0)
-                    scrollPosition.set(ScrollPosition.TOP)
-                }
-                floatingActionButtonEndList -> {
-
-                    val position: Int = gamesAdapter.itemCount - 1
-                    recyclerViewGames.scrollToPosition(position)
-                    scrollPosition.set(ScrollPosition.END)
-                }
-            }
+        when (view) {
+            binding.floatingActionButtonStartList -> viewModel.setPosition(ScrollPosition.TOP)
+            binding.floatingActionButtonEndList -> viewModel.setPosition(ScrollPosition.END)
         }
     }
     //endregion
@@ -205,7 +191,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                         super.onScrollStateChanged(recyclerView, newState)
 
-                        scrollPosition.set(
+                        val position =
                             if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                                 ScrollPosition.TOP
                             } else if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
@@ -213,7 +199,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                             } else {
                                 ScrollPosition.MIDDLE
                             }
-                        )
+                        this@GamesFragment.viewModel.setPosition(position)
                     }
                 })
                 ItemTouchHelper(SwipeController()).attachToRecyclerView(this)
@@ -222,10 +208,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             fragment = this@GamesFragment
             viewModel = this@GamesFragment.viewModel
             lifecycleOwner = this@GamesFragment
-            position = scrollPosition
         }
-
-        scrollPosition.set(ScrollPosition.TOP)
     }
 
     private fun setupBindings() {
@@ -276,13 +259,21 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
         viewModel.state.observe(viewLifecycleOwner, {
 
-            scrollPosition.set(ScrollPosition.TOP)
             binding.apply {
                 buttonPending.isSelected = it == State.PENDING_STATE
                 buttonInProgress.isSelected = it == State.IN_PROGRESS_STATE
                 buttonFinished.isSelected = it == State.FINISHED_STATE
             }
             viewModel.fetchGames(false)
+        })
+
+        viewModel.scrollPosition.observe(viewLifecycleOwner, {
+            when (it) {
+
+                ScrollPosition.TOP -> binding.recyclerViewGames.scrollToPosition(0)
+                ScrollPosition.END -> binding.recyclerViewGames.scrollToPosition(gamesAdapter.itemCount - 1)
+                else -> Unit
+            }
         })
     }
 

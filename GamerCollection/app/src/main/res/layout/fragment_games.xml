@@ -8,10 +8,6 @@
             />
 
         <import
-            type="androidx.databinding.ObservableField"
-            />
-
-        <import
             type="es.upsa.mimo.gamercollection.fragments.GamesFragment.ScrollPosition"
             />
 
@@ -23,11 +19,6 @@
         <variable
             name="viewModel"
             type="es.upsa.mimo.gamercollection.viewmodels.GamesViewModel"
-            />
-
-        <variable
-            name="position"
-            type="ObservableField&lt;ScrollPosition>"
             />
 
     </data>
@@ -119,7 +110,7 @@
                 android:id="@+id/floating_action_button_start_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="@{viewModel.games.empty || position == ScrollPosition.TOP ? View.GONE : View.VISIBLE}"
+                android:visibility="@{viewModel.games.empty || viewModel.scrollPosition == ScrollPosition.TOP ? View.GONE : View.VISIBLE}"
                 android:onClick="@{fragment::goToStartEndList}"
                 app:layout_constraintEnd_toEndOf="@+id/swipe_refresh_layout"
                 app:layout_constraintTop_toTopOf="@+id/swipe_refresh_layout"
@@ -130,7 +121,7 @@
                 android:id="@+id/floating_action_button_end_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="@{viewModel.games.empty || position == ScrollPosition.END ? View.GONE : View.VISIBLE}"
+                android:visibility="@{viewModel.games.empty || viewModel.scrollPosition == ScrollPosition.END ? View.GONE : View.VISIBLE}"
                 android:onClick="@{fragment::goToStartEndList}"
                 app:layout_constraintBottom_toBottomOf="@+id/swipe_refresh_layout"
                 app:layout_constraintEnd_toEndOf="@+id/swipe_refresh_layout"
