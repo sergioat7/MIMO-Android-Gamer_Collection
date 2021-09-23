@@ -140,23 +140,13 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     //region Public methods
     fun buttonClicked(it: View) {
 
-        scrollPosition.set(ScrollPosition.TOP)
-        with(binding) {
-
-            swipeRefreshLayout.isEnabled =
-                !it.isSelected && this@GamesFragment.viewModel.swipeRefresh
-            buttonPending.isSelected = if (it == buttonPending) !it.isSelected else false
-            buttonInProgress.isSelected = if (it == buttonInProgress) !it.isSelected else false
-            buttonFinished.isSelected = if (it == buttonFinished) !it.isSelected else false
-            val newState = when (it) {
-                buttonPending -> State.PENDING_STATE
-                buttonInProgress -> State.IN_PROGRESS_STATE
-                buttonFinished -> State.FINISHED_STATE
-                else -> null
-            }
-            this@GamesFragment.viewModel.state = if (it.isSelected) newState else null
+        val newState = when (it) {
+            binding.buttonPending -> if (it.isSelected) null else State.PENDING_STATE
+            binding.buttonInProgress -> if (it.isSelected) null else State.IN_PROGRESS_STATE
+            binding.buttonFinished -> if (it.isSelected) null else State.FINISHED_STATE
+            else -> null
         }
-        viewModel.fetchGames(false)
+        viewModel.setState(newState)
     }
 
     fun goToStartEndList(view: View) {
@@ -282,6 +272,17 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             position?.let {
                 gamesAdapter.notifyItemRemoved(position)
             }
+        })
+
+        viewModel.state.observe(viewLifecycleOwner, {
+
+            scrollPosition.set(ScrollPosition.TOP)
+            binding.apply {
+                buttonPending.isSelected = it == State.PENDING_STATE
+                buttonInProgress.isSelected = it == State.IN_PROGRESS_STATE
+                buttonFinished.isSelected = it == State.FINISHED_STATE
+            }
+            viewModel.fetchGames(false)
         })
     }
 

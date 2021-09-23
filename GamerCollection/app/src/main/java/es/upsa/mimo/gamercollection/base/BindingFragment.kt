@@ -158,7 +158,6 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
 
             searchView.isIconified = false
             searchView.isIconifiedByDefault = false
-            searchView.queryHint = resources.getString(R.string.search_games)
             if (query.isNotBlank()) {
                 searchView.setQuery(query, false)
             }

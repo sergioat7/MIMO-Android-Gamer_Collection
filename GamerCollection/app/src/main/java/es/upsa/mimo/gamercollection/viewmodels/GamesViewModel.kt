@@ -32,6 +32,7 @@ class GamesViewModel @Inject constructor(
     private val _games = MutableLiveData<List<GameResponse>>()
     private val _gamesCount = MutableLiveData<List<GameResponse>>()
     private val _gameDeleted = MutableLiveData<Int?>()
+    private var _state = MutableLiveData<String?>(null)
     private var sortKey: String = SharedPreferencesHelper.getSortingKey()
     private var sortAscending = true
     private var query: String? = null
@@ -49,8 +50,8 @@ class GamesViewModel @Inject constructor(
     val games: LiveData<List<GameResponse>> = _games
     val gamesCount: LiveData<List<GameResponse>> = _gamesCount
     val gameDeleted: LiveData<Int?> = _gameDeleted
-    var state: String? = null
     var filters: FilterModel? = null
+    val state: LiveData<String?> = _state
     //endregion
 
     //region Public methods
@@ -72,8 +73,8 @@ class GamesViewModel @Inject constructor(
     fun fetchGames(setCount: Boolean? = true) {
 
         val games = gameRepository.getGamesDatabase(
-            state,
             filters,
+            _state.value,
             sortKey,
             sortAscending
         )
@@ -180,6 +181,10 @@ class GamesViewModel @Inject constructor(
         } ?: listOf()
         _gamesCount.value = _games.value
     }
+
+    fun setState(newState: String?) {
+        _state.value = newState
+    }
     //endregion
 
     //region Private methods
@@ -196,7 +201,7 @@ class GamesViewModel @Inject constructor(
 
     private fun resetProperties() {
 
-        state = null
+        _state.value = null
         sortKey = SharedPreferencesHelper.getSortingKey()
         sortAscending = true
         filters = null
