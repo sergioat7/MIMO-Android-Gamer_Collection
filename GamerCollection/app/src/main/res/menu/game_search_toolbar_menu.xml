@@ -5,7 +5,7 @@
     >
 
     <item
-        android:id="@+id/action_search"
+        android:id="@+id/action_search_rawg"
         android:icon="@drawable/ic_search_light"
         android:title=""
         app:actionViewClass="android.widget.SearchView"

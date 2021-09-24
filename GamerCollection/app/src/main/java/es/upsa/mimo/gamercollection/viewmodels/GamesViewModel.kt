@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.fragments.GamesFragment
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
@@ -27,11 +28,16 @@ class GamesViewModel @Inject constructor(
     //region Private properties
     private val _gamesLoading = MutableLiveData<Boolean>()
     private val _gamesError = MutableLiveData<ErrorResponse>()
+    private val _originalGames = MutableLiveData<List<GameResponse>>()
     private val _games = MutableLiveData<List<GameResponse>>()
     private val _gamesCount = MutableLiveData<List<GameResponse>>()
     private val _gameDeleted = MutableLiveData<Int?>()
+    private var _state = MutableLiveData<String?>(null)
+    private var _filters = MutableLiveData<FilterModel?>(null)
+    private var _scrollPosition = MutableLiveData(GamesFragment.ScrollPosition.TOP)
     private var sortKey: String = SharedPreferencesHelper.getSortingKey()
     private var sortAscending = true
+    private var query: String? = null
     //endregion
 
     //region Public properties
@@ -46,8 +52,9 @@ class GamesViewModel @Inject constructor(
     val games: LiveData<List<GameResponse>> = _games
     val gamesCount: LiveData<List<GameResponse>> = _gamesCount
     val gameDeleted: LiveData<Int?> = _gameDeleted
-    var state: String? = null
-    var filters: FilterModel? = null
+    val state: LiveData<String?> = _state
+    val filters: LiveData<FilterModel?> = _filters
+    val scrollPosition: LiveData<GamesFragment.ScrollPosition> = _scrollPosition
     //endregion
 
     //region Public methods
@@ -69,16 +76,24 @@ class GamesViewModel @Inject constructor(
     fun fetchGames() {
 
         val games = gameRepository.getGamesDatabase(
-            state,
-            filters,
+            _filters.value,
+            query,
             sortKey,
             sortAscending
         )
-        _games.value = games
+        _originalGames.value = games
 
-        if (_gamesCount.value == null) {
-            _gamesCount.value = games
+        if (!_state.value.isNullOrBlank()) {
+            _games.value = _originalGames.value?.filter { game ->
+                game.state == _state.value
+            } ?: listOf()
+        } else {
+            _games.value = games
         }
+
+        _gamesCount.value = games
+
+        _scrollPosition.value = GamesFragment.ScrollPosition.TOP
     }
 
     fun sortGames(context: Context, resources: Resources) {
@@ -161,6 +176,34 @@ class GamesViewModel @Inject constructor(
             })
         }
     }
+
+    fun searchGames(query: String) {
+
+        this.query = query
+        fetchGames()
+    }
+
+    fun setState(newState: String?) {
+
+        _state.value = newState
+        if (!newState.isNullOrBlank()) {
+            _games.value = _originalGames.value?.filter { game ->
+                game.state == newState
+            } ?: listOf()
+        } else {
+            _games.value = _originalGames.value
+        }
+    }
+
+    fun applyFilters(newFilters: FilterModel?) {
+
+        _filters.value = newFilters
+        fetchGames()
+    }
+
+    fun setPosition(newPosition: GamesFragment.ScrollPosition) {
+        _scrollPosition.value = newPosition
+    }
     //endregion
 
     //region Private methods
@@ -177,10 +220,11 @@ class GamesViewModel @Inject constructor(
 
     private fun resetProperties() {
 
-        state = null
+        _state.value = null
+        _filters.value = null
         sortKey = SharedPreferencesHelper.getSortingKey()
         sortAscending = true
-        filters = null
+        query = null
     }
     //endregion
 }

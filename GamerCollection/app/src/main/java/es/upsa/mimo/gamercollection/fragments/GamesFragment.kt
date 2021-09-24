@@ -9,11 +9,11 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.os.Bundle
 import android.view.*
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import androidx.databinding.ObservableField
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -46,7 +46,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     private lateinit var viewModel: GamesViewModel
     private lateinit var gamesAdapter: GamesAdapter
     private var menu: Menu? = null
-    private val scrollPosition = ObservableField<ScrollPosition>()
     //endregion
 
     //region Lifecycle methods
@@ -65,7 +64,13 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
     override fun onResume() {
         super.onResume()
+        searchView?.setQuery(Constants.EMPTY_VALUE, false)
         viewModel.fetchGames()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        searchView?.setQuery(Constants.EMPTY_VALUE, false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -74,6 +79,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         this.menu = menu
         menu.clear()
         inflater.inflate(R.menu.games_toolbar_menu, menu)
+        setupSearchView(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -84,24 +90,14 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 openSyncPopup()
                 return true
             }
-            R.id.action_filter -> {
+            R.id.action_filter, R.id.action_filter_on -> {
 
                 filter()
                 return true
             }
-            R.id.action_filter_on -> {
-
-                filter()
-                return true
-            }
-            R.id.action_sort_on -> {
+            R.id.action_sort -> {
 
                 viewModel.sortGames(requireContext(), resources)
-                return true
-            }
-            R.id.action_add -> {
-
-                launchActivity(GameDetailActivity::class.java)
                 return true
             }
         }
@@ -123,55 +119,27 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     }
 
     override fun filter(filters: FilterModel?) {
-
-        viewModel.filters = filters
-        menu?.let {
-            it.findItem(R.id.action_filter).isVisible = filters == null
-            it.findItem(R.id.action_filter_on).isVisible = filters != null
-        }
-        scrollPosition.set(ScrollPosition.TOP)
-        viewModel.fetchGames()
+        viewModel.applyFilters(filters)
     }
     //endregion
 
     //region Public methods
     fun buttonClicked(it: View) {
 
-        scrollPosition.set(ScrollPosition.TOP)
-        with(binding) {
-
-            swipeRefreshLayout.isEnabled =
-                !it.isSelected && this@GamesFragment.viewModel.swipeRefresh
-            buttonPending.isSelected = if (it == buttonPending) !it.isSelected else false
-            buttonInProgress.isSelected = if (it == buttonInProgress) !it.isSelected else false
-            buttonFinished.isSelected = if (it == buttonFinished) !it.isSelected else false
-            val newState = when (it) {
-                buttonPending -> State.PENDING_STATE
-                buttonInProgress -> State.IN_PROGRESS_STATE
-                buttonFinished -> State.FINISHED_STATE
-                else -> null
-            }
-            this@GamesFragment.viewModel.state = if (it.isSelected) newState else null
+        val newState = when (it) {
+            binding.buttonPending -> if (it.isSelected) null else State.PENDING_STATE
+            binding.buttonInProgress -> if (it.isSelected) null else State.IN_PROGRESS_STATE
+            binding.buttonFinished -> if (it.isSelected) null else State.FINISHED_STATE
+            else -> null
         }
-        viewModel.fetchGames()
+        viewModel.setState(newState)
     }
 
     fun goToStartEndList(view: View) {
 
-        with(binding) {
-            when (view) {
-                floatingActionButtonStartList -> {
-
-                    recyclerViewGames.scrollToPosition(0)
-                    scrollPosition.set(ScrollPosition.TOP)
-                }
-                floatingActionButtonEndList -> {
-
-                    val position: Int = gamesAdapter.itemCount - 1
-                    recyclerViewGames.scrollToPosition(position)
-                    scrollPosition.set(ScrollPosition.END)
-                }
-            }
+        when (view) {
+            binding.floatingActionButtonStartList -> viewModel.setPosition(ScrollPosition.TOP)
+            binding.floatingActionButtonEndList -> viewModel.setPosition(ScrollPosition.END)
         }
     }
     //endregion
@@ -194,6 +162,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
                 setOnRefreshListener {
                     this@GamesFragment.viewModel.loadGames()
+                    searchView?.setQuery(Constants.EMPTY_VALUE, false)
                 }
             }
 
@@ -211,7 +180,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                         super.onScrollStateChanged(recyclerView, newState)
 
-                        scrollPosition.set(
+                        val position =
                             if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                                 ScrollPosition.TOP
                             } else if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
@@ -219,7 +188,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                             } else {
                                 ScrollPosition.MIDDLE
                             }
-                        )
+                        this@GamesFragment.viewModel.setPosition(position)
                     }
                 })
                 ItemTouchHelper(SwipeController()).attachToRecyclerView(this)
@@ -228,10 +197,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             fragment = this@GamesFragment
             viewModel = this@GamesFragment.viewModel
             lifecycleOwner = this@GamesFragment
-            position = scrollPosition
         }
-
-        scrollPosition.set(ScrollPosition.TOP)
     }
 
     private fun setupBindings() {
@@ -279,6 +245,32 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 gamesAdapter.notifyItemRemoved(position)
             }
         })
+
+        viewModel.state.observe(viewLifecycleOwner, {
+
+            binding.apply {
+                buttonPending.isSelected = it == State.PENDING_STATE
+                buttonInProgress.isSelected = it == State.IN_PROGRESS_STATE
+                buttonFinished.isSelected = it == State.FINISHED_STATE
+            }
+        })
+
+        viewModel.filters.observe(viewLifecycleOwner, { filters ->
+
+            menu?.let {
+                it.findItem(R.id.action_filter).isVisible = filters == null
+                it.findItem(R.id.action_filter_on).isVisible = filters != null
+            }
+        })
+
+        viewModel.scrollPosition.observe(viewLifecycleOwner, {
+            when (it) {
+
+                ScrollPosition.TOP -> binding.recyclerViewGames.scrollToPosition(0)
+                ScrollPosition.END -> binding.recyclerViewGames.scrollToPosition(gamesAdapter.itemCount - 1)
+                else -> Unit
+            }
+        })
     }
 
     private fun filter() {
@@ -289,7 +281,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             ft.remove(prev)
         }
         ft.addToBackStack(null)
-        val dialogFragment = PopupFilterDialogFragment(viewModel.filters, this)
+        val dialogFragment = PopupFilterDialogFragment(viewModel.filters.value, this)
         dialogFragment.isCancelable = false
         dialogFragment.show(ft, "filterPopup")
     }
@@ -412,6 +404,57 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             buttonInProgress.isEnabled = enable
             buttonFinished.isEnabled = enable
         }
+    }
+
+    private fun setupSearchView(menu: Menu) {
+
+        val menuItem = menu.findItem(R.id.action_search)
+        searchView = menuItem.actionView as SearchView
+        searchView?.let { searchView ->
+
+            searchView.queryHint = resources.getString(R.string.search_games)
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+                override fun onQueryTextChange(newText: String): Boolean {
+
+                    viewModel.searchGames(newText)
+                    return true
+                }
+
+                override fun onQueryTextSubmit(query: String): Boolean {
+
+                    menuItem.collapseActionView()
+                    Constants.hideSoftKeyboard(requireActivity())
+                    return true
+                }
+            })
+        }
+        menuItem.setOnActionExpandListener(
+            object : MenuItem.OnActionExpandListener {
+                override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
+                    menu.let {
+                        it.findItem(R.id.action_synchronize).isVisible = false
+                        it.findItem(R.id.action_filter).isVisible = false
+                        it.findItem(R.id.action_filter_on).isVisible = false
+                        it.findItem(R.id.action_sort).isVisible = false
+                    }
+                    return true
+                }
+
+                override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
+                    menu.let {
+                        it.findItem(R.id.action_synchronize).isVisible = true
+                        it.findItem(R.id.action_filter).isVisible = viewModel.filters.value == null
+                        it.findItem(R.id.action_filter_on).isVisible =
+                            viewModel.filters.value != null
+                        it.findItem(R.id.action_sort).isVisible = true
+                    }
+                    return true
+                }
+
+            }
+        )
+        setupSearchView(Constants.EMPTY_VALUE)
     }
     //endregion
 
