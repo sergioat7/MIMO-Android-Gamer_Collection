@@ -101,6 +101,7 @@ class GameRepository @Inject constructor(
     fun getGamesDatabase(
         state: String? = null,
         filters: FilterModel? = null,
+        name: String? = null,
         sortKey: String? = null,
         ascending: Boolean = true
     ): List<GameResponse> {
@@ -188,6 +189,13 @@ class GameRepository @Inject constructor(
                 queryConditions += "songs != '[]' AND "
             }
         }
+
+        if (!name.isNullOrBlank()) {
+            if (queryConditions.isEmpty()) queryConditions += " WHERE "
+
+            queryConditions += "name LIKE '%$name%' AND "
+        }
+
         queryConditions = queryConditions.dropLast(5)
         queryString += queryConditions
 
