@@ -79,21 +79,17 @@ class GamesViewModel @Inject constructor(
         val games = gameRepository.getGamesDatabase(
             _state.value,
             _filters.value,
+            query,
             sortKey,
             sortAscending
         )
         _originalGames.value = games
-        if (!query.isNullOrBlank()) {
-            _games.value = games.filter { game ->
-                game.name?.contains(query ?: Constants.EMPTY_VALUE, true) ?: false
-            }
-        } else {
-            _games.value = games
-        }
 
         if (setCount == true) {
             _gamesCount.value = _games.value
         }
+        
+        _games.value = games
 
         _scrollPosition.value = GamesFragment.ScrollPosition.TOP
     }
@@ -182,10 +178,7 @@ class GamesViewModel @Inject constructor(
     fun searchGames(query: String) {
 
         this.query = query
-        _games.value = _originalGames.value?.filter { game ->
-            game.name?.contains(query, true) ?: false
-        } ?: listOf()
-        _gamesCount.value = _games.value
+        fetchGames()
     }
 
     fun setState(newState: String?) {
