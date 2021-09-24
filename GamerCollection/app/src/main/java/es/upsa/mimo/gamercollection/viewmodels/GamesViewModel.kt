@@ -34,6 +34,7 @@ class GamesViewModel @Inject constructor(
     private val _gamesCount = MutableLiveData<List<GameResponse>>()
     private val _gameDeleted = MutableLiveData<Int?>()
     private var _state = MutableLiveData<String?>(null)
+    private var _filters = MutableLiveData<FilterModel?>(null)
     private var _scrollPosition = MutableLiveData(GamesFragment.ScrollPosition.TOP)
     private var sortKey: String = SharedPreferencesHelper.getSortingKey()
     private var sortAscending = true
@@ -52,8 +53,8 @@ class GamesViewModel @Inject constructor(
     val games: LiveData<List<GameResponse>> = _games
     val gamesCount: LiveData<List<GameResponse>> = _gamesCount
     val gameDeleted: LiveData<Int?> = _gameDeleted
-    var filters: FilterModel? = null
     val state: LiveData<String?> = _state
+    val filters: LiveData<FilterModel?> = _filters
     val scrollPosition: LiveData<GamesFragment.ScrollPosition> = _scrollPosition
     //endregion
 
@@ -76,8 +77,8 @@ class GamesViewModel @Inject constructor(
     fun fetchGames(setCount: Boolean? = true) {
 
         val games = gameRepository.getGamesDatabase(
-            filters,
             _state.value,
+            _filters.value,
             sortKey,
             sortAscending
         )
@@ -191,6 +192,12 @@ class GamesViewModel @Inject constructor(
         _state.value = newState
     }
 
+    fun applyFilters(newFilters: FilterModel?) {
+
+        _filters.value = newFilters
+        fetchGames()
+    }
+
     fun setPosition(newPosition: GamesFragment.ScrollPosition) {
         _scrollPosition.value = newPosition
     }
@@ -211,9 +218,9 @@ class GamesViewModel @Inject constructor(
     private fun resetProperties() {
 
         _state.value = null
+        _filters.value = null
         sortKey = SharedPreferencesHelper.getSortingKey()
         sortAscending = true
-        filters = null
         query = null
     }
     //endregion
