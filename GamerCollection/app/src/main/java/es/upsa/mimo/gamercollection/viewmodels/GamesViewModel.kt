@@ -17,7 +17,6 @@ import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
-import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
@@ -74,10 +73,9 @@ class GamesViewModel @Inject constructor(
         })
     }
 
-    fun fetchGames(setCount: Boolean? = true) {
+    fun fetchGames() {
 
         val games = gameRepository.getGamesDatabase(
-            _state.value,
             _filters.value,
             query,
             sortKey,
@@ -85,11 +83,15 @@ class GamesViewModel @Inject constructor(
         )
         _originalGames.value = games
 
-        if (setCount == true) {
-            _gamesCount.value = _games.value
+        if (!_state.value.isNullOrBlank()) {
+            _games.value = _originalGames.value?.filter { game ->
+                game.state == _state.value
+            } ?: listOf()
+        } else {
+            _games.value = games
         }
-        
-        _games.value = games
+
+        _gamesCount.value = games
 
         _scrollPosition.value = GamesFragment.ScrollPosition.TOP
     }
@@ -182,7 +184,15 @@ class GamesViewModel @Inject constructor(
     }
 
     fun setState(newState: String?) {
+
         _state.value = newState
+        if (!newState.isNullOrBlank()) {
+            _games.value = _originalGames.value?.filter { game ->
+                game.state == newState
+            } ?: listOf()
+        } else {
+            _games.value = _originalGames.value
+        }
     }
 
     fun applyFilters(newFilters: FilterModel?) {
