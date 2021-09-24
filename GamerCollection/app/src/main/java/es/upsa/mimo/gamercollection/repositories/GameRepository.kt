@@ -18,7 +18,6 @@ import es.upsa.mimo.gamercollection.network.RawgGameApiService
 import es.upsa.mimo.gamercollection.network.RequestResult
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
 import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.State
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
