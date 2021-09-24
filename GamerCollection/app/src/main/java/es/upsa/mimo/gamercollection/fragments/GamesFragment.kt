@@ -124,13 +124,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     }
 
     override fun filter(filters: FilterModel?) {
-
-        viewModel.filters = filters
-        menu?.let {
-            it.findItem(R.id.action_filter).isVisible = filters == null
-            it.findItem(R.id.action_filter_on).isVisible = filters != null
-        }
-        viewModel.fetchGames()
+        viewModel.applyFilters(filters)
     }
     //endregion
 
@@ -267,6 +261,14 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             viewModel.fetchGames(false)
         })
 
+        viewModel.filters.observe(viewLifecycleOwner, { filters ->
+
+            menu?.let {
+                it.findItem(R.id.action_filter).isVisible = filters == null
+                it.findItem(R.id.action_filter_on).isVisible = filters != null
+            }
+        })
+
         viewModel.scrollPosition.observe(viewLifecycleOwner, {
             when (it) {
 
@@ -285,7 +287,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             ft.remove(prev)
         }
         ft.addToBackStack(null)
-        val dialogFragment = PopupFilterDialogFragment(viewModel.filters, this)
+        val dialogFragment = PopupFilterDialogFragment(viewModel.filters.value, this)
         dialogFragment.isCancelable = false
         dialogFragment.show(ft, "filterPopup")
     }
