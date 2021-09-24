@@ -38,8 +38,6 @@ import kotlinx.android.synthetic.main.state_button.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.max
-import androidx.core.view.MenuItemCompat
-
 
 class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListener,
     OnFiltersSelected {
