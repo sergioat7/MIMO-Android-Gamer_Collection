@@ -99,20 +99,14 @@ class GameRepository @Inject constructor(
     }
 
     fun getGamesDatabase(
-        state: String? = null,
         filters: FilterModel? = null,
+        name: String? = null,
         sortKey: String? = null,
         ascending: Boolean = true
     ): List<GameResponse> {
 
         var queryString = "SELECT * FROM Game"
-
-        var queryConditions = when (state) {
-            State.PENDING_STATE -> " WHERE state == '${State.PENDING_STATE}' AND "
-            State.IN_PROGRESS_STATE -> " WHERE state == '${State.IN_PROGRESS_STATE}' AND "
-            State.FINISHED_STATE -> " WHERE state == '${State.FINISHED_STATE}' AND "
-            else -> Constants.EMPTY_VALUE
-        }
+        var queryConditions = Constants.EMPTY_VALUE
 
         filters?.let { filtersVar ->
 
@@ -188,6 +182,13 @@ class GameRepository @Inject constructor(
                 queryConditions += "songs != '[]' AND "
             }
         }
+
+        if (!name.isNullOrBlank()) {
+            if (queryConditions.isEmpty()) queryConditions += " WHERE "
+
+            queryConditions += "name LIKE '%$name%' AND "
+        }
+
         queryConditions = queryConditions.dropLast(5)
         queryString += queryConditions
 

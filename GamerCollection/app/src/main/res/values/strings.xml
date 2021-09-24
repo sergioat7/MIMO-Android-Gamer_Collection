@@ -98,6 +98,7 @@
         <item quantity="one">%s (%d game)</item>
         <item quantity="other">%s (%d games)</item>
     </plurals>
+    <string name="search_sagas">Search sagas</string>
 
     // Saga detail
     <string name="saga_detail">Detail</string>

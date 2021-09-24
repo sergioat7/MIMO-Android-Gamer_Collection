@@ -28,18 +28,19 @@
         tools:ignore="AlwaysShowAction"
         />
 
-    <item android:id="@+id/action_sort_on"
+    <item android:id="@+id/action_sort"
         android:icon="@drawable/ic_sort_light"
         android:title=""
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction"
         />
 
-    <item android:id="@+id/action_add"
-        android:icon="@drawable/ic_add_game_dark"
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search_light"
         android:title=""
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="collapseActionView|always"
         />
 
 </menu>
