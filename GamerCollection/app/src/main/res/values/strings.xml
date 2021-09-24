@@ -98,6 +98,7 @@
         <item quantity="one">%s (%d game)</item>
         <item quantity="other">%s (%d games)</item>
     </plurals>
+    <string name="search_sagas">Search sagas</string>
 
     // Saga detail
     <string name="saga_detail">Detail</string>
@@ -160,7 +161,10 @@
     <string name="channel_description">Notice the release day of a pending game</string>
     <string name="notification_title">%s already on sale</string>
     <string name="notification_description">Today, %s, game %s has been released</string>
-    <string name="summary_notifications_title">%d new games released</string>
+    <plurals name="summary_notifications_title">
+        <item quantity="one">%d new game released</item>
+        <item quantity="other">%d new games released</item>
+    </plurals>
 
     // Errors
     <string name="error_server">There was an error on getting data. Please, try again</string>

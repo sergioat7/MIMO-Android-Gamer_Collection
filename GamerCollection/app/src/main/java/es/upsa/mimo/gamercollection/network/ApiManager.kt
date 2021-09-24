@@ -53,7 +53,7 @@ object ApiManager {
 
     //region Public methods
     inline fun <reified T : Any> getRetrofit(url: String): Retrofit {
-        return retrofits[T::class] as Retrofit? ?: {
+        return retrofits[T::class] as Retrofit? ?: run {
 
             val logInterceptor = HttpLoggingInterceptor()
             logInterceptor.level =
@@ -77,15 +77,16 @@ object ApiManager {
 
             retrofits[T::class] = retrofit
             retrofit
-        }()
+        }
     }
 
     inline fun <reified T : Any> getService(url: String): T {
-        return apis[T::class] as? T ?: {
+        return apis[T::class] as? T ?: run {
+
             val ret = getRetrofit<T>(url).create(T::class.java)
             apis[T::class] = ret
             ret
-        }()
+        }
     }
 
     inline fun <reified T : Any> validateResponse(response: retrofit2.Response<T>): RequestResult<T> {

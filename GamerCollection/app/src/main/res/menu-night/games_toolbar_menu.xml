@@ -2,6 +2,7 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     >
 
     <item
@@ -9,12 +10,14 @@
         android:icon="@drawable/ic_synchronize_dark"
         android:title=""
         app:showAsAction="always"
+        tools:ignore="AlwaysShowAction"
         />
 
     <item android:id="@+id/action_filter"
         android:icon="@drawable/ic_filter_dark"
         android:title=""
         app:showAsAction="always"
+        tools:ignore="AlwaysShowAction"
         />
 
     <item android:id="@+id/action_filter_on"
@@ -22,18 +25,22 @@
         android:title=""
         android:visible="false"
         app:showAsAction="always"
+        tools:ignore="AlwaysShowAction"
         />
 
-    <item android:id="@+id/action_sort_on"
+    <item android:id="@+id/action_sort"
         android:icon="@drawable/ic_sort_dark"
         android:title=""
         app:showAsAction="always"
+        tools:ignore="AlwaysShowAction"
         />
 
-    <item android:id="@+id/action_add"
-        android:icon="@drawable/ic_add_game_light"
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search_dark"
         android:title=""
-        app:showAsAction="always"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="collapseActionView|always"
         />
 
 </menu>

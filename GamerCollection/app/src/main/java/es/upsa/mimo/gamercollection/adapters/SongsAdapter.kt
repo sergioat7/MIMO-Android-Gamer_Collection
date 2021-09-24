@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.BindingAdapter
@@ -35,12 +36,14 @@ class SongsAdapter(
     //endregion
 
     //region Public methods
+    @SuppressLint("NotifyDataSetChanged")
     fun setSongs(newSongs: List<SongResponse>) {
 
         this.songs = newSongs
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setEditable(editable: Boolean) {
 
         this.editable = editable
