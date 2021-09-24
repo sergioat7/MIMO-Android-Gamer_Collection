@@ -13,14 +13,6 @@
         tools:ignore="AlwaysShowAction"
         />
 
-    <item
-        android:id="@+id/action_search"
-        android:icon="@drawable/ic_search_light"
-        android:title=""
-        app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="collapseActionView|always"
-        />
-
     <item android:id="@+id/action_filter"
         android:icon="@drawable/ic_filter_light"
         android:title=""
@@ -41,6 +33,14 @@
         android:title=""
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction"
+        />
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search_light"
+        android:title=""
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="collapseActionView|always"
         />
 
 </menu>

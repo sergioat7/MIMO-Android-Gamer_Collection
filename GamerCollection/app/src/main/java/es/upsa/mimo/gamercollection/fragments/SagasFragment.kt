@@ -250,6 +250,26 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
                 }
             })
         }
+        menuItem.setOnActionExpandListener(
+            object : MenuItem.OnActionExpandListener {
+                override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
+                    menu.let {
+                        it.findItem(R.id.action_synchronize).isVisible = false
+                        it.findItem(R.id.action_add).isVisible = false
+                    }
+                    return true
+                }
+
+                override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
+                    menu.let {
+                        it.findItem(R.id.action_synchronize).isVisible = true
+                        it.findItem(R.id.action_add).isVisible = true
+                    }
+                    return true
+                }
+
+            }
+        )
         setupSearchView(Constants.EMPTY_VALUE)
     }
     //endregion

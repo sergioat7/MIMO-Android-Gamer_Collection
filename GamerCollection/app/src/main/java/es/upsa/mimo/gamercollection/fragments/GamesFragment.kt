@@ -38,6 +38,8 @@ import kotlinx.android.synthetic.main.state_button.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.max
+import androidx.core.view.MenuItemCompat
+
 
 class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListener,
     OnFiltersSelected {
@@ -90,12 +92,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 openSyncPopup()
                 return true
             }
-            R.id.action_filter -> {
-
-                filter()
-                return true
-            }
-            R.id.action_filter_on -> {
+            R.id.action_filter, R.id.action_filter_on -> {
 
                 filter()
                 return true
@@ -434,6 +431,31 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 }
             })
         }
+        menuItem.setOnActionExpandListener(
+            object : MenuItem.OnActionExpandListener {
+                override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
+                    menu.let {
+                        it.findItem(R.id.action_synchronize).isVisible = false
+                        it.findItem(R.id.action_filter).isVisible = false
+                        it.findItem(R.id.action_filter_on).isVisible = false
+                        it.findItem(R.id.action_sort).isVisible = false
+                    }
+                    return true
+                }
+
+                override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
+                    menu.let {
+                        it.findItem(R.id.action_synchronize).isVisible = true
+                        it.findItem(R.id.action_filter).isVisible = viewModel.filters.value == null
+                        it.findItem(R.id.action_filter_on).isVisible =
+                            viewModel.filters.value != null
+                        it.findItem(R.id.action_sort).isVisible = true
+                    }
+                    return true
+                }
+
+            }
+        )
         setupSearchView(Constants.EMPTY_VALUE)
     }
     //endregion
