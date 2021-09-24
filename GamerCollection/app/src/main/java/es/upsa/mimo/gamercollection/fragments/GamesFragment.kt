@@ -258,7 +258,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 buttonInProgress.isSelected = it == State.IN_PROGRESS_STATE
                 buttonFinished.isSelected = it == State.FINISHED_STATE
             }
-            viewModel.fetchGames(false)
         })
 
         viewModel.filters.observe(viewLifecycleOwner, { filters ->
