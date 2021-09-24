@@ -8,6 +8,7 @@ import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.repositories.SagaRepository
+import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
@@ -20,6 +21,8 @@ class SagasViewModel @Inject constructor(
     private val _sagasLoading = MutableLiveData<Boolean>()
     private val _sagasError = MutableLiveData<ErrorResponse>()
     private val _sagas = MutableLiveData<List<SagaResponse>>()
+    private val _originalSagas = MutableLiveData<List<SagaResponse>>()
+    private var query: String? = null
     //endregion
 
     //region Public properties
@@ -34,22 +37,43 @@ class SagasViewModel @Inject constructor(
     //endregion
 
     //region Public methods
-    fun getSagas() {
-        _sagas.value = sagaRepository.getSagasDatabase().sortedBy { it.name }
-    }
-
     fun loadSagas() {
 
         _sagasLoading.value = true
         sagaRepository.loadSagas({
 
-            getSagas()
+            expandedIds = mutableListOf()
+            query = null
+            fetchSagas()
             _sagasLoading.value = false
         }, {
 
             _sagasError.value = it
             _sagasLoading.value = false
         })
+    }
+
+    fun fetchSagas() {
+
+        val sagas = sagaRepository.getSagasDatabase().sortedBy { it.name }
+        _originalSagas.value = sagas
+        _sagas.value = sagas
+        if (!query.isNullOrBlank()) {
+            _sagas.value = sagas.filter { saga ->
+                saga.name?.contains(query ?: Constants.EMPTY_VALUE, true) ?: false
+            }
+        } else {
+            _sagas.value = sagas
+        }
+    }
+
+    fun searchSagas(query: String) {
+
+        expandedIds = mutableListOf()
+        this.query = query
+        _sagas.value = _originalSagas.value?.filter { saga ->
+            saga.name?.contains(query, true) ?: false
+        } ?: listOf()
     }
     //endregion
 }

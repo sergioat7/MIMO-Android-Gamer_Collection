@@ -5,11 +5,8 @@
     <color name="colorPrimaryLight">#75363636</color>
     <color name="colorSecondary">#FFFFFF</color>
     <color name="colorSecondaryLight">#75FFFFFF</color>
-    <color name="colorSecondarySuperLight">#50FFFFFF</color>
     <color name="colorFinished">#1ABC9C</color>
-    <color name="colorFinishedLight">#751ABC9C</color>
     <color name="colorPending">#EC5565</color>
-    <color name="colorPendingLight">#75EC5565</color>
     <color name="colorInProgress">#FECD54</color>
     <color name="colorInProgressLight">#75FECD54</color>
     <color name="buttonPrimary">#363636</color>

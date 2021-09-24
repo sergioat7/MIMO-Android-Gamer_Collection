@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import es.upsa.mimo.gamercollection.injection.components.AppComponent
@@ -11,6 +12,7 @@ import es.upsa.mimo.gamercollection.injection.modules.NetworkModule
 class GamerCollectionApplication : Application() {
 
     companion object {
+        @SuppressLint("StaticFieldLeak")
         lateinit var context: Context
     }
 

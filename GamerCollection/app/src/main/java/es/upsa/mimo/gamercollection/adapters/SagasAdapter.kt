@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -120,6 +121,7 @@ class SagasAdapter(
         this.expandedIds = newExpandedIds
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun resetList() {
 
         this.items = mutableListOf()

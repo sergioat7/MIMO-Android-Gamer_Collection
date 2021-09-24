@@ -116,7 +116,7 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
         showPopupDialog(error.toString())
     }
 
-    fun showPopupConfirmationDialog(message: String, acceptHandler: () -> Unit) {
+    fun showPopupConfirmationDialog(message: String, acceptHandler: () -> Unit, cancelHandler: (() -> Unit)? = null) {
 
         AlertDialog.Builder(context)
             .setMessage(message)
@@ -126,6 +126,7 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
                 dialog.dismiss()
             }
             .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                cancelHandler?.invoke()
                 dialog.dismiss()
             }
             .show()
@@ -157,7 +158,6 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
 
             searchView.isIconified = false
             searchView.isIconifiedByDefault = false
-            searchView.queryHint = resources.getString(R.string.search_games)
             if (query.isNotBlank()) {
                 searchView.setQuery(query, false)
             }
@@ -205,9 +205,9 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
 
     fun openSyncPopup() {
 
-        showPopupConfirmationDialog(resources.getString(R.string.sync_confirmation)) {
+        showPopupConfirmationDialog(resources.getString(R.string.sync_confirmation), {
             showSyncPopup()
-        }
+        })
     }
     //endregion
 
