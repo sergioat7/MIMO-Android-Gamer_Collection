@@ -203,9 +203,10 @@ class PopupFilterDialogFragment(
     private fun initializeUI() {
 
         val application = activity?.application
-        viewModel = ViewModelProvider(this, PopupFilterViewModelFactory(application)).get(
-            PopupFilterViewModel::class.java
-        )
+        viewModel = ViewModelProvider(
+            this,
+            PopupFilterViewModelFactory(application)
+        )[PopupFilterViewModel::class.java]
 
         fillPlatforms()
         fillGenres()

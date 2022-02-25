@@ -172,7 +172,7 @@ class GameDetailActivity : BaseActivity() {
                 gameId,
                 isRawgGame
             )
-        ).get(GameDetailViewModel::class.java)
+        )[GameDetailViewModel::class.java]
         setupBindings()
 
         platformValues = ArrayList()
@@ -200,37 +200,37 @@ class GameDetailActivity : BaseActivity() {
 
     private fun setupBindings() {
 
-        viewModel.gameDetailLoading.observe(this, { isLoading ->
+        viewModel.gameDetailLoading.observe(this) { isLoading ->
 
             if (isLoading) {
                 showLoading()
             } else {
                 hideLoading()
             }
-        })
+        }
 
-        viewModel.gameDetailSuccessMessage.observe(this, {
+        viewModel.gameDetailSuccessMessage.observe(this) {
 
             val message = resources.getString(it)
             showPopupDialog(message, goBack)
-        })
+        }
 
-        viewModel.gameDetailError.observe(this, { error ->
+        viewModel.gameDetailError.observe(this) { error ->
 
             hideLoading()
             manageError(error)
-        })
+        }
 
-        viewModel.game.observe(this, {
+        viewModel.game.observe(this) {
 
             game = it
             showData(it)
             makeFieldsEditable(isRawgGame || it == null)
-        })
+        }
 
-        goBack.observe(this, {
+        goBack.observe(this) {
             finish()
-        })
+        }
     }
 
     private fun showData(game: GameResponse?) {
@@ -271,10 +271,7 @@ class GameDetailActivity : BaseActivity() {
         binding.imagePegi = Constants.getPegiImage(game?.pegi, this)
 
         val name = game?.name ?: Constants.EMPTY_VALUE
-        binding.customEditTextName.setText(
-            if (name.isNotBlank()) name
-            else Constants.NO_VALUE
-        )
+        binding.customEditTextName.setText(name.ifBlank { Constants.NO_VALUE })
 
         var platformPosition = 0
         game?.platform?.let { platformId ->
