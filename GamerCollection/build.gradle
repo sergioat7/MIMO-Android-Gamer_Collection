@@ -2,7 +2,7 @@
 
 buildscript {
     ext.kotlin_version = "1.6.10"
-    ext.lifecycleVersion = "2.4.0"
+    ext.lifecycleVersion = "2.4.1"
     ext.navigationVersion = "2.4.1"
     ext.retrofitVersion = "2.9.0"
     ext.daggerVersion = "2.40.5"
