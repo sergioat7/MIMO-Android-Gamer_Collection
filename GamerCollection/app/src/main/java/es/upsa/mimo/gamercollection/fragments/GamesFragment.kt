@@ -258,8 +258,8 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         viewModel.filters.observe(viewLifecycleOwner, { filters ->
 
             menu?.let {
-                it.findItem(R.id.action_filter).isVisible = filters == null
-                it.findItem(R.id.action_filter_on).isVisible = filters != null
+                it.findItem(R.id.action_filter)?.isVisible = filters == null
+                it.findItem(R.id.action_filter_on)?.isVisible = filters != null
             }
         })
 
