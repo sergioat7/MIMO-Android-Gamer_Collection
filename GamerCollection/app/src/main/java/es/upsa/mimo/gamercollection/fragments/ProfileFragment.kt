@@ -50,16 +50,20 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
         when (item.itemId) {
             R.id.action_delete -> {
 
-                showPopupConfirmationDialog(resources.getString(R.string.profile_delete_confirmation), {
-                    viewModel.deleteUser()
-                })
+                showPopupConfirmationDialog(
+                    resources.getString(R.string.profile_delete_confirmation),
+                    {
+                        viewModel.deleteUser()
+                    })
                 return true
             }
             R.id.action_logout -> {
 
-                showPopupConfirmationDialog(resources.getString(R.string.profile_logout_confirmation), {
-                    viewModel.logout()
-                })
+                showPopupConfirmationDialog(
+                    resources.getString(R.string.profile_logout_confirmation),
+                    {
+                        viewModel.logout()
+                    })
                 return true
             }
         }
@@ -118,7 +122,7 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
         viewModel = ViewModelProvider(
             this,
             ProfileViewModelFactory(application)
-        ).get(ProfileViewModel::class.java)
+        )[ProfileViewModel::class.java]
         setupBindings()
 
         with(binding) {
@@ -168,16 +172,16 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
 
     private fun setupBindings() {
 
-        viewModel.profileLoading.observe(viewLifecycleOwner, { isLoading ->
+        viewModel.profileLoading.observe(viewLifecycleOwner) { isLoading ->
 
             if (isLoading) {
                 showLoading()
             } else {
                 hideLoading()
             }
-        })
+        }
 
-        viewModel.profileError.observe(viewLifecycleOwner, { error ->
+        viewModel.profileError.observe(viewLifecycleOwner) { error ->
 
             if (error == null) {
 
@@ -188,7 +192,7 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
                 hideLoading()
                 manageError(error)
             }
-        })
+        }
     }
 
     private fun getThemeMode(): Int {

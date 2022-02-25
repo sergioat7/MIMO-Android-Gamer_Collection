@@ -58,9 +58,10 @@ class GameSongsFragment(
     private fun initializeUI() {
 
         val application = activity?.application
-        viewModel = ViewModelProvider(this, GameSongsViewModelFactory(application, game)).get(
-            GameSongsViewModel::class.java
-        )
+        viewModel = ViewModelProvider(
+            this,
+            GameSongsViewModelFactory(application, game)
+        )[GameSongsViewModel::class.java]
         setupBindings()
 
         with(binding) {
@@ -86,18 +87,18 @@ class GameSongsFragment(
 
     private fun setupBindings() {
 
-        viewModel.gameSongsLoading.observe(viewLifecycleOwner, { isLoading ->
+        viewModel.gameSongsLoading.observe(viewLifecycleOwner) { isLoading ->
 
             if (isLoading) {
                 showLoading()
             } else {
                 hideLoading()
             }
-        })
+        }
 
-        viewModel.gameSongsError.observe(viewLifecycleOwner, { error ->
+        viewModel.gameSongsError.observe(viewLifecycleOwner) { error ->
             manageError(error)
-        })
+        }
     }
 
     private fun showNewSongPopup() {

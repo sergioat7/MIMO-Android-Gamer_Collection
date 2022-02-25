@@ -34,7 +34,7 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
         viewModel = ViewModelProvider(
             this,
             RegisterViewModelFactory(application)
-        ).get(RegisterViewModel::class.java)
+        )[RegisterViewModel::class.java]
         setupBindings()
 
         with(binding) {
@@ -88,7 +88,7 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
 
     private fun setupBindings() {
 
-        viewModel.registerFormState.observe(viewLifecycleOwner, {
+        viewModel.registerFormState.observe(viewLifecycleOwner) {
 
             val registerState = it ?: return@observe
 
@@ -109,18 +109,18 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
                     editTextRepeatPassword.error = getString(registerState.passwordError)
                 }
             }
-        })
+        }
 
-        viewModel.registerLoading.observe(viewLifecycleOwner, { isLoading ->
+        viewModel.registerLoading.observe(viewLifecycleOwner) { isLoading ->
 
             if (isLoading) {
                 showLoading()
             } else {
                 hideLoading()
             }
-        })
+        }
 
-        viewModel.registerError.observe(viewLifecycleOwner, { error ->
+        viewModel.registerError.observe(viewLifecycleOwner) { error ->
 
             if (error == null) {
                 launchActivity(MainActivity::class.java)
@@ -129,7 +129,7 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
                 hideLoading()
                 manageError(error)
             }
-        })
+        }
     }
 
     private fun registerDataChanged() {

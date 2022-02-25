@@ -244,9 +244,10 @@ class GameDataFragment(
     private fun initializeUI() {
 
         val application = activity?.application
-        viewModel = ViewModelProvider(this, GameDataViewModelFactory(application, game)).get(
-            GameDataViewModel::class.java
-        )
+        viewModel = ViewModelProvider(
+            this,
+            GameDataViewModelFactory(application, game)
+        )[GameDataViewModel::class.java]
         setupBindings()
 
         formatValues = ArrayList()
@@ -315,30 +316,29 @@ class GameDataFragment(
 
     private fun setupBindings() {
 
-        viewModel.gameDataLoading.observe(viewLifecycleOwner, { isLoading ->
+        viewModel.gameDataLoading.observe(viewLifecycleOwner) { isLoading ->
 
             if (isLoading) {
                 showLoading()
             } else {
                 hideLoading()
             }
-        })
+        }
 
-        viewModel.gameDataError.observe(viewLifecycleOwner, { error ->
+        viewModel.gameDataError.observe(viewLifecycleOwner) { error ->
 
             if (error == null) {
                 activity?.finish()
             } else {
                 manageError(error)
             }
-        })
+        }
     }
 
     private fun getText(value: String?): String {
 
         val newValue = value ?: Constants.EMPTY_VALUE
-        return if (newValue.isNotBlank()) newValue
-        else Constants.NO_VALUE
+        return newValue.ifBlank { Constants.NO_VALUE }
     }
     //endregion
 }

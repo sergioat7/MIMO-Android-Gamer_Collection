@@ -71,9 +71,11 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
             }
             R.id.action_remove -> {
 
-                showPopupConfirmationDialog(resources.getString(R.string.saga_detail_delete_confirmation), {
-                    viewModel.deleteSaga()
-                })
+                showPopupConfirmationDialog(
+                    resources.getString(R.string.saga_detail_delete_confirmation),
+                    {
+                        viewModel.deleteSaga()
+                    })
                 return true
             }
             R.id.action_save -> {
@@ -153,9 +155,10 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
 
         val application = activity?.application
         val sagaId = this.arguments?.getInt(Constants.SAGA_ID)
-        viewModel = ViewModelProvider(this, SagaDetailViewModelFactory(application, sagaId)).get(
-            SagaDetailViewModel::class.java
-        )
+        viewModel = ViewModelProvider(
+            this,
+            SagaDetailViewModelFactory(application, sagaId)
+        )[SagaDetailViewModel::class.java]
         setupBindings()
 
         binding.addGamesEnabled = viewModel.saga.value != null
@@ -165,7 +168,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
 
     private fun setupBindings() {
 
-        viewModel.sagaDetailLoading.observe(viewLifecycleOwner, { isLoading ->
+        viewModel.sagaDetailLoading.observe(viewLifecycleOwner) { isLoading ->
 
             if (isLoading) {
                 showLoading()
@@ -174,23 +177,23 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
                 hideLoading()
                 cancelEdition()
             }
-        })
+        }
 
-        viewModel.sagaDetailSuccessMessage.observe(viewLifecycleOwner, {
+        viewModel.sagaDetailSuccessMessage.observe(viewLifecycleOwner) {
 
             val message = resources.getString(it)
             showPopupDialog(message, goBack)
-        })
+        }
 
-        viewModel.sagaDetailError.observe(viewLifecycleOwner, { error ->
+        viewModel.sagaDetailError.observe(viewLifecycleOwner) { error ->
 
             hideLoading()
             error?.let {
                 manageError(it)
             }
-        })
+        }
 
-        viewModel.saga.observe(viewLifecycleOwner, { saga ->
+        viewModel.saga.observe(viewLifecycleOwner) { saga ->
 
             saga?.let {
                 sagaGames = it.games
@@ -198,11 +201,11 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
 
             showData(saga)
             enableEdition(saga == null)
-        })
+        }
 
-        goBack.observe(viewLifecycleOwner, {
+        goBack.observe(viewLifecycleOwner) {
             activity?.finish()
-        })
+        }
     }
 
     private fun showData(saga: SagaResponse?) {

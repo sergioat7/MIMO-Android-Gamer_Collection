@@ -36,7 +36,6 @@ import es.upsa.mimo.gamercollection.viewmodelfactories.GamesViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GamesViewModel
 import kotlinx.android.synthetic.main.state_button.view.*
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.max
 
 class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListener,
@@ -80,6 +79,13 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         menu.clear()
         inflater.inflate(R.menu.games_toolbar_menu, menu)
         setupSearchView(menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+
+        menu.findItem(R.id.action_filter)?.isVisible = viewModel.filters.value == null
+        menu.findItem(R.id.action_filter_on)?.isVisible = viewModel.filters.value != null
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -151,7 +157,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         viewModel = ViewModelProvider(
             this,
             GamesViewModelFactory(application)
-        ).get(GamesViewModel::class.java)
+        )[GamesViewModel::class.java]
         setupBindings()
 
         with(binding) {
@@ -202,7 +208,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
     private fun setupBindings() {
 
-        viewModel.gamesLoading.observe(viewLifecycleOwner, { isLoading ->
+        viewModel.gamesLoading.observe(viewLifecycleOwner) { isLoading ->
 
             enableStateButtons(!isLoading)
             if (isLoading) {
@@ -210,13 +216,13 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             } else {
                 hideLoading()
             }
-        })
+        }
 
-        viewModel.gamesError.observe(viewLifecycleOwner, { error ->
+        viewModel.gamesError.observe(viewLifecycleOwner) { error ->
             manageError(error)
-        })
+        }
 
-        viewModel.games.observe(viewLifecycleOwner, {
+        viewModel.games.observe(viewLifecycleOwner) {
 
             val today = Constants.stringToDate(
                 Constants.dateToString(
@@ -233,44 +239,42 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                     gamesToNotify.add(game)
             }
             if (gamesToNotify.isNotEmpty()) launchNotification(gamesToNotify)
-        })
+        }
 
-        viewModel.gamesCount.observe(viewLifecycleOwner, {
+        viewModel.gamesCount.observe(viewLifecycleOwner) {
             setGamesCount(it)
             setTitle(it.size)
-        })
+        }
 
-        viewModel.gameDeleted.observe(viewLifecycleOwner, { position ->
+        viewModel.gameDeleted.observe(viewLifecycleOwner) { position ->
             position?.let {
                 gamesAdapter.notifyItemRemoved(position)
             }
-        })
+        }
 
-        viewModel.state.observe(viewLifecycleOwner, {
+        viewModel.state.observe(viewLifecycleOwner) {
 
             binding.apply {
                 buttonPending.isSelected = it == State.PENDING_STATE
                 buttonInProgress.isSelected = it == State.IN_PROGRESS_STATE
                 buttonFinished.isSelected = it == State.FINISHED_STATE
             }
-        })
+        }
 
-        viewModel.filters.observe(viewLifecycleOwner, { filters ->
+        viewModel.filters.observe(viewLifecycleOwner) { filters ->
 
-            menu?.let {
-                it.findItem(R.id.action_filter)?.isVisible = filters == null
-                it.findItem(R.id.action_filter_on)?.isVisible = filters != null
-            }
-        })
+            menu?.findItem(R.id.action_filter)?.isVisible = filters == null
+            menu?.findItem(R.id.action_filter_on)?.isVisible = filters != null
+        }
 
-        viewModel.scrollPosition.observe(viewLifecycleOwner, {
+        viewModel.scrollPosition.observe(viewLifecycleOwner) {
             when (it) {
 
                 ScrollPosition.TOP -> binding.recyclerViewGames.scrollToPosition(0)
                 ScrollPosition.END -> binding.recyclerViewGames.scrollToPosition(gamesAdapter.itemCount - 1)
                 else -> Unit
             }
-        })
+        }
     }
 
     private fun filter() {
@@ -476,8 +480,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
             val position = viewHolder.adapterPosition
             if (direction == ItemTouchHelper.LEFT) {
-                showPopupConfirmationDialog(
-                    resources.getString(R.string.game_detail_delete_confirmation),
+                showPopupConfirmationDialog(resources.getString(R.string.game_detail_delete_confirmation),
                     {
                         viewModel.deleteGame(position)
                     },

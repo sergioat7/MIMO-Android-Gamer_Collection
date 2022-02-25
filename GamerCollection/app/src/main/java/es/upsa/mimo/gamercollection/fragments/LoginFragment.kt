@@ -34,12 +34,12 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
         viewModel = ViewModelProvider(
             this,
             LoginViewModelFactory(application)
-        ).get(LoginViewModel::class.java)
+        )[LoginViewModel::class.java]
         setupBindings()
 
-        val username = viewModel.username
-        val user = if (username.isEmpty()) Environment.getUsername() else username
-        val password = if (username.isEmpty()) Environment.getPassword() else Constants.EMPTY_VALUE
+        val user = viewModel.username.ifEmpty { Environment.getUsername() }
+        val password =
+            if (viewModel.username.isEmpty()) Environment.getPassword() else Constants.EMPTY_VALUE
 
         with(binding) {
 
@@ -83,7 +83,7 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
 
     private fun setupBindings() {
 
-        viewModel.loginFormState.observe(viewLifecycleOwner, {
+        viewModel.loginFormState.observe(viewLifecycleOwner) {
 
             val loginState = it ?: return@observe
 
@@ -95,18 +95,18 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
             if (loginState.passwordError != null) {
                 binding.editTextPassword.error = getString(loginState.passwordError)
             }
-        })
+        }
 
-        viewModel.loginLoading.observe(viewLifecycleOwner, { isLoading ->
+        viewModel.loginLoading.observe(viewLifecycleOwner) { isLoading ->
 
             if (isLoading) {
                 showLoading()
             } else {
                 hideLoading()
             }
-        })
+        }
 
-        viewModel.loginError.observe(viewLifecycleOwner, { error ->
+        viewModel.loginError.observe(viewLifecycleOwner) { error ->
 
             if (error == null) {
                 launchActivity(MainActivity::class.java)
@@ -115,7 +115,7 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
                 hideLoading()
                 manageError(error)
             }
-        })
+        }
     }
 
     private fun loginDataChanged() {

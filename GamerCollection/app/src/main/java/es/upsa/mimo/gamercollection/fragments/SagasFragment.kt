@@ -126,7 +126,7 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
         viewModel = ViewModelProvider(
             this,
             SagasViewModelFactory(application)
-        ).get(SagasViewModel::class.java)
+        )[SagasViewModel::class.java]
         setupBindings()
 
         with(binding) {
@@ -178,7 +178,7 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
 
     private fun setupBindings() {
 
-        viewModel.sagasLoading.observe(viewLifecycleOwner, { isLoading ->
+        viewModel.sagasLoading.observe(viewLifecycleOwner) { isLoading ->
 
             if (isLoading) {
                 showLoading()
@@ -187,19 +187,19 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
                 binding.swipeRefreshLayout.isRefreshing = false
                 hideLoading()
             }
-        })
+        }
 
-        viewModel.sagasError.observe(viewLifecycleOwner, { error ->
+        viewModel.sagasError.observe(viewLifecycleOwner) { error ->
 
             hideLoading()
             manageError(error)
-        })
+        }
 
-        viewModel.sagas.observe(viewLifecycleOwner, {
+        viewModel.sagas.observe(viewLifecycleOwner) {
 
             showData(it)
             setTitle(it.size)
-        })
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")

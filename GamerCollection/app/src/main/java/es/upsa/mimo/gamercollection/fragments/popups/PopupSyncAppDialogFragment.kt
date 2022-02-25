@@ -44,9 +44,10 @@ class PopupSyncAppDialogFragment : DialogFragment() {
     private fun initializeUI() {
 
         val application = activity?.application
-        viewModel = ViewModelProvider(this, PopupSyncAppViewModelFactory(application)).get(
-            PopupSyncAppViewModel::class.java
-        )
+        viewModel = ViewModelProvider(
+            this,
+            PopupSyncAppViewModelFactory(application)
+        )[PopupSyncAppViewModel::class.java]
         setupBindings()
 
         viewModel.loadContent()
@@ -54,7 +55,7 @@ class PopupSyncAppDialogFragment : DialogFragment() {
 
     private fun setupBindings() {
 
-        viewModel.popupSyncAppError.observe(viewLifecycleOwner, { error ->
+        viewModel.popupSyncAppError.observe(viewLifecycleOwner) { error ->
 
             dismiss()
             if (error == null) {
@@ -64,7 +65,7 @@ class PopupSyncAppDialogFragment : DialogFragment() {
             } else {
                 manageError(error)
             }
-        })
+        }
     }
 
     private fun manageError(errorResponse: ErrorResponse) {
