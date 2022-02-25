@@ -105,7 +105,7 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
         viewModel = ViewModelProvider(
             this,
             GameSearchViewModelFactory(application)
-        ).get(GameSearchViewModel::class.java)
+        )[GameSearchViewModel::class.java]
         setupBindings()
 
         with(binding) {
@@ -159,26 +159,26 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
 
     private fun setupBindings() {
 
-        viewModel.gamesLoading.observe(viewLifecycleOwner, { isLoading ->
+        viewModel.gamesLoading.observe(viewLifecycleOwner) { isLoading ->
 
             if (isLoading) {
                 showLoading()
             } else {
                 hideLoading()
             }
-        })
+        }
 
-        viewModel.gamesError.observe(viewLifecycleOwner, { error ->
+        viewModel.gamesError.observe(viewLifecycleOwner) { error ->
             manageError(error)
-        })
+        }
 
-        viewModel.gamesCount.observe(viewLifecycleOwner, {
+        viewModel.gamesCount.observe(viewLifecycleOwner) {
             setTitle(it)
-        })
+        }
 
-        viewModel.scrollPosition.observe(viewLifecycleOwner, {
+        viewModel.scrollPosition.observe(viewLifecycleOwner) {
             scrollPosition.set(it)
-        })
+        }
     }
 
     private fun setTitle(gamesCount: Int) {
