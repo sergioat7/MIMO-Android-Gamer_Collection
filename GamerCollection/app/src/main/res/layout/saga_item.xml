@@ -8,11 +8,6 @@
             />
 
         <variable
-            name="darkMode"
-            type="Boolean"
-            />
-
-        <variable
             name="saga"
             type="es.upsa.mimo.gamercollection.models.responses.SagaResponse"
             />
@@ -67,12 +62,11 @@
 
                 <ImageView
                     android:id="@+id/image_view_edit"
+                    style="@style/Widget.GamerCollection.ImageViewAddGameToSaga"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{() -> onItemClickListener.onItemClick(saga.id)}"
                     android:layout_toEndOf="@id/linear_layout_title_container"
-                    style="@style/Widget.GamerCollection.ImageViewAddGameToSaga"
-                    />
+                    android:onClick="@{() -> onItemClickListener.onItemClick(saga.id)}" />
 
             </RelativeLayout>
 
@@ -81,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_normal"
-                android:src="@{darkMode ? @drawable/ic_triangle_up_dark : @drawable/ic_triangle_up_light}"
+                android:src="@drawable/ic_triangle_up"
                 android:visibility="@{saga.games.empty ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

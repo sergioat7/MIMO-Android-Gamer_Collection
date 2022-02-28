@@ -13,13 +13,13 @@
         <item name="colorPrimaryDark">@color/colorSecondary</item>
         <item name="colorSwitchThumbNormal">@color/buttonSecondary</item>
         <item name="android:colorBackground">@color/colorSecondary</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_light</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_black</item>
     </style>
 
     <style name="Theme.GamerCollection.NoActionBar.GameDetail">
         <item name="android:minHeight">?attr/actionBarSize</item>
         <item name="android:background">@android:color/transparent</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_light</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white</item>
     </style>
 
 </resources>

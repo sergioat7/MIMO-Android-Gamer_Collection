@@ -11,11 +11,6 @@
             />
 
         <variable
-            name="darkMode"
-            type="Boolean"
-            />
-
-        <variable
             name="song"
             type="es.upsa.mimo.gamercollection.models.responses.SongResponse"
             />
@@ -89,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_small"
-            android:src="@{darkMode ? @drawable/ic_trash_dark : @drawable/ic_trash_light}"
+            android:src="@drawable/ic_trash"
             android:visibility="@{editable ? View.VISIBLE : View.GONE}"
             android:onClick="@{() -> onItemClickListener.onItemClick(song.id)}"
             app:layout_constraintBottom_toBottomOf="parent"

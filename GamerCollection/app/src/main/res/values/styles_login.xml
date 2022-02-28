@@ -2,7 +2,7 @@
 <resources>
 
     <style name="Widget.GamerCollection.ImageViewLogo">
-        <item name="android:src">@drawable/app_name_light</item>
+        <item name="android:src">@drawable/app_name</item>
     </style>
 
     <style name="Widget.GamerCollection.EditText.Credentials">
@@ -33,11 +33,11 @@
     </style>
 
     <style name="Widget.GamerCollection.ImageButton.EditText.Username">
-        <item name="android:src">@drawable/ic_show_info_light</item>
+        <item name="android:src">@drawable/ic_show_info</item>
     </style>
 
     <style name="Widget.GamerCollection.ImageButton.EditText.Password">
-        <item name="android:src">@drawable/ic_show_password_light</item>
+        <item name="android:src">@drawable/ic_show_password</item>
     </style>
 
     <style name="Widget.GamerCollection.Button.Rounded.Action.Login">
