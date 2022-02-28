@@ -17,13 +17,19 @@ import es.upsa.mimo.gamercollection.adapters.SagasAdapter
 import es.upsa.mimo.gamercollection.base.BaseModel
 import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentSagasBinding
+import es.upsa.mimo.gamercollection.extensions.hideSoftKeyboard
 import es.upsa.mimo.gamercollection.fragments.GamesFragment.ScrollPosition
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.SagasViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.SagasViewModel
 
 class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListener {
+
+    //region Protected properties
+    override val statusBarStyle = StatusBarStyle.SECONDARY
+    //endregion
 
     //region Private properties
     private lateinit var viewModel: SagasViewModel

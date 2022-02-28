@@ -36,6 +36,7 @@ import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Notifications
 import es.upsa.mimo.gamercollection.utils.State
+import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.GamesViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GamesViewModel
 import kotlinx.android.synthetic.main.state_button.view.*
@@ -44,6 +45,10 @@ import kotlin.math.max
 
 class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListener,
     OnFiltersSelected {
+
+    //region Protected properties
+    override val statusBarStyle = StatusBarStyle.SECONDARY
+    //endregion
 
     //region Private properties
     private lateinit var viewModel: GamesViewModel

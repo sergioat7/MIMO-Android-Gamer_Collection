@@ -17,6 +17,7 @@ import es.upsa.mimo.gamercollection.extensions.toString
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.State
+import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameDataViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameDataViewModel
 import kotlinx.android.synthetic.main.custom_edit_text.view.*
@@ -25,6 +26,10 @@ class GameDataFragment(
     private var game: GameResponse? = null,
     private var enabled: Boolean
 ) : BindingFragment<FragmentGameDataBinding>(), OnLocationSelected {
+
+    //region Protected properties
+    override val statusBarStyle = StatusBarStyle.SECONDARY
+    //endregion
 
     //region Private properties
     private lateinit var viewModel: GameDataViewModel

@@ -11,10 +11,15 @@ import es.upsa.mimo.gamercollection.extensions.afterTextChanged
 import es.upsa.mimo.gamercollection.extensions.clearErrors
 import es.upsa.mimo.gamercollection.extensions.onFocusChange
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.RegisterViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.RegisterViewModel
 
 class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
+
+    //region Protected properties
+    override val statusBarStyle = StatusBarStyle.SECONDARY
+    //endregion
 
     //region Private properties
     private lateinit var viewModel: RegisterViewModel

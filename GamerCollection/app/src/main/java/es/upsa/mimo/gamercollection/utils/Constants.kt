@@ -87,3 +87,8 @@ object Notifications {
     const val CHANNEL_ID = "GAMER_COLLECTION_NOTIFICATIONS_CHANNEL_ID"
     const val CHANNEL_GROUP = "GAMER_COLLECTION_NOTIFICATIONS_CHANNEL_GROUP"
 }
+
+enum class StatusBarStyle {
+    PRIMARY,
+    SECONDARY
+}

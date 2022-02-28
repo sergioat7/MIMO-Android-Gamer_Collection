@@ -11,10 +11,15 @@ import es.upsa.mimo.gamercollection.extensions.afterTextChanged
 import es.upsa.mimo.gamercollection.extensions.onFocusChange
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Environment
+import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.LoginViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.LoginViewModel
 
 class LoginFragment : BindingFragment<FragmentLoginBinding>() {
+
+    //region Protected properties
+    override val statusBarStyle = StatusBarStyle.SECONDARY
+    //endregion
 
     //region Private properties
     private lateinit var viewModel: LoginViewModel

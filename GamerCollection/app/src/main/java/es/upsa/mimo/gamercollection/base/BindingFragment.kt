@@ -18,11 +18,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.extensions.isDarkMode
+import es.upsa.mimo.gamercollection.extensions.setStatusBarStyle
 import es.upsa.mimo.gamercollection.fragments.popups.PopupErrorDialogFragment
 import es.upsa.mimo.gamercollection.fragments.popups.PopupLoadingDialogFragment
 import es.upsa.mimo.gamercollection.fragments.popups.PopupSyncAppDialogFragment
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import java.io.Serializable
 import java.lang.reflect.ParameterizedType
 
@@ -39,6 +42,7 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
     //region Protected properties
     protected lateinit var binding: Binding
         private set
+    protected abstract val statusBarStyle: StatusBarStyle
     //endregion
 
     //region Lifecycle methods
@@ -66,6 +70,27 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
         @Suppress("UNCHECKED_CAST")
         binding = inflateMethod.invoke(null, inflater, container, false) as Binding
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        activity?.let {
+            when (statusBarStyle) {
+                StatusBarStyle.PRIMARY -> {
+                    it.window.setStatusBarStyle(
+                        ContextCompat.getColor(it, R.color.colorSecondary),
+                        !it.isDarkMode()
+                    )
+                }
+                StatusBarStyle.SECONDARY -> {
+                    it.window.setStatusBarStyle(
+                        ContextCompat.getColor(it, R.color.colorPrimary),
+                        it.isDarkMode()
+                    )
+                }
+            }
+        }
     }
     //endregion
 

@@ -15,11 +15,16 @@ import es.upsa.mimo.gamercollection.databinding.FragmentProfileBinding
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Preferences
+import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.ProfileViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.ProfileViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
+
+    //region Protected properties
+    override val statusBarStyle = StatusBarStyle.SECONDARY
+    //endregion
 
     //region Private properties
     private lateinit var viewModel: ProfileViewModel

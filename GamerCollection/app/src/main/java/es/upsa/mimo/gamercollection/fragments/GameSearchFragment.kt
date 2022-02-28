@@ -18,10 +18,15 @@ import es.upsa.mimo.gamercollection.extensions.getFormatted
 import es.upsa.mimo.gamercollection.extensions.hideSoftKeyboard
 import es.upsa.mimo.gamercollection.fragments.GamesFragment.ScrollPosition
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameSearchViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameSearchViewModel
 
 class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemClickListener {
+
+    //region Protected properties
+    override val statusBarStyle = StatusBarStyle.SECONDARY
+    //endregion
 
     //region Private properties
     private lateinit var viewModel: GameSearchViewModel
