@@ -522,7 +522,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                         c.drawRect(background, paint)
 
                         val icon =
-                            ContextCompat.getDrawable(context, R.drawable.ic_remove_game_dark)
+                            ContextCompat.getDrawable(context, R.drawable.ic_remove_game)
                         icon?.setBounds(
                             itemView.right - 2 * width,
                             itemView.top + width,

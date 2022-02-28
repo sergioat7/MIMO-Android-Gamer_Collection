@@ -7,7 +7,6 @@ import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.databinding.SagaItemBinding
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
-import es.upsa.mimo.gamercollection.utils.Constants
 
 class SagasViewHolder(private val binding: SagaItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -32,7 +31,6 @@ class SagasViewHolder(private val binding: SagaItemBinding) :
             editTextName.setText(title)
             editTextName.setReadOnly(true, InputType.TYPE_NULL, 0)
 
-            darkMode = Constants.isDarkMode(root.context)
             this.saga = saga
             this.onItemClickListener = onItemClickListener
         }

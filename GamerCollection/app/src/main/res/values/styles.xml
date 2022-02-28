@@ -26,11 +26,11 @@
     </style>
 
     <style name="Widget.GamerCollection.GamesEmptyLayout">
-        <item name="emptyListLayout_image">@drawable/ic_games_dark</item>
+        <item name="emptyListLayout_image">@drawable/ic_games</item>
     </style>
 
     <style name="Widget.GamerCollection.SagasEmptyLayout">
-        <item name="emptyListLayout_image">@drawable/ic_sagas_dark</item>
+        <item name="emptyListLayout_image">@drawable/ic_sagas</item>
     </style>
 
     <style name="Widget.GamerCollection.ScrollViewContent">

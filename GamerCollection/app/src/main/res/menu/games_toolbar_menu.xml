@@ -7,21 +7,21 @@
 
     <item
         android:id="@+id/action_synchronize"
-        android:icon="@drawable/ic_synchronize_light"
+        android:icon="@drawable/ic_synchronize"
         android:title=""
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction"
         />
 
     <item android:id="@+id/action_filter"
-        android:icon="@drawable/ic_filter_light"
+        android:icon="@drawable/ic_filter"
         android:title=""
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction"
         />
 
     <item android:id="@+id/action_filter_on"
-        android:icon="@drawable/ic_filter_on_light"
+        android:icon="@drawable/ic_filter_on"
         android:title=""
         android:visible="false"
         app:showAsAction="always"
@@ -29,7 +29,7 @@
         />
 
     <item android:id="@+id/action_sort"
-        android:icon="@drawable/ic_sort_light"
+        android:icon="@drawable/ic_sort"
         android:title=""
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction"
@@ -37,7 +37,7 @@
 
     <item
         android:id="@+id/action_search"
-        android:icon="@drawable/ic_search_light"
+        android:icon="@drawable/ic_search"
         android:title=""
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="collapseActionView|always"

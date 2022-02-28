@@ -7,7 +7,6 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.databinding.SongItemBinding
 import es.upsa.mimo.gamercollection.models.responses.SongResponse
-import es.upsa.mimo.gamercollection.utils.Constants
 
 class SongsAdapter(
     private var songs: List<SongResponse>,
@@ -57,7 +56,6 @@ class SongsAdapter(
         fun bind(_song: SongResponse) {
             with(binding) {
 
-                darkMode = Constants.isDarkMode(root.context)
                 song = _song
                 editable = this@SongsAdapter.editable
                 onItemClickListener = this@SongsAdapter.onItemClickListener

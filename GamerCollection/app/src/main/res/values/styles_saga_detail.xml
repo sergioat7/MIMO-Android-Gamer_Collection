@@ -21,7 +21,7 @@
     <style name="Widget.GamerCollection.ImageButton.AddGame">
         <item name="android:layout_width">@dimen/margin_medium</item>
         <item name="android:layout_height">@dimen/margin_medium</item>
-        <item name="android:background">@drawable/ic_add_game_light</item>
+        <item name="android:background">@drawable/ic_add_game</item>
     </style>
 
     <style name="Widget.GamerCollection.AddGameSeparator">

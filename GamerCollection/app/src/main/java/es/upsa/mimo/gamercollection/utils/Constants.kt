@@ -186,15 +186,11 @@ object Constants {
 
         if (editText.transformationMethod is HideReturnsTransformationMethod) {
 
-            val image =
-                if (isDarkMode) R.drawable.ic_show_password_dark else R.drawable.ic_show_password_light
-            imageButton.setImageResource(image)
+            imageButton.setImageResource(R.drawable.ic_show_password)
             editText.transformationMethod = PasswordTransformationMethod.getInstance()
         } else {
 
-            val image =
-                if (isDarkMode) R.drawable.ic_hide_password_dark else R.drawable.ic_hide_password_light
-            imageButton.setImageResource(image)
+            imageButton.setImageResource(R.drawable.ic_hide_password)
             editText.transformationMethod = HideReturnsTransformationMethod.getInstance()
         }
     }
