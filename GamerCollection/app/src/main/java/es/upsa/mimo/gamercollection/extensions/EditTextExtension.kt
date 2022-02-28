@@ -80,20 +80,17 @@ private fun getPicker(editText: EditText, context: Context, dateFormat: String?)
         val newDate = "${year}-${newMonth}-${newDay}"
 
         val language = SharedPreferencesHelper.getLanguage()
-        val dateFormatToShow = dateFormat ?: Constants.getDateFormatToShow(language)
+        val dateFormatToShow = dateFormat ?: SharedPreferencesHelper.getDateFormatToShow()
 
-        val date = Constants.stringToDate(
-            newDate,
+        val date = newDate.toDate(
             Constants.DATE_FORMAT,
             language
-        )
-        val dateString = Constants.dateToString(
-            date,
+        ).toString(
             dateFormatToShow,
             language
         )
 
-        editText.setText(dateString)
+        editText.setText(date)
     }, currentYear, currentMonth, currentDay)
 }
 //endregion

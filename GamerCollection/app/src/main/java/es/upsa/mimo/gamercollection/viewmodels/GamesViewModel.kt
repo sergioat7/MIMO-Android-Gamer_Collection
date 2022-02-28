@@ -43,6 +43,8 @@ class GamesViewModel @Inject constructor(
     //region Public properties
     val language: String
         get() = SharedPreferencesHelper.getLanguage()
+    val dateFormatToShow: String
+        get() = SharedPreferencesHelper.getDateFormatToShow()
     val swipeRefresh: Boolean
         get() = SharedPreferencesHelper.getSwipeRefresh()
     val platforms: List<PlatformResponse>

@@ -24,6 +24,8 @@ class PopupFilterViewModel @Inject constructor(
     //region Public properties
     val language: String
         get() = SharedPreferencesHelper.getLanguage()
+    val filterDateFormat: String
+        get() = SharedPreferencesHelper.getFilterDateFormat()
     val formats: List<FormatResponse>
         get() = formatRepository.getFormatsDatabase()
     val genres: List<GenreResponse>

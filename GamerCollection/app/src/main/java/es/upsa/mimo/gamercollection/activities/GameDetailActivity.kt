@@ -19,6 +19,7 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GameDetailPagerAdapter
 import es.upsa.mimo.gamercollection.base.BaseActivity
 import es.upsa.mimo.gamercollection.databinding.ActivityGameDetailBinding
+import es.upsa.mimo.gamercollection.extensions.getImageForPegi
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameDetailViewModelFactory
@@ -264,7 +265,7 @@ class GameDetailActivity : BaseActivity() {
                 }
             })
 
-        binding.imagePegi = Constants.getPegiImage(game?.pegi, this)
+        binding.imagePegi = this.getImageForPegi(game?.pegi)
 
         val name = game?.name ?: Constants.EMPTY_VALUE
         binding.customEditTextName.setText(name.ifBlank { Constants.NO_VALUE })

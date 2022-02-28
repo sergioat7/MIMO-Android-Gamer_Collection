@@ -62,8 +62,7 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
             imageButtonPassword.setOnClickListener {
                 Constants.showOrHidePassword(
                     editTextPassword,
-                    imageButtonPassword,
-                    Constants.isDarkMode(context)
+                    imageButtonPassword
                 )
             }
 

@@ -60,8 +60,7 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
             imageButtonPassword.setOnClickListener {
                 Constants.showOrHidePassword(
                     editTextPassword,
-                    imageButtonPassword,
-                    Constants.isDarkMode(context)
+                    imageButtonPassword
                 )
             }
 
@@ -75,8 +74,7 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
             imageButtonConfirmPassword.setOnClickListener {
                 Constants.showOrHidePassword(
                     editTextRepeatPassword,
-                    imageButtonConfirmPassword,
-                    Constants.isDarkMode(context)
+                    imageButtonConfirmPassword
                 )
             }
 

@@ -132,8 +132,7 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
             imageButtonPassword.setOnClickListener {
                 Constants.showOrHidePassword(
                     edit_text_password,
-                    image_button_password,
-                    Constants.isDarkMode(context)
+                    image_button_password
                 )
             }
 

@@ -14,6 +14,8 @@ import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentGameSearchBinding
+import es.upsa.mimo.gamercollection.extensions.getFormatted
+import es.upsa.mimo.gamercollection.extensions.hideSoftKeyboard
 import es.upsa.mimo.gamercollection.fragments.GamesFragment.ScrollPosition
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameSearchViewModelFactory
@@ -186,7 +188,7 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
         val title = resources.getQuantityString(
             R.plurals.games_number_title,
             gamesCount,
-            Constants.getFormattedNumber(gamesCount)
+            gamesCount.getFormatted()
         )
         (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
@@ -226,7 +228,7 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
 
         viewModel.query = query
         reset()
-        Constants.hideSoftKeyboard(requireActivity())
+        requireActivity().hideSoftKeyboard()
     }
     //endregion
 }
