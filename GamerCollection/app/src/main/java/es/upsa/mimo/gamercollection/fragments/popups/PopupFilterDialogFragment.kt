@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnFiltersSelected
 import es.upsa.mimo.gamercollection.databinding.FragmentPopupFilterDialogBinding
+import es.upsa.mimo.gamercollection.extensions.toDate
+import es.upsa.mimo.gamercollection.extensions.toString
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.PopupFilterViewModelFactory
@@ -113,25 +115,21 @@ class PopupFilterDialogFragment(
         val minScore = (binding.ratingBarMin.rating * 2).toDouble()
         val maxScore = (binding.ratingBarMax.rating * 2).toDouble()
 
-        val minReleaseDate = Constants.stringToDate(
-            binding.customEditTextReleaseDateMin.getText(),
-            Constants.getFilterDateFormat(viewModel.language),
+        val minReleaseDate = binding.customEditTextReleaseDateMin.getText().toDate(
+            viewModel.filterDateFormat,
             viewModel.language
         )
-        val maxReleaseDate = Constants.stringToDate(
-            binding.customEditTextReleaseDateMax.getText(),
-            Constants.getFilterDateFormat(viewModel.language),
+        val maxReleaseDate = binding.customEditTextReleaseDateMax.getText().toDate(
+            viewModel.filterDateFormat,
             viewModel.language
         )
 
-        val minPurchaseDate = Constants.stringToDate(
-            binding.customEditTextPurchaseDateMin.getText(),
-            Constants.getFilterDateFormat(viewModel.language),
+        val minPurchaseDate = binding.customEditTextPurchaseDateMin.getText().toDate(
+            viewModel.filterDateFormat,
             viewModel.language
         )
-        val maxPurchaseDate = Constants.stringToDate(
-            binding.customEditTextPurchaseDateMax.getText(),
-            Constants.getFilterDateFormat(viewModel.language),
+        val maxPurchaseDate = binding.customEditTextPurchaseDateMax.getText().toDate(
+            viewModel.filterDateFormat,
             viewModel.language
         )
 
@@ -213,25 +211,17 @@ class PopupFilterDialogFragment(
         fillFormats()
 
         binding.customEditTextReleaseDateMin.setDatePickerFormat(
-            Constants.getFilterDateFormat(
-                viewModel.language
-            )
+            viewModel.filterDateFormat
         )
         binding.customEditTextReleaseDateMax.setDatePickerFormat(
-            Constants.getFilterDateFormat(
-                viewModel.language
-            )
+            viewModel.filterDateFormat
         )
 
         binding.customEditTextPurchaseDateMin.setDatePickerFormat(
-            Constants.getFilterDateFormat(
-                viewModel.language
-            )
+            viewModel.filterDateFormat
         )
         binding.customEditTextPurchaseDateMax.setDatePickerFormat(
-            Constants.getFilterDateFormat(
-                viewModel.language
-            )
+            viewModel.filterDateFormat
         )
 
         configFilters(currentFilters)
@@ -269,31 +259,27 @@ class PopupFilterDialogFragment(
             binding.ratingBarMax.rating = (filters.maxScore / 2).toFloat()
 
             binding.customEditTextReleaseDateMin.setText(
-                Constants.dateToString(
-                    filters.minReleaseDate,
-                    Constants.getFilterDateFormat(viewModel.language),
+                filters.minReleaseDate.toString(
+                    viewModel.filterDateFormat,
                     viewModel.language
                 )
             )
             binding.customEditTextReleaseDateMax.setText(
-                Constants.dateToString(
-                    filters.maxReleaseDate,
-                    Constants.getFilterDateFormat(viewModel.language),
+                filters.maxReleaseDate.toString(
+                    viewModel.filterDateFormat,
                     viewModel.language
                 )
             )
 
             binding.customEditTextPurchaseDateMin.setText(
-                Constants.dateToString(
-                    filters.minPurchaseDate,
-                    Constants.getFilterDateFormat(viewModel.language),
+                filters.minPurchaseDate.toString(
+                    viewModel.filterDateFormat,
                     viewModel.language
                 )
             )
             binding.customEditTextPurchaseDateMax.setText(
-                Constants.dateToString(
-                    filters.maxPurchaseDate,
-                    Constants.getFilterDateFormat(viewModel.language),
+                filters.maxPurchaseDate.toString(
+                    viewModel.filterDateFormat,
                     viewModel.language
                 )
             )

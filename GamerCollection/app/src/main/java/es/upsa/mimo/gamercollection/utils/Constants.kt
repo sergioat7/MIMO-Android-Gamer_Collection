@@ -1,14 +1,9 @@
 package es.upsa.mimo.gamercollection.utils
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
-import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import android.util.Log
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.core.content.ContextCompat
@@ -16,8 +11,6 @@ import com.google.android.gms.maps.model.LatLng
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.SpinnerAdapter
 import java.text.DecimalFormat
-import java.text.SimpleDateFormat
-import java.util.*
 
 object Preferences {
     const val PREFERENCES_NAME = "preferences"
@@ -36,14 +29,20 @@ object Preferences {
 }
 
 object Constants {
+    const val GAME_ID = "gameId"
+    const val SAGA_ID = "sagaId"
+    const val IS_RAWG_GAME = "isRawgGame"
     const val POPUP_DIALOG = "popupDialog"
     const val LOADING_DIALOG = "loadingDialog"
     const val SYNC_DIALOG = "syncDialog"
-    const val EMPTY_VALUE = ""
     const val POINT_UP = 0f
     const val POINT_DOWN = -180f
-    const val NEXT_VALUE_SEPARATOR = ", "
     const val DATABASE_NAME = "GamerCollection"
+    const val DATE_FORMAT = "yyyy-MM-dd"
+    const val EMPTY_VALUE = ""
+    const val NO_VALUE = "-"
+    const val NEXT_VALUE_SEPARATOR = ", "
+    val DEFAULT_LOCATION = LatLng(40.4169019, -3.7056721)
 
     fun getAdapter(
         context: Context,
@@ -56,124 +55,6 @@ object Constants {
         return arrayAdapter
     }
 
-    fun isDarkMode(context: Context?): Boolean {
-
-        val mode =
-            context?.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)
-        return mode == Configuration.UI_MODE_NIGHT_YES
-    }
-
-    fun hideSoftKeyboard(activity: Activity) {
-
-        activity.currentFocus?.let { currentFocus ->
-
-            val inputMethodManager =
-                activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
-        } ?: return
-    }
-
-    const val DATE_FORMAT = "yyyy-MM-dd"
-
-    fun getDateFormatToShow(language: String): String {
-
-        return when (language) {
-            Preferences.SPANISH_LANGUAGE_KEY -> "d MMMM yyyy"
-            else -> "MMMM d, yyyy"
-        }
-    }
-
-    fun getFilterDateFormat(language: String): String {
-
-        return when (language) {
-            Preferences.SPANISH_LANGUAGE_KEY -> "dd/MM/yyyy"
-            else -> "MM/dd/yyyy"
-        }
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    fun dateToString(
-        date: Date?,
-        format: String? = null,
-        language: String? = null
-    ): String? {
-
-        val dateFormat = format ?: DATE_FORMAT
-        val locale = language?.let {
-            Locale.forLanguageTag(it)
-        } ?: run {
-            Locale.getDefault()
-        }
-        date?.let {
-
-            return try {
-                SimpleDateFormat(dateFormat, locale).format(it)
-            } catch (e: Exception) {
-
-                Log.e("Constants", e.message ?: EMPTY_VALUE)
-                null
-            }
-        } ?: run {
-
-            Log.e("Constants", "date null")
-            return null
-        }
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    fun stringToDate(
-        dateString: String?,
-        format: String? = null,
-        language: String? = null
-    ): Date? {
-
-        val dateFormat = format ?: DATE_FORMAT
-        val locale = language?.let {
-            Locale.forLanguageTag(it)
-        } ?: run {
-            Locale.getDefault()
-        }
-        dateString?.let {
-
-            return try {
-                SimpleDateFormat(dateFormat, locale).parse(it)
-            } catch (e: Exception) {
-
-                Log.e("Constants", e.message ?: EMPTY_VALUE)
-                null
-            }
-        } ?: run {
-            Log.e("Constants", "dateString null")
-            return null
-        }
-    }
-
-    fun getFormattedNumber(number: Int): String {
-
-        val formatter = DecimalFormat("#,###")
-        return formatter.format(number)
-    }
-
-    const val GAME_ID = "gameId"
-    const val IS_RAWG_GAME = "isRawgGame"
-    const val NO_VALUE = "-"
-
-    fun getPegiImage(pegi: String?, context: Context): Drawable? {
-
-        return when (pegi) {
-            "+3" -> ContextCompat.getDrawable(context, R.drawable.pegi3)
-            "+7" -> ContextCompat.getDrawable(context, R.drawable.pegi7)
-            "+12" -> ContextCompat.getDrawable(context, R.drawable.pegi12)
-            "+16" -> ContextCompat.getDrawable(context, R.drawable.pegi16)
-            "+18" -> ContextCompat.getDrawable(context, R.drawable.pegi18)
-            else -> null
-        }
-    }
-
-    const val SAGA_ID = "sagaId"
-
-    val DEFAULT_LOCATION = LatLng(40.4169019, -3.7056721)
-
     fun isUserNameValid(username: String): Boolean {
         return username.isNotBlank()
     }
@@ -182,7 +63,7 @@ object Constants {
         return password.length > 3
     }
 
-    fun showOrHidePassword(editText: EditText, imageButton: ImageButton, isDarkMode: Boolean) {
+    fun showOrHidePassword(editText: EditText, imageButton: ImageButton) {
 
         if (editText.transformationMethod is HideReturnsTransformationMethod) {
 

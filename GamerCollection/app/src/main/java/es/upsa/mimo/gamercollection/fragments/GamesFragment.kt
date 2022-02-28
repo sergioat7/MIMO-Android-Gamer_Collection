@@ -26,6 +26,10 @@ import es.upsa.mimo.gamercollection.adapters.OnFiltersSelected
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentGamesBinding
+import es.upsa.mimo.gamercollection.extensions.getFormatted
+import es.upsa.mimo.gamercollection.extensions.hideSoftKeyboard
+import es.upsa.mimo.gamercollection.extensions.toDate
+import es.upsa.mimo.gamercollection.extensions.toString
 import es.upsa.mimo.gamercollection.fragments.popups.PopupFilterDialogFragment
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
@@ -224,13 +228,11 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
         viewModel.games.observe(viewLifecycleOwner) {
 
-            val today = Constants.stringToDate(
-                Constants.dateToString(
-                    Date(),
-                    Constants.getDateFormatToShow(viewModel.language),
-                    viewModel.language
-                ),
-                Constants.getDateFormatToShow(viewModel.language),
+            val today = Date().toString(
+                viewModel.dateFormatToShow,
+                viewModel.language
+            ).toDate(
+                viewModel.dateFormatToShow,
                 viewModel.language
             )
             val gamesToNotify = ArrayList<GameResponse>()
@@ -321,9 +323,8 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                         .setContentText(
                             resources.getString(
                                 R.string.notification_description,
-                                Constants.dateToString(
-                                    Date(),
-                                    Constants.getDateFormatToShow(viewModel.language),
+                                Date().toString(
+                                    viewModel.dateFormatToShow,
                                     viewModel.language
                                 ),
                                 game.name
@@ -395,7 +396,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         val title = resources.getQuantityString(
             R.plurals.games_number_title,
             gamesCount,
-            Constants.getFormattedNumber(gamesCount)
+            gamesCount.getFormatted()
         )
         (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
@@ -428,7 +429,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 override fun onQueryTextSubmit(query: String): Boolean {
 
                     menuItem.collapseActionView()
-                    Constants.hideSoftKeyboard(requireActivity())
+                    requireActivity().hideSoftKeyboard()
                     return true
                 }
             })

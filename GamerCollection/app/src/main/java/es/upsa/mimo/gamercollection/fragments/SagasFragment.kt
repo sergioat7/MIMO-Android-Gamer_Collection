@@ -245,7 +245,7 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
                 override fun onQueryTextSubmit(query: String): Boolean {
 
                     menuItem.collapseActionView()
-                    Constants.hideSoftKeyboard(requireActivity())
+                    requireActivity().hideSoftKeyboard()
                     return true
                 }
             })
