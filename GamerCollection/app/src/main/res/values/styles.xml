@@ -7,12 +7,17 @@
 
     <style name="Widget.GamerCollection" />
 
-    <style name="Widget.GamerCollection.BottomMenu">
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="itemTextColor">@color/colorSecondary</item>
+    <!--  BottomNavigationView  -->
+
+    <style name="Widget.GamerCollection.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="itemIconTint">@drawable/bottom_navigation_icon_colors</item>
+        <item name="itemTextColor">@drawable/bottom_navigation_text_colors</item>
+        <item name="itemTextAppearanceInactive">@font/roboto_regular</item>
+        <item name="itemTextAppearanceActive">@font/roboto_bold</item>
         <item name="labelVisibilityMode">labeled</item>
-        <item name="menu">@menu/bottom_nav_menu</item>
     </style>
+
+    <!--  Others  -->
 
     <style name="Widget.GamerCollection.LoadingProgressBar">
         <item name="android:indeterminate">true</item>
