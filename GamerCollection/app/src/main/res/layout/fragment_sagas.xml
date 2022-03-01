@@ -68,22 +68,28 @@
                 android:id="@+id/floating_action_button_start_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="@{viewModel.sagas.empty || position == ScrollPosition.TOP ? View.GONE : View.VISIBLE}"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_small"
                 android:onClick="@{fragment::goToStartEndList}"
+                android:src="@drawable/ic_double_arrow_up"
+                android:visibility="@{viewModel.sagas.empty || position == ScrollPosition.TOP ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="@+id/swipe_refresh_layout"
                 app:layout_constraintTop_toTopOf="@+id/swipe_refresh_layout"
-                style="@style/Widget.GamerCollection.ImageButton.PositionList.Start.Image"
+                style="@style/Widget.GamerCollection.ImageButton.PositionList"
                 />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/floating_action_button_end_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="@{viewModel.sagas.empty || position == ScrollPosition.END ? View.GONE : View.VISIBLE}"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_small"
                 android:onClick="@{fragment::goToStartEndList}"
+                android:src="@drawable/ic_double_arrow_down"
+                android:visibility="@{viewModel.sagas.empty || position == ScrollPosition.END ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@+id/swipe_refresh_layout"
                 app:layout_constraintEnd_toEndOf="@+id/swipe_refresh_layout"
-                style="@style/Widget.GamerCollection.ImageButton.PositionList.End.Image"
+                style="@style/Widget.GamerCollection.ImageButton.PositionList"
                 />
 
             <es.upsa.mimo.gamercollection.customviews.EmptyListLayout
@@ -91,11 +97,11 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:visibility="@{viewModel.sagas.empty ? View.VISIBLE : View.GONE}"
+                app:emptyListLayout_image="@drawable/ic_sagas"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                style="@style/Widget.GamerCollection.SagasEmptyLayout"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

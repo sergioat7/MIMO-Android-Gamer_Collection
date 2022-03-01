@@ -13,8 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_small"
         android:isIndicator="false"
-        android:numStars="5"
-        android:stepSize="0.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -23,14 +21,17 @@
 
     <Button
         android:id="@+id/button_rate"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/size_semi_huge"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:text="@string/accept"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rating_bar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintWidth_percent="0.5"
-        style="@style/Widget.GamerCollection.Button.Rounded.Action.Popup"
+        style="@style/Widget.GamerCollection.Button.Rounded"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

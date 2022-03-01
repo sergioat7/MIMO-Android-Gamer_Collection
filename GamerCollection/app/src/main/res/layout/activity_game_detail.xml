@@ -67,12 +67,14 @@
             android:id="@+id/image_view_game"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:adjustViewBounds="true"
             android:enabled="@{editable}"
             android:onClick="@{() -> activity.setImage()}"
+            android:src="@drawable/ic_add_image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:layout_constraintWidth_percent="0.4"
-            style="@style/Widget.GamerCollection.ImageViewNew"
             />
 
         <ProgressBar
@@ -91,11 +93,13 @@
             android:id="@+id/image_view_goty"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/goty_label"
             android:visibility="@{game.goty == true ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="@+id/image_view_game"
             app:layout_constraintStart_toStartOf="@+id/image_view_game"
             app:layout_constraintTop_toBottomOf="@+id/image_view_game"
-            style="@style/Widget.GamerCollection.ImageViewGoty"
+            tools:visibility="visible"
             />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -133,9 +137,15 @@
             <Button
                 android:id="@+id/rating_button"
                 android:layout_width="wrap_content"
-                android:text="@{String.valueOf(game.score)}"
+                android:layout_height="@dimen/size_big"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:background="@android:color/transparent"
+                android:drawableStart="@drawable/ic_star_white_24dp"
+                android:drawablePadding="@dimen/margin_medium_negative"
+                android:drawableTint="@color/colorInProgress"
                 android:enabled="@{editable}"
                 android:onClick="@{() -> activity.setRating()}"
+                android:text="@{String.valueOf(game.score)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/image_view_pegi"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -149,11 +159,14 @@
                 android:id="@+id/image_view_pegi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:adjustViewBounds="true"
+                android:maxWidth="@dimen/size_big"
                 android:src="@{imagePegi}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spinner_platforms"
-                style="@style/Widget.GamerCollection.ImageViewPegi"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -185,7 +198,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/barrier"
-            style="@style/Widget.GamerCollection.TabLayout.GameDetail"
+            style="@style/Widget.GamerCollection.TabLayout"
             >
 
             <com.google.android.material.tabs.TabItem
