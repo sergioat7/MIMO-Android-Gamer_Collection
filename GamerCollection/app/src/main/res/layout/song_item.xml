@@ -34,20 +34,26 @@
 
         <ImageView
             android:id="@+id/image_view_song"
+            android:layout_width="@dimen/size_big"
+            android:layout_height="@dimen/size_big"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:src="@drawable/ic_song"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/Widget.GamerCollection.ImageViewSongInfo"
             />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_small"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/image_view_remove"
             app:layout_constraintStart_toEndOf="@+id/image_view_song"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/Widget.GamerCollection.ViewSongInfoContainer"
             >
 
             <TextView

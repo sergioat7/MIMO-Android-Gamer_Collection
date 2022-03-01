@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
     <data>
 
@@ -20,8 +24,6 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
@@ -47,14 +49,21 @@
                     android:id="@+id/linear_layout_title_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.GamerCollection.ViewSagaNameContainer"
+                    android:layout_centerVertical="true"
+                    android:paddingStart="@dimen/margin_medium"
+                    android:paddingTop="@dimen/margin_tiny"
+                    android:paddingEnd="@dimen/margin_large"
+                    android:paddingBottom="@dimen/margin_tiny"
                     >
 
                     <EditText
                         android:id="@+id/edit_text_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_small"
+                        android:gravity="center|start"
                         android:inputType="none"
+                        tools:text="Saga name"
                         style="@style/Widget.GamerCollection.EditTextSaga"
                         />
 
@@ -62,11 +71,16 @@
 
                 <ImageView
                     android:id="@+id/image_view_edit"
-                    style="@style/Widget.GamerCollection.ImageViewAddGameToSaga"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/margin_large_negative"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:layout_marginBottom="@dimen/margin_normal"
                     android:layout_toEndOf="@id/linear_layout_title_container"
-                    android:onClick="@{() -> onItemClickListener.onItemClick(saga.id)}" />
+                    android:onClick="@{() -> onItemClickListener.onItemClick(saga.id)}"
+                    android:src="@drawable/ic_edit"
+                    />
 
             </RelativeLayout>
 

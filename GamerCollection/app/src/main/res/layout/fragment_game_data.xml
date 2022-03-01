@@ -42,11 +42,13 @@
             <ScrollView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:scrollbars="none"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                style="@style/Widget.GamerCollection.ScrollViewContent.GameData"
                 >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -106,12 +108,14 @@
                         android:id="@+id/linear_layout_hidden"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="@{editable ? View.VISIBLE : View.GONE}"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:animateLayoutChanges="true"
                         android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:visibility="@{editable ? View.VISIBLE : View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linear_layout_state_buttons"
-                        style="@style/Widget.GamerCollection.ViewHiddenContent"
                         >
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -121,8 +125,10 @@
                             >
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="@dimen/size_higher"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|start"
+                                android:layout_marginEnd="@dimen/margin_small"
                                 android:layout_weight="1"
                                 android:text="@string/game_detail_pegi"
                                 app:layout_constraintBottom_toTopOf="@+id/spinner_pegis"
@@ -156,8 +162,10 @@
                             >
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="@dimen/size_higher"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|start"
+                                android:layout_marginEnd="@dimen/margin_small"
                                 android:layout_weight="1"
                                 android:text="@string/game_detail_goty"
                                 app:layout_constraintBottom_toTopOf="@+id/radio_group_goty"
@@ -184,6 +192,7 @@
                                     android:id="@+id/radio_button_no"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
                                     android:checked="@{!game.goty}"
                                     android:text="@string/no"
                                     style="@style/Widget.GamerCollection.RadioButton"
@@ -193,6 +202,7 @@
                                     android:id="@+id/radio_button_yes"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
                                     android:checked="@{game.goty}"
                                     android:text="@string/yes"
                                     style="@style/Widget.GamerCollection.RadioButton"
@@ -223,7 +233,10 @@
                             >
 
                             <TextView
+                                android:layout_width="@dimen/size_higher"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|start"
+                                android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_genre"
                                 style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                                 />
@@ -244,7 +257,10 @@
                             >
 
                             <TextView
+                                android:layout_width="@dimen/size_higher"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|start"
+                                android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_release_date"
                                 style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                                 />
@@ -266,7 +282,10 @@
                             >
 
                             <TextView
+                                android:layout_width="@dimen/size_higher"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|start"
+                                android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_format"
                                 style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                                 />
@@ -287,7 +306,10 @@
                             >
 
                             <TextView
+                                android:layout_width="@dimen/size_higher"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|start"
+                                android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_distributor"
                                 style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                                 />
@@ -311,7 +333,10 @@
                             >
 
                             <TextView
+                                android:layout_width="@dimen/size_higher"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|start"
+                                android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_developer"
                                 style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                                 />
@@ -335,7 +360,10 @@
                             >
 
                             <TextView
+                                android:layout_width="@dimen/size_higher"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|start"
+                                android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_players"
                                 style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                                 />
@@ -360,7 +388,10 @@
 
                             <TextView
                                 android:id="@+id/text_view_price"
+                                android:layout_width="@dimen/size_higher"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|start"
+                                android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_price"
                                 style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                                 />
@@ -385,7 +416,10 @@
 
                             <TextView
                                 android:id="@+id/text_view_purchase_date"
+                                android:layout_width="@dimen/size_higher"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|start"
+                                android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_purchase_date"
                                 style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                                 />
@@ -407,7 +441,10 @@
 
                             <TextView
                                 android:id="@+id/text_view_purchase_location"
+                                android:layout_width="@dimen/size_higher"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|start"
+                                android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_purchase_location"
                                 style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                                 />
@@ -430,7 +467,10 @@
 
                             <TextView
                                 android:id="@+id/text_view_loaned"
+                                android:layout_width="@dimen/size_higher"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|start"
+                                android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_loaned_to"
                                 style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                                 />
@@ -455,7 +495,10 @@
 
                             <TextView
                                 android:id="@+id/text_view_video_url"
+                                android:layout_width="@dimen/size_higher"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|start"
+                                android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_video_url"
                                 style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                                 />
@@ -480,7 +523,10 @@
 
                             <TextView
                                 android:id="@+id/text_view_observations"
+                                android:layout_width="@dimen/size_higher"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|start"
+                                android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_observations"
                                 style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                                 />
@@ -505,7 +551,10 @@
 
                             <TextView
                                 android:id="@+id/text_view_saga"
+                                android:layout_width="@dimen/size_higher"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|start"
+                                android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_saga"
                                 style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
                                 />

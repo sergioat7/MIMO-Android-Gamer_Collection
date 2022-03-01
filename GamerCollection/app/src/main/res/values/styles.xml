@@ -23,10 +23,6 @@
     </style>
 
     <style name="Widget.GamerCollection.TextView.Error" parent="Widget.MaterialComponents.TextView">
-        <item name="android:layout_marginTop">@dimen/margin_medium</item>
-        <item name="android:layout_marginBottom">@dimen/margin_medium</item>
-        <item name="android:layout_marginStart">@dimen/margin_medium</item>
-        <item name="android:layout_marginEnd">@dimen/margin_medium</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/textPrimary</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
@@ -34,7 +30,6 @@
     </style>
 
     <style name="Widget.GamerCollection.TextView.GameName">
-        <item name="android:layout_marginBottom">@dimen/margin_small</item>
         <item name="android:textSize">@dimen/font_extra_large</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="android:maxLines">3</item>
@@ -42,7 +37,6 @@
     </style>
 
     <style name="Widget.GamerCollection.TextView.GamePlatform">
-        <item name="android:layout_marginBottom">@dimen/margin_tiny</item>
         <item name="android:textColor">@color/textTertiary</item>
         <item name="android:textSize">@dimen/font_medium</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
@@ -56,40 +50,24 @@
     </style>
 
     <style name="Widget.GamerCollection.TextView.Rating.GameScore">
-        <item name="android:layout_marginStart">@dimen/margin_small</item>
-        <item name="android:layout_marginBottom">@dimen/margin_mini</item>
-        <item name="android:gravity">bottom</item>
         <item name="android:textSize">@dimen/font_large</item>
     </style>
 
     <style name="Widget.GamerCollection.TextView.Rating.None">
-        <item name="android:text">@string/new_game</item>
         <item name="android:textSize">@dimen/font_extra_large</item>
     </style>
 
     <style name="Widget.GamerCollection.TextView.Bold.GameDataTitle">
-        <item name="android:layout_width">@dimen/size_higher</item>
-        <item name="android:layout_gravity">center_vertical|start</item>
-        <item name="android:layout_marginEnd">@dimen/margin_small</item>
         <item name="android:textSize">@dimen/font_medium</item>
     </style>
 
     <style name="Widget.GamerCollection.TextView.SetImageTitle">
-        <item name="android:layout_marginTop">@dimen/margin_small</item>
-        <item name="android:text">@string/game_detail_image_modal_title</item>
         <item name="android:textSize">@dimen/font_large</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
     </style>
 
-    <style name="Widget.GamerCollection.TextView.Bold.ModalFilterTitle">
-        <item name="android:layout_marginTop">@dimen/margin_medium</item>
-    </style>
-
     <style name="Widget.GamerCollection.TextView.NoAccount">
-        <item name="android:layout_marginEnd">@dimen/margin_tiny</item>
-        <item name="android:layout_gravity">center</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:text">@string/login_not_account</item>
         <item name="android:textColor">@color/textPrimaryLight</item>
     </style>
 
@@ -99,16 +77,10 @@
     </style>
 
     <style name="Widget.GamerCollection.TextView.Bold.AddGameTitle">
-        <item name="android:layout_marginTop">@dimen/margin_medium</item>
-        <item name="android:layout_marginEnd">@dimen/margin_small</item>
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:text">@string/saga_detail_games_title</item>
         <item name="android:textSize">@dimen/font_larger</item>
     </style>
 
-    <style name="Widget.GamerCollection.TitleTextView.ProfileSection" parent="Widget.AppCompat.TextView">
-        <item name="android:layout_marginTop">@dimen/margin_medium</item>
-        <item name="android:layout_marginBottom">@dimen/margin_tiny</item>
+    <style name="Widget.GamerCollection.TitleTextView.ProfileSection" parent="Widget.MaterialComponents.TextView">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:textColor">@color/textTertiary</item>
         <item name="android:textSize">@dimen/font_medium</item>
@@ -136,31 +108,12 @@
         <item name="android:selectAllOnFocus">true</item>
     </style>
 
-    <style name="Widget.GamerCollection.EditText.Credentials.Username">
-        <item name="android:layout_marginStart">@dimen/margin_larger</item>
-        <item name="android:layout_marginEnd">@dimen/margin_larger</item>
-        <item name="android:hint">@string/login_username</item>
-        <item name="android:inputType">text</item>
-    </style>
-
-    <style name="Widget.GamerCollection.EditText.Credentials.Password">
-        <item name="android:layout_marginTop">@dimen/margin_small</item>
-        <item name="android:hint">@string/login_password</item>
-        <item name="android:inputType">textPassword</item>
-    </style>
-
     <style name="Widget.GamerCollection.EditText.Bold.SagaTitle">
-        <item name="android:layout_marginTop">@dimen/margin_medium</item>
-        <item name="android:layout_marginStart">@dimen/margin_larger</item>
-        <item name="android:layout_marginEnd">@dimen/margin_larger</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">@dimen/font_extra_large</item>
-        <item name="android:hint">@string/saga_detail_placeholder_name</item>
     </style>
 
     <style name="Widget.GamerCollection.EditTextSaga" parent="Widget.AppCompat.EditText">
-        <item name="android:gravity">center|start</item>
-        <item name="android:paddingEnd">@dimen/margin_small</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="fontFamily">@font/roboto_bold</item>
         <item name="android:textColor">@color/textSecondary</item>
@@ -201,9 +154,6 @@
     </style>
 
     <style name="Widget.GamerCollection.CustomEditText.SetImage">
-        <item name="android:layout_marginTop">@dimen/margin_small</item>
-        <item name="android:layout_marginStart">@dimen/margin_small</item>
-        <item name="android:layout_marginEnd">@dimen/margin_small</item>
         <item name="customEditText_type">"URL"</item>
         <item name="customEditText_font">@font/roboto_regular</item>
         <item name="customEditText_text_size">@dimen/font_medium</item>
@@ -218,23 +168,18 @@
     </style>
 
     <style name="Widget.GamerCollection.CustomEditText.NewSong.Name">
-        <item name="android:layout_marginTop">@dimen/margin_medium</item>
-        <item name="android:layout_marginStart">@dimen/margin_small</item>
-        <item name="android:layout_marginEnd">@dimen/margin_small</item>
         <item name="customEditText_type">"TEXT"</item>
         <item name="customEditText_placeholder">@string/modal_song_placeholder_name</item>
         <item name="customEditText_ime_option">"NEXT"</item>
     </style>
 
     <style name="Widget.GamerCollection.CustomEditText.NewSong.Singer">
-        <item name="android:layout_marginTop">@dimen/margin_small</item>
         <item name="customEditText_type">"TEXT"</item>
         <item name="customEditText_placeholder">@string/modal_song_placeholder_singer</item>
         <item name="customEditText_ime_option">"NEXT"</item>
     </style>
 
     <style name="Widget.GamerCollection.CustomEditText.NewSong.Url">
-        <item name="android:layout_marginTop">@dimen/margin_small</item>
         <item name="customEditText_type">"URL"</item>
         <item name="customEditText_placeholder">@string/modal_song_placeholder_url</item>
         <item name="customEditText_ime_option">"DONE"</item>
@@ -248,28 +193,14 @@
     </style>
 
     <style name="Widget.GamerCollection.Button.Rounded">
-        <item name="android:layout_width">@dimen/size_semi_huge</item>
         <item name="android:gravity">center</item>
         <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:background">@drawable/rounded_button_primary</item>
         <item name="android:textColor">@color/textSecondary</item>
         <item name="android:textSize">@dimen/font_medium</item>
     </style>
 
-    <style name="Widget.GamerCollection.Button.Rounded.Action">
-        <item name="android:background">@drawable/rounded_button_primary</item>
-    </style>
-
-    <style name="Widget.GamerCollection.Button.Rounded.Action.Popup">
-        <item name="android:layout_marginTop">@dimen/margin_small</item>
-        <item name="android:layout_marginBottom">@dimen/margin_small</item>
-        <item name="android:text">@string/accept</item>
-    </style>
-
     <style name="Widget.GamerCollection.Button.LoadMore">
-        <item name="android:layout_margin">@dimen/margin_small</item>
-        <item name="android:gravity">center</item>
-        <item name="android:paddingStart">@dimen/margin_small</item>
-        <item name="android:paddingEnd">@dimen/margin_small</item>
         <item name="android:drawablePadding">@dimen/margin_small</item>
         <item name="android:background">@drawable/bordered_button_primary</item>
         <item name="android:text">@string/load_more</item>
@@ -278,54 +209,14 @@
     </style>
 
     <style name="Widget.GamerCollection.Button.Rating">
-        <item name="android:layout_height">@dimen/margin_medium</item>
-        <item name="android:layout_marginBottom">@dimen/margin_small</item>
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:drawableStart">@drawable/ic_star_white_24dp</item>
-        <item name="android:drawablePadding">@dimen/margin_medium_negative</item>
-        <item name="android:drawableTint">@color/colorInProgress</item>
-        <item name="android:text">0</item>
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textSize">@dimen/font_medium</item>
     </style>
 
-    <style name="Widget.GamerCollection.Button.Rounded.Action.Login">
-        <item name="android:layout_marginTop">@dimen/margin_small</item>
-        <item name="android:layout_marginBottom">@dimen/margin_small</item>
-        <item name="android:layout_marginStart">@dimen/margin_large</item>
-        <item name="android:layout_marginEnd">@dimen/margin_large</item>
-        <item name="android:layout_gravity">start</item>
-        <item name="android:text">@string/login_access</item>
-    </style>
-
     <style name="Widget.GamerCollection.Button.NoAccount">
-        <item name="android:layout_gravity">center</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
-        <item name="android:text">@string/login_register</item>
         <item name="android:textColor">@color/textPrimary</item>
-    </style>
-
-    <style name="Widget.GamerCollection.Button.Rounded.Action.Register">
-        <item name="android:layout_marginTop">@dimen/margin_small</item>
-        <item name="android:layout_marginBottom">@dimen/margin_small</item>
-        <item name="android:layout_gravity">start</item>
-        <item name="android:text">@string/register</item>
-    </style>
-
-    <style name="Widget.GamerCollection.Button.Rounded.Action.AddSong">
-        <item name="android:layout_marginBottom">@dimen/margin_small</item>
-        <item name="android:layout_marginStart">@dimen/margin_medium</item>
-        <item name="android:layout_marginEnd">@dimen/margin_medium</item>
-        <item name="android:text">@string/add</item>
-        <item name="android:visibility">gone</item>
-    </style>
-
-    <style name="Widget.GamerCollection.LocationButton" parent="Widget.AppCompat.Button">
-        <item name="android:layout_marginBottom">@dimen/margin_small</item>
-        <item name="android:layout_marginEnd">@dimen/margin_small</item>
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:src">@drawable/ic_locate_me</item>
     </style>
 
     <style name="Widget.GamerCollection.RoundedSelectorButton" parent="Widget.MaterialComponents.Button">
@@ -337,7 +228,6 @@
     </style>
 
     <style name="Widget.GamerCollection.FilterButton" parent="Widget.AppCompat.Button">
-        <item name="android:layout_weight">1</item>
         <item name="textAllCaps">false</item>
         <item name="maxLines">1</item>
         <item name="fontFamily">@font/roboto_bold</item>
@@ -346,7 +236,6 @@
     </style>
 
     <style name="Widget.GamerCollection.Switch.Profile" parent="Widget.AppCompat.CompoundButton.Switch">
-        <item name="android:layout_marginTop">@dimen/margin_medium</item>
         <item name="android:textColor">@color/textTertiary</item>
         <item name="android:textSize">@dimen/font_medium</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
@@ -354,88 +243,46 @@
 
     <!--  ImageButton  -->
 
-    <style name="Widget.GamerCollection.ImageButton" parent="Widget.AppCompat.ImageButton" />
+    <style name="Widget.GamerCollection.ImageButton" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 
     <style name="Widget.GamerCollection.ImageButton.PositionList">
+        <item name="borderWidth">0dp</item>
+        <item name="maxImageSize">@dimen/size_small</item>
+        <item name="fabSize">mini</item>
         <item name="android:backgroundTint">@color/buttonPrimary</item>
         <item name="android:tint">@color/colorSecondary</item>
         <item name="android:scaleType">center</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
-        <item name="borderWidth">0dp</item>
-        <item name="maxImageSize">10dp</item>
-        <item name="fabSize">mini</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ImageButton.PositionList.Start">
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginEnd">10dp</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ImageButton.PositionList.Start.Image">
-        <item name="android:src">@drawable/ic_double_arrow_up</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ImageButton.PositionList.End">
-        <item name="android:layout_marginBottom">10dp</item>
-        <item name="android:layout_marginEnd">10dp</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ImageButton.PositionList.End.Image">
-        <item name="android:src">@drawable/ic_double_arrow_down</item>
     </style>
 
     <style name="Widget.GamerCollection.ImageButton.EditText">
-        <item name="android:layout_width">50dp</item>
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
-        <item name="android:layout_marginEnd">20dp</item>
-        <item name="android:background">@android:color/transparent</item>
         <item name="android:scaleType">fitCenter</item>
     </style>
 
-    <style name="Widget.GamerCollection.ImageButton.EditText.Username">
-        <item name="android:src">@drawable/ic_show_info</item>
-    </style>
+    <!--  RadioButton  -->
 
-    <style name="Widget.GamerCollection.ImageButton.EditText.Password">
-        <item name="android:src">@drawable/ic_show_password</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ImageButton.AddGame">
-        <item name="android:layout_width">@dimen/margin_medium</item>
-        <item name="android:layout_height">@dimen/margin_medium</item>
-        <item name="android:background">@drawable/ic_add_game</item>
+    <style name="Widget.GamerCollection.RadioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:buttonTint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/textPrimary</item>
     </style>
 
     <!--  RatingBar  -->
 
     <style name="Widget.GamerCollection.RatingBar" parent="Widget.MaterialRatingBar.RatingBar">
         <item name="mrb_fillBackgroundStars">false</item>
+        <item name="android:numStars">5</item>
+        <item name="android:stepSize">0.5</item>
         <item name="android:progressTint">@color/colorInProgress</item>
         <item name="android:progressBackgroundTint">@color/colorInProgressLight</item>
         <item name="android:secondaryProgressTint">@color/colorInProgressLight</item>
     </style>
 
-    <style name="Widget.GamerCollection.RatingBar.GameScore">
-        <item name="android:layout_height">@dimen/size_large</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:isIndicator">true</item>
-        <item name="android:numStars">5</item>
-        <item name="android:stepSize">0.5</item>
-    </style>
-
-    <style name="Widget.GamerCollection.RatingBar.ModalFilter">
-        <item name="android:isIndicator">false</item>
-        <item name="android:numStars">5</item>
-        <item name="android:stepSize">0.5</item>
-    </style>
-
     <!--  TabLayout  -->
 
-    <style name="Widget.GamerCollection.TabLayout.GameDetail" parent="Widget.Design.TabLayout">
-        <item name="android:layout_marginStart">@dimen/margin_medium</item>
-        <item name="android:layout_marginEnd">@dimen/margin_medium</item>
+    <style name="Widget.GamerCollection.TabLayout" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">@color/colorFinished</item>
         <item name="tabSelectedTextColor">@color/colorSecondary</item>
         <item name="tabTextColor">@color/colorSecondaryLight</item>
@@ -458,170 +305,6 @@
         <item name="itemTextAppearanceInactive">@font/roboto_regular</item>
         <item name="itemTextAppearanceActive">@font/roboto_bold</item>
         <item name="labelVisibilityMode">labeled</item>
-    </style>
-
-    <!--  Others  -->
-
-    <style name="Widget.GamerCollection.LoadingProgressBar">
-        <item name="android:indeterminate">true</item>
-        <item name="android:indeterminateTint">@color/colorPrimary</item>
-    </style>
-
-    <style name="Widget.GamerCollection.RadioButton">
-        <item name="android:layout_weight">1</item>
-        <item name="android:buttonTint">@color/colorPrimary</item>
-        <item name="android:textColor">@color/textPrimary</item>
-    </style>
-
-    <style name="Widget.GamerCollection.GamesEmptyLayout">
-        <item name="emptyListLayout_image">@drawable/ic_games</item>
-    </style>
-
-    <style name="Widget.GamerCollection.SagasEmptyLayout">
-        <item name="emptyListLayout_image">@drawable/ic_sagas</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ScrollViewContent">
-        <item name="android:scrollbars">none</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ViewStateButtonsContainer">
-        <item name="android:background">#000000</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:padding">@dimen/margin_tiny</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ImageViewGoty">
-        <item name="android:visibility">gone</item>
-        <item name="android:adjustViewBounds">true</item>
-        <item name="srcCompat">@drawable/goty_label</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ViewGameInfoContainer">
-        <item name="android:layout_marginTop">@dimen/margin_tiny</item>
-        <item name="android:layout_marginBottom">@dimen/margin_tiny</item>
-        <item name="android:layout_marginStart">@dimen/margin_medium</item>
-        <item name="android:orientation">vertical</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ViewSeparatorLine">
-        <item name="android:layout_marginTop">@dimen/margin_small</item>
-        <item name="android:background">@color/colorPrimaryLight</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ImageViewNew">
-        <item name="android:layout_marginStart">@dimen/margin_medium</item>
-        <item name="android:adjustViewBounds">true</item>
-        <item name="srcCompat">@drawable/ic_add_image</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ImageViewPegi">
-        <item name="android:layout_marginTop">@dimen/margin_small</item>
-        <item name="android:layout_marginBottom">@dimen/margin_small</item>
-        <item name="android:adjustViewBounds">true</item>
-        <item name="android:maxWidth">@dimen/size_big</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ScrollViewContent.GameData">
-        <item name="android:layout_marginTop">@dimen/margin_small</item>
-        <item name="android:layout_marginBottom">@dimen/margin_small</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ViewHiddenContent">
-        <item name="android:layout_marginTop">@dimen/margin_medium</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:animateLayoutChanges">true</item>
-    </style>
-
-    <style name="Widget.GamerCollection.SongsEmptyLayout">
-        <item name="emptyListLayout_image">@drawable/ic_song</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ImageViewSongInfo">
-        <item name="android:layout_width">@dimen/size_big</item>
-        <item name="android:layout_height">@dimen/size_big</item>
-        <item name="android:layout_marginTop">@dimen/margin_small</item>
-        <item name="android:layout_marginBottom">@dimen/margin_small</item>
-        <item name="srcCompat">@drawable/ic_song</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ViewSongInfoContainer">
-        <item name="android:layout_marginTop">@dimen/margin_small</item>
-        <item name="android:layout_marginBottom">@dimen/margin_small</item>
-        <item name="android:layout_marginStart">@dimen/margin_small</item>
-        <item name="android:layout_marginEnd">@dimen/margin_small</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:orientation">vertical</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ScrollViewContent.ModalFilter">
-        <item name="android:layout_marginTop">@dimen/margin_mini</item>
-        <item name="android:layout_marginStart">@dimen/margin_medium</item>
-        <item name="android:layout_marginEnd">@dimen/margin_medium</item>
-        <item name="android:background">@color/colorSecondary</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ScrollViewContent.HorizontalModalFilter">
-        <item name="android:layout_height">@dimen/size_big</item>
-        <item name="android:layout_marginTop">@dimen/margin_medium</item>
-    </style>
-
-    <style name="Widget.GamerCollection.RatingLayout">
-        <item name="android:layout_marginTop">@dimen/margin_medium</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:gravity">center_vertical</item>
-    </style>
-
-    <style name="Widget.GamerCollection.FilterButtonsContent">
-        <item name="android:layout_marginBottom">@dimen/margin_mini</item>
-        <item name="android:layout_marginStart">@dimen/margin_mini</item>
-        <item name="android:layout_marginEnd">@dimen/margin_mini</item>
-        <item name="android:orientation">horizontal</item>
-    </style>
-
-    <style name="Widget.GamerCollection.FilterButtonSeparator">
-        <item name="android:layout_width">@dimen/margin_mini</item>
-        <item name="android:background">@color/colorPrimary</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ImageViewLogo">
-        <item name="android:src">@drawable/app_name</item>
-    </style>
-
-    <style name="Widget.GamerCollection.AddGameSeparator">
-        <item name="android:layout_height">@dimen/size_minimum</item>
-        <item name="android:layout_marginTop">@dimen/margin_tiny</item>
-        <item name="android:layout_marginStart">@dimen/margin_medium</item>
-        <item name="android:layout_marginEnd">@dimen/margin_medium</item>
-        <item name="android:background">@color/colorPrimary</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ScrollViewContent.SagaGames">
-        <item name="android:layout_marginTop">@dimen/margin_small</item>
-        <item name="android:layout_marginBottom">@dimen/margin_medium</item>
-    </style>
-
-    <style name="Widget.GamerCollection.GamesSelectorContent">
-        <item name="android:layout_marginTop">@dimen/margin_mini</item>
-        <item name="android:layout_marginStart">@dimen/margin_mini</item>
-        <item name="android:layout_marginEnd">@dimen/margin_mini</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ViewSagaNameContainer">
-        <item name="android:paddingTop">@dimen/margin_tiny</item>
-        <item name="android:paddingBottom">@dimen/margin_tiny</item>
-        <item name="android:paddingStart">@dimen/margin_medium</item>
-        <item name="android:paddingEnd">@dimen/margin_large</item>
-        <item name="android:layout_centerVertical">true</item>
-    </style>
-
-    <style name="Widget.GamerCollection.ImageViewAddGameToSaga">
-        <item name="android:layout_marginTop">@dimen/margin_normal</item>
-        <item name="android:layout_marginBottom">@dimen/margin_normal</item>
-        <item name="android:layout_marginStart">@dimen/margin_large_negative</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="srcCompat">@drawable/ic_edit</item>
     </style>
 
 </resources>

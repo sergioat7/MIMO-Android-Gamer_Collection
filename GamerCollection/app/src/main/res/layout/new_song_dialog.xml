@@ -11,6 +11,9 @@
         android:id="@+id/custom_edit_text_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,6 +26,7 @@
         android:id="@+id/custom_edit_text_singer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
         app:layout_constraintEnd_toEndOf="@+id/custom_edit_text_name"
         app:layout_constraintStart_toStartOf="@+id/custom_edit_text_name"
         app:layout_constraintTop_toBottomOf="@+id/custom_edit_text_name"
@@ -33,6 +37,7 @@
         android:id="@+id/custom_edit_text_url"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
         app:layout_constraintEnd_toEndOf="@+id/custom_edit_text_singer"
         app:layout_constraintStart_toStartOf="@+id/custom_edit_text_singer"
         app:layout_constraintTop_toBottomOf="@+id/custom_edit_text_singer"
@@ -41,14 +46,17 @@
 
     <Button
         android:id="@+id/button_accept"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/size_semi_huge"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:text="@string/accept"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/custom_edit_text_url"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintWidth_percent="0.5"
-        style="@style/Widget.GamerCollection.Button.Rounded.Action.Popup"
+        style="@style/Widget.GamerCollection.Button.Rounded"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
