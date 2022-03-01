@@ -12,6 +12,7 @@
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorSecondary</item>
         <item name="colorSwitchThumbNormal">@color/buttonSecondary</item>
+        <item name="bottomNavigationStyle">@style/Widget.GamerCollection.BottomNavigationView</item>
         <item name="android:colorBackground">@color/colorSecondary</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_black</item>
     </style>
