@@ -69,6 +69,7 @@
     <style name="Widget.GamerCollection.TextView.NoAccount">
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textColor">@color/textPrimaryLight</item>
+        <item name="android:textSize">@dimen/font_medium</item>
     </style>
 
     <style name="Widget.GamerCollection.TextView.Regular.AppTheme">
@@ -187,79 +188,97 @@
 
     <!--  Button  -->
 
-    <style name="Widget.GamerCollection.Button" parent="Widget.AppCompat.Button">
+    <style name="Widget.GamerCollection.Button" parent="Widget.MaterialComponents.Button">
         <item name="textAllCaps">false</item>
-        <item name="maxLines">1</item>
+        <item name="rippleColor">@null</item>
+        <item name="iconPadding">@dimen/padding_small</item>
+        <item name="android:insetTop">@dimen/no_padding</item>
+        <item name="android:insetBottom">@dimen/no_padding</item>
     </style>
 
-    <style name="Widget.GamerCollection.Button.Rounded">
-        <item name="android:gravity">center</item>
+    <style name="Widget.GamerCollection.Button.Main">
+        <item name="backgroundTint">@drawable/rounded_button_primary</item>
         <item name="fontFamily">@font/roboto_bold</item>
-        <item name="android:background">@drawable/rounded_button_primary</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.ReaderCollection.Rounded.15</item>
         <item name="android:textColor">@color/textSecondary</item>
         <item name="android:textSize">@dimen/font_medium</item>
-    </style>
-
-    <style name="Widget.GamerCollection.Button.LoadMore">
-        <item name="android:drawablePadding">@dimen/margin_small</item>
-        <item name="android:background">@drawable/bordered_button_primary</item>
-        <item name="android:text">@string/load_more</item>
-        <item name="android:textColor">@color/colorSecondary</item>
-        <item name="android:drawableStart">@drawable/ic_add_circle</item>
-    </style>
-
-    <style name="Widget.GamerCollection.Button.Rating">
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textSize">@dimen/font_medium</item>
-    </style>
-
-    <style name="Widget.GamerCollection.Button.NoAccount">
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:fontFamily">@font/roboto_bold</item>
-        <item name="android:textColor">@color/textPrimary</item>
-    </style>
-
-    <style name="Widget.GamerCollection.RoundedSelectorButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:background">@drawable/rounded_filter_selector_button</item>
-        <item name="android:textColor">@drawable/state_button_text_color</item>
         <item name="android:maxLines">1</item>
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">@dimen/font_normal</item>
     </style>
 
-    <style name="Widget.GamerCollection.FilterButton" parent="Widget.AppCompat.Button">
-        <item name="textAllCaps">false</item>
-        <item name="maxLines">1</item>
+    <style name="Widget.GamerCollection.Button.Main.Icon">
+        <item name="android:paddingStart">@dimen/padding_normal</item>
+        <item name="android:paddingEnd">@dimen/padding_normal</item>
+    </style>
+
+    <style name="Widget.GamerCollection.Button.RoundedSelectorButton">
+        <item name="backgroundTint">@drawable/rounded_filter_selector_button</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@drawable/state_button_text_color</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="Widget.GamerCollection.Button.Filter">
         <item name="fontFamily">@font/roboto_bold</item>
+        <item name="shapeAppearance">@null</item>
         <item name="android:textColor">@color/textSecondary</item>
         <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:maxLines">1</item>
     </style>
 
-    <style name="Widget.GamerCollection.Switch.Profile" parent="Widget.AppCompat.CompoundButton.Switch">
-        <item name="android:textColor">@color/textTertiary</item>
+    <!--  TextButton  -->
+
+    <style name="Widget.ReaderCollection.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="textAllCaps">false</item>
+        <item name="rippleColor">@null</item>
+        <item name="iconPadding">@dimen/padding_small</item>
+        <item name="android:padding">@dimen/no_padding</item>
+        <item name="android:insetTop">@dimen/no_padding</item>
+        <item name="android:insetBottom">@dimen/no_padding</item>
+        <item name="android:minHeight">@dimen/no_size</item>
+        <item name="android:minWidth">@dimen/no_size</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="Widget.ReaderCollection.TextButton.Main">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="Widget.ReaderCollection.TextButton.Main.Action">
+        <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="android:textSize">@dimen/font_medium</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="Widget.ReaderCollection.TextButton.Icon">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="iconTint">@color/colorInProgress</item>
     </style>
 
     <!--  ImageButton  -->
 
-    <style name="Widget.GamerCollection.ImageButton" parent="Widget.AppCompat.ImageButton">
+    <style name="Widget.GamerCollection.ImageButton" parent="Widget.MaterialComponents.TimePicker.ImageButton">
+        <item name="rippleColor">@null</item>
         <item name="android:background">@android:color/transparent</item>
+        <item name="android:minWidth">@null</item>
+        <item name="android:minHeight">@null</item>
     </style>
 
-    <style name="Widget.GamerCollection.ImageButton.PositionList">
+    <!--  FloatingActionButton  -->
+
+    <style name="Widget.ReaderCollection.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
         <item name="borderWidth">0dp</item>
-        <item name="maxImageSize">@dimen/size_small</item>
-        <item name="fabSize">mini</item>
-        <item name="android:backgroundTint">@color/buttonPrimary</item>
-        <item name="android:tint">@color/colorSecondary</item>
-        <item name="android:scaleType">center</item>
-        <item name="android:clickable">true</item>
+        <item name="backgroundTint">@color/colorSecondary</item>
+        <item name="tint">@color/colorSecondary</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
         <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
     </style>
 
-    <style name="Widget.GamerCollection.ImageButton.EditText">
-        <item name="android:scaleType">fitCenter</item>
+    <style name="Widget.ReaderCollection.FloatingActionButton.ListPosition">
+        <item name="fabSize">mini</item>
+        <item name="maxImageSize">@dimen/size_small</item>
     </style>
 
     <!--  RadioButton  -->
@@ -282,19 +301,20 @@
 
     <!--  TabLayout  -->
 
-    <style name="Widget.GamerCollection.TabLayout" parent="Widget.Design.TabLayout">
+    <style name="Widget.GamerCollection.TabLayout" parent="Widget.MaterialComponents.TabLayout">
         <item name="tabIndicatorColor">@color/colorFinished</item>
         <item name="tabSelectedTextColor">@color/colorSecondary</item>
         <item name="tabTextColor">@color/colorSecondaryLight</item>
+        <item name="android:background">@color/colorPrimary</item>
     </style>
 
     <!-- Spinner   -->
 
     <style name="Widget.GamerCollection.Spinner" parent="Widget.AppCompat.Spinner.Underlined">
+        <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:spinnerMode">dropdown</item>
         <item name="android:backgroundTint">@android:color/transparent</item>
         <item name="android:minHeight">@dimen/size_large</item>
-        <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
     <!--  BottomNavigationView  -->
@@ -305,6 +325,14 @@
         <item name="itemTextAppearanceInactive">@font/roboto_regular</item>
         <item name="itemTextAppearanceActive">@font/roboto_bold</item>
         <item name="labelVisibilityMode">labeled</item>
+    </style>
+
+    <!--  ShapeAppearance  -->
+
+    <style name="ShapeAppearance.ReaderCollection.Rounded" parent="ShapeAppearance.MaterialComponents" />
+
+    <style name="ShapeAppearance.ReaderCollection.Rounded.15">
+        <item name="cornerSize">@dimen/radius_normal</item>
     </style>
 
 </resources>

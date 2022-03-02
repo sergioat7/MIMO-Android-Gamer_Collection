@@ -52,7 +52,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/edit_text_user"
                 app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
                 app:layout_constraintTop_toTopOf="@+id/edit_text_user"
-                style="@style/Widget.GamerCollection.ImageButton.EditText"
+                style="@style/Widget.GamerCollection.ImageButton"
                 />
 
             <EditText
@@ -80,7 +80,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/edit_text_password"
                 app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
                 app:layout_constraintTop_toTopOf="@+id/edit_text_password"
-                style="@style/Widget.GamerCollection.ImageButton.EditText"
+                style="@style/Widget.GamerCollection.ImageButton"
                 />
 
             <EditText
@@ -107,7 +107,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/edit_text_repeatPassword"
                 app:layout_constraintEnd_toEndOf="@+id/edit_text_repeatPassword"
                 app:layout_constraintTop_toTopOf="@+id/edit_text_repeatPassword"
-                style="@style/Widget.GamerCollection.ImageButton.EditText"
+                style="@style/Widget.GamerCollection.ImageButton"
                 />
 
             <Button
@@ -124,7 +124,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_repeatPassword"
-                style="@style/Widget.GamerCollection.Button.Rounded"
+                style="@style/Widget.GamerCollection.Button.Main"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -73,7 +73,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                style="@style/Widget.GamerCollection.Button.Rounded"
+                style="@style/Widget.GamerCollection.Button.Main"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

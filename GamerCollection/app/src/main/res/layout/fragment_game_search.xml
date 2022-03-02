@@ -72,11 +72,11 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginEnd="@dimen/margin_small"
                 android:onClick="@{fragment::goToStartEndList}"
-                android:src="@drawable/ic_double_arrow_up"
                 android:visibility="@{viewModel.games.empty || position == ScrollPosition.TOP ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="@+id/swipe_refresh_layout"
                 app:layout_constraintTop_toTopOf="@+id/swipe_refresh_layout"
-                style="@style/Widget.GamerCollection.ImageButton.PositionList"
+                app:srcCompat="@drawable/ic_double_arrow_up"
+                style="@style/Widget.ReaderCollection.FloatingActionButton.ListPosition"
                 />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -86,11 +86,11 @@
                 android:layout_marginEnd="@dimen/margin_small"
                 android:layout_marginBottom="@dimen/margin_small"
                 android:onClick="@{fragment::goToStartEndList}"
-                android:src="@drawable/ic_double_arrow_down"
                 android:visibility="@{viewModel.games.empty || position == ScrollPosition.END ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@+id/swipe_refresh_layout"
                 app:layout_constraintEnd_toEndOf="@+id/swipe_refresh_layout"
-                style="@style/Widget.GamerCollection.ImageButton.PositionList"
+                app:srcCompat="@drawable/ic_double_arrow_down"
+                style="@style/Widget.ReaderCollection.FloatingActionButton.ListPosition"
                 />
 
             <es.upsa.mimo.gamercollection.customviews.EmptyListLayout
