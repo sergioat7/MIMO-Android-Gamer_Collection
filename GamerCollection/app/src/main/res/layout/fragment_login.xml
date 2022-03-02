@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/login_register"
-                    style="@style/Widget.ReaderCollection.TextButton.Main.Action"
+                    style="@style/Widget.GamerCollection.TextButton.Main.Action"
                     />
 
             </LinearLayout>

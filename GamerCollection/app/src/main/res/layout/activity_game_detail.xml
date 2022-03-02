@@ -150,7 +150,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/spinner_platforms"
                 app:layout_constraintVertical_bias="0.0"
                 tools:text="5"
-                style="@style/Widget.ReaderCollection.TextButton.Icon"
+                style="@style/Widget.GamerCollection.TextButton.Icon"
                 />
 
             <ImageView

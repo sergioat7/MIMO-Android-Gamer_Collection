@@ -75,7 +75,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/swipe_refresh_layout"
                 app:layout_constraintTop_toTopOf="@+id/swipe_refresh_layout"
                 app:srcCompat="@drawable/ic_double_arrow_up"
-                style="@style/Widget.ReaderCollection.FloatingActionButton.ListPosition"
+                style="@style/Widget.GamerCollection.FloatingActionButton.ListPosition"
                 />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -89,7 +89,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/swipe_refresh_layout"
                 app:layout_constraintEnd_toEndOf="@+id/swipe_refresh_layout"
                 app:srcCompat="@drawable/ic_double_arrow_down"
-                style="@style/Widget.ReaderCollection.FloatingActionButton.ListPosition"
+                style="@style/Widget.GamerCollection.FloatingActionButton.ListPosition"
                 />
 
             <es.upsa.mimo.gamercollection.customviews.EmptyListLayout

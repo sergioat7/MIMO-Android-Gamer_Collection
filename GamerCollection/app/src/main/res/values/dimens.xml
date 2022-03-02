@@ -38,6 +38,7 @@
     <dimen name="font_large">18sp</dimen>
     <dimen name="font_medium">16sp</dimen>
     <dimen name="font_normal">14sp</dimen>
+    <dimen name="font_small">12sp</dimen>
 
     <!--  radius  -->
     <dimen name="radius_huge">36dp</dimen>
