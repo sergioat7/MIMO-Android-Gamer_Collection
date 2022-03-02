@@ -70,8 +70,8 @@ class PopupFilterDialogFragment(
             (child as Chip).isChecked = false
         }
 
-        for (child in binding.linearLayoutFormats.children) {
-            child.isSelected = false
+        for (child in binding.chipGroupFormats.children) {
+            (child as Chip).isChecked = false
         }
 
         binding.ratingBarMin.rating = 0F
@@ -118,8 +118,12 @@ class PopupFilterDialogFragment(
         }
 
         val formats: ArrayList<String> = arrayListOf()
-        for (child in binding.linearLayoutFormats.children) {
-            if (child.isSelected) formats.add("${child.tag}")
+        for (childId in binding.chipGroupFormats.checkedChipIds) {
+            binding.chipGroupFormats.children.find { child ->
+                child.id == childId
+            }?.tag?.let { tag ->
+                formats.add("$tag")
+            }
         }
 
         val minScore = (binding.ratingBarMin.rating * 2).toDouble()
@@ -260,8 +264,8 @@ class PopupFilterDialogFragment(
 
             val formats = filters.formats
             if (formats.isNotEmpty()) {
-                for (child in binding.linearLayoutFormats.children) {
-                    child.isSelected = formats.firstOrNull { it == child.tag } != null
+                for (child in binding.chipGroupFormats.children) {
+                    (child as Chip).isChecked = formats.firstOrNull { it == child.tag } != null
                 }
             }
 
@@ -317,25 +321,10 @@ class PopupFilterDialogFragment(
 
     private fun fillFormats() {
 
-        binding.linearLayoutFormats.removeAllViews()
+        binding.chipGroupFormats.removeAllViews()
         for (format in viewModel.formats) {
-
-            val button = viewModel.getRoundedSelectorButton(
-                format.id,
-                format.name,
-                requireContext()
-            )
-
-            val view = View(requireContext())
-            view.layoutParams = ViewGroup.LayoutParams(
-                20,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-
-            binding.linearLayoutFormats.addView(button)
-            binding.linearLayoutFormats.addView(view)
+            binding.chipGroupFormats.addChip(layoutInflater, format.id, format.name)
         }
-        binding.linearLayoutFormats.removeViewAt(binding.linearLayoutFormats.childCount - 1)
     }
     //endregion
 }
