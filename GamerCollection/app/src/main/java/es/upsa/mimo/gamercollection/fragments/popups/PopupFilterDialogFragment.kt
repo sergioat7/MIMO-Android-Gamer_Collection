@@ -8,9 +8,11 @@ import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.chip.Chip
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnFiltersSelected
 import es.upsa.mimo.gamercollection.databinding.FragmentPopupFilterDialogBinding
+import es.upsa.mimo.gamercollection.extensions.addChip
 import es.upsa.mimo.gamercollection.extensions.toDate
 import es.upsa.mimo.gamercollection.extensions.toString
 import es.upsa.mimo.gamercollection.models.FilterModel
@@ -60,8 +62,8 @@ class PopupFilterDialogFragment(
 
     fun reset() {
 
-        for (child in binding.linearLayoutPlatforms.children) {
-            child.isSelected = false
+        for (child in binding.chipGroupPlatforms.children) {
+            (child as Chip).isChecked = false
         }
 
         for (child in binding.linearLayoutGenres.children) {
@@ -98,8 +100,12 @@ class PopupFilterDialogFragment(
     fun save() {
 
         val platforms: ArrayList<String> = arrayListOf()
-        for (child in binding.linearLayoutPlatforms.children) {
-            if (child.isSelected) platforms.add("${child.tag}")
+        for (childId in binding.chipGroupPlatforms.checkedChipIds) {
+            binding.chipGroupPlatforms.children.find { child ->
+                child.id == childId
+            }?.tag?.let { tag ->
+                platforms.add("$tag")
+            }
         }
 
         val genres: ArrayList<String> = arrayListOf()
@@ -236,8 +242,9 @@ class PopupFilterDialogFragment(
 
             val platforms = filters.platforms
             if (platforms.isNotEmpty()) {
-                for (child in binding.linearLayoutPlatforms.children) {
-                    child.isSelected = platforms.firstOrNull { it == child.tag } != null
+                for (child in binding.chipGroupPlatforms.children) {
+                    (child as Chip).isChecked = platforms.firstOrNull { it == child.tag } != null
+
                 }
             }
 
@@ -291,25 +298,10 @@ class PopupFilterDialogFragment(
 
     private fun fillPlatforms() {
 
-        binding.linearLayoutPlatforms.removeAllViews()
+        binding.chipGroupPlatforms.removeAllViews()
         for (platform in viewModel.platforms) {
-
-            val button = viewModel.getRoundedSelectorButton(
-                platform.id,
-                platform.name,
-                requireContext()
-            )
-
-            val view = View(requireContext())
-            view.layoutParams = ViewGroup.LayoutParams(
-                20,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-
-            binding.linearLayoutPlatforms.addView(button)
-            binding.linearLayoutPlatforms.addView(view)
+            binding.chipGroupPlatforms.addChip(layoutInflater, platform.id, platform.name)
         }
-        binding.linearLayoutPlatforms.removeViewAt(binding.linearLayoutPlatforms.childCount - 1)
     }
 
     private fun fillGenres() {
