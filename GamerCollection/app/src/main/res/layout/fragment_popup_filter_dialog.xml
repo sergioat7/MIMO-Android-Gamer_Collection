@@ -547,6 +547,8 @@
                     android:id="@+id/line_view_top"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/size_mini"
+                    android:layout_marginStart="@dimen/margin_mini"
+                    android:layout_marginEnd="@dimen/margin_mini"
                     android:background="@color/colorSecondary"
                     app:layout_constraintBottom_toTopOf="@+id/linear_layout_filter_buttons"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -568,10 +570,10 @@
                         android:id="@+id/button_cancel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorPending"
-                        android:text="@string/cancel"
                         android:onClick="@{() -> fragment.cancel()}"
-                        style="@style/Widget.GamerCollection.FilterButton"
+                        android:text="@string/cancel"
+                        app:backgroundTint="@color/colorPending"
+                        style="@style/Widget.GamerCollection.Button.Filter"
                         />
 
                     <View
@@ -585,10 +587,10 @@
                         android:id="@+id/button_reset"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorInProgress"
-                        android:text="@string/reset"
                         android:onClick="@{() -> fragment.reset()}"
-                        style="@style/Widget.GamerCollection.FilterButton"
+                        android:text="@string/reset"
+                        app:backgroundTint="@color/colorInProgress"
+                        style="@style/Widget.GamerCollection.Button.Filter"
                         />
 
                     <View
@@ -602,10 +604,10 @@
                         android:id="@+id/button_save"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorFinished"
-                        android:text="@string/save"
                         android:onClick="@{() -> fragment.save()}"
-                        style="@style/Widget.GamerCollection.FilterButton"
+                        android:text="@string/save"
+                        app:backgroundTint="@color/colorFinished"
+                        style="@style/Widget.GamerCollection.Button.Filter"
                         />
 
                 </LinearLayout>

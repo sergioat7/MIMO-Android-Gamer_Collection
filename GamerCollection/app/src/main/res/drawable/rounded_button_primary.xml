@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<selector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
-    <item android:state_pressed="true">
-        <shape android:shape="rectangle">
-            <corners android:radius="@dimen/radius_normal" />
-            <solid android:color="@color/colorPrimaryLight" />
-        </shape>
-    </item>
+    <item
+        android:color="@color/colorPrimaryLight"
+        android:state_pressed="true"
+        />
 
-    <item android:state_enabled="false">
-        <shape android:shape="rectangle">
-            <corners android:radius="@dimen/radius_normal" />
-            <solid android:color="@color/colorPrimaryLight" />
-        </shape>
-    </item>
+    <item
+        android:color="@color/colorPrimaryLight"
+        android:state_enabled="false"
+        />
 
-    <item>
-        <shape android:shape="rectangle">
-            <corners android:radius="@dimen/radius_normal" />
-            <solid android:color="@color/colorPrimary" />
-        </shape>
-    </item>
+    <item
+        android:color="@color/colorPrimary"
+        />
 
 </selector>

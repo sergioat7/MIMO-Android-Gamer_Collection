@@ -40,8 +40,8 @@ class PopupFilterViewModel @Inject constructor(
         val button = Button(
             context,
             null,
-            R.style.Widget_GamerCollection_RoundedSelectorButton,
-            R.style.Widget_GamerCollection_RoundedSelectorButton
+            R.style.Widget_GamerCollection_Button_RoundedSelectorButton,
+            R.style.Widget_GamerCollection_Button_RoundedSelectorButton
         )
         button.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,

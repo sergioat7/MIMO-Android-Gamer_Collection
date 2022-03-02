@@ -58,7 +58,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_container"
         app:layout_constraintWidth_percent="0.5"
-        style="@style/Widget.GamerCollection.Button.Rounded"
+        style="@style/Widget.GamerCollection.Button.Main"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

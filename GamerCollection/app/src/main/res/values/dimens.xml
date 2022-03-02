@@ -13,6 +13,11 @@
     <dimen name="margin_tiny">5dp</dimen>
     <dimen name="margin_mini">2dp</dimen>
 
+    <!--  paddings  -->
+    <dimen name="padding_normal">12dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="no_padding">0dp</dimen>
+
     <!-- sizes of views   -->
     <dimen name="size_huge">400dp</dimen>
     <dimen name="size_wide">300dp</dimen>
@@ -25,6 +30,7 @@
     <dimen name="size_tiny">5dp</dimen>
     <dimen name="size_mini">2dp</dimen>
     <dimen name="size_minimum">1dp</dimen>
+    <dimen name="no_size">0dp</dimen>
 
     <!--  font sizes  -->
     <dimen name="font_extra_large">24sp</dimen>

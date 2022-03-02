@@ -73,7 +73,7 @@
                         app:layout_constraintBottom_toBottomOf="@+id/edit_text_user"
                         app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
                         app:layout_constraintTop_toTopOf="@+id/edit_text_user"
-                        style="@style/Widget.GamerCollection.ImageButton.EditText"
+                        style="@style/Widget.GamerCollection.ImageButton"
                         />
 
                     <EditText
@@ -101,7 +101,7 @@
                         app:layout_constraintBottom_toBottomOf="@+id/edit_text_password"
                         app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
                         app:layout_constraintTop_toTopOf="@+id/edit_text_password"
-                        style="@style/Widget.GamerCollection.ImageButton.EditText"
+                        style="@style/Widget.GamerCollection.ImageButton"
                         />
 
                     <TextView
@@ -178,11 +178,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_medium"
                         android:checked="@{viewModel.swipeRefresh}"
+                        android:fontFamily="@font/roboto_regular"
                         android:text="@string/swipe_refresh_enabled_title"
+                        android:textColor="@color/textTertiary"
+                        android:textSize="@dimen/font_medium"
                         app:layout_constraintEnd_toEndOf="@+id/spinner_sorting_keys"
                         app:layout_constraintStart_toStartOf="@+id/spinner_sorting_keys"
                         app:layout_constraintTop_toBottomOf="@+id/spinner_sorting_keys"
-                        style="@style/Widget.GamerCollection.Switch.Profile"
                         />
 
                     <TextView
@@ -225,7 +227,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                style="@style/Widget.GamerCollection.Button.Rounded"
+                style="@style/Widget.GamerCollection.Button.Main"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

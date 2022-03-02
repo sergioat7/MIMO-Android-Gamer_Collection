@@ -24,8 +24,18 @@
             app:layout_constraintTop_toTopOf="parent"
             >
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="@dimen/size_minimum"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:background="@color/colorPrimary"
+                app:layout_constraintBottom_toTopOf="@+id/text_view_sync"
+                app:layout_constraintEnd_toEndOf="@+id/text_view_sync"
+                app:layout_constraintStart_toStartOf="@+id/text_view_sync"
+                />
+
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/text_view_sync"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_extra_large"
@@ -43,24 +53,14 @@
                 />
 
             <View
-                android:layout_width="0dp"
-                android:layout_height="@dimen/size_minimum"
-                android:layout_marginBottom="@dimen/margin_small"
-                android:background="@color/colorPrimary"
-                app:layout_constraintBottom_toTopOf="@+id/textView"
-                app:layout_constraintEnd_toEndOf="@+id/textView"
-                app:layout_constraintStart_toStartOf="@+id/textView"
-                />
-
-            <View
-                android:id="@+id/view2"
+                android:id="@+id/view"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/size_minimum"
                 android:layout_marginTop="@dimen/margin_small"
                 android:background="@color/colorPrimary"
-                app:layout_constraintEnd_toEndOf="@+id/textView"
-                app:layout_constraintStart_toStartOf="@+id/textView"
-                app:layout_constraintTop_toBottomOf="@+id/textView"
+                app:layout_constraintEnd_toEndOf="@+id/text_view_sync"
+                app:layout_constraintStart_toStartOf="@+id/text_view_sync"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_sync"
                 />
 
             <ProgressBar
@@ -68,12 +68,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_medium"
                 android:layout_marginBottom="@dimen/margin_medium"
+                android:indeterminateTint="@color/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view2"
-                style="@style/Widget.GamerCollection.LoadingProgressBar"
+                app:layout_constraintTop_toBottomOf="@+id/view"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -81,12 +81,12 @@
             android:id="@+id/progress_bar_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:indeterminateTint="@color/colorPrimary"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/constraint_layout_main_details"
             app:layout_constraintEnd_toEndOf="@+id/image_view_game"
             app:layout_constraintStart_toStartOf="@+id/image_view_game"
             app:layout_constraintTop_toTopOf="@+id/constraint_layout_main_details"
-            style="@style/Widget.GamerCollection.LoadingProgressBar"
             />
 
         <ImageView
@@ -139,20 +139,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/size_big"
                 android:layout_marginBottom="@dimen/margin_small"
-                android:background="@android:color/transparent"
-                android:drawableStart="@drawable/ic_star_white_24dp"
-                android:drawablePadding="@dimen/margin_medium_negative"
-                android:drawableTint="@color/colorInProgress"
                 android:enabled="@{editable}"
                 android:onClick="@{() -> activity.setRating()}"
                 android:text="@{String.valueOf(game.score)}"
+                app:icon="@drawable/ic_star_white_24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/image_view_pegi"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spinner_platforms"
                 app:layout_constraintVertical_bias="0.0"
-                style="@style/Widget.GamerCollection.Button.Rating"
+                tools:text="5"
+                style="@style/Widget.ReaderCollection.TextButton.Icon"
                 />
 
             <ImageView
@@ -177,17 +175,6 @@
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="image_view_goty, constraint_layout_main_details"
-            />
-
-        <View
-            android:id="@+id/view_background_tabs"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="@+id/tab_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tab_layout"
             />
 
         <com.google.android.material.tabs.TabLayout
