@@ -106,7 +106,7 @@
                         <HorizontalScrollView
                             android:id="@+id/scroll_genres"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/size_big"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_medium"
                             android:scrollbars="none"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -115,11 +115,11 @@
                             app:layout_constraintTop_toBottomOf="@+id/text_view_genre_title"
                             >
 
-                            <LinearLayout
-                                android:id="@+id/linear_layout_genres"
+                            <com.google.android.material.chip.ChipGroup
+                                android:id="@+id/chip_group_genres"
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:orientation="horizontal"
+                                android:layout_height="wrap_content"
+                                app:singleLine="true"
                                 />
 
                         </HorizontalScrollView>

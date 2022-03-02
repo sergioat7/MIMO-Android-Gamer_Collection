@@ -66,8 +66,8 @@ class PopupFilterDialogFragment(
             (child as Chip).isChecked = false
         }
 
-        for (child in binding.linearLayoutGenres.children) {
-            child.isSelected = false
+        for (child in binding.chipGroupGenres.children) {
+            (child as Chip).isChecked = false
         }
 
         for (child in binding.linearLayoutFormats.children) {
@@ -109,8 +109,12 @@ class PopupFilterDialogFragment(
         }
 
         val genres: ArrayList<String> = arrayListOf()
-        for (child in binding.linearLayoutGenres.children) {
-            if (child.isSelected) genres.add("${child.tag}")
+        for (childId in binding.chipGroupGenres.checkedChipIds) {
+            binding.chipGroupGenres.children.find { child ->
+                child.id == childId
+            }?.tag?.let { tag ->
+                genres.add("$tag")
+            }
         }
 
         val formats: ArrayList<String> = arrayListOf()
@@ -244,14 +248,13 @@ class PopupFilterDialogFragment(
             if (platforms.isNotEmpty()) {
                 for (child in binding.chipGroupPlatforms.children) {
                     (child as Chip).isChecked = platforms.firstOrNull { it == child.tag } != null
-
                 }
             }
 
             val genres = filters.genres
             if (genres.isNotEmpty()) {
-                for (child in binding.linearLayoutGenres.children) {
-                    child.isSelected = genres.firstOrNull { it == child.tag } != null
+                for (child in binding.chipGroupGenres.children) {
+                    (child as Chip).isChecked = genres.firstOrNull { it == child.tag } != null
                 }
             }
 
@@ -306,25 +309,10 @@ class PopupFilterDialogFragment(
 
     private fun fillGenres() {
 
-        binding.linearLayoutGenres.removeAllViews()
+        binding.chipGroupGenres.removeAllViews()
         for (genre in viewModel.genres) {
-
-            val button = viewModel.getRoundedSelectorButton(
-                genre.id,
-                genre.name,
-                requireContext()
-            )
-
-            val view = View(requireContext())
-            view.layoutParams = ViewGroup.LayoutParams(
-                20,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-
-            binding.linearLayoutGenres.addView(button)
-            binding.linearLayoutGenres.addView(view)
+            binding.chipGroupGenres.addChip(layoutInflater, genre.id, genre.name)
         }
-        binding.linearLayoutGenres.removeViewAt(binding.linearLayoutGenres.childCount - 1)
     }
 
     private fun fillFormats() {
