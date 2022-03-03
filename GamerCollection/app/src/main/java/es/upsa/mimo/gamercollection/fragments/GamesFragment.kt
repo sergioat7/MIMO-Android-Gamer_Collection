@@ -94,7 +94,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         super.onPrepareOptionsMenu(menu)
 
         menu.findItem(R.id.action_filter)?.isVisible = viewModel.filters.value == null
-        menu.findItem(R.id.action_filter_on)?.isVisible = viewModel.filters.value != null
+        menu.findItem(R.id.action_filter_fill)?.isVisible = viewModel.filters.value != null
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -105,7 +105,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 openSyncPopup()
                 return true
             }
-            R.id.action_filter, R.id.action_filter_on -> {
+            R.id.action_filter, R.id.action_filter_fill -> {
 
                 filter()
                 return true
@@ -271,7 +271,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         viewModel.filters.observe(viewLifecycleOwner) { filters ->
 
             menu?.findItem(R.id.action_filter)?.isVisible = filters == null
-            menu?.findItem(R.id.action_filter_on)?.isVisible = filters != null
+            menu?.findItem(R.id.action_filter_fill)?.isVisible = filters != null
         }
 
         viewModel.scrollPosition.observe(viewLifecycleOwner) {
@@ -445,7 +445,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                     menu.let {
                         it.findItem(R.id.action_synchronize).isVisible = false
                         it.findItem(R.id.action_filter).isVisible = false
-                        it.findItem(R.id.action_filter_on).isVisible = false
+                        it.findItem(R.id.action_filter_fill).isVisible = false
                         it.findItem(R.id.action_sort).isVisible = false
                     }
                     return true
@@ -455,7 +455,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                     menu.let {
                         it.findItem(R.id.action_synchronize).isVisible = true
                         it.findItem(R.id.action_filter).isVisible = viewModel.filters.value == null
-                        it.findItem(R.id.action_filter_on).isVisible =
+                        it.findItem(R.id.action_filter_fill).isVisible =
                             viewModel.filters.value != null
                         it.findItem(R.id.action_sort).isVisible = true
                     }

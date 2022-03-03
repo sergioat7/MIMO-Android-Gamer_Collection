@@ -20,8 +20,8 @@
         tools:ignore="AlwaysShowAction"
         />
 
-    <item android:id="@+id/action_filter_on"
-        android:icon="@drawable/ic_filter_on"
+    <item android:id="@+id/action_filter_fill"
+        android:icon="@drawable/ic_filter_fill"
         android:title=""
         android:visible="false"
         app:showAsAction="always"
