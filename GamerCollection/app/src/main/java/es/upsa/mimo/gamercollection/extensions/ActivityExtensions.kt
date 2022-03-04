@@ -29,11 +29,11 @@ fun Context?.isDarkMode(): Boolean {
 fun Context.getImageForPegi(pegi: String?): Drawable? {
     return when (pegi) {
 
-        "+3" -> ContextCompat.getDrawable(this, R.drawable.pegi3)
-        "+7" -> ContextCompat.getDrawable(this, R.drawable.pegi7)
-        "+12" -> ContextCompat.getDrawable(this, R.drawable.pegi12)
-        "+16" -> ContextCompat.getDrawable(this, R.drawable.pegi16)
-        "+18" -> ContextCompat.getDrawable(this, R.drawable.pegi18)
+        "+3" -> ContextCompat.getDrawable(this, R.drawable.pegi_3)
+        "+7" -> ContextCompat.getDrawable(this, R.drawable.pegi_7)
+        "+12" -> ContextCompat.getDrawable(this, R.drawable.pegi_12)
+        "+16" -> ContextCompat.getDrawable(this, R.drawable.pegi_16)
+        "+18" -> ContextCompat.getDrawable(this, R.drawable.pegi_18)
         else -> null
     }
 }
