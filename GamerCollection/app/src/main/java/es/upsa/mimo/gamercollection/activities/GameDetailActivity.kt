@@ -19,12 +19,12 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GameDetailPagerAdapter
 import es.upsa.mimo.gamercollection.base.BaseActivity
 import es.upsa.mimo.gamercollection.databinding.ActivityGameDetailBinding
+import es.upsa.mimo.gamercollection.databinding.SetImageDialogBinding
 import es.upsa.mimo.gamercollection.extensions.getImageForPegi
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameDetailViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameDetailViewModel
-import kotlinx.android.synthetic.main.set_image_dialog.view.*
 import kotlinx.android.synthetic.main.set_rating_dialog.view.*
 
 class GameDetailActivity : BaseActivity() {
@@ -116,33 +116,37 @@ class GameDetailActivity : BaseActivity() {
     //region Public methods
     fun setImage() {
 
-        val dialogBuilder = MaterialAlertDialogBuilder(this).create()
-        val dialogView = this.layoutInflater.inflate(R.layout.set_image_dialog, null)
+        val dialogBinding = SetImageDialogBinding.inflate(layoutInflater)
 
-        dialogView.button_accept.setOnClickListener {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(resources.getString(R.string.game_detail_image_modal_title))
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
 
-            val url = dialogView.custom_edit_text_url.getText()
-            if (url.isNotEmpty()) {
+                val url = dialogBinding.customEditTextUrl.getText()
+                if (url.isNotEmpty()) {
 
-                Picasso.get()
-                    .load(url)
-                    .error(R.drawable.ic_add_image)
-                    .into(binding.imageViewGame, object : Callback {
-                        override fun onSuccess() {
-                            imageUrl = url
-                        }
+                    Picasso.get()
+                        .load(url)
+                        .error(R.drawable.ic_add_image)
+                        .into(binding.imageViewGame, object : Callback {
+                            override fun onSuccess() {
+                                imageUrl = url
+                            }
 
-                        override fun onError(e: Exception?) {
-                            imageUrl = null
-                            showPopupDialog(resources.getString(R.string.error_image_url))
-                        }
-                    })
+                            override fun onError(e: Exception?) {
+                                imageUrl = null
+                                showPopupDialog(resources.getString(R.string.error_image_url))
+                            }
+                        })
+                }
+                dialog.dismiss()
             }
-            dialogBuilder.dismiss()
-        }
-
-        dialogBuilder.setView(dialogView)
-        dialogBuilder.show()
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     fun setRating() {
