@@ -1,7 +1,6 @@
 package es.upsa.mimo.gamercollection.fragments
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.os.Bundle
 import android.text.InputType
 import android.util.TypedValue
@@ -12,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
@@ -125,7 +125,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     //region Public methods
     fun addGame() {
 
-        val dialogBuilder = AlertDialog.Builder(requireContext()).create()
+        val dialogBuilder = MaterialAlertDialogBuilder(requireContext()).create()
         val dialogView = this.layoutInflater.inflate(R.layout.games_dialog, null)
 
         dialogView.recycler_view_games.layoutManager = LinearLayoutManager(requireContext())

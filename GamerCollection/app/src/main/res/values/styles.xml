@@ -338,6 +338,10 @@
 
     <style name="ShapeAppearance.GamerCollection.Rounded" parent="ShapeAppearance.MaterialComponents" />
 
+    <style name="ShapeAppearance.GamerCollection.Rounded.10">
+        <item name="cornerSize">@dimen/radius_small</item>
+    </style>
+
     <style name="ShapeAppearance.GamerCollection.Rounded.15">
         <item name="cornerSize">@dimen/radius_normal</item>
     </style>
@@ -357,6 +361,28 @@
     <style name="TextAppearance.GamerCollection.Chip" parent="TextAppearance.MaterialComponents.Body2">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+
+    <!--  MaterialAlertDialog  -->
+
+    <style name="MaterialAlertDialog.GamerCollection" parent="MaterialAlertDialog.MaterialComponents">
+        <item name="shapeAppearance">@style/ShapeAppearance.GamerCollection.Rounded.10</item>
+    </style>
+
+    <style name="MaterialAlertDialog.GamerCollection.Title" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/font_larger</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:maxLines">@null</item>
+        <item name="android:singleLine">false</item>
+    </style>
+
+    <style name="MaterialAlertDialog.GamerCollection.Body" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:maxLines">@null</item>
+        <item name="android:singleLine">false</item>
     </style>
 
 </resources>

@@ -1,6 +1,5 @@
 package es.upsa.mimo.gamercollection.base
 
-import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -17,6 +16,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.isDarkMode
 import es.upsa.mimo.gamercollection.extensions.setStatusBarStyle
@@ -141,9 +141,13 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
         showPopupDialog(error.toString())
     }
 
-    fun showPopupConfirmationDialog(message: String, acceptHandler: () -> Unit, cancelHandler: (() -> Unit)? = null) {
+    fun showPopupConfirmationDialog(
+        message: String,
+        acceptHandler: () -> Unit,
+        cancelHandler: (() -> Unit)? = null
+    ) {
 
-        AlertDialog.Builder(context)
+        MaterialAlertDialogBuilder(requireContext())
             .setMessage(message)
             .setCancelable(false)
             .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
