@@ -108,7 +108,7 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/margin_tiny"
                     android:text="@string/login_not_account"
-                    style="@style/Widget.GamerCollection.TextView.NoAccount"
+                    style="@style/Widget.GamerCollection.TextView.Description.NoAccount"
                     />
 
                 <Button

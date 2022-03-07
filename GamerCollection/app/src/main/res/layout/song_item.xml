@@ -2,6 +2,7 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     >
 
     <data>
@@ -60,9 +61,9 @@
                 android:id="@+id/text_view_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/font_large"
                 android:text="@{song.name}"
-                style="@style/Widget.GamerCollection.TextView.Bold"
+                tools:text="Song title"
+                style="@style/Widget.GamerCollection.TextView.Title.SongItem"
                 />
 
             <TextView
@@ -72,7 +73,8 @@
                 android:layout_marginTop="@dimen/margin_mini"
                 android:layout_marginBottom="@dimen/margin_mini"
                 android:text="@{song.singer}"
-                style="@style/Widget.GamerCollection.TextView.Regular"
+                tools:text="Singer"
+                style="@style/Widget.GamerCollection.TextView.Description.SongItem"
                 />
 
             <TextView
@@ -80,7 +82,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{song.url}"
-                style="@style/Widget.GamerCollection.TextView.Regular"
+                tools:text="Url"
+                style="@style/Widget.GamerCollection.TextView.Description.SongItem"
                 />
 
         </LinearLayout>
