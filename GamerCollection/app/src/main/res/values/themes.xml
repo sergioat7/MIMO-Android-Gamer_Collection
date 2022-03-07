@@ -13,6 +13,7 @@
         <item name="colorPrimaryDark">@color/colorSecondary</item>
         <item name="colorSwitchThumbNormal">@color/buttonSecondary</item>
         <item name="bottomNavigationStyle">@style/Widget.GamerCollection.BottomNavigationView</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.GamerCollection.MaterialAlertDialog</item>
         <item name="android:colorBackground">@color/colorSecondary</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white</item>
     </style>
@@ -28,6 +29,7 @@
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorSecondary</item>
         <item name="colorSwitchThumbNormal">@color/colorSecondary</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.GamerCollection.MaterialAlertDialog</item>
         <item name="android:colorBackground">@color/colorSecondary</item>
     </style>
 
@@ -39,6 +41,15 @@
 
     <style name="Theme.GamerCollection.DialogTransparent" parent="Theme.MaterialComponents.DayNight.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="ThemeOverlay.GamerCollection.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorSurface">@color/colorSecondary</item>
+        <item name="colorOnSurface">@color/colorPrimary</item>
+        <item name="alertDialogStyle">@style/MaterialAlertDialog.GamerCollection</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.GamerCollection.Title</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.GamerCollection.Body</item>
     </style>
 
     <style name="ThemeOverlay.GamerCollection.MaterialCalendar" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">

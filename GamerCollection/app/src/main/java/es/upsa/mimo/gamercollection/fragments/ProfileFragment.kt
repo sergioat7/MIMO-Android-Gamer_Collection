@@ -1,6 +1,5 @@
 package es.upsa.mimo.gamercollection.fragments
 
-import android.app.AlertDialog
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.InputType
@@ -8,6 +7,7 @@ import android.view.*
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.LandingActivity
 import es.upsa.mimo.gamercollection.base.BindingFragment
@@ -86,7 +86,7 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
         val styles = resources.getStringArray(R.array.app_theme_values)
         val themeMode = getThemeMode()
 
-        AlertDialog.Builder(context)
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle(resources.getString(R.string.choose_a_theme))
             .setSingleChoiceItems(styles, themeMode) { dialog, value ->
 

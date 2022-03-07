@@ -1,6 +1,5 @@
 package es.upsa.mimo.gamercollection.activities
 
-import android.app.AlertDialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -12,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -116,7 +116,7 @@ class GameDetailActivity : BaseActivity() {
     //region Public methods
     fun setImage() {
 
-        val dialogBuilder = AlertDialog.Builder(this).create()
+        val dialogBuilder = MaterialAlertDialogBuilder(this).create()
         val dialogView = this.layoutInflater.inflate(R.layout.set_image_dialog, null)
 
         dialogView.button_accept.setOnClickListener {
@@ -147,7 +147,7 @@ class GameDetailActivity : BaseActivity() {
 
     fun setRating() {
 
-        val dialogBuilder = AlertDialog.Builder(this).create()
+        val dialogBuilder = MaterialAlertDialogBuilder(this).create()
         val dialogView = this.layoutInflater.inflate(R.layout.set_rating_dialog, null)
 
         dialogView.rating_bar.rating = binding.ratingButton.text.toString().toFloat() / 2
