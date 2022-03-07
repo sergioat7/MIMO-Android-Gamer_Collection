@@ -32,7 +32,6 @@ object Constants {
     const val GAME_ID = "gameId"
     const val SAGA_ID = "sagaId"
     const val IS_RAWG_GAME = "isRawgGame"
-    const val POPUP_DIALOG = "popupDialog"
     const val LOADING_DIALOG = "loadingDialog"
     const val SYNC_DIALOG = "syncDialog"
     const val POINT_UP = 0f
