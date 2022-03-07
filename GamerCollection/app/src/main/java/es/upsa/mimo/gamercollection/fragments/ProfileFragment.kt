@@ -1,6 +1,5 @@
 package es.upsa.mimo.gamercollection.fragments
 
-import android.app.AlertDialog
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.InputType
@@ -8,6 +7,7 @@ import android.view.*
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.LandingActivity
 import es.upsa.mimo.gamercollection.base.BindingFragment
@@ -15,11 +15,16 @@ import es.upsa.mimo.gamercollection.databinding.FragmentProfileBinding
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Preferences
+import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.ProfileViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.ProfileViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
+
+    //region Protected properties
+    override val statusBarStyle = StatusBarStyle.SECONDARY
+    //endregion
 
     //region Private properties
     private lateinit var viewModel: ProfileViewModel
@@ -81,7 +86,7 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
         val styles = resources.getStringArray(R.array.app_theme_values)
         val themeMode = getThemeMode()
 
-        AlertDialog.Builder(context)
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle(resources.getString(R.string.choose_a_theme))
             .setSingleChoiceItems(styles, themeMode) { dialog, value ->
 
@@ -132,8 +137,7 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
             imageButtonPassword.setOnClickListener {
                 Constants.showOrHidePassword(
                     edit_text_password,
-                    image_button_password,
-                    Constants.isDarkMode(context)
+                    image_button_password
                 )
             }
 

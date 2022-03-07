@@ -77,30 +77,32 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@tools:sample/avatars"
                     />
 
                 <ImageView
                     android:id="@+id/image_view_goty"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/goty_label"
                     android:visibility="@{game.goty ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/image_view_game"
-                    style="@style/Widget.GamerCollection.ImageViewGoty"
+                    tools:visibility="visible"
                     />
 
                 <ProgressBar
                     android:id="@+id/progress_bar_loading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:indeterminateTint="@color/colorPrimary"
                     app:layout_constraintBottom_toBottomOf="@+id/image_view_game"
                     app:layout_constraintEnd_toEndOf="@+id/image_view_game"
                     app:layout_constraintStart_toStartOf="@+id/image_view_game"
                     app:layout_constraintTop_toTopOf="@+id/image_view_game"
-                    tools:visibility="gone"
-                    style="@style/Widget.GamerCollection.LoadingProgressBar"
                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -109,29 +111,36 @@
                 android:id="@+id/linearLayout"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_marginTop="@dimen/margin_tiny"
+                android:layout_marginBottom="@dimen/margin_tiny"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/check_box"
                 app:layout_constraintStart_toEndOf="@+id/layout_images"
                 app:layout_constraintTop_toTopOf="parent"
-                style="@style/Widget.GamerCollection.ViewGameInfoContainer"
                 >
 
                 <TextView
                     android:id="@+id/text_view_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_small"
                     android:text="@{game.name}"
                     android:visibility="@{game.name != null ? View.VISIBLE : View.GONE}"
-                    style="@style/Widget.GamerCollection.TextView.GameName"
+                    tools:text="Fifa 20"
+                    style="@style/Widget.GamerCollection.TextView.Title.GameItem"
                     />
 
                 <TextView
                     android:id="@+id/text_view_platform"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_tiny"
                     android:text="@{platform.name}"
                     android:visibility="@{platform != null &amp;&amp; isSagaIdNull ? View.VISIBLE : View.GONE}"
-                    style="@style/Widget.GamerCollection.TextView.GamePlatform"
+                    tools:text="PlayStation 4"
+                    style="@style/Widget.GamerCollection.TextView.Description.GameItem"
                     />
 
                 <LinearLayout
@@ -145,16 +154,24 @@
 
                     <me.zhanghai.android.materialratingbar.MaterialRatingBar
                         android:id="@+id/rating_bar"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/size_large"
+                        android:layout_weight="1"
+                        android:isIndicator="true"
                         android:rating="@{Float.valueOf(String.valueOf(game.score / 2))}"
-                        style="@style/Widget.GamerCollection.RatingBar.GameScore"
+                        tools:rating="2.5"
+                        style="@style/Widget.GamerCollection.RatingBar"
                         />
 
                     <TextView
                         android:id="@+id/text_view_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        style="@style/Widget.GamerCollection.TextView.Rating.GameScore"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:layout_marginBottom="@dimen/margin_small"
+                        android:gravity="bottom"
+                        tools:text="5.0"
+                        style="@style/Widget.GamerCollection.TextView.Title.Rating"
                         />
 
                 </LinearLayout>
@@ -164,8 +181,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="bottom"
+                    android:text="@string/new_game"
                     android:visibility="@{game.score &lt;= 0 &amp;&amp; isSagaIdNull ? View.VISIBLE : View.GONE}"
-                    style="@style/Widget.GamerCollection.TextView.Rating.None"
+                    style="@style/Widget.GamerCollection.TextView.Title.NoRating"
                     />
 
             </LinearLayout>
@@ -190,11 +208,12 @@
             android:id="@+id/view_separator"
             android:layout_width="0dp"
             android:layout_height="@dimen/size_mini"
-            app:layout_constraintStart_toEndOf="@+id/view_state"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/constraint_layout"
+            android:layout_marginTop="@dimen/margin_small"
+            android:background="@color/colorPrimaryLight"
             app:layout_constraintBottom_toBottomOf="parent"
-            style="@style/Widget.GamerCollection.ViewSeparatorLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/view_state"
+            app:layout_constraintTop_toBottomOf="@id/constraint_layout"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,6 @@
 package es.upsa.mimo.gamercollection.fragments
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.os.Bundle
 import android.text.InputType
 import android.util.TypedValue
@@ -11,21 +10,26 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentSagaDetailBinding
+import es.upsa.mimo.gamercollection.databinding.GamesDialogBinding
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.SagaDetailViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.SagaDetailViewModel
-import kotlinx.android.synthetic.main.games_dialog.view.*
 
 class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemClickListener {
+
+    //region Protected properties
+    override val statusBarStyle = StatusBarStyle.SECONDARY
+    //endregion
 
     //region Private properties
     private lateinit var viewModel: SagaDetailViewModel
@@ -120,33 +124,35 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     //region Public methods
     fun addGame() {
 
-        val dialogBuilder = AlertDialog.Builder(requireContext()).create()
-        val dialogView = this.layoutInflater.inflate(R.layout.games_dialog, null)
+        val dialogBinding = GamesDialogBinding.inflate(layoutInflater)
 
-        dialogView.recycler_view_games.layoutManager = LinearLayoutManager(requireContext())
         val orderedGames = viewModel.getOrderedGames(viewModel.games)
         if (orderedGames.isNotEmpty()) {
 
-            dialogView.recycler_view_games.adapter = GamesAdapter(
+            dialogBinding.recyclerViewGames.adapter = GamesAdapter(
                 orderedGames,
                 viewModel.platforms,
                 viewModel.saga.value?.id ?: 0,
                 this
             )
         }
-        dialogView.recycler_view_games.visibility =
+        dialogBinding.recyclerViewGames.visibility =
             if (orderedGames.isNotEmpty()) View.VISIBLE else View.GONE
-        dialogView.layout_empty_list.visibility =
+        dialogBinding.layoutEmptyList.visibility =
             if (orderedGames.isNotEmpty()) View.GONE else View.VISIBLE
 
-        dialogView.button_accept.setOnClickListener {
+        MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
 
-            showGames(newGames)
-            dialogBuilder.dismiss()
-        }
-
-        dialogBuilder.setView(dialogView)
-        dialogBuilder.show()
+                showGames(newGames)
+                dialog.dismiss()
+            }
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
     //endregion
 

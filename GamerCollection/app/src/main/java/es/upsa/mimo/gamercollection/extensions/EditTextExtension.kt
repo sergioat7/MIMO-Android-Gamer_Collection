@@ -1,13 +1,14 @@
 package es.upsa.mimo.gamercollection.extensions
 
-import android.app.DatePickerDialog
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
-import es.upsa.mimo.gamercollection.utils.Constants
+import androidx.fragment.app.FragmentActivity
+import com.google.android.material.datepicker.MaterialDatePicker
+import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import java.util.*
 
@@ -48,17 +49,17 @@ fun EditText.setReadOnly(value: Boolean, inputType: Int, lineColor: Int) {
         if (value) ColorStateList.valueOf(Color.TRANSPARENT) else ColorStateList.valueOf(lineColor)
 }
 
-fun EditText.showDatePicker(context: Context, dateFormat: String? = null) {
+fun EditText.showDatePicker(activity: FragmentActivity, dateFormat: String? = null) {
 
     this.setOnFocusChangeListener { _, hasFocus ->
         if (hasFocus) {
-            val picker = getPicker(this, context, dateFormat)
-            picker.show()
+            val datePicker = getPicker(this, context, dateFormat)
+            datePicker.show(activity.supportFragmentManager, "")
         }
     }
     this.setOnClickListener {
-        val picker = getPicker(this, context, dateFormat)
-        picker.show()
+        val datePicker = getPicker(this, context, dateFormat)
+        datePicker.show(activity.supportFragmentManager, "")
     }
 }
 
@@ -67,33 +68,35 @@ fun EditText.getValue(): String {
 }
 
 //region Private functions
-private fun getPicker(editText: EditText, context: Context, dateFormat: String?): DatePickerDialog {
+private fun getPicker(editText: EditText, context: Context, dateFormat: String?): MaterialDatePicker<Long> {
 
-    val calendar = Calendar.getInstance()
-    val currentDay: Int = calendar.get(Calendar.DAY_OF_MONTH)
-    val currentMonth: Int = calendar.get(Calendar.MONTH)
-    val currentYear: Int = calendar.get(Calendar.YEAR)
-    return DatePickerDialog(context, { _, year, month, day ->
+    val language = SharedPreferencesHelper.getLanguage()
+    val dateFormatToShow = dateFormat ?: SharedPreferencesHelper.getDateFormatToShow()
 
-        val newDay = if (day < 10) "0${day}" else day.toString()
-        val newMonth = if (month < 9) "0${month + 1}" else (month + 1).toString()
-        val newDate = "${year}-${newMonth}-${newDay}"
+    val currentDateInMillis = editText.text.toString().toDate(
+        dateFormatToShow,
+        language,
+        TimeZone.getTimeZone("UTC")
+    )?.time ?: MaterialDatePicker.todayInUtcMilliseconds()
 
-        val language = SharedPreferencesHelper.getLanguage()
-        val dateFormatToShow = dateFormat ?: Constants.getDateFormatToShow(language)
+    return MaterialDatePicker.Builder
+        .datePicker()
+        .setTheme(R.style.ThemeOverlay_GamerCollection_MaterialCalendar)
+        .setTitleText(context.resources.getString(R.string.game_detail_select_date))
+        .setSelection(currentDateInMillis)
+        .build().apply {
+            addOnPositiveButtonClickListener {
 
-        val date = Constants.stringToDate(
-            newDate,
-            Constants.DATE_FORMAT,
-            language
-        )
-        val dateString = Constants.dateToString(
-            date,
-            dateFormatToShow,
-            language
-        )
+                val calendar = Calendar.getInstance()
+                calendar.timeInMillis = it
 
-        editText.setText(dateString)
-    }, currentYear, currentMonth, currentDay)
+                val dateString = calendar.time.toString(
+                    dateFormatToShow,
+                    language
+                )
+
+                editText.setText(dateString)
+            }
+        }
 }
 //endregion

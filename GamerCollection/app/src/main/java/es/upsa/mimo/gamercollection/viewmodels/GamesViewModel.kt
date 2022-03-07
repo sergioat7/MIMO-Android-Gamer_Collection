@@ -1,6 +1,5 @@
 package es.upsa.mimo.gamercollection.viewmodels
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.res.Resources
 import android.view.Gravity
@@ -9,6 +8,7 @@ import android.widget.NumberPicker
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.fragments.GamesFragment
 import es.upsa.mimo.gamercollection.models.FilterModel
@@ -43,6 +43,8 @@ class GamesViewModel @Inject constructor(
     //region Public properties
     val language: String
         get() = SharedPreferencesHelper.getLanguage()
+    val dateFormatToShow: String
+        get() = SharedPreferencesHelper.getDateFormatToShow()
     val swipeRefresh: Boolean
         get() = SharedPreferencesHelper.getSwipeRefresh()
     val platforms: List<PlatformResponse>
@@ -132,7 +134,7 @@ class GamesViewModel @Inject constructor(
         dialogView.addView(sortKeysPicker, sortKeysPickerParams)
         dialogView.addView(ascendingPicker, ascendingPickerParams)
 
-        AlertDialog.Builder(context)
+        MaterialAlertDialogBuilder(context)
             .setTitle(resources.getString(R.string.sort_title))
             .setView(dialogView)
             .setCancelable(false)

@@ -47,12 +47,16 @@
                 android:id="@+id/edit_text_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_larger"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_larger"
+                android:hint="@string/saga_detail_placeholder_name"
+                android:inputType="textMultiLine"
+                android:text="@{sagaName}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="@{sagaName}"
-                android:inputType="textMultiLine"
                 style="@style/Widget.GamerCollection.EditText.Bold.SagaTitle"
                 />
 
@@ -60,39 +64,51 @@
                 android:id="@+id/text_view_games_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:text="@string/saga_detail_games_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/line_view"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_name"
-                style="@style/Widget.GamerCollection.TextView.Bold.AddGameTitle"
+                style="@style/Widget.GamerCollection.TextView.Title.Section"
                 />
 
-            <Button
+            <ImageButton
                 android:id="@+id/button_add_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add_game"
                 app:layout_constraintBottom_toBottomOf="@+id/text_view_games_title"
                 app:layout_constraintEnd_toEndOf="@+id/line_view"
                 android:visibility="@{editable &amp;&amp; addGamesEnabled ? View.VISIBLE : View.GONE}"
                 android:onClick="@{() -> fragment.addGame()}"
-                style="@style/Widget.GamerCollection.ImageButton.AddGame"
+                style="@style/Widget.GamerCollection.ImageButton"
                 />
 
             <View
                 android:id="@+id/line_view"
                 android:layout_width="0dp"
+                android:layout_height="@dimen/size_minimum"
+                android:layout_marginTop="@dimen/margin_tiny"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:background="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_games_title"
-                style="@style/Widget.GamerCollection.AddGameSeparator"
                 />
 
             <ScrollView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:scrollbars="none"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/line_view"
                 app:layout_constraintStart_toStartOf="@+id/text_view_games_title"
                 app:layout_constraintTop_toBottomOf="@+id/line_view"
-                style="@style/Widget.GamerCollection.ScrollViewContent.SagaGames"
                 >
 
                 <LinearLayout

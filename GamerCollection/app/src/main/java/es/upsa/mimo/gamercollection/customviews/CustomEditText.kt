@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentActivity
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.databinding.CustomEditTextBinding
 import es.upsa.mimo.gamercollection.extensions.getValue
@@ -80,8 +81,8 @@ class CustomEditText @JvmOverloads constructor(
         }
     }
 
-    fun setDatePickerFormat(dateFormat: String) {
-        binding.editText.showDatePicker(context, dateFormat)
+    fun setDatePickerFormat(activity: FragmentActivity, dateFormat: String? = null) {
+        binding.editText.showDatePicker(activity, dateFormat)
     }
     //endregion
 
@@ -130,9 +131,6 @@ class CustomEditText @JvmOverloads constructor(
 
             with(binding) {
 
-                if (inputType == EditTextType.DATE) {
-                    editText.showDatePicker(context)
-                }
                 editText.hint = hint
                 editText.typeface = ResourcesCompat.getFont(context, font)
                 editText.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)

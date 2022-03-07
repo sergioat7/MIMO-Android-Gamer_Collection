@@ -1,72 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-<!-- View   -->
-
     <style name="Widget" />
+
+    <style name="TextAppearance" />
 
     <style name="Widget.GamerCollection" />
 
-    <style name="Widget.GamerCollection.BottomMenu">
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="itemTextColor">@color/colorSecondary</item>
-        <item name="labelVisibilityMode">labeled</item>
-        <item name="menu">@menu/bottom_nav_menu</item>
+    <style name="TextAppearance.GamerCollection" />
+
+    <!--  TextViews  -->
+
+    <style name="Widget.GamerCollection.TextView" parent="Widget.MaterialComponents.TextView">
+        <item name="android:ellipsize">end</item>
+        <item name="android:includeFontPadding">false</item>
     </style>
 
-    <style name="Widget.GamerCollection.LoadingProgressBar">
-        <item name="android:indeterminate">true</item>
-        <item name="android:indeterminateTint">@color/colorPrimary</item>
-    </style>
-
-    <style name="Widget.GamerCollection.RadioButton">
-        <item name="android:layout_weight">1</item>
-        <item name="android:buttonTint">@color/colorPrimary</item>
+    <style name="Widget.GamerCollection.TextView.Title">
+        <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="android:textColor">@color/textPrimary</item>
     </style>
 
-    <style name="Widget.GamerCollection.GamesEmptyLayout">
-        <item name="emptyListLayout_image">@drawable/ic_games_dark</item>
+    <style name="Widget.GamerCollection.TextView.Title.Header">
+        <item name="android:textSize">@dimen/font_normal</item>
     </style>
 
-    <style name="Widget.GamerCollection.SagasEmptyLayout">
-        <item name="emptyListLayout_image">@drawable/ic_sagas_dark</item>
+    <style name="Widget.GamerCollection.TextView.Title.Section">
+        <item name="android:textSize">@dimen/font_larger</item>
     </style>
 
-    <style name="Widget.GamerCollection.ScrollViewContent">
-        <item name="android:scrollbars">none</item>
+    <style name="Widget.GamerCollection.TextView.Title.GameItem">
+        <item name="android:maxLines">3</item>
+        <item name="android:textSize">@dimen/font_extra_large</item>
     </style>
 
-<!--  Button  -->
-
-    <style name="Widget.GamerCollection.Button" parent="Widget.AppCompat.Button">
-        <item name="textAllCaps">false</item>
-        <item name="maxLines">1</item>
+    <style name="Widget.GamerCollection.TextView.Title.Rating">
+        <item name="android:textSize">@dimen/font_large</item>
     </style>
 
-    <style name="Widget.GamerCollection.Button.Rounded">
-        <item name="android:layout_width">@dimen/size_semi_huge</item>
-        <item name="android:gravity">center</item>
-        <item name="fontFamily">@font/roboto_bold</item>
-        <item name="android:textColor">@color/textSecondary</item>
+    <style name="Widget.GamerCollection.TextView.Title.NoRating">
+        <item name="android:textSize">@dimen/font_extra_large</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextView.Title.SongItem">
+        <item name="android:textSize">@dimen/font_large</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextView.Description">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/textPrimary</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextView.Description.NoAccount">
+        <item name="android:textColor">@color/textTertiary</item>
         <item name="android:textSize">@dimen/font_medium</item>
     </style>
 
-    <style name="Widget.GamerCollection.Button.Rounded.Action">
-        <item name="android:background">@drawable/rounded_button_primary</item>
+    <style name="Widget.GamerCollection.TextView.Description.GameItem">
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">@dimen/font_medium</item>
     </style>
 
-    <style name="Widget.GamerCollection.Button.Rounded.Action.Popup">
-        <item name="android:layout_marginTop">@dimen/margin_small</item>
-        <item name="android:layout_marginBottom">@dimen/margin_small</item>
-        <item name="android:text">@string/accept</item>
+    <style name="Widget.GamerCollection.TextView.Description.Rating">
+        <item name="android:textSize">@dimen/font_normal</item>
     </style>
 
-<!--  ImageButton  -->
+    <style name="Widget.GamerCollection.TextView.Description.SongItem">
+        <item name="android:textSize">@dimen/font_normal</item>
+    </style>
 
-    <style name="Widget.GamerCollection.ImageButton" parent="Widget.AppCompat.ImageButton" />
+    <style name="Widget.GamerCollection.TextView.Description.ProfileItem">
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
 
-<!--  EditText  -->
+    <!--  EditText  -->
 
     <style name="Widget.GamerCollection.EditText" parent="Widget.AppCompat.EditText">
         <item name="backgroundTint">@color/colorPrimary</item>
@@ -83,38 +90,283 @@
         <item name="fontFamily">@font/roboto_bold</item>
     </style>
 
+    <style name="Widget.GamerCollection.EditText.Credentials">
+        <item name="android:ems">10</item>
+        <item name="android:selectAllOnFocus">true</item>
+    </style>
+
+    <style name="Widget.GamerCollection.EditText.Bold.SagaTitle">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/font_extra_large</item>
+    </style>
+
+    <style name="Widget.GamerCollection.EditTextSaga" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/textSecondary</item>
+    </style>
+
     <style name="Widget.GamerCollection.CustomEditText" />
 
-<!--  TextView  -->
+    <style name="Widget.GamerCollection.CustomEditText.GameTitle">
+        <item name="customEditText_type">"TEXT"</item>
+        <item name="customEditText_placeholder">@string/game_detail_placeholder_name</item>
+        <item name="customEditText_font">@font/roboto_bold</item>
+        <item name="customEditText_text_size">@dimen/font_larger</item>
+    </style>
 
-    <style name="Widget.GamerCollection.TextView" parent="Widget.AppCompat.TextView">
+    <style name="Widget.GamerCollection.CustomEditText.GameDetail">
+        <item name="android:layout_gravity">center</item>
+        <item name="customEditText_font">@font/roboto_regular</item>
+        <item name="customEditText_text_size">@dimen/font_medium</item>
+    </style>
+
+    <style name="Widget.GamerCollection.CustomEditText.GameDetail.WithRemoveImage">
+        <item name="customEditText_icon">@drawable/ic_remove_text</item>
+    </style>
+
+    <style name="Widget.GamerCollection.CustomEditText.GameDetail.WithRemoveImage.ReleaseDate">
+        <item name="customEditText_type">"DATE"</item>
+        <item name="customEditText_placeholder">@string/game_detail_select_date</item>
+    </style>
+
+    <style name="Widget.GamerCollection.CustomEditText.GameDetail.WithRemoveImage.PurchaseDate">
+        <item name="customEditText_type">"DATE"</item>
+        <item name="customEditText_placeholder">@string/game_detail_select_date</item>
+    </style>
+
+    <style name="Widget.GamerCollection.CustomEditText.GameDetail.WithRemoveImage.PurchaseLocation">
+        <item name="customEditText_type">"NONE"</item>
+        <item name="customEditText_placeholder">@string/game_detail_placeholder_purchase_location</item>
+    </style>
+
+    <style name="Widget.GamerCollection.CustomEditText.SetImage">
+        <item name="customEditText_type">"URL"</item>
+        <item name="customEditText_font">@font/roboto_regular</item>
+        <item name="customEditText_text_size">@dimen/font_medium</item>
+        <item name="customEditText_icon">@drawable/ic_remove_text</item>
+        <item name="customEditText_ime_option">"DONE"</item>
+    </style>
+
+    <style name="Widget.GamerCollection.CustomEditText.NewSong">
+        <item name="customEditText_font">@font/roboto_regular</item>
+        <item name="customEditText_text_size">@dimen/font_large</item>
+        <item name="customEditText_icon">@drawable/ic_remove_text</item>
+    </style>
+
+    <style name="Widget.GamerCollection.CustomEditText.NewSong.Name">
+        <item name="customEditText_type">"TEXT"</item>
+        <item name="customEditText_placeholder">@string/modal_song_placeholder_name</item>
+        <item name="customEditText_ime_option">"NEXT"</item>
+    </style>
+
+    <style name="Widget.GamerCollection.CustomEditText.NewSong.Singer">
+        <item name="customEditText_type">"TEXT"</item>
+        <item name="customEditText_placeholder">@string/modal_song_placeholder_singer</item>
+        <item name="customEditText_ime_option">"NEXT"</item>
+    </style>
+
+    <style name="Widget.GamerCollection.CustomEditText.NewSong.Url">
+        <item name="customEditText_type">"URL"</item>
+        <item name="customEditText_placeholder">@string/modal_song_placeholder_url</item>
+        <item name="customEditText_ime_option">"DONE"</item>
+    </style>
+
+    <!--  Button  -->
+
+    <style name="Widget.GamerCollection.Button" parent="Widget.MaterialComponents.Button">
+        <item name="textAllCaps">false</item>
+        <item name="rippleColor">@null</item>
+        <item name="iconPadding">@dimen/padding_small</item>
+        <item name="android:insetTop">@dimen/no_padding</item>
+        <item name="android:insetBottom">@dimen/no_padding</item>
+    </style>
+
+    <style name="Widget.GamerCollection.Button.Main">
+        <item name="backgroundTint">@drawable/rounded_button_primary</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.GamerCollection.Rounded.15</item>
+        <item name="android:textColor">@color/textSecondary</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="Widget.GamerCollection.Button.Main.Icon">
+        <item name="android:paddingStart">@dimen/padding_normal</item>
+        <item name="android:paddingEnd">@dimen/padding_normal</item>
+    </style>
+
+    <style name="Widget.GamerCollection.Button.Filter">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="shapeAppearance">@null</item>
+        <item name="android:textColor">@color/textSecondary</item>
+        <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <!--  TextButton  -->
+
+    <style name="Widget.GamerCollection.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="textAllCaps">false</item>
+        <item name="rippleColor">@null</item>
+        <item name="iconPadding">@dimen/padding_small</item>
+        <item name="android:padding">@dimen/no_padding</item>
+        <item name="android:insetTop">@dimen/no_padding</item>
+        <item name="android:insetBottom">@dimen/no_padding</item>
+        <item name="android:minHeight">@dimen/no_size</item>
+        <item name="android:minWidth">@dimen/no_size</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextButton.Main">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextButton.Main.Action">
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextButton.Icon">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="iconTint">@color/colorInProgress</item>
+    </style>
+
+    <!--  ImageButton  -->
+
+    <style name="Widget.GamerCollection.ImageButton" parent="Widget.MaterialComponents.TimePicker.ImageButton">
+        <item name="rippleColor">@null</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:minWidth">@null</item>
+        <item name="android:minHeight">@null</item>
+    </style>
+
+    <!--  FloatingActionButton  -->
+
+    <style name="Widget.GamerCollection.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="borderWidth">0dp</item>
+        <item name="backgroundTint">@color/colorSecondary</item>
+        <item name="tint">@color/colorSecondary</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="Widget.GamerCollection.FloatingActionButton.ListPosition">
+        <item name="fabSize">mini</item>
+        <item name="maxImageSize">@dimen/size_small</item>
+    </style>
+
+    <!--  RadioButton  -->
+
+    <style name="Widget.GamerCollection.RadioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:buttonTint">@color/colorPrimary</item>
         <item name="android:textColor">@color/textPrimary</item>
     </style>
 
-    <style name="Widget.GamerCollection.TextView.Bold">
-        <item name="fontFamily">@font/roboto_bold</item>
-    </style>
-
-    <style name="Widget.GamerCollection.TextView.Regular">
-        <item name="fontFamily">@font/roboto_regular</item>
-    </style>
-
-<!--  RatingBar  -->
+    <!--  RatingBar  -->
 
     <style name="Widget.GamerCollection.RatingBar" parent="Widget.MaterialRatingBar.RatingBar">
+        <item name="mrb_fillBackgroundStars">false</item>
+        <item name="android:numStars">5</item>
+        <item name="android:stepSize">0.5</item>
         <item name="android:progressTint">@color/colorInProgress</item>
         <item name="android:progressBackgroundTint">@color/colorInProgressLight</item>
         <item name="android:secondaryProgressTint">@color/colorInProgressLight</item>
-        <item name="mrb_fillBackgroundStars">false</item>
     </style>
 
-<!-- Spinner   -->
+    <!--  TabLayout  -->
+
+    <style name="Widget.GamerCollection.TabLayout" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabIndicatorColor">@color/colorFinished</item>
+        <item name="tabSelectedTextColor">@color/colorSecondary</item>
+        <item name="tabTextColor">@color/colorSecondaryLight</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <!-- Spinner   -->
 
     <style name="Widget.GamerCollection.Spinner" parent="Widget.AppCompat.Spinner.Underlined">
+        <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:spinnerMode">dropdown</item>
         <item name="android:backgroundTint">@android:color/transparent</item>
         <item name="android:minHeight">@dimen/size_large</item>
+    </style>
+
+    <!--  Chip  -->
+
+    <style name="Widget.GamerCollection.Chip" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="checkedIcon">@drawable/ic_check</item>
+        <item name="checkedIconVisible">true</item>
+        <item name="chipBackgroundColor">@drawable/choice_chip_background_color</item>
+        <item name="chipStrokeColor">@color/colorPrimary</item>
+        <item name="chipStrokeWidth">@dimen/radius_mini</item>
+        <item name="rippleColor">@null</item>
+        <item name="android:textColor">@drawable/choice_chip_text_color</item>
+        <item name="android:textAppearance">@style/TextAppearance.GamerCollection.Chip</item>
+    </style>
+
+    <!--  BottomNavigationView  -->
+
+    <style name="Widget.GamerCollection.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="itemIconTint">@drawable/bottom_navigation_icon_colors</item>
+        <item name="itemTextColor">@drawable/bottom_navigation_text_colors</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.GamerCollection.ItemTextAppearanceActive</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.GamerCollection.ItemTextAppearanceInactive</item>
+        <item name="labelVisibilityMode">labeled</item>
+    </style>
+
+    <!--  ShapeAppearance  -->
+
+    <style name="ShapeAppearance.GamerCollection.Rounded" parent="ShapeAppearance.MaterialComponents" />
+
+    <style name="ShapeAppearance.GamerCollection.Rounded.10">
+        <item name="cornerSize">@dimen/radius_small</item>
+    </style>
+
+    <style name="ShapeAppearance.GamerCollection.Rounded.15">
+        <item name="cornerSize">@dimen/radius_normal</item>
+    </style>
+
+    <!--  TextAppearance  -->
+
+    <style name="TextAppearance.GamerCollection.ItemTextAppearanceActive">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+
+    <style name="TextAppearance.GamerCollection.ItemTextAppearanceInactive">
         <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">@dimen/font_small</item>
+    </style>
+
+    <style name="TextAppearance.GamerCollection.Chip" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+
+    <!--  MaterialAlertDialog  -->
+
+    <style name="MaterialAlertDialog.GamerCollection" parent="MaterialAlertDialog.MaterialComponents">
+        <item name="shapeAppearance">@style/ShapeAppearance.GamerCollection.Rounded.10</item>
+    </style>
+
+    <style name="MaterialAlertDialog.GamerCollection.Title" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/font_larger</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:maxLines">@null</item>
+        <item name="android:singleLine">false</item>
+    </style>
+
+    <style name="MaterialAlertDialog.GamerCollection.Body" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:maxLines">@null</item>
+        <item name="android:singleLine">false</item>
     </style>
 
 </resources>
