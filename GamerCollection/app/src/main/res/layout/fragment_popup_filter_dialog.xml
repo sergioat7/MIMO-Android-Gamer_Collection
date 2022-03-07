@@ -43,12 +43,16 @@
                 <ScrollView
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:layout_marginStart="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_mini"
+                    android:layout_marginEnd="@dimen/margin_medium"
+                    android:background="@color/colorSecondary"
+                    android:scrollbars="none"
                     app:layout_constraintBottom_toTopOf="@+id/line_view_top"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHeight_percent="0.875"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    style="@style/Widget.GamerCollection.ScrollViewContent.ModalFilter"
                     >
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -60,27 +64,30 @@
                             android:id="@+id/text_view_platform_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_medium"
                             android:text="@string/modal_filter_platform"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
+                            style="@style/Widget.GamerCollection.TextView.Title.Header"
                             />
 
                         <HorizontalScrollView
                             android:id="@+id/scroll_platforms"
                             android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_medium"
+                            android:scrollbars="none"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/text_view_platform_title"
-                            style="@style/Widget.GamerCollection.ScrollViewContent.HorizontalModalFilter"
                             >
 
-                            <LinearLayout
-                                android:id="@+id/linear_layout_platforms"
+                            <com.google.android.material.chip.ChipGroup
+                                android:id="@+id/chip_group_platforms"
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:orientation="horizontal"
+                                android:layout_height="wrap_content"
+                                app:singleLine="true"
                                 />
 
                         </HorizontalScrollView>
@@ -89,27 +96,30 @@
                             android:id="@+id/text_view_genre_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_medium"
                             android:text="@string/modal_filter_genre"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/scroll_platforms"
-                            style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
+                            style="@style/Widget.GamerCollection.TextView.Title.Header"
                             />
 
                         <HorizontalScrollView
                             android:id="@+id/scroll_genres"
                             android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_medium"
+                            android:scrollbars="none"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/text_view_genre_title"
-                            style="@style/Widget.GamerCollection.ScrollViewContent.HorizontalModalFilter"
                             >
 
-                            <LinearLayout
-                                android:id="@+id/linear_layout_genres"
+                            <com.google.android.material.chip.ChipGroup
+                                android:id="@+id/chip_group_genres"
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:orientation="horizontal"
+                                android:layout_height="wrap_content"
+                                app:singleLine="true"
                                 />
 
                         </HorizontalScrollView>
@@ -118,56 +128,64 @@
                             android:id="@+id/text_view_format_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_medium"
                             android:text="@string/modal_filter_format"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/scroll_genres"
-                            style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
+                            style="@style/Widget.GamerCollection.TextView.Title.Header"
                             />
 
                         <HorizontalScrollView
                             android:id="@+id/scroll_formats"
                             android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_medium"
+                            android:scrollbars="none"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/text_view_format_title"
-                            style="@style/Widget.GamerCollection.ScrollViewContent.HorizontalModalFilter"
                             >
 
-                            <LinearLayout
-                                android:id="@+id/linear_layout_formats"
+                            <com.google.android.material.chip.ChipGroup
+                                android:id="@+id/chip_group_formats"
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:orientation="horizontal"
+                                android:layout_height="wrap_content"
+                                app:singleLine="true"
                                 />
+
                         </HorizontalScrollView>
 
                         <TextView
                             android:id="@+id/text_view_score_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_medium"
                             android:text="@string/modal_filter_score"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/scroll_formats"
-                            style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
+                            style="@style/Widget.GamerCollection.TextView.Title.Header"
                             />
 
                         <LinearLayout
                             android:id="@+id/linear_layout_min_rating"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/margin_medium"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/text_view_score_title"
-                            style="@style/Widget.GamerCollection.RatingLayout"
                             >
 
                             <me.zhanghai.android.materialratingbar.MaterialRatingBar
                                 android:id="@+id/rating_bar_min"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:isIndicator="false"
                                 android:rating="0"
-                                style="@style/Widget.GamerCollection.RatingBar.ModalFilter"
+                                style="@style/Widget.GamerCollection.RatingBar"
                                 />
 
                             <TextView
@@ -176,7 +194,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/margin_small"
                                 android:text="@string/min"
-                                style="@style/Widget.GamerCollection.TextView.Regular"
+                                style="@style/Widget.GamerCollection.TextView.Description.Rating"
                                 />
 
                         </LinearLayout>
@@ -185,18 +203,21 @@
                             android:id="@+id/linear_layout_max_rating"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/margin_medium"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/linear_layout_min_rating"
-                            style="@style/Widget.GamerCollection.RatingLayout"
                             >
 
                             <me.zhanghai.android.materialratingbar.MaterialRatingBar
                                 android:id="@+id/rating_bar_max"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:isIndicator="false"
                                 android:rating="5"
-                                style="@style/Widget.GamerCollection.RatingBar.ModalFilter"
+                                style="@style/Widget.GamerCollection.RatingBar"
                                 />
 
                             <TextView
@@ -205,7 +226,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/margin_small"
                                 android:text="@string/max"
-                                style="@style/Widget.GamerCollection.TextView.Regular"
+                                style="@style/Widget.GamerCollection.TextView.Description.Rating"
                                 />
 
                         </LinearLayout>
@@ -214,10 +235,11 @@
                             android:id="@+id/text_view_release_date_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_medium"
                             android:text="@string/modal_filter_release_date"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/linear_layout_max_rating"
-                            style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
+                            style="@style/Widget.GamerCollection.TextView.Title.Header"
                             />
 
                         <LinearLayout
@@ -258,10 +280,11 @@
                             android:id="@+id/text_view_purchase_date_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_medium"
                             android:text="@string/modal_filter_purchase_date"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/linear_layout_release_dates"
-                            style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
+                            style="@style/Widget.GamerCollection.TextView.Title.Header"
                             />
 
                         <LinearLayout
@@ -302,10 +325,11 @@
                             android:id="@+id/text_view_price_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_medium"
                             android:text="@string/modal_filter_price"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/linear_layout_purchase_dates"
-                            style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
+                            style="@style/Widget.GamerCollection.TextView.Title.Header"
                             />
 
                         <LinearLayout
@@ -346,10 +370,11 @@
                             android:id="@+id/text_view_goty_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_medium"
                             android:text="@string/modal_filter_goty"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/linear_layout_prices"
-                            style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
+                            style="@style/Widget.GamerCollection.TextView.Title.Header"
                             />
 
                         <RadioGroup
@@ -366,6 +391,7 @@
                                 android:id="@+id/radio_button_goty_no"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:checked="true"
                                 android:text="@string/no"
                                 style="@style/Widget.GamerCollection.RadioButton"
@@ -375,6 +401,7 @@
                                 android:id="@+id/radio_button_goty_yes"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:text="@string/yes"
                                 android:checked="@{filter.goty}"
                                 style="@style/Widget.GamerCollection.RadioButton"
@@ -386,10 +413,11 @@
                             android:id="@+id/text_view_loaned_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_medium"
                             android:text="@string/modal_filter_loaned"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/radio_group_goty"
-                            style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
+                            style="@style/Widget.GamerCollection.TextView.Title.Header"
                             />
 
                         <RadioGroup
@@ -406,6 +434,7 @@
                                 android:id="@+id/radio_button_loaned_no"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:checked="true"
                                 android:text="@string/no"
                                 style="@style/Widget.GamerCollection.RadioButton"
@@ -415,6 +444,7 @@
                                 android:id="@+id/radio_button_loaned_yes"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:text="@string/yes"
                                 android:checked="@{filter.loaned}"
                                 style="@style/Widget.GamerCollection.RadioButton"
@@ -426,10 +456,11 @@
                             android:id="@+id/text_view_saga_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_medium"
                             android:text="@string/modal_filter_has_saga"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/radio_group_loaned"
-                            style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
+                            style="@style/Widget.GamerCollection.TextView.Title.Header"
                             />
 
                         <RadioGroup
@@ -446,6 +477,7 @@
                                 android:id="@+id/radio_button_saga_no"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:checked="true"
                                 android:text="@string/no"
                                 style="@style/Widget.GamerCollection.RadioButton"
@@ -455,6 +487,7 @@
                                 android:id="@+id/radio_button_saga_yes"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:text="@string/yes"
                                 android:checked="@{filter.hasSaga}"
                                 style="@style/Widget.GamerCollection.RadioButton"
@@ -466,10 +499,11 @@
                             android:id="@+id/text_view_songs_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_medium"
                             android:text="@string/modal_filter_has_songs"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/radio_group_saga"
-                            style="@style/Widget.GamerCollection.TextView.Bold.ModalFilterTitle"
+                            style="@style/Widget.GamerCollection.TextView.Title.Header"
                             />
 
                         <RadioGroup
@@ -488,6 +522,7 @@
                                 android:id="@+id/radio_button_songs_no"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:checked="true"
                                 android:text="@string/no"
                                 style="@style/Widget.GamerCollection.RadioButton"
@@ -497,6 +532,7 @@
                                 android:id="@+id/radio_button_songs_yes"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:text="@string/yes"
                                 android:checked="@{filter.hasSongs}"
                                 style="@style/Widget.GamerCollection.RadioButton"
@@ -512,6 +548,8 @@
                     android:id="@+id/line_view_top"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/size_mini"
+                    android:layout_marginStart="@dimen/margin_mini"
+                    android:layout_marginEnd="@dimen/margin_mini"
                     android:background="@color/colorSecondary"
                     app:layout_constraintBottom_toTopOf="@+id/linear_layout_filter_buttons"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -522,52 +560,55 @@
                     android:id="@+id/linear_layout_filter_buttons"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_mini"
+                    android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    style="@style/Widget.GamerCollection.FilterButtonsContent"
                     >
 
                     <Button
                         android:id="@+id/button_cancel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorPending"
-                        android:text="@string/cancel"
                         android:onClick="@{() -> fragment.cancel()}"
-                        style="@style/Widget.GamerCollection.FilterButton"
+                        android:text="@string/cancel"
+                        app:backgroundTint="@color/colorPending"
+                        style="@style/Widget.GamerCollection.Button.Filter"
                         />
 
                     <View
                         android:id="@+id/line_view_left"
+                        android:layout_width="@dimen/margin_mini"
                         android:layout_height="match_parent"
-                        style="@style/Widget.GamerCollection.FilterButtonSeparator"
+                        android:background="@color/colorPrimary"
                         />
 
                     <Button
                         android:id="@+id/button_reset"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorInProgress"
-                        android:text="@string/reset"
                         android:onClick="@{() -> fragment.reset()}"
-                        style="@style/Widget.GamerCollection.FilterButton"
+                        android:text="@string/reset"
+                        app:backgroundTint="@color/colorInProgress"
+                        style="@style/Widget.GamerCollection.Button.Filter"
                         />
 
                     <View
                         android:id="@+id/line_view_right"
+                        android:layout_width="@dimen/margin_mini"
                         android:layout_height="match_parent"
-                        style="@style/Widget.GamerCollection.FilterButtonSeparator"
+                        android:background="@color/colorPrimary"
                         />
 
                     <Button
                         android:id="@+id/button_save"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorFinished"
-                        android:text="@string/save"
                         android:onClick="@{() -> fragment.save()}"
-                        style="@style/Widget.GamerCollection.FilterButton"
+                        android:text="@string/save"
+                        app:backgroundTint="@color/colorFinished"
+                        style="@style/Widget.GamerCollection.Button.Filter"
                         />
 
                 </LinearLayout>

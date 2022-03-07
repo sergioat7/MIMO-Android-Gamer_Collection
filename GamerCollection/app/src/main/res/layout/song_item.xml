@@ -2,17 +2,13 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     >
 
     <data>
 
         <import
             type="android.view.View"
-            />
-
-        <variable
-            name="darkMode"
-            type="Boolean"
             />
 
         <variable
@@ -39,29 +35,35 @@
 
         <ImageView
             android:id="@+id/image_view_song"
+            android:layout_width="@dimen/size_big"
+            android:layout_height="@dimen/size_big"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:src="@drawable/ic_song"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/Widget.GamerCollection.ImageViewSongInfo"
             />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_small"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/image_view_remove"
             app:layout_constraintStart_toEndOf="@+id/image_view_song"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/Widget.GamerCollection.ViewSongInfoContainer"
             >
 
             <TextView
                 android:id="@+id/text_view_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/font_large"
                 android:text="@{song.name}"
-                style="@style/Widget.GamerCollection.TextView.Bold"
+                tools:text="Song title"
+                style="@style/Widget.GamerCollection.TextView.Title.SongItem"
                 />
 
             <TextView
@@ -71,7 +73,8 @@
                 android:layout_marginTop="@dimen/margin_mini"
                 android:layout_marginBottom="@dimen/margin_mini"
                 android:text="@{song.singer}"
-                style="@style/Widget.GamerCollection.TextView.Regular"
+                tools:text="Singer"
+                style="@style/Widget.GamerCollection.TextView.Description.SongItem"
                 />
 
             <TextView
@@ -79,7 +82,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{song.url}"
-                style="@style/Widget.GamerCollection.TextView.Regular"
+                tools:text="Url"
+                style="@style/Widget.GamerCollection.TextView.Description.SongItem"
                 />
 
         </LinearLayout>
@@ -89,7 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_small"
-            android:src="@{darkMode ? @drawable/ic_trash_dark : @drawable/ic_trash_light}"
+            android:src="@drawable/ic_trash"
             android:visibility="@{editable ? View.VISIBLE : View.GONE}"
             android:onClick="@{() -> onItemClickListener.onItemClick(song.id)}"
             app:layout_constraintBottom_toBottomOf="parent"

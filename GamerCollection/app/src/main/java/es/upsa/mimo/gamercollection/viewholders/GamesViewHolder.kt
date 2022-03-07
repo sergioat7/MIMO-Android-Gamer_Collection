@@ -49,9 +49,6 @@ class GamesViewHolder(
         }
 
         val image = game.imageUrl ?: Constants.NO_VALUE
-        val errorImage =
-            if (Constants.isDarkMode(binding.root.context)) R.drawable.ic_default_game_cover_dark
-            else R.drawable.ic_default_game_cover_light
         val loading = binding.progressBarLoading
         loading.visibility = View.VISIBLE
         Picasso
@@ -59,7 +56,7 @@ class GamesViewHolder(
             .load(image)
             .fit()
             .centerCrop()
-            .error(errorImage)
+            .error(R.drawable.ic_default_game_cover)
             .into(binding.imageViewGame, object : Callback {
 
                 override fun onSuccess() {

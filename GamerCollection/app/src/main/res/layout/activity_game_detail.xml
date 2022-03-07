@@ -67,35 +67,39 @@
             android:id="@+id/image_view_game"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:adjustViewBounds="true"
             android:enabled="@{editable}"
             android:onClick="@{() -> activity.setImage()}"
+            android:src="@drawable/ic_add_image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:layout_constraintWidth_percent="0.4"
-            style="@style/Widget.GamerCollection.ImageViewNew"
             />
 
         <ProgressBar
             android:id="@+id/progress_bar_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:indeterminateTint="@color/colorPrimary"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/constraint_layout_main_details"
             app:layout_constraintEnd_toEndOf="@+id/image_view_game"
             app:layout_constraintStart_toStartOf="@+id/image_view_game"
             app:layout_constraintTop_toTopOf="@+id/constraint_layout_main_details"
-            style="@style/Widget.GamerCollection.LoadingProgressBar"
             />
 
         <ImageView
             android:id="@+id/image_view_goty"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/goty_label"
             android:visibility="@{game.goty == true ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="@+id/image_view_game"
             app:layout_constraintStart_toStartOf="@+id/image_view_game"
             app:layout_constraintTop_toBottomOf="@+id/image_view_game"
-            style="@style/Widget.GamerCollection.ImageViewGoty"
+            tools:visibility="visible"
             />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -133,27 +137,34 @@
             <Button
                 android:id="@+id/rating_button"
                 android:layout_width="wrap_content"
-                android:text="@{String.valueOf(game.score)}"
+                android:layout_height="@dimen/size_big"
+                android:layout_marginBottom="@dimen/margin_small"
                 android:enabled="@{editable}"
                 android:onClick="@{() -> activity.setRating()}"
+                android:text="@{String.valueOf(game.score)}"
+                app:icon="@drawable/ic_star"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/image_view_pegi"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spinner_platforms"
                 app:layout_constraintVertical_bias="0.0"
-                style="@style/Widget.GamerCollection.Button.Rating"
+                tools:text="5"
+                style="@style/Widget.GamerCollection.TextButton.Icon"
                 />
 
             <ImageView
                 android:id="@+id/image_view_pegi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:adjustViewBounds="true"
+                android:maxWidth="@dimen/size_big"
                 android:src="@{imagePegi}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spinner_platforms"
-                style="@style/Widget.GamerCollection.ImageViewPegi"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -166,17 +177,6 @@
             app:constraint_referenced_ids="image_view_goty, constraint_layout_main_details"
             />
 
-        <View
-            android:id="@+id/view_background_tabs"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="@+id/tab_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tab_layout"
-            />
-
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="0dp"
@@ -185,7 +185,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/barrier"
-            style="@style/Widget.GamerCollection.TabLayout.GameDetail"
+            style="@style/Widget.GamerCollection.TabLayout"
             >
 
             <com.google.android.material.tabs.TabItem

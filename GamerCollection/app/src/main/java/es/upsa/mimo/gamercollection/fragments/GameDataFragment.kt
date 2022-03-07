@@ -12,9 +12,12 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnLocationSelected
 import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentGameDataBinding
+import es.upsa.mimo.gamercollection.extensions.toDate
+import es.upsa.mimo.gamercollection.extensions.toString
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.State
+import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameDataViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameDataViewModel
 import kotlinx.android.synthetic.main.custom_edit_text.view.*
@@ -23,6 +26,10 @@ class GameDataFragment(
     private var game: GameResponse? = null,
     private var enabled: Boolean
 ) : BindingFragment<FragmentGameDataBinding>(), OnLocationSelected {
+
+    //region Protected properties
+    override val statusBarStyle = StatusBarStyle.SECONDARY
+    //endregion
 
     //region Private properties
     private lateinit var viewModel: GameDataViewModel
@@ -72,13 +79,14 @@ class GameDataFragment(
         }
 
         val releaseDate = getText(
-            Constants.dateToString(
-                game?.releaseDate,
-                Constants.getDateFormatToShow(viewModel.language),
+            game?.releaseDate.toString(
+                viewModel.dateFormatToShow,
                 viewModel.language
             )
         )
         binding.customEditTextReleaseDate.setText(releaseDate)
+        binding.customEditTextReleaseDate.setDatePickerFormat(requireActivity())
+
 
         val distributor = getText(game?.distributor)
         binding.customEditTextDistributor.setText(distributor)
@@ -98,13 +106,13 @@ class GameDataFragment(
         binding.customEditTextPrice.setText(price.toString())
 
         val purchaseDate = getText(
-            Constants.dateToString(
-                game?.purchaseDate,
-                Constants.getDateFormatToShow(viewModel.language),
+            game?.purchaseDate.toString(
+                viewModel.dateFormatToShow,
                 viewModel.language
             )
         )
         binding.customEditTextPurchaseDate.setText(purchaseDate)
+        binding.customEditTextPurchaseDate.setDatePickerFormat(requireActivity())
 
         val purchaseLocation = getText(game?.purchaseLocation)
         binding.customEditTextPurchaseLocation.setText(purchaseLocation)
@@ -168,9 +176,8 @@ class GameDataFragment(
 
         val pegi = resources.getStringArray(R.array.pegis)
             .firstOrNull { it == binding.spinnerPegis.selectedItem.toString() }
-        val releaseDate = Constants.stringToDate(
-            binding.customEditTextReleaseDate.getText(),
-            Constants.getDateFormatToShow(viewModel.language),
+        val releaseDate = binding.customEditTextReleaseDate.getText().toDate(
+            viewModel.dateFormatToShow,
             viewModel.language
         )
         val format =
@@ -179,9 +186,8 @@ class GameDataFragment(
             viewModel.genres.firstOrNull { it.name == binding.spinnerGenres.selectedItem.toString() }?.id
         val state =
             if (binding.buttonPending.isSelected) State.PENDING_STATE else if (binding.buttonInProgress.isSelected) State.IN_PROGRESS_STATE else if (binding.buttonFinished.isSelected) State.FINISHED_STATE else null
-        val purchaseDate = Constants.stringToDate(
-            binding.customEditTextPurchaseDate.getText(),
-            Constants.getDateFormatToShow(viewModel.language),
+        val purchaseDate = binding.customEditTextPurchaseDate.getText().toDate(
+            viewModel.dateFormatToShow,
             viewModel.language
         )
         val price = try {

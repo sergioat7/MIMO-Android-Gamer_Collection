@@ -122,6 +122,22 @@ object SharedPreferencesHelper {
         }
     }
 
+    fun getDateFormatToShow(): String {
+
+        return when (getLanguage()) {
+            Preferences.SPANISH_LANGUAGE_KEY -> "d MMMM yyyy"
+            else -> "MMMM d, yyyy"
+        }
+    }
+
+    fun getFilterDateFormat(): String {
+
+        return when (getLanguage()) {
+            Preferences.SPANISH_LANGUAGE_KEY -> "dd/MM/yyyy"
+            else -> "MM/dd/yyyy"
+        }
+    }
+
     fun getSortingKey(): String {
         return appPreferences.getString(Preferences.SORTING_KEY_PREFERENCES_NAME, null)
             ?: Preferences.DEFAULT_SORTING_KEY

@@ -1,6 +1,5 @@
 package es.upsa.mimo.gamercollection.base
 
-import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -17,12 +16,15 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.fragments.popups.PopupErrorDialogFragment
+import es.upsa.mimo.gamercollection.extensions.isDarkMode
+import es.upsa.mimo.gamercollection.extensions.setStatusBarStyle
 import es.upsa.mimo.gamercollection.fragments.popups.PopupLoadingDialogFragment
 import es.upsa.mimo.gamercollection.fragments.popups.PopupSyncAppDialogFragment
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import java.io.Serializable
 import java.lang.reflect.ParameterizedType
 
@@ -39,6 +41,7 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
     //region Protected properties
     protected lateinit var binding: Binding
         private set
+    protected abstract val statusBarStyle: StatusBarStyle
     //endregion
 
     //region Lifecycle methods
@@ -67,20 +70,43 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
         binding = inflateMethod.invoke(null, inflater, container, false) as Binding
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        activity?.let {
+            when (statusBarStyle) {
+                StatusBarStyle.PRIMARY -> {
+                    it.window.setStatusBarStyle(
+                        ContextCompat.getColor(it, R.color.colorSecondary),
+                        !it.isDarkMode()
+                    )
+                }
+                StatusBarStyle.SECONDARY -> {
+                    it.window.setStatusBarStyle(
+                        ContextCompat.getColor(it, R.color.colorPrimary),
+                        it.isDarkMode()
+                    )
+                }
+            }
+        }
+    }
     //endregion
 
     //region Public methods
     fun showPopupDialog(message: String, goBack: MutableLiveData<Boolean>? = null) {
 
-        val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
-        val prev = activity?.supportFragmentManager?.findFragmentByTag(Constants.POPUP_DIALOG)
-        if (prev != null) {
-            ft.remove(prev)
-        }
-        ft.addToBackStack(null)
-        val dialogFragment = PopupErrorDialogFragment(message, goBack)
-        dialogFragment.isCancelable = false
-        dialogFragment.show(ft, Constants.POPUP_DIALOG)
+        MaterialAlertDialogBuilder(requireContext())
+            .setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
+
+                dialog.dismiss()
+                goBack?.let {
+                    it.value = true
+                }
+            }
+            .show()
     }
 
     fun showLoading() {
@@ -116,9 +142,13 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
         showPopupDialog(error.toString())
     }
 
-    fun showPopupConfirmationDialog(message: String, acceptHandler: () -> Unit, cancelHandler: (() -> Unit)? = null) {
+    fun showPopupConfirmationDialog(
+        message: String,
+        acceptHandler: () -> Unit,
+        cancelHandler: (() -> Unit)? = null
+    ) {
 
-        AlertDialog.Builder(context)
+        MaterialAlertDialogBuilder(requireContext())
             .setMessage(message)
             .setCancelable(false)
             .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->

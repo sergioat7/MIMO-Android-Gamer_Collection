@@ -26,12 +26,17 @@ import es.upsa.mimo.gamercollection.adapters.OnFiltersSelected
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentGamesBinding
+import es.upsa.mimo.gamercollection.extensions.getFormatted
+import es.upsa.mimo.gamercollection.extensions.hideSoftKeyboard
+import es.upsa.mimo.gamercollection.extensions.toDate
+import es.upsa.mimo.gamercollection.extensions.toString
 import es.upsa.mimo.gamercollection.fragments.popups.PopupFilterDialogFragment
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Notifications
 import es.upsa.mimo.gamercollection.utils.State
+import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.GamesViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GamesViewModel
 import kotlinx.android.synthetic.main.state_button.view.*
@@ -40,6 +45,10 @@ import kotlin.math.max
 
 class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListener,
     OnFiltersSelected {
+
+    //region Protected properties
+    override val statusBarStyle = StatusBarStyle.SECONDARY
+    //endregion
 
     //region Private properties
     private lateinit var viewModel: GamesViewModel
@@ -85,7 +94,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         super.onPrepareOptionsMenu(menu)
 
         menu.findItem(R.id.action_filter)?.isVisible = viewModel.filters.value == null
-        menu.findItem(R.id.action_filter_on)?.isVisible = viewModel.filters.value != null
+        menu.findItem(R.id.action_filter_fill)?.isVisible = viewModel.filters.value != null
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -96,7 +105,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 openSyncPopup()
                 return true
             }
-            R.id.action_filter, R.id.action_filter_on -> {
+            R.id.action_filter, R.id.action_filter_fill -> {
 
                 filter()
                 return true
@@ -224,13 +233,11 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
         viewModel.games.observe(viewLifecycleOwner) {
 
-            val today = Constants.stringToDate(
-                Constants.dateToString(
-                    Date(),
-                    Constants.getDateFormatToShow(viewModel.language),
-                    viewModel.language
-                ),
-                Constants.getDateFormatToShow(viewModel.language),
+            val today = Date().toString(
+                viewModel.dateFormatToShow,
+                viewModel.language
+            ).toDate(
+                viewModel.dateFormatToShow,
                 viewModel.language
             )
             val gamesToNotify = ArrayList<GameResponse>()
@@ -264,7 +271,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         viewModel.filters.observe(viewLifecycleOwner) { filters ->
 
             menu?.findItem(R.id.action_filter)?.isVisible = filters == null
-            menu?.findItem(R.id.action_filter_on)?.isVisible = filters != null
+            menu?.findItem(R.id.action_filter_fill)?.isVisible = filters != null
         }
 
         viewModel.scrollPosition.observe(viewLifecycleOwner) {
@@ -321,9 +328,8 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                         .setContentText(
                             resources.getString(
                                 R.string.notification_description,
-                                Constants.dateToString(
-                                    Date(),
-                                    Constants.getDateFormatToShow(viewModel.language),
+                                Date().toString(
+                                    viewModel.dateFormatToShow,
                                     viewModel.language
                                 ),
                                 game.name
@@ -395,7 +401,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         val title = resources.getQuantityString(
             R.plurals.games_number_title,
             gamesCount,
-            Constants.getFormattedNumber(gamesCount)
+            gamesCount.getFormatted()
         )
         (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
@@ -428,7 +434,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 override fun onQueryTextSubmit(query: String): Boolean {
 
                     menuItem.collapseActionView()
-                    Constants.hideSoftKeyboard(requireActivity())
+                    requireActivity().hideSoftKeyboard()
                     return true
                 }
             })
@@ -439,7 +445,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                     menu.let {
                         it.findItem(R.id.action_synchronize).isVisible = false
                         it.findItem(R.id.action_filter).isVisible = false
-                        it.findItem(R.id.action_filter_on).isVisible = false
+                        it.findItem(R.id.action_filter_fill).isVisible = false
                         it.findItem(R.id.action_sort).isVisible = false
                     }
                     return true
@@ -449,7 +455,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                     menu.let {
                         it.findItem(R.id.action_synchronize).isVisible = true
                         it.findItem(R.id.action_filter).isVisible = viewModel.filters.value == null
-                        it.findItem(R.id.action_filter_on).isVisible =
+                        it.findItem(R.id.action_filter_fill).isVisible =
                             viewModel.filters.value != null
                         it.findItem(R.id.action_sort).isVisible = true
                     }
@@ -522,7 +528,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                         c.drawRect(background, paint)
 
                         val icon =
-                            ContextCompat.getDrawable(context, R.drawable.ic_remove_game_dark)
+                            ContextCompat.getDrawable(context, R.drawable.ic_remove_game)
                         icon?.setBounds(
                             itemView.right - 2 * width,
                             itemView.top + width,

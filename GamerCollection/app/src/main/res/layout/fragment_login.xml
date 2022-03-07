@@ -19,56 +19,75 @@
                 android:id="@+id/image_view"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:src="@drawable/app_name"
                 app:layout_constraintBottom_toTopOf="@+id/edit_text_user"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                style="@style/Widget.GamerCollection.ImageViewLogo"
                 />
 
             <EditText
                 android:id="@+id/edit_text_user"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_larger"
+                android:layout_marginEnd="@dimen/margin_larger"
+                android:hint="@string/login_username"
+                android:inputType="text"
                 app:layout_constraintBottom_toTopOf="@+id/edit_text_password"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                style="@style/Widget.GamerCollection.EditText.Credentials.Username"
+                style="@style/Widget.GamerCollection.EditText.Credentials"
                 />
 
             <EditText
                 android:id="@+id/edit_text_password"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:hint="@string/login_password"
+                android:inputType="textPassword"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/edit_text_user"
                 app:layout_constraintTop_toTopOf="parent"
-                style="@style/Widget.GamerCollection.EditText.Credentials.Password"
+                style="@style/Widget.GamerCollection.EditText.Credentials"
                 />
 
             <ImageButton
                 android:id="@+id/image_button_password"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:src="@drawable/ic_show_password"
                 app:layout_constraintBottom_toBottomOf="@+id/edit_text_password"
                 app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
                 app:layout_constraintTop_toTopOf="@+id/edit_text_password"
-                style="@style/Widget.GamerCollection.ImageButton.EditText.Password"
+                style="@style/Widget.GamerCollection.ImageButton"
                 />
 
             <Button
                 android:id="@+id/login_button"
+                android:layout_width="@dimen/size_semi_huge"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:layout_marginBottom="@dimen/margin_medium"
                 android:enabled="false"
+                android:text="@string/login_access"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_password"
                 app:layout_constraintVertical_bias="1.0"
-                style="@style/Widget.GamerCollection.Button.Rounded.Action.Login"
+                style="@style/Widget.GamerCollection.Button.Main"
                 />
 
             <LinearLayout
@@ -86,14 +105,19 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.GamerCollection.TextView.NoAccount"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/margin_tiny"
+                    android:text="@string/login_not_account"
+                    style="@style/Widget.GamerCollection.TextView.Description.NoAccount"
                     />
 
                 <Button
                     android:id="@+id/register_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.GamerCollection.Button.NoAccount"
+                    android:layout_gravity="center"
+                    android:text="@string/login_register"
+                    style="@style/Widget.GamerCollection.TextButton.Main.Action"
                     />
 
             </LinearLayout>

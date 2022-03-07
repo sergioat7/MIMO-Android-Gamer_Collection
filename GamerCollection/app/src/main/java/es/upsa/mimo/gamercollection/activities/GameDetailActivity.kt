@@ -1,6 +1,5 @@
 package es.upsa.mimo.gamercollection.activities
 
-import android.app.AlertDialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -12,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -19,11 +19,13 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GameDetailPagerAdapter
 import es.upsa.mimo.gamercollection.base.BaseActivity
 import es.upsa.mimo.gamercollection.databinding.ActivityGameDetailBinding
+import es.upsa.mimo.gamercollection.databinding.SetImageDialogBinding
+import es.upsa.mimo.gamercollection.databinding.SetRatingDialogBinding
+import es.upsa.mimo.gamercollection.extensions.getImageForPegi
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameDetailViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameDetailViewModel
-import kotlinx.android.synthetic.main.set_image_dialog.view.*
 import kotlinx.android.synthetic.main.set_rating_dialog.view.*
 
 class GameDetailActivity : BaseActivity() {
@@ -115,51 +117,56 @@ class GameDetailActivity : BaseActivity() {
     //region Public methods
     fun setImage() {
 
-        val dialogBuilder = AlertDialog.Builder(this).create()
-        val dialogView = this.layoutInflater.inflate(R.layout.set_image_dialog, null)
+        val dialogBinding = SetImageDialogBinding.inflate(layoutInflater)
 
-        dialogView.button_accept.setOnClickListener {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(resources.getString(R.string.game_detail_image_modal_title))
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
 
-            val url = dialogView.custom_edit_text_url.getText()
-            val errorImage =
-                if (Constants.isDarkMode(this)) R.drawable.ic_add_image_light else R.drawable.ic_add_image_dark
-            if (url.isNotEmpty()) {
+                val url = dialogBinding.customEditTextUrl.getText()
+                if (url.isNotEmpty()) {
 
-                Picasso.get()
-                    .load(url)
-                    .error(errorImage)
-                    .into(binding.imageViewGame, object : Callback {
-                        override fun onSuccess() {
-                            imageUrl = url
-                        }
+                    Picasso.get()
+                        .load(url)
+                        .error(R.drawable.ic_add_image)
+                        .into(binding.imageViewGame, object : Callback {
+                            override fun onSuccess() {
+                                imageUrl = url
+                            }
 
-                        override fun onError(e: Exception?) {
-                            imageUrl = null
-                            showPopupDialog(resources.getString(R.string.error_image_url))
-                        }
-                    })
+                            override fun onError(e: Exception?) {
+                                imageUrl = null
+                                showPopupDialog(resources.getString(R.string.error_image_url))
+                            }
+                        })
+                }
+                dialog.dismiss()
             }
-            dialogBuilder.dismiss()
-        }
-
-        dialogBuilder.setView(dialogView)
-        dialogBuilder.show()
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     fun setRating() {
 
-        val dialogBuilder = AlertDialog.Builder(this).create()
-        val dialogView = this.layoutInflater.inflate(R.layout.set_rating_dialog, null)
+        val dialogBinding = SetRatingDialogBinding.inflate(layoutInflater)
+        dialogBinding.ratingBar.rating = binding.ratingButton.text.toString().toFloat() / 2
 
-        dialogView.rating_bar.rating = binding.ratingButton.text.toString().toFloat() / 2
-        dialogView.button_rate.setOnClickListener {
+        MaterialAlertDialogBuilder(this)
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
 
-            binding.ratingButton.text = (dialogView.rating_bar.rating * 2).toString()
-            dialogBuilder.dismiss()
-        }
-
-        dialogBuilder.setView(dialogView)
-        dialogBuilder.show()
+                binding.ratingButton.text = (dialogBinding.ratingBar.rating * 2).toString()
+                dialog.dismiss()
+            }
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
     //endregion
 
@@ -238,13 +245,11 @@ class GameDetailActivity : BaseActivity() {
         imageUrl = game?.imageUrl
 
         val image = imageUrl ?: Constants.NO_VALUE
-        val errorImage =
-            if (Constants.isDarkMode(this)) R.drawable.ic_add_image_dark else R.drawable.ic_add_image_light
         binding.progressBarLoading.visibility = View.VISIBLE
         Picasso
             .get()
             .load(image)
-            .error(errorImage)
+            .error(R.drawable.ic_add_image)
             .into(binding.imageViewGame, object : Callback {
 
                 override fun onSuccess() {
@@ -268,7 +273,7 @@ class GameDetailActivity : BaseActivity() {
                 }
             })
 
-        binding.imagePegi = Constants.getPegiImage(game?.pegi, this)
+        binding.imagePegi = this.getImageForPegi(game?.pegi)
 
         val name = game?.name ?: Constants.EMPTY_VALUE
         binding.customEditTextName.setText(name.ifBlank { Constants.NO_VALUE })
