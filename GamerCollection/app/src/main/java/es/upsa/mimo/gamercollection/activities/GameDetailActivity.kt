@@ -20,6 +20,7 @@ import es.upsa.mimo.gamercollection.adapters.GameDetailPagerAdapter
 import es.upsa.mimo.gamercollection.base.BaseActivity
 import es.upsa.mimo.gamercollection.databinding.ActivityGameDetailBinding
 import es.upsa.mimo.gamercollection.databinding.SetImageDialogBinding
+import es.upsa.mimo.gamercollection.databinding.SetRatingDialogBinding
 import es.upsa.mimo.gamercollection.extensions.getImageForPegi
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
@@ -151,18 +152,21 @@ class GameDetailActivity : BaseActivity() {
 
     fun setRating() {
 
-        val dialogBuilder = MaterialAlertDialogBuilder(this).create()
-        val dialogView = this.layoutInflater.inflate(R.layout.set_rating_dialog, null)
+        val dialogBinding = SetRatingDialogBinding.inflate(layoutInflater)
+        dialogBinding.ratingBar.rating = binding.ratingButton.text.toString().toFloat() / 2
 
-        dialogView.rating_bar.rating = binding.ratingButton.text.toString().toFloat() / 2
-        dialogView.button_rate.setOnClickListener {
+        MaterialAlertDialogBuilder(this)
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
 
-            binding.ratingButton.text = (dialogView.rating_bar.rating * 2).toString()
-            dialogBuilder.dismiss()
-        }
-
-        dialogBuilder.setView(dialogView)
-        dialogBuilder.show()
+                binding.ratingButton.text = (dialogBinding.ratingBar.rating * 2).toString()
+                dialog.dismiss()
+            }
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
     //endregion
 
