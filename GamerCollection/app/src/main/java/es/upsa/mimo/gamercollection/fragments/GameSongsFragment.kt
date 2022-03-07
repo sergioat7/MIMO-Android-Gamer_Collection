@@ -10,12 +10,12 @@ import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SongsAdapter
 import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentGameSongsBinding
+import es.upsa.mimo.gamercollection.databinding.NewSongDialogBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SongResponse
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameSongsViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameSongsViewModel
-import kotlinx.android.synthetic.main.new_song_dialog.view.*
 
 class GameSongsFragment(
     private var game: GameResponse?,
@@ -108,29 +108,32 @@ class GameSongsFragment(
 
     private fun showNewSongPopup() {
 
-        val dialogBuilder = MaterialAlertDialogBuilder(requireContext()).create()
-        val dialogView = this.layoutInflater.inflate(R.layout.new_song_dialog, null)
+        val dialogBinding = NewSongDialogBinding.inflate(layoutInflater)
 
-        dialogView.button_accept.setOnClickListener {
+        MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
 
-            val name = dialogView.custom_edit_text_name.getText()
-            val singer = dialogView.custom_edit_text_singer.getText()
-            val url = dialogView.custom_edit_text_url.getText()
+                val name = dialogBinding.customEditTextName.getText()
+                val singer = dialogBinding.customEditTextSinger.getText()
+                val url = dialogBinding.customEditTextUrl.getText()
 
-            if (name.isNotBlank() || singer.isNotBlank() || url.isNotBlank()) {
-                val song = SongResponse(
-                    0,
-                    name,
-                    singer,
-                    url
-                )
-                viewModel.createSong(song)
+                if (name.isNotBlank() || singer.isNotBlank() || url.isNotBlank()) {
+                    val song = SongResponse(
+                        0,
+                        name,
+                        singer,
+                        url
+                    )
+                    viewModel.createSong(song)
+                }
+                dialog.dismiss()
             }
-            dialogBuilder.dismiss()
-        }
-
-        dialogBuilder.setView(dialogView)
-        dialogBuilder.show()
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
     //endregion
 }
