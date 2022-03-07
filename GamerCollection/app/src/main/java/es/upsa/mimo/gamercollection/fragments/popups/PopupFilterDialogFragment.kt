@@ -225,16 +225,20 @@ class PopupFilterDialogFragment(
         fillFormats()
 
         binding.customEditTextReleaseDateMin.setDatePickerFormat(
+            requireActivity(),
             viewModel.filterDateFormat
         )
         binding.customEditTextReleaseDateMax.setDatePickerFormat(
+            requireActivity(),
             viewModel.filterDateFormat
         )
 
         binding.customEditTextPurchaseDateMin.setDatePickerFormat(
+            requireActivity(),
             viewModel.filterDateFormat
         )
         binding.customEditTextPurchaseDateMax.setDatePickerFormat(
+            requireActivity(),
             viewModel.filterDateFormat
         )
 

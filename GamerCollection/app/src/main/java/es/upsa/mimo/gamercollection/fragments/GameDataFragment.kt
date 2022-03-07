@@ -85,6 +85,8 @@ class GameDataFragment(
             )
         )
         binding.customEditTextReleaseDate.setText(releaseDate)
+        binding.customEditTextReleaseDate.setDatePickerFormat(requireActivity())
+
 
         val distributor = getText(game?.distributor)
         binding.customEditTextDistributor.setText(distributor)
@@ -110,6 +112,7 @@ class GameDataFragment(
             )
         )
         binding.customEditTextPurchaseDate.setText(purchaseDate)
+        binding.customEditTextPurchaseDate.setDatePickerFormat(requireActivity())
 
         val purchaseLocation = getText(game?.purchaseLocation)
         binding.customEditTextPurchaseLocation.setText(purchaseLocation)
