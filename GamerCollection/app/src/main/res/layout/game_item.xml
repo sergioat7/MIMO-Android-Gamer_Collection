@@ -128,7 +128,8 @@
                     android:layout_marginBottom="@dimen/margin_small"
                     android:text="@{game.name}"
                     android:visibility="@{game.name != null ? View.VISIBLE : View.GONE}"
-                    style="@style/Widget.GamerCollection.TextView.GameName"
+                    tools:text="Fifa 20"
+                    style="@style/Widget.GamerCollection.TextView.Title.GameItem"
                     />
 
                 <TextView
@@ -138,7 +139,8 @@
                     android:layout_marginBottom="@dimen/margin_tiny"
                     android:text="@{platform.name}"
                     android:visibility="@{platform != null &amp;&amp; isSagaIdNull ? View.VISIBLE : View.GONE}"
-                    style="@style/Widget.GamerCollection.TextView.GamePlatform"
+                    tools:text="PlayStation 4"
+                    style="@style/Widget.GamerCollection.TextView.Description.GameItem"
                     />
 
                 <LinearLayout
@@ -168,7 +170,8 @@
                         android:layout_marginStart="@dimen/margin_small"
                         android:layout_marginBottom="@dimen/margin_small"
                         android:gravity="bottom"
-                        style="@style/Widget.GamerCollection.TextView.Rating.GameScore"
+                        tools:text="5.0"
+                        style="@style/Widget.GamerCollection.TextView.Title.Rating"
                         />
 
                 </LinearLayout>
@@ -180,7 +183,7 @@
                     android:gravity="bottom"
                     android:text="@string/new_game"
                     android:visibility="@{game.score &lt;= 0 &amp;&amp; isSagaIdNull ? View.VISIBLE : View.GONE}"
-                    style="@style/Widget.GamerCollection.TextView.Rating.None"
+                    style="@style/Widget.GamerCollection.TextView.Title.NoRating"
                     />
 
             </LinearLayout>

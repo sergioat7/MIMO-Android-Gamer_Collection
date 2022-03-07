@@ -137,7 +137,7 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintVertical_bias="0.0"
-                                style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
+                                style="@style/Widget.GamerCollection.TextView.Title.Header"
                                 />
 
                             <Spinner
@@ -174,7 +174,7 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintVertical_bias="0.0"
-                                style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
+                                style="@style/Widget.GamerCollection.TextView.Title.Header"
                                 />
 
                             <RadioGroup
@@ -238,7 +238,7 @@
                                 android:layout_gravity="center_vertical|start"
                                 android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_genre"
-                                style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
+                                style="@style/Widget.GamerCollection.TextView.Title.Header"
                                 />
 
                             <Spinner
@@ -262,7 +262,7 @@
                                 android:layout_gravity="center_vertical|start"
                                 android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_release_date"
-                                style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
+                                style="@style/Widget.GamerCollection.TextView.Title.Header"
                                 />
 
                             <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -287,7 +287,7 @@
                                 android:layout_gravity="center_vertical|start"
                                 android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_format"
-                                style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
+                                style="@style/Widget.GamerCollection.TextView.Title.Header"
                                 />
 
                             <Spinner
@@ -311,7 +311,7 @@
                                 android:layout_gravity="center_vertical|start"
                                 android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_distributor"
-                                style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
+                                style="@style/Widget.GamerCollection.TextView.Title.Header"
                                 />
 
                             <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -338,7 +338,7 @@
                                 android:layout_gravity="center_vertical|start"
                                 android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_developer"
-                                style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
+                                style="@style/Widget.GamerCollection.TextView.Title.Header"
                                 />
 
                             <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -365,7 +365,7 @@
                                 android:layout_gravity="center_vertical|start"
                                 android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_players"
-                                style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
+                                style="@style/Widget.GamerCollection.TextView.Title.Header"
                                 />
 
                             <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -393,7 +393,7 @@
                                 android:layout_gravity="center_vertical|start"
                                 android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_price"
-                                style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
+                                style="@style/Widget.GamerCollection.TextView.Title.Header"
                                 />
 
                             <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -421,7 +421,7 @@
                                 android:layout_gravity="center_vertical|start"
                                 android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_purchase_date"
-                                style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
+                                style="@style/Widget.GamerCollection.TextView.Title.Header"
                                 />
 
                             <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -446,7 +446,7 @@
                                 android:layout_gravity="center_vertical|start"
                                 android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_purchase_location"
-                                style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
+                                style="@style/Widget.GamerCollection.TextView.Title.Header"
                                 />
 
                             <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -472,7 +472,7 @@
                                 android:layout_gravity="center_vertical|start"
                                 android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_loaned_to"
-                                style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
+                                style="@style/Widget.GamerCollection.TextView.Title.Header"
                                 />
 
                             <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -500,7 +500,7 @@
                                 android:layout_gravity="center_vertical|start"
                                 android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_video_url"
-                                style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
+                                style="@style/Widget.GamerCollection.TextView.Title.Header"
                                 />
 
                             <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -528,7 +528,7 @@
                                 android:layout_gravity="center_vertical|start"
                                 android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_observations"
-                                style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
+                                style="@style/Widget.GamerCollection.TextView.Title.Header"
                                 />
 
                             <es.upsa.mimo.gamercollection.customviews.CustomEditText
@@ -556,7 +556,7 @@
                                 android:layout_gravity="center_vertical|start"
                                 android:layout_marginEnd="@dimen/margin_small"
                                 android:text="@string/game_detail_saga"
-                                style="@style/Widget.GamerCollection.TextView.Bold.GameDataTitle"
+                                style="@style/Widget.GamerCollection.TextView.Title.Header"
                                 />
 
                             <es.upsa.mimo.gamercollection.customviews.CustomEditText

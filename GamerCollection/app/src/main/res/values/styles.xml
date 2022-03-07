@@ -12,75 +12,64 @@
     <!--  TextViews  -->
 
     <style name="Widget.GamerCollection.TextView" parent="Widget.MaterialComponents.TextView">
-        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:ellipsize">end</item>
         <item name="android:includeFontPadding">false</item>
     </style>
 
-    <style name="Widget.GamerCollection.TextView.Bold">
-        <item name="fontFamily">@font/roboto_bold</item>
-    </style>
-
-    <style name="Widget.GamerCollection.TextView.Regular">
-        <item name="fontFamily">@font/roboto_regular</item>
-    </style>
-
-    <style name="Widget.GamerCollection.TextView.Error" parent="Widget.MaterialComponents.TextView">
-        <item name="android:textAlignment">center</item>
-        <item name="android:textColor">@color/textPrimary</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">@dimen/font_large</item>
-    </style>
-
-    <style name="Widget.GamerCollection.TextView.GameName">
-        <item name="android:textSize">@dimen/font_extra_large</item>
+    <style name="Widget.GamerCollection.TextView.Title">
         <item name="android:fontFamily">@font/roboto_bold</item>
-        <item name="android:maxLines">3</item>
-        <item name="android:ellipsize">end</item>
-    </style>
-
-    <style name="Widget.GamerCollection.TextView.GamePlatform">
-        <item name="android:textColor">@color/textTertiary</item>
-        <item name="android:textSize">@dimen/font_medium</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-    </style>
-
-    <style name="Widget.GamerCollection.TextView.Rating">
-        <item name="android:textColor">@color/colorInProgress</item>
-        <item name="android:fontFamily">@font/roboto_bold</item>
-    </style>
-
-    <style name="Widget.GamerCollection.TextView.Rating.GameScore">
-        <item name="android:textSize">@dimen/font_large</item>
-    </style>
-
-    <style name="Widget.GamerCollection.TextView.Rating.None">
-        <item name="android:textSize">@dimen/font_extra_large</item>
-    </style>
-
-    <style name="Widget.GamerCollection.TextView.Bold.GameDataTitle">
-        <item name="android:textSize">@dimen/font_medium</item>
-    </style>
-
-    <style name="Widget.GamerCollection.TextView.NoAccount">
-        <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textColor">@color/textPrimaryLight</item>
-        <item name="android:textSize">@dimen/font_medium</item>
-    </style>
-
-    <style name="Widget.GamerCollection.TextView.Regular.AppTheme">
         <item name="android:textColor">@color/textPrimary</item>
-        <item name="android:textSize">@dimen/font_medium</item>
     </style>
 
-    <style name="Widget.GamerCollection.TextView.Bold.AddGameTitle">
+    <style name="Widget.GamerCollection.TextView.Title.Header">
+        <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextView.Title.Section">
         <item name="android:textSize">@dimen/font_larger</item>
     </style>
 
-    <style name="Widget.GamerCollection.TitleTextView.ProfileSection" parent="Widget.MaterialComponents.TextView">
-        <item name="fontFamily">@font/roboto_regular</item>
+    <style name="Widget.GamerCollection.TextView.Title.GameItem">
+        <item name="android:maxLines">3</item>
+        <item name="android:textSize">@dimen/font_extra_large</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextView.Title.Rating">
+        <item name="android:textSize">@dimen/font_large</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextView.Title.NoRating">
+        <item name="android:textSize">@dimen/font_extra_large</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextView.Title.SongItem">
+        <item name="android:textSize">@dimen/font_large</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextView.Description">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/textPrimary</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextView.Description.NoAccount">
         <item name="android:textColor">@color/textTertiary</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextView.Description.GameItem">
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextView.Description.Rating">
+        <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextView.Description.SongItem">
+        <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextView.Description.ProfileItem">
         <item name="android:textSize">@dimen/font_medium</item>
     </style>
 

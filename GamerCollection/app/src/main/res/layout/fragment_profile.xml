@@ -115,7 +115,7 @@
                         app:layout_constraintEnd_toEndOf="@+id/radio_group_language"
                         app:layout_constraintStart_toStartOf="@+id/radio_group_language"
                         app:layout_constraintTop_toBottomOf="@+id/edit_text_password"
-                        style="@style/Widget.GamerCollection.TitleTextView.ProfileSection"
+                        style="@style/Widget.GamerCollection.TextView.Title.Header"
                         />
 
                     <RadioGroup
@@ -159,7 +159,7 @@
                         app:layout_constraintEnd_toEndOf="@+id/spinner_sorting_keys"
                         app:layout_constraintStart_toStartOf="@+id/spinner_sorting_keys"
                         app:layout_constraintTop_toBottomOf="@+id/radio_group_language"
-                        style="@style/Widget.GamerCollection.TitleTextView.ProfileSection"
+                        style="@style/Widget.GamerCollection.TextView.Title.Header"
                         />
 
                     <Spinner
@@ -198,7 +198,7 @@
                         app:layout_constraintEnd_toEndOf="@+id/text_view_app_theme_value"
                         app:layout_constraintStart_toStartOf="@+id/text_view_app_theme_value"
                         app:layout_constraintTop_toBottomOf="@+id/switch_swipe_refresh"
-                        style="@style/Widget.GamerCollection.TitleTextView.ProfileSection"
+                        style="@style/Widget.GamerCollection.TextView.Title.Header"
                         />
 
                     <TextView
@@ -210,7 +210,7 @@
                         app:layout_constraintEnd_toEndOf="@+id/switch_swipe_refresh"
                         app:layout_constraintStart_toStartOf="@+id/switch_swipe_refresh"
                         app:layout_constraintTop_toBottomOf="@+id/switch_swipe_refresh"
-                        style="@style/Widget.GamerCollection.TextView.Regular.AppTheme"
+                        style="@style/Widget.GamerCollection.TextView.Description.ProfileItem"
                         />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
