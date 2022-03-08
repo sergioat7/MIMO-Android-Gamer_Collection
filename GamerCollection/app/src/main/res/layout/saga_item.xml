@@ -41,43 +41,31 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:padding="@dimen/padding_normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/image_view_arrow"
                 >
 
-                <LinearLayout
-                    android:id="@+id/linear_layout_title_container"
+                <EditText
+                    android:id="@+id/edit_text_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_large"
                     android:layout_centerVertical="true"
-                    android:paddingStart="@dimen/margin_medium"
-                    android:paddingTop="@dimen/margin_tiny"
-                    android:paddingEnd="@dimen/margin_large"
-                    android:paddingBottom="@dimen/margin_tiny"
-                    >
-
-                    <EditText
-                        android:id="@+id/edit_text_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_small"
-                        android:gravity="center|start"
-                        android:inputType="none"
-                        tools:text="Saga name"
-                        style="@style/Widget.GamerCollection.EditTextSaga"
-                        />
-
-                </LinearLayout>
+                    android:inputType="none"
+                    tools:text="Saga name"
+                    style="@style/Widget.GamerCollection.EditTextSaga"
+                    />
 
                 <ImageView
                     android:id="@+id/image_view_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_medium_large_negative"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/margin_large_negative"
                     android:layout_marginTop="@dimen/margin_normal"
                     android:layout_marginBottom="@dimen/margin_normal"
-                    android:layout_toEndOf="@id/linear_layout_title_container"
+                    android:layout_toEndOf="@id/edit_text_name"
                     android:onClick="@{() -> onItemClickListener.onItemClick(saga.id)}"
                     android:src="@drawable/ic_edit"
                     />
@@ -90,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_normal"
                 android:src="@drawable/ic_triangle_up"
-                android:visibility="@{saga.games.empty ? View.GONE : View.VISIBLE}"
+                android:visibility="@{saga.games.empty ? View.INVISIBLE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

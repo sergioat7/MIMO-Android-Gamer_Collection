@@ -163,7 +163,5 @@
     // Errors
     <string name="error_server">Hubo un error al recuperar los datos. Por favor, inténtalo otra vez</string>
     <string name="error_server_connection">Hubo un error al recuperar los datos. Por favor, revisa tu conexión a internet e inténtalo otra vez</string>
-    <string name="error_registration_empty_data">El usuario y la contraseña no pueden estar vacíos</string>
-    <string name="error_registration_different_passwords">Las contraseñas no coinciden</string>
     <string name="error_image_url">La imagen no se ha podido cargar</string>
 </resources>
