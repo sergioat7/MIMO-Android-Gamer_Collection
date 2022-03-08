@@ -1,16 +1,13 @@
 package es.upsa.mimo.gamercollection.utils
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.widget.EditText
 import android.widget.ImageButton
-import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.SpinnerAdapter
-import java.text.DecimalFormat
 
 object Preferences {
     const val PREFERENCES_NAME = "preferences"

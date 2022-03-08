@@ -26,7 +26,6 @@ import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameDetailViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameDetailViewModel
-import kotlinx.android.synthetic.main.set_rating_dialog.view.*
 
 class GameDetailActivity : BaseActivity() {
 
