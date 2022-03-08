@@ -63,11 +63,11 @@ class GameRepository @Inject constructor(
         }
     }
 
-    fun createGame(game: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+    fun createGame(newGame: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
         externalScope.launch {
 
             try {
-                when (val response = ApiManager.validateResponse(api.createGame(game))) {
+                when (val response = ApiManager.validateResponse(api.createGame(newGame))) {
                     is RequestResult.Success -> loadGames(success, failure)
                     is RequestResult.Failure -> failure(response.error)
                     else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))

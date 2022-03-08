@@ -6,7 +6,6 @@
     <dimen name="margin_larger">50dp</dimen>
     <dimen name="margin_large_negative">-40dp</dimen>
     <dimen name="margin_large">40dp</dimen>
-    <dimen name="margin_medium_negative">-20dp</dimen>
     <dimen name="margin_medium">20dp</dimen>
     <dimen name="margin_normal">15dp</dimen>
     <dimen name="margin_small">10dp</dimen>
@@ -41,7 +40,6 @@
     <dimen name="font_small">12sp</dimen>
 
     <!--  radius  -->
-    <dimen name="radius_huge">36dp</dimen>
     <dimen name="radius_normal">15dp</dimen>
     <dimen name="radius_small">10dp</dimen>
     <dimen name="radius_tiny">5dp</dimen>

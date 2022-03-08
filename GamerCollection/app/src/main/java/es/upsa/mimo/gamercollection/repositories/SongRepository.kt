@@ -16,12 +16,12 @@ class SongRepository @Inject constructor(
     //region Public methods
     suspend fun createSong(
         gameId: Int,
-        song: SongResponse,
+        newSong: SongResponse,
         success: () -> Unit,
         failure: (ErrorResponse) -> Unit
     ) {
         try {
-            when (val response = ApiManager.validateResponse(api.createSong(gameId, song))) {
+            when (val response = ApiManager.validateResponse(api.createSong(gameId, newSong))) {
 
                 is RequestResult.Success -> success()
                 is RequestResult.Failure -> failure(response.error)

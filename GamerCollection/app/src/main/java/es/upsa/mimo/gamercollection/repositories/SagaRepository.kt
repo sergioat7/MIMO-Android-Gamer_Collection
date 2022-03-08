@@ -55,21 +55,21 @@ class SagaRepository @Inject constructor(
     }
 
     fun createSaga(
-        saga: SagaResponse,
+        newSaga: SagaResponse,
         success: (SagaResponse?) -> Unit,
         failure: (ErrorResponse) -> Unit
     ) {
         externalScope.launch {
 
             try {
-                when (val response = ApiManager.validateResponse(api.createSaga(saga))) {
+                when (val response = ApiManager.validateResponse(api.createSaga(newSaga))) {
                     is RequestResult.Success -> {
                         loadSagas({
 
-                            val sagas = getSagasDatabase()
-                            val newSagaCreated = sagas.firstOrNull { s ->
-                                val game = s.games.firstOrNull { game ->
-                                    game.id == saga.games.firstOrNull()?.id
+                            val currentSagas = getSagasDatabase()
+                            val newSagaCreated = currentSagas.firstOrNull { saga ->
+                                val game = saga.games.firstOrNull { game ->
+                                    game.id == newSaga.games.firstOrNull()?.id
                                 }
                                 game != null
                             }

@@ -35,10 +35,12 @@
     </style>
 
     <style name="Widget.GamerCollection.TextView.Title.Rating">
+        <item name="android:textColor">@color/colorInProgress</item>
         <item name="android:textSize">@dimen/font_large</item>
     </style>
 
     <style name="Widget.GamerCollection.TextView.Title.NoRating">
+        <item name="android:textColor">@color/colorInProgress</item>
         <item name="android:textSize">@dimen/font_extra_large</item>
     </style>
 
