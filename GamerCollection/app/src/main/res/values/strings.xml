@@ -168,6 +168,7 @@
 
     // Errors
     <string name="error_server">There was an error on getting data. Please, try again</string>
+    <string name="error_server_connection">There was an error on getting data. Please, check your internet connection and try again</string>
     <string name="error_registration_empty_data">Username and password can\'t be empty</string>
     <string name="error_registration_different_passwords">Password and repeat don\'t match</string>
     <string name="error_image_url">The image could not be loaded</string>

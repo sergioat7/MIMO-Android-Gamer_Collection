@@ -1,6 +1,7 @@
 package es.upsa.mimo.gamercollection.repositories
 
 import androidx.sqlite.db.SimpleSQLiteQuery
+import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.injection.modules.IoDispatcher
 import es.upsa.mimo.gamercollection.injection.modules.MainDispatcher
 import es.upsa.mimo.gamercollection.models.FilterModel
@@ -38,21 +39,26 @@ class GameRepository @Inject constructor(
     fun loadGames(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
         externalScope.launch {
 
-            when (val response = ApiManager.validateResponse(api.getGames())) {
-                is RequestResult.JsonSuccess -> {
+            try {
+                when (val response = ApiManager.validateResponse(api.getGames())) {
+                    is RequestResult.JsonSuccess -> {
 
-                    val newGames = response.body
-                    for (newGame in newGames) {
-                        insertGameDatabase(newGame)
+                        val newGames = response.body
+                        for (newGame in newGames) {
+                            insertGameDatabase(newGame)
+                        }
+                        val currentGames = getGamesDatabase()
+                        val gamesToRemove = AppDatabase.getDisabledContent(currentGames, newGames)
+                        for (game in gamesToRemove) {
+                            deleteGameDatabase(game as GameResponse)
+                        }
+                        success()
                     }
-                    val currentGames = getGamesDatabase()
-                    val gamesToRemove = AppDatabase.getDisabledContent(currentGames, newGames)
-                    for (game in gamesToRemove) {
-                        deleteGameDatabase(game as GameResponse)
-                    }
-                    success()
+                    is RequestResult.Failure -> failure(response.error)
+                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
                 }
-                is RequestResult.Failure -> failure(response.error)
+            } catch (e: Exception) {
+                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
             }
         }
     }
@@ -60,9 +66,14 @@ class GameRepository @Inject constructor(
     fun createGame(game: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
         externalScope.launch {
 
-            when (val response = ApiManager.validateResponse(api.createGame(game))) {
-                is RequestResult.Success -> loadGames(success, failure)
-                is RequestResult.Failure -> failure(response.error)
+            try {
+                when (val response = ApiManager.validateResponse(api.createGame(game))) {
+                    is RequestResult.Success -> loadGames(success, failure)
+                    is RequestResult.Failure -> failure(response.error)
+                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+                }
+            } catch (e: Exception) {
+                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
             }
         }
     }
@@ -74,12 +85,17 @@ class GameRepository @Inject constructor(
     ) {
         externalScope.launch {
 
-            when (val response = ApiManager.validateResponse(api.setGame(game.id, game))) {
-                is RequestResult.JsonSuccess -> {
-                    updateGameDatabase(response.body)
-                    success(response.body)
+            try {
+                when (val response = ApiManager.validateResponse(api.setGame(game.id, game))) {
+                    is RequestResult.JsonSuccess -> {
+                        updateGameDatabase(response.body)
+                        success(response.body)
+                    }
+                    is RequestResult.Failure -> failure(response.error)
+                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
                 }
-                is RequestResult.Failure -> failure(response.error)
+            } catch (e: Exception) {
+                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
             }
         }
     }
@@ -87,12 +103,17 @@ class GameRepository @Inject constructor(
     fun deleteGame(game: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
         externalScope.launch {
 
-            when (val response = ApiManager.validateResponse(api.deleteGame(game.id))) {
-                is RequestResult.Success -> {
-                    deleteGameDatabase(game)
-                    success()
+            try {
+                when (val response = ApiManager.validateResponse(api.deleteGame(game.id))) {
+                    is RequestResult.Success -> {
+                        deleteGameDatabase(game)
+                        success()
+                    }
+                    is RequestResult.Failure -> failure(response.error)
+                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
                 }
-                is RequestResult.Failure -> failure(response.error)
+            } catch (e: Exception) {
+                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
             }
         }
     }
@@ -270,12 +291,17 @@ class GameRepository @Inject constructor(
     ) {
         externalScope.launch {
 
-            when (val response = ApiManager.validateResponse(api.getGame(gameId))) {
-                is RequestResult.JsonSuccess -> {
-                    updateGameDatabase(response.body)
-                    success(response.body)
+            try {
+                when (val response = ApiManager.validateResponse(api.getGame(gameId))) {
+                    is RequestResult.JsonSuccess -> {
+                        updateGameDatabase(response.body)
+                        success(response.body)
+                    }
+                    is RequestResult.Failure -> failure(response.error)
+                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
                 }
-                is RequestResult.Failure -> failure(response.error)
+            } catch (e: Exception) {
+                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
             }
         }
     }
@@ -303,12 +329,18 @@ class GameRepository @Inject constructor(
             query?.let {
                 params[ApiManager.SEARCH_PARAM] = it
             }
-            when (val response = ApiManager.validateResponse(apiRawg.getGames(params))) {
-                is RequestResult.JsonSuccess -> {
-                    val games = mapRawgGames(response.body.results)
-                    success(games, response.body.count, response.body.next != null)
+
+            try {
+                when (val response = ApiManager.validateResponse(apiRawg.getGames(params))) {
+                    is RequestResult.JsonSuccess -> {
+                        val games = mapRawgGames(response.body.results)
+                        success(games, response.body.count, response.body.next != null)
+                    }
+                    is RequestResult.Failure -> failure(response.error)
+                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
                 }
-                is RequestResult.Failure -> failure(response.error)
+            } catch (e: Exception) {
+                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
             }
         }
     }
@@ -322,9 +354,15 @@ class GameRepository @Inject constructor(
 
             val params: MutableMap<String, String> = java.util.HashMap()
             params[ApiManager.KEY_PARAM] = ApiManager.KEY_VALUE
-            when (val response = ApiManager.validateResponse(apiRawg.getGame(gameId, params))) {
-                is RequestResult.JsonSuccess -> success(mapRawgGame(response.body))
-                is RequestResult.Failure -> failure(response.error)
+
+            try {
+                when (val response = ApiManager.validateResponse(apiRawg.getGame(gameId, params))) {
+                    is RequestResult.JsonSuccess -> success(mapRawgGame(response.body))
+                    is RequestResult.Failure -> failure(response.error)
+                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+                }
+            } catch (e: Exception) {
+                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
             }
         }
     }
