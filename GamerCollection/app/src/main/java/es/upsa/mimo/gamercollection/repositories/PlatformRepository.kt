@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.injection.modules.IoDispatcher
 import es.upsa.mimo.gamercollection.injection.modules.MainDispatcher
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
@@ -8,6 +9,7 @@ import es.upsa.mimo.gamercollection.network.ApiManager
 import es.upsa.mimo.gamercollection.network.PlatformApiService
 import es.upsa.mimo.gamercollection.network.RequestResult
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
+import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
@@ -27,22 +29,27 @@ class PlatformRepository @Inject constructor(
     fun loadPlatforms(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
         externalScope.launch {
 
-            when (val response = ApiManager.validateResponse(api.getPlatforms())) {
-                is RequestResult.JsonSuccess -> {
+            try {
+                when (val response = ApiManager.validateResponse(api.getPlatforms())) {
+                    is RequestResult.JsonSuccess -> {
 
-                    val newPlatforms = response.body
-                    for (newPlatform in newPlatforms) {
-                        insertPlatformDatabase(newPlatform)
+                        val newPlatforms = response.body
+                        for (newPlatform in newPlatforms) {
+                            insertPlatformDatabase(newPlatform)
+                        }
+                        val currentPlatforms = getPlatformsDatabase()
+                        val platformsToRemove =
+                            AppDatabase.getDisabledContent(currentPlatforms, newPlatforms)
+                        for (platform in platformsToRemove) {
+                            deletePlatformDatabase(platform as PlatformResponse)
+                        }
+                        success()
                     }
-                    val currentPlatforms = getPlatformsDatabase()
-                    val platformsToRemove =
-                        AppDatabase.getDisabledContent(currentPlatforms, newPlatforms)
-                    for (platform in platformsToRemove) {
-                        deletePlatformDatabase(platform as PlatformResponse)
-                    }
-                    success()
+                    is RequestResult.Failure -> failure(response.error)
+                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
                 }
-                is RequestResult.Failure -> failure(response.error)
+            } catch (e: Exception) {
+                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
             }
         }
     }

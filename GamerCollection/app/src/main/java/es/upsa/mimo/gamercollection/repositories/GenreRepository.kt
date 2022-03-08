@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.injection.modules.IoDispatcher
 import es.upsa.mimo.gamercollection.injection.modules.MainDispatcher
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
@@ -8,6 +9,7 @@ import es.upsa.mimo.gamercollection.network.ApiManager
 import es.upsa.mimo.gamercollection.network.GenreApiService
 import es.upsa.mimo.gamercollection.network.RequestResult
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
+import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
@@ -27,21 +29,27 @@ class GenreRepository @Inject constructor(
     fun loadGenres(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
         externalScope.launch {
 
-            when (val response = ApiManager.validateResponse(api.getGenres())) {
-                is RequestResult.JsonSuccess -> {
+            try {
+                when (val response = ApiManager.validateResponse(api.getGenres())) {
+                    is RequestResult.JsonSuccess -> {
 
-                    val newGenres = response.body
-                    for (newGenre in newGenres) {
-                        insertGenreDatabase(newGenre)
+                        val newGenres = response.body
+                        for (newGenre in newGenres) {
+                            insertGenreDatabase(newGenre)
+                        }
+                        val currentGenres = getGenresDatabase()
+                        val genresToRemove =
+                            AppDatabase.getDisabledContent(currentGenres, newGenres)
+                        for (genre in genresToRemove) {
+                            deleteGenreDatabase(genre as GenreResponse)
+                        }
+                        success()
                     }
-                    val currentGenres = getGenresDatabase()
-                    val genresToRemove = AppDatabase.getDisabledContent(currentGenres, newGenres)
-                    for (genre in genresToRemove) {
-                        deleteGenreDatabase(genre as GenreResponse)
-                    }
-                    success()
+                    is RequestResult.Failure -> failure(response.error)
+                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
                 }
-                is RequestResult.Failure -> failure(response.error)
+            } catch (e: Exception) {
+                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
             }
         }
     }
