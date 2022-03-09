@@ -1,83 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.popups.PopupSyncAppDialogFragment"
     >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:context=".fragments.popups.PopupSyncAppDialogFragment"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorSecondary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             >
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="@dimen/size_minimum"
-                android:layout_marginBottom="@dimen/margin_small"
-                android:background="@color/colorPrimary"
-                app:layout_constraintBottom_toTopOf="@+id/text_view_sync"
-                app:layout_constraintEnd_toEndOf="@+id/text_view_sync"
-                app:layout_constraintStart_toStartOf="@+id/text_view_sync"
-                />
-
-            <TextView
-                android:id="@+id/text_view_sync"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_extra_large"
-                android:layout_marginEnd="@dimen/margin_extra_large"
-                android:fontFamily="@font/roboto_bold"
-                android:text="@string/sync_title"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/font_medium"
+                android:background="@color/colorSecondary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.4"
-                />
+                >
 
-            <View
-                android:id="@+id/view"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/size_minimum"
-                android:layout_marginTop="@dimen/margin_small"
-                android:background="@color/colorPrimary"
-                app:layout_constraintEnd_toEndOf="@+id/text_view_sync"
-                app:layout_constraintStart_toStartOf="@+id/text_view_sync"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_sync"
-                />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/size_minimum"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:background="@color/colorPrimary"
+                    app:layout_constraintBottom_toTopOf="@+id/text_view_sync"
+                    app:layout_constraintEnd_toEndOf="@+id/text_view_sync"
+                    app:layout_constraintStart_toStartOf="@+id/text_view_sync"
+                    />
 
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_medium"
-                android:layout_marginBottom="@dimen/margin_medium"
-                android:indeterminateTint="@color/colorPrimary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view"
-                />
+                <TextView
+                    android:id="@+id/text_view_sync"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_extra_large"
+                    android:layout_marginEnd="@dimen/margin_extra_large"
+                    android:text="@string/sync_title"
+                    android:textSize="@dimen/font_medium"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.4"
+                    style="@style/Widget.GamerCollection.TextView.Title"
+                    />
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/size_minimum"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:background="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="@+id/text_view_sync"
+                    app:layout_constraintStart_toStartOf="@+id/text_view_sync"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_sync"
+                    />
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_marginBottom="@dimen/margin_medium"
+                    android:indeterminateTint="@color/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </FrameLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+</layout>

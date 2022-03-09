@@ -1,16 +1,12 @@
 package es.upsa.mimo.gamercollection.fragments.popups
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.children
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
-import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnFiltersSelected
+import es.upsa.mimo.gamercollection.base.BindingDialogFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentPopupFilterDialogBinding
 import es.upsa.mimo.gamercollection.extensions.addChip
 import es.upsa.mimo.gamercollection.extensions.toDate
@@ -23,32 +19,17 @@ import es.upsa.mimo.gamercollection.viewmodels.PopupFilterViewModel
 class PopupFilterDialogFragment(
     private var currentFilters: FilterModel?,
     private val onFiltersSelected: OnFiltersSelected
-) : DialogFragment() {
+) : BindingDialogFragment<FragmentPopupFilterDialogBinding>() {
+
+    //region Protected properties
+    override val transparentStyle = true
+    //endregion
 
     //region Private properties
-    private lateinit var binding: FragmentPopupFilterDialogBinding
     private lateinit var viewModel: PopupFilterViewModel
     //endregion
 
     //region Lifecycle methods
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NO_TITLE, R.style.Theme_GamerCollection_DialogTransparent)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_popup_filter_dialog,
-            container,
-            false
-        )
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeUI()
