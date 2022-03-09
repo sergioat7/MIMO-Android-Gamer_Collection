@@ -74,9 +74,6 @@ class PopupFilterDialogFragment(
             (child as Chip).isChecked = false
         }
 
-        binding.ratingBarMin.rating = 0F
-        binding.ratingBarMax.rating = 5F
-
         binding.customEditTextReleaseDateMin.setText(Constants.EMPTY_VALUE)
         binding.customEditTextReleaseDateMax.setText(Constants.EMPTY_VALUE)
 
@@ -86,15 +83,8 @@ class PopupFilterDialogFragment(
         binding.customEditTextPriceMin.setText(Constants.EMPTY_VALUE)
         binding.customEditTextPriceMax.setText(Constants.EMPTY_VALUE)
 
-        binding.radioButtonGotyNo.isChecked = true
-
-        binding.radioButtonLoanedNo.isChecked = true
-
-        binding.radioButtonSagaNo.isChecked = true
-
-        binding.radioButtonSongsNo.isChecked = true
-
         currentFilters = null
+        binding.filter = null
     }
 
     fun save() {
@@ -272,9 +262,6 @@ class PopupFilterDialogFragment(
                     (child as Chip).isChecked = formats.firstOrNull { it == child.tag } != null
                 }
             }
-
-            binding.ratingBarMin.rating = (filters.minScore / 2).toFloat()
-            binding.ratingBarMax.rating = (filters.maxScore / 2).toFloat()
 
             binding.customEditTextReleaseDateMin.setText(
                 filters.minReleaseDate.toString(

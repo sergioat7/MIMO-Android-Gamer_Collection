@@ -138,7 +138,7 @@ class GameDetailActivity : BaseActivity() {
     fun setRating() {
 
         val dialogBinding = SetRatingDialogBinding.inflate(layoutInflater)
-        dialogBinding.ratingBar.rating = binding.ratingButton.text.toString().toFloat() / 2
+        dialogBinding.rating = binding.ratingButton.text.toString().toDouble() / 2
 
         MaterialAlertDialogBuilder(this)
             .setView(dialogBinding.root)
