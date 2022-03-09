@@ -106,7 +106,7 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
             if (radio_button_en.isChecked) Preferences.ENGLISH_LANGUAGE_KEY
             else Preferences.SPANISH_LANGUAGE_KEY
         val sortingKey =
-            resources.getStringArray(R.array.sorting_keys_ids)[spinner_sorting_keys.selectedItemPosition]
+            resources.getStringArray(R.array.sort_param_keys)[spinner_sorting_keys.selectedItemPosition]
         val themeMode =
             resources.getStringArray(R.array.app_theme_values)
                 .indexOf(text_view_app_theme_value.text.toString())
@@ -156,11 +156,11 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
                     )
                 adapter = Constants.getAdapter(
                     requireContext(),
-                    resources.getStringArray(R.array.sorting_keys).toList(),
+                    resources.getStringArray(R.array.sort_param_values).toList(),
                     true
                 )
                 setSelection(
-                    resources.getStringArray(R.array.sorting_keys_ids)
+                    resources.getStringArray(R.array.sort_param_keys)
                         .indexOf(this@ProfileFragment.viewModel.sortParam)
                 )
             }
