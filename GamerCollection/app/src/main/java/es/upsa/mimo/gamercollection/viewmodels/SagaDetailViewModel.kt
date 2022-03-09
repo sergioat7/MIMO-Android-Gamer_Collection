@@ -54,7 +54,7 @@ class SagaDetailViewModel @Inject constructor(
 
     fun getOrderedGames(games: List<GameResponse>): List<GameResponse> {
 
-        return when (SharedPreferencesHelper.getSortingKey()) {
+        return when (SharedPreferencesHelper.sortParam) {
             "platform" -> games.sortedBy { it.platform }
             "releaseDate" -> games.sortedBy { it.releaseDate }
             "purchaseDate" -> games.sortedBy { it.purchaseDate }

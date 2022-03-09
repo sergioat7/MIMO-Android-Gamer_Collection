@@ -17,12 +17,12 @@ object Preferences {
     const val LANGUAGE_PREFERENCES_NAME = "language"
     const val ENGLISH_LANGUAGE_KEY = "en"
     const val SPANISH_LANGUAGE_KEY = "es"
-    const val SORTING_KEY_PREFERENCES_NAME = "sortingKey"
-    const val DEFAULT_SORTING_KEY = "name"
+    const val SORT_PARAM_PREFERENCES_NAME = "sortParam"
+    const val DEFAULT_SORT_PARAM = "name"
     const val SWIPE_REFRESH_PREFERENCES_NAME = "swipeRefreshEnabled"
     const val GAME_NOTIFICATION_PREFERENCES_NAME = "gameNotificationLaunched_"
-    const val VERSION_PREFERENCE_NAME = "version"
-    const val THEME_MODE_PREFERENCE_NAME = "themeMode"
+    const val VERSION_PREFERENCES_NAME = "version"
+    const val THEME_MODE_PREFERENCES_NAME = "themeMode"
 }
 
 object Constants {

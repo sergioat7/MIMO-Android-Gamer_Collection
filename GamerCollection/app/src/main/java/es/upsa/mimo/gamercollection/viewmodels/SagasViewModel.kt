@@ -27,7 +27,7 @@ class SagasViewModel @Inject constructor(
 
     //region Public properties
     val swipeRefresh: Boolean
-        get() = SharedPreferencesHelper.getSwipeRefresh()
+        get() = SharedPreferencesHelper.swipeRefresh
     val platforms: List<PlatformResponse>
         get() = platformRepository.getPlatformsDatabase()
     val sagasLoading: LiveData<Boolean> = _sagasLoading

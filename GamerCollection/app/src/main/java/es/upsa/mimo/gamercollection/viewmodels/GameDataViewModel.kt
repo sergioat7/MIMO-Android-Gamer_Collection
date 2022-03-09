@@ -27,9 +27,9 @@ class GameDataViewModel @Inject constructor(
 
     //region Public properties
     val language: String
-        get() = SharedPreferencesHelper.getLanguage()
+        get() = SharedPreferencesHelper.language
     val dateFormatToShow: String
-        get() = SharedPreferencesHelper.getDateFormatToShow()
+        get() = SharedPreferencesHelper.dateFormatToShow
     val formats: List<FormatResponse>
         get() = formatRepository.getFormatsDatabase()
     val genres: List<GenreResponse>

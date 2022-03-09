@@ -161,7 +161,7 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
                 )
                 setSelection(
                     resources.getStringArray(R.array.sorting_keys_ids)
-                        .indexOf(this@ProfileFragment.viewModel.sortingKey)
+                        .indexOf(this@ProfileFragment.viewModel.sortParam)
                 )
             }
 
