@@ -38,7 +38,7 @@ class GamesViewModel @Inject constructor(
     private var _filters = MutableLiveData<FilterModel?>(null)
     private var _scrollPosition = MutableLiveData(GamesFragment.ScrollPosition.TOP)
     private var sortParam: String = SharedPreferencesHelper.sortParam
-    private var sortAscending = true
+    private var isSortOrderAscending = true
     private var query: String? = null
     //endregion
 
@@ -83,7 +83,7 @@ class GamesViewModel @Inject constructor(
             _filters.value,
             query,
             sortParam,
-            sortAscending
+            isSortOrderAscending
         )
         _originalGames.value = games
 
@@ -102,8 +102,8 @@ class GamesViewModel @Inject constructor(
 
     fun sortGames(context: Context, resources: Resources) {
 
-        val sortingKeys = resources.getStringArray(R.array.sorting_keys_ids)
-        val sortingValues = resources.getStringArray(R.array.sorting_keys)
+        val sortingKeys = resources.getStringArray(R.array.sort_param_keys)
+        val sortingValues = resources.getStringArray(R.array.sort_param_values)
 
         val dialogView = LinearLayout(context)
         dialogView.orientation = LinearLayout.HORIZONTAL
@@ -113,11 +113,8 @@ class GamesViewModel @Inject constructor(
         sortKeysPicker.value = sortingKeys.indexOf(sortParam)
 
         val sortOrdersPicker = NumberPicker(context)
-        sortOrdersPicker.setup(arrayOf(
-            resources.getString(R.string.ascending),
-            resources.getString(R.string.descending)
-        ))
-        sortOrdersPicker.value = if (sortAscending) 0 else 1
+        sortOrdersPicker.setup(context.resources.getStringArray(R.array.sort_order_values))
+        sortOrdersPicker.value = if (isSortOrderAscending) 0 else 1
 
         val params = LinearLayout.LayoutParams(50, 50)
         params.gravity = Gravity.CENTER
@@ -133,7 +130,7 @@ class GamesViewModel @Inject constructor(
             .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
 
                 sortParam = sortingKeys[sortKeysPicker.value]
-                sortAscending = sortOrdersPicker.value == 0
+                isSortOrderAscending = sortOrdersPicker.value == 0
                 fetchGames()
                 dialog.dismiss()
             }
@@ -206,7 +203,7 @@ class GamesViewModel @Inject constructor(
         _state.value = null
         _filters.value = null
         sortParam = SharedPreferencesHelper.sortParam
-        sortAscending = true
+        isSortOrderAscending = true
         query = null
     }
     //endregion
