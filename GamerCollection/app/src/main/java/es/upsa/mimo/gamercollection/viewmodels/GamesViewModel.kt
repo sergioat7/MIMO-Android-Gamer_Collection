@@ -70,7 +70,7 @@ class GamesViewModel @Inject constructor(
             _gamesLoading.value = false
         }, {
 
-            _gamesLoading.value = true
+            _gamesLoading.value = false
             _gamesError.value = it
         })
     }

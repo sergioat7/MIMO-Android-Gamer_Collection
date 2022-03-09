@@ -1,17 +1,13 @@
 package es.upsa.mimo.gamercollection.viewholders
 
 import android.graphics.Color
-import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.databinding.GameItemBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
-import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.State
 
 class GamesViewHolder(
@@ -48,38 +44,12 @@ class GamesViewHolder(
             Color.TRANSPARENT
         }
 
-        val image = game.imageUrl ?: Constants.NO_VALUE
-        val loading = binding.progressBarLoading
-        loading.visibility = View.VISIBLE
-        Picasso
-            .get()
-            .load(image)
-            .fit()
-            .centerCrop()
-            .error(R.drawable.ic_default_game_cover)
-            .into(binding.imageViewGame, object : Callback {
-
-                override fun onSuccess() {
-                    loading.visibility = View.GONE
-                }
-
-                override fun onError(e: Exception?) {
-                    loading.visibility = View.GONE
-                }
-            })
-
-        val rating = game.score
-
         with(binding) {
 
             viewState.setBackgroundColor(color)
-
             platform = platforms.firstOrNull { it.id == game.platform }
-
-            textViewRating.text = rating.toInt().toString()
-
+            textViewRating.text = game.score.toInt().toString()
             checkBox.isChecked = game.saga?.id == sagaId
-
             this.game = game
             isSagaIdNull = sagaId == null
             this.onItemClickListener = onItemClickListener
