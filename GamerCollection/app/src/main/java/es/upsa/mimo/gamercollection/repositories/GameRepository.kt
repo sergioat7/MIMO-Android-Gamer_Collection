@@ -6,10 +6,7 @@ import es.upsa.mimo.gamercollection.injection.modules.IoDispatcher
 import es.upsa.mimo.gamercollection.injection.modules.MainDispatcher
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.GameWithSaga
-import es.upsa.mimo.gamercollection.models.rawg.RawgDeveloperResponse
-import es.upsa.mimo.gamercollection.models.rawg.RawgEsrbResponse
 import es.upsa.mimo.gamercollection.models.rawg.RawgGameResponse
-import es.upsa.mimo.gamercollection.models.rawg.RawgPublisherResponse
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
@@ -357,7 +354,7 @@ class GameRepository @Inject constructor(
 
             try {
                 when (val response = ApiManager.validateResponse(apiRawg.getGame(gameId, params))) {
-                    is RequestResult.JsonSuccess -> success(mapRawgGame(response.body))
+                    is RequestResult.JsonSuccess -> success(GameResponse(response.body))
                     is RequestResult.Failure -> failure(response.error)
                     else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
                 }
@@ -404,92 +401,10 @@ class GameRepository @Inject constructor(
         val games = mutableListOf<GameResponse>()
         rawgGames?.let {
             for (rawgGame in it) {
-                games.add(mapRawgGame(rawgGame))
+                games.add(GameResponse(rawgGame))
             }
         }
         return games
-    }
-
-    private fun mapRawgGame(rawgGame: RawgGameResponse): GameResponse {
-
-        return GameResponse(
-            rawgGame.id,
-            rawgGame.name,
-            null,
-            rawgGame.rating * 2,
-            getRawgEsrbRating(rawgGame.esrbRating),
-            getRawgPublishers(rawgGame.publishers),
-            getRawgDevelopers(rawgGame.developers),
-            null,
-            rawgGame.released,
-            false,
-            null,
-            null,
-            null,
-            null,
-            null,
-            0.0,
-            rawgGame.backgroundImage,
-            null,
-            null,
-            null,
-            null,
-            listOf()
-        )
-    }
-
-    private fun getRawgDevelopers(developers: List<RawgDeveloperResponse>?): String? {
-
-        val result = StringBuilder()
-        developers?.let {
-            for (developer in it) {
-                result.append(developer.name)
-                result.append(Constants.NEXT_VALUE_SEPARATOR)
-            }
-        }
-        return if (result.isNotBlank()) {
-            StringBuilder(
-                result.substring(
-                    0,
-                    result.length - Constants.NEXT_VALUE_SEPARATOR.length
-                )
-            ).toString()
-        } else {
-            null
-        }
-    }
-
-    private fun getRawgPublishers(publishers: List<RawgPublisherResponse>?): String? {
-
-        val result = StringBuilder()
-        publishers?.let {
-            for (publisher in it) {
-                result.append(publisher.name)
-                result.append(Constants.NEXT_VALUE_SEPARATOR)
-            }
-        }
-        return if (result.isNotBlank()) {
-            StringBuilder(
-                result.substring(
-                    0,
-                    result.length - Constants.NEXT_VALUE_SEPARATOR.length
-                )
-            ).toString()
-        } else {
-            null
-        }
-    }
-
-    private fun getRawgEsrbRating(esrbRating: RawgEsrbResponse?): String? {
-
-        return when (esrbRating?.slug) {
-            "everyone" -> "+3"
-            "everyone-10-plus" -> "+7"
-            "teen" -> "+12"
-            "mature" -> "+16"
-            "adults-only" -> "+18"
-            else -> null
-        }
     }
     //endregion
 }
