@@ -141,9 +141,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     fun buttonClicked(it: View) {
 
         val newState = when (it) {
-            binding.buttonPending -> if (it.isSelected) null else State.PENDING_STATE
-            binding.buttonInProgress -> if (it.isSelected) null else State.IN_PROGRESS_STATE
-            binding.buttonFinished -> if (it.isSelected) null else State.FINISHED_STATE
+            binding.buttonPending.root -> if (it.isSelected) null else State.PENDING_STATE
+            binding.buttonInProgress.root -> if (it.isSelected) null else State.IN_PROGRESS_STATE
+            binding.buttonFinished.root -> if (it.isSelected) null else State.FINISHED_STATE
             else -> null
         }
         viewModel.setState(newState)
@@ -261,9 +261,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         viewModel.state.observe(viewLifecycleOwner) {
 
             binding.apply {
-                buttonPending.isSelected = it == State.PENDING_STATE
-                buttonInProgress.isSelected = it == State.IN_PROGRESS_STATE
-                buttonFinished.isSelected = it == State.FINISHED_STATE
+                buttonPending.root.isSelected = it == State.PENDING_STATE
+                buttonInProgress.root.isSelected = it == State.IN_PROGRESS_STATE
+                buttonFinished.root.isSelected = it == State.FINISHED_STATE
             }
         }
 
@@ -389,9 +389,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         val finishedGamesCount = filteredGames.filter { it == State.FINISHED_STATE }.size
 
         with(binding) {
-            buttonPending.setSubtitle("$pendingGamesCount")
-            buttonInProgress.setSubtitle("$inProgressGamesCount")
-            buttonFinished.setSubtitle("$finishedGamesCount")
+            buttonPending.subtitle = "$pendingGamesCount"
+            buttonInProgress.subtitle = "$inProgressGamesCount"
+            buttonFinished.subtitle = "$finishedGamesCount"
         }
     }
 
@@ -409,9 +409,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         with(binding) {
 
             swipeRefreshLayout.isRefreshing = !enable
-            buttonPending.isEnabled = enable
-            buttonInProgress.isEnabled = enable
-            buttonFinished.isEnabled = enable
+            buttonPending.root.isEnabled = enable
+            buttonInProgress.root.isEnabled = enable
+            buttonFinished.root.isEnabled = enable
         }
     }
 

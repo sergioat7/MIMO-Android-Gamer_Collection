@@ -11,6 +11,10 @@
             type="android.view.View"
             />
 
+        <import
+            type="es.upsa.mimo.gamercollection.extensions.StringExtensionsKt"
+            />
+
         <variable
             name="title"
             type="String"
@@ -65,7 +69,7 @@
             android:layout_marginStart="@dimen/margin_tiny"
             android:layout_marginEnd="@dimen/margin_tiny"
             android:text="@{subtitle}"
-            android:visibility="@{subtitle.empty ? View.GONE : View.VISIBLE}"
+            android:visibility="@{StringExtensionsKt.isNotBlank(subtitle) ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"

@@ -73,9 +73,9 @@ class GameDataFragment(
         binding.spinnerFormats.setSelection(formatPosition)
 
         game?.state?.let {
-            binding.buttonPending.isSelected = it == State.PENDING_STATE
-            binding.buttonInProgress.isSelected = it == State.IN_PROGRESS_STATE
-            binding.buttonFinished.isSelected = it == State.FINISHED_STATE
+            binding.buttonPending.root.isSelected = it == State.PENDING_STATE
+            binding.buttonInProgress.root.isSelected = it == State.IN_PROGRESS_STATE
+            binding.buttonFinished.root.isSelected = it == State.FINISHED_STATE
         }
 
         val releaseDate = getText(
@@ -145,9 +145,9 @@ class GameDataFragment(
             if (editable || binding.spinnerGenres.selectedItemPosition > 0) View.VISIBLE
             else View.GONE
 
-        binding.buttonPending.isEnabled = editable
-        binding.buttonInProgress.isEnabled = editable
-        binding.buttonFinished.isEnabled = editable
+        binding.buttonPending.root.isEnabled = editable
+        binding.buttonInProgress.root.isEnabled = editable
+        binding.buttonFinished.root.isEnabled = editable
 
         binding.spinnerFormats.backgroundTintList =
             if (!editable) ColorStateList.valueOf(Color.TRANSPARENT)
@@ -185,7 +185,12 @@ class GameDataFragment(
         val genre =
             viewModel.genres.firstOrNull { it.name == binding.spinnerGenres.selectedItem.toString() }?.id
         val state =
-            if (binding.buttonPending.isSelected) State.PENDING_STATE else if (binding.buttonInProgress.isSelected) State.IN_PROGRESS_STATE else if (binding.buttonFinished.isSelected) State.FINISHED_STATE else null
+            when {
+                binding.buttonPending.root.isSelected -> State.PENDING_STATE
+                binding.buttonInProgress.root.isSelected -> State.IN_PROGRESS_STATE
+                binding.buttonFinished.root.isSelected -> State.FINISHED_STATE
+                else -> null
+            }
         val purchaseDate = binding.customEditTextPurchaseDate.getText().toDate(
             viewModel.dateFormatToShow,
             viewModel.language
@@ -217,12 +222,12 @@ class GameDataFragment(
 
     fun buttonClicked(it: View) {
 
-        binding.buttonPending.isSelected =
-            if (it == binding.buttonPending) !it.isSelected else false
-        binding.buttonInProgress.isSelected =
-            if (it == binding.buttonInProgress) !it.isSelected else false
-        binding.buttonFinished.isSelected =
-            if (it == binding.buttonFinished) !it.isSelected else false
+        binding.buttonPending.root.isSelected =
+            if (it == binding.buttonPending.root) !it.isSelected else false
+        binding.buttonInProgress.root.isSelected =
+            if (it == binding.buttonInProgress.root) !it.isSelected else false
+        binding.buttonFinished.root.isSelected =
+            if (it == binding.buttonFinished.root) !it.isSelected else false
     }
 
     fun showMap() {
