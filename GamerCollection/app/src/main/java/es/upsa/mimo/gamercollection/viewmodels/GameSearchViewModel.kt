@@ -29,7 +29,7 @@ class GameSearchViewModel @Inject constructor(
     //region Public properties
     var query: String? = null
     val swipeRefresh: Boolean
-        get() = SharedPreferencesHelper.getSwipeRefresh()
+        get() = SharedPreferencesHelper.swipeRefresh
     val platforms: List<PlatformResponse>
         get() = platformRepository.getPlatformsDatabase()
     val gamesLoading: LiveData<Boolean> = _gamesLoading

@@ -37,18 +37,18 @@ class GamesViewModel @Inject constructor(
     private var _state = MutableLiveData<String?>(null)
     private var _filters = MutableLiveData<FilterModel?>(null)
     private var _scrollPosition = MutableLiveData(GamesFragment.ScrollPosition.TOP)
-    private var sortKey: String = SharedPreferencesHelper.getSortingKey()
+    private var sortParam: String = SharedPreferencesHelper.sortParam
     private var sortAscending = true
     private var query: String? = null
     //endregion
 
     //region Public properties
     val language: String
-        get() = SharedPreferencesHelper.getLanguage()
+        get() = SharedPreferencesHelper.language
     val dateFormatToShow: String
-        get() = SharedPreferencesHelper.getDateFormatToShow()
+        get() = SharedPreferencesHelper.dateFormatToShow
     val swipeRefresh: Boolean
-        get() = SharedPreferencesHelper.getSwipeRefresh()
+        get() = SharedPreferencesHelper.swipeRefresh
     val platforms: List<PlatformResponse>
         get() = platformRepository.getPlatformsDatabase()
     val gamesLoading: LiveData<Boolean> = _gamesLoading
@@ -82,7 +82,7 @@ class GamesViewModel @Inject constructor(
         val games = gameRepository.getGamesDatabase(
             _filters.value,
             query,
-            sortKey,
+            sortParam,
             sortAscending
         )
         _originalGames.value = games
@@ -110,7 +110,7 @@ class GamesViewModel @Inject constructor(
 
         val sortKeysPicker = NumberPicker(context)
         sortKeysPicker.setup(sortingValues)
-        sortKeysPicker.value = sortingKeys.indexOf(sortKey)
+        sortKeysPicker.value = sortingKeys.indexOf(sortParam)
 
         val sortOrdersPicker = NumberPicker(context)
         sortOrdersPicker.setup(arrayOf(
@@ -132,7 +132,7 @@ class GamesViewModel @Inject constructor(
             .setCancelable(false)
             .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
 
-                sortKey = sortingKeys[sortKeysPicker.value]
+                sortParam = sortingKeys[sortKeysPicker.value]
                 sortAscending = sortOrdersPicker.value == 0
                 fetchGames()
                 dialog.dismiss()
@@ -205,7 +205,7 @@ class GamesViewModel @Inject constructor(
 
         _state.value = null
         _filters.value = null
-        sortKey = SharedPreferencesHelper.getSortingKey()
+        sortParam = SharedPreferencesHelper.sortParam
         sortAscending = true
         query = null
     }

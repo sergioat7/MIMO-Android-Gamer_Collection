@@ -31,7 +31,7 @@ class LoginViewModel @Inject constructor(
 
     //region Public properties
     val username: String
-        get() = SharedPreferencesHelper.getUserData().username
+        get() = SharedPreferencesHelper.userData.username
     val loginFormState: LiveData<LoginFormState> = _loginForm
     val loginLoading: LiveData<Boolean> = _loginLoading
     val loginError: LiveData<ErrorResponse?> = _loginError
@@ -44,10 +44,9 @@ class LoginViewModel @Inject constructor(
         userRepository.login(username, password, { token ->
 
             val userData = UserData(username, password, false)
-            val authData = AuthData(token)
             SharedPreferencesHelper.run {
-                storeUserData(userData)
-                storeCredentials(authData)
+                this.userData = userData
+                this.credentials = AuthData(token)
             }
             loadContent(userData)
         }, {
@@ -84,7 +83,7 @@ class LoginViewModel @Inject constructor(
                             stateRepository.loadStates({
 
                                 userData.isLoggedIn = true
-                                SharedPreferencesHelper.storeUserData(userData)
+                                SharedPreferencesHelper.userData = userData
 
                                 _loginError.value = null
                                 _loginLoading.value = false

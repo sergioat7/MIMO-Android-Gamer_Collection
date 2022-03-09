@@ -28,13 +28,13 @@ class ProfileViewModel @Inject constructor(
 
     //region Public properties
     val userData: UserData
-        get() = SharedPreferencesHelper.getUserData()
+        get() = SharedPreferencesHelper.userData
     val language: String
-        get() = SharedPreferencesHelper.getLanguage()
-    val sortingKey: String
-        get() = SharedPreferencesHelper.getSortingKey()
+        get() = SharedPreferencesHelper.language
+    val sortParam: String
+        get() = SharedPreferencesHelper.sortParam
     val swipeRefresh: Boolean
-        get() = SharedPreferencesHelper.getSwipeRefresh()
+        get() = SharedPreferencesHelper.swipeRefresh
     val profileLoading: LiveData<Boolean> = _profileLoading
     val profileError: LiveData<ErrorResponse?> = _profileError
     //endregion
@@ -58,20 +58,19 @@ class ProfileViewModel @Inject constructor(
 
         val changePassword = newPassword != userData.password
         val changeLanguage = newLanguage != language
-        val changeSortParam = newSortParam != sortingKey
+        val changeSortParam = newSortParam != sortParam
         val changeSwipeRefresh = newSwipeRefresh != swipeRefresh
-        val changeThemeMode = themeMode != SharedPreferencesHelper.getThemeMode()
+        val changeThemeMode = themeMode != SharedPreferencesHelper.themeMode
 
         if (changePassword) {
             _profileLoading.value = true
             userRepository.updatePassword(newPassword, {
 
                 SharedPreferencesHelper.storePassword(newPassword)
-                val userData = SharedPreferencesHelper.getUserData()
+                val userData = SharedPreferencesHelper.userData
                 userRepository.login(userData.username, userData.password, {
 
-                    val authData = AuthData(it)
-                    SharedPreferencesHelper.storeCredentials(authData)
+                    SharedPreferencesHelper.credentials = AuthData(it)
                     _profileLoading.value = false
                     if (changeLanguage) {
                         reloadData()
@@ -85,16 +84,16 @@ class ProfileViewModel @Inject constructor(
         }
 
         if (changeSortParam) {
-            SharedPreferencesHelper.setSortingKey(newSortParam)
+            SharedPreferencesHelper.sortParam = newSortParam
         }
 
         if (changeSwipeRefresh) {
-            SharedPreferencesHelper.setSwipeRefresh(newSwipeRefresh)
+            SharedPreferencesHelper.swipeRefresh = newSwipeRefresh
         }
 
         if (changeLanguage) {
 
-            SharedPreferencesHelper.setLanguage(newLanguage)
+            SharedPreferencesHelper.language = newLanguage
             if (!changePassword) {
                 reloadData()
             }
@@ -102,7 +101,7 @@ class ProfileViewModel @Inject constructor(
 
         if (changeThemeMode) {
 
-            SharedPreferencesHelper.setThemeMode(themeMode)
+            SharedPreferencesHelper.themeMode = themeMode
             when (themeMode) {
                 1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)

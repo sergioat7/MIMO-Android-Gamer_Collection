@@ -41,10 +41,9 @@ class RegisterViewModel @Inject constructor(
             userRepository.login(username, password, { token ->
 
                 val userData = UserData(username, password, false)
-                val authData = AuthData(token)
                 SharedPreferencesHelper.run {
-                    storeUserData(userData)
-                    storeCredentials(authData)
+                    this.userData = userData
+                    this.credentials = AuthData(token)
                 }
                 loadContent(userData)
             }, {
@@ -86,7 +85,7 @@ class RegisterViewModel @Inject constructor(
                     stateRepository.loadStates({
 
                         userData.isLoggedIn = true
-                        SharedPreferencesHelper.storeUserData(userData)
+                        SharedPreferencesHelper.userData = userData
 
                         _registerLoading.value = false
                         _registerError.value = null
