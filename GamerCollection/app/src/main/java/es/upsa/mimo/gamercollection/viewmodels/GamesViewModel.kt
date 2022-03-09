@@ -10,6 +10,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.extensions.getPickerParams
+import es.upsa.mimo.gamercollection.extensions.setup
 import es.upsa.mimo.gamercollection.fragments.GamesFragment
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
@@ -106,33 +108,23 @@ class GamesViewModel @Inject constructor(
         val dialogView = LinearLayout(context)
         dialogView.orientation = LinearLayout.HORIZONTAL
 
-        val ascendingPicker = getPicker(
-            arrayOf(
-                resources.getString(R.string.ascending),
-                resources.getString(R.string.descending)
-            ), context
-        )
-        ascendingPicker.value = if (sortAscending) 0 else 1
-        val ascendingPickerParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        ascendingPickerParams.weight = 1f
-
-        val sortKeysPicker = getPicker(sortingValues, context)
+        val sortKeysPicker = NumberPicker(context)
+        sortKeysPicker.setup(sortingValues)
         sortKeysPicker.value = sortingKeys.indexOf(sortKey)
-        val sortKeysPickerParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        sortKeysPickerParams.weight = 1f
+
+        val sortOrdersPicker = NumberPicker(context)
+        sortOrdersPicker.setup(arrayOf(
+            resources.getString(R.string.ascending),
+            resources.getString(R.string.descending)
+        ))
+        sortOrdersPicker.value = if (sortAscending) 0 else 1
 
         val params = LinearLayout.LayoutParams(50, 50)
         params.gravity = Gravity.CENTER
 
         dialogView.layoutParams = params
-        dialogView.addView(sortKeysPicker, sortKeysPickerParams)
-        dialogView.addView(ascendingPicker, ascendingPickerParams)
+        dialogView.addView(sortKeysPicker, getPickerParams())
+        dialogView.addView(sortOrdersPicker, getPickerParams())
 
         MaterialAlertDialogBuilder(context)
             .setTitle(resources.getString(R.string.sort_title))
@@ -141,7 +133,7 @@ class GamesViewModel @Inject constructor(
             .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
 
                 sortKey = sortingKeys[sortKeysPicker.value]
-                sortAscending = ascendingPicker.value == 0
+                sortAscending = sortOrdersPicker.value == 0
                 fetchGames()
                 dialog.dismiss()
             }
@@ -209,17 +201,6 @@ class GamesViewModel @Inject constructor(
     //endregion
 
     //region Private methods
-    private fun getPicker(values: Array<String>, context: Context): NumberPicker {
-
-        val picker = NumberPicker(context)
-        picker.minValue = 0
-        picker.maxValue = values.size - 1
-        picker.wrapSelectorWheel = true
-        picker.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-        picker.displayedValues = values
-        return picker
-    }
-
     private fun resetProperties() {
 
         _state.value = null
