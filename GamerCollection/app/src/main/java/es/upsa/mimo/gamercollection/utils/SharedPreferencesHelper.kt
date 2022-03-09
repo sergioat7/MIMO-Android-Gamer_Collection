@@ -5,6 +5,9 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import com.google.gson.Gson
 import es.upsa.mimo.gamercollection.GamerCollectionApplication
+import es.upsa.mimo.gamercollection.extensions.setBoolean
+import es.upsa.mimo.gamercollection.extensions.setInt
+import es.upsa.mimo.gamercollection.extensions.setString
 import es.upsa.mimo.gamercollection.models.login.AuthData
 import es.upsa.mimo.gamercollection.models.login.UserData
 import java.util.*
@@ -16,6 +19,7 @@ object SharedPreferencesHelper {
         Preferences.PREFERENCES_NAME,
         Context.MODE_PRIVATE
     )
+    private val editor = appPreferences.edit()
     private val appEncryptedPreferences = EncryptedSharedPreferences.create(
         Preferences.ENCRYPTED_PREFERENCES_NAME,
         MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
@@ -23,6 +27,7 @@ object SharedPreferencesHelper {
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
+    private val encryptedEditor = appEncryptedPreferences.edit()
     private val gson = Gson()
     //endregion
 
@@ -46,34 +51,23 @@ object SharedPreferencesHelper {
     }
 
     fun storeUserData(userData: UserData) {
-
-        with(appEncryptedPreferences.edit()) {
-            val userDataJson = gson.toJson(userData)
-            putString(
-                Preferences.USER_DATA_PREFERENCES_NAME,
-                userDataJson
-            )
-            commit()
-        }
+        encryptedEditor.setString(Preferences.USER_DATA_PREFERENCES_NAME, gson.toJson(userData))
     }
 
     fun storePassword(password: String) {
 
         val userData = getUserData()
-        userData.password = password
-        storeUserData(userData)
+        storeUserData(UserData(userData.username, password, userData.isLoggedIn))
     }
 
     fun removeUserData() {
-        appEncryptedPreferences.edit()?.remove(Preferences.USER_DATA_PREFERENCES_NAME)?.apply()
+        encryptedEditor.remove(Preferences.USER_DATA_PREFERENCES_NAME)?.apply()
     }
 
     fun removePassword() {
 
         val userData = getUserData()
-        userData.password = Constants.EMPTY_VALUE
-        userData.isLoggedIn = false
-        storeUserData(userData)
+        storeUserData(UserData(userData.username, Constants.EMPTY_VALUE, false))
     }
 
     fun getCredentials(): AuthData {
@@ -88,16 +82,11 @@ object SharedPreferencesHelper {
     }
 
     fun storeCredentials(authData: AuthData) {
-
-        with(appEncryptedPreferences.edit()) {
-            val authDataJson = gson.toJson(authData)
-            putString(Preferences.AUTH_DATA_PREFERENCES_NAME, authDataJson)
-            commit()
-        }
+        encryptedEditor.setString(Preferences.AUTH_DATA_PREFERENCES_NAME, gson.toJson(authData))
     }
 
     fun removeCredentials() {
-        appEncryptedPreferences.edit()?.remove(Preferences.AUTH_DATA_PREFERENCES_NAME)?.apply()
+        encryptedEditor.remove(Preferences.AUTH_DATA_PREFERENCES_NAME)?.apply()
     }
 
     fun getLanguage(): String {
@@ -112,14 +101,7 @@ object SharedPreferencesHelper {
     }
 
     fun setLanguage(language: String) {
-
-        with(appPreferences.edit()) {
-            putString(
-                Preferences.LANGUAGE_PREFERENCES_NAME,
-                language
-            )
-            commit()
-        }
+        editor.setString(Preferences.LANGUAGE_PREFERENCES_NAME, language)
     }
 
     fun getDateFormatToShow(): String {
@@ -144,14 +126,7 @@ object SharedPreferencesHelper {
     }
 
     fun setSortingKey(sortingKey: String) {
-
-        with(appPreferences.edit()) {
-            putString(
-                Preferences.SORTING_KEY_PREFERENCES_NAME,
-                sortingKey
-            )
-            commit()
-        }
+        editor.setString(Preferences.SORTING_KEY_PREFERENCES_NAME, sortingKey)
     }
 
     fun getSwipeRefresh(): Boolean {
@@ -159,14 +134,7 @@ object SharedPreferencesHelper {
     }
 
     fun setSwipeRefresh(swipeRefresh: Boolean) {
-
-        with(appPreferences.edit()) {
-            putBoolean(
-                Preferences.SWIPE_REFRESH_PREFERENCES_NAME,
-                swipeRefresh
-            )
-            commit()
-        }
+        editor.setBoolean(Preferences.SWIPE_REFRESH_PREFERENCES_NAME, swipeRefresh)
     }
 
     fun notificationLaunched(gameId: Int): Boolean {
@@ -177,14 +145,7 @@ object SharedPreferencesHelper {
     }
 
     fun setNotificationLaunched(gameId: Int, value: Boolean) {
-
-        with(appPreferences.edit()) {
-            putBoolean(
-                "${Preferences.GAME_NOTIFICATION_PREFERENCES_NAME}$gameId",
-                value
-            )
-            commit()
-        }
+        editor.setBoolean("${Preferences.GAME_NOTIFICATION_PREFERENCES_NAME}$gameId", value)
     }
 
     fun getVersion(): Int {
@@ -192,14 +153,7 @@ object SharedPreferencesHelper {
     }
 
     fun setVersion(version: Int) {
-
-        with(appPreferences.edit()) {
-            putInt(
-                Preferences.VERSION_PREFERENCE_NAME,
-                version
-            )
-            commit()
-        }
+        editor.setInt(Preferences.VERSION_PREFERENCE_NAME, version)
     }
 
     fun getThemeMode(): Int {
@@ -207,14 +161,7 @@ object SharedPreferencesHelper {
     }
 
     fun setThemeMode(themeMode: Int) {
-
-        with(appPreferences.edit()) {
-            putInt(
-                Preferences.THEME_MODE_PREFERENCE_NAME,
-                themeMode
-            )
-            commit()
-        }
+        editor.setInt(Preferences.THEME_MODE_PREFERENCE_NAME, themeMode)
     }
     //endregion
 }
