@@ -93,12 +93,12 @@
                 style="@style/Widget.GamerCollection.FloatingActionButton.ListPosition"
                 />
 
-            <es.upsa.mimo.gamercollection.customviews.EmptyListLayout
-                android:id="@+id/layout_empty_list"
+            <include
+                layout="@layout/layout_empty_list"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:visibility="@{viewModel.games.empty ? View.VISIBLE : View.GONE}"
-                app:emptyListLayout_image="@drawable/ic_games"
+                app:image="@{@drawable/ic_games}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -138,7 +138,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
         }
         dialogBinding.recyclerViewGames.visibility =
             if (orderedGames.isNotEmpty()) View.VISIBLE else View.GONE
-        dialogBinding.layoutEmptyList.visibility =
+        dialogBinding.layoutEmptyList.root.visibility =
             if (orderedGames.isNotEmpty()) View.GONE else View.VISIBLE
 
         MaterialAlertDialogBuilder(requireContext())

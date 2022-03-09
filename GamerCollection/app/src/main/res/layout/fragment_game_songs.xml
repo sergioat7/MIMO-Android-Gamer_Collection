@@ -48,13 +48,13 @@
                 tools:listitem="@layout/song_item"
                 />
 
-            <es.upsa.mimo.gamercollection.customviews.EmptyListLayout
-                android:id="@+id/layout_empty_list"
+            <include
+                layout="@layout/layout_empty_list"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginBottom="@dimen/margin_small"
                 android:visibility="@{viewModel.songs.empty ? View.VISIBLE : View.GONE}"
-                app:emptyListLayout_image="@drawable/ic_song"
+                app:image="@{@drawable/ic_song}"
                 app:layout_constraintBottom_toTopOf="@+id/button_add_song"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

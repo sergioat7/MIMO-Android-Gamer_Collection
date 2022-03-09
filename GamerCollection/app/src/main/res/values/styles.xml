@@ -29,6 +29,11 @@
         <item name="android:textSize">@dimen/font_larger</item>
     </style>
 
+    <style name="Widget.GamerCollection.TextView.Title.StateButton">
+        <item name="android:textColor">@drawable/state_button_text_color</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
     <style name="Widget.GamerCollection.TextView.Title.GameItem">
         <item name="android:maxLines">3</item>
         <item name="android:textSize">@dimen/font_extra_large</item>
@@ -56,6 +61,11 @@
     <style name="Widget.GamerCollection.TextView.Description.NoAccount">
         <item name="android:textColor">@color/textTertiary</item>
         <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="Widget.GamerCollection.TextView.Description.StateButton">
+        <item name="android:textColor">@drawable/state_button_text_color</item>
+        <item name="android:maxLines">1</item>
     </style>
 
     <style name="Widget.GamerCollection.TextView.Description.GameItem">
