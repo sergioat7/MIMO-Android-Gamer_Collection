@@ -23,11 +23,12 @@
             tools:listitem="@layout/game_item"
             />
 
-        <es.upsa.mimo.gamercollection.customviews.EmptyListLayout
+        <include
             android:id="@+id/layout_empty_list"
+            layout="@layout/layout_empty_list"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:emptyListLayout_image="@drawable/ic_games"
+            app:image="@{@drawable/ic_games}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

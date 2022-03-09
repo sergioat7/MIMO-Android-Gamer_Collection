@@ -39,7 +39,6 @@ import es.upsa.mimo.gamercollection.utils.State
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.GamesViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GamesViewModel
-import kotlinx.android.synthetic.main.state_button.view.*
 import java.util.*
 import kotlin.math.max
 
@@ -390,9 +389,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         val finishedGamesCount = filteredGames.filter { it == State.FINISHED_STATE }.size
 
         with(binding) {
-            buttonPending.text_view_subtitle.text = "$pendingGamesCount"
-            buttonInProgress.text_view_subtitle.text = "$inProgressGamesCount"
-            buttonFinished.text_view_subtitle.text = "$finishedGamesCount"
+            buttonPending.setSubtitle("$pendingGamesCount")
+            buttonInProgress.setSubtitle("$inProgressGamesCount")
+            buttonFinished.setSubtitle("$finishedGamesCount")
         }
     }
 
