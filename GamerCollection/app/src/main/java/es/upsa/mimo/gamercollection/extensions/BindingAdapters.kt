@@ -12,6 +12,7 @@ import androidx.databinding.BindingAdapter
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.customviews.ImageViewWithLoading
+import es.upsa.mimo.gamercollection.customviews.StateButton
 import me.zhanghai.android.materialratingbar.MaterialRatingBar
 
 @BindingAdapter(
@@ -64,4 +65,14 @@ fun setImageUri(
 @BindingAdapter("rating")
 fun setRating(ratingBar: MaterialRatingBar, rating: Double?) {
     ratingBar.rating = rating?.toFloat() ?: 0F
+}
+
+@BindingAdapter("lineColor")
+fun setLineColor(stateButton: StateButton, lineColor: Drawable?) {
+    stateButton.binding.lineColor = lineColor
+}
+
+@BindingAdapter("background")
+fun setBackground(stateButton: StateButton, background: Drawable?) {
+    stateButton.binding.background = background
 }
