@@ -173,9 +173,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_medium"
                             android:isIndicator="false"
-                            android:rating="0"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/text_view_score_title"
+                            rating="@{filter.minScore / 2}"
                             style="@style/Widget.GamerCollection.RatingBar"
                             />
 
@@ -198,9 +198,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_medium"
                             android:isIndicator="false"
-                            android:rating="5"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/rating_bar_min"
+                            rating="@{filter != null ? (filter.maxScore / 2) : 5.0}"
                             style="@style/Widget.GamerCollection.RatingBar"
                             />
 
@@ -354,7 +354,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:checked="true"
+                                android:checked="@{!filter.goty}"
                                 android:text="@string/no"
                                 style="@style/Widget.GamerCollection.RadioButton"
                                 />
@@ -364,8 +364,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="@string/yes"
                                 android:checked="@{filter.goty}"
+                                android:text="@string/yes"
                                 style="@style/Widget.GamerCollection.RadioButton"
                                 />
 
@@ -397,7 +397,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:checked="true"
+                                android:checked="@{!filter.loaned}"
                                 android:text="@string/no"
                                 style="@style/Widget.GamerCollection.RadioButton"
                                 />
@@ -407,8 +407,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="@string/yes"
                                 android:checked="@{filter.loaned}"
+                                android:text="@string/yes"
                                 style="@style/Widget.GamerCollection.RadioButton"
                                 />
 
@@ -440,7 +440,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:checked="true"
+                                android:checked="@{!filter.hasSaga}"
                                 android:text="@string/no"
                                 style="@style/Widget.GamerCollection.RadioButton"
                                 />
@@ -450,8 +450,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="@string/yes"
                                 android:checked="@{filter.hasSaga}"
+                                android:text="@string/yes"
                                 style="@style/Widget.GamerCollection.RadioButton"
                                 />
 
@@ -485,7 +485,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:checked="true"
+                                android:checked="@{!filter.hasSongs}"
                                 android:text="@string/no"
                                 style="@style/Widget.GamerCollection.RadioButton"
                                 />
@@ -495,8 +495,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="@string/yes"
                                 android:checked="@{filter.hasSongs}"
+                                android:text="@string/yes"
                                 style="@style/Widget.GamerCollection.RadioButton"
                                 />
 

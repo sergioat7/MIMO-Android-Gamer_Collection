@@ -12,6 +12,7 @@ import androidx.databinding.BindingAdapter
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.customviews.ImageViewWithLoading
+import me.zhanghai.android.materialratingbar.MaterialRatingBar
 
 @BindingAdapter(
     value = ["src", "center", "placeholder", "radius", "loadingColor"],
@@ -58,4 +59,9 @@ fun setImageUri(
                 imageViewWithLoading.binding.progressBarImageLoading.visibility = View.GONE
             }
         })
+}
+
+@BindingAdapter("rating")
+fun setRating(ratingBar: MaterialRatingBar, rating: Double?) {
+    ratingBar.rating = rating?.toFloat() ?: 0F
 }

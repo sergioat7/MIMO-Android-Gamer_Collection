@@ -149,8 +149,8 @@
                         android:layout_height="@dimen/size_large"
                         android:layout_weight="1"
                         android:isIndicator="true"
-                        android:rating="@{Float.valueOf(String.valueOf(game.score / 2))}"
                         tools:rating="2.5"
+                        rating="@{game.score / 2}"
                         style="@style/Widget.GamerCollection.RatingBar"
                         />
 
@@ -159,7 +159,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/margin_small"
-                        android:layout_marginBottom="@dimen/margin_small"
+                        android:layout_marginBottom="@dimen/margin_tiny"
                         android:gravity="bottom"
                         tools:text="5.0"
                         style="@style/Widget.GamerCollection.TextView.Title.Rating"
