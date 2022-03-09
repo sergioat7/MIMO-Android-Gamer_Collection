@@ -38,7 +38,6 @@ class GameDetailActivity : BaseActivity() {
     private lateinit var pagerAdapter: GameDetailPagerAdapter
     private var game: GameResponse? = null
     private var platformValues = ArrayList<String>()
-    private var imageUrl: String? = null
     private val goBack = MutableLiveData<Boolean>()
     //endregion
 
@@ -126,20 +125,7 @@ class GameDetailActivity : BaseActivity() {
 
                 val url = dialogBinding.customEditTextUrl.getText()
                 if (url.isNotEmpty()) {
-
-                    Picasso.get()
-                        .load(url)
-                        .error(R.drawable.ic_add_image)
-                        .into(binding.imageViewGame, object : Callback {
-                            override fun onSuccess() {
-                                imageUrl = url
-                            }
-
-                            override fun onError(e: Exception?) {
-                                imageUrl = null
-                                showPopupDialog(resources.getString(R.string.error_image_url))
-                            }
-                        })
+                    binding.imageUrl = url
                 }
                 dialog.dismiss()
             }
@@ -241,24 +227,9 @@ class GameDetailActivity : BaseActivity() {
 
     private fun showData(game: GameResponse?) {
 
-        imageUrl = game?.imageUrl
+        binding.imageUrl = game?.imageUrl
 
-        val image = imageUrl ?: Constants.NO_VALUE
-        binding.progressBarLoading.visibility = View.VISIBLE
-        Picasso
-            .get()
-            .load(image)
-            .error(R.drawable.ic_add_image)
-            .into(binding.imageViewGame, object : Callback {
-
-                override fun onSuccess() {
-                    binding.progressBarLoading.visibility = View.GONE
-                }
-
-                override fun onError(e: Exception?) {
-                    binding.progressBarLoading.visibility = View.GONE
-                }
-            })
+        val image = binding.imageUrl ?: Constants.NO_VALUE
         Picasso
             .get()
             .load(image)
@@ -330,7 +301,7 @@ class GameDetailActivity : BaseActivity() {
 
             it.name = name
             it.platform = platform
-            it.imageUrl = imageUrl
+            it.imageUrl = binding.imageUrl
             it.score = score
             it
         } ?: run {
@@ -352,7 +323,7 @@ class GameDetailActivity : BaseActivity() {
                 null,
                 null,
                 0.0,
-                imageUrl,
+                binding.imageUrl,
                 null,
                 null,
                 null,
