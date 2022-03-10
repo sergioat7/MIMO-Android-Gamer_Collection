@@ -370,7 +370,112 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             .setCancelable(false)
             .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
 
-                //TODO: save
+                val platforms: ArrayList<String> = arrayListOf()
+                for (childId in dialogBinding.chipGroupPlatforms.checkedChipIds) {
+                    dialogBinding.chipGroupPlatforms.children.find { child ->
+                        child.id == childId
+                    }?.tag?.let { tag ->
+                        platforms.add("$tag")
+                    }
+                }
+
+                val genres: ArrayList<String> = arrayListOf()
+                for (childId in dialogBinding.chipGroupGenres.checkedChipIds) {
+                    dialogBinding.chipGroupGenres.children.find { child ->
+                        child.id == childId
+                    }?.tag?.let { tag ->
+                        genres.add("$tag")
+                    }
+                }
+
+                val formats: ArrayList<String> = arrayListOf()
+                for (childId in dialogBinding.chipGroupFormats.checkedChipIds) {
+                    dialogBinding.chipGroupFormats.children.find { child ->
+                        child.id == childId
+                    }?.tag?.let { tag ->
+                        formats.add("$tag")
+                    }
+                }
+
+                val minScore = (dialogBinding.ratingBarMin.rating * 2).toDouble()
+                val maxScore = (dialogBinding.ratingBarMax.rating * 2).toDouble()
+
+                val minReleaseDate = dialogBinding.customEditTextReleaseDateMin.getText().toDate(
+                    viewModel.filterDateFormat,
+                    viewModel.language
+                )
+                val maxReleaseDate = dialogBinding.customEditTextReleaseDateMax.getText().toDate(
+                    viewModel.filterDateFormat,
+                    viewModel.language
+                )
+
+                val minPurchaseDate = dialogBinding.customEditTextPurchaseDateMin.getText().toDate(
+                    viewModel.filterDateFormat,
+                    viewModel.language
+                )
+                val maxPurchaseDate = dialogBinding.customEditTextPurchaseDateMax.getText().toDate(
+                    viewModel.filterDateFormat,
+                    viewModel.language
+                )
+
+                var minPrice = 0.0
+                try {
+                    minPrice = dialogBinding.customEditTextPriceMin.getText().toDouble()
+                } catch (e: Exception) {
+                }
+                var maxPrice = 0.0
+                try {
+                    maxPrice = dialogBinding.customEditTextPriceMax.getText().toDouble()
+                } catch (e: Exception) {
+                }
+
+                val isGoty = dialogBinding.radioButtonGotyYes.isChecked
+
+                val isLoaned = dialogBinding.radioButtonLoanedYes.isChecked
+
+                val hasSaga = dialogBinding.radioButtonSagaYes.isChecked
+
+                val hasSongs = dialogBinding.radioButtonSongsYes.isChecked
+
+                val filters = FilterModel(
+                    platforms,
+                    genres,
+                    formats,
+                    minScore,
+                    maxScore,
+                    minReleaseDate,
+                    maxReleaseDate,
+                    minPurchaseDate,
+                    maxPurchaseDate,
+                    minPrice,
+                    maxPrice,
+                    isGoty,
+                    isLoaned,
+                    hasSaga,
+                    hasSongs
+                )
+
+                if (
+                    platforms.isEmpty() &&
+                    genres.isEmpty() &&
+                    formats.isEmpty() &&
+                    minScore == 0.0 &&
+                    maxScore == 10.0 &&
+                    minReleaseDate == null &&
+                    maxReleaseDate == null &&
+                    minPurchaseDate == null &&
+                    maxPurchaseDate == null &&
+                    minPrice == 0.0 &&
+                    maxPrice == 0.0 &&
+                    !isGoty &&
+                    !isLoaned &&
+                    !hasSaga &&
+                    !hasSongs
+                ) {
+                    viewModel.applyFilters(null)
+                } else {
+                    viewModel.applyFilters(filters)
+                }
                 dialog.dismiss()
             }
             .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
