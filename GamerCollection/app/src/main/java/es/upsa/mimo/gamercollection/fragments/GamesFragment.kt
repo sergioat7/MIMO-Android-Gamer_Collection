@@ -3,6 +3,7 @@ package es.upsa.mimo.gamercollection.fragments
 import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.PendingIntent
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -14,11 +15,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
@@ -26,11 +27,8 @@ import es.upsa.mimo.gamercollection.adapters.OnFiltersSelected
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentGamesBinding
-import es.upsa.mimo.gamercollection.extensions.getFormatted
-import es.upsa.mimo.gamercollection.extensions.hideSoftKeyboard
-import es.upsa.mimo.gamercollection.extensions.toDate
-import es.upsa.mimo.gamercollection.extensions.toString
-import es.upsa.mimo.gamercollection.fragments.popups.PopupFilterDialogFragment
+import es.upsa.mimo.gamercollection.databinding.FragmentPopupFilterDialogBinding
+import es.upsa.mimo.gamercollection.extensions.*
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
@@ -285,15 +283,28 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
     private fun filter() {
 
-        val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
-        val prev = activity?.supportFragmentManager?.findFragmentByTag("filterPopup")
-        if (prev != null) {
-            ft.remove(prev)
+        val dialogBinding = FragmentPopupFilterDialogBinding.inflate(layoutInflater)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
+
+                //TODO: save
+                dialog.dismiss()
+            }
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setNeutralButton(resources.getString(R.string.reset)) { _, _ -> }
+            .create()
+        dialog.show()
+
+        /*
+        This is needed to avoid the auto dismiss
+         */
+        dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener {
+
         }
-        ft.addToBackStack(null)
-        val dialogFragment = PopupFilterDialogFragment(viewModel.filters.value, this)
-        dialogFragment.isCancelable = false
-        dialogFragment.show(ft, "filterPopup")
     }
 
     @SuppressLint("UnspecifiedImmutableFlag")
