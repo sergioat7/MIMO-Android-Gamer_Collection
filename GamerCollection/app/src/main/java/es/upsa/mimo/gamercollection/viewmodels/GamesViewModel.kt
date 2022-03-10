@@ -14,16 +14,18 @@ import es.upsa.mimo.gamercollection.extensions.getPickerParams
 import es.upsa.mimo.gamercollection.extensions.setup
 import es.upsa.mimo.gamercollection.fragments.GamesFragment
 import es.upsa.mimo.gamercollection.models.FilterModel
-import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
-import es.upsa.mimo.gamercollection.models.responses.GameResponse
-import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
+import es.upsa.mimo.gamercollection.models.responses.*
+import es.upsa.mimo.gamercollection.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.repositories.GameRepository
+import es.upsa.mimo.gamercollection.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
 class GamesViewModel @Inject constructor(
+    private val formatRepository: FormatRepository,
     private val gameRepository: GameRepository,
+    private val genreRepository: GenreRepository,
     private val platformRepository: PlatformRepository
 ) : ViewModel() {
 
@@ -47,8 +49,14 @@ class GamesViewModel @Inject constructor(
         get() = SharedPreferencesHelper.language
     val dateFormatToShow: String
         get() = SharedPreferencesHelper.dateFormatToShow
+    val filterDateFormat: String
+        get() = SharedPreferencesHelper.filterDateFormat
     val swipeRefresh: Boolean
         get() = SharedPreferencesHelper.swipeRefresh
+    val formats: List<FormatResponse>
+        get() = formatRepository.getFormatsDatabase()
+    val genres: List<GenreResponse>
+        get() = genreRepository.getGenresDatabase()
     val platforms: List<PlatformResponse>
         get() = platformRepository.getPlatformsDatabase()
     val gamesLoading: LiveData<Boolean> = _gamesLoading

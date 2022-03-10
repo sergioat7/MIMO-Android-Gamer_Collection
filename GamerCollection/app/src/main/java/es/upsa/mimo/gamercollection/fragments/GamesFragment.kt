@@ -286,6 +286,85 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     private fun filter() {
 
         val dialogBinding = FragmentPopupFilterDialogBinding.inflate(layoutInflater)
+
+        dialogBinding.chipGroupPlatforms.removeAllViews()
+        for (platform in viewModel.platforms) {
+            dialogBinding.chipGroupPlatforms.addChip(layoutInflater, platform.id, platform.name)
+        }
+        dialogBinding.chipGroupGenres.removeAllViews()
+        for (genre in viewModel.genres) {
+            dialogBinding.chipGroupGenres.addChip(layoutInflater, genre.id, genre.name)
+        }
+        dialogBinding.chipGroupFormats.removeAllViews()
+        for (format in viewModel.formats) {
+            dialogBinding.chipGroupFormats.addChip(layoutInflater, format.id, format.name)
+        }
+        dialogBinding.customEditTextReleaseDateMin.setDatePickerFormat(
+            requireActivity(),
+            viewModel.filterDateFormat
+        )
+        dialogBinding.customEditTextReleaseDateMax.setDatePickerFormat(
+            requireActivity(),
+            viewModel.filterDateFormat
+        )
+
+        dialogBinding.customEditTextPurchaseDateMin.setDatePickerFormat(
+            requireActivity(),
+            viewModel.filterDateFormat
+        )
+        dialogBinding.customEditTextPurchaseDateMax.setDatePickerFormat(
+            requireActivity(),
+            viewModel.filterDateFormat
+        )
+        viewModel.filters.value?.let { filters ->
+
+            val platforms = filters.platforms
+            if (platforms.isNotEmpty()) {
+                for (child in dialogBinding.chipGroupPlatforms.children) {
+                    (child as Chip).isChecked = platforms.firstOrNull { it == child.tag } != null
+                }
+            }
+            val genres = filters.genres
+            if (genres.isNotEmpty()) {
+                for (child in dialogBinding.chipGroupGenres.children) {
+                    (child as Chip).isChecked = genres.firstOrNull { it == child.tag } != null
+                }
+            }
+            val formats = filters.formats
+            if (formats.isNotEmpty()) {
+                for (child in dialogBinding.chipGroupFormats.children) {
+                    (child as Chip).isChecked = formats.firstOrNull { it == child.tag } != null
+                }
+            }
+            dialogBinding.customEditTextReleaseDateMin.setText(
+                filters.minReleaseDate.toString(
+                    viewModel.filterDateFormat,
+                    viewModel.language
+                )
+            )
+            dialogBinding.customEditTextReleaseDateMax.setText(
+                filters.maxReleaseDate.toString(
+                    viewModel.filterDateFormat,
+                    viewModel.language
+                )
+            )
+            dialogBinding.customEditTextPurchaseDateMin.setText(
+                filters.minPurchaseDate.toString(
+                    viewModel.filterDateFormat,
+                    viewModel.language
+                )
+            )
+            dialogBinding.customEditTextPurchaseDateMax.setText(
+                filters.maxPurchaseDate.toString(
+                    viewModel.filterDateFormat,
+                    viewModel.language
+                )
+            )
+            if (filters.minPrice > 0) dialogBinding.customEditTextPriceMin.setText(filters.minPrice.toString())
+            if (filters.maxPrice > 0) dialogBinding.customEditTextPriceMax.setText(filters.maxPrice.toString())
+        }
+        dialogBinding.filter = viewModel.filters.value
+
         val dialog = MaterialAlertDialogBuilder(requireContext())
             .setView(dialogBinding.root)
             .setCancelable(false)
