@@ -15,10 +15,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
@@ -304,6 +306,28 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
          */
         dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener {
 
+            for (child in dialogBinding.chipGroupPlatforms.children) {
+                (child as Chip).isChecked = false
+            }
+
+            for (child in dialogBinding.chipGroupGenres.children) {
+                (child as Chip).isChecked = false
+            }
+
+            for (child in dialogBinding.chipGroupFormats.children) {
+                (child as Chip).isChecked = false
+            }
+
+            dialogBinding.customEditTextReleaseDateMin.setText(Constants.EMPTY_VALUE)
+            dialogBinding.customEditTextReleaseDateMax.setText(Constants.EMPTY_VALUE)
+
+            dialogBinding.customEditTextPurchaseDateMin.setText(Constants.EMPTY_VALUE)
+            dialogBinding.customEditTextPurchaseDateMax.setText(Constants.EMPTY_VALUE)
+
+            dialogBinding.customEditTextPriceMin.setText(Constants.EMPTY_VALUE)
+            dialogBinding.customEditTextPriceMax.setText(Constants.EMPTY_VALUE)
+
+            dialogBinding.filter = null
         }
     }
 
