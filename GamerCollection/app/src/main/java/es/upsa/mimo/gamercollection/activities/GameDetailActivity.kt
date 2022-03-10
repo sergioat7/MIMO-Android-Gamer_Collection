@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.activities
 
+import android.content.DialogInterface
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -140,7 +141,7 @@ class GameDetailActivity : BaseActivity() {
         val dialogBinding = SetRatingDialogBinding.inflate(layoutInflater)
         dialogBinding.rating = binding.ratingButton.text.toString().toDouble() / 2
 
-        MaterialAlertDialogBuilder(this)
+        val dialog = MaterialAlertDialogBuilder(this)
             .setView(dialogBinding.root)
             .setCancelable(false)
             .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
@@ -151,7 +152,16 @@ class GameDetailActivity : BaseActivity() {
             .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
             }
-            .show()
+            .setNeutralButton(resources.getString(R.string.reset)) { _, _ -> }
+            .create()
+        dialog.show()
+
+        /*
+        This is needed to avoid the auto dismiss
+         */
+        dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener {
+            dialogBinding.rating = binding.ratingButton.text.toString().toDouble() / 2
+        }
     }
     //endregion
 
