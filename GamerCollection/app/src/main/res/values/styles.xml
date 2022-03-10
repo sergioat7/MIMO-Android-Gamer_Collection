@@ -208,14 +208,6 @@
         <item name="android:paddingEnd">@dimen/padding_normal</item>
     </style>
 
-    <style name="Widget.GamerCollection.Button.Filter">
-        <item name="fontFamily">@font/roboto_bold</item>
-        <item name="shapeAppearance">@null</item>
-        <item name="android:textColor">@color/textSecondary</item>
-        <item name="android:textSize">@dimen/font_large</item>
-        <item name="android:maxLines">1</item>
-    </style>
-
     <!--  TextButton  -->
 
     <style name="Widget.GamerCollection.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
