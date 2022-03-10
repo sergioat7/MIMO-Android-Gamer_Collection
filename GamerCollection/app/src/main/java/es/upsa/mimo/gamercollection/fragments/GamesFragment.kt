@@ -25,7 +25,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
-import es.upsa.mimo.gamercollection.adapters.OnFiltersSelected
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentGamesBinding
@@ -42,8 +41,7 @@ import es.upsa.mimo.gamercollection.viewmodels.GamesViewModel
 import java.util.*
 import kotlin.math.max
 
-class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListener,
-    OnFiltersSelected {
+class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListener {
 
     //region Protected properties
     override val statusBarStyle = StatusBarStyle.SECONDARY
@@ -130,10 +128,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     }
 
     override fun onLoadMoreItemsClick() {
-    }
-
-    override fun filter(filters: FilterModel?) {
-        viewModel.applyFilters(filters)
     }
     //endregion
 
