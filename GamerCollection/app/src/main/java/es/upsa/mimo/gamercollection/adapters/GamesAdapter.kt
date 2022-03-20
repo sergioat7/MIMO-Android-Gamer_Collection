@@ -3,7 +3,6 @@ package es.upsa.mimo.gamercollection.adapters
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.databinding.GameItemBinding
@@ -13,7 +12,6 @@ import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.viewholders.GamesViewHolder
 import es.upsa.mimo.gamercollection.viewholders.LoadMoreItemsViewHolder
 import kotlinx.android.synthetic.main.game_item.view.*
-import java.util.*
 
 class GamesAdapter(
     private var games: List<GameResponse>,
@@ -97,22 +95,4 @@ class GamesAdapter(
         notifyDataSetChanged()
     }
     //endregion
-}
-
-@BindingAdapter("games")
-fun setRecyclerViewGames(recyclerView: RecyclerView?, games: List<GameResponse>?) {
-
-    val adapter = recyclerView?.adapter
-    if (adapter is GamesAdapter && games != null) {
-        adapter.setGames(games)
-    }
-}
-
-@BindingAdapter("newGames")
-fun addRecyclerViewGames(recyclerView: RecyclerView?, newGames: MutableList<GameResponse>?) {
-
-    val adapter = recyclerView?.adapter
-    if (adapter is GamesAdapter && newGames != null) {
-        adapter.addGames(newGames)
-    }
 }
