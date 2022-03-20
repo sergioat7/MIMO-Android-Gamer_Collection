@@ -4,19 +4,20 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import es.upsa.mimo.gamercollection.databinding.SongItemBinding
+import es.upsa.mimo.gamercollection.databinding.ItemSongBinding
 import es.upsa.mimo.gamercollection.models.responses.SongResponse
+import es.upsa.mimo.gamercollection.viewholders.SongsViewHolder
 
 class SongsAdapter(
     private var songs: List<SongResponse>,
     private var editable: Boolean,
     private var onItemClickListener: OnItemClickListener
-) : RecyclerView.Adapter<SongsAdapter.SongsViewHolder?>() {
+) : RecyclerView.Adapter<SongsViewHolder?>() {
 
     //region Lifecycle methods
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongsViewHolder {
         return SongsViewHolder(
-            SongItemBinding.inflate(
+            ItemSongBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -29,7 +30,7 @@ class SongsAdapter(
     }
 
     override fun onBindViewHolder(holder: SongsViewHolder, position: Int) {
-        holder.bind(songs[position])
+        holder.bind(songs[position], editable, onItemClickListener)
     }
     //endregion
 
@@ -48,18 +49,4 @@ class SongsAdapter(
         notifyDataSetChanged()
     }
     //endregion
-
-    inner class SongsViewHolder(val binding: SongItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(_song: SongResponse) {
-            with(binding) {
-
-                song = _song
-                editable = this@SongsAdapter.editable
-                onItemClickListener = this@SongsAdapter.onItemClickListener
-                executePendingBindings()
-            }
-        }
-    }
 }

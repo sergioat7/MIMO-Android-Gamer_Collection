@@ -27,8 +27,8 @@ import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.base.BindingFragment
+import es.upsa.mimo.gamercollection.databinding.DialogFragmentPopupFilterBinding
 import es.upsa.mimo.gamercollection.databinding.FragmentGamesBinding
-import es.upsa.mimo.gamercollection.databinding.FragmentPopupFilterDialogBinding
 import es.upsa.mimo.gamercollection.extensions.*
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
@@ -279,7 +279,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
     private fun filter() {
 
-        val dialogBinding = FragmentPopupFilterDialogBinding.inflate(layoutInflater)
+        val dialogBinding = DialogFragmentPopupFilterBinding.inflate(layoutInflater)
 
         dialogBinding.chipGroupPlatforms.removeAllViews()
         for (platform in viewModel.platforms) {

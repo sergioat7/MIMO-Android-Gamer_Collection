@@ -60,6 +60,7 @@
                     android:id="@+id/recycler_view_sagas"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    tools:listitem="@layout/item_saga"
                     />
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -93,7 +94,7 @@
                 />
 
             <include
-                layout="@layout/layout_empty_list"
+                layout="@layout/content_no_results"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:visibility="@{viewModel.sagas.empty ? View.VISIBLE : View.GONE}"

@@ -39,7 +39,7 @@ public class SpinnerAdapter extends ArrayAdapter {
 
         View listItem = convertView;
         if (listItem == null)
-            listItem = LayoutInflater.from(context).inflate(R.layout.spinner_item, parent, false);
+            listItem = LayoutInflater.from(context).inflate(R.layout.item_spinner, parent, false);
 
         String currentValue = values.get(position);
 

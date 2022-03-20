@@ -20,8 +20,8 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GameDetailPagerAdapter
 import es.upsa.mimo.gamercollection.base.BaseActivity
 import es.upsa.mimo.gamercollection.databinding.ActivityGameDetailBinding
-import es.upsa.mimo.gamercollection.databinding.SetImageDialogBinding
-import es.upsa.mimo.gamercollection.databinding.SetRatingDialogBinding
+import es.upsa.mimo.gamercollection.databinding.DialogSetImageBinding
+import es.upsa.mimo.gamercollection.databinding.DialogSetRatingBinding
 import es.upsa.mimo.gamercollection.extensions.getImageForPegi
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
@@ -116,7 +116,7 @@ class GameDetailActivity : BaseActivity() {
     //region Public methods
     fun setImage() {
 
-        val dialogBinding = SetImageDialogBinding.inflate(layoutInflater)
+        val dialogBinding = DialogSetImageBinding.inflate(layoutInflater)
 
         MaterialAlertDialogBuilder(this)
             .setTitle(resources.getString(R.string.game_detail_image_modal_title))
@@ -138,7 +138,7 @@ class GameDetailActivity : BaseActivity() {
 
     fun setRating() {
 
-        val dialogBinding = SetRatingDialogBinding.inflate(layoutInflater)
+        val dialogBinding = DialogSetRatingBinding.inflate(layoutInflater)
         dialogBinding.rating = binding.ratingButton.text.toString().toDouble() / 2
 
         val dialog = MaterialAlertDialogBuilder(this)
