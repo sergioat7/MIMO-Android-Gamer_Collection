@@ -3,7 +3,6 @@ package es.upsa.mimo.gamercollection.adapters
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.databinding.SongItemBinding
 import es.upsa.mimo.gamercollection.models.responses.SongResponse
@@ -62,23 +61,5 @@ class SongsAdapter(
                 executePendingBindings()
             }
         }
-    }
-}
-
-@BindingAdapter("songs")
-fun setRecyclerViewSongs(recyclerView: RecyclerView?, songs: List<SongResponse>?) {
-
-    val adapter = recyclerView?.adapter
-    if (adapter is SongsAdapter && songs != null) {
-        adapter.setSongs(songs)
-    }
-}
-
-@BindingAdapter("editable")
-fun setRecyclerViewEditable(recyclerView: RecyclerView?, editable: Boolean?) {
-
-    val adapter = recyclerView?.adapter
-    if (adapter is SongsAdapter && editable != null) {
-        adapter.setEditable(editable)
     }
 }
