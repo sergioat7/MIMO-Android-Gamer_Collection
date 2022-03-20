@@ -47,7 +47,7 @@ object Constants {
     ): SpinnerAdapter {
 
         val arrayAdapter = SpinnerAdapter(context, data, firstOptionEnabled)
-        arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+        arrayAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown)
         return arrayAdapter
     }
 

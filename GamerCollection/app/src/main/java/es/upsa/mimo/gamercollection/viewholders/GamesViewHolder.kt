@@ -5,13 +5,13 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
-import es.upsa.mimo.gamercollection.databinding.GameItemBinding
+import es.upsa.mimo.gamercollection.databinding.ItemGameBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.utils.State
 
 class GamesViewHolder(
-    private val binding: GameItemBinding,
+    val binding: ItemGameBinding,
     private val platforms: List<PlatformResponse>
 ) : RecyclerView.ViewHolder(binding.root) {
 

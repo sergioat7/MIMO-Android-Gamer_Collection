@@ -7,16 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.base.BaseModel
-import es.upsa.mimo.gamercollection.databinding.GameItemBinding
-import es.upsa.mimo.gamercollection.databinding.SagaItemBinding
+import es.upsa.mimo.gamercollection.databinding.ItemGameBinding
+import es.upsa.mimo.gamercollection.databinding.ItemSagaBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewholders.GamesViewHolder
 import es.upsa.mimo.gamercollection.viewholders.SagasViewHolder
-import kotlinx.android.synthetic.main.game_item.view.*
-import kotlinx.android.synthetic.main.saga_item.view.*
 
 class SagasAdapter(
     private var items: MutableList<BaseModel<Int>>,
@@ -29,15 +27,15 @@ class SagasAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return when (viewType) {
-            R.layout.saga_item -> SagasViewHolder(
-                SagaItemBinding.inflate(
+            R.layout.item_saga -> SagasViewHolder(
+                ItemSagaBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
             )
-            R.layout.game_item -> GamesViewHolder(
-                GameItemBinding.inflate(
+            R.layout.item_game -> GamesViewHolder(
+                ItemGameBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
@@ -51,8 +49,8 @@ class SagasAdapter(
     override fun getItemViewType(position: Int): Int {
 
         return when (items[position]) {
-            is SagaResponse -> R.layout.saga_item
-            is GameResponse -> R.layout.game_item
+            is SagaResponse -> R.layout.item_saga
+            is GameResponse -> R.layout.item_game
             else -> throw Throwable("Unsupported type")
         }
     }
@@ -73,7 +71,7 @@ class SagasAdapter(
                 else Constants.POINT_UP
             holder.rotateArrow(rotation)
 
-            holder.itemView.image_view_arrow.setOnClickListener {
+            holder.binding.imageViewArrow.setOnClickListener {
                 if (expandedIds.contains(saga.id)) {
 
                     val currentPosition = holder.layoutPosition
@@ -101,7 +99,7 @@ class SagasAdapter(
             holder.bind(game, null, onItemClickListener)
 
             holder.itemView.setOnClickListener {
-                holder.itemView.check_box.isChecked = !holder.itemView.check_box.isChecked
+                holder.binding.checkBox.isChecked = !holder.binding.checkBox.isChecked
                 onItemClickListener.onSubItemClick(game.id)
             }
         }

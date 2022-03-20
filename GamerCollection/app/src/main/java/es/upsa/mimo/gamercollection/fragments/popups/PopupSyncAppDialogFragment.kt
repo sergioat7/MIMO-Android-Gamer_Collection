@@ -8,12 +8,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.base.BindingDialogFragment
-import es.upsa.mimo.gamercollection.databinding.FragmentPopupSyncAppDialogBinding
+import es.upsa.mimo.gamercollection.databinding.DialogFragmentPopupSyncAppBinding
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.viewmodelfactories.PopupSyncAppViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.PopupSyncAppViewModel
 
-class PopupSyncAppDialogFragment : BindingDialogFragment<FragmentPopupSyncAppDialogBinding>() {
+class PopupSyncAppDialogFragment : BindingDialogFragment<DialogFragmentPopupSyncAppBinding>() {
 
     //region Protected properties
     override val transparentStyle = true
