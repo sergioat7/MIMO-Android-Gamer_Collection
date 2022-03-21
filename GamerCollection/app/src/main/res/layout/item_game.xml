@@ -79,7 +79,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     src="@{game.imageUrl}"
                     placeholder="@{@drawable/ic_default_game_cover}"
-                    center="@{true}"
+                    radius="@{@dimen/radius_tiny}"
                     />
 
                 <ImageView
