@@ -11,7 +11,7 @@ import es.upsa.mimo.gamercollection.repositories.*
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
-class ProfileViewModel @Inject constructor(
+class SettingsViewModel @Inject constructor(
     private val formatRepository: FormatRepository,
     private val gameRepository: GameRepository,
     private val genreRepository: GenreRepository,
@@ -22,8 +22,8 @@ class ProfileViewModel @Inject constructor(
 ) : ViewModel() {
 
     //region Private properties
-    private val _profileLoading = MutableLiveData<Boolean>()
-    private val _profileError = MutableLiveData<ErrorResponse?>()
+    private val _settingsLoading = MutableLiveData<Boolean>()
+    private val _settingsError = MutableLiveData<ErrorResponse?>()
     //endregion
 
     //region Public properties
@@ -35,14 +35,14 @@ class ProfileViewModel @Inject constructor(
         get() = SharedPreferencesHelper.sortParam
     val swipeRefresh: Boolean
         get() = SharedPreferencesHelper.swipeRefresh
-    val profileLoading: LiveData<Boolean> = _profileLoading
-    val profileError: LiveData<ErrorResponse?> = _profileError
+    val settingsLoading: LiveData<Boolean> = _settingsLoading
+    val settingsError: LiveData<ErrorResponse?> = _settingsError
     //endregion
 
     //region Public methods
     fun logout() {
 
-        _profileLoading.value = true
+        _settingsLoading.value = true
         userRepository.logout()
         SharedPreferencesHelper.removePassword()
         resetDatabase()
@@ -63,7 +63,7 @@ class ProfileViewModel @Inject constructor(
         val changeThemeMode = themeMode != SharedPreferencesHelper.themeMode
 
         if (changePassword) {
-            _profileLoading.value = true
+            _settingsLoading.value = true
             userRepository.updatePassword(newPassword, {
 
                 SharedPreferencesHelper.storePassword(newPassword)
@@ -71,15 +71,15 @@ class ProfileViewModel @Inject constructor(
                 userRepository.login(userData.username, userData.password, {
 
                     SharedPreferencesHelper.credentials = AuthData(it)
-                    _profileLoading.value = false
+                    _settingsLoading.value = false
                     if (changeLanguage) {
                         reloadData()
                     }
                 }, {
-                    _profileError.value = it
+                    _settingsError.value = it
                 })
             }, {
-                _profileError.value = it
+                _settingsError.value = it
             })
         }
 
@@ -112,14 +112,14 @@ class ProfileViewModel @Inject constructor(
 
     fun deleteUser() {
 
-        _profileLoading.value = true
+        _settingsLoading.value = true
         userRepository.deleteUser({
 
             SharedPreferencesHelper.removeUserData()
             SharedPreferencesHelper.removeCredentials()
             resetDatabase()
         }, {
-            _profileError.value = it
+            _settingsError.value = it
         })
     }
     //endregion
@@ -127,26 +127,26 @@ class ProfileViewModel @Inject constructor(
     //region Private methods
     private fun reloadData() {
 
-        _profileLoading.value = true
+        _settingsLoading.value = true
 
         formatRepository.loadFormats({
             genreRepository.loadGenres({
                 platformRepository.loadPlatforms({
                     stateRepository.loadStates({
 
-                        _profileLoading.value = false
-                        _profileError.value = null
+                        _settingsLoading.value = false
+                        _settingsError.value = null
                     }, {
-                        _profileError.value = it
+                        _settingsError.value = it
                     })
                 }, {
-                    _profileError.value = it
+                    _settingsError.value = it
                 })
             }, {
-                _profileError.value = it
+                _settingsError.value = it
             })
         }, {
-            _profileError.value = it
+            _settingsError.value = it
         })
     }
 
@@ -155,8 +155,8 @@ class ProfileViewModel @Inject constructor(
         gameRepository.resetTable()
         sagaRepository.resetTable()
 
-        _profileLoading.value = false
-        _profileError.value = null
+        _settingsLoading.value = false
+        _settingsError.value = null
     }
     //endregion
 }

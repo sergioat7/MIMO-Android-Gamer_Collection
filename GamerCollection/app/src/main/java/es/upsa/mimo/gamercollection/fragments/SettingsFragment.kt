@@ -11,23 +11,22 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.LandingActivity
 import es.upsa.mimo.gamercollection.base.BindingFragment
-import es.upsa.mimo.gamercollection.databinding.FragmentProfileBinding
+import es.upsa.mimo.gamercollection.databinding.FragmentSettingsBinding
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Preferences
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
-import es.upsa.mimo.gamercollection.viewmodelfactories.ProfileViewModelFactory
-import es.upsa.mimo.gamercollection.viewmodels.ProfileViewModel
-import kotlinx.android.synthetic.main.fragment_profile.*
+import es.upsa.mimo.gamercollection.viewmodelfactories.SettingsViewModelFactory
+import es.upsa.mimo.gamercollection.viewmodels.SettingsViewModel
 
-class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
+class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
 
     //region Protected properties
     override val statusBarStyle = StatusBarStyle.SECONDARY
     //endregion
 
     //region Private properties
-    private lateinit var viewModel: ProfileViewModel
+    private lateinit var viewModel: SettingsViewModel
     //endregion
 
     //region Lifecycle methods
@@ -47,7 +46,7 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         menu.clear()
-        inflater.inflate(R.menu.profile_toolbar_menu, menu)
+        inflater.inflate(R.menu.settings_toolbar_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -90,7 +89,7 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
             .setTitle(resources.getString(R.string.choose_a_theme))
             .setSingleChoiceItems(styles, themeMode) { dialog, value ->
 
-                text_view_app_theme_value.text = when (value) {
+                binding.textViewAppThemeValue.text = when (value) {
                     1 -> styles[1]
                     2 -> styles[2]
                     else -> styles[0]
@@ -103,18 +102,18 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
     fun save() {
 
         val language =
-            if (radio_button_en.isChecked) Preferences.ENGLISH_LANGUAGE_KEY
+            if (binding.radioButtonEn.isChecked) Preferences.ENGLISH_LANGUAGE_KEY
             else Preferences.SPANISH_LANGUAGE_KEY
         val sortingKey =
-            resources.getStringArray(R.array.sort_param_keys)[spinner_sorting_keys.selectedItemPosition]
+            resources.getStringArray(R.array.sort_param_keys)[binding.spinnerSortingKeys.selectedItemPosition]
         val themeMode =
             resources.getStringArray(R.array.app_theme_values)
-                .indexOf(text_view_app_theme_value.text.toString())
+                .indexOf(binding.textViewAppThemeValue.text.toString())
         viewModel.save(
-            edit_text_password.text.toString(),
+            binding.editTextPassword.text.toString(),
             language,
             sortingKey,
-            switch_swipe_refresh.isChecked,
+            binding.switchSwipeRefresh.isChecked,
             themeMode
         )
     }
@@ -126,8 +125,8 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
         val application = activity?.application
         viewModel = ViewModelProvider(
             this,
-            ProfileViewModelFactory(application)
-        )[ProfileViewModel::class.java]
+            SettingsViewModelFactory(application)
+        )[SettingsViewModel::class.java]
         setupBindings()
 
         with(binding) {
@@ -136,15 +135,15 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
 
             imageButtonPassword.setOnClickListener {
                 Constants.showOrHidePassword(
-                    edit_text_password,
-                    image_button_password
+                    binding.editTextPassword,
+                    binding.imageButtonPassword
                 )
             }
 
             radioButtonEn.isChecked =
-                this@ProfileFragment.viewModel.language == Preferences.ENGLISH_LANGUAGE_KEY
+                this@SettingsFragment.viewModel.language == Preferences.ENGLISH_LANGUAGE_KEY
             radioButtonEs.isChecked =
-                this@ProfileFragment.viewModel.language == Preferences.SPANISH_LANGUAGE_KEY
+                this@SettingsFragment.viewModel.language == Preferences.SPANISH_LANGUAGE_KEY
 
             spinnerSortingKeys.apply {
                 backgroundTintList =
@@ -161,22 +160,22 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
                 )
                 setSelection(
                     resources.getStringArray(R.array.sort_param_keys)
-                        .indexOf(this@ProfileFragment.viewModel.sortParam)
+                        .indexOf(this@SettingsFragment.viewModel.sortParam)
                 )
             }
 
             textViewAppThemeValue.text =
                 resources.getStringArray(R.array.app_theme_values)[getThemeMode()]
 
-            fragment = this@ProfileFragment
-            viewModel = this@ProfileFragment.viewModel
-            lifecycleOwner = this@ProfileFragment
+            fragment = this@SettingsFragment
+            viewModel = this@SettingsFragment.viewModel
+            lifecycleOwner = this@SettingsFragment
         }
     }
 
     private fun setupBindings() {
 
-        viewModel.profileLoading.observe(viewLifecycleOwner) { isLoading ->
+        viewModel.settingsLoading.observe(viewLifecycleOwner) { isLoading ->
 
             if (isLoading) {
                 showLoading()
@@ -185,7 +184,7 @@ class ProfileFragment : BindingFragment<FragmentProfileBinding>() {
             }
         }
 
-        viewModel.profileError.observe(viewLifecycleOwner) { error ->
+        viewModel.settingsError.observe(viewLifecycleOwner) { error ->
 
             if (error == null) {
 

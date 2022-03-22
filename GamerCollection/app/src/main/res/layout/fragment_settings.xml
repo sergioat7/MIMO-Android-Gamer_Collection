@@ -5,12 +5,12 @@
 
         <variable
             name="fragment"
-            type="es.upsa.mimo.gamercollection.fragments.ProfileFragment"
+            type="es.upsa.mimo.gamercollection.fragments.SettingsFragment"
             />
 
         <variable
             name="viewModel"
-            type="es.upsa.mimo.gamercollection.viewmodels.ProfileViewModel"
+            type="es.upsa.mimo.gamercollection.viewmodels.SettingsViewModel"
             />
 
     </data>
@@ -21,7 +21,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.ProfileFragment"
+        tools:context=".fragments.SettingsFragment"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -210,7 +210,7 @@
                         app:layout_constraintEnd_toEndOf="@+id/switch_swipe_refresh"
                         app:layout_constraintStart_toStartOf="@+id/switch_swipe_refresh"
                         app:layout_constraintTop_toBottomOf="@+id/switch_swipe_refresh"
-                        style="@style/Widget.GamerCollection.TextView.Description.ProfileItem"
+                        style="@style/Widget.GamerCollection.TextView.Description.SettingsItem"
                         />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

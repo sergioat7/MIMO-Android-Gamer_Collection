@@ -100,8 +100,8 @@
     <string name="saga_created">¡Saga creada!</string>
     <string name="saga_removed">¡Saga eliminada!</string>
 
-    // Profile
-    <string name="profile">Mi Perfil</string>
+    // Settings
+    <string name="settings">Configuración</string>
     <string name="app_language">Idioma de la aplicación</string>
     <string name="english">Inglés</string>
     <string name="spanish">Español</string>

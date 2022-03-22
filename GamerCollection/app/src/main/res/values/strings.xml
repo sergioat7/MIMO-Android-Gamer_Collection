@@ -115,8 +115,8 @@
     <string name="saga_created">Saga created!</string>
     <string name="saga_removed">Saga removed!</string>
 
-    // Profile
-    <string name="profile">My Profile</string>
+    // Settings
+    <string name="settings">Settings</string>
     <string name="app_language">App language</string>
     <string name="english">English</string>
     <string name="spanish">Spanish</string>
