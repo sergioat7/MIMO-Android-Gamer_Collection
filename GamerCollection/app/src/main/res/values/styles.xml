@@ -81,7 +81,7 @@
         <item name="android:textSize">@dimen/font_normal</item>
     </style>
 
-    <style name="Widget.GamerCollection.TextView.Description.ProfileItem">
+    <style name="Widget.GamerCollection.TextView.Description.SettingsItem">
         <item name="android:textSize">@dimen/font_medium</item>
     </style>
 

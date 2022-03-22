@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_games,
                 R.id.navigation_game_search,
                 R.id.navigation_sagas,
-                R.id.navigation_profile
+                R.id.navigation_settings
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

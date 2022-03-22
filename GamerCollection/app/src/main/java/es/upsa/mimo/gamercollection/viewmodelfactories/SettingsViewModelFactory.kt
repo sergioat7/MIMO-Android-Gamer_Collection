@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.repositories.*
-import es.upsa.mimo.gamercollection.viewmodels.ProfileViewModel
+import es.upsa.mimo.gamercollection.viewmodels.SettingsViewModel
 import javax.inject.Inject
 
-class ProfileViewModelFactory(
+class SettingsViewModelFactory(
     private val application: Application?
 ) : ViewModelProvider.Factory {
 
@@ -35,16 +35,16 @@ class ProfileViewModelFactory(
     lateinit var userRepository: UserRepository
 
     @Inject
-    lateinit var profileViewModel: ProfileViewModel
+    lateinit var settingsViewModel: SettingsViewModel
     //endregion
 
     //region Lifecycle methods
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(SettingsViewModel::class.java)) {
 
             (application as GamerCollectionApplication).appComponent.inject(this)
-            return profileViewModel as T
+            return settingsViewModel as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
