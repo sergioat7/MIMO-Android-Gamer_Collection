@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import es.upsa.mimo.gamercollection.base.BaseModel
+import es.upsa.mimo.gamercollection.models.rawg.RawgGameResponse
 import java.util.*
 
 @Entity(tableName = "Game")
@@ -55,4 +56,30 @@ data class GameResponse(
     var saga: SagaResponse?,
     @SerializedName("songs")
     var songs: List<SongResponse>
-) : BaseModel<Int>
+) : BaseModel<Int> {
+
+    constructor(rawgGame: RawgGameResponse) : this(
+        rawgGame.id,
+        rawgGame.name,
+        null,
+        rawgGame.rating * 2,
+        rawgGame.getRating(),
+        rawgGame.getPublishersAsString(),
+        rawgGame.getDevelopersAsString(),
+        null,
+        rawgGame.released,
+        false,
+        null,
+        null,
+        null,
+        null,
+        null,
+        0.0,
+        rawgGame.backgroundImage,
+        null,
+        null,
+        null,
+        null,
+        listOf()
+    )
+}

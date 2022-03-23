@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.activities
 
+import android.content.DialogInterface
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -19,14 +20,13 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GameDetailPagerAdapter
 import es.upsa.mimo.gamercollection.base.BaseActivity
 import es.upsa.mimo.gamercollection.databinding.ActivityGameDetailBinding
-import es.upsa.mimo.gamercollection.databinding.SetImageDialogBinding
-import es.upsa.mimo.gamercollection.databinding.SetRatingDialogBinding
+import es.upsa.mimo.gamercollection.databinding.DialogSetImageBinding
+import es.upsa.mimo.gamercollection.databinding.DialogSetRatingBinding
 import es.upsa.mimo.gamercollection.extensions.getImageForPegi
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameDetailViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameDetailViewModel
-import kotlinx.android.synthetic.main.set_rating_dialog.view.*
 
 class GameDetailActivity : BaseActivity() {
 
@@ -39,7 +39,6 @@ class GameDetailActivity : BaseActivity() {
     private lateinit var pagerAdapter: GameDetailPagerAdapter
     private var game: GameResponse? = null
     private var platformValues = ArrayList<String>()
-    private var imageUrl: String? = null
     private val goBack = MutableLiveData<Boolean>()
     //endregion
 
@@ -117,7 +116,7 @@ class GameDetailActivity : BaseActivity() {
     //region Public methods
     fun setImage() {
 
-        val dialogBinding = SetImageDialogBinding.inflate(layoutInflater)
+        val dialogBinding = DialogSetImageBinding.inflate(layoutInflater)
 
         MaterialAlertDialogBuilder(this)
             .setTitle(resources.getString(R.string.game_detail_image_modal_title))
@@ -127,20 +126,7 @@ class GameDetailActivity : BaseActivity() {
 
                 val url = dialogBinding.customEditTextUrl.getText()
                 if (url.isNotEmpty()) {
-
-                    Picasso.get()
-                        .load(url)
-                        .error(R.drawable.ic_add_image)
-                        .into(binding.imageViewGame, object : Callback {
-                            override fun onSuccess() {
-                                imageUrl = url
-                            }
-
-                            override fun onError(e: Exception?) {
-                                imageUrl = null
-                                showPopupDialog(resources.getString(R.string.error_image_url))
-                            }
-                        })
+                    binding.imageUrl = url
                 }
                 dialog.dismiss()
             }
@@ -152,10 +138,10 @@ class GameDetailActivity : BaseActivity() {
 
     fun setRating() {
 
-        val dialogBinding = SetRatingDialogBinding.inflate(layoutInflater)
-        dialogBinding.ratingBar.rating = binding.ratingButton.text.toString().toFloat() / 2
+        val dialogBinding = DialogSetRatingBinding.inflate(layoutInflater)
+        dialogBinding.rating = binding.ratingButton.text.toString().toDouble() / 2
 
-        MaterialAlertDialogBuilder(this)
+        val dialog = MaterialAlertDialogBuilder(this)
             .setView(dialogBinding.root)
             .setCancelable(false)
             .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
@@ -166,7 +152,16 @@ class GameDetailActivity : BaseActivity() {
             .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
             }
-            .show()
+            .setNeutralButton(resources.getString(R.string.reset)) { _, _ -> }
+            .create()
+        dialog.show()
+
+        /*
+        This is needed to avoid the auto dismiss
+         */
+        dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener {
+            dialogBinding.rating = binding.ratingButton.text.toString().toDouble() / 2
+        }
     }
     //endregion
 
@@ -242,24 +237,9 @@ class GameDetailActivity : BaseActivity() {
 
     private fun showData(game: GameResponse?) {
 
-        imageUrl = game?.imageUrl
+        binding.imageUrl = game?.imageUrl
 
-        val image = imageUrl ?: Constants.NO_VALUE
-        binding.progressBarLoading.visibility = View.VISIBLE
-        Picasso
-            .get()
-            .load(image)
-            .error(R.drawable.ic_add_image)
-            .into(binding.imageViewGame, object : Callback {
-
-                override fun onSuccess() {
-                    binding.progressBarLoading.visibility = View.GONE
-                }
-
-                override fun onError(e: Exception?) {
-                    binding.progressBarLoading.visibility = View.GONE
-                }
-            })
+        val image = binding.imageUrl ?: Constants.NO_VALUE
         Picasso
             .get()
             .load(image)
@@ -331,7 +311,7 @@ class GameDetailActivity : BaseActivity() {
 
             it.name = name
             it.platform = platform
-            it.imageUrl = imageUrl
+            it.imageUrl = binding.imageUrl
             it.score = score
             it
         } ?: run {
@@ -353,7 +333,7 @@ class GameDetailActivity : BaseActivity() {
                 null,
                 null,
                 0.0,
-                imageUrl,
+                binding.imageUrl,
                 null,
                 null,
                 null,

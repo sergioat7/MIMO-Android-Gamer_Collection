@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.injection.modules.MainDispatcher
 import es.upsa.mimo.gamercollection.models.requests.LoginCredentials
 import es.upsa.mimo.gamercollection.models.requests.NewPassword
@@ -7,6 +8,7 @@ import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.network.ApiManager
 import es.upsa.mimo.gamercollection.network.RequestResult
 import es.upsa.mimo.gamercollection.network.UserApiService
+import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -32,9 +34,15 @@ class UserRepository @Inject constructor(
         externalScope.launch {
 
             val body = LoginCredentials(username, password)
-            when (val response = ApiManager.validateResponse(api.login(body))) {
-                is RequestResult.JsonSuccess -> success(response.body.token)
-                is RequestResult.Failure -> failure(response.error)
+
+            try {
+                when (val response = ApiManager.validateResponse(api.login(body))) {
+                    is RequestResult.JsonSuccess -> success(response.body.token)
+                    is RequestResult.Failure -> failure(response.error)
+                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+                }
+            } catch (e: Exception) {
+                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
             }
         }
     }
@@ -48,26 +56,41 @@ class UserRepository @Inject constructor(
         externalScope.launch {
 
             val body = LoginCredentials(username, password)
-            when (val response = ApiManager.validateResponse(api.register(body))) {
-                is RequestResult.Success -> success()
-                is RequestResult.Failure -> failure(response.error)
+
+            try {
+                when (val response = ApiManager.validateResponse(api.register(body))) {
+                    is RequestResult.Success -> success()
+                    is RequestResult.Failure -> failure(response.error)
+                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+                }
+            } catch (e: Exception) {
+                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
             }
         }
     }
 
     fun logout() {
         externalScope.launch {
-            api.logout()
+
+            try {
+                api.logout()
+            } catch (e: Exception) {
+            }
         }
     }
 
     fun updatePassword(password: String, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
         externalScope.launch {
 
-            val body = NewPassword(password)
-            when (val response = ApiManager.validateResponse(api.updatePassword(body))) {
-                is RequestResult.Success -> success()
-                is RequestResult.Failure -> failure(response.error)
+            try {
+                val body = NewPassword(password)
+                when (val response = ApiManager.validateResponse(api.updatePassword(body))) {
+                    is RequestResult.Success -> success()
+                    is RequestResult.Failure -> failure(response.error)
+                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+                }
+            } catch (e: Exception) {
+                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
             }
         }
     }
@@ -75,9 +98,14 @@ class UserRepository @Inject constructor(
     fun deleteUser(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
         externalScope.launch {
 
-            when (val response = ApiManager.validateResponse(api.deleteUser())) {
-                is RequestResult.Success -> success()
-                is RequestResult.Failure -> failure(response.error)
+            try {
+                when (val response = ApiManager.validateResponse(api.deleteUser())) {
+                    is RequestResult.Success -> success()
+                    is RequestResult.Failure -> failure(response.error)
+                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+                }
+            } catch (e: Exception) {
+                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
             }
         }
     }

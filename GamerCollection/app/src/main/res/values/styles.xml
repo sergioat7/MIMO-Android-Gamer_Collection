@@ -29,16 +29,23 @@
         <item name="android:textSize">@dimen/font_larger</item>
     </style>
 
+    <style name="Widget.GamerCollection.TextView.Title.StateButton">
+        <item name="android:textColor">@drawable/state_button_text_color</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
     <style name="Widget.GamerCollection.TextView.Title.GameItem">
         <item name="android:maxLines">3</item>
         <item name="android:textSize">@dimen/font_extra_large</item>
     </style>
 
     <style name="Widget.GamerCollection.TextView.Title.Rating">
+        <item name="android:textColor">@color/colorInProgress</item>
         <item name="android:textSize">@dimen/font_large</item>
     </style>
 
     <style name="Widget.GamerCollection.TextView.Title.NoRating">
+        <item name="android:textColor">@color/colorInProgress</item>
         <item name="android:textSize">@dimen/font_extra_large</item>
     </style>
 
@@ -56,6 +63,11 @@
         <item name="android:textSize">@dimen/font_medium</item>
     </style>
 
+    <style name="Widget.GamerCollection.TextView.Description.StateButton">
+        <item name="android:textColor">@drawable/state_button_text_color</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
     <style name="Widget.GamerCollection.TextView.Description.GameItem">
         <item name="android:maxLines">1</item>
         <item name="android:textSize">@dimen/font_medium</item>
@@ -69,7 +81,7 @@
         <item name="android:textSize">@dimen/font_normal</item>
     </style>
 
-    <style name="Widget.GamerCollection.TextView.Description.ProfileItem">
+    <style name="Widget.GamerCollection.TextView.Description.SettingsItem">
         <item name="android:textSize">@dimen/font_medium</item>
     </style>
 
@@ -194,14 +206,6 @@
     <style name="Widget.GamerCollection.Button.Main.Icon">
         <item name="android:paddingStart">@dimen/padding_normal</item>
         <item name="android:paddingEnd">@dimen/padding_normal</item>
-    </style>
-
-    <style name="Widget.GamerCollection.Button.Filter">
-        <item name="fontFamily">@font/roboto_bold</item>
-        <item name="shapeAppearance">@null</item>
-        <item name="android:textColor">@color/textSecondary</item>
-        <item name="android:textSize">@dimen/font_large</item>
-        <item name="android:maxLines">1</item>
     </style>
 
     <!--  TextButton  -->

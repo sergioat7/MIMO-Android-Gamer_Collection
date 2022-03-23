@@ -32,6 +32,16 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
     }
     //endregion
 
+    //region Public methods
+    fun register() {
+
+        viewModel.register(
+            binding.editTextUser.text.toString(),
+            binding.editTextPassword.text.toString()
+        )
+    }
+    //endregion
+
     //region Private methods
     private fun initializeUI() {
 
@@ -83,9 +93,9 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
                 )
             }
 
-            registerButton.setOnClickListener {
-                register()
-            }
+            fragment = this@RegisterFragment
+            viewModel = this@RegisterFragment.viewModel
+            lifecycleOwner = this@RegisterFragment
         }
     }
 
@@ -100,8 +110,6 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
                 editTextUser.clearErrors()
                 editTextPassword.clearErrors()
                 editTextRepeatPassword.clearErrors()
-
-                registerButton.isEnabled = registerState.isDataValid
 
                 if (registerState.usernameError != null) {
                     editTextUser.error = getString(registerState.usernameError)
@@ -142,25 +150,6 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
             binding.editTextPassword.text.toString(),
             binding.editTextRepeatPassword.text.toString()
         )
-    }
-
-    private fun register() {
-
-        val username = binding.editTextUser.text.toString()
-        val password = binding.editTextPassword.text.toString()
-        val repeatPassword = binding.editTextRepeatPassword.text.toString()
-
-        if (username.isEmpty() || password.isEmpty() || repeatPassword.isEmpty()) {
-            showPopupDialog(resources.getString(R.string.error_registration_empty_data))
-            return
-        }
-
-        if (password != repeatPassword) {
-            showPopupDialog(resources.getString(R.string.error_registration_different_passwords))
-            return
-        }
-
-        viewModel.register(username, password)
     }
     //endregion
 }

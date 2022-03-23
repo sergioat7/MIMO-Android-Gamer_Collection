@@ -31,71 +31,72 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/padding_small"
         >
 
         <ImageView
             android:id="@+id/image_view_song"
             android:layout_width="@dimen/size_big"
             android:layout_height="@dimen/size_big"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginBottom="@dimen/margin_small"
             android:src="@drawable/ic_song"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/text_view_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_small"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:text="@{song.name}"
             app:layout_constraintEnd_toStartOf="@+id/image_view_remove"
             app:layout_constraintStart_toEndOf="@+id/image_view_song"
             app:layout_constraintTop_toTopOf="parent"
-            >
+            tools:text="Song title"
+            style="@style/Widget.GamerCollection.TextView.Title.SongItem"
+            />
 
-            <TextView
-                android:id="@+id/text_view_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{song.name}"
-                tools:text="Song title"
-                style="@style/Widget.GamerCollection.TextView.Title.SongItem"
-                />
+        <TextView
+            android:id="@+id/text_view_singer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:text="@{song.singer}"
+            app:layout_constraintEnd_toStartOf="@+id/image_view_remove"
+            app:layout_constraintStart_toEndOf="@+id/image_view_song"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_name"
+            tools:text="Singer"
+            style="@style/Widget.GamerCollection.TextView.Description.SongItem"
+            />
 
-            <TextView
-                android:id="@+id/text_view_singer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_mini"
-                android:layout_marginBottom="@dimen/margin_mini"
-                android:text="@{song.singer}"
-                tools:text="Singer"
-                style="@style/Widget.GamerCollection.TextView.Description.SongItem"
-                />
-
-            <TextView
-                android:id="@+id/text_view_url"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{song.url}"
-                tools:text="Url"
-                style="@style/Widget.GamerCollection.TextView.Description.SongItem"
-                />
-
-        </LinearLayout>
+        <TextView
+            android:id="@+id/text_view_url"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:text="@{song.url}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/image_view_remove"
+            app:layout_constraintStart_toEndOf="@+id/image_view_song"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_singer"
+            tools:text="Url"
+            style="@style/Widget.GamerCollection.TextView.Description.SongItem"
+            />
 
         <ImageView
             android:id="@+id/image_view_remove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_small"
+            android:onClick="@{() -> onItemClickListener.onItemClick(song.id)}"
             android:src="@drawable/ic_trash"
             android:visibility="@{editable ? View.VISIBLE : View.GONE}"
-            android:onClick="@{() -> onItemClickListener.onItemClick(song.id)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

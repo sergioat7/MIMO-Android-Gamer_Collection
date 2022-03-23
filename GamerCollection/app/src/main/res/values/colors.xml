@@ -9,8 +9,6 @@
     <color name="colorPending">#EC5565</color>
     <color name="colorInProgress">#FECD54</color>
     <color name="colorInProgressLight">#75FECD54</color>
-    <color name="buttonPrimary">#363636</color>
-    <color name="buttonSecondary">#FFFFFF</color>
     <color name="textPrimary">#363636</color>
     <color name="textPrimaryLight">#75363636</color>
     <color name="textSecondary">#FFFFFF</color>

@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="StateButton">
-        <attr name="stateButton_title" format="string"/>
-        <attr name="stateButton_subtitle" format="string"/>
-        <attr name="stateButton_color" format="reference"/>
-        <attr name="stateButton_background" format="reference" />
-    </declare-styleable>
-
-    <declare-styleable name="EmptyListLayout">
-        <attr name="emptyListLayout_image" format="reference"/>
-    </declare-styleable>
-
     <declare-styleable name="CustomEditText">
         <attr name="customEditText_type" format="string"/>
         <attr name="customEditText_placeholder" format="string"/>

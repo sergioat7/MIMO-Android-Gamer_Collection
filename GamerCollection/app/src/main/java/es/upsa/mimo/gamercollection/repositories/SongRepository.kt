@@ -1,10 +1,12 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.SongResponse
 import es.upsa.mimo.gamercollection.network.ApiManager
 import es.upsa.mimo.gamercollection.network.RequestResult
 import es.upsa.mimo.gamercollection.network.SongApiService
+import es.upsa.mimo.gamercollection.utils.Constants
 import javax.inject.Inject
 
 class SongRepository @Inject constructor(
@@ -14,14 +16,19 @@ class SongRepository @Inject constructor(
     //region Public methods
     suspend fun createSong(
         gameId: Int,
-        song: SongResponse,
+        newSong: SongResponse,
         success: () -> Unit,
         failure: (ErrorResponse) -> Unit
     ) {
-        when (val response = ApiManager.validateResponse(api.createSong(gameId, song))) {
+        try {
+            when (val response = ApiManager.validateResponse(api.createSong(gameId, newSong))) {
 
-            is RequestResult.Success -> success()
-            is RequestResult.Failure -> failure(response.error)
+                is RequestResult.Success -> success()
+                is RequestResult.Failure -> failure(response.error)
+                else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+            }
+        } catch (e: Exception) {
+            failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
         }
     }
 
@@ -31,10 +38,15 @@ class SongRepository @Inject constructor(
         success: () -> Unit,
         failure: (ErrorResponse) -> Unit
     ) {
-        when (val response = ApiManager.validateResponse(api.deleteSong(gameId, songId))) {
+        try {
+            when (val response = ApiManager.validateResponse(api.deleteSong(gameId, songId))) {
 
-            is RequestResult.Success -> success()
-            is RequestResult.Failure -> failure(response.error)
+                is RequestResult.Success -> success()
+                is RequestResult.Failure -> failure(response.error)
+                else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+            }
+        } catch (e: Exception) {
+            failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
         }
     }
     //endregion

@@ -3,17 +3,14 @@ package es.upsa.mimo.gamercollection.adapters
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.databinding.GameItemBinding
-import es.upsa.mimo.gamercollection.databinding.LayoutLoadMoreItemsBinding
+import es.upsa.mimo.gamercollection.databinding.ItemGameBinding
+import es.upsa.mimo.gamercollection.databinding.ItemLoadMoreItemsBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.viewholders.GamesViewHolder
 import es.upsa.mimo.gamercollection.viewholders.LoadMoreItemsViewHolder
-import kotlinx.android.synthetic.main.game_item.view.*
-import java.util.*
 
 class GamesAdapter(
     private var games: List<GameResponse>,
@@ -26,17 +23,17 @@ class GamesAdapter(
     override fun getItemViewType(position: Int): Int {
 
         return if (games[position].id > 0) {
-            R.layout.game_item
+            R.layout.item_game
         } else {
-            R.layout.layout_load_more_items
+            R.layout.item_load_more_items
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        return if (viewType == R.layout.game_item) {
+        return if (viewType == R.layout.item_game) {
             GamesViewHolder(
-                GameItemBinding.inflate(
+                ItemGameBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
@@ -45,7 +42,7 @@ class GamesAdapter(
             )
         } else {
             LoadMoreItemsViewHolder(
-                LayoutLoadMoreItemsBinding.inflate(
+                ItemLoadMoreItemsBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
@@ -66,7 +63,7 @@ class GamesAdapter(
             holder.bind(game, sagaId, onItemClickListener)
 
             holder.itemView.setOnClickListener {
-                holder.itemView.check_box.isChecked = !holder.itemView.check_box.isChecked
+                holder.binding.checkBox.isChecked = !holder.binding.checkBox.isChecked
                 onItemClickListener.onItemClick(game.id)
             }
         } else {
@@ -97,22 +94,4 @@ class GamesAdapter(
         notifyDataSetChanged()
     }
     //endregion
-}
-
-@BindingAdapter("games")
-fun setRecyclerViewGames(recyclerView: RecyclerView?, games: List<GameResponse>?) {
-
-    val adapter = recyclerView?.adapter
-    if (adapter is GamesAdapter && games != null) {
-        adapter.setGames(games)
-    }
-}
-
-@BindingAdapter("newGames")
-fun addRecyclerViewGames(recyclerView: RecyclerView?, newGames: MutableList<GameResponse>?) {
-
-    val adapter = recyclerView?.adapter
-    if (adapter is GamesAdapter && newGames != null) {
-        adapter.addGames(newGames)
-    }
 }

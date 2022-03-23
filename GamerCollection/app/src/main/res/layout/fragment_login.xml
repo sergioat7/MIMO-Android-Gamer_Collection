@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <variable
+            name="fragment"
+            type="es.upsa.mimo.gamercollection.fragments.LoginFragment"
+            />
+
+        <variable
+            name="viewModel"
+            type="es.upsa.mimo.gamercollection.viewmodels.LoginViewModel"
+            />
+
+    </data>
 
     <FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragments.LoginFragment"
@@ -79,9 +94,10 @@
                 android:layout_marginTop="@dimen/margin_medium"
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginBottom="@dimen/margin_medium"
-                android:enabled="false"
+                android:onClick="@{() -> fragment.login()}"
+                android:enabled="@{viewModel.loginFormState.isDataValid}"
                 android:text="@string/login_access"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                app:layout_constraintBottom_toTopOf="@+id/button_register"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -90,37 +106,32 @@
                 style="@style/Widget.GamerCollection.Button.Main"
                 />
 
-            <LinearLayout
-                android:id="@+id/linearLayout"
+            <TextView
+                android:id="@+id/text_view_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_tiny"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:text="@string/login_not_account"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintEnd_toStartOf="@+id/button_register"
+                app:layout_constraintStart_toStartOf="parent"
+                style="@style/Widget.GamerCollection.TextView.Description.NoAccount"
+                />
+
+            <Button
+                android:id="@+id/button_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_medium"
-                android:orientation="horizontal"
+                android:text="@string/login_register"
+                android:onClick="@{() -> fragment.goToRegister()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                >
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="@dimen/margin_tiny"
-                    android:text="@string/login_not_account"
-                    style="@style/Widget.GamerCollection.TextView.Description.NoAccount"
-                    />
-
-                <Button
-                    android:id="@+id/register_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/login_register"
-                    style="@style/Widget.GamerCollection.TextButton.Main.Action"
-                    />
-
-            </LinearLayout>
+                app:layout_constraintStart_toEndOf="@+id/text_view_register"
+                style="@style/Widget.GamerCollection.TextButton.Main.Action"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -70,8 +70,8 @@ fun EditText.getValue(): String {
 //region Private functions
 private fun getPicker(editText: EditText, context: Context, dateFormat: String?): MaterialDatePicker<Long> {
 
-    val language = SharedPreferencesHelper.getLanguage()
-    val dateFormatToShow = dateFormat ?: SharedPreferencesHelper.getDateFormatToShow()
+    val language = SharedPreferencesHelper.language
+    val dateFormatToShow = dateFormat ?: SharedPreferencesHelper.dateFormatToShow
 
     val currentDateInMillis = editText.text.toString().toDate(
         dateFormatToShow,

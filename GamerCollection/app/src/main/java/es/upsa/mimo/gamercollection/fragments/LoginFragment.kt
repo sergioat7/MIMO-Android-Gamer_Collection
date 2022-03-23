@@ -32,6 +32,20 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
     }
     //endregion
 
+    //region Public methods
+    fun goToRegister() {
+        launchActivity(RegisterActivity::class.java)
+    }
+
+    fun login() {
+
+        viewModel.login(
+            binding.editTextUser.text.toString(),
+            binding.editTextPassword.text.toString()
+        )
+    }
+    //endregion
+
     //region Private methods
     private fun initializeUI() {
 
@@ -71,17 +85,9 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
                 )
             }
 
-            loginButton.setOnClickListener {
-
-                viewModel.login(
-                    editTextUser.text.toString(),
-                    editTextPassword.text.toString()
-                )
-            }
-
-            registerButton.setOnClickListener {
-                launchActivity(RegisterActivity::class.java)
-            }
+            fragment = this@LoginFragment
+            viewModel = this@LoginFragment.viewModel
+            lifecycleOwner = this@LoginFragment
         }
     }
 
@@ -90,8 +96,6 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
         viewModel.loginFormState.observe(viewLifecycleOwner) {
 
             val loginState = it ?: return@observe
-
-            binding.loginButton.isEnabled = loginState.isDataValid
 
             if (loginState.usernameError != null) {
                 binding.editTextUser.error = getString(loginState.usernameError)
