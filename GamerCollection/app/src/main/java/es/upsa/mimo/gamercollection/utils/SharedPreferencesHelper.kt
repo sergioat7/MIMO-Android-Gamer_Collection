@@ -73,7 +73,7 @@ object SharedPreferencesHelper {
             ?: Preferences.DEFAULT_SORT_PARAM
         set(value) = editor.setString(Preferences.SORT_PARAM_PREFERENCES_NAME, value)
     var isSortOrderAscending: Boolean
-        get() = appPreferences.getBoolean(Preferences.SORT_ORDER_PREFERENCE_NAME, false)
+        get() = appPreferences.getBoolean(Preferences.SORT_ORDER_PREFERENCE_NAME, true)
         set(value) = editor.setBoolean(Preferences.SORT_ORDER_PREFERENCE_NAME, value)
     var swipeRefresh: Boolean
         get() = appPreferences.getBoolean(Preferences.SWIPE_REFRESH_PREFERENCES_NAME, true)
