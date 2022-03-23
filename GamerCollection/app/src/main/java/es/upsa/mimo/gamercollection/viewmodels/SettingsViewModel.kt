@@ -29,12 +29,9 @@ class SettingsViewModel @Inject constructor(
     //region Public properties
     val userData: UserData
         get() = SharedPreferencesHelper.userData
-    val language: String
-        get() = SharedPreferencesHelper.language
-    val sortParam: String
-        get() = SharedPreferencesHelper.sortParam
-    val swipeRefresh: Boolean
-        get() = SharedPreferencesHelper.swipeRefresh
+    val language: String = SharedPreferencesHelper.language
+    var sortParam: String = SharedPreferencesHelper.sortParam
+    var swipeRefresh: Boolean = SharedPreferencesHelper.swipeRefresh
     val settingsLoading: LiveData<Boolean> = _settingsLoading
     val settingsError: LiveData<ErrorResponse?> = _settingsError
     //endregion
@@ -56,11 +53,11 @@ class SettingsViewModel @Inject constructor(
         themeMode: Int
     ) {
 
-        val changePassword = newPassword != userData.password
-        val changeLanguage = newLanguage != language
-        val changeSortParam = newSortParam != sortParam
-        val changeSwipeRefresh = newSwipeRefresh != swipeRefresh
-        val changeThemeMode = themeMode != SharedPreferencesHelper.themeMode
+        val changePassword =            newPassword != userData.password
+        val changeLanguage =            newLanguage != language
+        val changeSortParam =           newSortParam != sortParam
+        val changeSwipeRefresh =        newSwipeRefresh != swipeRefresh
+        val changeThemeMode =           themeMode != SharedPreferencesHelper.themeMode
 
         if (changePassword) {
             _settingsLoading.value = true
@@ -72,7 +69,7 @@ class SettingsViewModel @Inject constructor(
 
                     SharedPreferencesHelper.credentials = AuthData(it)
                     _settingsLoading.value = false
-                    if (changeLanguage) {
+                    if (changeLanguage || changeSortParam) {
                         reloadData()
                     }
                 }, {
@@ -83,20 +80,20 @@ class SettingsViewModel @Inject constructor(
             })
         }
 
+        if (changeLanguage) {
+            SharedPreferencesHelper.language = newLanguage
+        }
+
         if (changeSortParam) {
+
             SharedPreferencesHelper.sortParam = newSortParam
+            sortParam = newSortParam
         }
 
         if (changeSwipeRefresh) {
+
             SharedPreferencesHelper.swipeRefresh = newSwipeRefresh
-        }
-
-        if (changeLanguage) {
-
-            SharedPreferencesHelper.language = newLanguage
-            if (!changePassword) {
-                reloadData()
-            }
+            swipeRefresh = newSwipeRefresh
         }
 
         if (changeThemeMode) {
@@ -107,6 +104,10 @@ class SettingsViewModel @Inject constructor(
                 2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }
+        }
+
+        if (!changePassword && (changeLanguage || changeSortParam)) {
+            reloadData()
         }
     }
 
