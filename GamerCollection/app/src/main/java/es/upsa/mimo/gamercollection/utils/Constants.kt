@@ -23,6 +23,7 @@ object Preferences {
     const val GAME_NOTIFICATION_PREFERENCES_NAME = "gameNotificationLaunched_"
     const val VERSION_PREFERENCES_NAME = "version"
     const val THEME_MODE_PREFERENCES_NAME = "themeMode"
+    const val SORT_ORDER_PREFERENCE_NAME = "sortOrder"
 }
 
 object Constants {

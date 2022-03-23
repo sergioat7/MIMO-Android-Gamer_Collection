@@ -155,20 +155,30 @@
                         android:layout_marginTop="@dimen/margin_medium"
                         android:layout_marginBottom="@dimen/margin_tiny"
                         android:text="@string/games_sorting_parameter"
-                        app:layout_constraintBottom_toTopOf="@+id/spinner_sorting_keys"
-                        app:layout_constraintEnd_toEndOf="@+id/spinner_sorting_keys"
-                        app:layout_constraintStart_toStartOf="@+id/spinner_sorting_keys"
+                        app:layout_constraintBottom_toTopOf="@+id/spinner_sort_params"
+                        app:layout_constraintEnd_toEndOf="@+id/spinner_sort_params"
+                        app:layout_constraintStart_toStartOf="@+id/spinner_sort_params"
                         app:layout_constraintTop_toBottomOf="@+id/radio_group_language"
                         style="@style/Widget.GamerCollection.TextView.Title.Header"
                         />
 
                     <Spinner
-                        android:id="@+id/spinner_sorting_keys"
+                        android:id="@+id/spinner_sort_params"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="@+id/radio_group_language"
                         app:layout_constraintStart_toStartOf="@+id/radio_group_language"
                         app:layout_constraintTop_toBottomOf="@+id/text_view_sort_keys"
+                        style="@style/Widget.GamerCollection.Spinner"
+                        />
+
+                    <Spinner
+                        android:id="@+id/spinner_sort_order"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="@+id/radio_group_language"
+                        app:layout_constraintStart_toStartOf="@+id/radio_group_language"
+                        app:layout_constraintTop_toBottomOf="@+id/spinner_sort_params"
                         style="@style/Widget.GamerCollection.Spinner"
                         />
 
@@ -182,9 +192,9 @@
                         android:text="@string/swipe_refresh_enabled_title"
                         android:textColor="@color/textTertiary"
                         android:textSize="@dimen/font_medium"
-                        app:layout_constraintEnd_toEndOf="@+id/spinner_sorting_keys"
-                        app:layout_constraintStart_toStartOf="@+id/spinner_sorting_keys"
-                        app:layout_constraintTop_toBottomOf="@+id/spinner_sorting_keys"
+                        app:layout_constraintEnd_toEndOf="@+id/spinner_sort_order"
+                        app:layout_constraintStart_toStartOf="@+id/spinner_sort_order"
+                        app:layout_constraintTop_toBottomOf="@+id/spinner_sort_order"
                         />
 
                     <TextView

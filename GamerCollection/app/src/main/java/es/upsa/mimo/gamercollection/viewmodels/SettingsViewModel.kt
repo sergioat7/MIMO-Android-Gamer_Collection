@@ -31,6 +31,7 @@ class SettingsViewModel @Inject constructor(
         get() = SharedPreferencesHelper.userData
     val language: String = SharedPreferencesHelper.language
     var sortParam: String = SharedPreferencesHelper.sortParam
+    var isSortOrderAscending: Boolean = SharedPreferencesHelper.isSortOrderAscending
     var swipeRefresh: Boolean = SharedPreferencesHelper.swipeRefresh
     val settingsLoading: LiveData<Boolean> = _settingsLoading
     val settingsError: LiveData<ErrorResponse?> = _settingsError
@@ -49,6 +50,7 @@ class SettingsViewModel @Inject constructor(
         newPassword: String,
         newLanguage: String,
         newSortParam: String,
+        newIsSortOrderAscending: Boolean,
         newSwipeRefresh: Boolean,
         themeMode: Int
     ) {
@@ -56,6 +58,7 @@ class SettingsViewModel @Inject constructor(
         val changePassword =            newPassword != userData.password
         val changeLanguage =            newLanguage != language
         val changeSortParam =           newSortParam != sortParam
+        val changeIsSortDescending =    newIsSortOrderAscending != isSortOrderAscending
         val changeSwipeRefresh =        newSwipeRefresh != swipeRefresh
         val changeThemeMode =           themeMode != SharedPreferencesHelper.themeMode
 
@@ -69,7 +72,7 @@ class SettingsViewModel @Inject constructor(
 
                     SharedPreferencesHelper.credentials = AuthData(it)
                     _settingsLoading.value = false
-                    if (changeLanguage || changeSortParam) {
+                    if (changeLanguage || changeSortParam || changeIsSortDescending) {
                         reloadData()
                     }
                 }, {
@@ -90,6 +93,12 @@ class SettingsViewModel @Inject constructor(
             sortParam = newSortParam
         }
 
+        if (changeIsSortDescending) {
+
+            SharedPreferencesHelper.isSortOrderAscending = newIsSortOrderAscending
+            isSortOrderAscending = newIsSortOrderAscending
+        }
+
         if (changeSwipeRefresh) {
 
             SharedPreferencesHelper.swipeRefresh = newSwipeRefresh
@@ -106,7 +115,7 @@ class SettingsViewModel @Inject constructor(
             }
         }
 
-        if (!changePassword && (changeLanguage || changeSortParam)) {
+        if (!changePassword && (changeLanguage || changeSortParam || changeIsSortDescending)) {
             reloadData()
         }
     }

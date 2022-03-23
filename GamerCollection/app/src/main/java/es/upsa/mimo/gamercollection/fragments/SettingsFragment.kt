@@ -106,13 +106,16 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
             else Preferences.SPANISH_LANGUAGE_KEY
         val sortParam =
             resources.getStringArray(R.array.sort_param_keys)[binding.spinnerSortParams.selectedItemPosition]
+        val isSortOrderAscending =
+            binding.spinnerSortOrder.selectedItemPosition == 0
         val themeMode =
             resources.getStringArray(R.array.app_theme_values)
                 .indexOf(binding.textViewAppThemeValue.text.toString())
         viewModel.save(
             binding.editTextPassword.text.toString(),
             language,
-            sortingKey,
+            sortParam,
+            isSortOrderAscending,
             binding.switchSwipeRefresh.isChecked,
             themeMode
         )
@@ -162,6 +165,22 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
                     resources.getStringArray(R.array.sort_param_keys)
                         .indexOf(this@SettingsFragment.viewModel.sortParam)
                 )
+            }
+
+            spinnerSortOrder.apply {
+                backgroundTintList =
+                    ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.colorPrimary
+                        )
+                    )
+                adapter = Constants.getAdapter(
+                    requireContext(),
+                    resources.getStringArray(R.array.sort_order_values).toList(),
+                    true
+                )
+                setSelection(if (this@SettingsFragment.viewModel.isSortOrderAscending) 0 else 1)
             }
 
             textViewAppThemeValue.text =
