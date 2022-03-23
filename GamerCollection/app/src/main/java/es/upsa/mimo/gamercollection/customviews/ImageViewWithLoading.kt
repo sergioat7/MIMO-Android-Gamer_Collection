@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2022 Sergio Aragonés. All rights reserved.
+ * Created by Sergio Aragonés on 9/3/2022
+ */
+
 package es.upsa.mimo.gamercollection.customviews
 
 import android.content.Context
@@ -6,18 +11,16 @@ import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.databinding.StateButtonBinding
+import es.upsa.mimo.gamercollection.databinding.ImageViewWithLoadingBinding
 
-class StateButton @JvmOverloads constructor(
+class ImageViewWithLoading @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    //region Public properties
-    val binding: StateButtonBinding = DataBindingUtil.inflate(
+    val binding: ImageViewWithLoadingBinding = DataBindingUtil.inflate(
         LayoutInflater.from(context),
-        R.layout.state_button,
+        R.layout.image_view_with_loading,
         this,
         true
     )
-    //endregion
 }

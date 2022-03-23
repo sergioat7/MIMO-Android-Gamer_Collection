@@ -67,39 +67,42 @@
                         app:layout_constraintTop_toTopOf="parent"
                         >
 
-                        <es.upsa.mimo.gamercollection.customviews.StateButton
+                        <include
                             android:id="@+id/button_pending"
+                            layout="@layout/state_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:onClick="@{fragment::buttonClicked}"
-                            app:stateButton_background="@drawable/bordered_pending_state_button"
-                            app:stateButton_color="@drawable/pending_state_button_bottom_line"
-                            app:stateButton_title="@string/game_detail_button_title_pending"
+                            app:background="@{@drawable/bordered_pending_state_button}"
+                            app:lineColor="@{@drawable/pending_state_button_bottom_line}"
+                            app:title="@{@string/game_detail_button_title_pending}"
                             />
 
-                        <es.upsa.mimo.gamercollection.customviews.StateButton
+                        <include
                             android:id="@+id/button_in_progress"
+                            layout="@layout/state_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/margin_small"
                             android:layout_marginEnd="@dimen/margin_small"
                             android:layout_weight="1"
                             android:onClick="@{fragment::buttonClicked}"
-                            app:stateButton_background="@drawable/bordered_in_progress_state_button"
-                            app:stateButton_color="@drawable/in_progress_state_button_bottom_line"
-                            app:stateButton_title="@string/game_detail_button_title_in_progress"
+                            app:background="@{@drawable/bordered_in_progress_state_button}"
+                            app:lineColor="@{@drawable/in_progress_state_button_bottom_line}"
+                            app:title="@{@string/game_detail_button_title_in_progress}"
                             />
 
-                        <es.upsa.mimo.gamercollection.customviews.StateButton
+                        <include
                             android:id="@+id/button_finished"
+                            layout="@layout/state_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:onClick="@{fragment::buttonClicked}"
-                            app:stateButton_background="@drawable/bordered_finished_state_button"
-                            app:stateButton_color="@drawable/finished_state_button_bottom_line"
-                            app:stateButton_title="@string/game_detail_button_title_finished"
+                            app:background="@{@drawable/bordered_finished_state_button}"
+                            app:lineColor="@{@drawable/finished_state_button_bottom_line}"
+                            app:title="@{@string/game_detail_button_title_finished}"
                             />
 
                     </LinearLayout>

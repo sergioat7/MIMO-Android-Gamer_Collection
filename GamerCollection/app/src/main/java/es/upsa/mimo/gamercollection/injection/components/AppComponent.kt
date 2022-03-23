@@ -22,10 +22,9 @@ interface AppComponent {
     fun inject(gameSearchViewModelFactory: GameSearchViewModelFactory)
     fun inject(landingViewModelFactory: LandingViewModelFactory)
     fun inject(loginViewModelFactory: LoginViewModelFactory)
-    fun inject(popupFilterViewModelFactory: PopupFilterViewModelFactory)
     fun inject(popupSyncAppViewModelFactory: PopupSyncAppViewModelFactory)
-    fun inject(profileViewModelFactory: ProfileViewModelFactory)
     fun inject(registerViewModelFactory: RegisterViewModelFactory)
     fun inject(sagaDetailViewModelFactory: SagaDetailViewModelFactory)
     fun inject(sagasViewModelFactory: SagasViewModelFactory)
+    fun inject(settingsViewModelFactory: SettingsViewModelFactory)
 }

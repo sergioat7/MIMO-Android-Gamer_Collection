@@ -39,3 +39,7 @@ fun String?.toDate(
         return null
     }
 }
+
+fun String?.isNotBlank(): Boolean {
+    return !this.isNullOrBlank()
+}

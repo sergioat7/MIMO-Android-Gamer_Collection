@@ -4,11 +4,11 @@ import android.text.InputType
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
-import es.upsa.mimo.gamercollection.databinding.SagaItemBinding
+import es.upsa.mimo.gamercollection.databinding.ItemSagaBinding
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 
-class SagasViewHolder(private val binding: SagaItemBinding) :
+class SagasViewHolder(val binding: ItemSagaBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     //region Public methods
@@ -30,7 +30,6 @@ class SagasViewHolder(private val binding: SagaItemBinding) :
 
             editTextName.setText(title)
             editTextName.setReadOnly(true, InputType.TYPE_NULL, 0)
-
             this.saga = saga
             this.onItemClickListener = onItemClickListener
         }

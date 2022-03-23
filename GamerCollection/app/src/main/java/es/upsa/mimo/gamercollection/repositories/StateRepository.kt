@@ -1,5 +1,6 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.injection.modules.IoDispatcher
 import es.upsa.mimo.gamercollection.injection.modules.MainDispatcher
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
@@ -8,6 +9,7 @@ import es.upsa.mimo.gamercollection.network.ApiManager
 import es.upsa.mimo.gamercollection.network.RequestResult
 import es.upsa.mimo.gamercollection.network.StateApiService
 import es.upsa.mimo.gamercollection.persistence.AppDatabase
+import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
@@ -27,21 +29,27 @@ class StateRepository @Inject constructor(
     fun loadStates(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
         externalScope.launch {
 
-            when (val response = ApiManager.validateResponse(api.getStates())) {
-                is RequestResult.JsonSuccess -> {
+            try {
+                when (val response = ApiManager.validateResponse(api.getStates())) {
+                    is RequestResult.JsonSuccess -> {
 
-                    val newStates = response.body
-                    for (newState in newStates) {
-                        insertStateDatabase(newState)
+                        val newStates = response.body
+                        for (newState in newStates) {
+                            insertStateDatabase(newState)
+                        }
+                        val currentStates = getStatesDatabase()
+                        val statesToRemove =
+                            AppDatabase.getDisabledContent(currentStates, newStates)
+                        for (state in statesToRemove) {
+                            deleteStateDatabase(state as StateResponse)
+                        }
+                        success()
                     }
-                    val currentStates = getStatesDatabase()
-                    val statesToRemove = AppDatabase.getDisabledContent(currentStates, newStates)
-                    for (state in statesToRemove) {
-                        deleteStateDatabase(state as StateResponse)
-                    }
-                    success()
+                    is RequestResult.Failure -> failure(response.error)
+                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
                 }
-                is RequestResult.Failure -> failure(response.error)
+            } catch (e: Exception) {
+                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
             }
         }
     }

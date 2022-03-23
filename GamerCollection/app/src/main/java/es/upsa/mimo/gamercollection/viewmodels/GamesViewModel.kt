@@ -10,18 +10,22 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.extensions.getPickerParams
+import es.upsa.mimo.gamercollection.extensions.setup
 import es.upsa.mimo.gamercollection.fragments.GamesFragment
 import es.upsa.mimo.gamercollection.models.FilterModel
-import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
-import es.upsa.mimo.gamercollection.models.responses.GameResponse
-import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
+import es.upsa.mimo.gamercollection.models.responses.*
+import es.upsa.mimo.gamercollection.repositories.FormatRepository
 import es.upsa.mimo.gamercollection.repositories.GameRepository
+import es.upsa.mimo.gamercollection.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
 class GamesViewModel @Inject constructor(
+    private val formatRepository: FormatRepository,
     private val gameRepository: GameRepository,
+    private val genreRepository: GenreRepository,
     private val platformRepository: PlatformRepository
 ) : ViewModel() {
 
@@ -35,18 +39,24 @@ class GamesViewModel @Inject constructor(
     private var _state = MutableLiveData<String?>(null)
     private var _filters = MutableLiveData<FilterModel?>(null)
     private var _scrollPosition = MutableLiveData(GamesFragment.ScrollPosition.TOP)
-    private var sortKey: String = SharedPreferencesHelper.getSortingKey()
-    private var sortAscending = true
+    private var sortParam: String = SharedPreferencesHelper.sortParam
+    private var isSortOrderAscending = SharedPreferencesHelper.isSortOrderAscending
     private var query: String? = null
     //endregion
 
     //region Public properties
     val language: String
-        get() = SharedPreferencesHelper.getLanguage()
+        get() = SharedPreferencesHelper.language
     val dateFormatToShow: String
-        get() = SharedPreferencesHelper.getDateFormatToShow()
+        get() = SharedPreferencesHelper.dateFormatToShow
+    val filterDateFormat: String
+        get() = SharedPreferencesHelper.filterDateFormat
     val swipeRefresh: Boolean
-        get() = SharedPreferencesHelper.getSwipeRefresh()
+        get() = SharedPreferencesHelper.swipeRefresh
+    val formats: List<FormatResponse>
+        get() = formatRepository.getFormatsDatabase()
+    val genres: List<GenreResponse>
+        get() = genreRepository.getGenresDatabase()
     val platforms: List<PlatformResponse>
         get() = platformRepository.getPlatformsDatabase()
     val gamesLoading: LiveData<Boolean> = _gamesLoading
@@ -70,7 +80,7 @@ class GamesViewModel @Inject constructor(
             _gamesLoading.value = false
         }, {
 
-            _gamesLoading.value = true
+            _gamesLoading.value = false
             _gamesError.value = it
         })
     }
@@ -80,8 +90,8 @@ class GamesViewModel @Inject constructor(
         val games = gameRepository.getGamesDatabase(
             _filters.value,
             query,
-            sortKey,
-            sortAscending
+            sortParam,
+            isSortOrderAscending
         )
         _originalGames.value = games
 
@@ -100,39 +110,26 @@ class GamesViewModel @Inject constructor(
 
     fun sortGames(context: Context, resources: Resources) {
 
-        val sortingKeys = resources.getStringArray(R.array.sorting_keys_ids)
-        val sortingValues = resources.getStringArray(R.array.sorting_keys)
+        val sortingKeys = resources.getStringArray(R.array.sort_param_keys)
+        val sortingValues = resources.getStringArray(R.array.sort_param_values)
 
         val dialogView = LinearLayout(context)
         dialogView.orientation = LinearLayout.HORIZONTAL
 
-        val ascendingPicker = getPicker(
-            arrayOf(
-                resources.getString(R.string.ascending),
-                resources.getString(R.string.descending)
-            ), context
-        )
-        ascendingPicker.value = if (sortAscending) 0 else 1
-        val ascendingPickerParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        ascendingPickerParams.weight = 1f
+        val sortKeysPicker = NumberPicker(context)
+        sortKeysPicker.setup(sortingValues)
+        sortKeysPicker.value = sortingKeys.indexOf(sortParam)
 
-        val sortKeysPicker = getPicker(sortingValues, context)
-        sortKeysPicker.value = sortingKeys.indexOf(sortKey)
-        val sortKeysPickerParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        sortKeysPickerParams.weight = 1f
+        val sortOrdersPicker = NumberPicker(context)
+        sortOrdersPicker.setup(context.resources.getStringArray(R.array.sort_order_values))
+        sortOrdersPicker.value = if (isSortOrderAscending) 0 else 1
 
         val params = LinearLayout.LayoutParams(50, 50)
         params.gravity = Gravity.CENTER
 
         dialogView.layoutParams = params
-        dialogView.addView(sortKeysPicker, sortKeysPickerParams)
-        dialogView.addView(ascendingPicker, ascendingPickerParams)
+        dialogView.addView(sortKeysPicker, getPickerParams())
+        dialogView.addView(sortOrdersPicker, getPickerParams())
 
         MaterialAlertDialogBuilder(context)
             .setTitle(resources.getString(R.string.sort_title))
@@ -140,8 +137,8 @@ class GamesViewModel @Inject constructor(
             .setCancelable(false)
             .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
 
-                sortKey = sortingKeys[sortKeysPicker.value]
-                sortAscending = ascendingPicker.value == 0
+                sortParam = sortingKeys[sortKeysPicker.value]
+                isSortOrderAscending = sortOrdersPicker.value == 0
                 fetchGames()
                 dialog.dismiss()
             }
@@ -209,23 +206,12 @@ class GamesViewModel @Inject constructor(
     //endregion
 
     //region Private methods
-    private fun getPicker(values: Array<String>, context: Context): NumberPicker {
-
-        val picker = NumberPicker(context)
-        picker.minValue = 0
-        picker.maxValue = values.size - 1
-        picker.wrapSelectorWheel = true
-        picker.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-        picker.displayedValues = values
-        return picker
-    }
-
     private fun resetProperties() {
 
         _state.value = null
         _filters.value = null
-        sortKey = SharedPreferencesHelper.getSortingKey()
-        sortAscending = true
+        sortParam = SharedPreferencesHelper.sortParam
+        isSortOrderAscending = true
         query = null
     }
     //endregion

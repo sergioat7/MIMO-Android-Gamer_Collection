@@ -15,8 +15,8 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.base.BindingFragment
+import es.upsa.mimo.gamercollection.databinding.DialogGamesBinding
 import es.upsa.mimo.gamercollection.databinding.FragmentSagaDetailBinding
-import es.upsa.mimo.gamercollection.databinding.GamesDialogBinding
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
@@ -124,7 +124,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     //region Public methods
     fun addGame() {
 
-        val dialogBinding = GamesDialogBinding.inflate(layoutInflater)
+        val dialogBinding = DialogGamesBinding.inflate(layoutInflater)
 
         val orderedGames = viewModel.getOrderedGames(viewModel.games)
         if (orderedGames.isNotEmpty()) {
@@ -138,7 +138,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
         }
         dialogBinding.recyclerViewGames.visibility =
             if (orderedGames.isNotEmpty()) View.VISIBLE else View.GONE
-        dialogBinding.layoutEmptyList.visibility =
+        dialogBinding.layoutEmptyList.root.visibility =
             if (orderedGames.isNotEmpty()) View.GONE else View.VISIBLE
 
         MaterialAlertDialogBuilder(requireContext())
