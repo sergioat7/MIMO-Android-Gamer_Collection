@@ -40,7 +40,7 @@ class GamesViewModel @Inject constructor(
     private var _filters = MutableLiveData<FilterModel?>(null)
     private var _scrollPosition = MutableLiveData(GamesFragment.ScrollPosition.TOP)
     private var sortParam: String = SharedPreferencesHelper.sortParam
-    private var isSortOrderAscending = true
+    private var isSortOrderAscending = SharedPreferencesHelper.isSortOrderAscending
     private var query: String? = null
     //endregion
 
