@@ -104,8 +104,8 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
         val language =
             if (binding.radioButtonEn.isChecked) Preferences.ENGLISH_LANGUAGE_KEY
             else Preferences.SPANISH_LANGUAGE_KEY
-        val sortingKey =
-            resources.getStringArray(R.array.sort_param_keys)[binding.spinnerSortingKeys.selectedItemPosition]
+        val sortParam =
+            resources.getStringArray(R.array.sort_param_keys)[binding.spinnerSortParams.selectedItemPosition]
         val themeMode =
             resources.getStringArray(R.array.app_theme_values)
                 .indexOf(binding.textViewAppThemeValue.text.toString())
@@ -145,7 +145,7 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
             radioButtonEs.isChecked =
                 this@SettingsFragment.viewModel.language == Preferences.SPANISH_LANGUAGE_KEY
 
-            spinnerSortingKeys.apply {
+            spinnerSortParams.apply {
                 backgroundTintList =
                     ColorStateList.valueOf(
                         ContextCompat.getColor(
