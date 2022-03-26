@@ -207,7 +207,7 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
 
             if (error == null) {
 
-                launchActivity(LandingActivity::class.java)
+                launchActivity(LandingActivity::class.java, true)
                 activity?.finish()
             } else {
 
