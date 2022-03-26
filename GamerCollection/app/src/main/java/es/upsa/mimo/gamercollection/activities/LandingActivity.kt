@@ -6,6 +6,9 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.base.BaseActivity
 import es.upsa.mimo.gamercollection.utils.Notifications
@@ -36,6 +39,7 @@ class LandingActivity : BaseActivity() {
         setupBindings()
 
         configLanguage()
+        fetchRemoteConfigValues()
         createNotificationChannel()
         viewModel.checkVersion()
         viewModel.checkTheme()
@@ -68,6 +72,58 @@ class LandingActivity : BaseActivity() {
                 NotificationManager::class.java
             )
             notificationManager?.createNotificationChannel(channel)
+        }
+    }
+
+    private fun fetchRemoteConfigValues() {
+
+        val remoteConfig = Firebase.remoteConfig.apply {
+            setConfigSettingsAsync(
+                remoteConfigSettings {
+                    minimumFetchIntervalInSeconds = 3600
+                }
+            )
+        }
+
+        setupFormats(remoteConfig.getString("formats"))
+        setupGenres(remoteConfig.getString("genres"))
+        setupPlatforms(remoteConfig.getString("platforms"))
+        setupStates(remoteConfig.getString("states"))
+
+        remoteConfig.fetchAndActivate().addOnCompleteListener(this) {
+
+            setupFormats(remoteConfig.getString("formats"))
+            setupGenres(remoteConfig.getString("genres"))
+            setupPlatforms(remoteConfig.getString("platforms"))
+            setupStates(remoteConfig.getString("states"))
+        }
+    }
+
+    private fun setupFormats(formatsString: String) {
+
+        if (formatsString.isNotEmpty()) {
+            //TODO: save formats
+        }
+    }
+
+    private fun setupGenres(genresString: String) {
+
+        if (genresString.isNotEmpty()) {
+            //TODO: save genres
+        }
+    }
+
+    private fun setupPlatforms(platformsString: String) {
+
+        if (platformsString.isNotEmpty()) {
+            //TODO: save platforms
+        }
+    }
+
+    private fun setupStates(statesString: String) {
+
+        if (statesString.isNotEmpty()) {
+            //TODO: save states
         }
     }
     //endregion
