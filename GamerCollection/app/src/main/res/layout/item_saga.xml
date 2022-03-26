@@ -21,6 +21,11 @@
             type="es.upsa.mimo.gamercollection.adapters.OnItemClickListener"
             />
 
+        <variable
+            name="isDarkMode"
+            type="Boolean"
+            />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,13 +66,13 @@
                     android:id="@+id/image_view_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_medium_large_negative"
                     android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/margin_medium_large_negative"
                     android:layout_marginTop="@dimen/margin_normal"
                     android:layout_marginBottom="@dimen/margin_normal"
                     android:layout_toEndOf="@id/edit_text_name"
                     android:onClick="@{() -> onItemClickListener.onItemClick(saga.id)}"
-                    android:src="@drawable/ic_edit"
+                    android:src="@{isDarkMode ? @drawable/ic_edit_black : @drawable/ic_edit_white}"
                     />
 
             </RelativeLayout>

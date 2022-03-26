@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.databinding.ItemSagaBinding
+import es.upsa.mimo.gamercollection.extensions.isDarkMode
 import es.upsa.mimo.gamercollection.extensions.setReadOnly
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 
@@ -32,6 +33,7 @@ class SagasViewHolder(val binding: ItemSagaBinding) :
             editTextName.setReadOnly(true, InputType.TYPE_NULL, 0)
             this.saga = saga
             this.onItemClickListener = onItemClickListener
+            this.isDarkMode = binding.root.context.isDarkMode()
         }
 
     }
