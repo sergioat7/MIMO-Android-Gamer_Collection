@@ -6,23 +6,9 @@ import es.upsa.mimo.gamercollection.network.*
 
 @Module
 class NetworkModule {
-    @Provides
-    fun providesFormatApiService(): FormatApiService = ApiManager.getService(
-        ApiManager.BASE_ENDPOINT
-    )
 
     @Provides
     fun providesGameApiService(): GameApiService = ApiManager.getService(
-        ApiManager.BASE_ENDPOINT
-    )
-
-    @Provides
-    fun providesGenreApiService(): GenreApiService = ApiManager.getService(
-        ApiManager.BASE_ENDPOINT
-    )
-
-    @Provides
-    fun providesPlatformApiService(): PlatformApiService = ApiManager.getService(
         ApiManager.BASE_ENDPOINT
     )
 
@@ -38,11 +24,6 @@ class NetworkModule {
 
     @Provides
     fun providesSongApiService(): SongApiService = ApiManager.getService(
-        ApiManager.BASE_ENDPOINT
-    )
-
-    @Provides
-    fun providesStateApiService(): StateApiService = ApiManager.getService(
         ApiManager.BASE_ENDPOINT
     )
 
