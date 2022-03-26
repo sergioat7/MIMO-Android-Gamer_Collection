@@ -176,7 +176,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
             gamesAdapter = GamesAdapter(
                 this@GamesFragment.viewModel.games.value ?: listOf(),
-                this@GamesFragment.viewModel.platforms,
                 null,
                 this@GamesFragment
             )
@@ -282,15 +281,15 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         val dialogBinding = DialogFragmentPopupFilterBinding.inflate(layoutInflater)
 
         dialogBinding.chipGroupPlatforms.removeAllViews()
-        for (platform in viewModel.platforms) {
+        for (platform in Constants.PLATFORMS) {
             dialogBinding.chipGroupPlatforms.addChip(layoutInflater, platform.id, platform.name)
         }
         dialogBinding.chipGroupGenres.removeAllViews()
-        for (genre in viewModel.genres) {
+        for (genre in Constants.GENRES) {
             dialogBinding.chipGroupGenres.addChip(layoutInflater, genre.id, genre.name)
         }
         dialogBinding.chipGroupFormats.removeAllViews()
-        for (format in viewModel.formats) {
+        for (format in Constants.FORMATS) {
             dialogBinding.chipGroupFormats.addChip(layoutInflater, format.id, format.name)
         }
         dialogBinding.customEditTextReleaseDateMin.setDatePickerFormat(
