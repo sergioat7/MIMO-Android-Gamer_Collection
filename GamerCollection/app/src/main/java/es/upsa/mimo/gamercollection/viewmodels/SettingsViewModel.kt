@@ -7,17 +7,15 @@ import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.models.login.AuthData
 import es.upsa.mimo.gamercollection.models.login.UserData
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
-import es.upsa.mimo.gamercollection.repositories.*
+import es.upsa.mimo.gamercollection.repositories.GameRepository
+import es.upsa.mimo.gamercollection.repositories.SagaRepository
+import es.upsa.mimo.gamercollection.repositories.UserRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor(
-    private val formatRepository: FormatRepository,
     private val gameRepository: GameRepository,
-    private val genreRepository: GenreRepository,
-    private val platformRepository: PlatformRepository,
     private val sagaRepository: SagaRepository,
-    private val stateRepository: StateRepository,
     private val userRepository: UserRepository
 ) : ViewModel() {
 
@@ -55,12 +53,12 @@ class SettingsViewModel @Inject constructor(
         themeMode: Int
     ) {
 
-        val changePassword =            newPassword != userData.password
-        val changeLanguage =            newLanguage != language
-        val changeSortParam =           newSortParam != sortParam
-        val changeIsSortDescending =    newIsSortOrderAscending != isSortOrderAscending
-        val changeSwipeRefresh =        newSwipeRefresh != swipeRefresh
-        val changeThemeMode =           themeMode != SharedPreferencesHelper.themeMode
+        val changePassword = newPassword != userData.password
+        val changeLanguage = newLanguage != language
+        val changeSortParam = newSortParam != sortParam
+        val changeIsSortDescending = newIsSortOrderAscending != isSortOrderAscending
+        val changeSwipeRefresh = newSwipeRefresh != swipeRefresh
+        val changeThemeMode = themeMode != SharedPreferencesHelper.themeMode
 
         if (changePassword) {
             _settingsLoading.value = true
@@ -73,7 +71,7 @@ class SettingsViewModel @Inject constructor(
                     SharedPreferencesHelper.credentials = AuthData(it)
                     _settingsLoading.value = false
                     if (changeLanguage || changeSortParam || changeIsSortDescending) {
-                        reloadData()
+                        _settingsError.value = null
                     }
                 }, {
                     _settingsError.value = it
@@ -116,7 +114,7 @@ class SettingsViewModel @Inject constructor(
         }
 
         if (!changePassword && (changeLanguage || changeSortParam || changeIsSortDescending)) {
-            reloadData()
+            _settingsError.value = null
         }
     }
 
@@ -135,31 +133,6 @@ class SettingsViewModel @Inject constructor(
     //endregion
 
     //region Private methods
-    private fun reloadData() {
-
-        _settingsLoading.value = true
-
-        formatRepository.loadFormats({
-            genreRepository.loadGenres({
-                platformRepository.loadPlatforms({
-                    stateRepository.loadStates({
-
-                        _settingsLoading.value = false
-                        _settingsError.value = null
-                    }, {
-                        _settingsError.value = it
-                    })
-                }, {
-                    _settingsError.value = it
-                })
-            }, {
-                _settingsError.value = it
-            })
-        }, {
-            _settingsError.value = it
-        })
-    }
-
     private fun resetDatabase() {
 
         gameRepository.resetTable()

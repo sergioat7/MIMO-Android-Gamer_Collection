@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.GamerCollectionApplication
-import es.upsa.mimo.gamercollection.repositories.*
+import es.upsa.mimo.gamercollection.repositories.UserRepository
 import es.upsa.mimo.gamercollection.viewmodels.RegisterViewModel
 import javax.inject.Inject
 
@@ -13,18 +13,6 @@ class RegisterViewModelFactory(
 ) : ViewModelProvider.Factory {
 
     //region Public properties
-    @Inject
-    lateinit var formatRepository: FormatRepository
-
-    @Inject
-    lateinit var genreRepository: GenreRepository
-
-    @Inject
-    lateinit var platformRepository: PlatformRepository
-
-    @Inject
-    lateinit var stateRepository: StateRepository
-
     @Inject
     lateinit var userRepository: UserRepository
 
