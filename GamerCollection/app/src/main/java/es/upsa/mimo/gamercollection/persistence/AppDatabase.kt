@@ -6,29 +6,24 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import es.upsa.mimo.gamercollection.base.BaseModel
-import es.upsa.mimo.gamercollection.daos.*
-import es.upsa.mimo.gamercollection.models.responses.*
+import es.upsa.mimo.gamercollection.daos.GameDao
+import es.upsa.mimo.gamercollection.daos.SagaDao
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.SagaResponse
+import es.upsa.mimo.gamercollection.models.responses.SongResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 
 @Database(
     entities = [
-        FormatResponse::class,
         GameResponse::class,
-        GenreResponse::class,
-        PlatformResponse::class,
         SagaResponse::class,
-        SongResponse::class,
-        StateResponse::class], version = 1
+        SongResponse::class], version = 1
 )
 @TypeConverters(ListConverter::class, DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun formatDao(): FormatDao
     abstract fun gameDao(): GameDao
-    abstract fun genreDao(): GenreDao
-    abstract fun platformDao(): PlatformDao
     abstract fun sagaDao(): SagaDao
-    abstract fun stateDao(): StateDao
 
     companion object {
 
