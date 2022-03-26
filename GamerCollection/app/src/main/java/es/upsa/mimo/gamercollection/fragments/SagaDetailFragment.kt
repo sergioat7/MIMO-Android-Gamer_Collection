@@ -131,7 +131,6 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
 
             dialogBinding.recyclerViewGames.adapter = GamesAdapter(
                 orderedGames,
-                viewModel.platforms,
                 viewModel.saga.value?.id ?: 0,
                 this
             )
