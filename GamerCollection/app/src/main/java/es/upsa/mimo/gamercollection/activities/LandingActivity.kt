@@ -13,10 +13,10 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.gson.Gson
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.base.BaseActivity
-import es.upsa.mimo.gamercollection.models.responses.FormatResponse
-import es.upsa.mimo.gamercollection.models.responses.GenreResponse
-import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
-import es.upsa.mimo.gamercollection.models.responses.StateResponse
+import es.upsa.mimo.gamercollection.models.FormatModel
+import es.upsa.mimo.gamercollection.models.GenreModel
+import es.upsa.mimo.gamercollection.models.PlatformModel
+import es.upsa.mimo.gamercollection.models.StateModel
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Notifications
 import es.upsa.mimo.gamercollection.viewmodelfactories.LandingViewModelFactory
@@ -110,12 +110,12 @@ class LandingActivity : BaseActivity() {
     private fun setupFormats(formatsString: String) {
 
         if (formatsString.isNotEmpty()) {
-            var formats = listOf<FormatResponse>()
+            var formats = listOf<FormatModel>()
             try {
                 val languagedFormats =
                     JSONObject(formatsString).get(viewModel.language).toString()
                 formats =
-                    Gson().fromJson(languagedFormats, Array<FormatResponse>::class.java).asList()
+                    Gson().fromJson(languagedFormats, Array<FormatModel>::class.java).asList()
             } catch (e: Exception) {
                 Log.e("LandingActivity", e.message ?: "")
             }
@@ -127,12 +127,12 @@ class LandingActivity : BaseActivity() {
     private fun setupGenres(genresString: String) {
 
         if (genresString.isNotEmpty()) {
-            var genres = listOf<GenreResponse>()
+            var genres = listOf<GenreModel>()
             try {
                 val languagedGenres =
                     JSONObject(genresString).get(viewModel.language).toString()
                 genres =
-                    Gson().fromJson(languagedGenres, Array<GenreResponse>::class.java).asList()
+                    Gson().fromJson(languagedGenres, Array<GenreModel>::class.java).asList()
             } catch (e: Exception) {
                 Log.e("LandingActivity", e.message ?: "")
             }
@@ -144,12 +144,12 @@ class LandingActivity : BaseActivity() {
     private fun setupPlatforms(platformsString: String) {
 
         if (platformsString.isNotEmpty()) {
-            var platforms = listOf<PlatformResponse>()
+            var platforms = listOf<PlatformModel>()
             try {
                 val languagedPlatforms =
                     JSONObject(platformsString).get(viewModel.language).toString()
                 platforms =
-                    Gson().fromJson(languagedPlatforms, Array<PlatformResponse>::class.java)
+                    Gson().fromJson(languagedPlatforms, Array<PlatformModel>::class.java)
                         .asList()
             } catch (e: Exception) {
                 Log.e("LandingActivity", e.message ?: "")
@@ -162,12 +162,12 @@ class LandingActivity : BaseActivity() {
     private fun setupStates(statesString: String) {
 
         if (statesString.isNotEmpty()) {
-            var states = listOf<StateResponse>()
+            var states = listOf<StateModel>()
             try {
                 val languagedStates =
                     JSONObject(statesString).get(viewModel.language).toString()
                 states =
-                    Gson().fromJson(languagedStates, Array<StateResponse>::class.java).asList()
+                    Gson().fromJson(languagedStates, Array<StateModel>::class.java).asList()
             } catch (e: Exception) {
                 Log.e("LandingActivity", e.message ?: "")
             }
