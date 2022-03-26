@@ -17,6 +17,7 @@ import es.upsa.mimo.gamercollection.models.responses.FormatResponse
 import es.upsa.mimo.gamercollection.models.responses.GenreResponse
 import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.models.responses.StateResponse
+import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Notifications
 import es.upsa.mimo.gamercollection.viewmodelfactories.LandingViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.LandingViewModel
@@ -118,6 +119,8 @@ class LandingActivity : BaseActivity() {
             } catch (e: Exception) {
                 Log.e("LandingActivity", e.message ?: "")
             }
+
+            Constants.FORMATS = formats
         }
     }
 
@@ -133,6 +136,8 @@ class LandingActivity : BaseActivity() {
             } catch (e: Exception) {
                 Log.e("LandingActivity", e.message ?: "")
             }
+
+            Constants.GENRES = genres
         }
     }
 
@@ -149,6 +154,8 @@ class LandingActivity : BaseActivity() {
             } catch (e: Exception) {
                 Log.e("LandingActivity", e.message ?: "")
             }
+
+            Constants.PLATFORMS = platforms
         }
     }
 
@@ -164,6 +171,8 @@ class LandingActivity : BaseActivity() {
             } catch (e: Exception) {
                 Log.e("LandingActivity", e.message ?: "")
             }
+
+            Constants.STATES = states
         }
     }
     //endregion
