@@ -5,15 +5,22 @@ import android.app.NotificationManager
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
+import com.google.gson.Gson
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.base.BaseActivity
+import es.upsa.mimo.gamercollection.models.responses.FormatResponse
+import es.upsa.mimo.gamercollection.models.responses.GenreResponse
+import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
+import es.upsa.mimo.gamercollection.models.responses.StateResponse
 import es.upsa.mimo.gamercollection.utils.Notifications
 import es.upsa.mimo.gamercollection.viewmodelfactories.LandingViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.LandingViewModel
+import org.json.JSONObject
 import java.util.*
 
 class LandingActivity : BaseActivity() {
@@ -102,28 +109,61 @@ class LandingActivity : BaseActivity() {
     private fun setupFormats(formatsString: String) {
 
         if (formatsString.isNotEmpty()) {
-            //TODO: save formats
+            var formats = listOf<FormatResponse>()
+            try {
+                val languagedFormats =
+                    JSONObject(formatsString).get(viewModel.language).toString()
+                formats =
+                    Gson().fromJson(languagedFormats, Array<FormatResponse>::class.java).asList()
+            } catch (e: Exception) {
+                Log.e("LandingActivity", e.message ?: "")
+            }
         }
     }
 
     private fun setupGenres(genresString: String) {
 
         if (genresString.isNotEmpty()) {
-            //TODO: save genres
+            var genres = listOf<GenreResponse>()
+            try {
+                val languagedGenres =
+                    JSONObject(genresString).get(viewModel.language).toString()
+                genres =
+                    Gson().fromJson(languagedGenres, Array<GenreResponse>::class.java).asList()
+            } catch (e: Exception) {
+                Log.e("LandingActivity", e.message ?: "")
+            }
         }
     }
 
     private fun setupPlatforms(platformsString: String) {
 
         if (platformsString.isNotEmpty()) {
-            //TODO: save platforms
+            var platforms = listOf<PlatformResponse>()
+            try {
+                val languagedPlatforms =
+                    JSONObject(platformsString).get(viewModel.language).toString()
+                platforms =
+                    Gson().fromJson(languagedPlatforms, Array<PlatformResponse>::class.java)
+                        .asList()
+            } catch (e: Exception) {
+                Log.e("LandingActivity", e.message ?: "")
+            }
         }
     }
 
     private fun setupStates(statesString: String) {
 
         if (statesString.isNotEmpty()) {
-            //TODO: save states
+            var states = listOf<StateResponse>()
+            try {
+                val languagedStates =
+                    JSONObject(statesString).get(viewModel.language).toString()
+                states =
+                    Gson().fromJson(languagedStates, Array<StateResponse>::class.java).asList()
+            } catch (e: Exception) {
+                Log.e("LandingActivity", e.message ?: "")
+            }
         }
     }
     //endregion
