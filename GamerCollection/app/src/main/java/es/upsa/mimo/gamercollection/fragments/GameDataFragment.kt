@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.model.LatLng
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnLocationSelected
@@ -18,7 +17,6 @@ import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.State
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
-import es.upsa.mimo.gamercollection.viewmodelfactories.GameDataViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameDataViewModel
 import kotlinx.android.synthetic.main.custom_edit_text.view.*
 
@@ -32,7 +30,7 @@ class GameDataFragment(
     //endregion
 
     //region Private properties
-    private lateinit var viewModel: GameDataViewModel
+    private val viewModel = GameDataViewModel(game)
     private var genreValues = ArrayList<String>()
     private var formatValues = ArrayList<String>()
     //endregion
@@ -58,7 +56,7 @@ class GameDataFragment(
 
         var genrePosition = 0
         game?.genre?.let { genreId ->
-            val genreName = viewModel.genres.firstOrNull { it.id == genreId }?.name
+            val genreName = Constants.GENRES.firstOrNull { it.id == genreId }?.name
             val pos = genreValues.indexOf(genreName)
             genrePosition = if (pos > 0) pos else 0
         }
@@ -66,7 +64,7 @@ class GameDataFragment(
 
         var formatPosition = 0
         game?.format?.let { formatId ->
-            val formatName = viewModel.formats.firstOrNull { it.id == formatId }?.name
+            val formatName = Constants.FORMATS.firstOrNull { it.id == formatId }?.name
             val pos = formatValues.indexOf(formatName)
             formatPosition = if (pos > 0) pos else 0
         }
@@ -181,9 +179,9 @@ class GameDataFragment(
             viewModel.language
         )
         val format =
-            viewModel.formats.firstOrNull { it.name == binding.spinnerFormats.selectedItem.toString() }?.id
+            Constants.FORMATS.firstOrNull { it.name == binding.spinnerFormats.selectedItem.toString() }?.id
         val genre =
-            viewModel.genres.firstOrNull { it.name == binding.spinnerGenres.selectedItem.toString() }?.id
+            Constants.GENRES.firstOrNull { it.name == binding.spinnerGenres.selectedItem.toString() }?.id
         val state =
             when {
                 binding.buttonPending.root.isSelected -> State.PENDING_STATE
@@ -254,22 +252,18 @@ class GameDataFragment(
     //region Private methods
     private fun initializeUI() {
 
-        val application = activity?.application
-        viewModel = ViewModelProvider(
-            this,
-            GameDataViewModelFactory(application, game)
-        )[GameDataViewModel::class.java]
+
         setupBindings()
 
         formatValues = ArrayList()
         formatValues.run {
             this.add(resources.getString((R.string.game_detail_select_format)))
-            this.addAll(viewModel.formats.map { it.name })
+            this.addAll(Constants.FORMATS.map { it.name })
         }
         genreValues = ArrayList()
         genreValues.run {
             this.add(resources.getString((R.string.game_detail_select_genre)))
-            this.addAll(viewModel.genres.map { it.name })
+            this.addAll(Constants.GENRES.map { it.name })
         }
         val pegis = ArrayList<String>()
         pegis.run {
