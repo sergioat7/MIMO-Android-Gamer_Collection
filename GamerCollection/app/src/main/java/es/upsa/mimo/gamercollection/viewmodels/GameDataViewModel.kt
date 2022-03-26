@@ -4,23 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
-import es.upsa.mimo.gamercollection.models.responses.FormatResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
-import es.upsa.mimo.gamercollection.models.responses.GenreResponse
-import es.upsa.mimo.gamercollection.repositories.FormatRepository
-import es.upsa.mimo.gamercollection.repositories.GenreRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import java.util.*
-import javax.inject.Inject
-import kotlin.collections.ArrayList
 
-class GameDataViewModel @Inject constructor(
-    private val formatRepository: FormatRepository,
-    private val genreRepository: GenreRepository
-) : ViewModel() {
+class GameDataViewModel(private val game: GameResponse?) : ViewModel() {
 
     //region Private properties
-    private var game: GameResponse? = null
     private val _gameDataLoading = MutableLiveData<Boolean>()
     private val _gameDataError = MutableLiveData<ErrorResponse>()
     //endregion
@@ -30,19 +20,11 @@ class GameDataViewModel @Inject constructor(
         get() = SharedPreferencesHelper.language
     val dateFormatToShow: String
         get() = SharedPreferencesHelper.dateFormatToShow
-    val formats: List<FormatResponse>
-        get() = formatRepository.getFormatsDatabase()
-    val genres: List<GenreResponse>
-        get() = genreRepository.getGenresDatabase()
     val gameDataLoading: LiveData<Boolean> = _gameDataLoading
     val gameDataError: LiveData<ErrorResponse> = _gameDataError
     //endregion
 
     //region Public methods
-    fun setGame(game: GameResponse?) {
-        this.game = game
-    }
-
     fun getGameData(
         pegi: String?,
         distributor: String,
