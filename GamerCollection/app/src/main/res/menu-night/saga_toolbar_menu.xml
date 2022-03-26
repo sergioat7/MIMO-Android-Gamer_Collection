@@ -6,22 +6,6 @@
     >
 
     <item
-        android:id="@+id/action_edit"
-        android:icon="@drawable/ic_edit_black"
-        android:title=""
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction"
-        />
-
-    <item
-        android:id="@+id/action_remove"
-        android:icon="@drawable/ic_remove_game"
-        android:title=""
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction"
-        />
-
-    <item
         android:id="@+id/action_cancel"
         android:icon="@drawable/ic_cancel_changes_black"
         android:title=""
@@ -34,6 +18,23 @@
         android:icon="@drawable/ic_save_changes_black"
         android:title=""
         app:showAsAction="always"
+        tools:ignore="AlwaysShowAction"
+        />
+
+    <item
+        android:id="@+id/action_edit"
+        android:icon="@drawable/ic_edit_black"
+        android:title=""
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction"
+        />
+
+    <item
+        android:id="@+id/action_remove"
+        android:icon="@drawable/ic_remove_saga"
+        android:title=""
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction"
         />
 
 </menu>
