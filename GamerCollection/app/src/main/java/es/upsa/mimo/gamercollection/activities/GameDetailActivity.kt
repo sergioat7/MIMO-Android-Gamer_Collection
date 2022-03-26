@@ -180,7 +180,7 @@ class GameDetailActivity : BaseActivity() {
         platformValues = ArrayList()
         platformValues.run {
             this.add(resources.getString((R.string.game_detail_select_platform)))
-            this.addAll(viewModel.platforms.map { it.name })
+            this.addAll(Constants.PLATFORMS.map { it.name })
         }
         binding.spinnerPlatforms.adapter = Constants.getAdapter(this, platformValues)
 
@@ -261,7 +261,7 @@ class GameDetailActivity : BaseActivity() {
         var platformPosition = 0
         game?.platform?.let { platformId ->
 
-            val platformName = viewModel.platforms.firstOrNull { it.id == platformId }?.name
+            val platformName = Constants.PLATFORMS.firstOrNull { it.id == platformId }?.name
             val pos = platformValues.indexOf(platformName)
             platformPosition = if (pos > 0) pos else 0
         }
@@ -304,7 +304,7 @@ class GameDetailActivity : BaseActivity() {
         val id = gameId ?: 0
         val name = binding.customEditTextName.getText()
         val platform =
-            viewModel.platforms.firstOrNull { it.name == binding.spinnerPlatforms.selectedItem.toString() }?.id
+            Constants.PLATFORMS.firstOrNull { it.name == binding.spinnerPlatforms.selectedItem.toString() }?.id
         val score = binding.ratingButton.text.toString().toDouble()
 
         return pagerAdapter.getGameData()?.let {

@@ -149,7 +149,6 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
             sagasAdapter = SagasAdapter(
                 this@SagasFragment.viewModel.sagas.value?.toMutableList() ?: mutableListOf(),
                 mutableListOf(),
-                this@SagasFragment.viewModel.platforms,
                 this@SagasFragment
             )
             recyclerViewSagas.apply {

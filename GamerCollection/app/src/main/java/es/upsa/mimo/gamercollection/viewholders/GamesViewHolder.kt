@@ -7,12 +7,11 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.databinding.ItemGameBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
-import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
+import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.State
 
 class GamesViewHolder(
-    val binding: ItemGameBinding,
-    private val platforms: List<PlatformResponse>
+    val binding: ItemGameBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
     //region Public methods
@@ -47,7 +46,7 @@ class GamesViewHolder(
         with(binding) {
 
             viewState.setBackgroundColor(color)
-            platform = platforms.firstOrNull { it.id == game.platform }
+            platform = Constants.PLATFORMS.firstOrNull { it.id == game.platform }
             textViewRating.text = game.score.toInt().toString()
             checkBox.isChecked = game.saga?.id == sagaId
             this.game = game

@@ -15,7 +15,6 @@ import es.upsa.mimo.gamercollection.viewmodelfactories.*
 )
 interface AppComponent {
 
-    fun inject(gameDataViewModelFactory: GameDataViewModelFactory)
     fun inject(gameDetailViewModelFactory: GameDetailViewModelFactory)
     fun inject(gameSongsViewModelFactory: GameSongsViewModelFactory)
     fun inject(gamesViewModelFactory: GamesViewModelFactory)

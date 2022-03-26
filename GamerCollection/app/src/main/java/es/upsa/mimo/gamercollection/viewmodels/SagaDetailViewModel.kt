@@ -6,17 +6,14 @@ import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
-import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
-import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.repositories.SagaRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
 class SagaDetailViewModel @Inject constructor(
     private val gameRepository: GameRepository,
-    private val platformRepository: PlatformRepository,
     private val sagaRepository: SagaRepository
 ) : ViewModel() {
 
@@ -31,8 +28,6 @@ class SagaDetailViewModel @Inject constructor(
     //region Public properties
     val games: List<GameResponse>
         get() = gameRepository.getGamesDatabase()
-    val platforms: List<PlatformResponse>
-        get() = platformRepository.getPlatformsDatabase()
     val sagaDetailLoading: LiveData<Boolean> = _sagaDetailLoading
     val sagaDetailSuccessMessage: LiveData<Int> = _sagaDetailSuccessMessage
     val sagaDetailError: LiveData<ErrorResponse?> = _sagaDetailError
