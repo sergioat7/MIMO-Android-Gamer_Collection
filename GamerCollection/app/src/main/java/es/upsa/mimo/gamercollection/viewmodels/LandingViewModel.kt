@@ -11,12 +11,8 @@ import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
 class LandingViewModel @Inject constructor(
-    private val formatRepository: FormatRepository,
     private val gameRepository: GameRepository,
-    private val genreRepository: GenreRepository,
-    private val platformRepository: PlatformRepository,
-    private val sagaRepository: SagaRepository,
-    private val stateRepository: StateRepository
+    private val sagaRepository: SagaRepository
 ) : ViewModel() {
 
     //region Private properties
@@ -64,12 +60,8 @@ class LandingViewModel @Inject constructor(
     //region Private methods
     private fun resetDatabase() {
 
-        formatRepository.resetTable()
         gameRepository.resetTable()
-        genreRepository.resetTable()
-        platformRepository.resetTable()
         sagaRepository.resetTable()
-        stateRepository.resetTable()
     }
     //endregion
 }

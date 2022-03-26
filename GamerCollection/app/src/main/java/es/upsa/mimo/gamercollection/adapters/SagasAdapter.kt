@@ -10,7 +10,6 @@ import es.upsa.mimo.gamercollection.base.BaseModel
 import es.upsa.mimo.gamercollection.databinding.ItemGameBinding
 import es.upsa.mimo.gamercollection.databinding.ItemSagaBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
-import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewholders.GamesViewHolder
@@ -19,7 +18,6 @@ import es.upsa.mimo.gamercollection.viewholders.SagasViewHolder
 class SagasAdapter(
     private var items: MutableList<BaseModel<Int>>,
     private var expandedIds: MutableList<Int>,
-    private val platforms: List<PlatformResponse>,
     private var onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<ViewHolder?>() {
 
@@ -39,8 +37,7 @@ class SagasAdapter(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
-                ),
-                platforms
+                )
             )
             else -> throw Throwable("Unsupported type")
         }

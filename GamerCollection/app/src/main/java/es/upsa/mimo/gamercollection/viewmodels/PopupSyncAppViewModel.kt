@@ -4,16 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
-import es.upsa.mimo.gamercollection.repositories.*
+import es.upsa.mimo.gamercollection.repositories.GameRepository
+import es.upsa.mimo.gamercollection.repositories.SagaRepository
 import javax.inject.Inject
 
 class PopupSyncAppViewModel @Inject constructor(
-    private val formatRepository: FormatRepository,
     private val gameRepository: GameRepository,
-    private val genreRepository: GenreRepository,
-    private val platformRepository: PlatformRepository,
-    private val sagaRepository: SagaRepository,
-    private val stateRepository: StateRepository
+    private val sagaRepository: SagaRepository
 ) : ViewModel() {
 
     //region Private properties
@@ -27,26 +24,10 @@ class PopupSyncAppViewModel @Inject constructor(
     //region Public methods
     fun loadContent() {
 
-        formatRepository.loadFormats({
-            gameRepository.loadGames({
-                genreRepository.loadGenres({
-                    platformRepository.loadPlatforms({
-                        sagaRepository.loadSagas({
-                            stateRepository.loadStates({
+        gameRepository.loadGames({
+            sagaRepository.loadSagas({
 
-                                _popupSyncAppError.value = null
-                            }, {
-                                _popupSyncAppError.value = it
-                            })
-                        }, {
-                            _popupSyncAppError.value = it
-                        })
-                    }, {
-                        _popupSyncAppError.value = it
-                    })
-                }, {
-                    _popupSyncAppError.value = it
-                })
+                _popupSyncAppError.value = null
             }, {
                 _popupSyncAppError.value = it
             })

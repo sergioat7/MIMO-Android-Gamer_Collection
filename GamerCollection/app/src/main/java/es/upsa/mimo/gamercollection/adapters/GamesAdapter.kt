@@ -8,13 +8,11 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.databinding.ItemGameBinding
 import es.upsa.mimo.gamercollection.databinding.ItemLoadMoreItemsBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
-import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.viewholders.GamesViewHolder
 import es.upsa.mimo.gamercollection.viewholders.LoadMoreItemsViewHolder
 
 class GamesAdapter(
     private var games: List<GameResponse>,
-    private val platforms: List<PlatformResponse>,
     private val sagaId: Int?,
     private var onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
@@ -37,8 +35,7 @@ class GamesAdapter(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
-                ),
-                platforms
+                )
             )
         } else {
             LoadMoreItemsViewHolder(

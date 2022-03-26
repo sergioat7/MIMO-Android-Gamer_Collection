@@ -14,7 +14,7 @@
 
         <variable
             name="platform"
-            type="es.upsa.mimo.gamercollection.models.responses.PlatformResponse"
+            type="es.upsa.mimo.gamercollection.models.PlatformModel"
             />
 
         <variable

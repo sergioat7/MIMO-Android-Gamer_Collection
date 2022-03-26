@@ -6,14 +6,11 @@ import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
-import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
-import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import javax.inject.Inject
 
 class GameDetailViewModel @Inject constructor(
-    private val gameRepository: GameRepository,
-    private val platformRepository: PlatformRepository
+    private val gameRepository: GameRepository
 ) : ViewModel() {
 
     //region Private properties
@@ -26,8 +23,6 @@ class GameDetailViewModel @Inject constructor(
     //endregion
 
     //region Public properties
-    val platforms: List<PlatformResponse>
-        get() = platformRepository.getPlatformsDatabase()
     val gameDetailLoading: LiveData<Boolean> = _gameDetailLoading
     val gameDetailSuccessMessage: LiveData<Int> = _gameDetailSuccessMessage
     val gameDetailError: LiveData<ErrorResponse> = _gameDetailError
