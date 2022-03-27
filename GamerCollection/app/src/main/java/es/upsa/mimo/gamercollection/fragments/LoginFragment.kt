@@ -68,7 +68,7 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
         )[LoginViewModel::class.java]
         setupBindings()
 
-        binding.fragment
+        binding.fragment = this
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
     }
