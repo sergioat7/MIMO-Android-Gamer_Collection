@@ -7,6 +7,10 @@
 
     <data>
 
+        <import
+            type="es.upsa.mimo.gamercollection.utils.CustomInputType"
+            />
+
         <variable
             name="fragment"
             type="es.upsa.mimo.gamercollection.fragments.LoginFragment"
@@ -35,54 +39,44 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:src="@drawable/app_name"
-                app:layout_constraintBottom_toTopOf="@+id/edit_text_user"
+                app:layout_constraintBottom_toTopOf="@+id/text_input_layout_username"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 />
 
-            <EditText
-                android:id="@+id/edit_text_user"
+            <include
+                android:id="@+id/text_input_layout_username"
+                layout="@layout/custom_text_input_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_larger"
                 android:layout_marginEnd="@dimen/margin_larger"
-                android:hint="@string/login_username"
-                android:inputType="text"
-                app:layout_constraintBottom_toTopOf="@+id/edit_text_password"
+                app:labelHintText="@{@string/login_username}"
+                app:inputType="@{CustomInputType.TEXT}"
+                app:enabled="@{true}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                style="@style/Widget.GamerCollection.EditText.Credentials"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.45"
+                app:text="@{viewModel.username}"
                 />
 
-            <EditText
-                android:id="@+id/edit_text_password"
+            <include
+                android:id="@+id/text_input_layout_password"
+                layout="@layout/custom_text_input_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_small"
-                android:hint="@string/login_password"
-                android:inputType="textPassword"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/edit_text_user"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/edit_text_user"
-                app:layout_constraintTop_toTopOf="parent"
-                style="@style/Widget.GamerCollection.EditText.Credentials"
-                />
-
-            <ImageButton
-                android:id="@+id/image_button_password"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/margin_small"
-                android:layout_marginEnd="@dimen/margin_medium"
-                android:layout_marginBottom="@dimen/margin_small"
-                android:src="@drawable/ic_show_password"
-                app:layout_constraintBottom_toBottomOf="@+id/edit_text_password"
-                app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
-                app:layout_constraintTop_toTopOf="@+id/edit_text_password"
-                style="@style/Widget.GamerCollection.ImageButton"
+                app:labelHintText="@{@string/login_password}"
+                app:inputType="@{CustomInputType.PASSWORD}"
+                app:enabled="@{true}"
+                app:endIconSrc="@{@drawable/ic_show_password}"
+                app:layout_constraintEnd_toEndOf="@+id/text_input_layout_username"
+                app:layout_constraintStart_toStartOf="@+id/text_input_layout_username"
+                app:layout_constraintTop_toBottomOf="@+id/text_input_layout_username"
                 />
 
             <Button
@@ -101,7 +95,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_password"
+                app:layout_constraintTop_toBottomOf="@+id/text_input_layout_password"
                 app:layout_constraintVertical_bias="1.0"
                 style="@style/Widget.GamerCollection.Button.Main"
                 />
