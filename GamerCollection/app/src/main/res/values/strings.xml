@@ -172,6 +172,10 @@
         <item>Price</item>
         <item>Score</item>
     </string-array>
+    <string-array name="sort_order_keys" translatable="false">
+        <item>ascending</item>
+        <item>descending</item>
+    </string-array>
     <string-array name="sort_order_values">
         <item>Ascending</item>
         <item>Descending</item>
