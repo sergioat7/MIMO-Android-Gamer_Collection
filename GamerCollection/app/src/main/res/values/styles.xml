@@ -184,6 +184,17 @@
         <item name="customEditText_ime_option">"DONE"</item>
     </style>
 
+    <!--  TextInputLayout  -->
+
+    <style name="Widget.GamerCollection.TextInputLayout.Bordered" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/color_text_input_layout_border</item>
+        <item name="editTextStyle">@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox</item>
+        <item name="hintTextAppearance">@style/TextAppearance.GamerCollection.Hint</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.GamerCollection.Rounded.10</item>
+        <item name="android:textColorHint">@color/textSecondary</item>
+        <item name="android:useDefaultMargins">false</item>
+    </style>
+
     <!--  Button  -->
 
     <style name="Widget.GamerCollection.Button" parent="Widget.MaterialComponents.Button">
@@ -349,6 +360,11 @@
     <style name="TextAppearance.GamerCollection.Chip" parent="TextAppearance.MaterialComponents.Body2">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+
+    <style name="TextAppearance.GamerCollection.Hint" parent="TextAppearance.Design.Hint">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">@dimen/font_small</item>
     </style>
 
     <!--  MaterialAlertDialog  -->

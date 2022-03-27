@@ -7,17 +7,23 @@ package es.upsa.mimo.gamercollection.extensions
 
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
+import android.text.InputType
 import android.view.View
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.SongsAdapter
 import es.upsa.mimo.gamercollection.customviews.ImageViewWithLoading
 import es.upsa.mimo.gamercollection.customviews.StateButton
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SongResponse
+import es.upsa.mimo.gamercollection.utils.CustomInputType
 import me.zhanghai.android.materialratingbar.MaterialRatingBar
 
 @BindingAdapter("games")
@@ -116,4 +122,46 @@ fun setLineColor(stateButton: StateButton, lineColor: Drawable?) {
 @BindingAdapter("background")
 fun setBackground(stateButton: StateButton, background: Drawable?) {
     stateButton.binding.background = background
+}
+
+@BindingAdapter("end_icon_mode")
+fun setEndIconMode(textInputLayout: TextInputLayout, mode: Int?) {
+    mode?.let {
+        when (it > 0) {
+            true -> textInputLayout.endIconMode = it
+            false -> Unit
+        }
+    }
+}
+
+@BindingAdapter("endIconTint")
+fun setEndIconTint(textInputLayout: TextInputLayout, tint: Int) {
+    textInputLayout.setEndIconTintList(ColorStateList.valueOf(tint))
+}
+
+@BindingAdapter("clickable")
+fun setClickable(textInputLayout: TextInputLayout, clickable: Boolean?) {
+    textInputLayout.isHovered = clickable != true
+}
+
+@BindingAdapter("customInputType")
+fun setInputType(view: TextInputEditText, inputType: CustomInputType?) {
+    view.inputType = when (inputType) {
+
+        CustomInputType.TEXT -> InputType.TYPE_CLASS_TEXT
+        CustomInputType.MULTI_LINE_TEXT -> InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE
+        CustomInputType.NUMBER -> InputType.TYPE_CLASS_NUMBER
+        CustomInputType.PASSWORD -> InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        else -> InputType.TYPE_NULL
+    }
+}
+
+@BindingAdapter("isBold")
+fun setBold(view: TextInputEditText, isBold: Boolean?) {
+
+    if (isBold == true) {
+        view.typeface = ResourcesCompat.getFont(view.context, R.font.roboto_bold)
+    } else {
+        view.typeface = ResourcesCompat.getFont(view.context, R.font.roboto_regular)
+    }
 }
