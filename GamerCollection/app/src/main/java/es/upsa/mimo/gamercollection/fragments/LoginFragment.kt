@@ -7,10 +7,9 @@ import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.activities.RegisterActivity
 import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentLoginBinding
-import es.upsa.mimo.gamercollection.extensions.afterTextChanged
-import es.upsa.mimo.gamercollection.extensions.onFocusChange
-import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.Environment
+import es.upsa.mimo.gamercollection.extensions.doAfterTextChanged
+import es.upsa.mimo.gamercollection.extensions.getValue
+import es.upsa.mimo.gamercollection.extensions.setError
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.LoginViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.LoginViewModel
@@ -30,6 +29,17 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
         super.onViewCreated(view, savedInstanceState)
         initializeUI()
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        binding.textInputLayoutUsername.doAfterTextChanged {
+            loginDataChanged()
+        }
+        binding.textInputLayoutPassword.doAfterTextChanged {
+            loginDataChanged()
+        }
+    }
     //endregion
 
     //region Public methods
@@ -39,9 +49,11 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
 
     fun login() {
 
+        binding.textInputLayoutUsername.textInputEditText.clearFocus()
+        binding.textInputLayoutPassword.textInputEditText.clearFocus()
         viewModel.login(
-            binding.editTextUser.text.toString(),
-            binding.editTextPassword.text.toString()
+            binding.textInputLayoutUsername.getValue(),
+            binding.textInputLayoutPassword.getValue()
         )
     }
     //endregion
@@ -56,52 +68,24 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
         )[LoginViewModel::class.java]
         setupBindings()
 
-        val user = viewModel.username.ifEmpty { Environment.getUsername() }
-        val password =
-            if (viewModel.username.isEmpty()) Environment.getPassword() else Constants.EMPTY_VALUE
-
-        with(binding) {
-
-            editTextUser.setText(user)
-            editTextUser.afterTextChanged {
-                loginDataChanged()
-            }
-            editTextUser.onFocusChange {
-                loginDataChanged()
-            }
-
-            editTextPassword.setText(password)
-            editTextPassword.afterTextChanged {
-                loginDataChanged()
-            }
-            editTextPassword.onFocusChange {
-                loginDataChanged()
-            }
-
-            imageButtonPassword.setOnClickListener {
-                Constants.showOrHidePassword(
-                    editTextPassword,
-                    imageButtonPassword
-                )
-            }
-
-            fragment = this@LoginFragment
-            viewModel = this@LoginFragment.viewModel
-            lifecycleOwner = this@LoginFragment
-        }
+        binding.fragment
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
     }
 
     private fun setupBindings() {
 
         viewModel.loginFormState.observe(viewLifecycleOwner) {
 
+            binding.textInputLayoutUsername.setError("")
+            binding.textInputLayoutPassword.setError("")
             val loginState = it ?: return@observe
 
             if (loginState.usernameError != null) {
-                binding.editTextUser.error = getString(loginState.usernameError)
+                binding.textInputLayoutUsername.setError(getString(loginState.usernameError))
             }
             if (loginState.passwordError != null) {
-                binding.editTextPassword.error = getString(loginState.passwordError)
+                binding.textInputLayoutPassword.setError(getString(loginState.passwordError))
             }
         }
 
@@ -129,8 +113,8 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
     private fun loginDataChanged() {
 
         viewModel.loginDataChanged(
-            binding.editTextUser.text.toString(),
-            binding.editTextPassword.text.toString()
+            binding.textInputLayoutUsername.getValue(),
+            binding.textInputLayoutPassword.getValue()
         )
     }
     //endregion
