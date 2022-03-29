@@ -102,11 +102,6 @@
         <item name="fontFamily">@font/roboto_bold</item>
     </style>
 
-    <style name="Widget.GamerCollection.EditText.Credentials">
-        <item name="android:ems">10</item>
-        <item name="android:selectAllOnFocus">true</item>
-    </style>
-
     <style name="Widget.GamerCollection.EditText.Bold.SagaTitle">
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">@dimen/font_extra_large</item>
