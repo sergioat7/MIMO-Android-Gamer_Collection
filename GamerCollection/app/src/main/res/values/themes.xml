@@ -7,8 +7,8 @@
         <item name="colorOnPrimary">@color/colorSecondary</item>
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorOnSecondary">@color/colorPrimary</item>
-        <item name="colorSurface">@color/colorPrimary</item>
-        <item name="colorOnSurface">@color/colorSecondary</item>
+        <item name="colorSurface">@color/colorSecondary</item>
+        <item name="colorOnSurface">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorSecondary</item>
         <item name="colorSwitchThumbNormal">@color/colorSecondary</item>

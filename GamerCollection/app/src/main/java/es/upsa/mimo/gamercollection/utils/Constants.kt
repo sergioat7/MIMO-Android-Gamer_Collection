@@ -1,10 +1,6 @@
 package es.upsa.mimo.gamercollection.utils
 
 import android.content.Context
-import android.text.method.HideReturnsTransformationMethod
-import android.text.method.PasswordTransformationMethod
-import android.widget.EditText
-import android.widget.ImageButton
 import com.google.android.gms.maps.model.LatLng
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.SpinnerAdapter
@@ -121,19 +117,6 @@ object Constants {
 
     fun isPasswordValid(password: String): Boolean {
         return password.length > 3
-    }
-
-    fun showOrHidePassword(editText: EditText, imageButton: ImageButton) {
-
-        if (editText.transformationMethod is HideReturnsTransformationMethod) {
-
-            imageButton.setImageResource(R.drawable.ic_show_password)
-            editText.transformationMethod = PasswordTransformationMethod.getInstance()
-        } else {
-
-            imageButton.setImageResource(R.drawable.ic_hide_password)
-            editText.transformationMethod = HideReturnsTransformationMethod.getInstance()
-        }
     }
 }
 
