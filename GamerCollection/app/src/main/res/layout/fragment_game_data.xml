@@ -11,6 +11,18 @@
             type="android.view.View"
             />
 
+        <import
+            type="es.upsa.mimo.gamercollection.utils.CustomInputType"
+            />
+
+        <import
+            type="es.upsa.mimo.gamercollection.utils.Constants"
+            />
+
+        <import
+            type="es.upsa.mimo.gamercollection.extensions.StringExtensionsKt"
+            />
+
         <variable
             name="fragment"
             type="es.upsa.mimo.gamercollection.fragments.GameDataFragment"
@@ -121,44 +133,21 @@
                         app:layout_constraintTop_toBottomOf="@+id/linear_layout_state_buttons"
                         >
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
+                        <include
+                            android:id="@+id/dropdown_text_input_layout_pegis"
+                            layout="@layout/custom_dropdown_text_input_layout"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            >
-
-                            <TextView
-                                android:layout_width="@dimen/size_higher"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical|start"
-                                android:layout_marginEnd="@dimen/margin_small"
-                                android:layout_weight="1"
-                                android:text="@string/game_detail_pegi"
-                                app:layout_constraintBottom_toTopOf="@+id/spinner_pegis"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="0.0"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintVertical_bias="0.0"
-                                style="@style/Widget.GamerCollection.TextView.Title.Header"
-                                />
-
-                            <Spinner
-                                android:id="@+id/spinner_pegis"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="0.0"
-                                app:layout_constraintStart_toStartOf="parent"
-                                style="@style/Widget.GamerCollection.Spinner"
-                                />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+                            app:enabled="@{editable}"
+                            app:labelHintText="@{@string/game_detail_pegi}"
+                            app:inputHintText="@{@string/game_detail_select_pegi}"
+                            app:showText="true"
+                            />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/margin_small"
                             android:layout_marginEnd="@dimen/margin_small"
                             android:layout_weight="1"
@@ -228,349 +217,180 @@
                         app:layout_constraintTop_toBottomOf="@+id/linear_layout_hidden"
                         >
 
-                        <LinearLayout
-                            android:id="@+id/linear_layout_genres"
+                        <include
+                            android:id="@+id/dropdown_text_input_layout_formats"
+                            layout="@layout/custom_dropdown_text_input_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
+                            app:enabled="@{editable}"
+                            app:inputHintText="@{@string/game_detail_select_format}"
+                            app:labelHintText="@{@string/game_detail_format}"
+                            app:showText="true"
+                            />
 
-                            <TextView
-                                android:layout_width="@dimen/size_higher"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical|start"
-                                android:layout_marginEnd="@dimen/margin_small"
-                                android:text="@string/game_detail_genre"
-                                style="@style/Widget.GamerCollection.TextView.Title.Header"
-                                />
-
-                            <Spinner
-                                android:id="@+id/spinner_genres"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                style="@style/Widget.GamerCollection.Spinner"
-                                />
-
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <include
+                            android:id="@+id/dropdown_text_input_layout_genres"
+                            layout="@layout/custom_dropdown_text_input_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
+                            android:layout_marginTop="@dimen/margin_medium"
+                            app:enabled="@{editable}"
+                            app:labelHintText="@{@string/game_detail_genre}"
+                            app:inputHintText="@{@string/game_detail_select_genre}"
+                            app:showText="true"
+                            />
 
-                            <TextView
-                                android:layout_width="@dimen/size_higher"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical|start"
-                                android:layout_marginEnd="@dimen/margin_small"
-                                android:text="@string/game_detail_release_date"
-                                style="@style/Widget.GamerCollection.TextView.Title.Header"
-                                />
-
-                            <es.upsa.mimo.gamercollection.customviews.CustomEditText
-                                android:id="@+id/custom_edit_text_release_date"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                style="@style/Widget.GamerCollection.CustomEditText.GameDetail.WithRemoveImage.ReleaseDate"
-                                />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/linear_layout_formats"
+                        <include
+                            android:id="@+id/text_input_layout_release_date"
+                            layout="@layout/custom_text_input_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
+                            android:layout_marginTop="@dimen/margin_medium"
+                            app:enabled="@{editable}"
+                            app:endIconSrc="@{editable ? @drawable/ic_clear_text : null}"
+                            app:inputHintText="@{@string/game_detail_release_date}"
+                            app:inputType="@{CustomInputType.DATE}"
+                            app:labelHintText="@{@string/game_detail_select_date}"
+                            app:text='@{game.releaseDateAsHumanReadable() ?? editable ? null : Constants.NO_VALUE}'
+                            />
 
-                            <TextView
-                                android:layout_width="@dimen/size_higher"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical|start"
-                                android:layout_marginEnd="@dimen/margin_small"
-                                android:text="@string/game_detail_format"
-                                style="@style/Widget.GamerCollection.TextView.Title.Header"
-                                />
-
-                            <Spinner
-                                android:id="@+id/spinner_formats"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                style="@style/Widget.GamerCollection.Spinner"
-                                />
-
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <include
+                            android:id="@+id/text_input_layout_distributor"
+                            layout="@layout/custom_text_input_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
+                            android:layout_marginTop="@dimen/margin_medium"
+                            app:enabled="@{editable}"
+                            app:endIconSrc="@{editable ? @drawable/ic_clear_text : null}"
+                            app:inputHintText="@{@string/game_detail_placeholder_distributor}"
+                            app:inputType="@{CustomInputType.MULTI_LINE_TEXT}"
+                            app:labelHintText="@{@string/game_detail_distributor}"
+                            app:text='@{StringExtensionsKt.isNotBlank(game.distributor) ? game.distributor : editable ? null : Constants.NO_VALUE}'
+                            />
 
-                            <TextView
-                                android:layout_width="@dimen/size_higher"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical|start"
-                                android:layout_marginEnd="@dimen/margin_small"
-                                android:text="@string/game_detail_distributor"
-                                style="@style/Widget.GamerCollection.TextView.Title.Header"
-                                />
-
-                            <es.upsa.mimo.gamercollection.customviews.CustomEditText
-                                android:id="@+id/custom_edit_text_distributor"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                app:customEditText_type="TEXT"
-                                app:customEditText_placeholder="@string/game_detail_placeholder_distributor"
-                                app:customEditText_ime_option="NEXT"
-                                style="@style/Widget.GamerCollection.CustomEditText.GameDetail"
-                                />
-
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <include
+                            android:id="@+id/text_input_layout_developer"
+                            layout="@layout/custom_text_input_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
+                            android:layout_marginTop="@dimen/margin_medium"
+                            app:enabled="@{editable}"
+                            app:endIconSrc="@{editable ? @drawable/ic_clear_text : null}"
+                            app:inputHintText="@{@string/game_detail_placeholder_developer}"
+                            app:inputType="@{CustomInputType.MULTI_LINE_TEXT}"
+                            app:labelHintText="@{@string/game_detail_developer}"
+                            app:text='@{StringExtensionsKt.isNotBlank(game.developer) ? game.developer : editable ? null : Constants.NO_VALUE}'
+                            />
 
-                            <TextView
-                                android:layout_width="@dimen/size_higher"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical|start"
-                                android:layout_marginEnd="@dimen/margin_small"
-                                android:text="@string/game_detail_developer"
-                                style="@style/Widget.GamerCollection.TextView.Title.Header"
-                                />
-
-                            <es.upsa.mimo.gamercollection.customviews.CustomEditText
-                                android:id="@+id/custom_edit_text_developer"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                app:customEditText_type="TEXT"
-                                app:customEditText_placeholder="@string/game_detail_placeholder_developer"
-                                app:customEditText_ime_option="NEXT"
-                                style="@style/Widget.GamerCollection.CustomEditText.GameDetail"
-                                />
-
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <include
+                            android:id="@+id/text_input_layout_players"
+                            layout="@layout/custom_text_input_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
+                            android:layout_marginTop="@dimen/margin_medium"
+                            app:enabled="@{editable}"
+                            app:endIconSrc="@{editable ? @drawable/ic_clear_text : null}"
+                            app:inputHintText="@{@string/game_detail_placeholder_players}"
+                            app:inputType="@{CustomInputType.TEXT}"
+                            app:labelHintText="@{@string/game_detail_players}"
+                            app:text='@{StringExtensionsKt.isNotBlank(game.players) ? game.players : editable ? null : Constants.NO_VALUE}'
+                            />
 
-                            <TextView
-                                android:layout_width="@dimen/size_higher"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical|start"
-                                android:layout_marginEnd="@dimen/margin_small"
-                                android:text="@string/game_detail_players"
-                                style="@style/Widget.GamerCollection.TextView.Title.Header"
-                                />
-
-                            <es.upsa.mimo.gamercollection.customviews.CustomEditText
-                                android:id="@+id/custom_edit_text_players"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                app:customEditText_type="TEXT"
-                                app:customEditText_placeholder="@string/game_detail_placeholder_players"
-                                app:customEditText_ime_option="NEXT"
-                                style="@style/Widget.GamerCollection.CustomEditText.GameDetail"
-                                />
-
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <include
+                            android:id="@+id/text_input_layout_price"
+                            layout="@layout/custom_text_input_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
+                            android:layout_marginTop="@dimen/margin_medium"
+                            app:enabled="@{editable}"
+                            app:endIconSrc="@{editable ? @drawable/ic_clear_text : null}"
+                            app:inputHintText="@{@string/game_detail_placeholder_price}"
+                            app:inputType="@{CustomInputType.NUMBER}"
+                            app:labelHintText="@{@string/game_detail_price}"
+                            app:text="@{game.price > 0 ? String.valueOf(game.price) : editable ? null : Constants.NO_VALUE}"
+                            />
 
-                            <TextView
-                                android:id="@+id/text_view_price"
-                                android:layout_width="@dimen/size_higher"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical|start"
-                                android:layout_marginEnd="@dimen/margin_small"
-                                android:text="@string/game_detail_price"
-                                style="@style/Widget.GamerCollection.TextView.Title.Header"
-                                />
-
-                            <es.upsa.mimo.gamercollection.customviews.CustomEditText
-                                android:id="@+id/custom_edit_text_price"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                app:customEditText_type="NUMBER"
-                                app:customEditText_placeholder="@string/game_detail_placeholder_price"
-                                app:customEditText_ime_option="NEXT"
-                                style="@style/Widget.GamerCollection.CustomEditText.GameDetail"
-                                />
-
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <include
+                            android:id="@+id/text_input_layout_purchase_date"
+                            layout="@layout/custom_text_input_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
+                            android:layout_marginTop="@dimen/margin_medium"
+                            app:enabled="@{editable}"
+                            app:endIconSrc="@{editable ? @drawable/ic_clear_text : null}"
+                            app:inputHintText="@{@string/game_detail_select_date}"
+                            app:inputType="@{CustomInputType.DATE}"
+                            app:labelHintText="@{@string/game_detail_purchase_date}"
+                            app:text='@{game.purchaseDateAsHumanReadable() ?? editable ? null : Constants.NO_VALUE}'
+                            />
 
-                            <TextView
-                                android:id="@+id/text_view_purchase_date"
-                                android:layout_width="@dimen/size_higher"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical|start"
-                                android:layout_marginEnd="@dimen/margin_small"
-                                android:text="@string/game_detail_purchase_date"
-                                style="@style/Widget.GamerCollection.TextView.Title.Header"
-                                />
-
-                            <es.upsa.mimo.gamercollection.customviews.CustomEditText
-                                android:id="@+id/custom_edit_text_purchase_date"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                style="@style/Widget.GamerCollection.CustomEditText.GameDetail.WithRemoveImage.PurchaseDate"
-                                />
-
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <include
+                            android:id="@+id/text_input_layout_purchase_location"
+                            layout="@layout/custom_text_input_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
+                            android:layout_marginTop="@dimen/margin_medium"
+                            app:enabled="@{editable}"
+                            app:endIconSrc="@{editable ? @drawable/ic_clear_text : null}"
+                            app:inputHintText="@{@string/game_detail_placeholder_purchase_location}"
+                            app:inputType="@{CustomInputType.NONE}"
+                            app:labelHintText="@{@string/game_detail_purchase_location}"
+                            app:text='@{StringExtensionsKt.isNotBlank(game.purchaseLocation) ? game.purchaseLocation : editable ? null : Constants.NO_VALUE}'
+                            />
 
-                            <TextView
-                                android:id="@+id/text_view_purchase_location"
-                                android:layout_width="@dimen/size_higher"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical|start"
-                                android:layout_marginEnd="@dimen/margin_small"
-                                android:text="@string/game_detail_purchase_location"
-                                style="@style/Widget.GamerCollection.TextView.Title.Header"
-                                />
-
-                            <es.upsa.mimo.gamercollection.customviews.CustomEditText
-                                android:id="@+id/custom_edit_text_purchase_location"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:onClick="@{() -> fragment.showMap()}"
-                                style="@style/Widget.GamerCollection.CustomEditText.GameDetail.WithRemoveImage.PurchaseLocation"
-                                />
-
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <include
+                            android:id="@+id/text_input_layout_loaned"
+                            layout="@layout/custom_text_input_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
+                            android:layout_marginTop="@dimen/margin_medium"
+                            app:enabled="@{editable}"
+                            app:endIconSrc="@{editable ? @drawable/ic_clear_text : null}"
+                            app:inputHintText="@{@string/game_detail_placeholder_loaned_to}"
+                            app:inputType="@{CustomInputType.TEXT}"
+                            app:labelHintText="@{@string/game_detail_loaned_to}"
+                            app:text='@{StringExtensionsKt.isNotBlank(game.loanedTo) ? game.loanedTo : editable ? null : Constants.NO_VALUE}'
+                            />
 
-                            <TextView
-                                android:id="@+id/text_view_loaned"
-                                android:layout_width="@dimen/size_higher"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical|start"
-                                android:layout_marginEnd="@dimen/margin_small"
-                                android:text="@string/game_detail_loaned_to"
-                                style="@style/Widget.GamerCollection.TextView.Title.Header"
-                                />
-
-                            <es.upsa.mimo.gamercollection.customviews.CustomEditText
-                                android:id="@+id/custom_edit_text_loaned"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                app:customEditText_type="TEXT"
-                                app:customEditText_placeholder="@string/game_detail_placeholder_loaned_to"
-                                app:customEditText_ime_option="NEXT"
-                                style="@style/Widget.GamerCollection.CustomEditText.GameDetail"
-                                />
-
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <include
+                            android:id="@+id/text_input_layout_video_url"
+                            layout="@layout/custom_text_input_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
+                            android:layout_marginTop="@dimen/margin_medium"
+                            app:enabled="@{editable}"
+                            app:endIconSrc="@{editable ? @drawable/ic_clear_text : null}"
+                            app:inputHintText="@{@string/game_detail_placeholder_video_url}"
+                            app:inputType="@{CustomInputType.TEXT}"
+                            app:labelHintText="@{@string/game_detail_video_url}"
+                            app:text='@{StringExtensionsKt.isNotBlank(game.videoUrl) ? game.videoUrl : editable ? null : Constants.NO_VALUE}'
+                            />
 
-                            <TextView
-                                android:id="@+id/text_view_video_url"
-                                android:layout_width="@dimen/size_higher"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical|start"
-                                android:layout_marginEnd="@dimen/margin_small"
-                                android:text="@string/game_detail_video_url"
-                                style="@style/Widget.GamerCollection.TextView.Title.Header"
-                                />
-
-                            <es.upsa.mimo.gamercollection.customviews.CustomEditText
-                                android:id="@+id/custom_edit_text_video_url"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                app:customEditText_type="URL"
-                                app:customEditText_placeholder="@string/game_detail_placeholder_video_url"
-                                app:customEditText_ime_option="NEXT"
-                                style="@style/Widget.GamerCollection.CustomEditText.GameDetail"
-                                />
-
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <include
+                            android:id="@+id/text_input_layout_observations"
+                            layout="@layout/custom_text_input_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
+                            android:layout_marginTop="@dimen/margin_medium"
+                            app:enabled="@{editable}"
+                            app:endIconSrc="@{editable ? @drawable/ic_clear_text : null}"
+                            app:inputHintText="@{@string/game_detail_placeholder_observations}"
+                            app:inputType="@{CustomInputType.TEXT}"
+                            app:labelHintText="@{@string/game_detail_observations}"
+                            app:text='@{StringExtensionsKt.isNotBlank(game.observations) ? game.observations : editable ? null : Constants.NO_VALUE}'
+                            />
 
-                            <TextView
-                                android:id="@+id/text_view_observations"
-                                android:layout_width="@dimen/size_higher"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical|start"
-                                android:layout_marginEnd="@dimen/margin_small"
-                                android:text="@string/game_detail_observations"
-                                style="@style/Widget.GamerCollection.TextView.Title.Header"
-                                />
-
-                            <es.upsa.mimo.gamercollection.customviews.CustomEditText
-                                android:id="@+id/custom_edit_text_observations"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                app:customEditText_type="TEXT"
-                                app:customEditText_placeholder="@string/game_detail_placeholder_observations"
-                                app:customEditText_ime_option="DONE"
-                                style="@style/Widget.GamerCollection.CustomEditText.GameDetail"
-                                />
-
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <include
+                            android:id="@+id/text_input_layout_saga"
+                            layout="@layout/custom_text_input_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
-
-                            <TextView
-                                android:id="@+id/text_view_saga"
-                                android:layout_width="@dimen/size_higher"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical|start"
-                                android:layout_marginEnd="@dimen/margin_small"
-                                android:text="@string/game_detail_saga"
-                                style="@style/Widget.GamerCollection.TextView.Title.Header"
-                                />
-
-                            <es.upsa.mimo.gamercollection.customviews.CustomEditText
-                                android:id="@+id/custom_edit_text_saga"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                app:customEditText_type="NONE"
-                                style="@style/Widget.GamerCollection.CustomEditText.GameDetail"
-                                />
-
-                        </LinearLayout>
+                            android:layout_marginTop="@dimen/margin_medium"
+                            app:labelHintText="@{@string/game_detail_saga}"
+                            app:inputType="@{CustomInputType.TEXT}"
+                            app:enabled="@{false}"
+                            app:text='@{StringExtensionsKt.isNotBlank(game.saga.name) ? game.saga.name : Constants.NO_VALUE}'
+                            />
 
                     </LinearLayout>
 

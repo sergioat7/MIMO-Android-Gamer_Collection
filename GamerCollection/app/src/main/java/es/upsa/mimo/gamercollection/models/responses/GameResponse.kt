@@ -5,7 +5,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import es.upsa.mimo.gamercollection.base.BaseModel
+import es.upsa.mimo.gamercollection.extensions.toString
 import es.upsa.mimo.gamercollection.models.rawg.RawgGameResponse
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import java.util.*
 
 @Entity(tableName = "Game")
@@ -82,4 +84,20 @@ data class GameResponse(
         null,
         listOf()
     )
+
+    fun releaseDateAsHumanReadable(): String? {
+
+        return releaseDate.toString(
+            SharedPreferencesHelper.dateFormatToShow,
+            SharedPreferencesHelper.language
+        )
+    }
+
+    fun purchaseDateAsHumanReadable(): String? {
+
+        return purchaseDate.toString(
+            SharedPreferencesHelper.dateFormatToShow,
+            SharedPreferencesHelper.language
+        )
+    }
 }
