@@ -16,7 +16,6 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.databinding.CustomTextInputLayoutBinding
-import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import java.util.*
 
@@ -43,10 +42,6 @@ fun CustomTextInputLayoutBinding.setEndIconOnClickListener(endIconOnClickListene
 
 fun CustomTextInputLayoutBinding.getValue(): String {
     return this.textInputEditText.text.toString().trimStart().trimEnd()
-}
-
-fun CustomTextInputLayoutBinding.isBlank(): Boolean {
-    return this.getValue().isBlank() || this.textInputEditText.text.toString() == Constants.NO_VALUE
 }
 
 fun CustomTextInputLayoutBinding.setHintStyle(id: Int) {

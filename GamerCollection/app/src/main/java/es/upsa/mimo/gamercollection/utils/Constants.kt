@@ -1,9 +1,6 @@
 package es.upsa.mimo.gamercollection.utils
 
-import android.content.Context
 import com.google.android.gms.maps.model.LatLng
-import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.adapters.SpinnerAdapter
 import es.upsa.mimo.gamercollection.models.FormatModel
 import es.upsa.mimo.gamercollection.models.GenreModel
 import es.upsa.mimo.gamercollection.models.PlatformModel
@@ -100,17 +97,6 @@ object Constants {
         StateModel("FINISHED", "Finished")
     )
 
-    fun getAdapter(
-        context: Context,
-        data: List<String>,
-        firstOptionEnabled: Boolean = false
-    ): SpinnerAdapter {
-
-        val arrayAdapter = SpinnerAdapter(context, data, firstOptionEnabled)
-        arrayAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown)
-        return arrayAdapter
-    }
-
     fun isUserNameValid(username: String): Boolean {
         return username.isNotBlank()
     }
@@ -141,12 +127,14 @@ enum class CustomInputType {
     MULTI_LINE_TEXT,
     NUMBER,
     PASSWORD,
-    DATE
+    DATE,
+    NONE
 }
 
 enum class CustomDropdownType {
     FORMAT,
     GENRE,
+    PEGI,
     PLATFORM,
     STATE,
     SORT_PARAM,

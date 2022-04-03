@@ -48,6 +48,7 @@
     // Game detail
     <string name="game_detail_placeholder_name">Add a name</string>
     <string name="game_detail_image_modal_title">Introduce a valid URL</string>
+    <string name="game_detail_platform">Platform</string>
     <string name="game_detail_select_platform">Select a platform</string>
     <string name="game_detail_genre">Genre</string>
     <string name="game_detail_select_genre">Select a genre</string>

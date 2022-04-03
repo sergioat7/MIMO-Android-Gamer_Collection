@@ -115,38 +115,6 @@
 
     <style name="Widget.GamerCollection.CustomEditText" />
 
-    <style name="Widget.GamerCollection.CustomEditText.GameTitle">
-        <item name="customEditText_type">"TEXT"</item>
-        <item name="customEditText_placeholder">@string/game_detail_placeholder_name</item>
-        <item name="customEditText_font">@font/roboto_bold</item>
-        <item name="customEditText_text_size">@dimen/font_larger</item>
-    </style>
-
-    <style name="Widget.GamerCollection.CustomEditText.GameDetail">
-        <item name="android:layout_gravity">center</item>
-        <item name="customEditText_font">@font/roboto_regular</item>
-        <item name="customEditText_text_size">@dimen/font_medium</item>
-    </style>
-
-    <style name="Widget.GamerCollection.CustomEditText.GameDetail.WithRemoveImage">
-        <item name="customEditText_icon">@drawable/ic_remove_text</item>
-    </style>
-
-    <style name="Widget.GamerCollection.CustomEditText.GameDetail.WithRemoveImage.ReleaseDate">
-        <item name="customEditText_type">"DATE"</item>
-        <item name="customEditText_placeholder">@string/game_detail_select_date</item>
-    </style>
-
-    <style name="Widget.GamerCollection.CustomEditText.GameDetail.WithRemoveImage.PurchaseDate">
-        <item name="customEditText_type">"DATE"</item>
-        <item name="customEditText_placeholder">@string/game_detail_select_date</item>
-    </style>
-
-    <style name="Widget.GamerCollection.CustomEditText.GameDetail.WithRemoveImage.PurchaseLocation">
-        <item name="customEditText_type">"NONE"</item>
-        <item name="customEditText_placeholder">@string/game_detail_placeholder_purchase_location</item>
-    </style>
-
     <style name="Widget.GamerCollection.CustomEditText.SetImage">
         <item name="customEditText_type">"URL"</item>
         <item name="customEditText_font">@font/roboto_regular</item>

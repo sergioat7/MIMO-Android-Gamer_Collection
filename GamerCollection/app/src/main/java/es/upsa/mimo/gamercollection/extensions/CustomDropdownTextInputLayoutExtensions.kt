@@ -33,6 +33,7 @@ fun CustomDropdownTextInputLayoutBinding.setValue(currentKey: String?, type: Cus
     val values = when (type) {
         CustomDropdownType.FORMAT -> Constants.FORMATS.map { it.name }
         CustomDropdownType.GENRE -> Constants.GENRES.map { it.name }
+        CustomDropdownType.PEGI -> root.context.resources.getStringArray(R.array.pegis).toList()
         CustomDropdownType.PLATFORM -> Constants.PLATFORMS.map { it.name }
         CustomDropdownType.STATE -> Constants.STATES.map { it.name }
         CustomDropdownType.SORT_PARAM -> root.context.resources.getStringArray(R.array.sort_param_values)
@@ -51,6 +52,7 @@ fun CustomDropdownTextInputLayoutBinding.setValue(currentKey: String?, type: Cus
         val keys = when (type) {
             CustomDropdownType.FORMAT -> Constants.FORMATS.map { it.id }
             CustomDropdownType.GENRE -> Constants.GENRES.map { it.id }
+            CustomDropdownType.PEGI -> root.context.resources.getStringArray(R.array.pegis).toList()
             CustomDropdownType.PLATFORM -> Constants.PLATFORMS.map { it.id }
             CustomDropdownType.STATE -> Constants.STATES.map { it.id }
             CustomDropdownType.SORT_PARAM -> root.context.resources.getStringArray(R.array.sort_param_keys)
