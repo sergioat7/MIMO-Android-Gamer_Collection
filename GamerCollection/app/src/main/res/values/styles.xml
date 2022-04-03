@@ -115,14 +115,6 @@
 
     <style name="Widget.GamerCollection.CustomEditText" />
 
-    <style name="Widget.GamerCollection.CustomEditText.SetImage">
-        <item name="customEditText_type">"URL"</item>
-        <item name="customEditText_font">@font/roboto_regular</item>
-        <item name="customEditText_text_size">@dimen/font_medium</item>
-        <item name="customEditText_icon">@drawable/ic_remove_text</item>
-        <item name="customEditText_ime_option">"DONE"</item>
-    </style>
-
     <style name="Widget.GamerCollection.CustomEditText.NewSong">
         <item name="customEditText_font">@font/roboto_regular</item>
         <item name="customEditText_text_size">@dimen/font_large</item>
@@ -163,7 +155,7 @@
         <item name="editTextStyle">@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox</item>
         <item name="hintTextAppearance">@style/TextAppearance.GamerCollection.Hint</item>
         <item name="shapeAppearanceOverlay">@style/ShapeAppearance.GamerCollection.Rounded.10</item>
-        <item name="android:textColorHint">@color/textSecondary</item>
+        <item name="android:textColorHint">@color/textPrimary</item>
         <item name="android:useDefaultMargins">false</item>
     </style>
 
@@ -271,15 +263,6 @@
         <item name="tabSelectedTextColor">@color/colorSecondary</item>
         <item name="tabTextColor">@color/colorSecondaryLight</item>
         <item name="android:background">@color/colorPrimary</item>
-    </style>
-
-    <!-- Spinner   -->
-
-    <style name="Widget.GamerCollection.Spinner" parent="Widget.AppCompat.Spinner.Underlined">
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:spinnerMode">dropdown</item>
-        <item name="android:backgroundTint">@android:color/transparent</item>
-        <item name="android:minHeight">@dimen/size_large</item>
     </style>
 
     <!--  Chip  -->
