@@ -113,32 +113,6 @@
         <item name="android:textColor">@color/textSecondary</item>
     </style>
 
-    <style name="Widget.GamerCollection.CustomEditText" />
-
-    <style name="Widget.GamerCollection.CustomEditText.NewSong">
-        <item name="customEditText_font">@font/roboto_regular</item>
-        <item name="customEditText_text_size">@dimen/font_large</item>
-        <item name="customEditText_icon">@drawable/ic_remove_text</item>
-    </style>
-
-    <style name="Widget.GamerCollection.CustomEditText.NewSong.Name">
-        <item name="customEditText_type">"TEXT"</item>
-        <item name="customEditText_placeholder">@string/modal_song_placeholder_name</item>
-        <item name="customEditText_ime_option">"NEXT"</item>
-    </style>
-
-    <style name="Widget.GamerCollection.CustomEditText.NewSong.Singer">
-        <item name="customEditText_type">"TEXT"</item>
-        <item name="customEditText_placeholder">@string/modal_song_placeholder_singer</item>
-        <item name="customEditText_ime_option">"NEXT"</item>
-    </style>
-
-    <style name="Widget.GamerCollection.CustomEditText.NewSong.Url">
-        <item name="customEditText_type">"URL"</item>
-        <item name="customEditText_placeholder">@string/modal_song_placeholder_url</item>
-        <item name="customEditText_ime_option">"DONE"</item>
-    </style>
-
     <!--  TextInputLayout  -->
 
     <style name="Widget.GamerCollection.TextInputLayout.Bordered" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
