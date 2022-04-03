@@ -123,7 +123,7 @@ class GameDetailActivity : BaseActivity() {
             .setCancelable(false)
             .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
 
-                val url = dialogBinding.customEditTextUrl.getText()
+                val url = dialogBinding.textInputLayoutImageUrl.getValue()
                 if (url.isNotEmpty()) {
                     binding.imageUrl = url
                 }
