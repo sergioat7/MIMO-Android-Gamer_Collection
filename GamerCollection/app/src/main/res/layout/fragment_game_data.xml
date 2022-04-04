@@ -361,7 +361,7 @@
                             app:enabled="@{editable}"
                             app:endIconSrc="@{editable ? @drawable/ic_clear_text : null}"
                             app:inputHintText="@{@string/game_detail_placeholder_video_url}"
-                            app:inputType="@{CustomInputType.TEXT}"
+                            app:inputType="@{CustomInputType.URL}"
                             app:labelHintText="@{@string/game_detail_video_url}"
                             app:text='@{StringExtensionsKt.isNotBlank(game.videoUrl) ? game.videoUrl : editable ? null : Constants.NO_VALUE}'
                             />

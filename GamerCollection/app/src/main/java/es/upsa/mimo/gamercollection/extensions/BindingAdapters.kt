@@ -152,6 +152,7 @@ fun setInputType(view: TextInputEditText, inputType: CustomInputType?) {
         CustomInputType.MULTI_LINE_TEXT -> InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE
         CustomInputType.NUMBER -> InputType.TYPE_CLASS_NUMBER
         CustomInputType.PASSWORD -> InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        CustomInputType.URL -> InputType.TYPE_TEXT_VARIATION_URI
         else -> InputType.TYPE_NULL
     }
 }
