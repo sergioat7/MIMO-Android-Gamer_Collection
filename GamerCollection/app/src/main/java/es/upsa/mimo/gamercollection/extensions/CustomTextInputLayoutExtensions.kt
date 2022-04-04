@@ -50,22 +50,24 @@ fun CustomTextInputLayoutBinding.setHintStyle(id: Int) {
     }
 }
 
-fun CustomTextInputLayoutBinding.showDatePicker(activity: FragmentActivity) {
+fun CustomTextInputLayoutBinding.showDatePicker(activity: FragmentActivity, dateFormat: String? = null) {
 
     this.textInputEditText.setOnFocusChangeListener { _, hasFocus ->
         if (hasFocus) {
-            val datePicker = getPicker(this.textInputEditText, activity)
+            val datePicker = getPicker(this.textInputEditText, activity, dateFormat)
             datePicker.show(activity.supportFragmentManager, "")
         }
     }
     this.textInputEditText.setOnClickListener {
-        val datePicker = getPicker(this.textInputEditText, this.textInputEditText.context)
+        val datePicker = getPicker(this.textInputEditText, this.textInputEditText.context, dateFormat)
         datePicker.show(activity.supportFragmentManager, "")
     }
 }
 
 //region Private functions
-private fun getPicker(editText: TextInputEditText, context: Context): MaterialDatePicker<Long> {
+private fun getPicker(editText: TextInputEditText,
+                      context: Context,
+                      dateFormat: String? = SharedPreferencesHelper.dateFormatToShow): MaterialDatePicker<Long> {
 
     val currentDateInMillis = editText.text.toString().toDate(
         SharedPreferencesHelper.dateFormatToShow,
@@ -84,7 +86,7 @@ private fun getPicker(editText: TextInputEditText, context: Context): MaterialDa
                 calendar.timeInMillis = it
 
                 val dateString = calendar.time.toString(
-                    SharedPreferencesHelper.dateFormatToShow,
+                    dateFormat,
                     SharedPreferencesHelper.language
                 )
 
