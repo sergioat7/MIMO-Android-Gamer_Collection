@@ -7,6 +7,10 @@
             type="android.view.View"
             />
 
+        <import
+            type="es.upsa.mimo.gamercollection.utils.CustomInputType"
+            />
+
         <variable
             name="sagaName"
             type="String"
@@ -43,21 +47,23 @@
             android:layout_height="match_parent"
             >
 
-            <EditText
-                android:id="@+id/edit_text_name"
-                android:layout_width="wrap_content"
+            <include
+                android:id="@+id/text_input_layout_saga_name"
+                layout="@layout/custom_text_input_layout"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_larger"
                 android:layout_marginTop="@dimen/margin_medium"
-                android:layout_marginEnd="@dimen/margin_larger"
-                android:hint="@string/saga_detail_placeholder_name"
-                android:inputType="textMultiLine"
-                android:text="@{sagaName}"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_medium"
+                app:enabled="@{editable}"
+                app:inputHintText="@{@string/saga_detail_placeholder_name}"
+                app:inputType="@{CustomInputType.MULTI_LINE_TEXT}"
+                app:isBold="@{true}"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                style="@style/Widget.GamerCollection.EditText.Bold.SagaTitle"
+                app:text='@{sagaName}'
+                app:textSize="@{@dimen/font_extra_large}"
                 />
 
             <TextView
@@ -70,7 +76,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/line_view"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_name"
+                app:layout_constraintTop_toBottomOf="@+id/text_input_layout_saga_name"
                 style="@style/Widget.GamerCollection.TextView.Title.Section"
                 />
 
