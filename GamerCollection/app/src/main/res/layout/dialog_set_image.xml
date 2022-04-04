@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             app:enabled="@{true}"
             app:endIconSrc="@{@drawable/ic_clear_text}"
-            app:inputType="@{CustomInputType.TEXT}"
+            app:inputType="@{CustomInputType.URL}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

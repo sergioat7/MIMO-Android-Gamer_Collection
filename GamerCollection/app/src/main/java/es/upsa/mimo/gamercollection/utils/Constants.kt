@@ -127,6 +127,7 @@ enum class CustomInputType {
     MULTI_LINE_TEXT,
     NUMBER,
     PASSWORD,
+    URL,
     DATE,
     NONE
 }
