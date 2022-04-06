@@ -22,7 +22,6 @@
     <dimen name="size_wide">300dp</dimen>
     <dimen name="size_semi_huge">200dp</dimen>
     <dimen name="size_higher">125dp</dimen>
-    <dimen name="size_bigger">50dp</dimen>
     <dimen name="size_big">40dp</dimen>
     <dimen name="size_large">30dp</dimen>
     <dimen name="size_small">10dp</dimen>
