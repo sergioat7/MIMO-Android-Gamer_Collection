@@ -86,17 +86,8 @@
         <item name="android:textSize">@dimen/font_normal</item>
     </style>
 
-    <!--  EditText  -->
-
-    <style name="Widget.GamerCollection.EditText" parent="Widget.AppCompat.EditText">
-        <item name="backgroundTint">@color/colorPrimary</item>
-        <item name="android:textColor">@color/textPrimary</item>
-        <item name="android:textColorHint">@color/textPrimaryLight</item>
-        <item name="android:textIsSelectable">true</item>
-    </style>
-
-    <style name="Widget.GamerCollection.EditText.Regular">
-        <item name="fontFamily">@font/roboto_regular</item>
+    <style name="Widget.GamerCollection.TextView.Description.SagaGame">
+        <item name="android:textSize">@dimen/font_large</item>
     </style>
 
     <!--  TextInputLayout  -->
