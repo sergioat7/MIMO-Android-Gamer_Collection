@@ -124,7 +124,6 @@
     <string name="games_sorting_parameter">Games sorting parameter</string>
     <string name="swipe_refresh_enabled_title">Enable list refresh</string>
     <string name="app_theme">App theme</string>
-    <string name="choose_a_theme">Choose a theme</string>
     <string-array name="app_theme_values">
         <item>System default</item>
         <item>Light</item>
@@ -195,5 +194,4 @@
     // Errors
     <string name="error_server">There was an error on getting data. Please, try again</string>
     <string name="error_server_connection">There was an error on getting data. Please, check your internet connection and try again</string>
-    <string name="error_image_url">The image could not be loaded</string>
 </resources>
