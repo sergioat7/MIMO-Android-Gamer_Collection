@@ -235,9 +235,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
         for (game in games.sortedBy { it.releaseDate }) {
 
             val tvGame = TextView(requireContext())
-            tvGame.setTextAppearance(R.style.Widget_GamerCollection_EditText_Regular)
-            tvGame.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18F)
-
+            tvGame.setTextAppearance(R.style.Widget_GamerCollection_TextView_Description_SagaGame)
             tvGame.text = "- ${game.name}"
             binding.linearLayoutGames.addView(tvGame, layoutParams)
         }
