@@ -51,15 +51,15 @@
                 app:layout_constraintEnd_toStartOf="@id/image_view_arrow"
                 >
 
-                <EditText
-                    android:id="@+id/edit_text_name"
+                <TextView
+                    android:id="@+id/text_view_saga_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_large"
                     android:layout_centerVertical="true"
-                    android:inputType="none"
+                    android:text="@{saga.games.size() > 0 ? @plurals/saga_title(saga.games.size(), saga.name, saga.games.size()) : saga.name}"
                     tools:text="Saga name"
-                    style="@style/Widget.GamerCollection.EditTextSaga"
+                    style="@style/Widget.GamerCollection.TextView.Title.SagaItem"
                     />
 
                 <ImageView
@@ -70,9 +70,10 @@
                     android:layout_marginStart="@dimen/margin_medium_large_negative"
                     android:layout_marginTop="@dimen/margin_normal"
                     android:layout_marginBottom="@dimen/margin_normal"
-                    android:layout_toEndOf="@id/edit_text_name"
+                    android:layout_toEndOf="@id/text_view_saga_name"
                     android:onClick="@{() -> onItemClickListener.onItemClick(saga.id)}"
                     android:src="@{isDarkMode ? @drawable/ic_edit_black : @drawable/ic_edit_white}"
+                    tools:src="@drawable/ic_edit_white"
                     />
 
             </RelativeLayout>
