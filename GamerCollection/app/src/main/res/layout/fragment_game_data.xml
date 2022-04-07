@@ -54,8 +54,8 @@
             <ScrollView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="@dimen/margin_10dp"
-                android:layout_marginBottom="@dimen/margin_10dp"
+                android:layout_marginTop="@dimen/margin_12dp"
+                android:layout_marginBottom="@dimen/margin_12dp"
                 android:scrollbars="none"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -96,8 +96,8 @@
                             layout="@layout/state_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/margin_10dp"
-                            android:layout_marginEnd="@dimen/margin_10dp"
+                            android:layout_marginStart="@dimen/margin_12dp"
+                            android:layout_marginEnd="@dimen/margin_12dp"
                             android:layout_weight="1"
                             android:onClick="@{fragment::buttonClicked}"
                             app:background="@{@drawable/bordered_in_progress_state_button}"
@@ -148,8 +148,8 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/margin_10dp"
-                            android:layout_marginEnd="@dimen/margin_10dp"
+                            android:layout_marginStart="@dimen/margin_12dp"
+                            android:layout_marginEnd="@dimen/margin_12dp"
                             android:layout_weight="1"
                             >
 
@@ -157,7 +157,7 @@
                                 android:layout_width="@dimen/size_125dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical|start"
-                                android:layout_marginEnd="@dimen/margin_10dp"
+                                android:layout_marginEnd="@dimen/margin_12dp"
                                 android:layout_weight="1"
                                 android:text="@string/game_detail_goty"
                                 app:layout_constraintBottom_toTopOf="@+id/radio_group_goty"
