@@ -4,12 +4,14 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.login.AuthData
 import es.upsa.mimo.gamercollection.models.login.UserData
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.SagaRepository
 import es.upsa.mimo.gamercollection.repositories.UserRepository
+import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
@@ -20,6 +22,7 @@ class SettingsViewModel @Inject constructor(
 ) : ViewModel() {
 
     //region Private properties
+    private val _settingsForm = MutableLiveData<Int?>()
     private val _settingsLoading = MutableLiveData<Boolean>()
     private val _settingsError = MutableLiveData<ErrorResponse?>()
     //endregion
@@ -31,6 +34,7 @@ class SettingsViewModel @Inject constructor(
     var sortParam: String = SharedPreferencesHelper.sortParam
     var isSortOrderAscending: Boolean = SharedPreferencesHelper.isSortOrderAscending
     var swipeRefresh: Boolean = SharedPreferencesHelper.swipeRefresh
+    val settingsForm: LiveData<Int?> = _settingsForm
     val settingsLoading: LiveData<Boolean> = _settingsLoading
     val settingsError: LiveData<ErrorResponse?> = _settingsError
     //endregion
@@ -129,6 +133,15 @@ class SettingsViewModel @Inject constructor(
         }, {
             _settingsError.value = it
         })
+    }
+
+    fun profileDataChanged(password: String) {
+
+        var passwordError: Int? = null
+        if (!Constants.isPasswordValid(password)) {
+            passwordError = R.string.invalid_password
+        }
+        _settingsForm.value = passwordError
     }
     //endregion
 

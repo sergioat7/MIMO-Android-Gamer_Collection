@@ -46,6 +46,7 @@
     // Game detail
     <string name="game_detail_placeholder_name">Añade un nombre</string>
     <string name="game_detail_image_modal_title">Introduce un enlace válido</string>
+    <string name="game_detail_platform">Plataforma</string>
     <string name="game_detail_select_platform">Selecciona una plataforma</string>
     <string name="game_detail_genre">Género</string>
     <string name="game_detail_select_genre">Selecciona un género</string>
@@ -108,7 +109,6 @@
     <string name="games_sorting_parameter">Parámetro de ordenación de los juegos</string>
     <string name="swipe_refresh_enabled_title">Habilitar actualización de lista</string>
     <string name="app_theme">Tema</string>
-    <string name="choose_a_theme">Elige un tema</string>
     <string-array name="app_theme_values">
         <item>Predeterminado por el sistema</item>
         <item>Claro</item>
@@ -167,5 +167,4 @@
     // Errors
     <string name="error_server">Hubo un error al recuperar los datos. Por favor, inténtalo otra vez</string>
     <string name="error_server_connection">Hubo un error al recuperar los datos. Por favor, revisa tu conexión a internet e inténtalo otra vez</string>
-    <string name="error_image_url">La imagen no se ha podido cargar</string>
 </resources>

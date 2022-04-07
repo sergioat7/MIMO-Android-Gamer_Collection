@@ -32,10 +32,7 @@ import es.upsa.mimo.gamercollection.databinding.FragmentGamesBinding
 import es.upsa.mimo.gamercollection.extensions.*
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
-import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.Notifications
-import es.upsa.mimo.gamercollection.utils.State
-import es.upsa.mimo.gamercollection.utils.StatusBarStyle
+import es.upsa.mimo.gamercollection.utils.*
 import es.upsa.mimo.gamercollection.viewmodelfactories.GamesViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GamesViewModel
 import java.util.*
@@ -278,37 +275,33 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
     private fun filter() {
 
-        val dialogBinding = DialogFragmentPopupFilterBinding.inflate(layoutInflater)
+        val dialogBinding = DialogFragmentPopupFilterBinding.inflate(layoutInflater).apply {
 
-        dialogBinding.chipGroupPlatforms.removeAllViews()
-        for (platform in Constants.PLATFORMS) {
-            dialogBinding.chipGroupPlatforms.addChip(layoutInflater, platform.id, platform.name)
+            chipGroupPlatforms.removeAllViews()
+            for (platform in Constants.PLATFORMS) {
+                chipGroupPlatforms.addChip(layoutInflater, platform.id, platform.name)
+            }
+            chipGroupGenres.removeAllViews()
+            for (genre in Constants.GENRES) {
+                chipGroupGenres.addChip(layoutInflater, genre.id, genre.name)
+            }
+            chipGroupFormats.removeAllViews()
+            for (format in Constants.FORMATS) {
+                chipGroupFormats.addChip(layoutInflater, format.id, format.name)
+            }
+            for (view in listOf(
+                textInputLayoutReleaseDateMin,
+                textInputLayoutReleaseDateMax,
+                textInputLayoutPurchaseDateMin,
+                textInputLayoutPurchaseDateMax
+            )) {
+                view.showDatePicker(
+                    requireActivity(),
+                    SharedPreferencesHelper.filterDateFormat
+                )
+            }
+            filter = viewModel.filters.value
         }
-        dialogBinding.chipGroupGenres.removeAllViews()
-        for (genre in Constants.GENRES) {
-            dialogBinding.chipGroupGenres.addChip(layoutInflater, genre.id, genre.name)
-        }
-        dialogBinding.chipGroupFormats.removeAllViews()
-        for (format in Constants.FORMATS) {
-            dialogBinding.chipGroupFormats.addChip(layoutInflater, format.id, format.name)
-        }
-        dialogBinding.customEditTextReleaseDateMin.setDatePickerFormat(
-            requireActivity(),
-            viewModel.filterDateFormat
-        )
-        dialogBinding.customEditTextReleaseDateMax.setDatePickerFormat(
-            requireActivity(),
-            viewModel.filterDateFormat
-        )
-
-        dialogBinding.customEditTextPurchaseDateMin.setDatePickerFormat(
-            requireActivity(),
-            viewModel.filterDateFormat
-        )
-        dialogBinding.customEditTextPurchaseDateMax.setDatePickerFormat(
-            requireActivity(),
-            viewModel.filterDateFormat
-        )
         viewModel.filters.value?.let { filters ->
 
             val platforms = filters.platforms
@@ -329,34 +322,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                     (child as Chip).isChecked = formats.firstOrNull { it == child.tag } != null
                 }
             }
-            dialogBinding.customEditTextReleaseDateMin.setText(
-                filters.minReleaseDate.toString(
-                    viewModel.filterDateFormat,
-                    viewModel.language
-                )
-            )
-            dialogBinding.customEditTextReleaseDateMax.setText(
-                filters.maxReleaseDate.toString(
-                    viewModel.filterDateFormat,
-                    viewModel.language
-                )
-            )
-            dialogBinding.customEditTextPurchaseDateMin.setText(
-                filters.minPurchaseDate.toString(
-                    viewModel.filterDateFormat,
-                    viewModel.language
-                )
-            )
-            dialogBinding.customEditTextPurchaseDateMax.setText(
-                filters.maxPurchaseDate.toString(
-                    viewModel.filterDateFormat,
-                    viewModel.language
-                )
-            )
-            if (filters.minPrice > 0) dialogBinding.customEditTextPriceMin.setText(filters.minPrice.toString())
-            if (filters.maxPrice > 0) dialogBinding.customEditTextPriceMax.setText(filters.maxPrice.toString())
         }
-        dialogBinding.filter = viewModel.filters.value
 
         val dialog = MaterialAlertDialogBuilder(requireContext())
             .setView(dialogBinding.root)
@@ -393,41 +359,40 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 val minScore = (dialogBinding.ratingBarMin.rating * 2).toDouble()
                 val maxScore = (dialogBinding.ratingBarMax.rating * 2).toDouble()
 
-                val minReleaseDate = dialogBinding.customEditTextReleaseDateMin.getText().toDate(
+                val minReleaseDate = dialogBinding.textInputLayoutReleaseDateMin.getValue().toDate(
                     viewModel.filterDateFormat,
                     viewModel.language
                 )
-                val maxReleaseDate = dialogBinding.customEditTextReleaseDateMax.getText().toDate(
+                val maxReleaseDate = dialogBinding.textInputLayoutReleaseDateMax.getValue().toDate(
                     viewModel.filterDateFormat,
                     viewModel.language
                 )
 
-                val minPurchaseDate = dialogBinding.customEditTextPurchaseDateMin.getText().toDate(
-                    viewModel.filterDateFormat,
-                    viewModel.language
-                )
-                val maxPurchaseDate = dialogBinding.customEditTextPurchaseDateMax.getText().toDate(
-                    viewModel.filterDateFormat,
-                    viewModel.language
-                )
+                val minPurchaseDate =
+                    dialogBinding.textInputLayoutPurchaseDateMin.getValue().toDate(
+                        viewModel.filterDateFormat,
+                        viewModel.language
+                    )
+                val maxPurchaseDate =
+                    dialogBinding.textInputLayoutPurchaseDateMax.getValue().toDate(
+                        viewModel.filterDateFormat,
+                        viewModel.language
+                    )
 
                 var minPrice = 0.0
                 try {
-                    minPrice = dialogBinding.customEditTextPriceMin.getText().toDouble()
+                    minPrice = dialogBinding.textInputLayoutPriceMin.getValue().toDouble()
                 } catch (e: Exception) {
                 }
                 var maxPrice = 0.0
                 try {
-                    maxPrice = dialogBinding.customEditTextPriceMax.getText().toDouble()
+                    maxPrice = dialogBinding.textInputLayoutPriceMax.getValue().toDouble()
                 } catch (e: Exception) {
                 }
 
                 val isGoty = dialogBinding.radioButtonGotyYes.isChecked
-
                 val isLoaned = dialogBinding.radioButtonLoanedYes.isChecked
-
                 val hasSaga = dialogBinding.radioButtonSagaYes.isChecked
-
                 val hasSongs = dialogBinding.radioButtonSongsYes.isChecked
 
                 val filters = FilterModel(
@@ -482,29 +447,19 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         This is needed to avoid the auto dismiss
          */
         dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener {
+            dialogBinding.apply {
 
-            for (child in dialogBinding.chipGroupPlatforms.children) {
-                (child as Chip).isChecked = false
+                for (child in chipGroupPlatforms.children) {
+                    (child as Chip).isChecked = false
+                }
+                for (child in chipGroupGenres.children) {
+                    (child as Chip).isChecked = false
+                }
+                for (child in chipGroupFormats.children) {
+                    (child as Chip).isChecked = false
+                }
+                filter = null
             }
-
-            for (child in dialogBinding.chipGroupGenres.children) {
-                (child as Chip).isChecked = false
-            }
-
-            for (child in dialogBinding.chipGroupFormats.children) {
-                (child as Chip).isChecked = false
-            }
-
-            dialogBinding.customEditTextReleaseDateMin.setText(Constants.EMPTY_VALUE)
-            dialogBinding.customEditTextReleaseDateMax.setText(Constants.EMPTY_VALUE)
-
-            dialogBinding.customEditTextPurchaseDateMin.setText(Constants.EMPTY_VALUE)
-            dialogBinding.customEditTextPurchaseDateMax.setText(Constants.EMPTY_VALUE)
-
-            dialogBinding.customEditTextPriceMin.setText(Constants.EMPTY_VALUE)
-            dialogBinding.customEditTextPriceMax.setText(Constants.EMPTY_VALUE)
-
-            dialogBinding.filter = null
         }
     }
 

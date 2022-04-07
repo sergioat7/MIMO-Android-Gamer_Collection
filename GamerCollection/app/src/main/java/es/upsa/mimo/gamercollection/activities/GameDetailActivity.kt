@@ -1,14 +1,10 @@
 package es.upsa.mimo.gamercollection.activities
 
 import android.content.DialogInterface
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.core.app.NavUtils
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
@@ -23,8 +19,12 @@ import es.upsa.mimo.gamercollection.databinding.ActivityGameDetailBinding
 import es.upsa.mimo.gamercollection.databinding.DialogSetImageBinding
 import es.upsa.mimo.gamercollection.databinding.DialogSetRatingBinding
 import es.upsa.mimo.gamercollection.extensions.getImageForPegi
+import es.upsa.mimo.gamercollection.extensions.getValue
+import es.upsa.mimo.gamercollection.extensions.setHintStyle
+import es.upsa.mimo.gamercollection.extensions.setValue
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.CustomDropdownType
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameDetailViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameDetailViewModel
 
@@ -38,7 +38,6 @@ class GameDetailActivity : BaseActivity() {
     private var menu: Menu? = null
     private lateinit var pagerAdapter: GameDetailPagerAdapter
     private var game: GameResponse? = null
-    private var platformValues = ArrayList<String>()
     private val goBack = MutableLiveData<Boolean>()
     //endregion
 
@@ -124,7 +123,7 @@ class GameDetailActivity : BaseActivity() {
             .setCancelable(false)
             .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
 
-                val url = dialogBinding.customEditTextUrl.getText()
+                val url = dialogBinding.textInputLayoutImageUrl.getValue()
                 if (url.isNotEmpty()) {
                     binding.imageUrl = url
                 }
@@ -177,13 +176,6 @@ class GameDetailActivity : BaseActivity() {
         )[GameDetailViewModel::class.java]
         setupBindings()
 
-        platformValues = ArrayList()
-        platformValues.run {
-            this.add(resources.getString((R.string.game_detail_select_platform)))
-            this.addAll(Constants.PLATFORMS.map { it.name })
-        }
-        binding.spinnerPlatforms.adapter = Constants.getAdapter(this, platformValues)
-
         pagerAdapter = GameDetailPagerAdapter(
             this,
             2,
@@ -196,6 +188,9 @@ class GameDetailActivity : BaseActivity() {
                     R.string.game_detail_songs_title
                 )
         }.attach()
+
+        binding.textInputLayoutGameName.setHintStyle(R.style.Widget_GamerCollection_TextView_Title_Header)
+        binding.dropdownTextInputLayoutPlatforms.setHintStyle(R.style.Widget_GamerCollection_TextView_Title_Header)
 
         binding.activity = this
     }
@@ -255,17 +250,10 @@ class GameDetailActivity : BaseActivity() {
 
         binding.imagePegi = this.getImageForPegi(game?.pegi)
 
-        val name = game?.name ?: Constants.EMPTY_VALUE
-        binding.customEditTextName.setText(name.ifBlank { Constants.NO_VALUE })
-
-        var platformPosition = 0
-        game?.platform?.let { platformId ->
-
-            val platformName = Constants.PLATFORMS.firstOrNull { it.id == platformId }?.name
-            val pos = platformValues.indexOf(platformName)
-            platformPosition = if (pos > 0) pos else 0
-        }
-        binding.spinnerPlatforms.setSelection(platformPosition)
+        binding.dropdownTextInputLayoutPlatforms.setValue(
+            game?.platform,
+            CustomDropdownType.PLATFORM
+        )
 
         binding.game = game
         pagerAdapter.showData(game)
@@ -285,16 +273,6 @@ class GameDetailActivity : BaseActivity() {
 
     private fun makeFieldsEditable(editable: Boolean) {
 
-        val backgroundColor = ContextCompat.getColor(this, R.color.colorPrimary)
-
-        binding.customEditTextName.setReadOnly(!editable, backgroundColor)
-        binding.spinnerPlatforms.visibility =
-            if (editable || binding.spinnerPlatforms.selectedItemPosition > 0) View.VISIBLE
-            else View.GONE
-        binding.spinnerPlatforms.backgroundTintList =
-            if (!editable) ColorStateList.valueOf(Color.TRANSPARENT)
-            else ColorStateList.valueOf(backgroundColor)
-
         binding.editable = editable
         pagerAdapter.setEdition(editable)
     }
@@ -302,9 +280,9 @@ class GameDetailActivity : BaseActivity() {
     private fun getGameData(): GameResponse {
 
         val id = gameId ?: 0
-        val name = binding.customEditTextName.getText()
+        val name = binding.textInputLayoutGameName.getValue()
         val platform =
-            Constants.PLATFORMS.firstOrNull { it.name == binding.spinnerPlatforms.selectedItem.toString() }?.id
+            Constants.PLATFORMS.firstOrNull { it.name == binding.dropdownTextInputLayoutPlatforms.getValue() }?.id
         val score = binding.ratingButton.text.toString().toDouble()
 
         return pagerAdapter.getGameData()?.let {

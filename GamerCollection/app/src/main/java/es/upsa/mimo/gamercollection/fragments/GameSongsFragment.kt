@@ -11,6 +11,7 @@ import es.upsa.mimo.gamercollection.adapters.SongsAdapter
 import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.DialogNewSongBinding
 import es.upsa.mimo.gamercollection.databinding.FragmentGameSongsBinding
+import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SongResponse
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
@@ -115,9 +116,9 @@ class GameSongsFragment(
             .setCancelable(false)
             .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
 
-                val name = dialogBinding.customEditTextName.getText()
-                val singer = dialogBinding.customEditTextSinger.getText()
-                val url = dialogBinding.customEditTextUrl.getText()
+                val name = dialogBinding.textInputLayoutSongName.getValue()
+                val singer = dialogBinding.textInputLayoutSongSinger.getValue()
+                val url = dialogBinding.textInputLayoutSongUrl.getValue()
 
                 if (name.isNotBlank() || singer.isNotBlank() || url.isNotBlank()) {
                     val song = SongResponse(

@@ -1,19 +1,15 @@
 package es.upsa.mimo.gamercollection.fragments
 
-import android.content.res.ColorStateList
 import android.os.Bundle
-import android.text.InputType
 import android.view.*
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.LandingActivity
 import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentSettingsBinding
-import es.upsa.mimo.gamercollection.extensions.setReadOnly
-import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.extensions.*
+import es.upsa.mimo.gamercollection.utils.CustomDropdownType
 import es.upsa.mimo.gamercollection.utils.Preferences
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.SettingsViewModelFactory
@@ -73,52 +69,37 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        binding.textInputLayoutPassword.doAfterTextChanged {
+            viewModel.profileDataChanged(it.toString())
+        }
+        setupDropdowns()
+    }
     //endregion
 
     //region Public methods
-    fun showMessage(message: String) {
-        showPopupDialog(message)
-    }
-
-    fun chooseThemeDialog() {
-
-        val styles = resources.getStringArray(R.array.app_theme_values)
-        val themeMode = getThemeMode()
-
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(resources.getString(R.string.choose_a_theme))
-            .setSingleChoiceItems(styles, themeMode) { dialog, value ->
-
-                binding.textViewAppThemeValue.text = when (value) {
-                    1 -> styles[1]
-                    2 -> styles[2]
-                    else -> styles[0]
-                }
-                dialog.dismiss()
-            }
-            .show()
-    }
-
     fun save() {
+        with(binding) {
 
-        val language =
-            if (binding.radioButtonEn.isChecked) Preferences.ENGLISH_LANGUAGE_KEY
-            else Preferences.SPANISH_LANGUAGE_KEY
-        val sortParam =
-            resources.getStringArray(R.array.sort_param_keys)[binding.spinnerSortParams.selectedItemPosition]
-        val isSortOrderAscending =
-            binding.spinnerSortOrder.selectedItemPosition == 0
-        val themeMode =
-            resources.getStringArray(R.array.app_theme_values)
-                .indexOf(binding.textViewAppThemeValue.text.toString())
-        viewModel.save(
-            binding.editTextPassword.text.toString(),
-            language,
-            sortParam,
-            isSortOrderAscending,
-            binding.switchSwipeRefresh.isChecked,
-            themeMode
-        )
+            val language =
+                if (radioButtonEn.isChecked) Preferences.ENGLISH_LANGUAGE_KEY
+                else Preferences.SPANISH_LANGUAGE_KEY
+            val sortParam =
+                resources.getStringArray(R.array.sort_param_keys)[dropdownTextInputLayoutSortParams.getPosition()]
+            val isSortAscending = dropdownTextInputLayoutSortOrders.getPosition() == 0
+            val themeMode = dropdownTextInputLayoutAppTheme.getPosition()
+            this@SettingsFragment.viewModel.save(
+                textInputLayoutPassword.getValue(),
+                language,
+                sortParam,
+                isSortAscending,
+                binding.switchSwipeRefresh.isChecked,
+                themeMode
+            )
+        }
     }
     //endregion
 
@@ -132,67 +113,22 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
         )[SettingsViewModel::class.java]
         setupBindings()
 
-        with(binding) {
-
-            editTextUser.setReadOnly(true, InputType.TYPE_NULL, 0)
-
-            imageButtonPassword.setOnClickListener {
-                Constants.showOrHidePassword(
-                    binding.editTextPassword,
-                    binding.imageButtonPassword
-                )
-            }
-
-            radioButtonEn.isChecked =
-                this@SettingsFragment.viewModel.language == Preferences.ENGLISH_LANGUAGE_KEY
-            radioButtonEs.isChecked =
-                this@SettingsFragment.viewModel.language == Preferences.SPANISH_LANGUAGE_KEY
-
-            spinnerSortParams.apply {
-                backgroundTintList =
-                    ColorStateList.valueOf(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.colorPrimary
-                        )
-                    )
-                adapter = Constants.getAdapter(
-                    requireContext(),
-                    resources.getStringArray(R.array.sort_param_values).toList(),
-                    true
-                )
-                setSelection(
-                    resources.getStringArray(R.array.sort_param_keys)
-                        .indexOf(this@SettingsFragment.viewModel.sortParam)
-                )
-            }
-
-            spinnerSortOrder.apply {
-                backgroundTintList =
-                    ColorStateList.valueOf(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.colorPrimary
-                        )
-                    )
-                adapter = Constants.getAdapter(
-                    requireContext(),
-                    resources.getStringArray(R.array.sort_order_values).toList(),
-                    true
-                )
-                setSelection(if (this@SettingsFragment.viewModel.isSortOrderAscending) 0 else 1)
-            }
-
-            textViewAppThemeValue.text =
-                resources.getStringArray(R.array.app_theme_values)[getThemeMode()]
-
-            fragment = this@SettingsFragment
-            viewModel = this@SettingsFragment.viewModel
-            lifecycleOwner = this@SettingsFragment
+        binding.textInputLayoutUsername.setEndIconOnClickListener {
+            showPopupDialog(resources.getString(R.string.username_info))
         }
+        binding.fragment = this
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
     }
 
     private fun setupBindings() {
+
+        viewModel.settingsForm.observe(viewLifecycleOwner) {
+
+            binding.textInputLayoutPassword.setError("")
+            val passwordError = it ?: return@observe
+            binding.textInputLayoutPassword.setError(getString(passwordError))
+        }
 
         viewModel.settingsLoading.observe(viewLifecycleOwner) { isLoading ->
 
@@ -224,6 +160,26 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
             AppCompatDelegate.MODE_NIGHT_YES -> 2
             else -> 0
         }
+    }
+
+    private fun setupDropdowns() {
+
+        binding.dropdownTextInputLayoutSortParams.setValue(
+            viewModel.sortParam,
+            CustomDropdownType.SORT_PARAM
+        )
+
+        val sortOrderKeys = resources.getStringArray(R.array.sort_order_keys).toList()
+        binding.dropdownTextInputLayoutSortOrders.setValue(
+            if (viewModel.isSortOrderAscending) sortOrderKeys[0] else sortOrderKeys[1],
+            CustomDropdownType.SORT_ORDER
+        )
+
+        val appThemes = resources.getStringArray(R.array.app_theme_values).toList()
+        binding.dropdownTextInputLayoutAppTheme.setValue(
+            appThemes[getThemeMode()],
+            CustomDropdownType.APP_THEME
+        )
     }
     //endregion
 }
