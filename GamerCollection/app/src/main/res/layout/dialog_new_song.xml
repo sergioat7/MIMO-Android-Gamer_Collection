@@ -15,8 +15,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingStart="@dimen/padding_normal"
-        android:paddingEnd="@dimen/padding_normal"
+        android:paddingStart="@dimen/padding_12dp"
+        android:paddingEnd="@dimen/padding_12dp"
         >
 
         <include
@@ -24,7 +24,7 @@
             layout="@layout/custom_text_input_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_20dp"
             app:enabled="@{true}"
             app:endIconSrc="@{@drawable/ic_clear_text}"
             app:inputHintText="@{@string/modal_song_placeholder_name}"
@@ -33,7 +33,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:textColor="@{@color/textTertiary}"
-            app:textSize="@{@dimen/font_large}"
+            app:textSize="@{@dimen/text_size_18sp}"
             />
 
         <include
@@ -41,7 +41,7 @@
             layout="@layout/custom_text_input_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_10dp"
             app:enabled="@{true}"
             app:endIconSrc="@{@drawable/ic_clear_text}"
             app:inputHintText="@{@string/modal_song_placeholder_singer}"
@@ -50,7 +50,7 @@
             app:layout_constraintStart_toStartOf="@+id/text_input_layout_song_name"
             app:layout_constraintTop_toBottomOf="@+id/text_input_layout_song_name"
             app:textColor="@{@color/textTertiary}"
-            app:textSize="@{@dimen/font_large}"
+            app:textSize="@{@dimen/text_size_18sp}"
             />
 
         <include
@@ -58,7 +58,7 @@
             layout="@layout/custom_text_input_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_10dp"
             app:enabled="@{true}"
             app:endIconSrc="@{@drawable/ic_clear_text}"
             app:inputHintText="@{@string/modal_song_placeholder_url}"
@@ -67,7 +67,7 @@
             app:layout_constraintStart_toStartOf="@+id/text_input_layout_song_singer"
             app:layout_constraintTop_toBottomOf="@+id/text_input_layout_song_singer"
             app:textColor="@{@color/textTertiary}"
-            app:textSize="@{@dimen/font_large}"
+            app:textSize="@{@dimen/text_size_18sp}"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
