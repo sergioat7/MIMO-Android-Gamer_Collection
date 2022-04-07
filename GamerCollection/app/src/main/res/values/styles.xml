@@ -53,6 +53,11 @@
         <item name="android:textSize">@dimen/font_large</item>
     </style>
 
+    <style name="Widget.GamerCollection.TextView.Title.SagaItem">
+        <item name="android:textColor">@color/textSecondary</item>
+        <item name="android:textSize">@dimen/font_larger</item>
+    </style>
+
     <style name="Widget.GamerCollection.TextView.Description">
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textColor">@color/textPrimary</item>
@@ -81,107 +86,28 @@
         <item name="android:textSize">@dimen/font_normal</item>
     </style>
 
-    <style name="Widget.GamerCollection.TextView.Description.SettingsItem">
-        <item name="android:textSize">@dimen/font_medium</item>
+    <style name="Widget.GamerCollection.TextView.Description.SagaGame">
+        <item name="android:textSize">@dimen/font_large</item>
     </style>
 
-    <!--  EditText  -->
+    <!--  TextInputLayout  -->
 
-    <style name="Widget.GamerCollection.EditText" parent="Widget.AppCompat.EditText">
-        <item name="backgroundTint">@color/colorPrimary</item>
-        <item name="android:textColor">@color/textPrimary</item>
-        <item name="android:textColorHint">@color/textPrimaryLight</item>
-        <item name="android:textIsSelectable">true</item>
+    <style name="Widget.GamerCollection.TextInputLayout.Bordered" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/color_text_input_layout_border</item>
+        <item name="editTextStyle">@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox</item>
+        <item name="hintTextAppearance">@style/TextAppearance.GamerCollection.Hint</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.GamerCollection.Rounded.10</item>
+        <item name="android:textColorHint">@color/textTertiary</item>
+        <item name="android:useDefaultMargins">false</item>
     </style>
 
-    <style name="Widget.GamerCollection.EditText.Regular">
-        <item name="fontFamily">@font/roboto_regular</item>
-    </style>
-
-    <style name="Widget.GamerCollection.EditText.Bold">
-        <item name="fontFamily">@font/roboto_bold</item>
-    </style>
-
-    <style name="Widget.GamerCollection.EditText.Credentials">
-        <item name="android:ems">10</item>
-        <item name="android:selectAllOnFocus">true</item>
-    </style>
-
-    <style name="Widget.GamerCollection.EditText.Bold.SagaTitle">
-        <item name="android:textAlignment">center</item>
-        <item name="android:textSize">@dimen/font_extra_large</item>
-    </style>
-
-    <style name="Widget.GamerCollection.EditTextSaga" parent="Widget.AppCompat.EditText">
-        <item name="android:background">@android:color/transparent</item>
-        <item name="fontFamily">@font/roboto_bold</item>
-        <item name="android:textColor">@color/textSecondary</item>
-    </style>
-
-    <style name="Widget.GamerCollection.CustomEditText" />
-
-    <style name="Widget.GamerCollection.CustomEditText.GameTitle">
-        <item name="customEditText_type">"TEXT"</item>
-        <item name="customEditText_placeholder">@string/game_detail_placeholder_name</item>
-        <item name="customEditText_font">@font/roboto_bold</item>
-        <item name="customEditText_text_size">@dimen/font_larger</item>
-    </style>
-
-    <style name="Widget.GamerCollection.CustomEditText.GameDetail">
-        <item name="android:layout_gravity">center</item>
-        <item name="customEditText_font">@font/roboto_regular</item>
-        <item name="customEditText_text_size">@dimen/font_medium</item>
-    </style>
-
-    <style name="Widget.GamerCollection.CustomEditText.GameDetail.WithRemoveImage">
-        <item name="customEditText_icon">@drawable/ic_remove_text</item>
-    </style>
-
-    <style name="Widget.GamerCollection.CustomEditText.GameDetail.WithRemoveImage.ReleaseDate">
-        <item name="customEditText_type">"DATE"</item>
-        <item name="customEditText_placeholder">@string/game_detail_select_date</item>
-    </style>
-
-    <style name="Widget.GamerCollection.CustomEditText.GameDetail.WithRemoveImage.PurchaseDate">
-        <item name="customEditText_type">"DATE"</item>
-        <item name="customEditText_placeholder">@string/game_detail_select_date</item>
-    </style>
-
-    <style name="Widget.GamerCollection.CustomEditText.GameDetail.WithRemoveImage.PurchaseLocation">
-        <item name="customEditText_type">"NONE"</item>
-        <item name="customEditText_placeholder">@string/game_detail_placeholder_purchase_location</item>
-    </style>
-
-    <style name="Widget.GamerCollection.CustomEditText.SetImage">
-        <item name="customEditText_type">"URL"</item>
-        <item name="customEditText_font">@font/roboto_regular</item>
-        <item name="customEditText_text_size">@dimen/font_medium</item>
-        <item name="customEditText_icon">@drawable/ic_remove_text</item>
-        <item name="customEditText_ime_option">"DONE"</item>
-    </style>
-
-    <style name="Widget.GamerCollection.CustomEditText.NewSong">
-        <item name="customEditText_font">@font/roboto_regular</item>
-        <item name="customEditText_text_size">@dimen/font_large</item>
-        <item name="customEditText_icon">@drawable/ic_remove_text</item>
-    </style>
-
-    <style name="Widget.GamerCollection.CustomEditText.NewSong.Name">
-        <item name="customEditText_type">"TEXT"</item>
-        <item name="customEditText_placeholder">@string/modal_song_placeholder_name</item>
-        <item name="customEditText_ime_option">"NEXT"</item>
-    </style>
-
-    <style name="Widget.GamerCollection.CustomEditText.NewSong.Singer">
-        <item name="customEditText_type">"TEXT"</item>
-        <item name="customEditText_placeholder">@string/modal_song_placeholder_singer</item>
-        <item name="customEditText_ime_option">"NEXT"</item>
-    </style>
-
-    <style name="Widget.GamerCollection.CustomEditText.NewSong.Url">
-        <item name="customEditText_type">"URL"</item>
-        <item name="customEditText_placeholder">@string/modal_song_placeholder_url</item>
-        <item name="customEditText_ime_option">"DONE"</item>
+    <style name="Widget.GamerCollection.TextInputLayout.BorderedDropdown" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxStrokeColor">@color/color_text_input_layout_border</item>
+        <item name="editTextStyle">@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox</item>
+        <item name="hintTextAppearance">@style/TextAppearance.GamerCollection.Hint</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.GamerCollection.Rounded.10</item>
+        <item name="android:textColorHint">@color/textPrimary</item>
+        <item name="android:useDefaultMargins">false</item>
     </style>
 
     <!--  Button  -->
@@ -290,15 +216,6 @@
         <item name="android:background">@color/colorPrimary</item>
     </style>
 
-    <!-- Spinner   -->
-
-    <style name="Widget.GamerCollection.Spinner" parent="Widget.AppCompat.Spinner.Underlined">
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:spinnerMode">dropdown</item>
-        <item name="android:backgroundTint">@android:color/transparent</item>
-        <item name="android:minHeight">@dimen/size_large</item>
-    </style>
-
     <!--  Chip  -->
 
     <style name="Widget.GamerCollection.Chip" parent="Widget.MaterialComponents.Chip.Choice">
@@ -349,6 +266,11 @@
     <style name="TextAppearance.GamerCollection.Chip" parent="TextAppearance.MaterialComponents.Body2">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+
+    <style name="TextAppearance.GamerCollection.Hint" parent="TextAppearance.Design.Hint">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">@dimen/font_small</item>
     </style>
 
     <!--  MaterialAlertDialog  -->

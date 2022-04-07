@@ -8,9 +8,11 @@ package es.upsa.mimo.gamercollection.extensions
 import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import es.upsa.mimo.gamercollection.R
 
 fun Activity.hideSoftKeyboard() {
@@ -36,4 +38,8 @@ fun Context.getImageForPegi(pegi: String?): Drawable? {
         "+18" -> ContextCompat.getDrawable(this, R.drawable.pegi_18)
         else -> null
     }
+}
+
+fun Context.getCustomFont(fontId: Int): Typeface? {
+    return ResourcesCompat.getFont(this, fontId)
 }

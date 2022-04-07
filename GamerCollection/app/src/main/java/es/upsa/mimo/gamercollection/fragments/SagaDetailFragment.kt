@@ -2,12 +2,10 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.InputType
 import android.util.TypedValue
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -17,7 +15,7 @@ import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.DialogGamesBinding
 import es.upsa.mimo.gamercollection.databinding.FragmentSagaDetailBinding
-import es.upsa.mimo.gamercollection.extensions.setReadOnly
+import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.utils.Constants
@@ -84,7 +82,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
             }
             R.id.action_save -> {
 
-                viewModel.saveSaga(binding.editTextName.text.toString(), newGames)
+                viewModel.saveSaga(binding.textInputLayoutSagaName.getValue(), newGames)
                 return true
             }
             R.id.action_cancel -> {
@@ -237,20 +235,13 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
         for (game in games.sortedBy { it.releaseDate }) {
 
             val tvGame = TextView(requireContext())
-            tvGame.setTextAppearance(R.style.Widget_GamerCollection_EditText_Regular)
-            tvGame.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18F)
-
+            tvGame.setTextAppearance(R.style.Widget_GamerCollection_TextView_Description_SagaGame)
             tvGame.text = "- ${game.name}"
             binding.linearLayoutGames.addView(tvGame, layoutParams)
         }
     }
 
     private fun enableEdition(enable: Boolean) {
-
-        val inputTypeText = if (enable) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
-        val backgroundColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
-
-        binding.editTextName.setReadOnly(!enable, inputTypeText, backgroundColor)
         binding.editable = enable
     }
 

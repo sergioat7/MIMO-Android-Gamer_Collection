@@ -11,6 +11,18 @@
             type="android.graphics.drawable.Drawable"
             />
 
+        <import
+            type="es.upsa.mimo.gamercollection.utils.CustomInputType"
+            />
+
+        <import
+            type="es.upsa.mimo.gamercollection.utils.Constants"
+            />
+
+        <import
+            type="es.upsa.mimo.gamercollection.extensions.StringExtensionsKt"
+            />
+
         <variable
             name="activity"
             type="es.upsa.mimo.gamercollection.activities.GameDetailActivity"
@@ -106,25 +118,35 @@
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             >
 
-            <es.upsa.mimo.gamercollection.customviews.CustomEditText
-                android:id="@+id/custom_edit_text_name"
+            <include
+                android:id="@+id/text_input_layout_game_name"
+                layout="@layout/custom_text_input_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:enabled="@{editable}"
+                app:inputType="@{CustomInputType.MULTI_LINE_TEXT}"
+                app:isBold="@{true}"
+                app:labelHintText="@{@string/game_detail_placeholder_name}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                style="@style/Widget.GamerCollection.CustomEditText.GameTitle"
+                app:text='@{StringExtensionsKt.isNotBlank(game.name) ? game.name : editable ? null : Constants.NO_VALUE}'
+                app:textSize="@{@dimen/font_larger}"
                 />
 
-            <Spinner
-                android:id="@+id/spinner_platforms"
+            <include
+                android:id="@+id/dropdown_text_input_layout_platforms"
+                layout="@layout/custom_dropdown_text_input_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:enabled="@{editable}"
+                android:layout_marginTop="@dimen/margin_normal"
+                app:enabled="@{editable}"
+                app:inputHintText="@{@string/game_detail_select_platform}"
+                app:labelHintText="@{@string/game_detail_platform}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/custom_edit_text_name"
-                style="@style/Widget.GamerCollection.Spinner"
+                app:layout_constraintTop_toBottomOf="@+id/text_input_layout_game_name"
+                app:showText="true"
                 />
 
             <Button
@@ -140,7 +162,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/image_view_pegi"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner_platforms"
+                app:layout_constraintTop_toBottomOf="@+id/dropdown_text_input_layout_platforms"
                 app:layout_constraintVertical_bias="0.0"
                 tools:text="5"
                 style="@style/Widget.GamerCollection.TextButton.Icon"
@@ -157,7 +179,7 @@
                 android:src="@{imagePegi}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner_platforms"
+                app:layout_constraintTop_toBottomOf="@+id/dropdown_text_input_layout_platforms"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -224,4 +246,5 @@
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

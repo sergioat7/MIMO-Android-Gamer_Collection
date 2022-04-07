@@ -4,22 +4,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
+    <data>
+
+        <import
+            type="es.upsa.mimo.gamercollection.utils.CustomInputType"
+            />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingStart="@dimen/padding_normal"
+        android:paddingEnd="@dimen/padding_normal"
         >
 
-        <es.upsa.mimo.gamercollection.customviews.CustomEditText
-            android:id="@+id/custom_edit_text_url"
+        <include
+            android:id="@+id/text_input_layout_image_url"
+            layout="@layout/custom_text_input_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_small"
+            app:enabled="@{true}"
+            app:endIconSrc="@{@drawable/ic_clear_text}"
+            app:inputType="@{CustomInputType.URL}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/Widget.GamerCollection.CustomEditText.SetImage"
+            app:textColor="@{@color/textTertiary}"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

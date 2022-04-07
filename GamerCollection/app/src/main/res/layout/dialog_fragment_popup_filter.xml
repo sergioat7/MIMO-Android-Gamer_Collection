@@ -6,6 +6,10 @@
 
     <data>
 
+        <import
+            type="es.upsa.mimo.gamercollection.utils.CustomInputType"
+            />
+
         <variable
             name="filter"
             type="es.upsa.mimo.gamercollection.models.FilterModel"
@@ -204,30 +208,34 @@
                     style="@style/Widget.GamerCollection.TextView.Title.Header"
                     />
 
-                <es.upsa.mimo.gamercollection.customviews.CustomEditText
-                    android:id="@+id/custom_edit_text_release_date_min"
+                <include
+                    android:id="@+id/text_input_layout_release_date_min"
+                    layout="@layout/custom_text_input_layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:customEditText_font="@font/roboto_regular"
-                    app:customEditText_placeholder="@string/min"
-                    app:customEditText_text_size="@dimen/font_medium"
-                    app:customEditText_type="DATE"
-                    app:layout_constraintEnd_toStartOf="@+id/custom_edit_text_release_date_max"
+                    android:layout_marginEnd="@dimen/margin_tiny"
+                    app:enabled="@{true}"
+                    app:inputHintText="@{@string/min}"
+                    app:inputType="@{CustomInputType.DATE}"
+                    app:layout_constraintEnd_toStartOf="@+id/text_input_layout_release_date_max"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_release_date_title"
+                    app:text='@{filter.minReleaseDateAsHumanReadable()}'
                     />
 
-                <es.upsa.mimo.gamercollection.customviews.CustomEditText
-                    android:id="@+id/custom_edit_text_release_date_max"
+                <include
+                    android:id="@+id/text_input_layout_release_date_max"
+                    layout="@layout/custom_text_input_layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:customEditText_font="@font/roboto_regular"
-                    app:customEditText_placeholder="@string/max"
-                    app:customEditText_text_size="@dimen/font_medium"
-                    app:customEditText_type="DATE"
+                    android:layout_marginStart="@dimen/margin_tiny"
+                    app:enabled="@{true}"
+                    app:inputHintText="@{@string/max}"
+                    app:inputType="@{CustomInputType.DATE}"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/custom_edit_text_release_date_min"
+                    app:layout_constraintStart_toEndOf="@+id/text_input_layout_release_date_min"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_release_date_title"
+                    app:text='@{filter.maxReleaseDateAsHumanReadable()}'
                     />
 
                 <TextView
@@ -237,34 +245,38 @@
                     android:layout_marginTop="@dimen/margin_medium"
                     android:text="@string/modal_filter_purchase_date"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/custom_edit_text_release_date_min"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_layout_release_date_min"
                     style="@style/Widget.GamerCollection.TextView.Title.Header"
                     />
 
-                <es.upsa.mimo.gamercollection.customviews.CustomEditText
-                    android:id="@+id/custom_edit_text_purchase_date_min"
+                <include
+                    android:id="@+id/text_input_layout_purchase_date_min"
+                    layout="@layout/custom_text_input_layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:customEditText_font="@font/roboto_regular"
-                    app:customEditText_placeholder="@string/min"
-                    app:customEditText_text_size="@dimen/font_medium"
-                    app:customEditText_type="DATE"
-                    app:layout_constraintEnd_toStartOf="@+id/custom_edit_text_purchase_date_max"
+                    android:layout_marginEnd="@dimen/margin_tiny"
+                    app:enabled="@{true}"
+                    app:inputHintText="@{@string/min}"
+                    app:inputType="@{CustomInputType.DATE}"
+                    app:layout_constraintEnd_toStartOf="@+id/text_input_layout_purchase_date_max"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_purchase_date_title"
+                    app:text='@{filter.minPurchaseDateAsHumanReadable()}'
                     />
 
-                <es.upsa.mimo.gamercollection.customviews.CustomEditText
-                    android:id="@+id/custom_edit_text_purchase_date_max"
+                <include
+                    android:id="@+id/text_input_layout_purchase_date_max"
+                    layout="@layout/custom_text_input_layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:customEditText_font="@font/roboto_regular"
-                    app:customEditText_placeholder="@string/max"
-                    app:customEditText_text_size="@dimen/font_medium"
-                    app:customEditText_type="DATE"
+                    android:layout_marginStart="@dimen/margin_tiny"
+                    app:enabled="@{true}"
+                    app:inputHintText="@{@string/max}"
+                    app:inputType="@{CustomInputType.DATE}"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/custom_edit_text_purchase_date_min"
+                    app:layout_constraintStart_toEndOf="@+id/text_input_layout_purchase_date_min"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_purchase_date_title"
+                    app:text='@{filter.maxPurchaseDateAsHumanReadable()}'
                     />
 
                 <TextView
@@ -274,34 +286,38 @@
                     android:layout_marginTop="@dimen/margin_medium"
                     android:text="@string/modal_filter_price"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/custom_edit_text_purchase_date_min"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_layout_purchase_date_min"
                     style="@style/Widget.GamerCollection.TextView.Title.Header"
                     />
 
-                <es.upsa.mimo.gamercollection.customviews.CustomEditText
-                    android:id="@+id/custom_edit_text_price_min"
+                <include
+                    android:id="@+id/text_input_layout_price_min"
+                    layout="@layout/custom_text_input_layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:customEditText_font="@font/roboto_regular"
-                    app:customEditText_placeholder="@string/min"
-                    app:customEditText_text_size="@dimen/font_medium"
-                    app:customEditText_type="NUMBER"
-                    app:layout_constraintEnd_toStartOf="@+id/custom_edit_text_price_max"
+                    android:layout_marginEnd="@dimen/margin_tiny"
+                    app:enabled="@{true}"
+                    app:inputHintText="@{@string/min}"
+                    app:inputType="@{CustomInputType.NUMBER}"
+                    app:layout_constraintEnd_toStartOf="@+id/text_input_layout_price_max"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_price_title"
+                    app:text="@{filter.minPrice > 0 ? String.valueOf(filter.minPrice) : null }"
                     />
 
-                <es.upsa.mimo.gamercollection.customviews.CustomEditText
-                    android:id="@+id/custom_edit_text_price_max"
+                <include
+                    android:id="@+id/text_input_layout_price_max"
+                    layout="@layout/custom_text_input_layout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:customEditText_font="@font/roboto_regular"
-                    app:customEditText_placeholder="@string/max"
-                    app:customEditText_text_size="@dimen/font_medium"
-                    app:customEditText_type="NUMBER"
+                    android:layout_marginStart="@dimen/margin_tiny"
+                    app:enabled="@{true}"
+                    app:inputHintText="@{@string/max}"
+                    app:inputType="@{CustomInputType.NUMBER}"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/custom_edit_text_price_min"
+                    app:layout_constraintStart_toEndOf="@+id/text_input_layout_price_min"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_price_title"
+                    app:text="@{filter.maxPrice > 0 ? String.valueOf(filter.maxPrice) : null }"
                     />
 
                 <TextView
@@ -311,7 +327,7 @@
                     android:layout_marginTop="@dimen/margin_medium"
                     android:text="@string/modal_filter_goty"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/custom_edit_text_price_min"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_layout_price_min"
                     style="@style/Widget.GamerCollection.TextView.Title.Header"
                     />
 

@@ -1,13 +1,6 @@
 package es.upsa.mimo.gamercollection.utils
 
-import android.content.Context
-import android.text.method.HideReturnsTransformationMethod
-import android.text.method.PasswordTransformationMethod
-import android.widget.EditText
-import android.widget.ImageButton
 import com.google.android.gms.maps.model.LatLng
-import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.adapters.SpinnerAdapter
 import es.upsa.mimo.gamercollection.models.FormatModel
 import es.upsa.mimo.gamercollection.models.GenreModel
 import es.upsa.mimo.gamercollection.models.PlatformModel
@@ -104,36 +97,12 @@ object Constants {
         StateModel("FINISHED", "Finished")
     )
 
-    fun getAdapter(
-        context: Context,
-        data: List<String>,
-        firstOptionEnabled: Boolean = false
-    ): SpinnerAdapter {
-
-        val arrayAdapter = SpinnerAdapter(context, data, firstOptionEnabled)
-        arrayAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown)
-        return arrayAdapter
-    }
-
     fun isUserNameValid(username: String): Boolean {
         return username.isNotBlank()
     }
 
     fun isPasswordValid(password: String): Boolean {
         return password.length > 3
-    }
-
-    fun showOrHidePassword(editText: EditText, imageButton: ImageButton) {
-
-        if (editText.transformationMethod is HideReturnsTransformationMethod) {
-
-            imageButton.setImageResource(R.drawable.ic_show_password)
-            editText.transformationMethod = PasswordTransformationMethod.getInstance()
-        } else {
-
-            imageButton.setImageResource(R.drawable.ic_hide_password)
-            editText.transformationMethod = HideReturnsTransformationMethod.getInstance()
-        }
     }
 }
 
@@ -151,4 +120,25 @@ object Notifications {
 enum class StatusBarStyle {
     PRIMARY,
     SECONDARY
+}
+
+enum class CustomInputType {
+    TEXT,
+    MULTI_LINE_TEXT,
+    NUMBER,
+    PASSWORD,
+    URL,
+    DATE,
+    NONE
+}
+
+enum class CustomDropdownType {
+    FORMAT,
+    GENRE,
+    PEGI,
+    PLATFORM,
+    STATE,
+    SORT_PARAM,
+    SORT_ORDER,
+    APP_THEME
 }

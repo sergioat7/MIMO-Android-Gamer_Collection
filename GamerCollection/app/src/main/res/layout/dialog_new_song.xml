@@ -4,46 +4,70 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
+    <data>
+
+        <import
+            type="es.upsa.mimo.gamercollection.utils.CustomInputType"
+            />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingStart="@dimen/padding_normal"
+        android:paddingEnd="@dimen/padding_normal"
         >
 
-        <es.upsa.mimo.gamercollection.customviews.CustomEditText
-            android:id="@+id/custom_edit_text_name"
+        <include
+            android:id="@+id/text_input_layout_song_name"
+            layout="@layout/custom_text_input_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_medium"
-            android:layout_marginEnd="@dimen/margin_small"
+            app:enabled="@{true}"
+            app:endIconSrc="@{@drawable/ic_clear_text}"
+            app:inputHintText="@{@string/modal_song_placeholder_name}"
+            app:inputType="@{CustomInputType.TEXT}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="1"
-            style="@style/Widget.GamerCollection.CustomEditText.NewSong.Name"
+            app:textColor="@{@color/textTertiary}"
+            app:textSize="@{@dimen/font_large}"
             />
 
-        <es.upsa.mimo.gamercollection.customviews.CustomEditText
-            android:id="@+id/custom_edit_text_singer"
+        <include
+            android:id="@+id/text_input_layout_song_singer"
+            layout="@layout/custom_text_input_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_small"
-            app:layout_constraintEnd_toEndOf="@+id/custom_edit_text_name"
-            app:layout_constraintStart_toStartOf="@+id/custom_edit_text_name"
-            app:layout_constraintTop_toBottomOf="@+id/custom_edit_text_name"
-            style="@style/Widget.GamerCollection.CustomEditText.NewSong.Singer"
+            app:enabled="@{true}"
+            app:endIconSrc="@{@drawable/ic_clear_text}"
+            app:inputHintText="@{@string/modal_song_placeholder_singer}"
+            app:inputType="@{CustomInputType.TEXT}"
+            app:layout_constraintEnd_toEndOf="@+id/text_input_layout_song_name"
+            app:layout_constraintStart_toStartOf="@+id/text_input_layout_song_name"
+            app:layout_constraintTop_toBottomOf="@+id/text_input_layout_song_name"
+            app:textColor="@{@color/textTertiary}"
+            app:textSize="@{@dimen/font_large}"
             />
 
-        <es.upsa.mimo.gamercollection.customviews.CustomEditText
-            android:id="@+id/custom_edit_text_url"
+        <include
+            android:id="@+id/text_input_layout_song_url"
+            layout="@layout/custom_text_input_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_small"
-            app:layout_constraintEnd_toEndOf="@+id/custom_edit_text_singer"
-            app:layout_constraintStart_toStartOf="@+id/custom_edit_text_singer"
-            app:layout_constraintTop_toBottomOf="@+id/custom_edit_text_singer"
-            style="@style/Widget.GamerCollection.CustomEditText.NewSong.Url"
+            app:enabled="@{true}"
+            app:endIconSrc="@{@drawable/ic_clear_text}"
+            app:inputHintText="@{@string/modal_song_placeholder_url}"
+            app:inputType="@{CustomInputType.URL}"
+            app:layout_constraintEnd_toEndOf="@+id/text_input_layout_song_singer"
+            app:layout_constraintStart_toStartOf="@+id/text_input_layout_song_singer"
+            app:layout_constraintTop_toBottomOf="@+id/text_input_layout_song_singer"
+            app:textColor="@{@color/textTertiary}"
+            app:textSize="@{@dimen/font_large}"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
