@@ -37,7 +37,7 @@
         android:fontFamily="@font/roboto_bold"
         android:hint="@{labelHintText}"
         android:textColor="@color/textSecondary"
-        android:textSize="@dimen/font_medium"
+        android:textSize="@dimen/text_size_16sp"
         app:expandedHintEnabled="false"
         app:endIconTint="@{enabled ? @color/colorPrimary : 0}"
         tools:hint="Format"
@@ -54,7 +54,7 @@
             android:inputType="none"
             android:textColor="@color/textPrimary"
             android:textColorHint="@color/textPrimaryLight"
-            android:textSize="@dimen/font_medium"
+            android:textSize="@dimen/text_size_16sp"
             tools:hint="Please choose"
             style="@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox"
             />
