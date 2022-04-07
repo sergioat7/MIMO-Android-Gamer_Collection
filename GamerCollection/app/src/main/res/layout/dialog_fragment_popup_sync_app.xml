@@ -30,7 +30,7 @@
                 <View
                     android:layout_width="0dp"
                     android:layout_height="@dimen/size_1dp"
-                    android:layout_marginBottom="@dimen/margin_10dp"
+                    android:layout_marginBottom="@dimen/margin_12dp"
                     android:background="@color/colorPrimary"
                     app:layout_constraintBottom_toTopOf="@+id/text_view_sync"
                     app:layout_constraintEnd_toEndOf="@+id/text_view_sync"
@@ -58,7 +58,7 @@
                     android:id="@+id/view"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/size_1dp"
-                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:layout_marginTop="@dimen/margin_12dp"
                     android:background="@color/colorPrimary"
                     app:layout_constraintEnd_toEndOf="@+id/text_view_sync"
                     app:layout_constraintStart_toStartOf="@+id/text_view_sync"
