@@ -37,7 +37,6 @@
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activities.MainActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity

@@ -101,7 +101,7 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
         viewModel.loginError.observe(viewLifecycleOwner) { error ->
 
             if (error == null) {
-                launchActivity(MainActivity::class.java)
+                launchActivity(MainActivity::class.java, true)
             } else {
 
                 hideLoading()
