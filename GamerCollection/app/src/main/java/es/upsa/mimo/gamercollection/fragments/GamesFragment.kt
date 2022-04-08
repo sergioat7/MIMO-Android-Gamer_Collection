@@ -634,10 +634,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     }
     //endregion
 
-    enum class ScrollPosition {
-        TOP, MIDDLE, END
-    }
-
     inner class SwipeController : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
         private val paint = Paint()
