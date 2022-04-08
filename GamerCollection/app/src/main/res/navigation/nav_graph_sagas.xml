@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Sergio Aragonés. All rights reserved.
+  ~ Created by Sergio Aragonés on 8/4/2022
+  -->
+
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_sagas"
+    app:startDestination="@id/sagasFragment"
+    >
+
+    <fragment
+        android:id="@+id/sagasFragment"
+        android:name="es.upsa.mimo.gamercollection.fragments.SagasFragment"
+        android:label="SagasFragment"
+        tools:layout="@layout/fragment_sagas"
+        >
+
+        <action
+            android:id="@+id/action_sagasFragment_to_sagaDetailFragment22"
+            app:destination="@id/sagaDetailFragment"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/sagaDetailFragment"
+        android:name="es.upsa.mimo.gamercollection.fragments.SagaDetailFragment"
+        android:label="SagaDetailFragment"
+        tools:layout="@layout/fragment_saga_detail"
+        />
+
+</navigation>
