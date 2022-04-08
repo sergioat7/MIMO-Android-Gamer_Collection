@@ -30,9 +30,5 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         nav_view.setupWithNavController(navController)
     }
-
-    override fun onBackPressed() {
-        moveTaskToBack(true)
-    }
     //endregion
 }
