@@ -15,7 +15,7 @@
     <fragment
         android:id="@+id/sagasFragment"
         android:name="es.upsa.mimo.gamercollection.fragments.SagasFragment"
-        android:label="SagasFragment"
+        android:label="@string/sagas"
         tools:layout="@layout/fragment_sagas"
         >
 
