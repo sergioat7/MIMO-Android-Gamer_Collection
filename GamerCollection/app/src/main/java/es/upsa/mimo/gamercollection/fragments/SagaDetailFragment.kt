@@ -2,12 +2,13 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
@@ -18,7 +19,6 @@ import es.upsa.mimo.gamercollection.databinding.FragmentSagaDetailBinding
 import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
-import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.SagaDetailViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.SagaDetailViewModel
@@ -30,6 +30,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     //endregion
 
     //region Private properties
+    private val args: SagaDetailFragmentArgs by navArgs()
     private lateinit var viewModel: SagaDetailViewModel
     private var menu: Menu? = null
     private var sagaGames: List<GameResponse> = arrayListOf()
@@ -42,7 +43,12 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         setHasOptionsMenu(true)
+        (activity as? AppCompatActivity)?.supportActionBar?.apply {
+            title = getString(R.string.saga_detail)
+            setDisplayHomeAsUpEnabled(true)
+        }
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -156,11 +162,9 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     //region Private methods
     private fun initializeUI() {
 
-        val application = activity?.application
-        val sagaId = this.arguments?.getInt(Constants.SAGA_ID)
         viewModel = ViewModelProvider(
             this,
-            SagaDetailViewModelFactory(application, sagaId)
+            SagaDetailViewModelFactory(activity?.application, args.sagaId)
         )[SagaDetailViewModel::class.java]
         setupBindings()
 

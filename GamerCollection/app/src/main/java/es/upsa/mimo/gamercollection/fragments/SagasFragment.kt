@@ -7,11 +7,11 @@ import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.GameDetailActivity
-import es.upsa.mimo.gamercollection.activities.SagaDetailActivity
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SagasAdapter
 import es.upsa.mimo.gamercollection.base.BaseModel
@@ -79,7 +79,8 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
             }
             R.id.action_add -> {
 
-                launchActivity(SagaDetailActivity::class.java)
+                val action = SagasFragmentDirections.actionSagasFragmentToSagaDetailFragment(0)
+                findNavController().navigate(action)
                 return true
             }
         }
@@ -90,8 +91,8 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
     //region Interface methods
     override fun onItemClick(id: Int) {
 
-        val params = mapOf(Constants.SAGA_ID to id)
-        launchActivityWithExtras(SagaDetailActivity::class.java, params)
+        val action = SagasFragmentDirections.actionSagasFragmentToSagaDetailFragment(id)
+        findNavController().navigate(action)
     }
 
     override fun onSubItemClick(id: Int) {

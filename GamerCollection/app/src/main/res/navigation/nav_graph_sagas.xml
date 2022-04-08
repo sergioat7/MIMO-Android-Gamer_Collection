@@ -20,7 +20,7 @@
         >
 
         <action
-            android:id="@+id/action_sagasFragment_to_sagaDetailFragment22"
+            android:id="@+id/action_sagasFragment_to_sagaDetailFragment"
             app:destination="@id/sagaDetailFragment"
             />
 
@@ -31,6 +31,13 @@
         android:name="es.upsa.mimo.gamercollection.fragments.SagaDetailFragment"
         android:label="SagaDetailFragment"
         tools:layout="@layout/fragment_saga_detail"
-        />
+        >
+
+        <argument
+            android:name="sagaId"
+            app:argType="integer"
+            />
+
+    </fragment>
 
 </navigation>

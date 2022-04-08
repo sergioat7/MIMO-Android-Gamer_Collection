@@ -25,7 +25,6 @@ object Preferences {
 
 object Constants {
     const val GAME_ID = "gameId"
-    const val SAGA_ID = "sagaId"
     const val IS_RAWG_GAME = "isRawgGame"
     const val LOADING_DIALOG = "loadingDialog"
     const val SYNC_DIALOG = "syncDialog"
