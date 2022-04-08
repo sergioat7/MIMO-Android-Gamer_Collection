@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
@@ -98,6 +99,16 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.findViewById<BottomNavigationView>(R.id.nav_view)?.visibility = View.GONE
+    }
+
+    override fun onPause() {
+        super.onPause()
+        activity?.findViewById<BottomNavigationView>(R.id.nav_view)?.visibility = View.VISIBLE
     }
     //endregion
 
