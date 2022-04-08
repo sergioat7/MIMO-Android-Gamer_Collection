@@ -116,6 +116,10 @@ object Notifications {
     const val CHANNEL_GROUP = "GAMER_COLLECTION_NOTIFICATIONS_CHANNEL_GROUP"
 }
 
+enum class ScrollPosition {
+    TOP, MIDDLE, END
+}
+
 enum class StatusBarStyle {
     PRIMARY,
     SECONDARY
