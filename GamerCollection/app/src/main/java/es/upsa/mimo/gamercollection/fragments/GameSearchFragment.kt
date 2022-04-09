@@ -6,10 +6,10 @@ import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.base.BindingFragment
@@ -70,8 +70,8 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
     //region Interface methods
     override fun onItemClick(id: Int) {
 
-        val params = mapOf(Constants.GAME_ID to id, Constants.IS_RAWG_GAME to true)
-        launchActivityWithExtras(GameDetailActivity::class.java, params)
+        val action = GameSearchFragmentDirections.actionSearchFragmentToGameDetailFragment(id, true)
+        findNavController().navigate(action)
     }
 
     override fun onSubItemClick(id: Int) {

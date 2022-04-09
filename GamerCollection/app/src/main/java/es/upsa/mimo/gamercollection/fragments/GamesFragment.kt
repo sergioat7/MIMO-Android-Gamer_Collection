@@ -17,13 +17,13 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.base.BindingFragment
@@ -117,8 +117,8 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     //region Interface methods
     override fun onItemClick(id: Int) {
 
-        val params = mapOf(Constants.GAME_ID to id, Constants.IS_RAWG_GAME to false)
-        launchActivityWithExtras(GameDetailActivity::class.java, params)
+        val action = GamesFragmentDirections.actionGamesFragmentToGameDetailFragment(id)
+        findNavController().navigate(action)
     }
 
     override fun onSubItemClick(id: Int) {
@@ -470,8 +470,8 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         var gameNames = Constants.EMPTY_VALUE
         for (game in games) {
 
-            val intent = Intent(requireContext(), GameDetailActivity::class.java).apply {
-                putExtra(Constants.GAME_ID, game.id)
+            val intent = Intent(requireContext(), GameDetailFragment::class.java).apply {
+                putExtra("gameId", game.id)
             }
             val pendingIntent = PendingIntent.getActivity(
                 requireContext(),
