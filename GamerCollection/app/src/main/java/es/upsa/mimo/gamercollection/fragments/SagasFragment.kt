@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SagasAdapter
 import es.upsa.mimo.gamercollection.base.BaseModel
@@ -97,8 +96,8 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
 
     override fun onSubItemClick(id: Int) {
 
-        val params = mapOf(Constants.GAME_ID to id)
-        launchActivityWithExtras(GameDetailActivity::class.java, params)
+        val action = SagasFragmentDirections.actionSagasFragmentToGameDetailFragment(id)
+        findNavController().navigate(action)
     }
 
     override fun onLoadMoreItemsClick() {
