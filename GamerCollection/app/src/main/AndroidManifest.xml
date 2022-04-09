@@ -14,7 +14,6 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.GamerCollection.General"
         tools:ignore="AllowBackup">
 
         <uses-library
@@ -25,14 +24,9 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".activities.GameDetailActivity"
-            android:parentActivityName=".activities.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.GamerCollection.NoActionBar"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
             android:name=".activities.MainActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.GamerCollection.General"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activities.RegisterActivity"

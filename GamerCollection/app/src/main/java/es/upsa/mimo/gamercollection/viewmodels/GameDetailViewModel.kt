@@ -14,7 +14,7 @@ class GameDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     //region Private properties
-    private var gameId: Int? = null
+    private var gameId: Int = 0
     private var isRawgGame: Boolean = false
     private val _gameDetailLoading = MutableLiveData<Boolean>()
     private val _gameDetailSuccessMessage = MutableLiveData<Int>()
@@ -32,12 +32,11 @@ class GameDetailViewModel @Inject constructor(
     //region Public methods
     fun getGame() {
 
-        gameId?.let { id ->
-
+        if (gameId > 0) {
             _gameDetailLoading.value = true
             if (isRawgGame) {
 
-                gameRepository.getRawgGame(id, { game ->
+                gameRepository.getRawgGame(gameId, { game ->
 
                     _game.value = game
                     _gameDetailLoading.value = false
@@ -46,10 +45,10 @@ class GameDetailViewModel @Inject constructor(
                 })
             } else {
 
-                _game.value = gameRepository.getGameDatabase(id)
+                _game.value = gameRepository.getGameDatabase(gameId)
                 _gameDetailLoading.value = false
             }
-        } ?: run {
+        } else {
             _game.value = null
         }
     }
@@ -92,7 +91,7 @@ class GameDetailViewModel @Inject constructor(
         }
     }
 
-    fun setGameId(gameId: Int?) {
+    fun setGameId(gameId: Int) {
         this.gameId = gameId
     }
 

@@ -26,11 +26,24 @@
 
     </fragment>
 
-    <activity
-        android:id="@+id/gameDetailActivity"
-        android:name="es.upsa.mimo.gamercollection.activities.GameDetailActivity"
-        android:label="GameDetailActivity"
-        tools:layout="@layout/activity_game_detail"
-        />
+    <fragment
+        android:id="@+id/gameDetailFragment"
+        android:name="es.upsa.mimo.gamercollection.fragments.GameDetailFragment"
+        android:label="GameDetailFragment"
+        tools:layout="@layout/fragment_game_detail"
+        >
+
+        <argument
+            android:name="gameId"
+            app:argType="integer"
+            />
+
+        <argument
+            android:name="isRawgGame"
+            app:argType="boolean"
+            android:defaultValue="false"
+            />
+
+    </fragment>
 
 </navigation>

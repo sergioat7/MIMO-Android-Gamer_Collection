@@ -1,39 +1,44 @@
-package es.upsa.mimo.gamercollection.activities
+/*
+ * Copyright (c) 2022 Sergio Aragonés. All rights reserved.
+ * Created by Sergio Aragonés on 9/4/2022
+ */
+
+package es.upsa.mimo.gamercollection.fragments
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import androidx.core.app.NavUtils
-import androidx.databinding.DataBindingUtil
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GameDetailPagerAdapter
-import es.upsa.mimo.gamercollection.base.BaseActivity
-import es.upsa.mimo.gamercollection.databinding.ActivityGameDetailBinding
+import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.DialogSetImageBinding
 import es.upsa.mimo.gamercollection.databinding.DialogSetRatingBinding
-import es.upsa.mimo.gamercollection.extensions.getImageForPegi
-import es.upsa.mimo.gamercollection.extensions.getValue
-import es.upsa.mimo.gamercollection.extensions.setHintStyle
-import es.upsa.mimo.gamercollection.extensions.setValue
+import es.upsa.mimo.gamercollection.databinding.FragmentGameDetailBinding
+import es.upsa.mimo.gamercollection.extensions.*
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.CustomDropdownType
+import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameDetailViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameDetailViewModel
 
-class GameDetailActivity : BaseActivity() {
+class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
+
+    //region Protected properties
+    override val statusBarStyle = StatusBarStyle.SECONDARY
+    //endregion
 
     //region  - Private properties
-    private var gameId: Int? = null
-    private var isRawgGame: Boolean = false
-    private lateinit var binding: ActivityGameDetailBinding
+    private val args: GameDetailFragmentArgs by navArgs()
     private lateinit var viewModel: GameDetailViewModel
     private var menu: Menu? = null
     private lateinit var pagerAdapter: GameDetailPagerAdapter
@@ -42,59 +47,55 @@ class GameDetailActivity : BaseActivity() {
     //endregion
 
     //region Lifecycle methods
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_game_detail)
-        setContentView(binding.root)
+        setHasOptionsMenu(true)
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
 
-        title = Constants.EMPTY_VALUE
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        val id = intent.getIntExtra(Constants.GAME_ID, 0)
-        gameId = if (id > 0) id else null
-        isRawgGame = intent.getBooleanExtra(Constants.IS_RAWG_GAME, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         initializeUI()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
 
         this.menu = menu
-        menu?.let {
+        menu.clear()
+        val menuRes =
+            if (args.isRawgGame) R.menu.rawg_game_toolbar_menu else R.menu.game_toolbar_menu
+        inflater.inflate(menuRes, menu)
+        if (!args.isRawgGame) {
 
-            it.clear()
-            val menuRes =
-                if (isRawgGame) R.menu.rawg_game_toolbar_menu else R.menu.game_toolbar_menu
-            menuInflater.inflate(menuRes, menu)
-            if (!isRawgGame) {
-
-                menu.findItem(R.id.action_edit).isVisible = game != null
-                menu.findItem(R.id.action_remove).isVisible = game != null
-                menu.findItem(R.id.action_save).isVisible = game == null
-                it.findItem(R.id.action_cancel).isVisible = false
-            }
+            menu.findItem(R.id.action_edit).isVisible = game != null
+            menu.findItem(R.id.action_remove).isVisible = game != null
+            menu.findItem(R.id.action_save).isVisible = game == null
+            menu.findItem(R.id.action_cancel).isVisible = false
         }
-        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-            android.R.id.home -> {
-                NavUtils.navigateUpFromSameTask(this)
-            }
+//            android.R.id.home -> {
+//                NavUtils.navigateUpFromSameTask(this)
+//            }
             R.id.action_edit -> setEdition(true)
             R.id.action_remove -> {
 
-                showPopupConfirmationDialog(resources.getString(R.string.game_detail_delete_confirmation)) {
-                    viewModel.deleteGame()
-                }
+                showPopupConfirmationDialog(resources.getString(R.string.game_detail_delete_confirmation),
+                    {
+                        viewModel.deleteGame()
+                    })
             }
             R.id.action_save -> {
 
-                if (isRawgGame || game == null) {
+                if (args.isRawgGame || game == null) {
                     viewModel.createGame(getGameData())
                 } else {
 
@@ -117,7 +118,7 @@ class GameDetailActivity : BaseActivity() {
 
         val dialogBinding = DialogSetImageBinding.inflate(layoutInflater)
 
-        MaterialAlertDialogBuilder(this)
+        MaterialAlertDialogBuilder(requireActivity())
             .setTitle(resources.getString(R.string.game_detail_image_modal_title))
             .setView(dialogBinding.root)
             .setCancelable(false)
@@ -140,7 +141,7 @@ class GameDetailActivity : BaseActivity() {
         val dialogBinding = DialogSetRatingBinding.inflate(layoutInflater)
         dialogBinding.rating = binding.ratingButton.text.toString().toDouble() / 2
 
-        val dialog = MaterialAlertDialogBuilder(this)
+        val dialog = MaterialAlertDialogBuilder(requireActivity())
             .setView(dialogBinding.root)
             .setCancelable(false)
             .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
@@ -169,15 +170,15 @@ class GameDetailActivity : BaseActivity() {
 
         viewModel = ViewModelProvider(
             this, GameDetailViewModelFactory(
-                application,
-                gameId,
-                isRawgGame
+                activity?.application,
+                args.gameId,
+                args.isRawgGame
             )
         )[GameDetailViewModel::class.java]
         setupBindings()
 
         pagerAdapter = GameDetailPagerAdapter(
-            this,
+            requireActivity(),
             2,
             viewModel.game.value
         )
@@ -193,11 +194,12 @@ class GameDetailActivity : BaseActivity() {
         binding.dropdownTextInputLayoutPlatforms.setHintStyle(R.style.Widget_GamerCollection_TextView_Title_Header)
 
         binding.activity = this
+        binding.isDarkMode = context?.isDarkMode()
     }
 
     private fun setupBindings() {
 
-        viewModel.gameDetailLoading.observe(this) { isLoading ->
+        viewModel.gameDetailLoading.observe(viewLifecycleOwner) { isLoading ->
 
             if (isLoading) {
                 showLoading()
@@ -206,27 +208,27 @@ class GameDetailActivity : BaseActivity() {
             }
         }
 
-        viewModel.gameDetailSuccessMessage.observe(this) {
+        viewModel.gameDetailSuccessMessage.observe(viewLifecycleOwner) {
 
             val message = resources.getString(it)
             showPopupDialog(message, goBack)
         }
 
-        viewModel.gameDetailError.observe(this) { error ->
+        viewModel.gameDetailError.observe(viewLifecycleOwner) { error ->
 
             hideLoading()
             manageError(error)
         }
 
-        viewModel.game.observe(this) {
+        viewModel.game.observe(viewLifecycleOwner) {
 
             game = it
             showData(it)
-            makeFieldsEditable(isRawgGame || it == null)
+            makeFieldsEditable(args.isRawgGame || it == null)
         }
 
-        goBack.observe(this) {
-            finish()
+        goBack.observe(viewLifecycleOwner) {
+            findNavController().popBackStack()
         }
     }
 
@@ -248,7 +250,7 @@ class GameDetailActivity : BaseActivity() {
                 }
             })
 
-        binding.imagePegi = this.getImageForPegi(game?.pegi)
+        binding.imagePegi = requireContext().getImageForPegi(game?.pegi)
 
         binding.dropdownTextInputLayoutPlatforms.setValue(
             game?.platform,
@@ -279,7 +281,7 @@ class GameDetailActivity : BaseActivity() {
 
     private fun getGameData(): GameResponse {
 
-        val id = gameId ?: 0
+        val id = args.gameId
         val name = binding.textInputLayoutGameName.getValue()
         val platform =
             Constants.PLATFORMS.firstOrNull { it.name == binding.dropdownTextInputLayoutPlatforms.getValue() }?.id

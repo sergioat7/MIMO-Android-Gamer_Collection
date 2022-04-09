@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class GameDetailViewModelFactory(
     private val application: Application?,
-    private val gameId: Int?,
+    private val gameId: Int,
     private val isRawgGame: Boolean
 ) : ViewModelProvider.Factory {
 

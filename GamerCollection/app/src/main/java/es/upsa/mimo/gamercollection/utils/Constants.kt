@@ -24,8 +24,6 @@ object Preferences {
 }
 
 object Constants {
-    const val GAME_ID = "gameId"
-    const val IS_RAWG_GAME = "isRawgGame"
     const val LOADING_DIALOG = "loadingDialog"
     const val SYNC_DIALOG = "syncDialog"
     const val POINT_UP = 0f
