@@ -22,11 +22,19 @@
         <action
             android:id="@+id/action_sagasFragment_to_sagaDetailFragment"
             app:destination="@id/sagaDetailFragment"
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/wait_anim"
+            app:popEnterAnim="@anim/wait_anim"
+            app:popExitAnim="@anim/slide_right"
             />
 
         <action
             android:id="@+id/action_sagasFragment_to_gameDetailFragment"
             app:destination="@id/gameDetailFragment"
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/wait_anim"
+            app:popEnterAnim="@anim/wait_anim"
+            app:popExitAnim="@anim/slide_right"
             />
 
     </fragment>
