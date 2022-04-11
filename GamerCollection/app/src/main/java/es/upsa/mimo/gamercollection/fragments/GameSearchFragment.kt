@@ -15,7 +15,6 @@ import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentGameSearchBinding
-import es.upsa.mimo.gamercollection.extensions.getFormatted
 import es.upsa.mimo.gamercollection.extensions.hideSoftKeyboard
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.ScrollPosition
@@ -40,6 +39,7 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        toolbar = binding.toolbar
         initializeUi()
     }
 
@@ -176,23 +176,9 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
             manageError(error)
         }
 
-        viewModel.gamesCount.observe(viewLifecycleOwner) {
-            setTitle(it)
-        }
-
         viewModel.scrollPosition.observe(viewLifecycleOwner) {
             scrollPosition.set(it)
         }
-    }
-
-    private fun setTitle(gamesCount: Int) {
-
-        val title = resources.getQuantityString(
-            R.plurals.games_number_title,
-            gamesCount,
-            gamesCount.getFormatted()
-        )
-        (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
 
     private fun reset() {

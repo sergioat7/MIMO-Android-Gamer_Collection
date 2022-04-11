@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
@@ -18,6 +17,7 @@ import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.DialogGamesBinding
 import es.upsa.mimo.gamercollection.databinding.FragmentSagaDetailBinding
 import es.upsa.mimo.gamercollection.extensions.getValue
+import es.upsa.mimo.gamercollection.extensions.isDarkMode
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
@@ -44,6 +44,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        toolbar = binding.toolbar
         initializeUi()
     }
 
@@ -172,6 +173,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
         binding.addGamesEnabled = viewModel.saga.value != null
 
         binding.fragment = this
+        binding.isDarkMode = context.isDarkMode()
     }
 
     private fun setupBindings() {

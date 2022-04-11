@@ -29,6 +29,8 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
     //region Lifecycle methods
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        toolbar = binding.toolbar
         initializeUi()
     }
 
