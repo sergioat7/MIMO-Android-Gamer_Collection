@@ -36,7 +36,7 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeUI()
+        initializeUi()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -103,8 +103,9 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
     }
     //endregion
 
-    //region Private methods
-    private fun initializeUI() {
+    //region Protected methods
+    override fun initializeUi() {
+        super.initializeUi()
 
         val application = activity?.application
         viewModel = ViewModelProvider(
@@ -120,7 +121,9 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
     }
+    //endregion
 
+    //region Protected methods
     private fun setupBindings() {
 
         viewModel.settingsForm.observe(viewLifecycleOwner) {

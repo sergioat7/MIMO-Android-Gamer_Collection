@@ -93,6 +93,12 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
     }
     //endregion
 
+    //region Protected methods
+    protected open fun initializeUi() {
+
+    }
+    //endregion
+
     //region Public methods
     fun showPopupDialog(message: String, goBack: MutableLiveData<Boolean>? = null) {
 
@@ -171,9 +177,11 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
         startActivity(intent)
     }
 
-    fun <T> launchActivityWithExtras(activity: Class<T>,
-                                     params: Map<String, Serializable>,
-                                     clearStack: Boolean = false) {
+    fun <T> launchActivityWithExtras(
+        activity: Class<T>,
+        params: Map<String, Serializable>,
+        clearStack: Boolean = false
+    ) {
 
         val intent = Intent(context, activity)
         for (param in params) {

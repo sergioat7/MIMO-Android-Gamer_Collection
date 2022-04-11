@@ -47,7 +47,7 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeUI()
+        initializeUi()
     }
 
     override fun onResume() {
@@ -125,8 +125,9 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
     }
     //endregion
 
-    //region Private methods
-    private fun initializeUI() {
+    //region Protected methods
+    override fun initializeUi() {
+        super.initializeUi()
 
         val application = activity?.application
         viewModel = ViewModelProvider(
@@ -180,7 +181,9 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
 
         scrollPosition.set(ScrollPosition.TOP)
     }
+    //endregion
 
+    //region Private methods
     private fun setupBindings() {
 
         viewModel.sagasLoading.observe(viewLifecycleOwner) { isLoading ->
