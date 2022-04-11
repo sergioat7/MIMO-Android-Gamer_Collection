@@ -34,7 +34,7 @@ class GameSongsFragment(
     //region Lifecycle methods
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeUI()
+        initializeUi()
     }
     //endregion
 
@@ -60,8 +60,9 @@ class GameSongsFragment(
     }
     //endregion
 
-    //region Private methods
-    private fun initializeUI() {
+    //region Protected methods
+    override fun initializeUi() {
+        super.initializeUi()
 
         val application = activity?.application
         viewModel = ViewModelProvider(
@@ -90,7 +91,9 @@ class GameSongsFragment(
             editable = enabled
         }
     }
+    //endregion
 
+    //region Private methods
     private fun setupBindings() {
 
         viewModel.gameSongsLoading.observe(viewLifecycleOwner) { isLoading ->

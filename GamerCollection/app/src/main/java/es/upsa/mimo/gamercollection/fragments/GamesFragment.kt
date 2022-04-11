@@ -61,7 +61,8 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeUI()
+
+        initializeUi()
     }
 
     override fun onResume() {
@@ -149,8 +150,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     }
     //endregion
 
-    //region Private methods
-    private fun initializeUI() {
+    //region Protected methods
+    override fun initializeUi() {
+        super.initializeUi()
 
         val application = activity?.application
         viewModel = ViewModelProvider(
@@ -203,7 +205,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             lifecycleOwner = this@GamesFragment
         }
     }
+    //endregion
 
+    //region Private methods
     private fun setupBindings() {
 
         viewModel.gamesLoading.observe(viewLifecycleOwner) { isLoading ->

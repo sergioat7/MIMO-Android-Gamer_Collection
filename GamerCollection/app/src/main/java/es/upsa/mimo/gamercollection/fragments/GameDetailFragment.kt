@@ -59,7 +59,7 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initializeUI()
+        initializeUi()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -165,8 +165,9 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
     }
     //endregion
 
-    //region Private methods
-    private fun initializeUI() {
+    //region Protected methods
+    override fun initializeUi() {
+        super.initializeUi()
 
         viewModel = ViewModelProvider(
             this, GameDetailViewModelFactory(
@@ -196,7 +197,9 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
         binding.activity = this
         binding.isDarkMode = context?.isDarkMode()
     }
+    //endregion
 
+    //region Private methods
     private fun setupBindings() {
 
         viewModel.gameDetailLoading.observe(viewLifecycleOwner) { isLoading ->

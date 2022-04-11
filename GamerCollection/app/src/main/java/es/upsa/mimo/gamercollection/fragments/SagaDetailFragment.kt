@@ -55,7 +55,8 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeUI()
+
+        initializeUi()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -170,8 +171,9 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     }
     //endregion
 
-    //region Private methods
-    private fun initializeUI() {
+    //region Protected methods
+    override fun initializeUi() {
+        super.initializeUi()
 
         viewModel = ViewModelProvider(
             this,
@@ -225,7 +227,9 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
             activity?.finish()
         }
     }
+    //endregion
 
+    //region Private methods
     private fun showData(saga: SagaResponse?) {
 
         saga?.let {
