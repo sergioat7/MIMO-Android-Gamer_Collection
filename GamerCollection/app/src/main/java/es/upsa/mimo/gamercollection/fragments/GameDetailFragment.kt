@@ -7,8 +7,10 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.*
-import androidx.appcompat.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -35,6 +37,7 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
 
     //region Protected properties
     override val statusBarStyle = StatusBarStyle.SECONDARY
+    override val hasOptionsMenu = true
     //endregion
 
     //region  - Private properties
@@ -47,15 +50,6 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
     //endregion
 
     //region Lifecycle methods
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        setHasOptionsMenu(true)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

@@ -28,6 +28,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
 
     //region Protected properties
     override val statusBarStyle = StatusBarStyle.SECONDARY
+    override val hasOptionsMenu = true
     //endregion
 
     //region Private properties
@@ -40,19 +41,6 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     //endregion
 
     //region Lifecycle methods
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        setHasOptionsMenu(true)
-        (activity as? AppCompatActivity)?.supportActionBar?.apply {
-            title = getString(R.string.saga_detail)
-            setDisplayHomeAsUpEnabled(true)
-        }
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

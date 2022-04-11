@@ -18,6 +18,7 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
 
     //region Protected properties
     override val statusBarStyle = StatusBarStyle.SECONDARY
+    override val hasOptionsMenu = false
     //endregion
 
     //region Private properties
