@@ -37,6 +37,17 @@
             android:layout_height="match_parent"
             >
 
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="@{@string/settings}"
+                />
+
             <ScrollView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -44,7 +55,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/button_save"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"
                 >
 
                 <androidx.constraintlayout.widget.ConstraintLayout

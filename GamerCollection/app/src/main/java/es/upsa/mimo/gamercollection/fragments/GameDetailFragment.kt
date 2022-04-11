@@ -53,6 +53,7 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        toolbar = binding.toolbar
         initializeUi()
     }
 

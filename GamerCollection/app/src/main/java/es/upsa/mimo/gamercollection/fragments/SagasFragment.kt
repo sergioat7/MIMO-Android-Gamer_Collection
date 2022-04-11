@@ -2,9 +2,11 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.SearchView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -40,6 +42,8 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
     //region Lifecycle methods
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        toolbar = binding.toolbar
         initializeUi()
     }
 
@@ -197,9 +201,7 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
         }
 
         viewModel.sagas.observe(viewLifecycleOwner) {
-
             showData(it)
-            setTitle(it.size)
         }
     }
 
@@ -219,13 +221,6 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
         sagasAdapter.setItems(items)
         sagasAdapter.setExpandedIds(viewModel.expandedIds)
         sagasAdapter.notifyDataSetChanged()
-    }
-
-    private fun setTitle(sagasCount: Int) {
-
-        val title =
-            resources.getQuantityString(R.plurals.sagas_number_title, sagasCount, sagasCount)
-        (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
 
     private fun setupSearchView(menu: Menu) {

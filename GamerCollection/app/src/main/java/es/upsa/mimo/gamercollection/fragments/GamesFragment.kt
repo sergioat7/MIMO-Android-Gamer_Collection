@@ -11,7 +11,6 @@ import android.graphics.RectF
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -55,6 +54,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        toolbar = binding.toolbar
         initializeUi()
     }
 
@@ -236,7 +236,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
         viewModel.gamesCount.observe(viewLifecycleOwner) {
             setGamesCount(it)
-            setTitle(it.size)
         }
 
         viewModel.gameDeleted.observe(viewLifecycleOwner) { position ->
@@ -557,16 +556,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             buttonInProgress.subtitle = "$inProgressGamesCount"
             buttonFinished.subtitle = "$finishedGamesCount"
         }
-    }
-
-    private fun setTitle(gamesCount: Int) {
-
-        val title = resources.getQuantityString(
-            R.plurals.games_number_title,
-            gamesCount,
-            gamesCount.getFormatted()
-        )
-        (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
 
     private fun enableStateButtons(enable: Boolean) {
