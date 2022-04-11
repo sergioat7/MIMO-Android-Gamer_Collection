@@ -20,9 +20,13 @@
         >
 
         <action
-            android:id="@+id/action_searchFragment_to_gameDetailActivity"
-            app:destination="@id/gameDetailActivity"
-            />
+            android:id="@+id/action_searchFragment_to_gameDetailFragment"
+            app:destination="@id/gameDetailFragment"
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/wait_anim"
+            app:popEnterAnim="@anim/wait_anim"
+            app:popExitAnim="@anim/slide_right"
+        />
 
     </fragment>
 
