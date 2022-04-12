@@ -15,6 +15,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Callback
@@ -102,6 +103,16 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.findViewById<BottomNavigationView>(R.id.nav_view)?.visibility = View.GONE
+    }
+
+    override fun onPause() {
+        super.onPause()
+        activity?.findViewById<BottomNavigationView>(R.id.nav_view)?.visibility = View.VISIBLE
     }
     //endregion
 
