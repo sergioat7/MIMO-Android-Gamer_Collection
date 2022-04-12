@@ -45,7 +45,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:menu="@menu/games_toolbar_menu"
                 app:title="@{@plurals/games_number_title(viewModel.gamesCount.size(), viewModel.gamesCount.size())}"
+                tools:title="120 games"
+                style="@style/Widget.GamerCollection.Toolbar"
                 />
 
             <LinearLayout

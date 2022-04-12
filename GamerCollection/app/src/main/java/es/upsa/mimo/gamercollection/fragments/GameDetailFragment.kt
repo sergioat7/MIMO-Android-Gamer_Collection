@@ -77,9 +77,6 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-//            android.R.id.home -> {
-//                NavUtils.navigateUpFromSameTask(this)
-//            }
             R.id.action_edit -> setEdition(true)
             R.id.action_remove -> {
 
