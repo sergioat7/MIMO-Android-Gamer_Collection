@@ -10,12 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.isDarkMode
@@ -42,6 +45,8 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
     protected lateinit var binding: Binding
         private set
     protected abstract val statusBarStyle: StatusBarStyle
+    protected abstract val hasOptionsMenu: Boolean
+    protected open var toolbar: Toolbar? = null
     //endregion
 
     //region Lifecycle methods
@@ -50,6 +55,8 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        setHasOptionsMenu(hasOptionsMenu)
         val bindingType =
             (this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments
                 .firstOrNull {
@@ -88,6 +95,18 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
                         it.isDarkMode()
                     )
                 }
+            }
+        }
+    }
+    //endregion
+
+    //region Protected methods
+    protected open fun initializeUi() {
+
+        toolbar?.let {
+            (activity as? AppCompatActivity)?.setSupportActionBar(it)
+            it.setNavigationOnClickListener {
+                findNavController().popBackStack()
             }
         }
     }
@@ -171,11 +190,18 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
         startActivity(intent)
     }
 
-    fun <T> launchActivityWithExtras(activity: Class<T>, params: Map<String, Serializable>) {
+    fun <T> launchActivityWithExtras(
+        activity: Class<T>,
+        params: Map<String, Serializable>,
+        clearStack: Boolean = false
+    ) {
 
-        val intent = Intent(context, activity).apply {}
+        val intent = Intent(context, activity)
         for (param in params) {
             intent.putExtra(param.key, param.value)
+        }
+        if (clearStack) {
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         startActivity(intent)
     }

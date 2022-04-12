@@ -1,23 +1,23 @@
 package es.upsa.mimo.gamercollection.fragments
 
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.View
 import android.widget.SearchView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentGameSearchBinding
-import es.upsa.mimo.gamercollection.extensions.getFormatted
 import es.upsa.mimo.gamercollection.extensions.hideSoftKeyboard
-import es.upsa.mimo.gamercollection.fragments.GamesFragment.ScrollPosition
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameSearchViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameSearchViewModel
@@ -26,6 +26,7 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
 
     //region Protected properties
     override val statusBarStyle = StatusBarStyle.SECONDARY
+    override val hasOptionsMenu = true
     //endregion
 
     //region Private properties
@@ -35,17 +36,11 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
     //endregion
 
     //region Lifecycle methods
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        setHasOptionsMenu(true)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeUI()
+
+        toolbar = binding.toolbar
+        initializeUi()
     }
 
     override fun onResume() {
@@ -70,8 +65,8 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
     //region Interface methods
     override fun onItemClick(id: Int) {
 
-        val params = mapOf(Constants.GAME_ID to id, Constants.IS_RAWG_GAME to true)
-        launchActivityWithExtras(GameDetailActivity::class.java, params)
+        val action = GameSearchFragmentDirections.actionSearchFragmentToGameDetailFragment(id, true)
+        findNavController().navigate(action)
     }
 
     override fun onSubItemClick(id: Int) {
@@ -105,8 +100,9 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
     }
     //endregion
 
-    //region Private methods
-    private fun initializeUI() {
+    //region Protected methods
+    override fun initializeUi() {
+        super.initializeUi()
 
         val application = activity?.application
         viewModel = ViewModelProvider(
@@ -162,7 +158,9 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
 
         scrollPosition.set(ScrollPosition.TOP)
     }
+    //endregion
 
+    //region Protected methods
     private fun setupBindings() {
 
         viewModel.gamesLoading.observe(viewLifecycleOwner) { isLoading ->
@@ -178,23 +176,9 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
             manageError(error)
         }
 
-        viewModel.gamesCount.observe(viewLifecycleOwner) {
-            setTitle(it)
-        }
-
         viewModel.scrollPosition.observe(viewLifecycleOwner) {
             scrollPosition.set(it)
         }
-    }
-
-    private fun setTitle(gamesCount: Int) {
-
-        val title = resources.getQuantityString(
-            R.plurals.games_number_title,
-            gamesCount,
-            gamesCount.getFormatted()
-        )
-        (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
 
     private fun reset() {

@@ -12,11 +12,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.getPickerParams
 import es.upsa.mimo.gamercollection.extensions.setup
-import es.upsa.mimo.gamercollection.fragments.GamesFragment
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
+import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
@@ -33,7 +33,7 @@ class GamesViewModel @Inject constructor(
     private val _gameDeleted = MutableLiveData<Int?>()
     private var _state = MutableLiveData<String?>(null)
     private var _filters = MutableLiveData<FilterModel?>(null)
-    private var _scrollPosition = MutableLiveData(GamesFragment.ScrollPosition.TOP)
+    private var _scrollPosition = MutableLiveData(ScrollPosition.TOP)
     private var sortParam: String = SharedPreferencesHelper.sortParam
     private var isSortOrderAscending = SharedPreferencesHelper.isSortOrderAscending
     private var query: String? = null
@@ -55,7 +55,7 @@ class GamesViewModel @Inject constructor(
     val gameDeleted: LiveData<Int?> = _gameDeleted
     val state: LiveData<String?> = _state
     val filters: LiveData<FilterModel?> = _filters
-    val scrollPosition: LiveData<GamesFragment.ScrollPosition> = _scrollPosition
+    val scrollPosition: LiveData<ScrollPosition> = _scrollPosition
     //endregion
 
     //region Public methods
@@ -94,7 +94,7 @@ class GamesViewModel @Inject constructor(
 
         _gamesCount.value = games
 
-        _scrollPosition.value = GamesFragment.ScrollPosition.TOP
+        _scrollPosition.value = ScrollPosition.TOP
     }
 
     fun sortGames(context: Context, resources: Resources) {
@@ -189,7 +189,7 @@ class GamesViewModel @Inject constructor(
         fetchGames()
     }
 
-    fun setPosition(newPosition: GamesFragment.ScrollPosition) {
+    fun setPosition(newPosition: ScrollPosition) {
         _scrollPosition.value = newPosition
     }
     //endregion

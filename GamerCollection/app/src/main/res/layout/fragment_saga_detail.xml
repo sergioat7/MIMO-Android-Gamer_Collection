@@ -31,6 +31,11 @@
             type="es.upsa.mimo.gamercollection.fragments.SagaDetailFragment"
             />
 
+        <variable
+            name="isDarkMode"
+            type="Boolean"
+            />
+
     </data>
 
     <FrameLayout
@@ -45,7 +50,23 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/colorSecondary"
             >
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:menu="@menu/saga_toolbar_menu"
+                app:navigationIcon="@{isDarkMode ? @drawable/ic_arrow_back_black : @drawable/ic_arrow_back_white}"
+                app:title="@{@string/saga_detail}"
+                tools:title="@string/settings"
+                style="@style/Widget.GamerCollection.Toolbar"
+                />
 
             <include
                 android:id="@+id/text_input_layout_saga_name"
@@ -61,7 +82,7 @@
                 app:isBold="@{true}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"
                 app:text='@{sagaName}'
                 app:textSize="@{@dimen/text_size_24sp}"
                 />

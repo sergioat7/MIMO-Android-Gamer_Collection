@@ -19,6 +19,7 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
 
     //region Protected properties
     override val statusBarStyle = StatusBarStyle.SECONDARY
+    override val hasOptionsMenu = false
     //endregion
 
     //region Private properties
@@ -28,7 +29,7 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
     //region Lifecycle methods
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeUI()
+        initializeUi()
     }
 
     override fun onResume() {
@@ -59,8 +60,9 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
     }
     //endregion
 
-    //region Private methods
-    private fun initializeUI() {
+    //region Protected methods
+    override fun initializeUi() {
+        super.initializeUi()
 
         val application = activity?.application
         viewModel = ViewModelProvider(
@@ -76,7 +78,9 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
     }
+    //endregion
 
+    //region Private methods
     private fun setupBindings() {
 
         viewModel.registerFormState.observe(viewLifecycleOwner) {

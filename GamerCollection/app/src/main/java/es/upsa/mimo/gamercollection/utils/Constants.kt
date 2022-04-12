@@ -24,9 +24,6 @@ object Preferences {
 }
 
 object Constants {
-    const val GAME_ID = "gameId"
-    const val SAGA_ID = "sagaId"
-    const val IS_RAWG_GAME = "isRawgGame"
     const val LOADING_DIALOG = "loadingDialog"
     const val SYNC_DIALOG = "syncDialog"
     const val POINT_UP = 0f
@@ -115,6 +112,10 @@ object State {
 object Notifications {
     const val CHANNEL_ID = "GAMER_COLLECTION_NOTIFICATIONS_CHANNEL_ID"
     const val CHANNEL_GROUP = "GAMER_COLLECTION_NOTIFICATIONS_CHANNEL_GROUP"
+}
+
+enum class ScrollPosition {
+    TOP, MIDDLE, END
 }
 
 enum class StatusBarStyle {
