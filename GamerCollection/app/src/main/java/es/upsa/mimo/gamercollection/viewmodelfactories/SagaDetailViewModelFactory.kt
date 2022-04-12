@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class SagaDetailViewModelFactory(
     private val application: Application?,
-    private val sagaId: Int?
+    private val sagaId: Int
 ) : ViewModelProvider.Factory {
 
     //region Public properties

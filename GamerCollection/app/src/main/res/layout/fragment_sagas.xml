@@ -12,7 +12,7 @@
             />
 
         <import
-            type="es.upsa.mimo.gamercollection.fragments.GamesFragment.ScrollPosition"
+            type="es.upsa.mimo.gamercollection.utils.ScrollPosition"
             />
 
         <variable
@@ -46,6 +46,20 @@
             android:layout_height="match_parent"
             >
 
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:menu="@menu/sagas_toolbar_menu"
+                app:title="@{@plurals/sagas_number_title(viewModel.sagas.size(), viewModel.sagas.size())}"
+                tools:title="12 sagas"
+                style="@style/Widget.GamerCollection.Toolbar"
+                />
+
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_refresh_layout"
                 android:layout_width="0dp"
@@ -53,7 +67,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"
                 >
 
                 <androidx.recyclerview.widget.RecyclerView

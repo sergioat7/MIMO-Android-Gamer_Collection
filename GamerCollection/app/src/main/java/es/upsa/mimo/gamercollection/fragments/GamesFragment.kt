@@ -11,19 +11,18 @@ import android.graphics.RectF
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.base.BindingFragment
@@ -42,6 +41,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
     //region Protected properties
     override val statusBarStyle = StatusBarStyle.SECONDARY
+    override val hasOptionsMenu = true
     //endregion
 
     //region Private properties
@@ -51,17 +51,11 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     //endregion
 
     //region Lifecycle methods
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        setHasOptionsMenu(true)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeUI()
+
+        toolbar = binding.toolbar
+        initializeUi()
     }
 
     override fun onResume() {
@@ -117,8 +111,8 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     //region Interface methods
     override fun onItemClick(id: Int) {
 
-        val params = mapOf(Constants.GAME_ID to id, Constants.IS_RAWG_GAME to false)
-        launchActivityWithExtras(GameDetailActivity::class.java, params)
+        val action = GamesFragmentDirections.actionGamesFragmentToGameDetailFragment(id)
+        findNavController().navigate(action)
     }
 
     override fun onSubItemClick(id: Int) {
@@ -149,8 +143,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     }
     //endregion
 
-    //region Private methods
-    private fun initializeUI() {
+    //region Protected methods
+    override fun initializeUi() {
+        super.initializeUi()
 
         val application = activity?.application
         viewModel = ViewModelProvider(
@@ -203,7 +198,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             lifecycleOwner = this@GamesFragment
         }
     }
+    //endregion
 
+    //region Private methods
     private fun setupBindings() {
 
         viewModel.gamesLoading.observe(viewLifecycleOwner) { isLoading ->
@@ -239,7 +236,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
         viewModel.gamesCount.observe(viewLifecycleOwner) {
             setGamesCount(it)
-            setTitle(it.size)
         }
 
         viewModel.gameDeleted.observe(viewLifecycleOwner) { position ->
@@ -470,8 +466,8 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         var gameNames = Constants.EMPTY_VALUE
         for (game in games) {
 
-            val intent = Intent(requireContext(), GameDetailActivity::class.java).apply {
-                putExtra(Constants.GAME_ID, game.id)
+            val intent = Intent(requireContext(), GameDetailFragment::class.java).apply {
+                putExtra("gameId", game.id)
             }
             val pendingIntent = PendingIntent.getActivity(
                 requireContext(),
@@ -562,16 +558,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         }
     }
 
-    private fun setTitle(gamesCount: Int) {
-
-        val title = resources.getQuantityString(
-            R.plurals.games_number_title,
-            gamesCount,
-            gamesCount.getFormatted()
-        )
-        (activity as AppCompatActivity?)?.supportActionBar?.title = title
-    }
-
     private fun enableStateButtons(enable: Boolean) {
         with(binding) {
 
@@ -633,10 +619,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         setupSearchView(Constants.EMPTY_VALUE)
     }
     //endregion
-
-    enum class ScrollPosition {
-        TOP, MIDDLE, END
-    }
 
     inner class SwipeController : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 

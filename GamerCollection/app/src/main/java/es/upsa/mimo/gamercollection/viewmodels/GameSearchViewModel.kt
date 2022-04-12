@@ -3,7 +3,7 @@ package es.upsa.mimo.gamercollection.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import es.upsa.mimo.gamercollection.fragments.GamesFragment.ScrollPosition
+import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
@@ -19,7 +19,7 @@ class GameSearchViewModel @Inject constructor(
     private val _gamesLoading = MutableLiveData<Boolean>()
     private val _gamesError = MutableLiveData<ErrorResponse>()
     private val _games = MutableLiveData<MutableList<GameResponse>>()
-    private val _gamesCount = MutableLiveData<Int>()
+    private val _gamesCount = MutableLiveData(0)
     private val _scrollPosition = MutableLiveData(ScrollPosition.TOP)
     //endregion
 

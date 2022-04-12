@@ -25,7 +25,7 @@
 
         <variable
             name="activity"
-            type="es.upsa.mimo.gamercollection.activities.GameDetailActivity"
+            type="es.upsa.mimo.gamercollection.fragments.GameDetailFragment"
             />
         
         <variable
@@ -47,6 +47,11 @@
             name="editable"
             type="Boolean"
             />
+
+        <variable
+            name="isDarkMode"
+            type="Boolean"
+            />
         
     </data>
     
@@ -56,7 +61,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.GameDetailActivity"
+        tools:context=".fragments.GameDetailFragment"
         >
 
         <com.jgabrielfreitas.core.BlurImageView
@@ -238,11 +243,12 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/Theme.GamerCollection.NoActionBar.GameDetail"
             android:minHeight="?attr/actionBarSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@{isDarkMode ? @drawable/ic_arrow_back_white : @drawable/ic_arrow_back_black}"
+            app:title=" "
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

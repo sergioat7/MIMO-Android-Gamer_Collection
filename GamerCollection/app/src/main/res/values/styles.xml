@@ -21,6 +21,10 @@
         <item name="android:textColor">@color/textPrimary</item>
     </style>
 
+    <style name="Widget.GamerCollection.TextView.Title.Toolbar">
+        <item name="android:textSize">@dimen/text_size_24sp</item>
+    </style>
+
     <style name="Widget.GamerCollection.TextView.Title.Header">
         <item name="android:textSize">@dimen/text_size_14sp</item>
     </style>
@@ -227,6 +231,13 @@
         <item name="rippleColor">@null</item>
         <item name="android:textColor">@drawable/choice_chip_text_color</item>
         <item name="android:textAppearance">@style/TextAppearance.GamerCollection.Chip</item>
+    </style>
+
+    <!--  Toolbar  -->
+
+    <style name="Widget.GamerCollection.Toolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="titleTextAppearance">@style/Widget.GamerCollection.TextView.Title.Toolbar</item>
+        <item name="titleTextColor">@color/textSecondary</item>
     </style>
 
     <!--  BottomNavigationView  -->

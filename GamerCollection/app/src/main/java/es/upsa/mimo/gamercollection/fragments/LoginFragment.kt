@@ -18,6 +18,7 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
 
     //region Protected properties
     override val statusBarStyle = StatusBarStyle.SECONDARY
+    override val hasOptionsMenu = false
     //endregion
 
     //region Private properties
@@ -27,7 +28,7 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
     //region Lifecycle methods
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeUI()
+        initializeUi()
     }
 
     override fun onResume() {
@@ -58,8 +59,9 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
     }
     //endregion
 
-    //region Private methods
-    private fun initializeUI() {
+    //region Protected methods
+    override fun initializeUi() {
+        super.initializeUi()
 
         val application = activity?.application
         viewModel = ViewModelProvider(
@@ -72,7 +74,9 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
     }
+    //endregion
 
+    //region Private methods
     private fun setupBindings() {
 
         viewModel.loginFormState.observe(viewLifecycleOwner) {
@@ -101,7 +105,7 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
         viewModel.loginError.observe(viewLifecycleOwner) { error ->
 
             if (error == null) {
-                launchActivity(MainActivity::class.java)
+                launchActivity(MainActivity::class.java, true)
             } else {
 
                 hideLoading()

@@ -19,6 +19,7 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
 
     //region Protected properties
     override val statusBarStyle = StatusBarStyle.SECONDARY
+    override val hasOptionsMenu = true
     //endregion
 
     //region Private properties
@@ -26,17 +27,11 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
     //endregion
 
     //region Lifecycle methods
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        setHasOptionsMenu(true)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeUI()
+
+        toolbar = binding.toolbar
+        initializeUi()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -103,8 +98,9 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
     }
     //endregion
 
-    //region Private methods
-    private fun initializeUI() {
+    //region Protected methods
+    override fun initializeUi() {
+        super.initializeUi()
 
         val application = activity?.application
         viewModel = ViewModelProvider(
@@ -120,7 +116,9 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
     }
+    //endregion
 
+    //region Protected methods
     private fun setupBindings() {
 
         viewModel.settingsForm.observe(viewLifecycleOwner) {

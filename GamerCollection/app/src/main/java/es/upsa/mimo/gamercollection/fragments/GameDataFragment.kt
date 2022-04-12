@@ -23,6 +23,7 @@ class GameDataFragment(
 
     //region Protected properties
     override val statusBarStyle = StatusBarStyle.SECONDARY
+    override val hasOptionsMenu = false
     //endregion
 
     //region Private properties
@@ -32,7 +33,7 @@ class GameDataFragment(
     //region Lifecycle methods
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeUI()
+        initializeUi()
     }
     //endregion
 
@@ -142,8 +143,9 @@ class GameDataFragment(
     }
     //endregion
 
-    //region Private methods
-    private fun initializeUI() {
+    //region Protected methods
+    override fun initializeUi() {
+        super.initializeUi()
 
         setupBindings()
 
@@ -193,7 +195,9 @@ class GameDataFragment(
         showData(game)
         setEdition(enabled)
     }
+    //endregion
 
+    //region Private methods
     private fun setupBindings() {
 
         viewModel.gameDataLoading.observe(viewLifecycleOwner) { isLoading ->

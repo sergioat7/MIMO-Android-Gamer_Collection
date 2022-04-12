@@ -56,7 +56,9 @@ class LandingActivity : BaseActivity() {
     private fun setupBindings() {
 
         viewModel.landingClassToStart.observe(this) { cls: Class<*>? ->
+
             val intent = Intent(this, cls)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
     }

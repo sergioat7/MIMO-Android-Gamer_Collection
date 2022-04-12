@@ -2,12 +2,13 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
@@ -16,9 +17,9 @@ import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.DialogGamesBinding
 import es.upsa.mimo.gamercollection.databinding.FragmentSagaDetailBinding
 import es.upsa.mimo.gamercollection.extensions.getValue
+import es.upsa.mimo.gamercollection.extensions.isDarkMode
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
-import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.SagaDetailViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.SagaDetailViewModel
@@ -27,9 +28,11 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
 
     //region Protected properties
     override val statusBarStyle = StatusBarStyle.SECONDARY
+    override val hasOptionsMenu = true
     //endregion
 
     //region Private properties
+    private val args: SagaDetailFragmentArgs by navArgs()
     private lateinit var viewModel: SagaDetailViewModel
     private var menu: Menu? = null
     private var sagaGames: List<GameResponse> = arrayListOf()
@@ -38,17 +41,11 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     //endregion
 
     //region Lifecycle methods
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        setHasOptionsMenu(true)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeUI()
+
+        toolbar = binding.toolbar
+        initializeUi()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -92,6 +89,16 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.findViewById<BottomNavigationView>(R.id.nav_view)?.visibility = View.GONE
+    }
+
+    override fun onPause() {
+        super.onPause()
+        activity?.findViewById<BottomNavigationView>(R.id.nav_view)?.visibility = View.VISIBLE
     }
     //endregion
 
@@ -153,20 +160,20 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     }
     //endregion
 
-    //region Private methods
-    private fun initializeUI() {
+    //region Protected methods
+    override fun initializeUi() {
+        super.initializeUi()
 
-        val application = activity?.application
-        val sagaId = this.arguments?.getInt(Constants.SAGA_ID)
         viewModel = ViewModelProvider(
             this,
-            SagaDetailViewModelFactory(application, sagaId)
+            SagaDetailViewModelFactory(activity?.application, args.sagaId)
         )[SagaDetailViewModel::class.java]
         setupBindings()
 
         binding.addGamesEnabled = viewModel.saga.value != null
 
         binding.fragment = this
+        binding.isDarkMode = context.isDarkMode()
     }
 
     private fun setupBindings() {
@@ -210,7 +217,9 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
             activity?.finish()
         }
     }
+    //endregion
 
+    //region Private methods
     private fun showData(saga: SagaResponse?) {
 
         saga?.let {
