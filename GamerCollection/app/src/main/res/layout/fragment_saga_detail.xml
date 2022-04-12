@@ -61,8 +61,11 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:menu="@menu/saga_toolbar_menu"
                 app:navigationIcon="@{isDarkMode ? @drawable/ic_arrow_back_black : @drawable/ic_arrow_back_white}"
                 app:title="@{@string/saga_detail}"
+                tools:title="@string/settings"
+                style="@style/Widget.GamerCollection.Toolbar"
                 />
 
             <include

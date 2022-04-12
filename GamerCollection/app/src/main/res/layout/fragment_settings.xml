@@ -45,7 +45,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:menu="@menu/settings_toolbar_menu"
                 app:title="@{@string/settings}"
+                tools:title="@string/settings"
+                style="@style/Widget.GamerCollection.Toolbar"
                 />
 
             <ScrollView

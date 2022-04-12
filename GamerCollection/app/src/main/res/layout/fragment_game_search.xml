@@ -54,7 +54,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:menu="@menu/game_search_toolbar_menu"
                 app:title="@{@plurals/games_number_title(viewModel.gamesCount, viewModel.gamesCount)}"
+                tools:title="120 games"
+                style="@style/Widget.GamerCollection.Toolbar"
                 />
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
