@@ -125,19 +125,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     }
     //endregion
 
-    //region Public methods
-    fun buttonClicked(it: View) {
-
-        val newState = when (it) {
-            binding.buttonPending.root -> if (it.isSelected) null else State.PENDING_STATE
-            binding.buttonInProgress.root -> if (it.isSelected) null else State.IN_PROGRESS_STATE
-            binding.buttonFinished.root -> if (it.isSelected) null else State.FINISHED_STATE
-            else -> null
-        }
-        viewModel.setState(newState)
-    }
-    //endregion
-
     //region Protected methods
     override fun initializeUi() {
         super.initializeUi()
@@ -187,7 +174,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
         viewModel.gamesLoading.observe(viewLifecycleOwner) { isLoading ->
 
-            enableStateButtons(!isLoading)
             if (isLoading) {
                 showLoading()
             } else {
@@ -216,22 +202,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             if (gamesToNotify.isNotEmpty()) launchNotification(gamesToNotify)
         }
 
-        viewModel.gamesCount.observe(viewLifecycleOwner) {
-            setGamesCount(it)
-        }
-
         viewModel.gameDeleted.observe(viewLifecycleOwner) { position ->
             position?.let {
                 gamesAdapter.notifyItemRemoved(position)
-            }
-        }
-
-        viewModel.state.observe(viewLifecycleOwner) {
-
-            binding.apply {
-                buttonPending.root.isSelected = it == State.PENDING_STATE
-                buttonInProgress.root.isSelected = it == State.IN_PROGRESS_STATE
-                buttonFinished.root.isSelected = it == State.FINISHED_STATE
             }
         }
 
@@ -514,30 +487,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 viewModel.setNotificationLaunched(notification.key, true)
             }
             if (notifications.isNotEmpty()) notify(0, summaryNotification)
-        }
-    }
-
-    private fun setGamesCount(games: List<GameResponse>) {
-
-        val filteredGames = games.mapNotNull { it.state }
-        val pendingGamesCount = filteredGames.filter { it == State.PENDING_STATE }.size
-        val inProgressGamesCount = filteredGames.filter { it == State.IN_PROGRESS_STATE }.size
-        val finishedGamesCount = filteredGames.filter { it == State.FINISHED_STATE }.size
-
-        with(binding) {
-            buttonPending.subtitle = "$pendingGamesCount"
-            buttonInProgress.subtitle = "$inProgressGamesCount"
-            buttonFinished.subtitle = "$finishedGamesCount"
-        }
-    }
-
-    private fun enableStateButtons(enable: Boolean) {
-        with(binding) {
-
-            swipeRefreshLayout.isRefreshing = !enable
-            buttonPending.root.isEnabled = enable
-            buttonInProgress.root.isEnabled = enable
-            buttonFinished.root.isEnabled = enable
         }
     }
 

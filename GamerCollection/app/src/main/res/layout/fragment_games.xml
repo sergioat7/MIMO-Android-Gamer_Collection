@@ -46,59 +46,6 @@
                 style="@style/Widget.GamerCollection.Toolbar"
                 />
 
-            <LinearLayout
-                android:id="@+id/linear_layout_state_buttons"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@android:color/black"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="@dimen/margin_4dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar"
-                >
-
-                <include
-                    android:id="@+id/button_pending"
-                    layout="@layout/state_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="@{fragment::buttonClicked}"
-                    app:background="@{@drawable/state_button}"
-                    app:lineColor="@{@drawable/pending_state_button_bottom_line}"
-                    app:title="@{@string/games_filter_button_title_pending}"
-                    />
-
-                <include
-                    android:id="@+id/button_in_progress"
-                    layout="@layout/state_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_12dp"
-                    android:layout_marginEnd="@dimen/margin_12dp"
-                    android:layout_weight="1"
-                    android:onClick="@{fragment::buttonClicked}"
-                    app:background="@{@drawable/state_button}"
-                    app:lineColor="@{@drawable/in_progress_state_button_bottom_line}"
-                    app:title="@{@string/games_filter_button_title_in_progress}"
-                    />
-
-                <include
-                    android:id="@+id/button_finished"
-                    layout="@layout/state_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="@{fragment::buttonClicked}"
-                    app:background="@{@drawable/state_button}"
-                    app:lineColor="@{@drawable/finished_state_button_bottom_line}"
-                    app:title="@{@string/games_filter_button_title_finished}"
-                    />
-
-            </LinearLayout>
-
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_refresh_layout"
                 android:layout_width="0dp"
@@ -106,7 +53,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linear_layout_state_buttons"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"
                 >
 
                 <androidx.recyclerview.widget.RecyclerView

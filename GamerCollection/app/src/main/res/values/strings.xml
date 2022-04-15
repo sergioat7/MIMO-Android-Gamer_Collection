@@ -31,9 +31,6 @@
 
     // Games
     <string name="games">My Games</string>
-    <string name="games_filter_button_title_pending">Pending</string>
-    <string name="games_filter_button_title_in_progress">In Progress</string>
-    <string name="games_filter_button_title_finished">Finished</string>
     <plurals name="games_number_title">
         <item quantity="one">%s game</item>
         <item quantity="other">%s games</item>

@@ -30,7 +30,6 @@ class GamesViewModel @Inject constructor(
     private val _games = MutableLiveData<List<GameResponse>>()
     private val _gamesCount = MutableLiveData<List<GameResponse>>()
     private val _gameDeleted = MutableLiveData<Int?>()
-    private var _state = MutableLiveData<String?>(null)
     private var _filters = MutableLiveData<FilterModel?>(null)
     private var sortParam: String = SharedPreferencesHelper.sortParam
     private var isSortOrderAscending = SharedPreferencesHelper.isSortOrderAscending
@@ -51,7 +50,6 @@ class GamesViewModel @Inject constructor(
     val games: LiveData<List<GameResponse>> = _games
     val gamesCount: LiveData<List<GameResponse>> = _gamesCount
     val gameDeleted: LiveData<Int?> = _gameDeleted
-    val state: LiveData<String?> = _state
     val filters: LiveData<FilterModel?> = _filters
     //endregion
 
@@ -80,13 +78,7 @@ class GamesViewModel @Inject constructor(
             isSortOrderAscending
         )
         _originalGames.value = games
-        if (!_state.value.isNullOrBlank()) {
-            _games.value = _originalGames.value?.filter { game ->
-                game.state == _state.value
-            } ?: listOf()
-        } else {
-            _games.value = games
-        }
+        _games.value = games
         _gamesCount.value = games
     }
 
@@ -164,18 +156,6 @@ class GamesViewModel @Inject constructor(
         fetchGames()
     }
 
-    fun setState(newState: String?) {
-
-        _state.value = newState
-        if (!newState.isNullOrBlank()) {
-            _games.value = _originalGames.value?.filter { game ->
-                game.state == newState
-            } ?: listOf()
-        } else {
-            _games.value = _originalGames.value
-        }
-    }
-
     fun applyFilters(newFilters: FilterModel?) {
 
         _filters.value = newFilters
@@ -186,10 +166,9 @@ class GamesViewModel @Inject constructor(
     //region Private methods
     private fun resetProperties() {
 
-        _state.value = null
         _filters.value = null
         sortParam = SharedPreferencesHelper.sortParam
-        isSortOrderAscending = true
+        isSortOrderAscending = SharedPreferencesHelper.isSortOrderAscending
         query = null
     }
     //endregion
