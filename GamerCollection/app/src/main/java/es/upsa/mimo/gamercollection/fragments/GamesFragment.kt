@@ -172,25 +172,12 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 this@GamesFragment
             )
             recyclerViewGames.apply {
-                layoutManager = LinearLayoutManager(requireContext())
+                layoutManager = LinearLayoutManager(
+                    requireContext(),
+                    LinearLayoutManager.HORIZONTAL,
+                    false
+                )
                 adapter = gamesAdapter
-                addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
-                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                        super.onScrollStateChanged(recyclerView, newState)
-
-                        val position =
-                            if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                                ScrollPosition.TOP
-                            } else if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                                ScrollPosition.END
-                            } else {
-                                ScrollPosition.MIDDLE
-                            }
-                        this@GamesFragment.viewModel.setPosition(position)
-                    }
-                })
-                ItemTouchHelper(SwipeController()).attachToRecyclerView(this)
             }
 
             fragment = this@GamesFragment
