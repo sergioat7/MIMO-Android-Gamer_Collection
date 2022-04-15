@@ -16,7 +16,6 @@ import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
-import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
@@ -33,7 +32,6 @@ class GamesViewModel @Inject constructor(
     private val _gameDeleted = MutableLiveData<Int?>()
     private var _state = MutableLiveData<String?>(null)
     private var _filters = MutableLiveData<FilterModel?>(null)
-    private var _scrollPosition = MutableLiveData(ScrollPosition.TOP)
     private var sortParam: String = SharedPreferencesHelper.sortParam
     private var isSortOrderAscending = SharedPreferencesHelper.isSortOrderAscending
     private var query: String? = null
@@ -55,7 +53,6 @@ class GamesViewModel @Inject constructor(
     val gameDeleted: LiveData<Int?> = _gameDeleted
     val state: LiveData<String?> = _state
     val filters: LiveData<FilterModel?> = _filters
-    val scrollPosition: LiveData<ScrollPosition> = _scrollPosition
     //endregion
 
     //region Public methods
@@ -83,7 +80,6 @@ class GamesViewModel @Inject constructor(
             isSortOrderAscending
         )
         _originalGames.value = games
-
         if (!_state.value.isNullOrBlank()) {
             _games.value = _originalGames.value?.filter { game ->
                 game.state == _state.value
@@ -91,10 +87,7 @@ class GamesViewModel @Inject constructor(
         } else {
             _games.value = games
         }
-
         _gamesCount.value = games
-
-        _scrollPosition.value = ScrollPosition.TOP
     }
 
     fun sortGames(context: Context, resources: Resources) {
@@ -187,10 +180,6 @@ class GamesViewModel @Inject constructor(
 
         _filters.value = newFilters
         fetchGames()
-    }
-
-    fun setPosition(newPosition: ScrollPosition) {
-        _scrollPosition.value = newPosition
     }
     //endregion
 

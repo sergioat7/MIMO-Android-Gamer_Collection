@@ -9,7 +9,10 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.SearchView
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -133,14 +136,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         }
         viewModel.setState(newState)
     }
-
-    fun goToStartEndList(view: View) {
-
-        when (view) {
-            binding.floatingActionButtonStartList -> viewModel.setPosition(ScrollPosition.TOP)
-            binding.floatingActionButtonEndList -> viewModel.setPosition(ScrollPosition.END)
-        }
-    }
     //endregion
 
     //region Protected methods
@@ -244,15 +239,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
             menu?.findItem(R.id.action_filter)?.isVisible = filters == null
             menu?.findItem(R.id.action_filter_fill)?.isVisible = filters != null
-        }
-
-        viewModel.scrollPosition.observe(viewLifecycleOwner) {
-            when (it) {
-
-                ScrollPosition.TOP -> binding.recyclerViewGames.scrollToPosition(0)
-                ScrollPosition.END -> binding.recyclerViewGames.scrollToPosition(gamesAdapter.itemCount - 1)
-                else -> Unit
-            }
         }
     }
 

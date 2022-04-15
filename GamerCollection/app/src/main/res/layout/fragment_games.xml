@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -23,19 +26,11 @@
 
     </data>
 
-    <FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragments.GamesFragment"
         >
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -124,34 +119,6 @@
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/floating_action_button_start_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_12dp"
-                android:layout_marginEnd="@dimen/margin_12dp"
-                android:onClick="@{fragment::goToStartEndList}"
-                android:visibility="@{viewModel.games.empty || viewModel.scrollPosition == ScrollPosition.TOP ? View.GONE : View.VISIBLE}"
-                app:layout_constraintEnd_toEndOf="@+id/swipe_refresh_layout"
-                app:layout_constraintTop_toTopOf="@+id/swipe_refresh_layout"
-                app:srcCompat="@drawable/ic_double_arrow_up"
-                style="@style/Widget.GamerCollection.FloatingActionButton.ListPosition"
-                />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/floating_action_button_end_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_12dp"
-                android:layout_marginBottom="@dimen/margin_12dp"
-                android:onClick="@{fragment::goToStartEndList}"
-                android:visibility="@{viewModel.games.empty || viewModel.scrollPosition == ScrollPosition.END ? View.GONE : View.VISIBLE}"
-                app:layout_constraintBottom_toBottomOf="@+id/swipe_refresh_layout"
-                app:layout_constraintEnd_toEndOf="@+id/swipe_refresh_layout"
-                app:srcCompat="@drawable/ic_double_arrow_down"
-                style="@style/Widget.GamerCollection.FloatingActionButton.ListPosition"
-                />
-
             <include
                 layout="@layout/content_no_results"
                 android:layout_width="0dp"
@@ -164,8 +131,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/linear_layout_state_buttons"
                 />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
