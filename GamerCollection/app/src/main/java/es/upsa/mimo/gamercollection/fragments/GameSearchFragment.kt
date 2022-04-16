@@ -1,13 +1,18 @@
 package es.upsa.mimo.gamercollection.fragments
 
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.RectF
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
@@ -20,6 +25,8 @@ import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.GameSearchViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameSearchViewModel
+import kotlin.math.max
+import kotlin.math.min
 
 class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemClickListener {
 
@@ -146,6 +153,7 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
                         )
                     }
                 })
+                ItemTouchHelper(SwipeController()).attachToRecyclerView(this)
             }
 
             fragment = this@GameSearchFragment
@@ -211,6 +219,96 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
         viewModel.query = query
         reset()
         requireActivity().hideSoftKeyboard()
+    }
+    //endregion
+
+    //region SwipeController
+    inner class SwipeController :
+        ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+
+        private val paint = Paint()
+
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ) = false
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+            val position = viewHolder.adapterPosition
+//            viewModel.addGame(position)//TODO: implement
+            gamesAdapter.notifyItemChanged(position)
+        }
+
+        override fun onChildDraw(
+            c: Canvas,
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            dX: Float,
+            dY: Float,
+            actionState: Int,
+            isCurrentlyActive: Boolean
+        ) {
+
+            var x = dX
+            if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+
+                val itemView = viewHolder.itemView
+                val context = recyclerView.context
+
+                val height = itemView.bottom - itemView.top
+                val width = height / 3
+                val maxX = itemView.width.toFloat() * 0.6F
+
+                paint.color = ContextCompat.getColor(context, R.color.colorFinished)
+                val icon = ContextCompat.getDrawable(context, R.drawable.ic_add_game)
+
+                when {
+                    dX < 0 -> {// Swiping to the left
+                        val background = RectF(
+                            itemView.right.toFloat() + dX,
+                            itemView.top.toFloat(),
+                            itemView.right.toFloat(),
+                            itemView.bottom.toFloat()
+                        )
+                        c.drawRect(background, paint)
+
+                        icon?.setBounds(
+                            itemView.right - 2 * width,
+                            itemView.top + width,
+                            itemView.right - width,
+                            itemView.bottom - width
+                        )
+                        icon?.draw(c)
+                        x = max(dX, -maxX)
+                    }
+                    dX > 0 -> {// Swiping to the right
+                        val background = RectF(
+                            itemView.left.toFloat(),
+                            itemView.top.toFloat(),
+                            dX,
+                            itemView.bottom.toFloat()
+                        )
+                        c.drawRect(background, paint)
+
+                        icon?.setBounds(
+                            itemView.left + width,
+                            itemView.top + width,
+                            itemView.left + 2 * width,
+                            itemView.bottom - width
+                        )
+                        icon?.draw(c)
+                        x = min(dX, maxX)
+                    }
+                    else -> {// view is unSwiped
+                        val background = RectF(0F, 0F, 0F, 0F)
+                        c.drawRect(background, paint)
+                    }
+                }
+            }
+            super.onChildDraw(c, recyclerView, viewHolder, x, dY, actionState, isCurrentlyActive)
+        }
     }
     //endregion
 }
