@@ -8,6 +8,7 @@ import android.widget.NumberPicker
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.getPickerParams
@@ -17,6 +18,7 @@ import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.utils.State
 import javax.inject.Inject
 
 class GamesViewModel @Inject constructor(
@@ -46,6 +48,27 @@ class GamesViewModel @Inject constructor(
     val gamesLoading: LiveData<Boolean> = _gamesLoading
     val gamesError: LiveData<ErrorResponse> = _gamesError
     val games: LiveData<List<GameResponse>> = _games
+    val inProgressGames: LiveData<List<GameResponse>> = _games.map {
+        it.filter { game -> game.state == State.IN_PROGRESS }
+    }
+    val inProgressGamesVisible: LiveData<Boolean> = inProgressGames.map {
+        !((it.isEmpty() && query?.isNotBlank() == true) || _games.value?.isEmpty() == true)
+    }
+    val pendingGames: LiveData<List<GameResponse>> = _games.map {
+        it.filter { game -> game.state == State.PENDING }
+    }
+    val pendingGamesVisible: LiveData<Boolean> = pendingGames.map {
+        it.isNotEmpty()
+    }
+    val finishedGames: LiveData<List<GameResponse>> = _games.map {
+        it.filter { game -> game.state != State.IN_PROGRESS && game.state != State.PENDING }
+    }
+    val finishedGamesVisible: LiveData<Boolean> = finishedGames.map {
+        it.isNotEmpty()
+    }
+    val noResultsVisible: LiveData<Boolean> = _games.map {
+        it.isEmpty()
+    }
     val gamesCount: LiveData<List<GameResponse>> = _gamesCount
     val gameDeleted: LiveData<Int?> = _gameDeleted
     val filters: LiveData<FilterModel?> = _filters

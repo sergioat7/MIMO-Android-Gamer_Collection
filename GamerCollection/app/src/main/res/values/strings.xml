@@ -36,6 +36,8 @@
         <item quantity="other">%s games</item>
     </plurals>
     <string name="new_game">New</string>
+    <string name="pending">Pending</string>
+    <string name="finished">Finished</string>
 
     // Game search
     <string name="game_search">Search</string>

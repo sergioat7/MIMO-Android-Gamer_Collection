@@ -28,10 +28,7 @@ import es.upsa.mimo.gamercollection.databinding.FragmentGamesBinding
 import es.upsa.mimo.gamercollection.extensions.*
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
-import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.Notifications
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
-import es.upsa.mimo.gamercollection.utils.StatusBarStyle
+import es.upsa.mimo.gamercollection.utils.*
 import es.upsa.mimo.gamercollection.viewmodelfactories.GamesViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GamesViewModel
 import java.util.*
@@ -45,6 +42,8 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
     //region Private properties
     private lateinit var viewModel: GamesViewModel
+    private lateinit var inProgressGamesAdapter: GamesAdapter
+    private lateinit var pendingGamesAdapter: GamesAdapter
     private lateinit var gamesAdapter: GamesAdapter
     private var menu: Menu? = null
     //endregion
@@ -131,22 +130,46 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         )[GamesViewModel::class.java]
         setupBindings()
 
-        gamesAdapter = GamesAdapter(
-            this@GamesFragment.viewModel.games.value ?: listOf(),
+        inProgressGamesAdapter = GamesAdapter(
+            viewModel.inProgressGames.value
+                ?: listOf(),
             null,
-            this@GamesFragment
+            this
         )
-        binding.recyclerViewGames.apply {
-            layoutManager = LinearLayoutManager(
-                requireContext(),
-                LinearLayoutManager.HORIZONTAL,
-                false
-            )
-            adapter = gamesAdapter
+        pendingGamesAdapter = GamesAdapter(
+            viewModel.pendingGames.value
+                ?: listOf(),
+            null,
+            this
+        )
+        gamesAdapter = GamesAdapter(
+            viewModel.finishedGames.value ?: mutableListOf(),
+            null,
+            this
+        )
+
+        with(binding) {
+
+            for (recyclerView in listOf(
+                recyclerViewInProgressGames,
+                recyclerViewPendingGames,
+                recyclerViewGames
+            )) {
+                recyclerView.layoutManager = LinearLayoutManager(
+                    requireContext(),
+                    LinearLayoutManager.HORIZONTAL,
+                    false
+                )
+            }
+
+            recyclerViewInProgressGames.adapter = inProgressGamesAdapter
+            recyclerViewPendingGames.adapter = pendingGamesAdapter
+            recyclerViewGames.adapter = gamesAdapter
+
+            fragment = this@GamesFragment
+            viewModel = this@GamesFragment.viewModel
+            lifecycleOwner = this@GamesFragment
         }
-        binding.fragment = this
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = this
         setupSearchView()
     }
     //endregion
