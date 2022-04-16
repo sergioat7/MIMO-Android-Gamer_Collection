@@ -104,9 +104,9 @@ object Constants {
 }
 
 object State {
-    const val PENDING_STATE = "PENDING"
-    const val IN_PROGRESS_STATE = "IN_PROGRESS"
-    const val FINISHED_STATE = "FINISHED"
+    const val PENDING = "PENDING"
+    const val IN_PROGRESS = "IN_PROGRESS"
+    const val FINISHED = "FINISHED"
 }
 
 object Notifications {

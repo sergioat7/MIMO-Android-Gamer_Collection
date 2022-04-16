@@ -55,9 +55,9 @@ class GameDataFragment(
         )
 
         game?.state?.let {
-            binding.buttonPending.root.isSelected = it == State.PENDING_STATE
-            binding.buttonInProgress.root.isSelected = it == State.IN_PROGRESS_STATE
-            binding.buttonFinished.root.isSelected = it == State.FINISHED_STATE
+            binding.buttonPending.root.isSelected = it == State.PENDING
+            binding.buttonInProgress.root.isSelected = it == State.IN_PROGRESS
+            binding.buttonFinished.root.isSelected = it == State.FINISHED
         }
 
         binding.dropdownTextInputLayoutGenres.setValue(
@@ -98,9 +98,9 @@ class GameDataFragment(
             Constants.GENRES.firstOrNull { it.name == binding.dropdownTextInputLayoutGenres.getValue() }?.id
         val state =
             when {
-                binding.buttonPending.root.isSelected -> State.PENDING_STATE
-                binding.buttonInProgress.root.isSelected -> State.IN_PROGRESS_STATE
-                binding.buttonFinished.root.isSelected -> State.FINISHED_STATE
+                binding.buttonPending.root.isSelected -> State.PENDING
+                binding.buttonInProgress.root.isSelected -> State.IN_PROGRESS
+                binding.buttonFinished.root.isSelected -> State.FINISHED
                 else -> null
             }
         val purchaseDate = binding.textInputLayoutPurchaseDate.getValue().toDate(

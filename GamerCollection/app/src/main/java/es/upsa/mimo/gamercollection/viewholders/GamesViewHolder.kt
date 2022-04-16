@@ -19,19 +19,19 @@ class GamesViewHolder(
 
         val color = game.state?.let {
             when (it) {
-                State.PENDING_STATE ->
+                State.PENDING ->
                     ContextCompat.getColor(
                         binding.root.context,
                         R.color.colorPending
                     )
 
-                State.IN_PROGRESS_STATE ->
+                State.IN_PROGRESS ->
                     ContextCompat.getColor(
                         binding.root.context,
                         R.color.colorInProgress
                     )
 
-                State.FINISHED_STATE ->
+                State.FINISHED ->
                     ContextCompat.getColor(
                         binding.root.context,
                         R.color.colorFinished
