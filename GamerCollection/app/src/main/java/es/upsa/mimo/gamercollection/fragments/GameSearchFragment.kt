@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -191,25 +191,21 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
     private fun setupSearchView(menu: Menu) {
 
         val menuItem = menu.findItem(R.id.action_search_rawg)
-        searchView = menuItem.actionView as SearchView
-        searchView?.let { searchView ->
+        this.searchView = menuItem.actionView as SearchView
+        this.searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
-            searchView.queryHint = resources.getString(R.string.search_games)
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String): Boolean {
+                return true
+            }
 
-                override fun onQueryTextChange(newText: String): Boolean {
-                    return true
-                }
+            override fun onQueryTextSubmit(query: String): Boolean {
 
-                override fun onQueryTextSubmit(query: String): Boolean {
-
-                    searchGames(query)
-                    menuItem.collapseActionView()
-                    return true
-                }
-            })
-        }
-        setupSearchView(viewModel.query ?: Constants.EMPTY_VALUE)
+                searchGames(query)
+                menuItem.collapseActionView()
+                return true
+            }
+        })
+        setupSearchView(R.color.textSecondary, Constants.EMPTY_VALUE, R.string.search_games)
     }
 
     private fun searchGames(query: String) {

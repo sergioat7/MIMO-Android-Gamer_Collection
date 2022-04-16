@@ -13,7 +13,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -34,7 +34,10 @@ import es.upsa.mimo.gamercollection.databinding.FragmentGamesBinding
 import es.upsa.mimo.gamercollection.extensions.*
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
-import es.upsa.mimo.gamercollection.utils.*
+import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.Notifications
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.GamesViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GamesViewModel
 import java.util.*
@@ -78,7 +81,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         this.menu = menu
         menu.clear()
         inflater.inflate(R.menu.games_toolbar_menu, menu)
-        setupSearchView(menu)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
@@ -166,6 +168,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             viewModel = this@GamesFragment.viewModel
             lifecycleOwner = this@GamesFragment
         }
+        setupSearchView()
     }
     //endregion
 
@@ -490,55 +493,28 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         }
     }
 
-    private fun setupSearchView(menu: Menu) {
+    private fun setupSearchView() {
 
-        val menuItem = menu.findItem(R.id.action_search)
-        searchView = menuItem.actionView as SearchView
-        searchView?.let { searchView ->
+        this.searchView = binding.searchViewGames
+        this.searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
-            searchView.queryHint = resources.getString(R.string.search_games)
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String): Boolean {
 
-                override fun onQueryTextChange(newText: String): Boolean {
-
-                    viewModel.searchGames(newText)
-                    return true
+                viewModel.searchGames(newText)
+                binding.apply {
+                    recyclerViewGames.scrollToPosition(0)
                 }
-
-                override fun onQueryTextSubmit(query: String): Boolean {
-
-                    menuItem.collapseActionView()
-                    requireActivity().hideSoftKeyboard()
-                    return true
-                }
-            })
-        }
-        menuItem.setOnActionExpandListener(
-            object : MenuItem.OnActionExpandListener {
-                override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
-                    menu.let {
-                        it.findItem(R.id.action_synchronize).isVisible = false
-                        it.findItem(R.id.action_filter).isVisible = false
-                        it.findItem(R.id.action_filter_fill).isVisible = false
-                        it.findItem(R.id.action_sort).isVisible = false
-                    }
-                    return true
-                }
-
-                override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
-                    menu.let {
-                        it.findItem(R.id.action_synchronize).isVisible = true
-                        it.findItem(R.id.action_filter).isVisible = viewModel.filters.value == null
-                        it.findItem(R.id.action_filter_fill).isVisible =
-                            viewModel.filters.value != null
-                        it.findItem(R.id.action_sort).isVisible = true
-                    }
-                    return true
-                }
-
+                return true
             }
-        )
-        setupSearchView(Constants.EMPTY_VALUE)
+
+            override fun onQueryTextSubmit(query: String): Boolean {
+
+                requireActivity().hideSoftKeyboard()
+                searchView?.clearFocus()
+                return true
+            }
+        })
+        this.setupSearchView(R.color.colorSecondary, Constants.EMPTY_VALUE, R.string.search_games)
     }
     //endregion
 

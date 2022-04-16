@@ -6,7 +6,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -226,26 +226,22 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
     private fun setupSearchView(menu: Menu) {
 
         val menuItem = menu.findItem(R.id.action_search_sagas)
-        searchView = menuItem.actionView as SearchView
-        searchView?.let { searchView ->
+        this.searchView = menuItem.actionView as SearchView
+        this.searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
-            searchView.queryHint = resources.getString(R.string.search_sagas)
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String): Boolean {
 
-                override fun onQueryTextChange(newText: String): Boolean {
+                viewModel.searchSagas(newText)
+                return true
+            }
 
-                    viewModel.searchSagas(newText)
-                    return true
-                }
+            override fun onQueryTextSubmit(query: String): Boolean {
 
-                override fun onQueryTextSubmit(query: String): Boolean {
-
-                    menuItem.collapseActionView()
-                    requireActivity().hideSoftKeyboard()
-                    return true
-                }
-            })
-        }
+                menuItem.collapseActionView()
+                requireActivity().hideSoftKeyboard()
+                return true
+            }
+        })
         menuItem.setOnActionExpandListener(
             object : MenuItem.OnActionExpandListener {
                 override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
@@ -266,7 +262,7 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
 
             }
         )
-        setupSearchView(Constants.EMPTY_VALUE)
+        setupSearchView(R.color.textSecondary, Constants.EMPTY_VALUE, R.string.search_sagas)
     }
     //endregion
 }
