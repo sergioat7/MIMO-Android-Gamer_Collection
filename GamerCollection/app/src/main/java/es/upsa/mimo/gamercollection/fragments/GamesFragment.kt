@@ -138,36 +138,22 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         )[GamesViewModel::class.java]
         setupBindings()
 
-        with(binding) {
-
-            swipeRefreshLayout.apply {
-                isEnabled = this@GamesFragment.viewModel.swipeRefresh
-                setColorSchemeResources(R.color.colorPrimary)
-                setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
-                setOnRefreshListener {
-                    this@GamesFragment.viewModel.loadGames()
-                    searchView?.setQuery(Constants.EMPTY_VALUE, false)
-                }
-            }
-
-            gamesAdapter = GamesAdapter(
-                this@GamesFragment.viewModel.games.value ?: listOf(),
-                null,
-                this@GamesFragment
+        gamesAdapter = GamesAdapter(
+            this@GamesFragment.viewModel.games.value ?: listOf(),
+            null,
+            this@GamesFragment
+        )
+        binding.recyclerViewGames.apply {
+            layoutManager = LinearLayoutManager(
+                requireContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false
             )
-            recyclerViewGames.apply {
-                layoutManager = LinearLayoutManager(
-                    requireContext(),
-                    LinearLayoutManager.HORIZONTAL,
-                    false
-                )
-                adapter = gamesAdapter
-            }
-
-            fragment = this@GamesFragment
-            viewModel = this@GamesFragment.viewModel
-            lifecycleOwner = this@GamesFragment
+            adapter = gamesAdapter
         }
+        binding.fragment = this
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
         setupSearchView()
     }
     //endregion

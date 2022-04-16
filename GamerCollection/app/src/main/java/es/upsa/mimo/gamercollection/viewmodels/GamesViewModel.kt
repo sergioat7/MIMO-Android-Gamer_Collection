@@ -43,8 +43,6 @@ class GamesViewModel @Inject constructor(
         get() = SharedPreferencesHelper.dateFormatToShow
     val filterDateFormat: String
         get() = SharedPreferencesHelper.filterDateFormat
-    val swipeRefresh: Boolean
-        get() = SharedPreferencesHelper.swipeRefresh
     val gamesLoading: LiveData<Boolean> = _gamesLoading
     val gamesError: LiveData<ErrorResponse> = _gamesError
     val games: LiveData<List<GameResponse>> = _games
@@ -54,21 +52,6 @@ class GamesViewModel @Inject constructor(
     //endregion
 
     //region Public methods
-    fun loadGames() {
-
-        _gamesLoading.value = true
-        gameRepository.loadGames({
-
-            resetProperties()
-            fetchGames()
-            _gamesLoading.value = false
-        }, {
-
-            _gamesLoading.value = false
-            _gamesError.value = it
-        })
-    }
-
     fun fetchGames() {
 
         val games = gameRepository.getGamesDatabase(

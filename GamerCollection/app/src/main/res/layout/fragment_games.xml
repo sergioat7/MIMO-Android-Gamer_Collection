@@ -75,25 +75,17 @@
                     app:layout_constraintTop_toTopOf="parent"
                     />
 
-                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                    android:id="@+id/swipe_refresh_layout"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_games"
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:layout_height="@dimen/size_200dp"
+                    app:games="@{viewModel.games}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/search_view_games"
-                    >
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_view_games"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        app:games="@{viewModel.games}"
-                        tools:listitem="@layout/item_game"
-                        />
-
-                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                    tools:listitem="@layout/item_game"
+                    />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
