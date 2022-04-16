@@ -8,7 +8,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
@@ -130,7 +129,6 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
                 this@GameSearchFragment
             )
             recyclerViewGames.apply {
-                layoutManager = LinearLayoutManager(requireContext())
                 adapter = gamesAdapter
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
