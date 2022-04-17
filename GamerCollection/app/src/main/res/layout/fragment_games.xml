@@ -85,7 +85,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/search_view_games"
-                    tools:listitem="@layout/item_game"
+                    tools:listitem="@layout/item_rawg_game"
                     />
 
                 <View
@@ -129,7 +129,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_pending_games"
-                    tools:listitem="@layout/item_game"
+                    tools:listitem="@layout/item_rawg_game"
                     />
 
                 <View
@@ -173,7 +173,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_finished_games"
-                    tools:listitem="@layout/item_game"
+                    tools:listitem="@layout/item_rawg_game"
                     />
 
                 <include

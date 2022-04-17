@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.base.BaseModel
-import es.upsa.mimo.gamercollection.databinding.ItemGameBinding
+import es.upsa.mimo.gamercollection.databinding.ItemRawgGameBinding
 import es.upsa.mimo.gamercollection.databinding.ItemSagaBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
@@ -32,8 +32,8 @@ class SagasAdapter(
                     false
                 )
             )
-            R.layout.item_game -> GamesViewHolder(
-                ItemGameBinding.inflate(
+            R.layout.item_rawg_game -> GamesViewHolder(
+                ItemRawgGameBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
@@ -47,7 +47,7 @@ class SagasAdapter(
 
         return when (items[position]) {
             is SagaResponse -> R.layout.item_saga
-            is GameResponse -> R.layout.item_game
+            is GameResponse -> R.layout.item_rawg_game
             else -> throw Throwable("Unsupported type")
         }
     }

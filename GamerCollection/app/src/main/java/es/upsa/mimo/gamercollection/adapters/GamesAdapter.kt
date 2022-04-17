@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.databinding.ItemGameBinding
+import es.upsa.mimo.gamercollection.databinding.ItemRawgGameBinding
 import es.upsa.mimo.gamercollection.databinding.ItemLoadMoreItemsBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.viewholders.GamesViewHolder
@@ -21,7 +21,7 @@ class GamesAdapter(
     override fun getItemViewType(position: Int): Int {
 
         return if (games[position].id > 0) {
-            R.layout.item_game
+            R.layout.item_rawg_game
         } else {
             R.layout.item_load_more_items
         }
@@ -29,9 +29,9 @@ class GamesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        return if (viewType == R.layout.item_game) {
+        return if (viewType == R.layout.item_rawg_game) {
             GamesViewHolder(
-                ItemGameBinding.inflate(
+                ItemRawgGameBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
