@@ -143,7 +143,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             this
         )
         gamesAdapter = GamesAdapter(
-            viewModel.finishedGames.value ?: mutableListOf(),
+            viewModel.finishedGames.value ?: listOf(),
             null,
             this
         )

@@ -76,7 +76,7 @@
                     android:layout_height="0dp"
                     app:newGames="@{viewModel.games}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_rawg_game"
+                    tools:listitem="@layout/item_game_vertical_display"
                     />
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
