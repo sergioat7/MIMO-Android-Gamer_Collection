@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.databinding.ItemGameBinding
 import es.upsa.mimo.gamercollection.databinding.ItemGameVerticalDisplayBinding
 import es.upsa.mimo.gamercollection.databinding.ItemLoadMoreItemsBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
@@ -13,6 +14,7 @@ import es.upsa.mimo.gamercollection.viewholders.LoadMoreItemsViewHolder
 
 class GamesAdapter(
     private var games: List<GameResponse>,
+    private val isVerticalDisplay: Boolean,
     private val sagaId: Int?,
     private var onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
@@ -22,7 +24,8 @@ class GamesAdapter(
 
         val game = games[position]
         return when {
-            game.id > 0 -> R.layout.item_game_vertical_display
+            isVerticalDisplay && game.id > 0 -> R.layout.item_game_vertical_display
+            !isVerticalDisplay && game.id > 0 -> R.layout.item_game
             else -> R.layout.item_load_more_items
         }
     }
@@ -33,6 +36,15 @@ class GamesAdapter(
             R.layout.item_game_vertical_display -> {
                 GamesViewHolder(
                     ItemGameVerticalDisplayBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
+            R.layout.item_game -> {
+                GamesViewHolder(
+                    ItemGameBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false

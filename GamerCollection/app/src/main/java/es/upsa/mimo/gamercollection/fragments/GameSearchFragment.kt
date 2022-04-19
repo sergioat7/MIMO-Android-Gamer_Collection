@@ -132,6 +132,7 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
 
             gamesAdapter = GamesAdapter(
                 this@GameSearchFragment.viewModel.games.value ?: listOf(),
+                true,
                 null,
                 this@GameSearchFragment
             )

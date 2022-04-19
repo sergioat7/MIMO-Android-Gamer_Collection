@@ -6,6 +6,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
+import es.upsa.mimo.gamercollection.databinding.ItemGameBinding
 import es.upsa.mimo.gamercollection.databinding.ItemGameVerticalDisplayBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
@@ -69,6 +70,21 @@ class GamesViewHolder(
                         }
                     }
                 }
+
+                is ItemGameBinding -> {
+
+                    this.game = game
+                    this.platform = Constants.PLATFORMS.firstOrNull { it.id == game.platform }
+
+                    this.root.setOnClickListener {
+                        if (isSubItem) {
+                            onItemClickListener.onSubItemClick(game.id)
+                        } else {
+                            onItemClickListener.onItemClick(game.id)
+                        }
+                    }
+                }
+
                 else -> Unit
             }
         }

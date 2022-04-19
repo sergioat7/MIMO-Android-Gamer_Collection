@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Sergio Aragonés. All rights reserved.
+  ~ Created by Sergio Aragonés on 17/4/2022
+  -->
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <variable
+            name="game"
+            type="es.upsa.mimo.gamercollection.models.responses.GameResponse"
+            />
+
+        <variable
+            name="platform"
+            type="es.upsa.mimo.gamercollection.models.PlatformModel"
+            />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_12dp"
+        android:layout_marginEnd="@dimen/margin_12dp"
+        >
+
+        <es.upsa.mimo.gamercollection.customviews.ImageViewWithLoading
+            android:id="@+id/imageView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            center="@{true}"
+            placeholder="@{@drawable/ic_default_game_cover}"
+            radius="@{@dimen/radius_15dp}"
+            src="@{game.imageUrl}"
+            tools:srcCompat="@tools:sample/avatars"
+            />
+
+        <TextView
+            android:id="@+id/text_view_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:text="@{game.name}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            tools:text="Fifa 20"
+            style="@style/Widget.GamerCollection.TextView.Title.GameItem"
+            />
+
+        <TextView
+            android:id="@+id/text_view_platform"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:text="@{platform.name}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_title"
+            tools:text="Playstation 4"
+            style="@style/Widget.GamerCollection.TextView.Description.GameItem"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -133,17 +133,20 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         inProgressGamesAdapter = GamesAdapter(
             viewModel.inProgressGames.value
                 ?: listOf(),
+            false,
             null,
             this
         )
         pendingGamesAdapter = GamesAdapter(
             viewModel.pendingGames.value
                 ?: listOf(),
+            false,
             null,
             this
         )
         gamesAdapter = GamesAdapter(
             viewModel.finishedGames.value ?: listOf(),
+            false,
             null,
             this
         )
