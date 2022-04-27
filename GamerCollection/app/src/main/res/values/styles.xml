@@ -39,7 +39,7 @@
     </style>
 
     <style name="Widget.GamerCollection.TextView.Title.GameItem">
-        <item name="android:maxLines">3</item>
+        <item name="android:maxLines">2</item>
         <item name="android:textSize">@dimen/text_size_24sp</item>
     </style>
 
