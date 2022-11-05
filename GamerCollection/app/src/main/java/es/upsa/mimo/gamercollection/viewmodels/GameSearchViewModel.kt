@@ -92,7 +92,7 @@ class GameSearchViewModel @Inject constructor(
                     null,
                     null,
                     null,
-                    listOf()
+                    mutableListOf()
                 )
             )
         }

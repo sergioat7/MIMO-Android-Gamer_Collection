@@ -249,6 +249,16 @@ class GameRepository @Inject constructor(
         return game?.transform()
     }
 
+    fun updateGameDatabase(game: GameResponse) {
+
+        runBlocking {
+            val job = databaseScope.launch {
+                database.gameDao().updateGame(game)
+            }
+            job.join()
+        }
+    }
+
     fun removeSagaFromGames(saga: SagaResponse) {
 
         val newSagaGames = saga.games
@@ -282,25 +292,25 @@ class GameRepository @Inject constructor(
     }
 
     fun updateGameSongs(
-        gameId: Int,
+        game: GameResponse,
         success: (GameResponse) -> Unit,
         failure: (ErrorResponse) -> Unit
     ) {
-        externalScope.launch {
-
-            try {
-                when (val response = ApiManager.validateResponse(api.getGame(gameId))) {
-                    is RequestResult.JsonSuccess -> {
-                        updateGameDatabase(response.body)
-                        success(response.body)
-                    }
-                    is RequestResult.Failure -> failure(response.error)
-                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
-                }
-            } catch (e: Exception) {
-                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
-            }
-        }
+//        externalScope.launch {
+//
+//            try {
+//                when (val response = ApiManager.validateResponse(api.getGame(gameId))) {
+//                    is RequestResult.JsonSuccess -> {
+//                        updateGameDatabase(response.body)
+//                        success(response.body)
+//                    }
+//                    is RequestResult.Failure -> failure(response.error)
+//                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+//                }
+//            } catch (e: Exception) {
+//                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
+//            }
+//        }
     }
 
     fun resetTable() {
@@ -371,16 +381,6 @@ class GameRepository @Inject constructor(
         runBlocking {
             val job = databaseScope.launch {
                 database.gameDao().insertGame(game)
-            }
-            job.join()
-        }
-    }
-
-    private fun updateGameDatabase(game: GameResponse) {
-
-        runBlocking {
-            val job = databaseScope.launch {
-                database.gameDao().updateGame(game)
             }
             job.join()
         }
