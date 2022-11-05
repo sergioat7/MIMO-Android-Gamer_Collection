@@ -26,24 +26,12 @@ class LandingViewModel @Inject constructor(
     //endregion
 
     //region Public methods
-    fun checkVersion() {
+    fun checkIsLoggedIn() {
 
-        val currentVersion = SharedPreferencesHelper.version
-        val newVersion = BuildConfig.VERSION_CODE
-        if (newVersion > currentVersion) {
-
-            SharedPreferencesHelper.version = newVersion
-            SharedPreferencesHelper.removePassword()
-            SharedPreferencesHelper.removeCredentials()
-            resetDatabase()
-            _landingClassToStart.value = LoginActivity::class.java
+        _landingClassToStart.value = if (SharedPreferencesHelper.isLoggedIn) {
+            MainActivity::class.java
         } else {
-
-            _landingClassToStart.value = if (SharedPreferencesHelper.isLoggedIn) {
-                MainActivity::class.java
-            } else {
-                LoginActivity::class.java
-            }
+            LoginActivity::class.java
         }
     }
 

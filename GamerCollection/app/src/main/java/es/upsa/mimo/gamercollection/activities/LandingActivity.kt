@@ -49,8 +49,8 @@ class LandingActivity : BaseActivity() {
         configLanguage()
         fetchRemoteConfigValues()
         createNotificationChannel()
-        viewModel.checkVersion()
         viewModel.checkTheme()
+        viewModel.checkIsLoggedIn()
     }
 
     private fun setupBindings() {
