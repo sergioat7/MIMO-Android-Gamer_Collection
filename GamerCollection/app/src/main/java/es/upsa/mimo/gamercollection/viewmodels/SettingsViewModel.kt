@@ -42,10 +42,13 @@ class SettingsViewModel @Inject constructor(
     //region Public methods
     fun logout() {
 
-        _settingsLoading.value = true
-        userRepository.logout()
-        SharedPreferencesHelper.removePassword()
-        resetDatabase()
+//        _settingsLoading.value = true
+//        userRepository.logout()
+//        SharedPreferencesHelper.removePassword()
+//        resetDatabase()
+
+        SharedPreferencesHelper.logout()
+        _settingsError.value = null
     }
 
     fun save(
