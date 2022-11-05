@@ -177,7 +177,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
         )[SagaDetailViewModel::class.java]
         setupBindings()
 
-        binding.addGamesEnabled = viewModel.saga.value != null
+        binding.addGamesEnabled = true
 
         binding.fragment = this
         binding.isDarkMode = context.isDarkMode()
