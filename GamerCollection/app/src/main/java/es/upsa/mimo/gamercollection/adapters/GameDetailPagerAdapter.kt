@@ -53,7 +53,8 @@ class GameDetailPagerAdapter(
 
         val game = gameDataFragment?.getGameData()
         if (game != null) {
-            game.songs = gameSongsFragment?.getSongs() ?: currentGame?.songs ?: ArrayList()
+            val songs = gameSongsFragment?.getSongs() ?: currentGame?.songs
+            game.songs = songs?.toMutableList() ?: mutableListOf()
         }
         return game
     }
