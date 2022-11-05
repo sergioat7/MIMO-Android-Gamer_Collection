@@ -10,6 +10,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import es.upsa.mimo.gamercollection.base.BaseModel
 import es.upsa.mimo.gamercollection.daos.GameDao
 import es.upsa.mimo.gamercollection.daos.SagaDao
+import es.upsa.mimo.gamercollection.daos.SongDao
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.models.responses.SongResponse
@@ -26,6 +27,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun gameDao(): GameDao
     abstract fun sagaDao(): SagaDao
+    abstract fun songDao(): SongDao
 
     companion object {
 

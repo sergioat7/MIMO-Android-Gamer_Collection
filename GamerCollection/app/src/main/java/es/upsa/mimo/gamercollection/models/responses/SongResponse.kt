@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
 data class SongResponse(
     @PrimaryKey
     @SerializedName("id")
-    val id: Int,
+    var id: Int,
     @SerializedName("name")
     val name: String?,
     @SerializedName("singer")
