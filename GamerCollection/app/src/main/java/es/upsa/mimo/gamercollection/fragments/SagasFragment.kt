@@ -75,7 +75,7 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
             }
             R.id.action_add -> {
 
-                val action = SagasFragmentDirections.actionSagasFragmentToSagaDetailFragment(0)
+                val action = SagasFragmentDirections.actionSagasFragmentToSagaDetailFragment(-1)
                 findNavController().navigate(action)
                 return true
             }

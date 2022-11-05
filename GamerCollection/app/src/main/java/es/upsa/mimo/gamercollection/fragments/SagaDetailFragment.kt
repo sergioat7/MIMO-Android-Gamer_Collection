@@ -36,8 +36,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     private val args: SagaDetailFragmentArgs by navArgs()
     private lateinit var viewModel: SagaDetailViewModel
     private var menu: Menu? = null
-    private var sagaGames: List<GameResponse> = arrayListOf()
-    private var newGames: ArrayList<GameResponse> = arrayListOf()
+    private var newGames: MutableList<GameResponse> = mutableListOf()
     private val goBack = MutableLiveData<Boolean>()
     //endregion
 
@@ -132,7 +131,14 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
 
         val dialogBinding = DialogGamesBinding.inflate(layoutInflater)
 
-        val orderedGames = viewModel.getOrderedGames(viewModel.games)
+        val orderedGames = viewModel.getOrderedGames(viewModel.games).map { game ->
+            if (newGames.firstOrNull { it.id == game.id } != null) {
+                game.saga = viewModel.saga.value
+            } else {
+                game.saga = null
+            }
+            game
+        }
         if (orderedGames.isNotEmpty()) {
 
             dialogBinding.recyclerViewGames.adapter = GamesAdapter(
@@ -175,6 +181,8 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
 
         binding.fragment = this
         binding.isDarkMode = context.isDarkMode()
+
+        newGames = viewModel.saga.value?.games?.toMutableList() ?: mutableListOf()
     }
 
     private fun setupBindings() {
@@ -206,10 +214,6 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
 
         viewModel.saga.observe(viewLifecycleOwner) { saga ->
 
-            saga?.let {
-                sagaGames = it.games
-            }
-
             showData(saga)
             enableEdition(saga == null)
         }
@@ -225,10 +229,8 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
 
         saga?.let {
 
-            binding.sagaName = saga.name
-            newGames.clear()
-            newGames.addAll(saga.games)
-            showGames(newGames)
+            binding.sagaName = it.name
+            showGames(it.games)
         }
     }
 
