@@ -78,5 +78,17 @@ open class BaseActivity : AppCompatActivity() {
             }
             .show()
     }
+
+    fun showPopupActionDialog(message: String, acceptHandler: () -> Unit) {
+
+        MaterialAlertDialogBuilder(this)
+            .setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
+                acceptHandler()
+                dialog.dismiss()
+            }
+            .show()
+    }
     //endregion
 }

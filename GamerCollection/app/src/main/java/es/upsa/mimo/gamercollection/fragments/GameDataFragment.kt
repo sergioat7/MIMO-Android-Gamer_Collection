@@ -58,6 +58,8 @@ class GameDataFragment(
             binding.buttonPending.root.isSelected = it == State.PENDING_STATE
             binding.buttonInProgress.root.isSelected = it == State.IN_PROGRESS_STATE
             binding.buttonFinished.root.isSelected = it == State.FINISHED_STATE
+        } ?: run {
+            binding.buttonFinished.root.isSelected = true
         }
 
         binding.dropdownTextInputLayoutGenres.setValue(

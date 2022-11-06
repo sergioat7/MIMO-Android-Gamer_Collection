@@ -37,7 +37,7 @@ class SagaDetailViewModel @Inject constructor(
     //region Public methods
     fun getSaga() {
 
-        if (sagaId > 0) {
+        if (sagaId >= 0) {
 
             _sagaDetailLoading.value = true
             _saga.value = sagaRepository.getSagaDatabase(sagaId)
@@ -61,12 +61,7 @@ class SagaDetailViewModel @Inject constructor(
 
     fun saveSaga(name: String, games: List<GameResponse>) {
 
-        val newSaga = SagaResponse(
-            sagaId,
-            name,
-            games
-        )
-
+        val newSaga = SagaResponse(sagaId, name, games)
         if (_saga.value != null) {
             setSaga(newSaga)
         } else {

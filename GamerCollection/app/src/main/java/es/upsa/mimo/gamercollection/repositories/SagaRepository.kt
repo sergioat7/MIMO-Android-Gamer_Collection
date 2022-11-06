@@ -28,30 +28,31 @@ class SagaRepository @Inject constructor(
 
     //region Public methods
     fun loadSagas(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
-        externalScope.launch {
-
-            try {
-                when (val response = ApiManager.validateResponse(api.getSagas())) {
-                    is RequestResult.JsonSuccess -> {
-
-                        val newSagas = response.body
-                        for (newSaga in newSagas) {
-                            insertSagaDatabase(newSaga)
-                        }
-                        val currentSagas = getSagasDatabase()
-                        val sagasToRemove = AppDatabase.getDisabledContent(currentSagas, newSagas)
-                        for (saga in sagasToRemove) {
-                            deleteSagaDatabase(saga as SagaResponse)
-                        }
-                        success()
-                    }
-                    is RequestResult.Failure -> failure(response.error)
-                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
-                }
-            } catch (e: Exception) {
-                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
-            }
-        }
+        success()
+//        externalScope.launch {
+//
+//            try {
+//                when (val response = ApiManager.validateResponse(api.getSagas())) {
+//                    is RequestResult.JsonSuccess -> {
+//
+//                        val newSagas = response.body
+//                        for (newSaga in newSagas) {
+//                            insertSagaDatabase(newSaga)
+//                        }
+//                        val currentSagas = getSagasDatabase()
+//                        val sagasToRemove = AppDatabase.getDisabledContent(currentSagas, newSagas)
+//                        for (saga in sagasToRemove) {
+//                            deleteSagaDatabase(saga as SagaResponse)
+//                        }
+//                        success()
+//                    }
+//                    is RequestResult.Failure -> failure(response.error)
+//                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+//                }
+//            } catch (e: Exception) {
+//                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
+//            }
+//        }
     }
 
     fun createSaga(
@@ -59,31 +60,34 @@ class SagaRepository @Inject constructor(
         success: (SagaResponse?) -> Unit,
         failure: (ErrorResponse) -> Unit
     ) {
-        externalScope.launch {
-
-            try {
-                when (val response = ApiManager.validateResponse(api.createSaga(newSaga))) {
-                    is RequestResult.Success -> {
-                        loadSagas({
-
-                            val currentSagas = getSagasDatabase()
-                            val newSagaCreated = currentSagas.firstOrNull { saga ->
-                                val game = saga.games.firstOrNull { game ->
-                                    game.id == newSaga.games.firstOrNull()?.id
-                                }
-                                game != null
-                            }
-
-                            success(newSagaCreated)
-                        }, failure)
-                    }
-                    is RequestResult.Failure -> failure(response.error)
-                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
-                }
-            } catch (e: Exception) {
-                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
-            }
-        }
+        newSaga.id = getNextId()
+        insertSagaDatabase(newSaga)
+        success(newSaga)
+//        externalScope.launch {
+//
+//            try {
+//                when (val response = ApiManager.validateResponse(api.createSaga(newSaga))) {
+//                    is RequestResult.Success -> {
+//                        loadSagas({
+//
+//                            val currentSagas = getSagasDatabase()
+//                            val newSagaCreated = currentSagas.firstOrNull { saga ->
+//                                val game = saga.games.firstOrNull { game ->
+//                                    game.id == newSaga.games.firstOrNull()?.id
+//                                }
+//                                game != null
+//                            }
+//
+//                            success(newSagaCreated)
+//                        }, failure)
+//                    }
+//                    is RequestResult.Failure -> failure(response.error)
+//                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+//                }
+//            } catch (e: Exception) {
+//                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
+//            }
+//        }
     }
 
     fun setSaga(
@@ -91,39 +95,43 @@ class SagaRepository @Inject constructor(
         success: (SagaResponse) -> Unit,
         failure: (ErrorResponse) -> Unit
     ) {
-        externalScope.launch {
-
-            try {
-                when (val response = ApiManager.validateResponse(api.setSaga(saga.id, saga))) {
-                    is RequestResult.JsonSuccess -> {
-                        updateSagaDatabase(response.body)
-                        success(response.body)
-                    }
-                    is RequestResult.Failure -> failure(response.error)
-                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
-                }
-            } catch (e: Exception) {
-                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
-            }
-        }
+        updateSagaDatabase(saga)
+        success(saga)
+//        externalScope.launch {
+//
+//            try {
+//                when (val response = ApiManager.validateResponse(api.setSaga(saga.id, saga))) {
+//                    is RequestResult.JsonSuccess -> {
+//                        updateSagaDatabase(response.body)
+//                        success(response.body)
+//                    }
+//                    is RequestResult.Failure -> failure(response.error)
+//                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+//                }
+//            } catch (e: Exception) {
+//                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
+//            }
+//        }
     }
 
     fun deleteSaga(saga: SagaResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
-        externalScope.launch {
-
-            try {
-                when (val response = ApiManager.validateResponse(api.deleteSaga(saga.id))) {
-                    is RequestResult.Success -> {
-                        deleteSagaDatabase(saga)
-                        success()
-                    }
-                    is RequestResult.Failure -> failure(response.error)
-                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
-                }
-            } catch (e: Exception) {
-                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
-            }
-        }
+        deleteSagaDatabase(saga)
+        success()
+//        externalScope.launch {
+//
+//            try {
+//                when (val response = ApiManager.validateResponse(api.deleteSaga(saga.id))) {
+//                    is RequestResult.Success -> {
+//                        deleteSagaDatabase(saga)
+//                        success()
+//                    }
+//                    is RequestResult.Failure -> failure(response.error)
+//                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+//                }
+//            } catch (e: Exception) {
+//                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
+//            }
+//        }
     }
 
     fun getSagasDatabase(): List<SagaResponse> {
@@ -193,6 +201,16 @@ class SagaRepository @Inject constructor(
                 database.sagaDao().deleteSaga(saga)
             }
             job.join()
+        }
+    }
+
+    private fun getNextId(): Int {
+
+        val sagas = getSagasDatabase()
+        return if (sagas.isNotEmpty()) {
+            sagas.maxOf { it.id } + 1
+        } else {
+            0
         }
     }
     //endregion

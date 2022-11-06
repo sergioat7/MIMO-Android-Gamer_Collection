@@ -9,7 +9,7 @@ import es.upsa.mimo.gamercollection.base.BaseModel
 data class SagaResponse(
     @PrimaryKey
     @SerializedName("id")
-    override val id: Int,
+    override var id: Int,
     @SerializedName("name")
     val name: String?,
     @SerializedName("games")
