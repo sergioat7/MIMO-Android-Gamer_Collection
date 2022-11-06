@@ -14,7 +14,7 @@ import java.util.*
 data class GameResponse(
     @PrimaryKey
     @SerializedName("id")
-    override val id: Int,
+    override var id: Int,
     @SerializedName("name")
     var name: String?,
     @SerializedName("platform")
