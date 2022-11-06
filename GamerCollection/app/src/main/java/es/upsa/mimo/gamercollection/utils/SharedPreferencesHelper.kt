@@ -78,9 +78,6 @@ object SharedPreferencesHelper {
     var swipeRefresh: Boolean
         get() = appPreferences.getBoolean(Preferences.SWIPE_REFRESH_PREFERENCES_NAME, true)
         set(value) = editor.setBoolean(Preferences.SWIPE_REFRESH_PREFERENCES_NAME, value)
-    var version: Int
-        get() = appPreferences.getInt(Preferences.VERSION_PREFERENCES_NAME, 0)
-        set(value) = editor.setInt(Preferences.VERSION_PREFERENCES_NAME, value)
     var themeMode: Int
         get() = appPreferences.getInt(Preferences.THEME_MODE_PREFERENCES_NAME, 0)
         set(value) = editor.setInt(Preferences.THEME_MODE_PREFERENCES_NAME, value)
@@ -98,6 +95,9 @@ object SharedPreferencesHelper {
                 else -> "MM/dd/yyyy"
             }
         }
+    var newChangesPopupShown: Boolean
+        get() = appPreferences.getBoolean(Preferences.NEW_CHANGES_POPUP_PREFERENCES_NAME, false)
+        set(value) = editor.setBoolean(Preferences.NEW_CHANGES_POPUP_PREFERENCES_NAME, value)
     //endregion
 
     //region Public methods
@@ -109,8 +109,11 @@ object SharedPreferencesHelper {
         userData = UserData(userData.username, password, userData.isLoggedIn)
     }
 
-    fun removePassword() {
-        userData = UserData(userData.username, Constants.EMPTY_VALUE, false)
+//    fun removePassword() {
+//        userData = UserData(userData.username, Constants.EMPTY_VALUE, false)
+//    }
+    fun logout() {
+        userData = UserData(userData.username, userData.password, false)
     }
 
     fun removeUserData() {

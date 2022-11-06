@@ -64,14 +64,14 @@ class GameSearchViewModel @Inject constructor(
     private fun addGames(newGames: List<GameResponse>, next: Boolean) {
 
         val currentGames = _games.value ?: mutableListOf()
-        if (currentGames.size > 0) {
+        if (currentGames.isNotEmpty()) {
             currentGames.removeLast()
         }
         currentGames.addAll(newGames)
         if (next) {
             currentGames.add(
                 GameResponse(
-                    0,
+                    -1,
                     null,
                     null,
                     0.0,
@@ -92,7 +92,7 @@ class GameSearchViewModel @Inject constructor(
                     null,
                     null,
                     null,
-                    listOf()
+                    mutableListOf()
                 )
             )
         }

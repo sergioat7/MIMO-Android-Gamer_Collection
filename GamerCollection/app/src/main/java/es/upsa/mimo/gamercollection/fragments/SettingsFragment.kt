@@ -86,6 +86,7 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
                 resources.getStringArray(R.array.sort_param_keys)[dropdownTextInputLayoutSortParams.getPosition()]
             val isSortAscending = dropdownTextInputLayoutSortOrders.getPosition() == 0
             val themeMode = dropdownTextInputLayoutAppTheme.getPosition()
+            this.textInputLayoutPassword.textInputEditText.clearFocus()
             this@SettingsFragment.viewModel.save(
                 textInputLayoutPassword.getValue(),
                 language,

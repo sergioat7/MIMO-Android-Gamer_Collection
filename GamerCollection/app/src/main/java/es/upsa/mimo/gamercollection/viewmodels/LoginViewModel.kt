@@ -73,20 +73,20 @@ class LoginViewModel @Inject constructor(
     //region Private methods
     private fun loadContent(userData: UserData) {
 
-        gameRepository.loadGames({
-            sagaRepository.loadSagas({
+//        gameRepository.loadGames({
+//            sagaRepository.loadSagas({
 
                 userData.isLoggedIn = true
                 SharedPreferencesHelper.userData = userData
 
                 _loginError.value = null
                 _loginLoading.value = false
-            }, {
-                _loginError.value = it
-            })
-        }, {
-            _loginError.value = it
-        })
+//            }, {
+//                _loginError.value = it
+//            })
+//        }, {
+//            _loginError.value = it
+//        })
     }
     //endregion
 }
