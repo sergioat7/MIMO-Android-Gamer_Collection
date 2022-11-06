@@ -12,6 +12,8 @@
     <string name="no">No</string>
     <string name="loading">Cargando…</string>
 
+    <string name="new_version_changes">Debido a problemas con los servidores, a partir de ahora la aplicación sólo funcionará en local. Todos los juegos que guardes quedarán almacenados sola y exclusivamente en la aplicación, por tanto, si la desinstalas, perderás toda la información almacenada. Los juegos que ya tuvieras guardados seguirán estando disponibles mientras no desinstales la aplicación.</string>
+
     // Login
     <string name="login_username">Usuario</string>
     <string name="login_password">Contraseña</string>

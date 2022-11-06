@@ -50,7 +50,14 @@ class LandingActivity : BaseActivity() {
         fetchRemoteConfigValues()
         createNotificationChannel()
         viewModel.checkTheme()
-        viewModel.checkIsLoggedIn()
+
+        if (!viewModel.newChangesPopupShown) {
+            showPopupActionDialog(getString(R.string.new_version_changes), acceptHandler = {
+                viewModel.checkIsLoggedIn()
+            })
+        } else {
+            viewModel.checkIsLoggedIn()
+        }
     }
 
     private fun setupBindings() {

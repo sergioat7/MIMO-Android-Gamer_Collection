@@ -18,9 +18,9 @@ object Preferences {
     const val DEFAULT_SORT_PARAM = "name"
     const val SWIPE_REFRESH_PREFERENCES_NAME = "swipeRefreshEnabled"
     const val GAME_NOTIFICATION_PREFERENCES_NAME = "gameNotificationLaunched_"
-    const val VERSION_PREFERENCES_NAME = "version"
     const val THEME_MODE_PREFERENCES_NAME = "themeMode"
     const val SORT_ORDER_PREFERENCE_NAME = "sortOrder"
+    const val NEW_CHANGES_POPUP_PREFERENCES_NAME = "version"
 }
 
 object Constants {
