@@ -34,45 +34,49 @@ class GameRepository @Inject constructor(
 
     //region Public methods
     fun loadGames(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
-        externalScope.launch {
-
-            try {
-                when (val response = ApiManager.validateResponse(api.getGames())) {
-                    is RequestResult.JsonSuccess -> {
-
-                        val newGames = response.body
-                        for (newGame in newGames) {
-                            insertGameDatabase(newGame)
-                        }
-                        val currentGames = getGamesDatabase()
-                        val gamesToRemove = AppDatabase.getDisabledContent(currentGames, newGames)
-                        for (game in gamesToRemove) {
-                            deleteGameDatabase(game as GameResponse)
-                        }
-                        success()
-                    }
-                    is RequestResult.Failure -> failure(response.error)
-                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
-                }
-            } catch (e: Exception) {
-                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
-            }
-        }
+        success()
+//        externalScope.launch {
+//
+//            try {
+//                when (val response = ApiManager.validateResponse(api.getGames())) {
+//                    is RequestResult.JsonSuccess -> {
+//
+//                        val newGames = response.body
+//                        for (newGame in newGames) {
+//                            insertGameDatabase(newGame)
+//                        }
+//                        val currentGames = getGamesDatabase()
+//                        val gamesToRemove = AppDatabase.getDisabledContent(currentGames, newGames)
+//                        for (game in gamesToRemove) {
+//                            deleteGameDatabase(game as GameResponse)
+//                        }
+//                        success()
+//                    }
+//                    is RequestResult.Failure -> failure(response.error)
+//                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+//                }
+//            } catch (e: Exception) {
+//                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
+//            }
+//        }
     }
 
     fun createGame(newGame: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
-        externalScope.launch {
-
-            try {
-                when (val response = ApiManager.validateResponse(api.createGame(newGame))) {
-                    is RequestResult.Success -> loadGames(success, failure)
-                    is RequestResult.Failure -> failure(response.error)
-                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
-                }
-            } catch (e: Exception) {
-                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
-            }
-        }
+        newGame.id = getNextId()
+        insertGameDatabase(newGame)
+        success()
+//        externalScope.launch {
+//
+//            try {
+//                when (val response = ApiManager.validateResponse(api.createGame(newGame))) {
+//                    is RequestResult.Success -> loadGames(success, failure)
+//                    is RequestResult.Failure -> failure(response.error)
+//                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+//                }
+//            } catch (e: Exception) {
+//                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
+//            }
+//        }
     }
 
     fun setGame(
@@ -80,39 +84,43 @@ class GameRepository @Inject constructor(
         success: (GameResponse) -> Unit,
         failure: (ErrorResponse) -> Unit
     ) {
-        externalScope.launch {
-
-            try {
-                when (val response = ApiManager.validateResponse(api.setGame(game.id, game))) {
-                    is RequestResult.JsonSuccess -> {
-                        updateGameDatabase(response.body)
-                        success(response.body)
-                    }
-                    is RequestResult.Failure -> failure(response.error)
-                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
-                }
-            } catch (e: Exception) {
-                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
-            }
-        }
+        updateGameDatabase(game)
+        success(game)
+//        externalScope.launch {
+//
+//            try {
+//                when (val response = ApiManager.validateResponse(api.setGame(game.id, game))) {
+//                    is RequestResult.JsonSuccess -> {
+//                        updateGameDatabase(response.body)
+//                        success(response.body)
+//                    }
+//                    is RequestResult.Failure -> failure(response.error)
+//                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+//                }
+//            } catch (e: Exception) {
+//                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
+//            }
+//        }
     }
 
     fun deleteGame(game: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
-        externalScope.launch {
-
-            try {
-                when (val response = ApiManager.validateResponse(api.deleteGame(game.id))) {
-                    is RequestResult.Success -> {
-                        deleteGameDatabase(game)
-                        success()
-                    }
-                    is RequestResult.Failure -> failure(response.error)
-                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
-                }
-            } catch (e: Exception) {
-                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
-            }
-        }
+        deleteGameDatabase(game)
+        success()
+//        externalScope.launch {
+//
+//            try {
+//                when (val response = ApiManager.validateResponse(api.deleteGame(game.id))) {
+//                    is RequestResult.Success -> {
+//                        deleteGameDatabase(game)
+//                        success()
+//                    }
+//                    is RequestResult.Failure -> failure(response.error)
+//                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+//                }
+//            } catch (e: Exception) {
+//                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
+//            }
+//        }
     }
 
     fun getGamesDatabase(
@@ -405,6 +413,16 @@ class GameRepository @Inject constructor(
             }
         }
         return games
+    }
+
+    private fun getNextId(): Int {
+
+        val games = getGamesDatabase()
+        return if (games.isNotEmpty()) {
+            games.maxOf { it.id } + 1
+        } else {
+            0
+        }
     }
     //endregion
 }

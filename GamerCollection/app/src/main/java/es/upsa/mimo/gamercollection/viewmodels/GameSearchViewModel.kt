@@ -71,7 +71,7 @@ class GameSearchViewModel @Inject constructor(
         if (next) {
             currentGames.add(
                 GameResponse(
-                    0,
+                    -1,
                     null,
                     null,
                     0.0,

@@ -20,7 +20,7 @@ class GamesAdapter(
     //region Lifecycle methods
     override fun getItemViewType(position: Int): Int {
 
-        return if (games[position].id > 0) {
+        return if (games[position].id >= 0) {
             R.layout.item_game
         } else {
             R.layout.item_load_more_items
