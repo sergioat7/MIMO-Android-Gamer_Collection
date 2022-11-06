@@ -95,6 +95,9 @@ object SharedPreferencesHelper {
                 else -> "MM/dd/yyyy"
             }
         }
+    var newChangesPopupShown: Boolean
+        get() = appPreferences.getBoolean(Preferences.NEW_CHANGES_POPUP_PREFERENCES_NAME, false)
+        set(value) = editor.setBoolean(Preferences.NEW_CHANGES_POPUP_PREFERENCES_NAME, value)
     //endregion
 
     //region Public methods
