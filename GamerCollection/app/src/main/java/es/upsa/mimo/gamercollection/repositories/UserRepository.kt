@@ -2,6 +2,7 @@ package es.upsa.mimo.gamercollection.repositories
 
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.injection.modules.MainDispatcher
+import es.upsa.mimo.gamercollection.models.login.UserData
 import es.upsa.mimo.gamercollection.models.requests.LoginCredentials
 import es.upsa.mimo.gamercollection.models.requests.NewPassword
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
@@ -32,7 +33,10 @@ class UserRepository @Inject constructor(
         success: (String) -> Unit,
         failure: (ErrorResponse) -> Unit
     ) {
-        if (password == SharedPreferencesHelper.userData.password) {
+        val userData = SharedPreferencesHelper.userData
+        if (userData.username.isEmpty()) {
+            failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.username_not_exist))
+        } else if (userData.username == username && userData.password == password) {
             success("-")
         } else {
             failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.wrong_password))
@@ -59,6 +63,7 @@ class UserRepository @Inject constructor(
         success: () -> Unit,
         failure: (ErrorResponse) -> Unit
     ) {
+        SharedPreferencesHelper.userData = UserData(username, password, false)
         success()
 //        externalScope.launch {
 //
