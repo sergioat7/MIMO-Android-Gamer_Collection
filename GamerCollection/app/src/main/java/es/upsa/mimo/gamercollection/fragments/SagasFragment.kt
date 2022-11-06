@@ -68,11 +68,11 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-            R.id.action_synchronize -> {
-
-                openSyncPopup()
-                return true
-            }
+//            R.id.action_synchronize -> {
+//
+//                openSyncPopup()
+//                return true
+//            }
             R.id.action_add -> {
 
                 val action = SagasFragmentDirections.actionSagasFragmentToSagaDetailFragment(-1)
@@ -250,7 +250,7 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
             object : MenuItem.OnActionExpandListener {
                 override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
                     menu.let {
-                        it.findItem(R.id.action_synchronize).isVisible = false
+//                        it.findItem(R.id.action_synchronize).isVisible = false
                         it.findItem(R.id.action_add).isVisible = false
                     }
                     return true
@@ -258,7 +258,7 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
 
                 override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
                     menu.let {
-                        it.findItem(R.id.action_synchronize).isVisible = true
+//                        it.findItem(R.id.action_synchronize).isVisible = true
                         it.findItem(R.id.action_add).isVisible = true
                     }
                     return true
