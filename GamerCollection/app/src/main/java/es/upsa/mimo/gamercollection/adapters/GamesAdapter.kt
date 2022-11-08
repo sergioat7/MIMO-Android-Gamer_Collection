@@ -24,6 +24,7 @@ class GamesAdapter(
 
         val game = games[position]
         return when {
+            game.state == State.IN_PROGRESS -> R.layout.item_game_in_progress
             isVerticalDisplay && game.id > 0 -> R.layout.item_game_vertical_display
             !isVerticalDisplay && game.id > 0 -> R.layout.item_game
             else -> R.layout.item_load_more_items
@@ -33,6 +34,15 @@ class GamesAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         return when (viewType) {
+            R.layout.item_game_in_progress -> {
+                GamesViewHolder(
+                    ItemGameInProgressBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
             R.layout.item_game_vertical_display -> {
                 GamesViewHolder(
                     ItemGameVerticalDisplayBinding.inflate(

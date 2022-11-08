@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.databinding.ItemGameBinding
+import es.upsa.mimo.gamercollection.databinding.ItemGameInProgressBinding
 import es.upsa.mimo.gamercollection.databinding.ItemGameVerticalDisplayBinding
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
@@ -26,6 +27,9 @@ class GamesViewHolder(
         binding.apply {
             when (this) {
 
+                is ItemGameInProgressBinding -> {
+                    //TODO:
+                }
 
                 is ItemGameVerticalDisplayBinding -> {
                     val color = game.state?.let {
