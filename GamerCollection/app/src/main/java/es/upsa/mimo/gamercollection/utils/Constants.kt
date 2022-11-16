@@ -34,6 +34,8 @@ object Constants {
     const val NO_VALUE = "-"
     const val NEXT_VALUE_SEPARATOR = ", "
     val DEFAULT_LOCATION = LatLng(40.4169019, -3.7056721)
+    const val GOOGLE_USER_TEST = "googleTest"
+    const val GOOGLE_PASSWORD_TEST = "d9MqzK3k1&07"
 
     var FORMATS = listOf(
         FormatModel("DIGITAL", "Digital"),
