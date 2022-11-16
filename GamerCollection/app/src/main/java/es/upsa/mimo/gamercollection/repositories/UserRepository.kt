@@ -34,7 +34,7 @@ class UserRepository @Inject constructor(
         failure: (ErrorResponse) -> Unit
     ) {
         val userData = SharedPreferencesHelper.userData
-        if (userData.username.isEmpty()) {
+        if (userData.username.isEmpty() || userData.username != username) {
             failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.username_not_exist))
         } else if (userData.username == username && userData.password == password) {
             success("-")
