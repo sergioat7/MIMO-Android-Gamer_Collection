@@ -15,17 +15,15 @@ import es.upsa.mimo.gamercollection.viewmodelfactories.*
 )
 interface AppComponent {
 
-    fun inject(gameDataViewModelFactory: GameDataViewModelFactory)
     fun inject(gameDetailViewModelFactory: GameDetailViewModelFactory)
     fun inject(gameSongsViewModelFactory: GameSongsViewModelFactory)
     fun inject(gamesViewModelFactory: GamesViewModelFactory)
     fun inject(gameSearchViewModelFactory: GameSearchViewModelFactory)
     fun inject(landingViewModelFactory: LandingViewModelFactory)
     fun inject(loginViewModelFactory: LoginViewModelFactory)
-    fun inject(popupFilterViewModelFactory: PopupFilterViewModelFactory)
     fun inject(popupSyncAppViewModelFactory: PopupSyncAppViewModelFactory)
-    fun inject(profileViewModelFactory: ProfileViewModelFactory)
     fun inject(registerViewModelFactory: RegisterViewModelFactory)
     fun inject(sagaDetailViewModelFactory: SagaDetailViewModelFactory)
     fun inject(sagasViewModelFactory: SagasViewModelFactory)
+    fun inject(settingsViewModelFactory: SettingsViewModelFactory)
 }

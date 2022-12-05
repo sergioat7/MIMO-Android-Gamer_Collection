@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    
+    <data>
+
+        <import
+            type="android.view.View"
+            />
+
+        <import
+            type="android.graphics.drawable.Drawable"
+            />
+
+        <import
+            type="es.upsa.mimo.gamercollection.utils.CustomInputType"
+            />
+
+        <import
+            type="es.upsa.mimo.gamercollection.utils.Constants"
+            />
+
+        <import
+            type="es.upsa.mimo.gamercollection.extensions.StringExtensionsKt"
+            />
+
+        <variable
+            name="activity"
+            type="es.upsa.mimo.gamercollection.fragments.GameDetailFragment"
+            />
+        
+        <variable
+            name="game"
+            type="es.upsa.mimo.gamercollection.models.responses.GameResponse"
+            />
+
+        <variable
+            name="imageUrl"
+            type="String"
+            />
+
+        <variable
+            name="imagePegi"
+            type="Drawable"
+            />
+
+        <variable
+            name="editable"
+            type="Boolean"
+            />
+
+        <variable
+            name="isDarkMode"
+            type="Boolean"
+            />
+        
+    </data>
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.GameDetailFragment"
+        >
+
+        <com.jgabrielfreitas.core.BlurImageView
+            android:id="@+id/image_view_blurred"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@+id/tab_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/gradient_view"
+            app:layout_constraintBottom_toBottomOf="@+id/image_view_blurred"
+            app:layout_constraintEnd_toEndOf="@+id/image_view_blurred"
+            app:layout_constraintStart_toStartOf="@+id/image_view_blurred"
+            app:layout_constraintTop_toTopOf="@+id/image_view_blurred"
+            />
+
+        <es.upsa.mimo.gamercollection.customviews.ImageViewWithLoading
+            android:id="@+id/image_view_game"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/size_200dp"
+            android:layout_marginStart="@dimen/margin_20dp"
+            android:enabled="@{editable}"
+            android:onClick="@{() -> activity.setImage()}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintWidth_percent="0.4"
+            src="@{imageUrl}"
+            placeholder="@{@drawable/ic_add_image}"
+            />
+
+        <ImageView
+            android:id="@+id/image_view_goty"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/goty_label"
+            android:visibility="@{game.goty == true ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="@+id/image_view_game"
+            app:layout_constraintStart_toStartOf="@+id/image_view_game"
+            app:layout_constraintTop_toBottomOf="@+id/image_view_game"
+            tools:visibility="visible"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_main_details"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_12dp"
+            android:layout_marginEnd="@dimen/margin_20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_view_game"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            >
+
+            <include
+                android:id="@+id/text_input_layout_game_name"
+                layout="@layout/custom_text_input_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:enabled="@{editable}"
+                app:inputType="@{CustomInputType.MULTI_LINE_TEXT}"
+                app:isBold="@{true}"
+                app:labelHintText="@{@string/game_detail_placeholder_name}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:text='@{StringExtensionsKt.isNotBlank(game.name) ? game.name : editable ? null : Constants.NO_VALUE}'
+                app:textSize="@{@dimen/text_size_20sp}"
+                />
+
+            <include
+                android:id="@+id/dropdown_text_input_layout_platforms"
+                layout="@layout/custom_dropdown_text_input_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                app:enabled="@{editable}"
+                app:inputHintText="@{@string/game_detail_select_platform}"
+                app:labelHintText="@{@string/game_detail_platform}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_input_layout_game_name"
+                app:showText="true"
+                />
+
+            <Button
+                android:id="@+id/rating_button"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_40dp"
+                android:layout_marginBottom="@dimen/margin_12dp"
+                android:enabled="@{editable}"
+                android:onClick="@{() -> activity.setRating()}"
+                android:text="@{String.valueOf(game.score)}"
+                app:icon="@drawable/ic_star"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/image_view_pegi"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dropdown_text_input_layout_platforms"
+                app:layout_constraintVertical_bias="0.0"
+                tools:text="5"
+                style="@style/Widget.GamerCollection.TextButton.Icon"
+                />
+
+            <ImageView
+                android:id="@+id/image_view_pegi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_12dp"
+                android:layout_marginBottom="@dimen/margin_12dp"
+                android:adjustViewBounds="true"
+                android:maxWidth="@dimen/size_40dp"
+                android:src="@{imagePegi}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dropdown_text_input_layout_platforms"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="image_view_goty, constraint_layout_main_details"
+            />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/barrier"
+            style="@style/Widget.GamerCollection.TabLayout"
+            >
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_item_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/game_detail_title"
+                />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_item_songs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/game_detail_songs_title"
+                />
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager_game"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/margin_20dp"
+            android:layout_marginTop="@dimen/margin_20dp"
+            android:layout_marginEnd="@dimen/margin_20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tab_layout"
+            >
+
+        </androidx.viewpager2.widget.ViewPager2>
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@{isDarkMode ? @drawable/ic_arrow_back_white : @drawable/ic_arrow_back_black}"
+            app:title=" "
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

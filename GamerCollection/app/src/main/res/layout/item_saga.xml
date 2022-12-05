@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <import
+            type="android.view.View"
+            />
+
+        <variable
+            name="saga"
+            type="es.upsa.mimo.gamercollection.models.responses.SagaResponse"
+            />
+
+        <variable
+            name="onItemClickListener"
+            type="es.upsa.mimo.gamercollection.adapters.OnItemClickListener"
+            />
+
+        <variable
+            name="isDarkMode"
+            type="Boolean"
+            />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryLight"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:padding="@dimen/padding_12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/image_view_arrow"
+                >
+
+                <TextView
+                    android:id="@+id/text_view_saga_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_40dp"
+                    android:layout_centerVertical="true"
+                    android:text="@{saga.games.size() > 0 ? @plurals/saga_title(saga.games.size(), saga.name, saga.games.size()) : saga.name}"
+                    tools:text="Saga name"
+                    style="@style/Widget.GamerCollection.TextView.Title.SagaItem"
+                    />
+
+                <ImageView
+                    android:id="@+id/image_view_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/margin_30dp_negative"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:layout_marginBottom="@dimen/margin_16dp"
+                    android:layout_toEndOf="@id/text_view_saga_name"
+                    android:onClick="@{() -> onItemClickListener.onItemClick(saga.id)}"
+                    android:src="@{isDarkMode ? @drawable/ic_edit_black : @drawable/ic_edit_white}"
+                    tools:src="@drawable/ic_edit_white"
+                    />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/image_view_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_16dp"
+                android:src="@drawable/ic_triangle_up"
+                android:visibility="@{saga.games.empty ? View.INVISIBLE : View.VISIBLE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/line_view"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/size_5dp"
+            android:background="@color/colorSecondary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraint_layout_name"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

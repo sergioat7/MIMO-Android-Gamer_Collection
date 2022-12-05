@@ -4,7 +4,9 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.GamerCollectionApplication
-import es.upsa.mimo.gamercollection.repositories.*
+import es.upsa.mimo.gamercollection.repositories.GameRepository
+import es.upsa.mimo.gamercollection.repositories.SagaRepository
+import es.upsa.mimo.gamercollection.repositories.UserRepository
 import es.upsa.mimo.gamercollection.viewmodels.LoginViewModel
 import javax.inject.Inject
 
@@ -14,22 +16,10 @@ class LoginViewModelFactory(
 
     //region Public properties
     @Inject
-    lateinit var formatRepository: FormatRepository
-
-    @Inject
     lateinit var gameRepository: GameRepository
 
     @Inject
-    lateinit var genreRepository: GenreRepository
-
-    @Inject
-    lateinit var platformRepository: PlatformRepository
-
-    @Inject
     lateinit var sagaRepository: SagaRepository
-
-    @Inject
-    lateinit var stateRepository: StateRepository
 
     @Inject
     lateinit var userRepository: UserRepository

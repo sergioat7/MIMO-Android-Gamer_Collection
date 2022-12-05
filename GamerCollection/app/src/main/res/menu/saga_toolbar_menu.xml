@@ -7,7 +7,7 @@
 
     <item
         android:id="@+id/action_cancel"
-        android:icon="@drawable/ic_cancel_changes_dark"
+        android:icon="@drawable/ic_cancel_changes_white"
         android:title=""
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction"
@@ -15,7 +15,7 @@
 
     <item
         android:id="@+id/action_save"
-        android:icon="@drawable/ic_save_changes_dark"
+        android:icon="@drawable/ic_save_changes_white"
         android:title=""
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction"
@@ -23,7 +23,7 @@
 
     <item
         android:id="@+id/action_edit"
-        android:icon="@drawable/ic_edit_dark"
+        android:icon="@drawable/ic_edit_white"
         android:title=""
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction"
@@ -31,7 +31,7 @@
 
     <item
         android:id="@+id/action_remove"
-        android:icon="@drawable/ic_remove_saga_light"
+        android:icon="@drawable/ic_remove_saga"
         android:title=""
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction"

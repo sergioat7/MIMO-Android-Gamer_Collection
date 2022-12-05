@@ -38,14 +38,15 @@ class GameSongsViewModel @Inject constructor(
             _gameSongsLoading.value = true
             viewModelScope.launch {
                 songRepository.createSong(game.id, song, {
-                    gameRepository.updateGameSongs(game.id, {
+//                    gameRepository.updateGameSongs(game.id, {
 
-                        this@GameSongsViewModel.game = it
-                        _songs.value = it.songs
-                        _gameSongsLoading.value = false
-                    }, {
-                        _gameSongsError.value = it
-                    })
+                    game.songs.add(song)
+                    gameRepository.updateGameDatabase(game)
+                    setGame(game)
+                    _gameSongsLoading.value = false
+//                    }, {
+//                        _gameSongsError.value = it
+//                    })
                 }, {
                     _gameSongsError.value = it
                 })
@@ -60,14 +61,15 @@ class GameSongsViewModel @Inject constructor(
             _gameSongsLoading.value = true
             viewModelScope.launch {
                 songRepository.deleteSong(game.id, songId, {
-                    gameRepository.updateGameSongs(game.id, {
+//                    gameRepository.updateGameSongs(game.id, {
 
-                        this@GameSongsViewModel.game = it
-                        _songs.value = it.songs
-                        _gameSongsLoading.value = false
-                    }, {
-                        _gameSongsError.value = it
-                    })
+                    game.songs.removeAll { it.id == songId }
+                    gameRepository.updateGameDatabase(game)
+                    setGame(game)
+                    _gameSongsLoading.value = false
+//                    }, {
+//                        _gameSongsError.value = it
+//                    })
                 }, {
                     _gameSongsError.value = it
                 })

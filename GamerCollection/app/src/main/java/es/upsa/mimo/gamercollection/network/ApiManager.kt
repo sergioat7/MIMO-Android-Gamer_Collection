@@ -3,6 +3,7 @@ package es.upsa.mimo.gamercollection.network
 import com.google.gson.*
 import es.upsa.mimo.gamercollection.BuildConfig
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.extensions.toDate
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
@@ -39,7 +40,7 @@ object ApiManager {
             .registerTypeAdapter(
                 Date::class.java,
                 JsonDeserializer<Date> { json: JsonElement, _: Type?, _: JsonDeserializationContext? ->
-                    Constants.stringToDate(json.asString)
+                    json.asString.toDate()
                 }
             )
             .setDateFormat(Constants.DATE_FORMAT)
@@ -149,14 +150,14 @@ object ApiManager {
 
             val request = if (authRequirement != null) {
 
-                val accessToken = SharedPreferencesHelper.getCredentials().token
+                val accessToken = SharedPreferencesHelper.credentials.token
                 original.newBuilder()
-                    .addHeader(ACCEPT_LANGUAGE_HEADER, SharedPreferencesHelper.getLanguage())
+                    .addHeader(ACCEPT_LANGUAGE_HEADER, SharedPreferencesHelper.language)
                     .header(AUTHORIZATION_HEADER, accessToken)
                     .build()
             } else {
                 original.newBuilder()
-                    .addHeader(ACCEPT_LANGUAGE_HEADER, SharedPreferencesHelper.getLanguage())
+                    .addHeader(ACCEPT_LANGUAGE_HEADER, SharedPreferencesHelper.language)
                     .build()
             }
 

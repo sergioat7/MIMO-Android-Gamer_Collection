@@ -7,14 +7,19 @@ import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.activities.RegisterActivity
 import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentLoginBinding
-import es.upsa.mimo.gamercollection.extensions.afterTextChanged
-import es.upsa.mimo.gamercollection.extensions.onFocusChange
-import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.Environment
+import es.upsa.mimo.gamercollection.extensions.doAfterTextChanged
+import es.upsa.mimo.gamercollection.extensions.getValue
+import es.upsa.mimo.gamercollection.extensions.setError
+import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.LoginViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.LoginViewModel
 
 class LoginFragment : BindingFragment<FragmentLoginBinding>() {
+
+    //region Protected properties
+    override val statusBarStyle = StatusBarStyle.SECONDARY
+    override val hasOptionsMenu = false
+    //endregion
 
     //region Private properties
     private lateinit var viewModel: LoginViewModel
@@ -23,106 +28,97 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
     //region Lifecycle methods
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeUI()
+        initializeUi()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        binding.textInputLayoutUsername.doAfterTextChanged {
+            loginDataChanged()
+        }
+        binding.textInputLayoutPassword.doAfterTextChanged {
+            loginDataChanged()
+        }
     }
     //endregion
 
-    //region Private methods
-    private fun initializeUI() {
+    //region Public methods
+    fun goToRegister() {
+        launchActivity(RegisterActivity::class.java)
+    }
+
+    fun login() {
+
+        binding.textInputLayoutUsername.textInputEditText.clearFocus()
+        binding.textInputLayoutPassword.textInputEditText.clearFocus()
+        viewModel.login(
+            binding.textInputLayoutUsername.getValue(),
+            binding.textInputLayoutPassword.getValue()
+        )
+    }
+    //endregion
+
+    //region Protected methods
+    override fun initializeUi() {
+        super.initializeUi()
 
         val application = activity?.application
         viewModel = ViewModelProvider(
             this,
             LoginViewModelFactory(application)
-        ).get(LoginViewModel::class.java)
+        )[LoginViewModel::class.java]
         setupBindings()
 
-        val username = viewModel.username
-        val user = if (username.isEmpty()) Environment.getUsername() else username
-        val password = if (username.isEmpty()) Environment.getPassword() else Constants.EMPTY_VALUE
-
-        with(binding) {
-
-            editTextUser.setText(user)
-            editTextUser.afterTextChanged {
-                loginDataChanged()
-            }
-            editTextUser.onFocusChange {
-                loginDataChanged()
-            }
-
-            editTextPassword.setText(password)
-            editTextPassword.afterTextChanged {
-                loginDataChanged()
-            }
-            editTextPassword.onFocusChange {
-                loginDataChanged()
-            }
-
-            imageButtonPassword.setOnClickListener {
-                Constants.showOrHidePassword(
-                    editTextPassword,
-                    imageButtonPassword,
-                    Constants.isDarkMode(context)
-                )
-            }
-
-            loginButton.setOnClickListener {
-
-                viewModel.login(
-                    editTextUser.text.toString(),
-                    editTextPassword.text.toString()
-                )
-            }
-
-            registerButton.setOnClickListener {
-                launchActivity(RegisterActivity::class.java)
-            }
-        }
+        binding.fragment = this
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
     }
+    //endregion
 
+    //region Private methods
     private fun setupBindings() {
 
-        viewModel.loginFormState.observe(viewLifecycleOwner, {
+        viewModel.loginFormState.observe(viewLifecycleOwner) {
 
+            binding.textInputLayoutUsername.setError("")
+            binding.textInputLayoutPassword.setError("")
             val loginState = it ?: return@observe
 
-            binding.loginButton.isEnabled = loginState.isDataValid
-
             if (loginState.usernameError != null) {
-                binding.editTextUser.error = getString(loginState.usernameError)
+                binding.textInputLayoutUsername.setError(getString(loginState.usernameError))
             }
             if (loginState.passwordError != null) {
-                binding.editTextPassword.error = getString(loginState.passwordError)
+                binding.textInputLayoutPassword.setError(getString(loginState.passwordError))
             }
-        })
+        }
 
-        viewModel.loginLoading.observe(viewLifecycleOwner, { isLoading ->
+        viewModel.loginLoading.observe(viewLifecycleOwner) { isLoading ->
 
             if (isLoading) {
                 showLoading()
             } else {
                 hideLoading()
             }
-        })
+        }
 
-        viewModel.loginError.observe(viewLifecycleOwner, { error ->
+        viewModel.loginError.observe(viewLifecycleOwner) { error ->
 
             if (error == null) {
-                launchActivity(MainActivity::class.java)
+                launchActivity(MainActivity::class.java, true)
             } else {
 
                 hideLoading()
                 manageError(error)
             }
-        })
+        }
     }
 
     private fun loginDataChanged() {
 
         viewModel.loginDataChanged(
-            binding.editTextUser.text.toString(),
-            binding.editTextPassword.text.toString()
+            binding.textInputLayoutUsername.getValue(),
+            binding.textInputLayoutPassword.getValue()
         )
     }
     //endregion

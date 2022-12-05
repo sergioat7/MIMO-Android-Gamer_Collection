@@ -3,6 +3,7 @@ package es.upsa.mimo.gamercollection.fragments
 import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.PendingIntent
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -10,37 +11,38 @@ import android.graphics.RectF
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentTransaction
+import androidx.core.view.children
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.activities.GameDetailActivity
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
-import es.upsa.mimo.gamercollection.adapters.OnFiltersSelected
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.base.BindingFragment
+import es.upsa.mimo.gamercollection.databinding.DialogFragmentPopupFilterBinding
 import es.upsa.mimo.gamercollection.databinding.FragmentGamesBinding
-import es.upsa.mimo.gamercollection.fragments.popups.PopupFilterDialogFragment
+import es.upsa.mimo.gamercollection.extensions.*
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
-import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.Notifications
-import es.upsa.mimo.gamercollection.utils.State
+import es.upsa.mimo.gamercollection.utils.*
 import es.upsa.mimo.gamercollection.viewmodelfactories.GamesViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GamesViewModel
-import kotlinx.android.synthetic.main.state_button.view.*
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.max
 
-class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListener,
-    OnFiltersSelected {
+class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListener {
+
+    //region Protected properties
+    override val statusBarStyle = StatusBarStyle.SECONDARY
+    override val hasOptionsMenu = true
+    //endregion
 
     //region Private properties
     private lateinit var viewModel: GamesViewModel
@@ -49,17 +51,11 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     //endregion
 
     //region Lifecycle methods
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        setHasOptionsMenu(true)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeUI()
+
+        toolbar = binding.toolbar
+        initializeUi()
     }
 
     override fun onResume() {
@@ -82,15 +78,22 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         setupSearchView(menu)
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+
+        menu.findItem(R.id.action_filter)?.isVisible = viewModel.filters.value == null
+        menu.findItem(R.id.action_filter_fill)?.isVisible = viewModel.filters.value != null
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-            R.id.action_synchronize -> {
-
-                openSyncPopup()
-                return true
-            }
-            R.id.action_filter, R.id.action_filter_on -> {
+//            R.id.action_synchronize -> {
+//
+//                openSyncPopup()
+//                return true
+//            }
+            R.id.action_filter, R.id.action_filter_fill -> {
 
                 filter()
                 return true
@@ -108,8 +111,8 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     //region Interface methods
     override fun onItemClick(id: Int) {
 
-        val params = mapOf(Constants.GAME_ID to id, Constants.IS_RAWG_GAME to false)
-        launchActivityWithExtras(GameDetailActivity::class.java, params)
+        val action = GamesFragmentDirections.actionGamesFragmentToGameDetailFragment(id)
+        findNavController().navigate(action)
     }
 
     override fun onSubItemClick(id: Int) {
@@ -117,19 +120,15 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
     override fun onLoadMoreItemsClick() {
     }
-
-    override fun filter(filters: FilterModel?) {
-        viewModel.applyFilters(filters)
-    }
     //endregion
 
     //region Public methods
     fun buttonClicked(it: View) {
 
         val newState = when (it) {
-            binding.buttonPending -> if (it.isSelected) null else State.PENDING_STATE
-            binding.buttonInProgress -> if (it.isSelected) null else State.IN_PROGRESS_STATE
-            binding.buttonFinished -> if (it.isSelected) null else State.FINISHED_STATE
+            binding.buttonPending.root -> if (it.isSelected) null else State.PENDING_STATE
+            binding.buttonInProgress.root -> if (it.isSelected) null else State.IN_PROGRESS_STATE
+            binding.buttonFinished.root -> if (it.isSelected) null else State.FINISHED_STATE
             else -> null
         }
         viewModel.setState(newState)
@@ -144,14 +143,15 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     }
     //endregion
 
-    //region Private methods
-    private fun initializeUI() {
+    //region Protected methods
+    override fun initializeUi() {
+        super.initializeUi()
 
         val application = activity?.application
         viewModel = ViewModelProvider(
             this,
             GamesViewModelFactory(application)
-        ).get(GamesViewModel::class.java)
+        )[GamesViewModel::class.java]
         setupBindings()
 
         with(binding) {
@@ -168,7 +168,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
             gamesAdapter = GamesAdapter(
                 this@GamesFragment.viewModel.games.value ?: listOf(),
-                this@GamesFragment.viewModel.platforms,
                 null,
                 this@GamesFragment
             )
@@ -199,10 +198,12 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             lifecycleOwner = this@GamesFragment
         }
     }
+    //endregion
 
+    //region Private methods
     private fun setupBindings() {
 
-        viewModel.gamesLoading.observe(viewLifecycleOwner, { isLoading ->
+        viewModel.gamesLoading.observe(viewLifecycleOwner) { isLoading ->
 
             enableStateButtons(!isLoading)
             if (isLoading) {
@@ -210,21 +211,19 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             } else {
                 hideLoading()
             }
-        })
+        }
 
-        viewModel.gamesError.observe(viewLifecycleOwner, { error ->
+        viewModel.gamesError.observe(viewLifecycleOwner) { error ->
             manageError(error)
-        })
+        }
 
-        viewModel.games.observe(viewLifecycleOwner, {
+        viewModel.games.observe(viewLifecycleOwner) {
 
-            val today = Constants.stringToDate(
-                Constants.dateToString(
-                    Date(),
-                    Constants.getDateFormatToShow(viewModel.language),
-                    viewModel.language
-                ),
-                Constants.getDateFormatToShow(viewModel.language),
+            val today = Date().toString(
+                viewModel.dateFormatToShow,
+                viewModel.language
+            ).toDate(
+                viewModel.dateFormatToShow,
                 viewModel.language
             )
             val gamesToNotify = ArrayList<GameResponse>()
@@ -233,57 +232,231 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                     gamesToNotify.add(game)
             }
             if (gamesToNotify.isNotEmpty()) launchNotification(gamesToNotify)
-        })
+        }
 
-        viewModel.gamesCount.observe(viewLifecycleOwner, {
+        viewModel.gamesCount.observe(viewLifecycleOwner) {
             setGamesCount(it)
-            setTitle(it.size)
-        })
+        }
 
-        viewModel.gameDeleted.observe(viewLifecycleOwner, { position ->
+        viewModel.gameDeleted.observe(viewLifecycleOwner) { position ->
             position?.let {
                 gamesAdapter.notifyItemRemoved(position)
             }
-        })
+        }
 
-        viewModel.state.observe(viewLifecycleOwner, {
+        viewModel.state.observe(viewLifecycleOwner) {
 
             binding.apply {
-                buttonPending.isSelected = it == State.PENDING_STATE
-                buttonInProgress.isSelected = it == State.IN_PROGRESS_STATE
-                buttonFinished.isSelected = it == State.FINISHED_STATE
+                buttonPending.root.isSelected = it == State.PENDING_STATE
+                buttonInProgress.root.isSelected = it == State.IN_PROGRESS_STATE
+                buttonFinished.root.isSelected = it == State.FINISHED_STATE
             }
-        })
+        }
 
-        viewModel.filters.observe(viewLifecycleOwner, { filters ->
+        viewModel.filters.observe(viewLifecycleOwner) { filters ->
 
-            menu?.let {
-                it.findItem(R.id.action_filter).isVisible = filters == null
-                it.findItem(R.id.action_filter_on).isVisible = filters != null
-            }
-        })
+            menu?.findItem(R.id.action_filter)?.isVisible = filters == null
+            menu?.findItem(R.id.action_filter_fill)?.isVisible = filters != null
+        }
 
-        viewModel.scrollPosition.observe(viewLifecycleOwner, {
+        viewModel.scrollPosition.observe(viewLifecycleOwner) {
             when (it) {
 
                 ScrollPosition.TOP -> binding.recyclerViewGames.scrollToPosition(0)
                 ScrollPosition.END -> binding.recyclerViewGames.scrollToPosition(gamesAdapter.itemCount - 1)
                 else -> Unit
             }
-        })
+        }
     }
 
     private fun filter() {
 
-        val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
-        val prev = activity?.supportFragmentManager?.findFragmentByTag("filterPopup")
-        if (prev != null) {
-            ft.remove(prev)
+        val dialogBinding = DialogFragmentPopupFilterBinding.inflate(layoutInflater).apply {
+
+            chipGroupPlatforms.removeAllViews()
+            for (platform in Constants.PLATFORMS) {
+                chipGroupPlatforms.addChip(layoutInflater, platform.id, platform.name)
+            }
+            chipGroupGenres.removeAllViews()
+            for (genre in Constants.GENRES) {
+                chipGroupGenres.addChip(layoutInflater, genre.id, genre.name)
+            }
+            chipGroupFormats.removeAllViews()
+            for (format in Constants.FORMATS) {
+                chipGroupFormats.addChip(layoutInflater, format.id, format.name)
+            }
+            for (view in listOf(
+                textInputLayoutReleaseDateMin,
+                textInputLayoutReleaseDateMax,
+                textInputLayoutPurchaseDateMin,
+                textInputLayoutPurchaseDateMax
+            )) {
+                view.showDatePicker(
+                    requireActivity(),
+                    SharedPreferencesHelper.filterDateFormat
+                )
+            }
+            filter = viewModel.filters.value
         }
-        ft.addToBackStack(null)
-        val dialogFragment = PopupFilterDialogFragment(viewModel.filters.value, this)
-        dialogFragment.isCancelable = false
-        dialogFragment.show(ft, "filterPopup")
+        viewModel.filters.value?.let { filters ->
+
+            val platforms = filters.platforms
+            if (platforms.isNotEmpty()) {
+                for (child in dialogBinding.chipGroupPlatforms.children) {
+                    (child as Chip).isChecked = platforms.firstOrNull { it == child.tag } != null
+                }
+            }
+            val genres = filters.genres
+            if (genres.isNotEmpty()) {
+                for (child in dialogBinding.chipGroupGenres.children) {
+                    (child as Chip).isChecked = genres.firstOrNull { it == child.tag } != null
+                }
+            }
+            val formats = filters.formats
+            if (formats.isNotEmpty()) {
+                for (child in dialogBinding.chipGroupFormats.children) {
+                    (child as Chip).isChecked = formats.firstOrNull { it == child.tag } != null
+                }
+            }
+        }
+
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
+
+                val platforms: ArrayList<String> = arrayListOf()
+                for (childId in dialogBinding.chipGroupPlatforms.checkedChipIds) {
+                    dialogBinding.chipGroupPlatforms.children.find { child ->
+                        child.id == childId
+                    }?.tag?.let { tag ->
+                        platforms.add("$tag")
+                    }
+                }
+
+                val genres: ArrayList<String> = arrayListOf()
+                for (childId in dialogBinding.chipGroupGenres.checkedChipIds) {
+                    dialogBinding.chipGroupGenres.children.find { child ->
+                        child.id == childId
+                    }?.tag?.let { tag ->
+                        genres.add("$tag")
+                    }
+                }
+
+                val formats: ArrayList<String> = arrayListOf()
+                for (childId in dialogBinding.chipGroupFormats.checkedChipIds) {
+                    dialogBinding.chipGroupFormats.children.find { child ->
+                        child.id == childId
+                    }?.tag?.let { tag ->
+                        formats.add("$tag")
+                    }
+                }
+
+                val minScore = (dialogBinding.ratingBarMin.rating * 2).toDouble()
+                val maxScore = (dialogBinding.ratingBarMax.rating * 2).toDouble()
+
+                val minReleaseDate = dialogBinding.textInputLayoutReleaseDateMin.getValue().toDate(
+                    viewModel.filterDateFormat,
+                    viewModel.language
+                )
+                val maxReleaseDate = dialogBinding.textInputLayoutReleaseDateMax.getValue().toDate(
+                    viewModel.filterDateFormat,
+                    viewModel.language
+                )
+
+                val minPurchaseDate =
+                    dialogBinding.textInputLayoutPurchaseDateMin.getValue().toDate(
+                        viewModel.filterDateFormat,
+                        viewModel.language
+                    )
+                val maxPurchaseDate =
+                    dialogBinding.textInputLayoutPurchaseDateMax.getValue().toDate(
+                        viewModel.filterDateFormat,
+                        viewModel.language
+                    )
+
+                var minPrice = 0.0
+                try {
+                    minPrice = dialogBinding.textInputLayoutPriceMin.getValue().toDouble()
+                } catch (e: Exception) {
+                }
+                var maxPrice = 0.0
+                try {
+                    maxPrice = dialogBinding.textInputLayoutPriceMax.getValue().toDouble()
+                } catch (e: Exception) {
+                }
+
+                val isGoty = dialogBinding.radioButtonGotyYes.isChecked
+                val isLoaned = dialogBinding.radioButtonLoanedYes.isChecked
+                val hasSaga = dialogBinding.radioButtonSagaYes.isChecked
+                val hasSongs = dialogBinding.radioButtonSongsYes.isChecked
+
+                val filters = FilterModel(
+                    platforms,
+                    genres,
+                    formats,
+                    minScore,
+                    maxScore,
+                    minReleaseDate,
+                    maxReleaseDate,
+                    minPurchaseDate,
+                    maxPurchaseDate,
+                    minPrice,
+                    maxPrice,
+                    isGoty,
+                    isLoaned,
+                    hasSaga,
+                    hasSongs
+                )
+
+                if (
+                    platforms.isEmpty() &&
+                    genres.isEmpty() &&
+                    formats.isEmpty() &&
+                    minScore == 0.0 &&
+                    maxScore == 10.0 &&
+                    minReleaseDate == null &&
+                    maxReleaseDate == null &&
+                    minPurchaseDate == null &&
+                    maxPurchaseDate == null &&
+                    minPrice == 0.0 &&
+                    maxPrice == 0.0 &&
+                    !isGoty &&
+                    !isLoaned &&
+                    !hasSaga &&
+                    !hasSongs
+                ) {
+                    viewModel.applyFilters(null)
+                } else {
+                    viewModel.applyFilters(filters)
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setNeutralButton(resources.getString(R.string.reset)) { _, _ -> }
+            .create()
+        dialog.show()
+
+        /*
+        This is needed to avoid the auto dismiss
+         */
+        dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener {
+            dialogBinding.apply {
+
+                for (child in chipGroupPlatforms.children) {
+                    (child as Chip).isChecked = false
+                }
+                for (child in chipGroupGenres.children) {
+                    (child as Chip).isChecked = false
+                }
+                for (child in chipGroupFormats.children) {
+                    (child as Chip).isChecked = false
+                }
+                filter = null
+            }
+        }
     }
 
     @SuppressLint("UnspecifiedImmutableFlag")
@@ -293,8 +466,8 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         var gameNames = Constants.EMPTY_VALUE
         for (game in games) {
 
-            val intent = Intent(requireContext(), GameDetailActivity::class.java).apply {
-                putExtra(Constants.GAME_ID, game.id)
+            val intent = Intent(requireContext(), GameDetailFragment::class.java).apply {
+                putExtra("gameId", game.id)
             }
             val pendingIntent = PendingIntent.getActivity(
                 requireContext(),
@@ -317,9 +490,8 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                         .setContentText(
                             resources.getString(
                                 R.string.notification_description,
-                                Constants.dateToString(
-                                    Date(),
-                                    Constants.getDateFormatToShow(viewModel.language),
+                                Date().toString(
+                                    viewModel.dateFormatToShow,
                                     viewModel.language
                                 ),
                                 game.name
@@ -380,29 +552,19 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         val finishedGamesCount = filteredGames.filter { it == State.FINISHED_STATE }.size
 
         with(binding) {
-            buttonPending.text_view_subtitle.text = "$pendingGamesCount"
-            buttonInProgress.text_view_subtitle.text = "$inProgressGamesCount"
-            buttonFinished.text_view_subtitle.text = "$finishedGamesCount"
+            buttonPending.subtitle = "$pendingGamesCount"
+            buttonInProgress.subtitle = "$inProgressGamesCount"
+            buttonFinished.subtitle = "$finishedGamesCount"
         }
-    }
-
-    private fun setTitle(gamesCount: Int) {
-
-        val title = resources.getQuantityString(
-            R.plurals.games_number_title,
-            gamesCount,
-            Constants.getFormattedNumber(gamesCount)
-        )
-        (activity as AppCompatActivity?)?.supportActionBar?.title = title
     }
 
     private fun enableStateButtons(enable: Boolean) {
         with(binding) {
 
             swipeRefreshLayout.isRefreshing = !enable
-            buttonPending.isEnabled = enable
-            buttonInProgress.isEnabled = enable
-            buttonFinished.isEnabled = enable
+            buttonPending.root.isEnabled = enable
+            buttonInProgress.root.isEnabled = enable
+            buttonFinished.root.isEnabled = enable
         }
     }
 
@@ -424,7 +586,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 override fun onQueryTextSubmit(query: String): Boolean {
 
                     menuItem.collapseActionView()
-                    Constants.hideSoftKeyboard(requireActivity())
+                    requireActivity().hideSoftKeyboard()
                     return true
                 }
             })
@@ -433,9 +595,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             object : MenuItem.OnActionExpandListener {
                 override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
                     menu.let {
-                        it.findItem(R.id.action_synchronize).isVisible = false
+//                        it.findItem(R.id.action_synchronize).isVisible = false
                         it.findItem(R.id.action_filter).isVisible = false
-                        it.findItem(R.id.action_filter_on).isVisible = false
+                        it.findItem(R.id.action_filter_fill).isVisible = false
                         it.findItem(R.id.action_sort).isVisible = false
                     }
                     return true
@@ -443,9 +605,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
                 override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
                     menu.let {
-                        it.findItem(R.id.action_synchronize).isVisible = true
+//                        it.findItem(R.id.action_synchronize).isVisible = true
                         it.findItem(R.id.action_filter).isVisible = viewModel.filters.value == null
-                        it.findItem(R.id.action_filter_on).isVisible =
+                        it.findItem(R.id.action_filter_fill).isVisible =
                             viewModel.filters.value != null
                         it.findItem(R.id.action_sort).isVisible = true
                     }
@@ -457,10 +619,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         setupSearchView(Constants.EMPTY_VALUE)
     }
     //endregion
-
-    enum class ScrollPosition {
-        TOP, MIDDLE, END
-    }
 
     inner class SwipeController : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
@@ -476,8 +634,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
             val position = viewHolder.adapterPosition
             if (direction == ItemTouchHelper.LEFT) {
-                showPopupConfirmationDialog(
-                    resources.getString(R.string.game_detail_delete_confirmation),
+                showPopupConfirmationDialog(resources.getString(R.string.game_detail_delete_confirmation),
                     {
                         viewModel.deleteGame(position)
                     },
@@ -519,7 +676,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                         c.drawRect(background, paint)
 
                         val icon =
-                            ContextCompat.getDrawable(context, R.drawable.ic_remove_game_dark)
+                            ContextCompat.getDrawable(context, R.drawable.ic_remove_game)
                         icon?.setBounds(
                             itemView.right - 2 * width,
                             itemView.top + width,

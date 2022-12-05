@@ -5,35 +5,42 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import es.upsa.mimo.gamercollection.base.BaseModel
-import es.upsa.mimo.gamercollection.daos.*
-import es.upsa.mimo.gamercollection.models.responses.*
+import es.upsa.mimo.gamercollection.daos.GameDao
+import es.upsa.mimo.gamercollection.daos.SagaDao
+import es.upsa.mimo.gamercollection.daos.SongDao
+import es.upsa.mimo.gamercollection.models.responses.GameResponse
+import es.upsa.mimo.gamercollection.models.responses.SagaResponse
+import es.upsa.mimo.gamercollection.models.responses.SongResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 
 @Database(
     entities = [
-        FormatResponse::class,
         GameResponse::class,
-        GenreResponse::class,
-        PlatformResponse::class,
         SagaResponse::class,
-        SongResponse::class,
-        StateResponse::class], version = 1
+        SongResponse::class], version = 2
 )
 @TypeConverters(ListConverter::class, DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun formatDao(): FormatDao
     abstract fun gameDao(): GameDao
-    abstract fun genreDao(): GenreDao
-    abstract fun platformDao(): PlatformDao
     abstract fun sagaDao(): SagaDao
-    abstract fun stateDao(): StateDao
+    abstract fun songDao(): SongDao
 
     companion object {
 
         //region Private properties
         private var instance: AppDatabase? = null
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("DROP TABLE Format")
+                database.execSQL("DROP TABLE Genre")
+                database.execSQL("DROP TABLE Platform")
+                database.execSQL("DROP TABLE State")
+            }
+        }
         //endregion
 
         //region Public methods
@@ -42,11 +49,14 @@ abstract class AppDatabase : RoomDatabase() {
             if (instance == null) {
                 synchronized(AppDatabase::class) {
 
-                    instance = Room.databaseBuilder(
-                        context.applicationContext,
-                        AppDatabase::class.java,
-                        Constants.DATABASE_NAME
-                    ).build()
+                    instance = Room
+                        .databaseBuilder(
+                            context.applicationContext,
+                            AppDatabase::class.java,
+                            Constants.DATABASE_NAME
+                        )
+                        .addMigrations(MIGRATION_1_2)
+                        .build()
                 }
             }
             return instance!!

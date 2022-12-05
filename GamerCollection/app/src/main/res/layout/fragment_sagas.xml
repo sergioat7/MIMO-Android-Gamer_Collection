@@ -12,7 +12,7 @@
             />
 
         <import
-            type="es.upsa.mimo.gamercollection.fragments.GamesFragment.ScrollPosition"
+            type="es.upsa.mimo.gamercollection.utils.ScrollPosition"
             />
 
         <variable
@@ -46,6 +46,20 @@
             android:layout_height="match_parent"
             >
 
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:menu="@menu/sagas_toolbar_menu"
+                app:title="@{@plurals/sagas_number_title(viewModel.sagas.size(), viewModel.sagas.size())}"
+                tools:title="12 sagas"
+                style="@style/Widget.GamerCollection.Toolbar"
+                />
+
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_refresh_layout"
                 android:layout_width="0dp"
@@ -53,13 +67,14 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"
                 >
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_sagas"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    tools:listitem="@layout/item_saga"
                     />
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -68,34 +83,40 @@
                 android:id="@+id/floating_action_button_start_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="@{viewModel.sagas.empty || position == ScrollPosition.TOP ? View.GONE : View.VISIBLE}"
+                android:layout_marginTop="@dimen/margin_12dp"
+                android:layout_marginEnd="@dimen/margin_12dp"
                 android:onClick="@{fragment::goToStartEndList}"
+                android:visibility="@{viewModel.sagas.empty || position == ScrollPosition.TOP ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="@+id/swipe_refresh_layout"
                 app:layout_constraintTop_toTopOf="@+id/swipe_refresh_layout"
-                style="@style/Widget.GamerCollection.ImageButton.PositionList.Start.Image"
+                app:srcCompat="@drawable/ic_double_arrow_up"
+                style="@style/Widget.GamerCollection.FloatingActionButton.ListPosition"
                 />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/floating_action_button_end_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="@{viewModel.sagas.empty || position == ScrollPosition.END ? View.GONE : View.VISIBLE}"
+                android:layout_marginEnd="@dimen/margin_12dp"
+                android:layout_marginBottom="@dimen/margin_12dp"
                 android:onClick="@{fragment::goToStartEndList}"
+                android:visibility="@{viewModel.sagas.empty || position == ScrollPosition.END ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@+id/swipe_refresh_layout"
                 app:layout_constraintEnd_toEndOf="@+id/swipe_refresh_layout"
-                style="@style/Widget.GamerCollection.ImageButton.PositionList.End.Image"
+                app:srcCompat="@drawable/ic_double_arrow_down"
+                style="@style/Widget.GamerCollection.FloatingActionButton.ListPosition"
                 />
 
-            <es.upsa.mimo.gamercollection.customviews.EmptyListLayout
-                android:id="@+id/layout_empty_list"
+            <include
+                layout="@layout/content_no_results"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:visibility="@{viewModel.sagas.empty ? View.VISIBLE : View.GONE}"
+                app:image="@{@drawable/ic_sagas}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                style="@style/Widget.GamerCollection.SagasEmptyLayout"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

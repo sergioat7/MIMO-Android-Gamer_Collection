@@ -37,7 +37,7 @@
                 android:id="@+id/recycler_view_songs"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginBottom="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_12dp"
                 android:visibility="@{viewModel.songs.empty ? View.GONE : View.VISIBLE}"
                 app:songs="@{viewModel.songs}"
                 app:editable="@{editable}"
@@ -45,30 +45,35 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:listitem="@layout/song_item"
+                tools:listitem="@layout/item_song"
                 />
 
-            <es.upsa.mimo.gamercollection.customviews.EmptyListLayout
-                android:id="@+id/layout_empty_list"
+            <include
+                layout="@layout/content_no_results"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginBottom="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_12dp"
                 android:visibility="@{viewModel.songs.empty ? View.VISIBLE : View.GONE}"
+                app:image="@{@drawable/ic_song}"
                 app:layout_constraintBottom_toTopOf="@+id/button_add_song"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                style="@style/Widget.GamerCollection.SongsEmptyLayout"
                 />
 
             <Button
                 android:id="@+id/button_add_song"
+                android:layout_width="@dimen/size_200dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_20dp"
+                android:layout_marginEnd="@dimen/margin_20dp"
+                android:layout_marginBottom="@dimen/margin_12dp"
+                android:text="@string/add"
                 android:visibility="@{editable ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                style="@style/Widget.GamerCollection.Button.Rounded.Action.AddSong"
+                style="@style/Widget.GamerCollection.Button.Main"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
