@@ -4,16 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
-import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
-import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.repositories.SagaRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
 class SagasViewModel @Inject constructor(
-    private val platformRepository: PlatformRepository,
     private val sagaRepository: SagaRepository
 ) : ViewModel() {
 
@@ -27,9 +24,7 @@ class SagasViewModel @Inject constructor(
 
     //region Public properties
     val swipeRefresh: Boolean
-        get() = SharedPreferencesHelper.getSwipeRefresh()
-    val platforms: List<PlatformResponse>
-        get() = platformRepository.getPlatformsDatabase()
+        get() = SharedPreferencesHelper.swipeRefresh
     val sagasLoading: LiveData<Boolean> = _sagasLoading
     val sagasError: LiveData<ErrorResponse> = _sagasError
     val sagas: LiveData<List<SagaResponse>> = _sagas

@@ -4,27 +4,27 @@
     >
 
     <item
-        android:id="@+id/navigation_games"
-        android:icon="@drawable/bottom_navigation_games_images"
+        android:id="@+id/nav_graph_games"
+        android:icon="@drawable/ic_games"
         android:title="@string/games"
         />
 
     <item
-        android:id="@+id/navigation_game_search"
-        android:icon="@drawable/bottom_navigation_game_search_images"
+        android:id="@+id/nav_graph_search"
+        android:icon="@drawable/ic_games_search"
         android:title="@string/game_search"
         />
 
     <item
-        android:id="@+id/navigation_sagas"
-        android:icon="@drawable/bottom_navigation_sagas_images"
+        android:id="@+id/nav_graph_sagas"
+        android:icon="@drawable/ic_sagas"
         android:title="@string/sagas"
         />
 
     <item
-        android:id="@+id/navigation_profile"
-        android:icon="@drawable/bottom_navigation_profile_images"
-        android:title="@string/profile"
+        android:id="@+id/nav_graph_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings"
         />
 
 </menu>

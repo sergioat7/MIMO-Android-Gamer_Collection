@@ -8,16 +8,12 @@ import es.upsa.mimo.gamercollection.models.login.AuthData
 import es.upsa.mimo.gamercollection.models.login.LoginFormState
 import es.upsa.mimo.gamercollection.models.login.UserData
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
-import es.upsa.mimo.gamercollection.repositories.*
+import es.upsa.mimo.gamercollection.repositories.UserRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
 class RegisterViewModel @Inject constructor(
-    private val formatRepository: FormatRepository,
-    private val genreRepository: GenreRepository,
-    private val platformRepository: PlatformRepository,
-    private val stateRepository: StateRepository,
     private val userRepository: UserRepository
 ) : ViewModel() {
 
@@ -40,13 +36,14 @@ class RegisterViewModel @Inject constructor(
         userRepository.register(username, password, {
             userRepository.login(username, password, { token ->
 
-                val userData = UserData(username, password, false)
-                val authData = AuthData(token)
+                val userData = UserData(username, password, true)
                 SharedPreferencesHelper.run {
-                    storeUserData(userData)
-                    storeCredentials(authData)
+                    this.userData = userData
+                    this.credentials = AuthData(token)
                 }
-                loadContent(userData)
+
+                _registerLoading.value = false
+                _registerError.value = null
             }, {
                 _registerError.value = it
             })
@@ -74,34 +71,6 @@ class RegisterViewModel @Inject constructor(
             isDataValid = false
         }
         _registerForm.value = LoginFormState(usernameError, passwordError, isDataValid)
-    }
-    //endregion
-
-    //region Private methods
-    private fun loadContent(userData: UserData) {
-
-        formatRepository.loadFormats({
-            genreRepository.loadGenres({
-                platformRepository.loadPlatforms({
-                    stateRepository.loadStates({
-
-                        userData.isLoggedIn = true
-                        SharedPreferencesHelper.storeUserData(userData)
-
-                        _registerLoading.value = false
-                        _registerError.value = null
-                    }, {
-                        _registerError.value = it
-                    })
-                }, {
-                    _registerError.value = it
-                })
-            }, {
-                _registerError.value = it
-            })
-        }, {
-            _registerError.value = it
-        })
     }
     //endregion
 }

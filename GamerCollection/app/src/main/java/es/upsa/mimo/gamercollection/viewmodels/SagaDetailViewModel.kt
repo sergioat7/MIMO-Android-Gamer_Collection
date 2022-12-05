@@ -6,22 +6,19 @@ import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
-import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
-import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.repositories.SagaRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
 class SagaDetailViewModel @Inject constructor(
     private val gameRepository: GameRepository,
-    private val platformRepository: PlatformRepository,
     private val sagaRepository: SagaRepository
 ) : ViewModel() {
 
     //region Private properties
-    private var sagaId: Int? = null
+    private var sagaId: Int = 0
     private val _sagaDetailLoading = MutableLiveData<Boolean>()
     private val _sagaDetailSuccessMessage = MutableLiveData<Int>()
     private val _sagaDetailError = MutableLiveData<ErrorResponse?>()
@@ -31,8 +28,6 @@ class SagaDetailViewModel @Inject constructor(
     //region Public properties
     val games: List<GameResponse>
         get() = gameRepository.getGamesDatabase()
-    val platforms: List<PlatformResponse>
-        get() = platformRepository.getPlatformsDatabase()
     val sagaDetailLoading: LiveData<Boolean> = _sagaDetailLoading
     val sagaDetailSuccessMessage: LiveData<Int> = _sagaDetailSuccessMessage
     val sagaDetailError: LiveData<ErrorResponse?> = _sagaDetailError
@@ -42,19 +37,19 @@ class SagaDetailViewModel @Inject constructor(
     //region Public methods
     fun getSaga() {
 
-        sagaId?.let {
+        if (sagaId >= 0) {
 
             _sagaDetailLoading.value = true
-            _saga.value = sagaRepository.getSagaDatabase(it)
+            _saga.value = sagaRepository.getSagaDatabase(sagaId)
             _sagaDetailLoading.value = false
-        } ?: run {
+        } else {
             _saga.value = null
         }
     }
 
     fun getOrderedGames(games: List<GameResponse>): List<GameResponse> {
 
-        return when (SharedPreferencesHelper.getSortingKey()) {
+        return when (SharedPreferencesHelper.sortParam) {
             "platform" -> games.sortedBy { it.platform }
             "releaseDate" -> games.sortedBy { it.releaseDate }
             "purchaseDate" -> games.sortedBy { it.purchaseDate }
@@ -66,12 +61,7 @@ class SagaDetailViewModel @Inject constructor(
 
     fun saveSaga(name: String, games: List<GameResponse>) {
 
-        val newSaga = SagaResponse(
-            sagaId ?: 0,
-            name,
-            games
-        )
-
+        val newSaga = SagaResponse(sagaId, name, games)
         if (_saga.value != null) {
             setSaga(newSaga)
         } else {
@@ -96,7 +86,7 @@ class SagaDetailViewModel @Inject constructor(
         }
     }
 
-    fun setSagaId(sagaId: Int?) {
+    fun setSagaId(sagaId: Int) {
         this.sagaId = sagaId
     }
     //endregion

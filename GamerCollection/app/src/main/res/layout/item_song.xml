@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <import
+            type="android.view.View"
+            />
+
+        <variable
+            name="song"
+            type="es.upsa.mimo.gamercollection.models.responses.SongResponse"
+            />
+
+        <variable
+            name="editable"
+            type="Boolean"
+            />
+
+        <variable
+            name="onItemClickListener"
+            type="es.upsa.mimo.gamercollection.adapters.OnItemClickListener"
+            />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_8dp"
+        >
+
+        <ImageView
+            android:id="@+id/image_view_song"
+            android:layout_width="@dimen/size_40dp"
+            android:layout_height="@dimen/size_40dp"
+            android:src="@drawable/ic_song"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/text_view_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginEnd="@dimen/margin_16dp"
+            android:text="@{song.name}"
+            app:layout_constraintEnd_toStartOf="@+id/image_view_remove"
+            app:layout_constraintStart_toEndOf="@+id/image_view_song"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Song title"
+            style="@style/Widget.GamerCollection.TextView.Title.SongItem"
+            />
+
+        <TextView
+            android:id="@+id/text_view_singer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_4dp"
+            android:layout_marginEnd="@dimen/margin_16dp"
+            android:text="@{song.singer}"
+            app:layout_constraintEnd_toStartOf="@+id/image_view_remove"
+            app:layout_constraintStart_toEndOf="@+id/image_view_song"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_name"
+            tools:text="Singer"
+            style="@style/Widget.GamerCollection.TextView.Description.SongItem"
+            />
+
+        <TextView
+            android:id="@+id/text_view_url"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_4dp"
+            android:layout_marginEnd="@dimen/margin_16dp"
+            android:text="@{song.url}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/image_view_remove"
+            app:layout_constraintStart_toEndOf="@+id/image_view_song"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_singer"
+            tools:text="Url"
+            style="@style/Widget.GamerCollection.TextView.Description.SongItem"
+            />
+
+        <ImageView
+            android:id="@+id/image_view_remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_12dp"
+            android:onClick="@{() -> onItemClickListener.onItemClick(song.id)}"
+            android:src="@drawable/ic_trash"
+            android:visibility="@{editable ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

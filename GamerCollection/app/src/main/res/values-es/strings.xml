@@ -8,11 +8,11 @@
     <string name="save">Guardar</string>
     <string name="add">Añadir</string>
     <string name="empty_list">La lista está vacía</string>
-    <string name="ascending">Ascendente</string>
-    <string name="descending">Descendente</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
     <string name="loading">Cargando…</string>
+
+    <string name="new_version_changes">Debido a problemas con los servidores, a partir de ahora la aplicación sólo funcionará en local. Todos los juegos que guardes quedarán almacenados sola y exclusivamente en la aplicación, por tanto, si la desinstalas, perderás toda la información almacenada. Los juegos que ya tuvieras guardados seguirán estando disponibles mientras no desinstales la aplicación.</string>
 
     // Login
     <string name="login_username">Usuario</string>
@@ -23,6 +23,8 @@
     <string name="invalid_username">Usuario no válido</string>
     <string name="invalid_password">La contraseña debe tener más de 3 carácteres</string>
     <string name="username_info">El usuario sólo es necesario para identificarte y poder diferenciar tus juegos de los de otro usuario.\n\nSin embargo, al no guardar ningún tipo de información personal, si se te olvida la contraseña no podrás recuperarla.\n\nSi esto pasa, contacta con el desarrollador de la aplicación, puedes encontrar su correo electrónico en la ficha de la aplicación en Google Play Store.</string>
+    <string name="username_not_exist">El usuario no existe</string>
+    <string name="wrong_password">La contraseña no es correcta</string>
 
     // Register
     <string name="registration_repeat_password">Repetir contraseña</string>
@@ -48,6 +50,7 @@
     // Game detail
     <string name="game_detail_placeholder_name">Añade un nombre</string>
     <string name="game_detail_image_modal_title">Introduce un enlace válido</string>
+    <string name="game_detail_platform">Plataforma</string>
     <string name="game_detail_select_platform">Selecciona una plataforma</string>
     <string name="game_detail_genre">Género</string>
     <string name="game_detail_select_genre">Selecciona un género</string>
@@ -102,21 +105,14 @@
     <string name="saga_created">¡Saga creada!</string>
     <string name="saga_removed">¡Saga eliminada!</string>
 
-    // Profile
-    <string name="profile">Mi Perfil</string>
+    // Settings
+    <string name="settings">Configuración</string>
     <string name="app_language">Idioma de la aplicación</string>
     <string name="english">Inglés</string>
     <string name="spanish">Español</string>
     <string name="games_sorting_parameter">Parámetro de ordenación de los juegos</string>
-    <string name="name">Nombre</string>
-    <string name="platform">Plataforma</string>
-    <string name="release_date">Fecha de publicación</string>
-    <string name="purchase_date">Fecha de compra</string>
-    <string name="price">Precio</string>
-    <string name="score">Puntuación</string>
     <string name="swipe_refresh_enabled_title">Habilitar actualización de lista</string>
     <string name="app_theme">Tema</string>
-    <string name="choose_a_theme">Elige un tema</string>
     <string-array name="app_theme_values">
         <item>Predeterminado por el sistema</item>
         <item>Claro</item>
@@ -149,6 +145,18 @@
 
     // Sort picker
     <string name="sort_title">Ordenar por</string>
+    <string-array name="sort_param_values">
+        <item>Nombre</item>
+        <item>Plataforma</item>
+        <item>Fecha de publicación</item>
+        <item>Fecha de compra</item>
+        <item>Precio</item>
+        <item>Puntuación</item>
+    </string-array>
+    <string-array name="sort_order_values">
+        <item>Ascendente</item>
+        <item>Descendente</item>
+    </string-array>
 
     // Notifications
     <string name="channel_name">Aviso de lanzamiento</string>
@@ -162,7 +170,5 @@
 
     // Errors
     <string name="error_server">Hubo un error al recuperar los datos. Por favor, inténtalo otra vez</string>
-    <string name="error_registration_empty_data">El usuario y la contraseña no pueden estar vacíos</string>
-    <string name="error_registration_different_passwords">Las contraseñas no coinciden</string>
-    <string name="error_image_url">La imagen no se ha podido cargar</string>
+    <string name="error_server_connection">Hubo un error al recuperar los datos. Por favor, revisa tu conexión a internet e inténtalo otra vez</string>
 </resources>

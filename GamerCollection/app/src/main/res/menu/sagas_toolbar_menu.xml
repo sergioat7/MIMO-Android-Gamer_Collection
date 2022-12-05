@@ -5,16 +5,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
-    <item
-        android:id="@+id/action_synchronize"
-        android:icon="@drawable/ic_synchronize_light"
-        android:title=""
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction"
-        />
+<!--    <item-->
+<!--        android:id="@+id/action_synchronize"-->
+<!--        android:icon="@drawable/ic_synchronize"-->
+<!--        android:title=""-->
+<!--        app:showAsAction="always"-->
+<!--        tools:ignore="AlwaysShowAction"-->
+<!--        />-->
 
     <item android:id="@+id/action_add"
-        android:icon="@drawable/ic_add_saga_light"
+        android:icon="@drawable/ic_add_saga"
         android:title=""
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction"
@@ -22,7 +22,7 @@
 
     <item
         android:id="@+id/action_search_sagas"
-        android:icon="@drawable/ic_search_light"
+        android:icon="@drawable/ic_search"
         android:title=""
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="collapseActionView|always"

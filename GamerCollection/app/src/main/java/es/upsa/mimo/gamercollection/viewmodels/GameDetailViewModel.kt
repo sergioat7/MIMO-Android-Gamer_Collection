@@ -6,18 +6,15 @@ import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
-import es.upsa.mimo.gamercollection.models.responses.PlatformResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
-import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import javax.inject.Inject
 
 class GameDetailViewModel @Inject constructor(
-    private val gameRepository: GameRepository,
-    private val platformRepository: PlatformRepository
+    private val gameRepository: GameRepository
 ) : ViewModel() {
 
     //region Private properties
-    private var gameId: Int? = null
+    private var gameId: Int = -1
     private var isRawgGame: Boolean = false
     private val _gameDetailLoading = MutableLiveData<Boolean>()
     private val _gameDetailSuccessMessage = MutableLiveData<Int>()
@@ -26,8 +23,6 @@ class GameDetailViewModel @Inject constructor(
     //endregion
 
     //region Public properties
-    val platforms: List<PlatformResponse>
-        get() = platformRepository.getPlatformsDatabase()
     val gameDetailLoading: LiveData<Boolean> = _gameDetailLoading
     val gameDetailSuccessMessage: LiveData<Int> = _gameDetailSuccessMessage
     val gameDetailError: LiveData<ErrorResponse> = _gameDetailError
@@ -37,12 +32,11 @@ class GameDetailViewModel @Inject constructor(
     //region Public methods
     fun getGame() {
 
-        gameId?.let { id ->
-
+        if (gameId >= 0) {
             _gameDetailLoading.value = true
             if (isRawgGame) {
 
-                gameRepository.getRawgGame(id, { game ->
+                gameRepository.getRawgGame(gameId, { game ->
 
                     _game.value = game
                     _gameDetailLoading.value = false
@@ -51,10 +45,10 @@ class GameDetailViewModel @Inject constructor(
                 })
             } else {
 
-                _game.value = gameRepository.getGameDatabase(id)
+                _game.value = gameRepository.getGameDatabase(gameId)
                 _gameDetailLoading.value = false
             }
-        } ?: run {
+        } else {
             _game.value = null
         }
     }
@@ -97,7 +91,7 @@ class GameDetailViewModel @Inject constructor(
         }
     }
 
-    fun setGameId(gameId: Int?) {
+    fun setGameId(gameId: Int) {
         this.gameId = gameId
     }
 

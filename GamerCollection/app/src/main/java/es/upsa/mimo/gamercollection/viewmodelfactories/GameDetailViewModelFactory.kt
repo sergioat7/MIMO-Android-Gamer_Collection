@@ -5,22 +5,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import es.upsa.mimo.gamercollection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.repositories.GameRepository
-import es.upsa.mimo.gamercollection.repositories.PlatformRepository
 import es.upsa.mimo.gamercollection.viewmodels.GameDetailViewModel
 import javax.inject.Inject
 
 class GameDetailViewModelFactory(
     private val application: Application?,
-    private val gameId: Int?,
+    private val gameId: Int,
     private val isRawgGame: Boolean
 ) : ViewModelProvider.Factory {
 
     //region Public properties
     @Inject
     lateinit var gameRepository: GameRepository
-
-    @Inject
-    lateinit var platformRepository: PlatformRepository
 
     @Inject
     lateinit var gameDetailViewModel: GameDetailViewModel

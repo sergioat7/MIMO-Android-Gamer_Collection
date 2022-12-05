@@ -1,52 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/layout_state_button"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     >
 
-    <TextView
-        android:id="@+id/text_view_title"
-        android:layout_width="wrap_content"
+    <data>
+
+        <import
+            type="android.view.View"
+            />
+
+        <import
+            type="es.upsa.mimo.gamercollection.extensions.StringExtensionsKt"
+            />
+
+        <variable
+            name="title"
+            type="String"
+            />
+
+        <variable
+            name="subtitle"
+            type="String"
+            />
+
+        <variable
+            name="lineColor"
+            type="android.graphics.drawable.Drawable"
+            />
+
+        <variable
+            name="background"
+            type="android.graphics.drawable.Drawable"
+            />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_state_button"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_tiny"
-        android:layout_marginTop="@dimen/margin_tiny"
-        android:layout_marginEnd="@dimen/margin_tiny"
-        android:fontFamily="@font/roboto_regular"
-        android:maxLines="1"
-        android:textColor="@drawable/state_button_text_color"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        android:background="@{background}"
+        tools:background="@color/colorSecondary"
+        >
 
-    <TextView
-        android:id="@+id/text_view_subtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_tiny"
-        android:layout_marginEnd="@dimen/margin_tiny"
-        android:fontFamily="@font/roboto_bold"
-        android:maxLines="1"
-        android:textColor="@drawable/state_button_text_color"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_title"
-        />
+        <TextView
+            android:id="@+id/text_view_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_4dp"
+            android:layout_marginTop="@dimen/margin_4dp"
+            android:layout_marginEnd="@dimen/margin_4dp"
+            android:text="@{title}"
+            android:visibility="@{title.empty ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/games_filter_button_title_pending"
+            style="@style/Widget.GamerCollection.TextView.Description.StateButton"
+            />
 
-    <View
-        android:id="@+id/line_view_color"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/margin_tiny"
-        android:layout_marginTop="@dimen/margin_tiny"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_subtitle"
-        />
+        <TextView
+            android:id="@+id/text_view_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_4dp"
+            android:layout_marginEnd="@dimen/margin_4dp"
+            android:text="@{subtitle}"
+            android:visibility="@{StringExtensionsKt.isNotBlank(subtitle) ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_title"
+            tools:text="25"
+            style="@style/Widget.GamerCollection.TextView.Title.StateButton"
+            />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:id="@+id/line_view_color"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/margin_4dp"
+            android:layout_marginTop="@dimen/margin_4dp"
+            android:background="@{lineColor}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_subtitle"
+            tools:background="@drawable/finished_state_button_bottom_line"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

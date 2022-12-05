@@ -3,7 +3,7 @@
 
     <item android:state_selected="true">
         <shape android:shape="rectangle">
-            <corners android:radius="@dimen/radius_tiny" />
+            <corners android:radius="@dimen/radius_5dp" />
             <stroke android:width="5px" android:color="@color/colorInProgress" />
             <solid android:color="@color/colorPrimary" />
         </shape>
@@ -11,7 +11,7 @@
 
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="@dimen/radius_tiny" />
+            <corners android:radius="@dimen/radius_5dp" />
             <stroke android:width="5px" android:color="@color/colorInProgress" />
             <solid android:color="@color/colorSecondary" />
         </shape>

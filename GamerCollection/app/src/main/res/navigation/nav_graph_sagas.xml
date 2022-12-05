@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Sergio Aragonés. All rights reserved.
+  ~ Created by Sergio Aragonés on 8/4/2022
+  -->
+
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_sagas"
+    app:startDestination="@id/sagasFragment"
+    >
+
+    <fragment
+        android:id="@+id/sagasFragment"
+        android:name="es.upsa.mimo.gamercollection.fragments.SagasFragment"
+        android:label="@string/sagas"
+        tools:layout="@layout/fragment_sagas"
+        >
+
+        <action
+            android:id="@+id/action_sagasFragment_to_sagaDetailFragment"
+            app:destination="@id/sagaDetailFragment"
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/wait_anim"
+            app:popEnterAnim="@anim/wait_anim"
+            app:popExitAnim="@anim/slide_right"
+            />
+
+        <action
+            android:id="@+id/action_sagasFragment_to_gameDetailFragment"
+            app:destination="@id/gameDetailFragment"
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/wait_anim"
+            app:popEnterAnim="@anim/wait_anim"
+            app:popExitAnim="@anim/slide_right"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/sagaDetailFragment"
+        android:name="es.upsa.mimo.gamercollection.fragments.SagaDetailFragment"
+        android:label="SagaDetailFragment"
+        tools:layout="@layout/fragment_saga_detail"
+        >
+
+        <argument
+            android:name="sagaId"
+            app:argType="integer"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/gameDetailFragment"
+        android:name="es.upsa.mimo.gamercollection.fragments.GameDetailFragment"
+        android:label="GameDetailFragment"
+        tools:layout="@layout/fragment_game_detail"
+        >
+
+        <argument
+            android:name="gameId"
+            app:argType="integer"
+            />
+
+        <argument
+            android:name="isRawgGame"
+            app:argType="boolean"
+            android:defaultValue="false"
+            />
+
+    </fragment>
+
+</navigation>

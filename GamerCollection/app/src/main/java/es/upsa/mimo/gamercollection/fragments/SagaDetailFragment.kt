@@ -1,52 +1,51 @@
 package es.upsa.mimo.gamercollection.fragments
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.os.Bundle
-import android.text.InputType
-import android.util.TypedValue
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.base.BindingFragment
+import es.upsa.mimo.gamercollection.databinding.DialogGamesBinding
 import es.upsa.mimo.gamercollection.databinding.FragmentSagaDetailBinding
-import es.upsa.mimo.gamercollection.extensions.setReadOnly
+import es.upsa.mimo.gamercollection.extensions.getValue
+import es.upsa.mimo.gamercollection.extensions.isDarkMode
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
-import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.SagaDetailViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.SagaDetailViewModel
-import kotlinx.android.synthetic.main.games_dialog.view.*
 
 class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemClickListener {
 
+    //region Protected properties
+    override val statusBarStyle = StatusBarStyle.SECONDARY
+    override val hasOptionsMenu = true
+    //endregion
+
     //region Private properties
+    private val args: SagaDetailFragmentArgs by navArgs()
     private lateinit var viewModel: SagaDetailViewModel
     private var menu: Menu? = null
-    private var sagaGames: List<GameResponse> = arrayListOf()
-    private var newGames: ArrayList<GameResponse> = arrayListOf()
+    private var newGames: MutableList<GameResponse> = mutableListOf()
     private val goBack = MutableLiveData<Boolean>()
     //endregion
 
     //region Lifecycle methods
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        setHasOptionsMenu(true)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeUI()
+
+        toolbar = binding.toolbar
+        initializeUi()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -71,14 +70,16 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
             }
             R.id.action_remove -> {
 
-                showPopupConfirmationDialog(resources.getString(R.string.saga_detail_delete_confirmation), {
-                    viewModel.deleteSaga()
-                })
+                showPopupConfirmationDialog(
+                    resources.getString(R.string.saga_detail_delete_confirmation),
+                    {
+                        viewModel.deleteSaga()
+                    })
                 return true
             }
             R.id.action_save -> {
 
-                viewModel.saveSaga(binding.editTextName.text.toString(), newGames)
+                viewModel.saveSaga(binding.textInputLayoutSagaName.getValue(), newGames)
                 return true
             }
             R.id.action_cancel -> {
@@ -88,6 +89,16 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.findViewById<BottomNavigationView>(R.id.nav_view)?.visibility = View.GONE
+    }
+
+    override fun onPause() {
+        super.onPause()
+        activity?.findViewById<BottomNavigationView>(R.id.nav_view)?.visibility = View.VISIBLE
     }
     //endregion
 
@@ -118,54 +129,65 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     //region Public methods
     fun addGame() {
 
-        val dialogBuilder = AlertDialog.Builder(requireContext()).create()
-        val dialogView = this.layoutInflater.inflate(R.layout.games_dialog, null)
+        val dialogBinding = DialogGamesBinding.inflate(layoutInflater)
 
-        dialogView.recycler_view_games.layoutManager = LinearLayoutManager(requireContext())
-        val orderedGames = viewModel.getOrderedGames(viewModel.games)
+        val orderedGames = viewModel.getOrderedGames(viewModel.games).map { game ->
+            if (newGames.firstOrNull { it.id == game.id } != null) {
+                game.saga = viewModel.saga.value
+            } else {
+                game.saga = null
+            }
+            game
+        }
         if (orderedGames.isNotEmpty()) {
 
-            dialogView.recycler_view_games.adapter = GamesAdapter(
+            dialogBinding.recyclerViewGames.adapter = GamesAdapter(
                 orderedGames,
-                viewModel.platforms,
                 viewModel.saga.value?.id ?: 0,
                 this
             )
         }
-        dialogView.recycler_view_games.visibility =
+        dialogBinding.recyclerViewGames.visibility =
             if (orderedGames.isNotEmpty()) View.VISIBLE else View.GONE
-        dialogView.layout_empty_list.visibility =
+        dialogBinding.layoutEmptyList.root.visibility =
             if (orderedGames.isNotEmpty()) View.GONE else View.VISIBLE
 
-        dialogView.button_accept.setOnClickListener {
+        MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
 
-            showGames(newGames)
-            dialogBuilder.dismiss()
-        }
-
-        dialogBuilder.setView(dialogView)
-        dialogBuilder.show()
+                showGames(newGames)
+                dialog.dismiss()
+            }
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
     //endregion
 
-    //region Private methods
-    private fun initializeUI() {
+    //region Protected methods
+    override fun initializeUi() {
+        super.initializeUi()
 
-        val application = activity?.application
-        val sagaId = this.arguments?.getInt(Constants.SAGA_ID)
-        viewModel = ViewModelProvider(this, SagaDetailViewModelFactory(application, sagaId)).get(
-            SagaDetailViewModel::class.java
-        )
+        viewModel = ViewModelProvider(
+            this,
+            SagaDetailViewModelFactory(activity?.application, args.sagaId)
+        )[SagaDetailViewModel::class.java]
         setupBindings()
 
-        binding.addGamesEnabled = viewModel.saga.value != null
+        binding.addGamesEnabled = true
 
         binding.fragment = this
+        binding.isDarkMode = context.isDarkMode()
+
+        newGames = viewModel.saga.value?.games?.toMutableList() ?: mutableListOf()
     }
 
     private fun setupBindings() {
 
-        viewModel.sagaDetailLoading.observe(viewLifecycleOwner, { isLoading ->
+        viewModel.sagaDetailLoading.observe(viewLifecycleOwner) { isLoading ->
 
             if (isLoading) {
                 showLoading()
@@ -174,45 +196,41 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
                 hideLoading()
                 cancelEdition()
             }
-        })
+        }
 
-        viewModel.sagaDetailSuccessMessage.observe(viewLifecycleOwner, {
+        viewModel.sagaDetailSuccessMessage.observe(viewLifecycleOwner) {
 
             val message = resources.getString(it)
             showPopupDialog(message, goBack)
-        })
+        }
 
-        viewModel.sagaDetailError.observe(viewLifecycleOwner, { error ->
+        viewModel.sagaDetailError.observe(viewLifecycleOwner) { error ->
 
             hideLoading()
             error?.let {
                 manageError(it)
             }
-        })
+        }
 
-        viewModel.saga.observe(viewLifecycleOwner, { saga ->
-
-            saga?.let {
-                sagaGames = it.games
-            }
+        viewModel.saga.observe(viewLifecycleOwner) { saga ->
 
             showData(saga)
             enableEdition(saga == null)
-        })
+        }
 
-        goBack.observe(viewLifecycleOwner, {
-            activity?.finish()
-        })
+        goBack.observe(viewLifecycleOwner) {
+            findNavController().popBackStack()
+        }
     }
+    //endregion
 
+    //region Private methods
     private fun showData(saga: SagaResponse?) {
 
         saga?.let {
 
-            binding.sagaName = saga.name
-            newGames.clear()
-            newGames.addAll(saga.games)
-            showGames(newGames)
+            binding.sagaName = it.name
+            showGames(it.games)
         }
     }
 
@@ -229,20 +247,13 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
         for (game in games.sortedBy { it.releaseDate }) {
 
             val tvGame = TextView(requireContext())
-            tvGame.setTextAppearance(R.style.Widget_GamerCollection_EditText_Regular)
-            tvGame.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18F)
-
+            tvGame.setTextAppearance(R.style.Widget_GamerCollection_TextView_Description_SagaGame)
             tvGame.text = "- ${game.name}"
             binding.linearLayoutGames.addView(tvGame, layoutParams)
         }
     }
 
     private fun enableEdition(enable: Boolean) {
-
-        val inputTypeText = if (enable) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
-        val backgroundColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
-
-        binding.editTextName.setReadOnly(!enable, inputTypeText, backgroundColor)
         binding.editable = enable
     }
 

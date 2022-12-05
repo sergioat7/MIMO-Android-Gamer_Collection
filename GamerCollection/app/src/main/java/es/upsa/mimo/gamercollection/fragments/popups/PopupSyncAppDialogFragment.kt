@@ -2,38 +2,28 @@ package es.upsa.mimo.gamercollection.fragments.popups
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
+import es.upsa.mimo.gamercollection.base.BindingDialogFragment
+import es.upsa.mimo.gamercollection.databinding.DialogFragmentPopupSyncAppBinding
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
-import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.viewmodelfactories.PopupSyncAppViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.PopupSyncAppViewModel
 
-class PopupSyncAppDialogFragment : DialogFragment() {
+class PopupSyncAppDialogFragment : BindingDialogFragment<DialogFragmentPopupSyncAppBinding>() {
+
+    //region Protected properties
+    override val transparentStyle = true
+    //endregion
 
     //region Private properties
     private lateinit var viewModel: PopupSyncAppViewModel
     //endregion
 
     //region Lifecycle methods
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NO_TITLE, R.style.Theme_GamerCollection_DialogTransparent)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_popup_sync_app_dialog, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeUI()
@@ -44,9 +34,10 @@ class PopupSyncAppDialogFragment : DialogFragment() {
     private fun initializeUI() {
 
         val application = activity?.application
-        viewModel = ViewModelProvider(this, PopupSyncAppViewModelFactory(application)).get(
-            PopupSyncAppViewModel::class.java
-        )
+        viewModel = ViewModelProvider(
+            this,
+            PopupSyncAppViewModelFactory(application)
+        )[PopupSyncAppViewModel::class.java]
         setupBindings()
 
         viewModel.loadContent()
@@ -54,7 +45,7 @@ class PopupSyncAppDialogFragment : DialogFragment() {
 
     private fun setupBindings() {
 
-        viewModel.popupSyncAppError.observe(viewLifecycleOwner, { error ->
+        viewModel.popupSyncAppError.observe(viewLifecycleOwner) { error ->
 
             dismiss()
             if (error == null) {
@@ -64,7 +55,7 @@ class PopupSyncAppDialogFragment : DialogFragment() {
             } else {
                 manageError(error)
             }
-        })
+        }
     }
 
     private fun manageError(errorResponse: ErrorResponse) {
@@ -80,14 +71,14 @@ class PopupSyncAppDialogFragment : DialogFragment() {
 
     private fun showPopupDialog(message: String) {
 
-        val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
-        val prev = activity?.supportFragmentManager?.findFragmentByTag(Constants.POPUP_DIALOG)
-        if (prev != null) {
-            ft.remove(prev)
-        }
-        ft.addToBackStack(null)
-        val dialogFragment = PopupErrorDialogFragment(message)
-        dialogFragment.show(ft, Constants.POPUP_DIALOG)
+        MaterialAlertDialogBuilder(requireContext())
+            .setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+
     }
     //endregion
 }

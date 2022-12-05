@@ -1,28 +1,47 @@
 package es.upsa.mimo.gamercollection.repositories
 
+import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.injection.modules.IoDispatcher
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.SongResponse
 import es.upsa.mimo.gamercollection.network.ApiManager
 import es.upsa.mimo.gamercollection.network.RequestResult
 import es.upsa.mimo.gamercollection.network.SongApiService
+import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.persistence.AppDatabase
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class SongRepository @Inject constructor(
-    private val api: SongApiService
+    private val api: SongApiService,
+    private val database: AppDatabase,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
+
+    //region Private properties
+    private val databaseScope = CoroutineScope(Job() + ioDispatcher)
+    //endregion
 
     //region Public methods
     suspend fun createSong(
         gameId: Int,
-        song: SongResponse,
+        newSong: SongResponse,
         success: () -> Unit,
         failure: (ErrorResponse) -> Unit
     ) {
-        when (val response = ApiManager.validateResponse(api.createSong(gameId, song))) {
-
-            is RequestResult.Success -> success()
-            is RequestResult.Failure -> failure(response.error)
-        }
+        newSong.id = getNextId()
+        insertSongDatabase(newSong)
+        success()
+//        try {
+//            when (val response = ApiManager.validateResponse(api.createSong(gameId, newSong))) {
+//
+//                is RequestResult.Success -> success()
+//                is RequestResult.Failure -> failure(response.error)
+//                else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+//            }
+//        } catch (e: Exception) {
+//            failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
+//        }
     }
 
     suspend fun deleteSong(
@@ -31,10 +50,77 @@ class SongRepository @Inject constructor(
         success: () -> Unit,
         failure: (ErrorResponse) -> Unit
     ) {
-        when (val response = ApiManager.validateResponse(api.deleteSong(gameId, songId))) {
+        getSongDatabase(songId)?.let {
+            deleteSongDatabase(it)
+        }
+        success()
+//        try {
+//            when (val response = ApiManager.validateResponse(api.deleteSong(gameId, songId))) {
+//
+//                is RequestResult.Success -> success()
+//                is RequestResult.Failure -> failure(response.error)
+//                else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+//            }
+//        } catch (e: Exception) {
+//            failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
+//        }
+    }
+    //endregion
 
-            is RequestResult.Success -> success()
-            is RequestResult.Failure -> failure(response.error)
+    //region Private methods
+    private fun getSongsDatabase(): List<SongResponse> {
+
+        var songs: List<SongResponse> = arrayListOf()
+        runBlocking {
+
+            val result = databaseScope.async {
+                database.songDao().getSongs()
+            }
+            songs = result.await()
+        }
+        return songs
+    }
+
+    private fun getSongDatabase(songId: Int): SongResponse? {
+
+        var song: SongResponse? = null
+        runBlocking {
+
+            val result = databaseScope.async {
+                database.songDao().getSong(songId)
+            }
+            song = result.await()
+        }
+        return song
+    }
+
+    private fun insertSongDatabase(song: SongResponse) {
+
+        runBlocking {
+            val job = databaseScope.launch {
+                database.songDao().insertSong(song)
+            }
+            job.join()
+        }
+    }
+
+    private fun deleteSongDatabase(song: SongResponse) {
+
+        runBlocking {
+            val job = databaseScope.launch {
+                database.songDao().deleteSong(song)
+            }
+            job.join()
+        }
+    }
+
+    private fun getNextId(): Int {
+
+        val songs = getSongsDatabase()
+        return if (songs.isNotEmpty()) {
+            songs.maxOf { it.id } + 1
+        } else {
+            0
         }
     }
     //endregion

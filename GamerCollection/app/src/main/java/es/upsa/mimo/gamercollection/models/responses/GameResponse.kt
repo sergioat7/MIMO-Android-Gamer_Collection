@@ -5,13 +5,16 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import es.upsa.mimo.gamercollection.base.BaseModel
+import es.upsa.mimo.gamercollection.extensions.toString
+import es.upsa.mimo.gamercollection.models.rawg.RawgGameResponse
+import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import java.util.*
 
 @Entity(tableName = "Game")
 data class GameResponse(
     @PrimaryKey
     @SerializedName("id")
-    override val id: Int,
+    override var id: Int,
     @SerializedName("name")
     var name: String?,
     @SerializedName("platform")
@@ -54,5 +57,47 @@ data class GameResponse(
     @SerializedName("saga")
     var saga: SagaResponse?,
     @SerializedName("songs")
-    var songs: List<SongResponse>
-) : BaseModel<Int>
+    var songs: MutableList<SongResponse>
+) : BaseModel<Int> {
+
+    constructor(rawgGame: RawgGameResponse) : this(
+        rawgGame.id,
+        rawgGame.name,
+        null,
+        rawgGame.rating * 2,
+        rawgGame.getRating(),
+        rawgGame.getPublishersAsString(),
+        rawgGame.getDevelopersAsString(),
+        null,
+        rawgGame.released,
+        false,
+        null,
+        null,
+        null,
+        null,
+        null,
+        0.0,
+        rawgGame.backgroundImage,
+        null,
+        null,
+        null,
+        null,
+        mutableListOf()
+    )
+
+    fun releaseDateAsHumanReadable(): String? {
+
+        return releaseDate.toString(
+            SharedPreferencesHelper.dateFormatToShow,
+            SharedPreferencesHelper.language
+        )
+    }
+
+    fun purchaseDateAsHumanReadable(): String? {
+
+        return purchaseDate.toString(
+            SharedPreferencesHelper.dateFormatToShow,
+            SharedPreferencesHelper.language
+        )
+    }
+}

@@ -2,28 +2,36 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.SearchView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.activities.GameDetailActivity
-import es.upsa.mimo.gamercollection.activities.SagaDetailActivity
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SagasAdapter
 import es.upsa.mimo.gamercollection.base.BaseModel
 import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentSagasBinding
-import es.upsa.mimo.gamercollection.fragments.GamesFragment.ScrollPosition
+import es.upsa.mimo.gamercollection.extensions.hideSoftKeyboard
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.ScrollPosition
+import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodelfactories.SagasViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.SagasViewModel
 
 class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListener {
+
+    //region Protected properties
+    override val statusBarStyle = StatusBarStyle.SECONDARY
+    override val hasOptionsMenu = true
+    //endregion
 
     //region Private properties
     private lateinit var viewModel: SagasViewModel
@@ -32,17 +40,11 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
     //endregion
 
     //region Lifecycle methods
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        setHasOptionsMenu(true)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeUI()
+
+        toolbar = binding.toolbar
+        initializeUi()
     }
 
     override fun onResume() {
@@ -66,14 +68,15 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-            R.id.action_synchronize -> {
-
-                openSyncPopup()
-                return true
-            }
+//            R.id.action_synchronize -> {
+//
+//                openSyncPopup()
+//                return true
+//            }
             R.id.action_add -> {
 
-                launchActivity(SagaDetailActivity::class.java)
+                val action = SagasFragmentDirections.actionSagasFragmentToSagaDetailFragment(-1)
+                findNavController().navigate(action)
                 return true
             }
         }
@@ -84,14 +87,14 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
     //region Interface methods
     override fun onItemClick(id: Int) {
 
-        val params = mapOf(Constants.SAGA_ID to id)
-        launchActivityWithExtras(SagaDetailActivity::class.java, params)
+        val action = SagasFragmentDirections.actionSagasFragmentToSagaDetailFragment(id)
+        findNavController().navigate(action)
     }
 
     override fun onSubItemClick(id: Int) {
 
-        val params = mapOf(Constants.GAME_ID to id)
-        launchActivityWithExtras(GameDetailActivity::class.java, params)
+        val action = SagasFragmentDirections.actionSagasFragmentToGameDetailFragment(id)
+        findNavController().navigate(action)
     }
 
     override fun onLoadMoreItemsClick() {
@@ -119,14 +122,15 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
     }
     //endregion
 
-    //region Private methods
-    private fun initializeUI() {
+    //region Protected methods
+    override fun initializeUi() {
+        super.initializeUi()
 
         val application = activity?.application
         viewModel = ViewModelProvider(
             this,
             SagasViewModelFactory(application)
-        ).get(SagasViewModel::class.java)
+        )[SagasViewModel::class.java]
         setupBindings()
 
         with(binding) {
@@ -143,7 +147,6 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
             sagasAdapter = SagasAdapter(
                 this@SagasFragment.viewModel.sagas.value?.toMutableList() ?: mutableListOf(),
                 mutableListOf(),
-                this@SagasFragment.viewModel.platforms,
                 this@SagasFragment
             )
             recyclerViewSagas.apply {
@@ -175,10 +178,12 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
 
         scrollPosition.set(ScrollPosition.TOP)
     }
+    //endregion
 
+    //region Private methods
     private fun setupBindings() {
 
-        viewModel.sagasLoading.observe(viewLifecycleOwner, { isLoading ->
+        viewModel.sagasLoading.observe(viewLifecycleOwner) { isLoading ->
 
             if (isLoading) {
                 showLoading()
@@ -187,19 +192,17 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
                 binding.swipeRefreshLayout.isRefreshing = false
                 hideLoading()
             }
-        })
+        }
 
-        viewModel.sagasError.observe(viewLifecycleOwner, { error ->
+        viewModel.sagasError.observe(viewLifecycleOwner) { error ->
 
             hideLoading()
             manageError(error)
-        })
+        }
 
-        viewModel.sagas.observe(viewLifecycleOwner, {
-
+        viewModel.sagas.observe(viewLifecycleOwner) {
             showData(it)
-            setTitle(it.size)
-        })
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -220,13 +223,6 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
         sagasAdapter.notifyDataSetChanged()
     }
 
-    private fun setTitle(sagasCount: Int) {
-
-        val title =
-            resources.getQuantityString(R.plurals.sagas_number_title, sagasCount, sagasCount)
-        (activity as AppCompatActivity?)?.supportActionBar?.title = title
-    }
-
     private fun setupSearchView(menu: Menu) {
 
         val menuItem = menu.findItem(R.id.action_search_sagas)
@@ -245,7 +241,7 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
                 override fun onQueryTextSubmit(query: String): Boolean {
 
                     menuItem.collapseActionView()
-                    Constants.hideSoftKeyboard(requireActivity())
+                    requireActivity().hideSoftKeyboard()
                     return true
                 }
             })
@@ -254,7 +250,7 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
             object : MenuItem.OnActionExpandListener {
                 override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
                     menu.let {
-                        it.findItem(R.id.action_synchronize).isVisible = false
+//                        it.findItem(R.id.action_synchronize).isVisible = false
                         it.findItem(R.id.action_add).isVisible = false
                     }
                     return true
@@ -262,7 +258,7 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
 
                 override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
                     menu.let {
-                        it.findItem(R.id.action_synchronize).isVisible = true
+//                        it.findItem(R.id.action_synchronize).isVisible = true
                         it.findItem(R.id.action_add).isVisible = true
                     }
                     return true
