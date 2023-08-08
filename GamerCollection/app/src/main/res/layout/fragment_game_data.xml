@@ -307,7 +307,7 @@
                             app:inputHintText="@{@string/game_detail_placeholder_price}"
                             app:inputType="@{CustomInputType.NUMBER}"
                             app:labelHintText="@{@string/game_detail_price}"
-                            app:text="@{game.price > 0 ? String.valueOf(game.price) : editable ? null : Constants.NO_VALUE}"
+                            app:text="@{game.price == 0 &amp;&amp; editable ? null : String.valueOf(game.price)}"
                             />
 
                         <include
