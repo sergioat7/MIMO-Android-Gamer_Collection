@@ -158,10 +158,12 @@ class GameDataFragment(
             dropdownTextInputLayoutGenres.setHintStyle(R.style.Widget_GamerCollection_TextView_Title_Header)
 
             for (view in listOf(
+                textInputLayoutReleaseDate,
                 textInputLayoutDistributor,
                 textInputLayoutDeveloper,
                 textInputLayoutPlayers,
                 textInputLayoutPrice,
+                textInputLayoutPurchaseDate,
                 textInputLayoutPurchaseLocation,
                 textInputLayoutLoaned,
                 textInputLayoutVideoUrl,
@@ -174,18 +176,12 @@ class GameDataFragment(
                 }
             }
 
-            textInputLayoutReleaseDate.apply {
-                setHintStyle(R.style.Widget_GamerCollection_TextView_Title_Header)
-                setOnClickListener {
-                    this.showDatePicker(requireActivity())
-                }
+            textInputLayoutReleaseDate.setOnClickListener {
+                textInputLayoutReleaseDate.showDatePicker(requireActivity(), viewModel.dateFormatToShow)
             }
 
-            textInputLayoutPurchaseDate.apply {
-                setHintStyle(R.style.Widget_GamerCollection_TextView_Title_Header)
-                setOnClickListener {
-                    this.showDatePicker(requireActivity())
-                }
+            textInputLayoutPurchaseDate.setOnClickListener {
+                textInputLayoutPurchaseDate.showDatePicker(requireActivity(), viewModel.dateFormatToShow)
             }
 
             textInputLayoutPurchaseLocation.setOnClickListener {
