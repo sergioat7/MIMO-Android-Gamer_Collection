@@ -3,14 +3,13 @@ package es.upsa.mimo.gamercollection.fragments.popups
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.base.BindingDialogFragment
 import es.upsa.mimo.gamercollection.databinding.DialogFragmentPopupSyncAppBinding
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
-import es.upsa.mimo.gamercollection.viewmodelfactories.PopupSyncAppViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.PopupSyncAppViewModel
 
 class PopupSyncAppDialogFragment : BindingDialogFragment<DialogFragmentPopupSyncAppBinding>() {
@@ -20,7 +19,7 @@ class PopupSyncAppDialogFragment : BindingDialogFragment<DialogFragmentPopupSync
     //endregion
 
     //region Private properties
-    private lateinit var viewModel: PopupSyncAppViewModel
+    private val viewModel: PopupSyncAppViewModel by viewModels()
     //endregion
 
     //region Lifecycle methods
@@ -33,11 +32,6 @@ class PopupSyncAppDialogFragment : BindingDialogFragment<DialogFragmentPopupSync
     //region Private methods
     private fun initializeUI() {
 
-        val application = activity?.application
-        viewModel = ViewModelProvider(
-            this,
-            PopupSyncAppViewModelFactory(application)
-        )[PopupSyncAppViewModel::class.java]
         setupBindings()
 
         viewModel.loadContent()

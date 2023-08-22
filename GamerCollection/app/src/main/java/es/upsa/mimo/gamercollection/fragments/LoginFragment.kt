@@ -2,7 +2,7 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.activities.RegisterActivity
 import es.upsa.mimo.gamercollection.base.BindingFragment
@@ -11,7 +11,6 @@ import es.upsa.mimo.gamercollection.extensions.doAfterTextChanged
 import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.extensions.setError
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
-import es.upsa.mimo.gamercollection.viewmodelfactories.LoginViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.LoginViewModel
 
 class LoginFragment : BindingFragment<FragmentLoginBinding>() {
@@ -22,7 +21,7 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
     //endregion
 
     //region Private properties
-    private lateinit var viewModel: LoginViewModel
+    private val viewModel: LoginViewModel by viewModels()
     //endregion
 
     //region Lifecycle methods
@@ -63,11 +62,6 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
     override fun initializeUi() {
         super.initializeUi()
 
-        val application = activity?.application
-        viewModel = ViewModelProvider(
-            this,
-            LoginViewModelFactory(application)
-        )[LoginViewModel::class.java]
         setupBindings()
 
         binding.fragment = this

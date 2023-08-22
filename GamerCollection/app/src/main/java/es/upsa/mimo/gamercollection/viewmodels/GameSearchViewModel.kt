@@ -34,6 +34,12 @@ class GameSearchViewModel @Inject constructor(
     val scrollPosition: LiveData<ScrollPosition> = _scrollPosition
     //endregion
 
+    //region Lifecycle methods
+    init {
+        loadGames()
+    }
+    //endregion
+
     //region Public methods
     fun loadGames() {
 

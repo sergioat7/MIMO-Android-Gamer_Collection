@@ -15,7 +15,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,7 +32,6 @@ import es.upsa.mimo.gamercollection.extensions.*
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.*
-import es.upsa.mimo.gamercollection.viewmodelfactories.GamesViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GamesViewModel
 import java.util.*
 import kotlin.math.max
@@ -45,7 +44,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     //endregion
 
     //region Private properties
-    private lateinit var viewModel: GamesViewModel
+    private val viewModel: GamesViewModel by viewModels()
     private lateinit var gamesAdapter: GamesAdapter
     private var menu: Menu? = null
     //endregion
@@ -98,6 +97,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 filter()
                 return true
             }
+
             R.id.action_sort -> {
 
                 viewModel.sortGames(requireContext(), resources)
@@ -147,11 +147,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     override fun initializeUi() {
         super.initializeUi()
 
-        val application = activity?.application
-        viewModel = ViewModelProvider(
-            this,
-            GamesViewModelFactory(application)
-        )[GamesViewModel::class.java]
         setupBindings()
 
         with(binding) {
@@ -686,6 +681,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                         icon?.draw(c)
                         x = max(dX, -maxX)
                     }
+
                     else -> {// view is unSwiped
                         val background = RectF(0F, 0F, 0F, 0F)
                         c.drawRect(background, paint)
