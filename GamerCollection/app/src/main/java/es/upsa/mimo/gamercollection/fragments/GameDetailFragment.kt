@@ -29,6 +29,7 @@ import es.upsa.mimo.gamercollection.databinding.DialogSetRatingBinding
 import es.upsa.mimo.gamercollection.databinding.FragmentGameDetailBinding
 import es.upsa.mimo.gamercollection.extensions.getImageForPegi
 import es.upsa.mimo.gamercollection.extensions.getValue
+import es.upsa.mimo.gamercollection.extensions.getValueWithoutHyphen
 import es.upsa.mimo.gamercollection.extensions.isDarkMode
 import es.upsa.mimo.gamercollection.extensions.setHintStyle
 import es.upsa.mimo.gamercollection.extensions.setValue
@@ -288,7 +289,7 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
     private fun getGameData(): GameResponse {
 
         val id = args.gameId
-        val name = binding.textInputLayoutGameName.getValue()
+        val name = binding.textInputLayoutGameName.getValueWithoutHyphen()
         val platform =
             Constants.PLATFORMS.firstOrNull { it.name == binding.dropdownTextInputLayoutPlatforms.getValue() }?.id
         val score = binding.ratingButton.text.toString().toDouble()
