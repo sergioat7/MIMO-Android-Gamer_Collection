@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
@@ -22,9 +22,9 @@ import es.upsa.mimo.gamercollection.extensions.isDarkMode
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
-import es.upsa.mimo.gamercollection.viewmodelfactories.SagaDetailViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.SagaDetailViewModel
 
+@AndroidEntryPoint
 class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemClickListener {
 
     //region Protected properties
@@ -33,8 +33,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     //endregion
 
     //region Private properties
-    private val args: SagaDetailFragmentArgs by navArgs()
-    private lateinit var viewModel: SagaDetailViewModel
+    private val viewModel: SagaDetailViewModel by viewModels()
     private var menu: Menu? = null
     private var newGames: MutableList<GameResponse> = mutableListOf()
     private val goBack = MutableLiveData<Boolean>()
@@ -68,6 +67,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
                 editSaga()
                 return true
             }
+
             R.id.action_remove -> {
 
                 showPopupConfirmationDialog(
@@ -77,11 +77,13 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
                     })
                 return true
             }
+
             R.id.action_save -> {
 
                 viewModel.saveSaga(binding.textInputLayoutSagaName.getValue(), newGames)
                 return true
             }
+
             R.id.action_cancel -> {
 
                 cancelEdition()
@@ -171,10 +173,6 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     override fun initializeUi() {
         super.initializeUi()
 
-        viewModel = ViewModelProvider(
-            this,
-            SagaDetailViewModelFactory(activity?.application, args.sagaId)
-        )[SagaDetailViewModel::class.java]
         setupBindings()
 
         binding.addGamesEnabled = true

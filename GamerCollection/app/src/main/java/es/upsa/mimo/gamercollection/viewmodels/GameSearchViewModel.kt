@@ -3,6 +3,7 @@ package es.upsa.mimo.gamercollection.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
@@ -10,6 +11,7 @@ import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
+@HiltViewModel
 class GameSearchViewModel @Inject constructor(
     private val gameRepository: GameRepository
 ) : ViewModel() {
@@ -32,6 +34,12 @@ class GameSearchViewModel @Inject constructor(
     val games: LiveData<MutableList<GameResponse>> = _games
     val gamesCount: LiveData<Int> = _gamesCount
     val scrollPosition: LiveData<ScrollPosition> = _scrollPosition
+    //endregion
+
+    //region Lifecycle methods
+    init {
+        loadGames()
+    }
     //endregion
 
     //region Public methods

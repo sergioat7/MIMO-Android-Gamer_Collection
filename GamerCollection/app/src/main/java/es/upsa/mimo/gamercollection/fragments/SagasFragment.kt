@@ -8,10 +8,11 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.SearchView
 import androidx.databinding.ObservableField
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SagasAdapter
@@ -23,9 +24,9 @@ import es.upsa.mimo.gamercollection.models.responses.SagaResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
-import es.upsa.mimo.gamercollection.viewmodelfactories.SagasViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.SagasViewModel
 
+@AndroidEntryPoint
 class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListener {
 
     //region Protected properties
@@ -34,7 +35,7 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
     //endregion
 
     //region Private properties
-    private lateinit var viewModel: SagasViewModel
+    private val viewModel: SagasViewModel by viewModels()
     private lateinit var sagasAdapter: SagasAdapter
     private val scrollPosition = ObservableField<ScrollPosition>()
     //endregion
@@ -111,6 +112,7 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
                     recyclerViewSagas.scrollToPosition(0)
                     scrollPosition.set(ScrollPosition.TOP)
                 }
+
                 floatingActionButtonEndList -> {
 
                     val position: Int = sagasAdapter.itemCount - 1
@@ -126,11 +128,6 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
     override fun initializeUi() {
         super.initializeUi()
 
-        val application = activity?.application
-        viewModel = ViewModelProvider(
-            this,
-            SagasViewModelFactory(application)
-        )[SagasViewModel::class.java]
         setupBindings()
 
         with(binding) {

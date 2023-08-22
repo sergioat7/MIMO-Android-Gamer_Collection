@@ -2,20 +2,24 @@ package es.upsa.mimo.gamercollection.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import javax.inject.Inject
 
+@HiltViewModel
 class GameDetailViewModel @Inject constructor(
+    state: SavedStateHandle,
     private val gameRepository: GameRepository
 ) : ViewModel() {
 
     //region Private properties
-    private var gameId: Int = -1
-    private var isRawgGame: Boolean = false
+    private var gameId: Int = state["gameId"] ?: -1
+    private var isRawgGame: Boolean = state["isRawgGame"] ?: false
     private val _gameDetailLoading = MutableLiveData<Boolean>()
     private val _gameDetailSuccessMessage = MutableLiveData<Int>()
     private val _gameDetailError = MutableLiveData<ErrorResponse>()
@@ -29,8 +33,8 @@ class GameDetailViewModel @Inject constructor(
     val game: LiveData<GameResponse?> = _game
     //endregion
 
-    //region Public methods
-    fun getGame() {
+    //region Lifecycle methods
+    init {
 
         if (gameId >= 0) {
             _gameDetailLoading.value = true
@@ -52,7 +56,9 @@ class GameDetailViewModel @Inject constructor(
             _game.value = null
         }
     }
+    //endregion
 
+    //region Public methods
     fun createGame(game: GameResponse) {
 
         _gameDetailLoading.value = true
@@ -89,14 +95,6 @@ class GameDetailViewModel @Inject constructor(
                 _gameDetailError.value = it
             })
         }
-    }
-
-    fun setGameId(gameId: Int) {
-        this.gameId = gameId
-    }
-
-    fun setIsRawgGame(isRawgGame: Boolean) {
-        this.isRawgGame = isRawgGame
     }
     //endregion
 }

@@ -2,9 +2,9 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SongsAdapter
@@ -14,14 +14,25 @@ import es.upsa.mimo.gamercollection.databinding.FragmentGameSongsBinding
 import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.models.responses.SongResponse
+import es.upsa.mimo.gamercollection.repositories.GameRepository
+import es.upsa.mimo.gamercollection.repositories.SongRepository
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
-import es.upsa.mimo.gamercollection.viewmodelfactories.GameSongsViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameSongsViewModel
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class GameSongsFragment(
-    private var game: GameResponse?,
+    game: GameResponse?,
     private var enabled: Boolean
 ) : BindingFragment<FragmentGameSongsBinding>(), OnItemClickListener {
+
+    //region Public properties
+    @Inject
+    lateinit var gameRepository: GameRepository
+
+    @Inject
+    lateinit var songRepository: SongRepository
+    //endregion
 
     //region Protected properties
     override val statusBarStyle = StatusBarStyle.SECONDARY
@@ -29,7 +40,7 @@ class GameSongsFragment(
     //endregion
 
     //region Private properties
-    private lateinit var viewModel: GameSongsViewModel
+    private val viewModel = GameSongsViewModel(game, gameRepository, songRepository)
     //endregion
 
     //region Lifecycle methods
@@ -65,11 +76,6 @@ class GameSongsFragment(
     override fun initializeUi() {
         super.initializeUi()
 
-        val application = activity?.application
-        viewModel = ViewModelProvider(
-            this,
-            GameSongsViewModelFactory(application, game)
-        )[GameSongsViewModel::class.java]
         setupBindings()
 
         with(binding) {

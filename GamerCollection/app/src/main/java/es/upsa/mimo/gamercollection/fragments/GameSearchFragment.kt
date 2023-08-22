@@ -6,10 +6,11 @@ import android.view.MenuInflater
 import android.view.View
 import android.widget.SearchView
 import androidx.databinding.ObservableField
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
@@ -19,9 +20,9 @@ import es.upsa.mimo.gamercollection.extensions.hideSoftKeyboard
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
-import es.upsa.mimo.gamercollection.viewmodelfactories.GameSearchViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameSearchViewModel
 
+@AndroidEntryPoint
 class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemClickListener {
 
     //region Protected properties
@@ -30,7 +31,7 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
     //endregion
 
     //region Private properties
-    private lateinit var viewModel: GameSearchViewModel
+    private val viewModel: GameSearchViewModel by viewModels()
     private lateinit var gamesAdapter: GamesAdapter
     private val scrollPosition = ObservableField<ScrollPosition>()
     //endregion
@@ -89,6 +90,7 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
                     recyclerViewGames.scrollToPosition(0)
                     scrollPosition.set(ScrollPosition.TOP)
                 }
+
                 floatingActionButtonEndList -> {
 
                     val position: Int = gamesAdapter.itemCount - 1
@@ -104,11 +106,6 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
     override fun initializeUi() {
         super.initializeUi()
 
-        val application = activity?.application
-        viewModel = ViewModelProvider(
-            this,
-            GameSearchViewModelFactory(application)
-        )[GameSearchViewModel::class.java]
         setupBindings()
 
         with(binding) {
