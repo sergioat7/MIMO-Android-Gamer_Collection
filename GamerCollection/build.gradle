@@ -40,6 +40,5 @@ ext {
     //App dependencies
     lifecycleVersion = '2.4.1'
     retrofitVersion = '2.9.0'
-    daggerVersion = '2.40.5'
     roomVersion = '2.4.1'
 }
