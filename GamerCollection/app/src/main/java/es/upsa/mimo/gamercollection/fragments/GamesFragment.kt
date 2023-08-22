@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GamesAdapter
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
@@ -36,6 +37,7 @@ import es.upsa.mimo.gamercollection.viewmodels.GamesViewModel
 import java.util.*
 import kotlin.math.max
 
+@AndroidEntryPoint
 class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListener {
 
     //region Protected properties

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
@@ -13,6 +14,7 @@ import es.upsa.mimo.gamercollection.repositories.SagaRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
+@HiltViewModel
 class SagaDetailViewModel @Inject constructor(
     state: SavedStateHandle,
     private val gameRepository: GameRepository,

@@ -3,6 +3,7 @@ package es.upsa.mimo.gamercollection.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.activities.RegisterActivity
 import es.upsa.mimo.gamercollection.base.BindingFragment
@@ -13,6 +14,7 @@ import es.upsa.mimo.gamercollection.extensions.setError
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodels.LoginViewModel
 
+@AndroidEntryPoint
 class LoginFragment : BindingFragment<FragmentLoginBinding>() {
 
     //region Protected properties

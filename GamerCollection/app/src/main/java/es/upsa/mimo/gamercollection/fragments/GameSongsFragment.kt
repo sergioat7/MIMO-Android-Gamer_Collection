@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SongsAdapter
@@ -19,6 +20,7 @@ import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodels.GameSongsViewModel
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class GameSongsFragment(
     game: GameResponse?,
     private var enabled: Boolean

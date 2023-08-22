@@ -3,11 +3,13 @@ package es.upsa.mimo.gamercollection.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.SagaRepository
 import javax.inject.Inject
 
+@HiltViewModel
 class PopupSyncAppViewModel @Inject constructor(
     private val gameRepository: GameRepository,
     private val sagaRepository: SagaRepository

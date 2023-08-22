@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.OnItemClickListener
 import es.upsa.mimo.gamercollection.adapters.SagasAdapter
@@ -25,6 +26,7 @@ import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodels.SagasViewModel
 
+@AndroidEntryPoint
 class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListener {
 
     //region Protected properties
