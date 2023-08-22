@@ -20,7 +20,7 @@ class GameSongsViewModel constructor(
     //region Private properties
     private val _gameSongsLoading = MutableLiveData<Boolean>()
     private val _gameSongsError = MutableLiveData<ErrorResponse>()
-    private val _songs = MutableLiveData<List<SongResponse>>()
+    private val _songs = MutableLiveData<List<SongResponse>>(game?.songs ?: ArrayList())
     //endregion
 
     //region Public properties
@@ -75,8 +75,10 @@ class GameSongsViewModel constructor(
             }
         }
     }
+    //endregion
 
-    fun setGame(game: GameResponse?) {
+    //region Private methods
+    private fun setGame(game: GameResponse?) {
 
         this.game = game
         _songs.value = game?.songs ?: ArrayList()

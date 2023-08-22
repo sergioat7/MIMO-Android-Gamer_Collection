@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class GameSongsFragment(
-    game: GameResponse?,
+    private val game: GameResponse?,
     private var enabled: Boolean
 ) : BindingFragment<FragmentGameSongsBinding>(), OnItemClickListener {
 
@@ -40,7 +40,7 @@ class GameSongsFragment(
     //endregion
 
     //region Private properties
-    private val viewModel = GameSongsViewModel(game, gameRepository, songRepository)
+    private lateinit var viewModel: GameSongsViewModel
     //endregion
 
     //region Lifecycle methods
@@ -76,6 +76,7 @@ class GameSongsFragment(
     override fun initializeUi() {
         super.initializeUi()
 
+        viewModel = GameSongsViewModel(game, gameRepository, songRepository)
         setupBindings()
 
         with(binding) {

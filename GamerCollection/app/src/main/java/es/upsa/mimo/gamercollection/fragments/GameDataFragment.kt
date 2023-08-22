@@ -90,7 +90,7 @@ class GameDataFragment(
 
         val pegi = resources.getStringArray(R.array.pegis)
             .firstOrNull { it == binding.dropdownTextInputLayoutPegis.getValue() }
-        val releaseDate = binding.textInputLayoutReleaseDate.getValue().toDate(
+        val releaseDate = binding.textInputLayoutReleaseDate.getValueWithoutHyphen().toDate(
             viewModel.dateFormatToShow,
             viewModel.language
         )
@@ -105,32 +105,32 @@ class GameDataFragment(
                 binding.buttonFinished.root.isSelected -> State.FINISHED_STATE
                 else -> null
             }
-        val purchaseDate = binding.textInputLayoutPurchaseDate.getValue().toDate(
+        val purchaseDate = binding.textInputLayoutPurchaseDate.getValueWithoutHyphen().toDate(
             viewModel.dateFormatToShow,
             viewModel.language
         )
         val price = try {
-            binding.textInputLayoutPrice.getValue().toDouble()
+            binding.textInputLayoutPrice.getValueWithoutHyphen().toDouble()
         } catch (e: NumberFormatException) {
             0.0
         }
 
         return viewModel.getGameData(
             pegi,
-            binding.textInputLayoutDistributor.getValue(),
-            binding.textInputLayoutDeveloper.getValue(),
-            binding.textInputLayoutPlayers.getValue(),
+            binding.textInputLayoutDistributor.getValueWithoutHyphen(),
+            binding.textInputLayoutDeveloper.getValueWithoutHyphen(),
+            binding.textInputLayoutPlayers.getValueWithoutHyphen(),
             releaseDate,
             binding.radioButtonYes.isChecked,
             format,
             genre,
             state,
             purchaseDate,
-            binding.textInputLayoutPurchaseLocation.getValue(),
+            binding.textInputLayoutPurchaseLocation.getValueWithoutHyphen(),
             price,
-            binding.textInputLayoutVideoUrl.getValue(),
-            binding.textInputLayoutLoaned.getValue(),
-            binding.textInputLayoutObservations.getValue()
+            binding.textInputLayoutVideoUrl.getValueWithoutHyphen(),
+            binding.textInputLayoutLoaned.getValueWithoutHyphen(),
+            binding.textInputLayoutObservations.getValueWithoutHyphen()
         )
     }
 

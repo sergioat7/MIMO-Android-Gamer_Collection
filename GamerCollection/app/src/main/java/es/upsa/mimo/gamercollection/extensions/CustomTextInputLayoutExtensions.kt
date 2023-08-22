@@ -44,6 +44,12 @@ fun CustomTextInputLayoutBinding.getValue(): String {
     return this.textInputEditText.text.toString().trimStart().trimEnd()
 }
 
+fun CustomTextInputLayoutBinding.getValueWithoutHyphen(): String {
+
+    val result = this.textInputEditText.text.toString().trimStart().trimEnd()
+    return if(result.equals("-")) "" else result
+}
+
 fun CustomTextInputLayoutBinding.setHintStyle(id: Int) {
     this.textInputLayout.doOnLayout {
         this.textInputLayout.setHintTextAppearance(id)
