@@ -11,8 +11,8 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -20,20 +20,25 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.adapters.GameDetailPagerAdapter
 import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.DialogSetImageBinding
 import es.upsa.mimo.gamercollection.databinding.DialogSetRatingBinding
 import es.upsa.mimo.gamercollection.databinding.FragmentGameDetailBinding
-import es.upsa.mimo.gamercollection.extensions.*
+import es.upsa.mimo.gamercollection.extensions.getImageForPegi
+import es.upsa.mimo.gamercollection.extensions.getValue
+import es.upsa.mimo.gamercollection.extensions.isDarkMode
+import es.upsa.mimo.gamercollection.extensions.setHintStyle
+import es.upsa.mimo.gamercollection.extensions.setValue
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.CustomDropdownType
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
-import es.upsa.mimo.gamercollection.viewmodelfactories.GameDetailViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.GameDetailViewModel
 
+@AndroidEntryPoint
 class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
 
     //region Protected properties
@@ -41,9 +46,9 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
     override val hasOptionsMenu = true
     //endregion
 
-    //region  - Private properties
+    //region Private properties
     private val args: GameDetailFragmentArgs by navArgs()
-    private lateinit var viewModel: GameDetailViewModel
+    private val viewModel: GameDetailViewModel by viewModels()
     private var menu: Menu? = null
     private lateinit var pagerAdapter: GameDetailPagerAdapter
     private var game: GameResponse? = null
@@ -86,6 +91,7 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
                         viewModel.deleteGame()
                     })
             }
+
             R.id.action_save -> {
 
                 if (args.isRawgGame || game == null) {
@@ -96,6 +102,7 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
                     setEdition(false)
                 }
             }
+
             R.id.action_cancel -> {
 
                 showData(game)
@@ -172,13 +179,6 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
     override fun initializeUi() {
         super.initializeUi()
 
-        viewModel = ViewModelProvider(
-            this, GameDetailViewModelFactory(
-                activity?.application,
-                args.gameId,
-                args.isRawgGame
-            )
-        )[GameDetailViewModel::class.java]
         setupBindings()
 
         pagerAdapter = GameDetailPagerAdapter(

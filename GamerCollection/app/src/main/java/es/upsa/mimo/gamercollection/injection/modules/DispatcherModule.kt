@@ -2,12 +2,16 @@ package es.upsa.mimo.gamercollection.injection.modules
 
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Qualifier
 
 @Module
-class DispatcherModule {
+@InstallIn(SingletonComponent::class)
+object DispatcherModule {
+
     @DefaultDispatcher
     @Provides
     fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default

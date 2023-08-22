@@ -3,6 +3,7 @@ package es.upsa.mimo.gamercollection.viewmodels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.BuildConfig
 import es.upsa.mimo.gamercollection.activities.LoginActivity
 import es.upsa.mimo.gamercollection.activities.MainActivity
@@ -10,6 +11,7 @@ import es.upsa.mimo.gamercollection.repositories.*
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
+@HiltViewModel
 class LandingViewModel @Inject constructor(
     private val gameRepository: GameRepository,
     private val sagaRepository: SagaRepository

@@ -2,7 +2,9 @@ package es.upsa.mimo.gamercollection.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.models.responses.GameResponse
@@ -12,13 +14,15 @@ import es.upsa.mimo.gamercollection.repositories.SagaRepository
 import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
+@HiltViewModel
 class SagaDetailViewModel @Inject constructor(
+    state: SavedStateHandle,
     private val gameRepository: GameRepository,
     private val sagaRepository: SagaRepository
 ) : ViewModel() {
 
     //region Private properties
-    private var sagaId: Int = 0
+    private var sagaId: Int = state["sagaId"] ?: 0
     private val _sagaDetailLoading = MutableLiveData<Boolean>()
     private val _sagaDetailSuccessMessage = MutableLiveData<Int>()
     private val _sagaDetailError = MutableLiveData<ErrorResponse?>()
@@ -34,8 +38,8 @@ class SagaDetailViewModel @Inject constructor(
     val saga: LiveData<SagaResponse?> = _saga
     //endregion
 
-    //region Public methods
-    fun getSaga() {
+    //region Lifecycle methods
+    init {
 
         if (sagaId >= 0) {
 
@@ -46,7 +50,9 @@ class SagaDetailViewModel @Inject constructor(
             _saga.value = null
         }
     }
+    //endregion
 
+    //region Public methods
     fun getOrderedGames(games: List<GameResponse>): List<GameResponse> {
 
         return when (SharedPreferencesHelper.sortParam) {
@@ -84,10 +90,6 @@ class SagaDetailViewModel @Inject constructor(
         } ?: run {
             _sagaDetailError.value = null
         }
-    }
-
-    fun setSagaId(sagaId: Int) {
-        this.sagaId = sagaId
     }
     //endregion
 

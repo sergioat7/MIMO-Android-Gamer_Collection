@@ -6,11 +6,12 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.base.BaseActivity
 import es.upsa.mimo.gamercollection.models.FormatModel
@@ -19,20 +20,21 @@ import es.upsa.mimo.gamercollection.models.PlatformModel
 import es.upsa.mimo.gamercollection.models.StateModel
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Notifications
-import es.upsa.mimo.gamercollection.viewmodelfactories.LandingViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.LandingViewModel
 import org.json.JSONObject
 import java.util.*
 
+@AndroidEntryPoint
 class LandingActivity : BaseActivity() {
 
     //region Private properties
-    private lateinit var viewModel: LandingViewModel
+     private val viewModel: LandingViewModel by viewModels()
     //endregion
 
     //region Lifecycle methods
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         initializeUI()
     }
     //endregion
@@ -40,10 +42,6 @@ class LandingActivity : BaseActivity() {
     //region Private methods
     private fun initializeUI() {
 
-        viewModel = ViewModelProvider(
-            this,
-            LandingViewModelFactory(application)
-        )[LandingViewModel::class.java]
         setupBindings()
 
         configLanguage()
