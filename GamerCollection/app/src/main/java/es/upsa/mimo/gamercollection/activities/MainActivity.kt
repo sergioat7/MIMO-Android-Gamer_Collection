@@ -4,11 +4,13 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
+import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.base.BaseActivity
 import es.upsa.mimo.gamercollection.databinding.ActivityMainBinding
 import es.upsa.mimo.gamercollection.extensions.setupWithNavController
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
     //region Private properties

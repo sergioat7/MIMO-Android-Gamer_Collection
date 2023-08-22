@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.base.BindingDialogFragment
@@ -12,6 +13,7 @@ import es.upsa.mimo.gamercollection.databinding.DialogFragmentPopupSyncAppBindin
 import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
 import es.upsa.mimo.gamercollection.viewmodels.PopupSyncAppViewModel
 
+@AndroidEntryPoint
 class PopupSyncAppDialogFragment : BindingDialogFragment<DialogFragmentPopupSyncAppBinding>() {
 
     //region Protected properties

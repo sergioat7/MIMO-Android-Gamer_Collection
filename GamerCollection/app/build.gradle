@@ -36,14 +36,6 @@ android {
 
         versionCode versionMajor * 100000 + versionMinor * 1000 + versionPatch * 10 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
-
-        multiDexEnabled = true
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
-            }
-        }
     }
 
     buildTypes {

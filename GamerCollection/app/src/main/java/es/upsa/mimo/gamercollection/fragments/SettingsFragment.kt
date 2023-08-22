@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.LandingActivity
 import es.upsa.mimo.gamercollection.base.BindingFragment
@@ -22,6 +23,7 @@ import es.upsa.mimo.gamercollection.utils.Preferences
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import es.upsa.mimo.gamercollection.viewmodels.SettingsViewModel
 
+@AndroidEntryPoint
 class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
 
     //region Protected properties
