@@ -10,15 +10,14 @@ import es.upsa.mimo.gamercollection.models.responses.SongResponse
 import es.upsa.mimo.gamercollection.repositories.GameRepository
 import es.upsa.mimo.gamercollection.repositories.SongRepository
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class GameSongsViewModel @Inject constructor(
+class GameSongsViewModel constructor(
+    private var game: GameResponse?,
     private val gameRepository: GameRepository,
     private val songRepository: SongRepository
 ) : ViewModel() {
 
     //region Private properties
-    private var game: GameResponse? = null
     private val _gameSongsLoading = MutableLiveData<Boolean>()
     private val _gameSongsError = MutableLiveData<ErrorResponse>()
     private val _songs = MutableLiveData<List<SongResponse>>()

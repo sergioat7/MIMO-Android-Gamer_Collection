@@ -2,7 +2,7 @@ package es.upsa.mimo.gamercollection.fragments
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.MainActivity
 import es.upsa.mimo.gamercollection.base.BindingFragment
@@ -12,7 +12,6 @@ import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.extensions.setEndIconOnClickListener
 import es.upsa.mimo.gamercollection.extensions.setError
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
-import es.upsa.mimo.gamercollection.viewmodelfactories.RegisterViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.RegisterViewModel
 
 class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
@@ -23,7 +22,7 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
     //endregion
 
     //region Private properties
-    private lateinit var viewModel: RegisterViewModel
+    private val viewModel: RegisterViewModel by viewModels()
     //endregion
 
     //region Lifecycle methods
@@ -64,11 +63,6 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
     override fun initializeUi() {
         super.initializeUi()
 
-        val application = activity?.application
-        viewModel = ViewModelProvider(
-            this,
-            RegisterViewModelFactory(application)
-        )[RegisterViewModel::class.java]
         setupBindings()
 
         binding.textInputLayoutUsername.setEndIconOnClickListener {

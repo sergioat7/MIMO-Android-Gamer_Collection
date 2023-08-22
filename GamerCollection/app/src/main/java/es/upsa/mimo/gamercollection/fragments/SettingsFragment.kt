@@ -1,18 +1,25 @@
 package es.upsa.mimo.gamercollection.fragments
 
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.activities.LandingActivity
 import es.upsa.mimo.gamercollection.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentSettingsBinding
-import es.upsa.mimo.gamercollection.extensions.*
+import es.upsa.mimo.gamercollection.extensions.doAfterTextChanged
+import es.upsa.mimo.gamercollection.extensions.getPosition
+import es.upsa.mimo.gamercollection.extensions.getValue
+import es.upsa.mimo.gamercollection.extensions.setEndIconOnClickListener
+import es.upsa.mimo.gamercollection.extensions.setError
+import es.upsa.mimo.gamercollection.extensions.setValue
 import es.upsa.mimo.gamercollection.utils.CustomDropdownType
 import es.upsa.mimo.gamercollection.utils.Preferences
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
-import es.upsa.mimo.gamercollection.viewmodelfactories.SettingsViewModelFactory
 import es.upsa.mimo.gamercollection.viewmodels.SettingsViewModel
 
 class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
@@ -23,7 +30,7 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
     //endregion
 
     //region Private properties
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel: SettingsViewModel by viewModels()
     //endregion
 
     //region Lifecycle methods
@@ -52,6 +59,7 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
                     })
                 return true
             }
+
             R.id.action_logout -> {
 
                 showPopupConfirmationDialog(
@@ -103,11 +111,6 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
     override fun initializeUi() {
         super.initializeUi()
 
-        val application = activity?.application
-        viewModel = ViewModelProvider(
-            this,
-            SettingsViewModelFactory(application)
-        )[SettingsViewModel::class.java]
         setupBindings()
 
         binding.textInputLayoutUsername.setEndIconOnClickListener {
