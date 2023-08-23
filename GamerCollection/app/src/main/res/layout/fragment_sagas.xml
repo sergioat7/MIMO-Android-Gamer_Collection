@@ -17,12 +17,12 @@
 
         <variable
             name="fragment"
-            type="es.upsa.mimo.gamercollection.fragments.SagasFragment"
+            type="es.upsa.mimo.gamercollection.ui.sagas.SagasFragment"
             />
 
         <variable
             name="viewModel"
-            type="es.upsa.mimo.gamercollection.viewmodels.SagasViewModel"
+            type="es.upsa.mimo.gamercollection.ui.sagas.SagasViewModel"
             />
 
         <variable
@@ -38,7 +38,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.SagasFragment"
+        tools:context=".ui.sagas.SagasFragment"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout

@@ -16,7 +16,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.databinding.CustomTextInputLayoutBinding
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.data.source.SharedPreferencesHelper
 import java.util.*
 
 fun CustomTextInputLayoutBinding.setError(text: String?) {

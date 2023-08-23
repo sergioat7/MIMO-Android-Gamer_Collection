@@ -17,12 +17,12 @@ import com.google.android.material.textfield.TextInputLayout
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.adapters.GamesAdapter
-import es.upsa.mimo.gamercollection.adapters.SongsAdapter
-import es.upsa.mimo.gamercollection.customviews.ImageViewWithLoading
-import es.upsa.mimo.gamercollection.customviews.StateButton
-import es.upsa.mimo.gamercollection.models.responses.GameResponse
-import es.upsa.mimo.gamercollection.models.responses.SongResponse
+import es.upsa.mimo.gamercollection.ui.games.GamesAdapter
+import es.upsa.mimo.gamercollection.ui.gamedetail.gamesongs.SongsAdapter
+import es.upsa.mimo.gamercollection.ui.customviews.ImageViewWithLoading
+import es.upsa.mimo.gamercollection.ui.customviews.StateButton
+import es.upsa.mimo.gamercollection.models.GameResponse
+import es.upsa.mimo.gamercollection.models.SongResponse
 import es.upsa.mimo.gamercollection.utils.CustomInputType
 import me.zhanghai.android.materialratingbar.MaterialRatingBar
 
