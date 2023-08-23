@@ -5,7 +5,7 @@
 
         <variable
             name="onItemClickListener"
-            type="es.upsa.mimo.gamercollection.adapters.OnItemClickListener"
+            type="es.upsa.mimo.gamercollection.interfaces.OnItemClickListener"
             />
 
     </data>

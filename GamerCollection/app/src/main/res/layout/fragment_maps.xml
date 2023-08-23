@@ -5,7 +5,7 @@
 
         <variable
             name="fragment"
-            type="es.upsa.mimo.gamercollection.fragments.MapsFragment"
+            type="es.upsa.mimo.gamercollection.ui.gamedetail.gamedata.MapsFragment"
             />
 
     </data>
@@ -16,7 +16,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.MapsFragment"
+        tools:context=".ui.gamedetail.gamedata.MapsFragment"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout

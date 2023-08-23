@@ -4,9 +4,9 @@ import com.google.gson.*
 import es.upsa.mimo.gamercollection.BuildConfig
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.toDate
-import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
+import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.utils.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.data.source.SharedPreferencesHelper
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
