@@ -4,25 +4,30 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.data.source.di.IoDispatcher
 import es.upsa.mimo.gamercollection.data.source.di.MainDispatcher
+import es.upsa.mimo.gamercollection.database.daos.GameDao
+import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.FilterModel
+import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.GameWithSaga
 import es.upsa.mimo.gamercollection.models.RawgGameResponse
-import es.upsa.mimo.gamercollection.models.ErrorResponse
-import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.network.ApiManager
+import es.upsa.mimo.gamercollection.network.RequestResult
 import es.upsa.mimo.gamercollection.network.interfaces.GameApiService
 import es.upsa.mimo.gamercollection.network.interfaces.RawgGameApiService
-import es.upsa.mimo.gamercollection.network.RequestResult
-import es.upsa.mimo.gamercollection.database.AppDatabase
 import es.upsa.mimo.gamercollection.utils.Constants
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class GameRepository @Inject constructor(
     private val api: GameApiService,
     private val apiRawg: RawgGameApiService,
-    private val database: AppDatabase,
+    private val gameDao: GameDao,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
@@ -229,9 +234,7 @@ class GameRepository @Inject constructor(
         var games: List<GameWithSaga> = arrayListOf()
         runBlocking {
             val result = databaseScope.async {
-                database
-                    .gameDao()
-                    .getGames(query)
+                gameDao.getGames(query)
             }
             games = result.await()
         }
@@ -247,8 +250,7 @@ class GameRepository @Inject constructor(
         var game: GameWithSaga? = null
         runBlocking {
             val result = databaseScope.async {
-                database
-                    .gameDao()
+                gameDao
                     .getGames(SimpleSQLiteQuery("SELECT * FROM Game WHERE id == '${gameId}'"))
                     .firstOrNull()
             }
@@ -261,7 +263,7 @@ class GameRepository @Inject constructor(
 
         runBlocking {
             val job = databaseScope.launch {
-                database.gameDao().updateGame(game)
+                gameDao.updateGame(game)
             }
             job.join()
         }
@@ -351,6 +353,7 @@ class GameRepository @Inject constructor(
                         val games = mapRawgGames(response.body.results)
                         success(games, response.body.count, response.body.next != null)
                     }
+
                     is RequestResult.Failure -> failure(response.error)
                     else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
                 }
@@ -388,7 +391,7 @@ class GameRepository @Inject constructor(
 
         runBlocking {
             val job = databaseScope.launch {
-                database.gameDao().insertGame(game)
+                gameDao.insertGame(game)
             }
             job.join()
         }
@@ -398,7 +401,7 @@ class GameRepository @Inject constructor(
 
         runBlocking {
             val job = databaseScope.launch {
-                database.gameDao().deleteGame(game)
+                gameDao.deleteGame(game)
             }
             job.join()
         }
