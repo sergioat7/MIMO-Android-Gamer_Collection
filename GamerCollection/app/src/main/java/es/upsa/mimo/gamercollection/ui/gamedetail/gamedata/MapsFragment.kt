@@ -198,9 +198,10 @@ class MapsFragment(
         fusedLocationClient.requestLocationUpdates(mLocationRequest, object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
 
-                val lastLocation: Location = locationResult.lastLocation
-                val position = LatLng(lastLocation.latitude, lastLocation.longitude)
-                addMarker(position)
+                locationResult.lastLocation?.let { lastLocation ->
+                    val position = LatLng(lastLocation.latitude, lastLocation.longitude)
+                    addMarker(position)
+                }
             }
         }, Looper.myLooper())
     }
