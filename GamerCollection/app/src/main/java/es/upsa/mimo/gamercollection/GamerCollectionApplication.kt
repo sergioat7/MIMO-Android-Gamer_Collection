@@ -8,16 +8,19 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class GamerCollectionApplication : Application() {
 
+    //region Static properties
     companion object {
-        @SuppressLint("StaticFieldLeak")
-        lateinit var context: Context
+        val context: Context
+            get() = app.applicationContext
+        private lateinit var app: GamerCollectionApplication
     }
+    //endregion
 
     //region Lifecycle methods
     override fun onCreate() {
         super.onCreate()
 
-        context = applicationContext
+        app = this
     }
     //endregion
 }

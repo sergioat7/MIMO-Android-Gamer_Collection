@@ -2,17 +2,22 @@ package es.upsa.mimo.gamercollection.data.source
 
 import es.upsa.mimo.gamercollection.data.source.di.IoDispatcher
 import es.upsa.mimo.gamercollection.data.source.di.MainDispatcher
-import es.upsa.mimo.gamercollection.models.SagaWithGames
+import es.upsa.mimo.gamercollection.database.daos.SagaDao
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.SagaResponse
+import es.upsa.mimo.gamercollection.models.SagaWithGames
 import es.upsa.mimo.gamercollection.network.interfaces.SagaApiService
-import es.upsa.mimo.gamercollection.database.AppDatabase
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class SagaRepository @Inject constructor(
     private val api: SagaApiService,
-    private val database: AppDatabase,
+    private val sagaDao: SagaDao,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
@@ -136,7 +141,7 @@ class SagaRepository @Inject constructor(
         runBlocking {
 
             val result = databaseScope.async {
-                database.sagaDao().getSagas()
+                sagaDao.getSagas()
             }
             sagas = result.await()
         }
@@ -153,7 +158,7 @@ class SagaRepository @Inject constructor(
         runBlocking {
 
             val result = databaseScope.async {
-                database.sagaDao().getSaga(sagaId)
+                sagaDao.getSaga(sagaId)
             }
             saga = result.await()
         }
@@ -174,7 +179,7 @@ class SagaRepository @Inject constructor(
 
         runBlocking {
             val job = databaseScope.launch {
-                database.sagaDao().insertSaga(saga)
+                sagaDao.insertSaga(saga)
             }
             job.join()
         }
@@ -184,7 +189,7 @@ class SagaRepository @Inject constructor(
 
         runBlocking {
             val job = databaseScope.launch {
-                database.sagaDao().updateSaga(saga)
+                sagaDao.updateSaga(saga)
             }
             job.join()
         }
@@ -194,7 +199,7 @@ class SagaRepository @Inject constructor(
 
         runBlocking {
             val job = databaseScope.launch {
-                database.sagaDao().deleteSaga(saga)
+                sagaDao.deleteSaga(saga)
             }
             job.join()
         }

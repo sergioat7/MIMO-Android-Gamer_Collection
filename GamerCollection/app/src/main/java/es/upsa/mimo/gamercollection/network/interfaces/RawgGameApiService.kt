@@ -14,7 +14,7 @@ interface RawgGameApiService {
     @GET("games")
     suspend fun getGames(@QueryMap queryParams: Map<String, String>): Response<RawgGameListResponse>
 
-    @Headers("User-Agent:GamerDB")
+    @Headers("User-Agent:GamerCollection")
     @GET("games/{gameId}")
     suspend fun getGame(
         @Path(value = "gameId") gameId: Int,

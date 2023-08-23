@@ -1,16 +1,21 @@
 package es.upsa.mimo.gamercollection.data.source
 
 import es.upsa.mimo.gamercollection.data.source.di.IoDispatcher
+import es.upsa.mimo.gamercollection.database.daos.SongDao
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.SongResponse
 import es.upsa.mimo.gamercollection.network.interfaces.SongApiService
-import es.upsa.mimo.gamercollection.database.AppDatabase
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class SongRepository @Inject constructor(
     private val api: SongApiService,
-    private val database: AppDatabase,
+    private val songDao: SongDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
@@ -70,7 +75,7 @@ class SongRepository @Inject constructor(
         runBlocking {
 
             val result = databaseScope.async {
-                database.songDao().getSongs()
+                songDao.getSongs()
             }
             songs = result.await()
         }
@@ -83,7 +88,7 @@ class SongRepository @Inject constructor(
         runBlocking {
 
             val result = databaseScope.async {
-                database.songDao().getSong(songId)
+                songDao.getSong(songId)
             }
             song = result.await()
         }
@@ -94,7 +99,7 @@ class SongRepository @Inject constructor(
 
         runBlocking {
             val job = databaseScope.launch {
-                database.songDao().insertSong(song)
+                songDao.insertSong(song)
             }
             job.join()
         }
@@ -104,7 +109,7 @@ class SongRepository @Inject constructor(
 
         runBlocking {
             val job = databaseScope.launch {
-                database.songDao().deleteSong(song)
+                songDao.deleteSong(song)
             }
             job.join()
         }
