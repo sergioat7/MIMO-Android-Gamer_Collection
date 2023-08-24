@@ -1,6 +1,6 @@
 package es.upsa.mimo.gamercollection.network
 
-import es.upsa.mimo.gamercollection.models.responses.ErrorResponse
+import es.upsa.mimo.gamercollection.models.ErrorResponse
 
 sealed class RequestResult<out T> {
     object Success : RequestResult<Nothing>()

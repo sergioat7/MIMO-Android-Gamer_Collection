@@ -13,12 +13,12 @@
 
         <variable
             name="saga"
-            type="es.upsa.mimo.gamercollection.models.responses.SagaResponse"
+            type="es.upsa.mimo.gamercollection.models.SagaResponse"
             />
 
         <variable
             name="onItemClickListener"
-            type="es.upsa.mimo.gamercollection.adapters.OnItemClickListener"
+            type="es.upsa.mimo.gamercollection.interfaces.OnItemClickListener"
             />
 
         <variable
