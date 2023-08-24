@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/gamesFragment"
-        android:name="es.upsa.mimo.gamercollection.fragments.GamesFragment"
+        android:name="es.upsa.mimo.gamercollection.ui.games.GamesFragment"
         android:label="@string/games"
         tools:layout="@layout/fragment_games"
         >
@@ -32,7 +32,7 @@
 
     <fragment
         android:id="@+id/gameDetailFragment"
-        android:name="es.upsa.mimo.gamercollection.fragments.GameDetailFragment"
+        android:name="es.upsa.mimo.gamercollection.ui.gamedetail.GameDetailFragment"
         android:label="GameDetailFragment"
         tools:layout="@layout/fragment_game_detail"
         >

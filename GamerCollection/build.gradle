@@ -2,9 +2,9 @@
 
 buildscript {
 
-    ext.kotlin_version = "1.6.10"
-    ext.navigationVersion = "2.4.1"
-    ext.hilt_version = '2.42'
+    ext.kotlin_version = "1.8.22"
+    ext.navigationVersion = "2.5.3"
+    ext.hilt_version = '2.47'
 
     repositories {
         google()
@@ -13,8 +13,8 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.3.10'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
+        classpath 'com.google.gms:google-services:4.3.15'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.8'
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
 
@@ -38,7 +38,7 @@ tasks.register('clean', Delete) {
 ext {
 
     //App dependencies
-    lifecycleVersion = '2.4.1'
+    lifecycleVersion = '2.6.1'
     retrofitVersion = '2.9.0'
-    roomVersion = '2.4.1'
+    roomVersion = '2.5.2'
 }

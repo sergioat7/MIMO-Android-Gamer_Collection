@@ -25,12 +25,12 @@
 
         <variable
             name="fragment"
-            type="es.upsa.mimo.gamercollection.fragments.GameDataFragment"
+            type="es.upsa.mimo.gamercollection.ui.gamedetail.gamedata.GameDataFragment"
             />
 
         <variable
             name="game"
-            type="es.upsa.mimo.gamercollection.models.responses.GameResponse"
+            type="es.upsa.mimo.gamercollection.models.GameResponse"
             />
 
         <variable
@@ -43,7 +43,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.GameDataFragment"
+        tools:context=".ui.gamedetail.gamedata.GameDataFragment"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout

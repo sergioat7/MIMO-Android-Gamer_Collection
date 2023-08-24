@@ -13,7 +13,7 @@
 
         <variable
             name="song"
-            type="es.upsa.mimo.gamercollection.models.responses.SongResponse"
+            type="es.upsa.mimo.gamercollection.models.SongResponse"
             />
 
         <variable
@@ -23,7 +23,7 @@
 
         <variable
             name="onItemClickListener"
-            type="es.upsa.mimo.gamercollection.adapters.OnItemClickListener"
+            type="es.upsa.mimo.gamercollection.interfaces.OnItemClickListener"
             />
 
     </data>

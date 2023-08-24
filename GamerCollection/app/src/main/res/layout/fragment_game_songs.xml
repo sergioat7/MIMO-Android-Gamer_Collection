@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="es.upsa.mimo.gamercollection.viewmodels.GameSongsViewModel"
+            type="es.upsa.mimo.gamercollection.ui.gamedetail.gamesongs.GameSongsViewModel"
             />
 
         <variable
@@ -25,7 +25,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.GameSongsFragment"
+        tools:context=".ui.gamedetail.gamesongs.GameSongsFragment"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout

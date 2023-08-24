@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="es.upsa.mimo.gamercollection.fragments.SettingsFragment"
+        android:name="es.upsa.mimo.gamercollection.ui.settings.SettingsFragment"
         android:label="@string/settings"
         tools:layout="@layout/fragment_settings"
         />
