@@ -53,6 +53,7 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
         searchView?.setQuery(Constants.EMPTY_VALUE, false)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
 

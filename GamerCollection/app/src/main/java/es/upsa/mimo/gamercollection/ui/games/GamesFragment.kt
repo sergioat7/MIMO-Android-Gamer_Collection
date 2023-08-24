@@ -70,6 +70,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         searchView?.setQuery(Constants.EMPTY_VALUE, false)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
 
@@ -79,6 +80,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         setupSearchView(menu)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
 
@@ -86,6 +88,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         menu.findItem(R.id.action_filter_fill)?.isVisible = viewModel.filters.value != null
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {

@@ -14,6 +14,7 @@ class LoginActivity : BaseActivity() {
         setContentView(R.layout.activity_login)
     }
 
+    @Deprecated("Deprecated in Java", ReplaceWith("moveTaskToBack(true)"))
     override fun onBackPressed() {
         moveTaskToBack(true)
     }

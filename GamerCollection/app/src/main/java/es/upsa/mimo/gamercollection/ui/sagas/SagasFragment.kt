@@ -56,6 +56,7 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
         viewModel.expandedIds = sagasAdapter.getExpandedIds()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
 
@@ -64,6 +65,7 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
         setupSearchView(menu)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {

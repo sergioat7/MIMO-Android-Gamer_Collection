@@ -62,6 +62,7 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
         initializeUi()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
 
@@ -79,6 +80,7 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
