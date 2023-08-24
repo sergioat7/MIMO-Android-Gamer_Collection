@@ -13,12 +13,12 @@
 
         <variable
             name="fragment"
-            type="es.upsa.mimo.gamercollection.fragments.SettingsFragment"
+            type="es.upsa.mimo.gamercollection.ui.settings.SettingsFragment"
             />
 
         <variable
             name="viewModel"
-            type="es.upsa.mimo.gamercollection.viewmodels.SettingsViewModel"
+            type="es.upsa.mimo.gamercollection.ui.settings.SettingsViewModel"
             />
 
     </data>
@@ -29,7 +29,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.SettingsFragment"
+        tools:context=".ui.settings.SettingsFragment"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout

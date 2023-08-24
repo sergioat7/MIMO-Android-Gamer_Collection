@@ -25,12 +25,12 @@
 
         <variable
             name="activity"
-            type="es.upsa.mimo.gamercollection.fragments.GameDetailFragment"
+            type="es.upsa.mimo.gamercollection.ui.gamedetail.GameDetailFragment"
             />
         
         <variable
             name="game"
-            type="es.upsa.mimo.gamercollection.models.responses.GameResponse"
+            type="es.upsa.mimo.gamercollection.models.GameResponse"
             />
 
         <variable
@@ -61,7 +61,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.GameDetailFragment"
+        tools:context=".ui.gamedetail.GameDetailFragment"
         >
 
         <com.jgabrielfreitas.core.BlurImageView
@@ -85,7 +85,7 @@
             app:layout_constraintTop_toTopOf="@+id/image_view_blurred"
             />
 
-        <es.upsa.mimo.gamercollection.customviews.ImageViewWithLoading
+        <es.upsa.mimo.gamercollection.ui.customviews.ImageViewWithLoading
             android:id="@+id/image_view_game"
             android:layout_width="0dp"
             android:layout_height="@dimen/size_200dp"

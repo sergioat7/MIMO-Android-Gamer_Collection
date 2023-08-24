@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/sagasFragment"
-        android:name="es.upsa.mimo.gamercollection.fragments.SagasFragment"
+        android:name="es.upsa.mimo.gamercollection.ui.sagas.SagasFragment"
         android:label="@string/sagas"
         tools:layout="@layout/fragment_sagas"
         >
@@ -41,7 +41,7 @@
 
     <fragment
         android:id="@+id/sagaDetailFragment"
-        android:name="es.upsa.mimo.gamercollection.fragments.SagaDetailFragment"
+        android:name="es.upsa.mimo.gamercollection.ui.sagadetail.SagaDetailFragment"
         android:label="SagaDetailFragment"
         tools:layout="@layout/fragment_saga_detail"
         >
@@ -55,7 +55,7 @@
 
     <fragment
         android:id="@+id/gameDetailFragment"
-        android:name="es.upsa.mimo.gamercollection.fragments.GameDetailFragment"
+        android:name="es.upsa.mimo.gamercollection.ui.gamedetail.GameDetailFragment"
         android:label="GameDetailFragment"
         tools:layout="@layout/fragment_game_detail"
         >
