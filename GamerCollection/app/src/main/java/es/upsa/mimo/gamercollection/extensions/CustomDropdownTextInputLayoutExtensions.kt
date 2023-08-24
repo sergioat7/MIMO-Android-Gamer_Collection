@@ -7,7 +7,7 @@ package es.upsa.mimo.gamercollection.extensions
 
 import androidx.core.view.doOnLayout
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.adapters.MenuAdapter
+import es.upsa.mimo.gamercollection.ui.adapters.MenuAdapter
 import es.upsa.mimo.gamercollection.databinding.CustomDropdownTextInputLayoutBinding
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.CustomDropdownType

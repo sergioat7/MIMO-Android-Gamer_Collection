@@ -9,7 +9,7 @@
 
         <variable
             name="game"
-            type="es.upsa.mimo.gamercollection.models.responses.GameResponse"
+            type="es.upsa.mimo.gamercollection.models.GameResponse"
             />
 
         <variable
@@ -24,7 +24,7 @@
 
         <variable
             name="onItemClickListener"
-            type="es.upsa.mimo.gamercollection.adapters.OnItemClickListener"
+            type="es.upsa.mimo.gamercollection.interfaces.OnItemClickListener"
             />
 
     </data>
@@ -69,7 +69,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 >
 
-                <es.upsa.mimo.gamercollection.customviews.ImageViewWithLoading
+                <es.upsa.mimo.gamercollection.ui.customviews.ImageViewWithLoading
                     android:id="@+id/image_view_game"
                     android:layout_width="@dimen/size_125dp"
                     android:layout_height="0dp"

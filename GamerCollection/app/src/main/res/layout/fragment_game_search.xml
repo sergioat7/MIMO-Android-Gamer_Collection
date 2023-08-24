@@ -17,12 +17,12 @@
 
         <variable
             name="fragment"
-            type="es.upsa.mimo.gamercollection.fragments.GameSearchFragment"
+            type="es.upsa.mimo.gamercollection.ui.gamesearch.GameSearchFragment"
             />
 
         <variable
             name="viewModel"
-            type="es.upsa.mimo.gamercollection.viewmodels.GameSearchViewModel"
+            type="es.upsa.mimo.gamercollection.ui.gamesearch.GameSearchViewModel"
             />
 
         <variable
@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context=".fragments.GameSearchFragment"
+        tools:context=".ui.gamesearch.GameSearchFragment"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout

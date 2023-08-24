@@ -28,7 +28,7 @@
 
         <variable
             name="fragment"
-            type="es.upsa.mimo.gamercollection.fragments.SagaDetailFragment"
+            type="es.upsa.mimo.gamercollection.ui.sagadetail.SagaDetailFragment"
             />
 
         <variable
@@ -44,7 +44,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.SagaDetailFragment"
+        tools:context=".ui.sagadetail.SagaDetailFragment"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
