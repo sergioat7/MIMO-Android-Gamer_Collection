@@ -13,8 +13,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.ui.landing.LandingActivity
-import es.upsa.mimo.gamercollection.ui.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentSettingsBinding
 import es.upsa.mimo.gamercollection.extensions.doAfterTextChanged
 import es.upsa.mimo.gamercollection.extensions.getPosition
@@ -22,6 +20,8 @@ import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.extensions.setEndIconOnClickListener
 import es.upsa.mimo.gamercollection.extensions.setError
 import es.upsa.mimo.gamercollection.extensions.setValue
+import es.upsa.mimo.gamercollection.ui.base.BindingFragment
+import es.upsa.mimo.gamercollection.ui.landing.LandingActivity
 import es.upsa.mimo.gamercollection.utils.CustomDropdownType
 import es.upsa.mimo.gamercollection.utils.Preferences
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
@@ -61,7 +61,7 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.action_import -> {
                 showPopupConfirmationDialog(
                     resources.getString(R.string.import_confirmation),
@@ -71,7 +71,7 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
                         intent.type = "*/*"
                         openFileLauncher.launch(intent)
                     })
-                return true
+                true
             }
 
             R.id.action_export -> {
@@ -86,7 +86,7 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
                         }
                         newFileLauncher.launch(intent)
                     })
-                return true
+                true
             }
 
             R.id.action_delete -> {
@@ -96,7 +96,7 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
                     {
                         viewModel.deleteUser()
                     })
-                return true
+                true
             }
 
             R.id.action_logout -> {
@@ -106,10 +106,11 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
                     {
                         viewModel.logout()
                     })
-                return true
+                true
             }
+
+            else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {
