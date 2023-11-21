@@ -165,6 +165,16 @@ class SagaRepository @Inject constructor(
         return saga?.transform()
     }
 
+    fun insertSagaDatabase(saga: SagaResponse) {
+
+        runBlocking {
+            val job = databaseScope.launch {
+                sagaDao.insertSaga(saga)
+            }
+            job.join()
+        }
+    }
+
     fun resetTable() {
 
         val sagas = getSagasDatabase()
@@ -175,16 +185,6 @@ class SagaRepository @Inject constructor(
     //endregion
 
     //region Private methods
-    private fun insertSagaDatabase(saga: SagaResponse) {
-
-        runBlocking {
-            val job = databaseScope.launch {
-                sagaDao.insertSaga(saga)
-            }
-            job.join()
-        }
-    }
-
     private fun updateSagaDatabase(saga: SagaResponse) {
 
         runBlocking {

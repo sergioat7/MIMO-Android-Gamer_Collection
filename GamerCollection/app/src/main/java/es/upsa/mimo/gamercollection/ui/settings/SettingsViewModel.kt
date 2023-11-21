@@ -4,16 +4,21 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.gson.Gson
+import com.google.gson.JsonParser
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.models.AuthData
-import es.upsa.mimo.gamercollection.models.UserData
-import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.data.source.GameRepository
 import es.upsa.mimo.gamercollection.data.source.SagaRepository
-import es.upsa.mimo.gamercollection.data.source.UserRepository
-import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.data.source.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.data.source.UserRepository
+import es.upsa.mimo.gamercollection.models.AuthData
+import es.upsa.mimo.gamercollection.models.ErrorResponse
+import es.upsa.mimo.gamercollection.models.GameResponse
+import es.upsa.mimo.gamercollection.models.SagaResponse
+import es.upsa.mimo.gamercollection.models.UserData
+import es.upsa.mimo.gamercollection.utils.Constants
 import javax.inject.Inject
 
 @HiltViewModel
@@ -147,6 +152,34 @@ class SettingsViewModel @Inject constructor(
             passwordError = R.string.invalid_password
         }
         _settingsForm.value = passwordError
+    }
+
+    fun importData(jsonData: String) {
+
+        val json = JsonParser.parseString(jsonData)
+        val jsonGames = json.asJsonObject["games"].toString()
+        val jsonSagas = json.asJsonObject["sagas"].toString()
+
+        var listType = object : TypeToken<List<GameResponse?>?>() {}.type
+        val games = Gson().fromJson<List<GameResponse?>>(jsonGames, listType).mapNotNull { it }
+        listType = object : TypeToken<List<SagaResponse?>?>() {}.type
+        val sagas = Gson().fromJson<List<SagaResponse?>>(jsonSagas, listType).mapNotNull { it }
+
+        for (game in games) {
+            gameRepository.insertGameDatabase(game)
+        }
+        for (saga in sagas) {
+            sagaRepository.insertSagaDatabase(saga)
+        }
+    }
+
+    fun getDataToExport(): String {
+
+        val data = mapOf(
+            "games" to gameRepository.getGamesDatabase(),
+            "sagas" to sagaRepository.getSagasDatabase()
+        )
+        return Gson().toJson(data)
     }
     //endregion
 
