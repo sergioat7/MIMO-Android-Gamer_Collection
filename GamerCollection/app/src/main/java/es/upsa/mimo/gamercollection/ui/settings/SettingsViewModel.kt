@@ -9,16 +9,16 @@ import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.models.AuthData
-import es.upsa.mimo.gamercollection.models.UserData
-import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.data.source.GameRepository
 import es.upsa.mimo.gamercollection.data.source.SagaRepository
+import es.upsa.mimo.gamercollection.data.source.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.data.source.UserRepository
+import es.upsa.mimo.gamercollection.models.AuthData
+import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.SagaResponse
+import es.upsa.mimo.gamercollection.models.UserData
 import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.data.source.SharedPreferencesHelper
 import javax.inject.Inject
 
 @HiltViewModel
