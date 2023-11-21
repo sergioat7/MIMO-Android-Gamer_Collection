@@ -1,16 +1,18 @@
 package es.upsa.mimo.gamercollection.ui.settings
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.ui.landing.LandingActivity
-import es.upsa.mimo.gamercollection.ui.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentSettingsBinding
 import es.upsa.mimo.gamercollection.extensions.doAfterTextChanged
 import es.upsa.mimo.gamercollection.extensions.getPosition
@@ -18,9 +20,14 @@ import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.extensions.setEndIconOnClickListener
 import es.upsa.mimo.gamercollection.extensions.setError
 import es.upsa.mimo.gamercollection.extensions.setValue
+import es.upsa.mimo.gamercollection.ui.base.BindingFragment
+import es.upsa.mimo.gamercollection.ui.landing.LandingActivity
 import es.upsa.mimo.gamercollection.utils.CustomDropdownType
 import es.upsa.mimo.gamercollection.utils.Preferences
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
 
 @AndroidEntryPoint
 class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
@@ -32,6 +39,8 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
 
     //region Private properties
     private val viewModel: SettingsViewModel by viewModels()
+    private lateinit var openFileLauncher: ActivityResultLauncher<Intent>
+    private lateinit var newFileLauncher: ActivityResultLauncher<Intent>
     //endregion
 
     //region Lifecycle methods
@@ -52,7 +61,34 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when (item.itemId) {
+        return when (item.itemId) {
+            R.id.action_import -> {
+                showPopupConfirmationDialog(
+                    resources.getString(R.string.import_confirmation),
+                    acceptHandler = {
+
+                        val intent = Intent(Intent.ACTION_GET_CONTENT)
+                        intent.type = "*/*"
+                        openFileLauncher.launch(intent)
+                    })
+                true
+            }
+
+            R.id.action_export -> {
+                showPopupConfirmationDialog(
+                    resources.getString(R.string.export_confirmation),
+                    acceptHandler = {
+
+                        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                            addCategory(Intent.CATEGORY_OPENABLE)
+                            type = "text/txt"
+                            putExtra(Intent.EXTRA_TITLE, "gamercollection_database_backup.txt")
+                        }
+                        newFileLauncher.launch(intent)
+                    })
+                true
+            }
+
             R.id.action_delete -> {
 
                 showPopupConfirmationDialog(
@@ -60,7 +96,7 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
                     {
                         viewModel.deleteUser()
                     })
-                return true
+                true
             }
 
             R.id.action_logout -> {
@@ -70,10 +106,11 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
                     {
                         viewModel.logout()
                     })
-                return true
+                true
             }
+
+            else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {
@@ -113,6 +150,42 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
     //region Protected methods
     override fun initializeUi() {
         super.initializeUi()
+
+        openFileLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    result.data?.data?.let { uri ->
+
+                        try {
+                            val inputStream = context?.contentResolver?.openInputStream(uri)
+                            val reader = BufferedReader(InputStreamReader(inputStream))
+                            val jsonData = reader.readLine()
+                            inputStream?.close()
+                            viewModel.importData(jsonData)
+                            val message = resources.getString(R.string.data_imported)
+                            showPopupDialog(message)
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            }
+        newFileLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    result.data?.data?.let { uri ->
+
+                        val data = viewModel.getDataToExport()
+                        context?.contentResolver?.openOutputStream(uri)
+                            ?.use { outputStream ->
+                                outputStream.write(data.toByteArray())
+                                outputStream.close()
+                            }
+                        val message = resources.getString(R.string.file_created)
+                        showPopupDialog(message)
+                    }
+                }
+            }
 
         setupBindings()
 
