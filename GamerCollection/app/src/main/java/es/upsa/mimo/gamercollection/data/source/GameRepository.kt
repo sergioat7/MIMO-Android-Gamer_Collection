@@ -259,6 +259,16 @@ class GameRepository @Inject constructor(
         return game?.transform()
     }
 
+    fun insertGameDatabase(game: GameResponse) {
+
+        runBlocking {
+            val job = databaseScope.launch {
+                gameDao.insertGame(game)
+            }
+            job.join()
+        }
+    }
+
     fun updateGameDatabase(game: GameResponse) {
 
         runBlocking {
@@ -387,16 +397,6 @@ class GameRepository @Inject constructor(
     //endregion
 
     //region Private methods
-    private fun insertGameDatabase(game: GameResponse) {
-
-        runBlocking {
-            val job = databaseScope.launch {
-                gameDao.insertGame(game)
-            }
-            job.join()
-        }
-    }
-
     private fun deleteGameDatabase(game: GameResponse) {
 
         runBlocking {
