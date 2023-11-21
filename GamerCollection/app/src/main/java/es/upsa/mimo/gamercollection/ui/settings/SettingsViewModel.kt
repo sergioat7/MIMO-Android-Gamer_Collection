@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.AuthData
@@ -153,6 +154,12 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun getDataToExport(): String {
+
+        val data = mapOf(
+            "games" to gameRepository.getGamesDatabase(),
+            "sagas" to sagaRepository.getSagasDatabase()
+        )
+        return Gson().toJson(data)
     }
     //endregion
 
