@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
+import com.google.gson.JsonParser
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.AuthData
@@ -13,6 +15,8 @@ import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.data.source.GameRepository
 import es.upsa.mimo.gamercollection.data.source.SagaRepository
 import es.upsa.mimo.gamercollection.data.source.UserRepository
+import es.upsa.mimo.gamercollection.models.GameResponse
+import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.data.source.SharedPreferencesHelper
 import javax.inject.Inject
@@ -151,6 +155,22 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun importData(jsonData: String) {
+
+        val json = JsonParser.parseString(jsonData)
+        val jsonGames = json.asJsonObject["games"].toString()
+        val jsonSagas = json.asJsonObject["sagas"].toString()
+
+        var listType = object : TypeToken<List<GameResponse?>?>() {}.type
+        val games = Gson().fromJson<List<GameResponse?>>(jsonGames, listType).mapNotNull { it }
+        listType = object : TypeToken<List<SagaResponse?>?>() {}.type
+        val sagas = Gson().fromJson<List<SagaResponse?>>(jsonSagas, listType).mapNotNull { it }
+
+        for (game in games) {
+            gameRepository.createGame(game, success = {}, failure = {})
+        }
+        for (saga in sagas) {
+            sagaRepository.createSaga(saga, success = {}, failure = {})
+        }
     }
 
     fun getDataToExport(): String {
