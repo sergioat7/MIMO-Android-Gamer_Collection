@@ -148,6 +148,12 @@ class SettingsViewModel @Inject constructor(
         }
         _settingsForm.value = passwordError
     }
+
+    fun importData(jsonData: String) {
+    }
+
+    fun getDataToExport(): String {
+    }
     //endregion
 
     //region Private methods
