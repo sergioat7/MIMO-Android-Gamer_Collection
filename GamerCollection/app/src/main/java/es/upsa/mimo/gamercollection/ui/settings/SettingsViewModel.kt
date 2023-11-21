@@ -166,10 +166,10 @@ class SettingsViewModel @Inject constructor(
         val sagas = Gson().fromJson<List<SagaResponse?>>(jsonSagas, listType).mapNotNull { it }
 
         for (game in games) {
-            gameRepository.createGame(game, success = {}, failure = {})
+            gameRepository.insertGameDatabase(game)
         }
         for (saga in sagas) {
-            sagaRepository.createSaga(saga, success = {}, failure = {})
+            sagaRepository.insertSagaDatabase(saga)
         }
     }
 
