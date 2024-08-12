@@ -92,7 +92,6 @@ dependencies {
     //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
-    implementation "androidx.navigation:navigation-dynamic-features-fragment:$navigationVersion"
 
     //Google Play Services
     implementation 'com.google.android.gms:play-services-location:21.0.1'
