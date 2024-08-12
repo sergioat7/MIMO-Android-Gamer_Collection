@@ -8,12 +8,17 @@ plugins {
     id 'dagger.hilt.android.plugin'
 }
 
+def appName = "es.upsa.mimo.gamercollection"
+
 def versionMajor = 2
 def versionMinor = 3
 def versionPatch = 0
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 android {
+
+    namespace appName
+    compileSdk 34
 
     signingConfigs {
         release {
@@ -28,10 +33,9 @@ android {
 
     defaultConfig {
 
-        applicationId "es.upsa.mimo.gamercollection"
+        applicationId appName
         minSdkVersion 23
         targetSdkVersion 34
-        compileSdk 34
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         versionCode versionMajor * 100000 + versionMinor * 1000 + versionPatch * 10 + versionBuild
