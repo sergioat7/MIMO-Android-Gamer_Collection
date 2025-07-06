@@ -2,7 +2,7 @@
 
 buildscript {
 
-    ext.agp_version = "7.4.2"
+    ext.agp_version = "8.11.0"
     ext.kotlin_version = "1.8.22"
     ext.navigationVersion = "2.7.7"
     ext.hilt_version = '2.47'
