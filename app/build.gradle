@@ -18,7 +18,7 @@ def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 android {
 
     namespace appName
-    compileSdk 34
+    compileSdk 36
 
     signingConfigs {
         release {
@@ -35,7 +35,7 @@ android {
 
         applicationId appName
         minSdkVersion 23
-        targetSdkVersion 34
+        targetSdkVersion 36
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         versionCode versionMajor * 100000 + versionMinor * 1000 + versionPatch * 10 + versionBuild
