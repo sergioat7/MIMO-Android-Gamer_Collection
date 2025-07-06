@@ -1,2 +1,4 @@
 GamerCollection/.idea/
 GamerCollection/app/schemas/
+.gradle/
+.idea/
