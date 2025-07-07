@@ -1,11 +1,11 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
-    id("com.google.gms.google-services")
+    alias(libs.plugins.google.services)
     id("com.google.firebase.crashlytics")
     id("androidx.navigation.safeargs.kotlin")
-    id("dagger.hilt.android.plugin")
+    alias(libs.plugins.hilt)
 }
 
 val appName = "es.upsa.mimo.gamercollection"
