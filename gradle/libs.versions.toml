@@ -1,0 +1,121 @@
+[versions]
+jdk = "17"
+sdk-compile = "36"
+sdk-min = "23"
+sdk-target = "36"
+
+agp = "8.11.0"
+androidx-test-ext-junit = "1.2.1"
+app-compat = "1.7.1"
+blur-image-view = "1.0.1"
+constraint-layout = "2.2.1"
+core-ktx = "1.16.0"
+crashlytics = "3.0.4"
+espresso-core = "3.6.1"
+firebase-bom = "33.16.0"
+fragment-ktx = "1.8.8"
+google-services = "4.4.3"
+gson = "2.13.1"
+hilt = "2.56.2"
+junit = "4.13.2"
+kotlin = "2.2.0"
+kotlinx-coroutines-android="1.10.2"
+legacy-support-v4 = "1.0.0"
+lifecycle = "2.9.1"
+material = "1.12.0"
+materialratingbar = "1.4.0"
+multidex = "2.0.1"
+navigation = "2.9.1"
+okhttp3 = "5.0.0"
+play-services-location = "21.3.0"
+play-services-maps = "19.2.0"
+picasso = "2.8"
+retrofit = "3.0.0"
+room = "2.7.2"
+security = "1.0.0"
+
+[libraries]
+
+#Android
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "app-compat" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraint-layout" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragment-ktx" }
+legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacy-support-v4" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+multidex = { group = "androidx.multidex", name = "multidex", version.ref = "multidex" }
+
+#Firebase
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
+firebase-config = { module = "com.google.firebase:firebase-config-ktx" }
+
+#Blur image view
+blurImageView = { group = "com.github.jgabrielfreitas", name = "BlurImageView", version.ref = "blur-image-view" }
+
+#Gson
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+
+#Hilt
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+
+#Kotlin
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinx-coroutines-android" }
+
+#LiveData
+lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
+lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+
+#Material rating bar
+materialratingbar = { group = "me.zhanghai.android.materialratingbar", name = "library", version.ref = "materialratingbar" }
+
+#Navigation
+navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
+navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
+
+#Play services
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "play-services-location" }
+play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "play-services-maps" }
+
+#Picasso
+picasso = { group = "com.squareup.picasso", name = "picasso", version.ref = "picasso" }
+
+#Retrofit
+okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp3" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+
+#Room
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+
+#Security
+security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "security" }
+
+#Tests
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+
+#Android tests
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
+[bundles]
+firebase = [
+    "firebase-analytics",
+    "firebase-config",
+    "firebase-crashlytics",
+]
+retrofit = [
+    "okhttp3-logging-interceptor",
+    "retrofit",
+    "retrofit-converter-gson",
+]
