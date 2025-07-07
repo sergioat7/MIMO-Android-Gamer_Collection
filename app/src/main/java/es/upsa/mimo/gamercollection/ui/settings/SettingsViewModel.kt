@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -160,10 +160,14 @@ class SettingsViewModel @Inject constructor(
         val jsonGames = json.asJsonObject["games"].toString()
         val jsonSagas = json.asJsonObject["sagas"].toString()
 
+        val gson = GsonBuilder()
+            .setDateFormat("MMM dd, yyyy HH:mm:ss")
+            .create()
         var listType = object : TypeToken<List<GameResponse?>?>() {}.type
-        val games = Gson().fromJson<List<GameResponse?>>(jsonGames, listType).mapNotNull { it }
+
+        val games = gson.fromJson<List<GameResponse?>>(jsonGames, listType).mapNotNull { it }
         listType = object : TypeToken<List<SagaResponse?>?>() {}.type
-        val sagas = Gson().fromJson<List<SagaResponse?>>(jsonSagas, listType).mapNotNull { it }
+        val sagas = gson.fromJson<List<SagaResponse?>>(jsonSagas, listType).mapNotNull { it }
 
         for (game in games) {
             gameRepository.insertGameDatabase(game)
@@ -179,7 +183,10 @@ class SettingsViewModel @Inject constructor(
             "games" to gameRepository.getGamesDatabase(),
             "sagas" to sagaRepository.getSagasDatabase()
         )
-        return Gson().toJson(data)
+        val gson = GsonBuilder()
+            .setDateFormat("MMM dd, yyyy HH:mm:ss")
+            .create()
+        return gson.toJson(data)
     }
     //endregion
 
