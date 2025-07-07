@@ -73,7 +73,7 @@ class GameSearchViewModel @Inject constructor(
 
         val currentGames = _games.value ?: mutableListOf()
         if (currentGames.isNotEmpty()) {
-            currentGames.removeLast()
+            currentGames.removeAt(currentGames.lastIndex)
         }
         currentGames.addAll(newGames)
         if (next) {
