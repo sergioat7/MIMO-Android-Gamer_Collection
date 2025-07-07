@@ -18,7 +18,7 @@ val versionBuild = 0 // bump for dogfood builds, public betas, etc.
 android {
 
     namespace = appName
-    compileSdk = 36
+    compileSdk = libs.versions.sdk.compile.get().toInt()
 
     signingConfigs {
         create("release") {
@@ -35,8 +35,8 @@ android {
     defaultConfig {
 
         applicationId = appName
-        minSdk = 23
-        targetSdk = 36
+        minSdk = libs.versions.sdk.min.get().toInt()
+        targetSdk = libs.versions.sdk.target.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         versionCode = versionMajor * 100000 + versionMinor * 1000 + versionPatch * 10 + versionBuild
@@ -70,11 +70,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.jdk.get())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.jdk.get())
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = libs.versions.jdk.get()
     }
 
     kapt {
