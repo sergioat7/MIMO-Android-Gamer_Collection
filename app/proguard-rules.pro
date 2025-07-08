@@ -58,4 +58,7 @@
     public static ** bind(android.view.View);
 }
 
+-keep class ** extends es.upsa.mimo.gamercollection.ui.base.BindingFragment {
+}
+
 ##---------------------End: proguard configuration for BindingFragment ---------------
