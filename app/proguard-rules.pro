@@ -38,6 +38,8 @@
 
 -keep class es.upsa.mimo.gamercollection.models.** { <fields>; }
 
+-keep class es.upsa.mimo.gamercollection.network.interfaces.** { <fields>; }
+
 #-keep class * extends com.google.gson.TypeAdapter
 #-keep class * implements com.google.gson.TypeAdapterFactory
 #-keep class * implements com.google.gson.JsonSerializer
@@ -54,6 +56,9 @@
 -keep class ** extends androidx.databinding.ViewDataBinding {
     public static ** inflate(android.view.LayoutInflater, android.view.ViewGroup, boolean);
     public static ** bind(android.view.View);
+}
+
+-keep class ** extends es.upsa.mimo.gamercollection.ui.base.BindingFragment {
 }
 
 ##---------------------End: proguard configuration for BindingFragment ---------------
