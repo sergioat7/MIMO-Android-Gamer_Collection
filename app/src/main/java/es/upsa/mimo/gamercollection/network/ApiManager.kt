@@ -27,7 +27,6 @@ object ApiManager {
     const val AUTHORIZATION_HEADER = "Authorization"
     const val OTHER_VALUE = "OTHER"
     const val KEY_PARAM = "key"
-    const val KEY_VALUE = "747a7639039d4134a4370852b0f6b282"
     const val PAGE_PARAM = "page"
     const val PAGE_SIZE_PARAM = "page_size"
     const val PAGE_SIZE = 20

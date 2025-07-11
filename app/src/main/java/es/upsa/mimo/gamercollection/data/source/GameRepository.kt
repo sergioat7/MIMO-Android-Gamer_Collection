@@ -1,6 +1,7 @@
 package es.upsa.mimo.gamercollection.data.source
 
 import androidx.sqlite.db.SimpleSQLiteQuery
+import es.upsa.mimo.gamercollection.BuildConfig
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.data.source.di.IoDispatcher
 import es.upsa.mimo.gamercollection.data.source.di.MainDispatcher
@@ -350,7 +351,7 @@ class GameRepository @Inject constructor(
         externalScope.launch {
 
             val params: MutableMap<String, String> = java.util.HashMap()
-            params[ApiManager.KEY_PARAM] = ApiManager.KEY_VALUE
+            params[ApiManager.KEY_PARAM] = BuildConfig.RAWG_API_KEY
             params[ApiManager.PAGE_PARAM] = page.toString()
             params[ApiManager.PAGE_SIZE_PARAM] = ApiManager.PAGE_SIZE.toString()
             query?.let {
@@ -381,7 +382,7 @@ class GameRepository @Inject constructor(
         externalScope.launch {
 
             val params: MutableMap<String, String> = java.util.HashMap()
-            params[ApiManager.KEY_PARAM] = ApiManager.KEY_VALUE
+            params[ApiManager.KEY_PARAM] = BuildConfig.RAWG_API_KEY
 
             try {
                 when (val response = ApiManager.validateResponse(apiRawg.getGame(gameId, params))) {

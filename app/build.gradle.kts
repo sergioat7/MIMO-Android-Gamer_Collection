@@ -45,6 +45,8 @@ android {
 
         versionCode = versionMajor * 100000 + versionMinor * 1000 + versionPatch * 10 + versionBuild
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
+
+        buildConfigField("String", "RAWG_API_KEY", keystoreProperties.getProperty("rawg.api.key"))
     }
 
     buildTypes {
