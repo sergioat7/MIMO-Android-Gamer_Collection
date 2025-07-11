@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -7,6 +10,10 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     alias(libs.plugins.hilt)
 }
+
+val keystorePropertiesFile: File = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 val appName = "es.upsa.mimo.gamercollection"
 
@@ -22,14 +29,11 @@ android {
 
     signingConfigs {
         create("release") {
-            if (project.hasProperty("GAMER_COLLECTION_STORE_FILE")) {
-                storeFile = file(properties["GAMER_COLLECTION_STORE_FILE"] as String)
-                storePassword = properties["GAMER_COLLECTION_STORE_PASSWORD"] as String
-                keyAlias = properties["GAMER_COLLECTION_KEY_ALIAS"] as String
-                keyPassword = properties["GAMER_COLLECTION_KEY_PASSWORD"] as String
-            }
+            storeFile = file("gamercollection-keystore.jks")
+            storePassword = keystoreProperties.getProperty("keystore.storePassword")
+            keyAlias = keystoreProperties.getProperty("keystore.keyAlias")
+            keyPassword = keystoreProperties.getProperty("keystore.keyPassword")
         }
-
     }
 
     defaultConfig {
