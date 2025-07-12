@@ -1,16 +1,21 @@
 package es.upsa.mimo.gamercollection.ui.games
 
+import android.Manifest.permission.POST_NOTIFICATIONS
 import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.PendingIntent
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -49,6 +54,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     private val viewModel: GamesViewModel by viewModels()
     private lateinit var gamesAdapter: GamesAdapter
     private var menu: Menu? = null
+    private lateinit var notificationPermissionLauncher: ActivityResultLauncher<String>
     //endregion
 
     //region Lifecycle methods
@@ -152,6 +158,13 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     override fun initializeUi() {
         super.initializeUi()
 
+        notificationPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { /*no-op*/ }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            notificationPermissionLauncher.launch(POST_NOTIFICATIONS)
+        }
+
         setupBindings()
 
         with(binding) {
@@ -231,7 +244,10 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 if (game.releaseDate == today)
                     gamesToNotify.add(game)
             }
-            if (gamesToNotify.isNotEmpty()) launchNotification(gamesToNotify)
+
+            if (gamesToNotify.isNotEmpty() && hasNotificationPermission()) {
+                launchNotification(gamesToNotify)
+            }
         }
 
         viewModel.gamesCount.observe(viewLifecycleOwner) {
@@ -459,7 +475,15 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         }
     }
 
-    @SuppressLint("UnspecifiedImmutableFlag")
+    private fun hasNotificationPermission(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+    }
+
+    @SuppressLint("MissingPermission")
     private fun launchNotification(games: List<GameResponse>) {
 
         val notifications = mutableMapOf<Int, Notification>()
@@ -473,7 +497,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 requireContext(),
                 game.id,
                 intent,
-                PendingIntent.FLAG_ONE_SHOT
+                PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
             )
 
             if (!viewModel.isNotificationLaunched(game.id)) {
@@ -614,7 +638,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 }
                 return true
             }
-
         })
         setupSearchView(Constants.EMPTY_VALUE)
     }
