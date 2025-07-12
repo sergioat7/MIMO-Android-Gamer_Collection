@@ -45,7 +45,7 @@ jobs:
           echo "keystore.storePassword=$KEY_STORE_PASSWORD" >> keystore.properties
           echo "keystore.keyAlias=$ALIAS" >> keystore.properties
           echo "keystore.keyPassword=$KEY_PASSWORD" >> keystore.properties
-          echo "rawg.api.key=RAWG_API_KEY" >> keystore.properties
+          echo "rawg.api.key=$RAWG_API_KEY" >> keystore.properties
 
       - name: Run unit tests
         run: ./gradlew testDebugUnitTest
