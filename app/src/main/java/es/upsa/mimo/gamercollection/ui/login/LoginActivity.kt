@@ -1,6 +1,7 @@
 package es.upsa.mimo.gamercollection.ui.login
 
 import android.os.Bundle
+import androidx.activity.addCallback
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.ui.base.BaseActivity
@@ -12,11 +13,10 @@ class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-    }
 
-    @Deprecated("Deprecated in Java", ReplaceWith("moveTaskToBack(true)"))
-    override fun onBackPressed() {
-        moveTaskToBack(true)
+        onBackPressedDispatcher.addCallback {
+            moveTaskToBack(true)
+        }
     }
     //endregion
 }

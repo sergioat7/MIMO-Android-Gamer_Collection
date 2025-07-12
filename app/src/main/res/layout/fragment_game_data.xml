@@ -248,9 +248,9 @@
                             android:layout_marginTop="@dimen/margin_20dp"
                             app:enabled="@{editable}"
                             app:endIconSrc="@{editable ? @drawable/ic_clear_text : null}"
-                            app:inputHintText="@{@string/game_detail_release_date}"
+                            app:inputHintText="@{@string/game_detail_select_date}"
                             app:inputType="@{CustomInputType.DATE}"
-                            app:labelHintText="@{@string/game_detail_select_date}"
+                            app:labelHintText="@{@string/game_detail_release_date}"
                             app:text='@{game.releaseDateAsHumanReadable() ?? editable ? null : Constants.NO_VALUE}'
                             />
 

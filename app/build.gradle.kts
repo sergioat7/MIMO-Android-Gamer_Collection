@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -8,11 +11,15 @@ plugins {
     alias(libs.plugins.hilt)
 }
 
+val keystorePropertiesFile: File = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
 val appName = "es.upsa.mimo.gamercollection"
 
 val versionMajor = 2
 val versionMinor = 4
-val versionPatch = 1
+val versionPatch = 2
 val versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 android {
@@ -22,14 +29,11 @@ android {
 
     signingConfigs {
         create("release") {
-            if (project.hasProperty("GAMER_COLLECTION_STORE_FILE")) {
-                storeFile = file(properties["GAMER_COLLECTION_STORE_FILE"] as String)
-                storePassword = properties["GAMER_COLLECTION_STORE_PASSWORD"] as String
-                keyAlias = properties["GAMER_COLLECTION_KEY_ALIAS"] as String
-                keyPassword = properties["GAMER_COLLECTION_KEY_PASSWORD"] as String
-            }
+            storeFile = file("gamercollection-keystore.jks")
+            storePassword = keystoreProperties.getProperty("keystore.storePassword")
+            keyAlias = keystoreProperties.getProperty("keystore.keyAlias")
+            keyPassword = keystoreProperties.getProperty("keystore.keyPassword")
         }
-
     }
 
     defaultConfig {
@@ -41,6 +45,8 @@ android {
 
         versionCode = versionMajor * 100000 + versionMinor * 1000 + versionPatch * 10 + versionBuild
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
+
+        buildConfigField("String", "RAWG_API_KEY", keystoreProperties.getProperty("rawg.api.key"))
     }
 
     buildTypes {

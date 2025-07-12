@@ -1,0 +1,69 @@
+name: Upload to Play Store Alpha
+
+on:
+  push:
+    branches:
+      - release/*
+      - hotfix/*
+
+jobs:
+  upload-to-play-store-alpha:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+
+      - uses: actions/checkout@v3
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'zulu'
+          cache: gradle
+
+      - name: Grant execution permission for gradlew
+        run: chmod +x ./gradlew
+
+      - name: Decode Keystore
+        env:
+          KEYSTORE_ENCODED: ${{ secrets.KEYSTORE_ENCODED }}
+          KEYSTORE_PATH: ${{ secrets.KEYSTORE_PATH }}
+        run: |
+          echo $KEYSTORE_ENCODED > keystore-encoded.txt
+          base64 -d keystore-encoded.txt > $KEYSTORE_PATH
+
+      - name: Load Keystore properties
+        env:
+          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+          ALIAS: ${{ secrets.ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          RAWG_API_KEY: ${{ secrets.RAWG_API_KEY }}
+        run: |
+          echo "keystore.storePassword=$KEY_STORE_PASSWORD" >> keystore.properties
+          echo "keystore.keyAlias=$ALIAS" >> keystore.properties
+          echo "keystore.keyPassword=$KEY_PASSWORD" >> keystore.properties
+          echo "rawg.api.key=$RAWG_API_KEY" >> keystore.properties
+
+      - name: Run unit tests
+        run: ./gradlew testDebugUnitTest
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Assemble release bundle
+        run: ./gradlew bundleRelease
+
+      - name: Create service_account.json
+        run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
+
+      - name: Deploy to Alpha
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJson: service_account.json
+          packageName: es.upsa.mimo.gamercollection
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          track: internal
+          whatsNewDirectory: whatsnew/
