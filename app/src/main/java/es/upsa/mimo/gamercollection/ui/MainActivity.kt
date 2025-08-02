@@ -1,6 +1,7 @@
 package es.upsa.mimo.gamercollection.ui
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
@@ -21,6 +22,9 @@ class MainActivity : BaseActivity() {
     //region Lifecycle methods
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        enableEdgeToEdge()
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         setContentView(binding.root)
 

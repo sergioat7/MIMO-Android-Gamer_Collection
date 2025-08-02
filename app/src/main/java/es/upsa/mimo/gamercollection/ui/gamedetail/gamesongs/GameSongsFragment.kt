@@ -33,7 +33,7 @@ class GameSongsFragment(
     //endregion
 
     //region Protected properties
-    override val statusBarStyle = StatusBarStyle.SECONDARY
+    override val statusBarStyle = null
     override val hasOptionsMenu = false
     //endregion
 
