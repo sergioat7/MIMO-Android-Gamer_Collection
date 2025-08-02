@@ -19,7 +19,7 @@ val appName = "es.upsa.mimo.gamercollection"
 
 val versionMajor = 2
 val versionMinor = 4
-val versionPatch = 2
+val versionPatch = 3
 val versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 android {
