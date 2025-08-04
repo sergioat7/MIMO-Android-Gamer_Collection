@@ -14,6 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -44,7 +47,7 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
     //region Protected properties
     protected lateinit var binding: Binding
         private set
-    protected abstract val statusBarStyle: StatusBarStyle
+    protected abstract val statusBarStyle: StatusBarStyle?
     protected abstract val hasOptionsMenu: Boolean
     protected open var toolbar: Toolbar? = null
     //endregion
@@ -84,17 +87,13 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
         activity?.let {
             when (statusBarStyle) {
                 StatusBarStyle.PRIMARY -> {
-                    it.window.setStatusBarStyle(
-                        ContextCompat.getColor(it, R.color.colorSecondary),
-                        !it.isDarkMode()
-                    )
+                    it.window.setStatusBarStyle(!it.isDarkMode())
                 }
+
                 StatusBarStyle.SECONDARY -> {
-                    it.window.setStatusBarStyle(
-                        ContextCompat.getColor(it, R.color.colorPrimary),
-                        it.isDarkMode()
-                    )
+                    it.window.setStatusBarStyle(it.isDarkMode())
                 }
+                null -> Unit
             }
         }
     }
@@ -104,6 +103,11 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
     protected open fun initializeUi() {
 
         toolbar?.let {
+            ViewCompat.setOnApplyWindowInsetsListener(it) { view, windowInsets ->
+                val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+                view.updatePadding(top = insets.top)
+                windowInsets
+            }
             (activity as? AppCompatActivity)?.setSupportActionBar(it)
             it.setNavigationOnClickListener {
                 findNavController().popBackStack()

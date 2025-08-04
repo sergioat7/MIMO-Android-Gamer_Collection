@@ -2,6 +2,9 @@ package es.upsa.mimo.gamercollection.ui.login
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.ui.MainActivity
@@ -17,7 +20,7 @@ import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 class LoginFragment : BindingFragment<FragmentLoginBinding>() {
 
     //region Protected properties
-    override val statusBarStyle = StatusBarStyle.SECONDARY
+    override val statusBarStyle = StatusBarStyle.PRIMARY
     override val hasOptionsMenu = false
     //endregion
 
@@ -62,6 +65,12 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
     //region Protected methods
     override fun initializeUi() {
         super.initializeUi()
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(bottom = insets.bottom)
+            windowInsets
+        }
 
         setupBindings()
 

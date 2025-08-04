@@ -8,7 +8,6 @@ package es.upsa.mimo.gamercollection.extensions
 import android.view.Window
 import androidx.core.view.WindowInsetsControllerCompat
 
-fun Window.setStatusBarStyle(color: Int, lightStatusBar: Boolean) {
-    statusBarColor = color
+fun Window.setStatusBarStyle(lightStatusBar: Boolean) {
     WindowInsetsControllerCompat(this, decorView).isAppearanceLightStatusBars = lightStatusBar
 }
