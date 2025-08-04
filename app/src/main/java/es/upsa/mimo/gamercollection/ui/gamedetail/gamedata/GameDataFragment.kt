@@ -21,7 +21,7 @@ class GameDataFragment(
 ) : BindingFragment<FragmentGameDataBinding>(), OnLocationSelected {
 
     //region Protected properties
-    override val statusBarStyle = StatusBarStyle.SECONDARY
+    override val statusBarStyle = null
     override val hasOptionsMenu = false
     //endregion
 

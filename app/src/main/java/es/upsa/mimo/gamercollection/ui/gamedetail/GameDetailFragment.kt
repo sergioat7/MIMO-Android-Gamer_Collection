@@ -11,6 +11,9 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
@@ -31,6 +34,7 @@ import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.extensions.getValueWithoutHyphen
 import es.upsa.mimo.gamercollection.extensions.isDarkMode
 import es.upsa.mimo.gamercollection.extensions.setHintStyle
+import es.upsa.mimo.gamercollection.extensions.setStatusBarStyle
 import es.upsa.mimo.gamercollection.extensions.setValue
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
@@ -116,6 +120,9 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
     override fun onResume() {
         super.onResume()
         activity?.findViewById<BottomNavigationView>(R.id.nav_view)?.visibility = View.GONE
+        view?.post {
+            requireActivity().window.setStatusBarStyle(!requireActivity().isDarkMode())
+        }
     }
 
     override fun onPause() {
@@ -179,6 +186,12 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
     //region Protected methods
     override fun initializeUi() {
         super.initializeUi()
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(bottom = insets.bottom)
+            windowInsets
+        }
 
         setupBindings()
 
