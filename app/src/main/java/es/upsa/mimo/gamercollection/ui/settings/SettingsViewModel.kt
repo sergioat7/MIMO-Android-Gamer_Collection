@@ -179,9 +179,21 @@ class SettingsViewModel @Inject constructor(
 
     fun getDataToExport(): String {
 
+        val games = gameRepository.getGamesDatabase().also {
+            it.forEach { game ->
+                game.saga = game.saga?.copy(games = emptyList())
+            }
+        }
+        val sagas = sagaRepository.getSagasDatabase().also {
+            it.forEach { saga ->
+                saga.games.forEach { game ->
+                    game.saga = game.saga?.copy(games = emptyList())
+                }
+            }
+        }
         val data = mapOf(
-            "games" to gameRepository.getGamesDatabase(),
-            "sagas" to sagaRepository.getSagasDatabase()
+            "games" to games,
+            "sagas" to sagas
         )
         val gson = GsonBuilder()
             .setDateFormat("MMM dd, yyyy HH:mm:ss")
