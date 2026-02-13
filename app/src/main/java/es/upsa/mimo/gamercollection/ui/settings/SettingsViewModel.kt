@@ -177,28 +177,32 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun getDataToExport(): String {
+    fun getDataToExport(): String? {
+        return try {
 
-        val games = gameRepository.getGamesDatabase().also {
-            it.forEach { game ->
-                game.saga = game.saga?.copy(games = emptyList())
-            }
-        }
-        val sagas = sagaRepository.getSagasDatabase().also {
-            it.forEach { saga ->
-                saga.games.forEach { game ->
+            val games = gameRepository.getGamesDatabase().also {
+                it.forEach { game ->
                     game.saga = game.saga?.copy(games = emptyList())
                 }
             }
+            val sagas = sagaRepository.getSagasDatabase().also {
+                it.forEach { saga ->
+                    saga.games.forEach { game ->
+                        game.saga = game.saga?.copy(games = emptyList())
+                    }
+                }
+            }
+            val data = mapOf(
+                "games" to games,
+                "sagas" to sagas
+            )
+            val gson = GsonBuilder()
+                .setDateFormat("MMM dd, yyyy HH:mm:ss")
+                .create()
+            gson.toJson(data)
+        } catch (_: Exception) {
+            null
         }
-        val data = mapOf(
-            "games" to games,
-            "sagas" to sagas
-        )
-        val gson = GsonBuilder()
-            .setDateFormat("MMM dd, yyyy HH:mm:ss")
-            .create()
-        return gson.toJson(data)
     }
     //endregion
 
