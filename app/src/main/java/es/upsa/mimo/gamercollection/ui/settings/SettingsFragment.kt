@@ -161,8 +161,12 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
                             val reader = BufferedReader(InputStreamReader(inputStream))
                             val jsonData = reader.readLine()
                             inputStream?.close()
-                            viewModel.importData(jsonData)
-                            val message = resources.getString(R.string.data_imported)
+                            val message = try {
+                                viewModel.importData(jsonData)
+                                resources.getString(R.string.data_imported)
+                            } catch (_: Exception) {
+                                resources.getString(R.string.error_file_data)
+                            }
                             showPopupDialog(message)
                         } catch (e: IOException) {
                             e.printStackTrace()
@@ -175,13 +179,13 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
                 if (result.resultCode == Activity.RESULT_OK) {
                     result.data?.data?.let { uri ->
 
-                        val data = viewModel.getDataToExport()
-                        context?.contentResolver?.openOutputStream(uri)
-                            ?.use { outputStream ->
-                                outputStream.write(data.toByteArray())
-                                outputStream.close()
-                            }
-                        val message = resources.getString(R.string.file_created)
+                        val message = viewModel.getDataToExport()?.let { data ->
+                            context?.contentResolver?.openOutputStream(uri)?.use { outputStream ->
+                                    outputStream.write(data.toByteArray())
+                                    outputStream.close()
+                                }
+                            resources.getString(R.string.file_created)
+                        } ?: resources.getString(R.string.error_database)
                         showPopupDialog(message)
                     }
                 }
