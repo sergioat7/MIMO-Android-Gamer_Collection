@@ -64,8 +64,8 @@ class LoginViewModel @Inject constructor(
             usernameError = R.string.invalid_username
             isDataValid = false
         }
-        if (!Constants.isPasswordValid(password)) {
-            passwordError = R.string.invalid_password
+        if (password.length <= 3) {
+            passwordError = R.string.invalid_password_old
             isDataValid = false
         }
         _loginForm.value = LoginFormState(usernameError, passwordError, isDataValid)
