@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.database.daos
+package es.upsa.mimo.gamercollection.data.local.daos
 
 import androidx.room.*
 import es.upsa.mimo.gamercollection.models.SagaWithGames

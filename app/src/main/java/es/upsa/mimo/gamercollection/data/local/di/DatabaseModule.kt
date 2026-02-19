@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.database.di
+package es.upsa.mimo.gamercollection.data.local.di
 
 import android.content.Context
 import androidx.room.Room
@@ -9,10 +9,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import es.upsa.mimo.gamercollection.database.GamerCollectionDatabase
-import es.upsa.mimo.gamercollection.database.daos.GameDao
-import es.upsa.mimo.gamercollection.database.daos.SagaDao
-import es.upsa.mimo.gamercollection.database.daos.SongDao
+import es.upsa.mimo.gamercollection.data.local.GamerCollectionDatabase
+import es.upsa.mimo.gamercollection.data.local.daos.GameDao
+import es.upsa.mimo.gamercollection.data.local.daos.SagaDao
+import es.upsa.mimo.gamercollection.data.local.daos.SongDao
 import es.upsa.mimo.gamercollection.utils.Constants
 import javax.inject.Singleton
 

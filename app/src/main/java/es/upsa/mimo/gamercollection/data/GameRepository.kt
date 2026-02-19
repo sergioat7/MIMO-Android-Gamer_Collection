@@ -1,21 +1,21 @@
-package es.upsa.mimo.gamercollection.data.source
+package es.upsa.mimo.gamercollection.data
 
 import androidx.sqlite.db.SimpleSQLiteQuery
 import es.upsa.mimo.gamercollection.BuildConfig
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.data.source.di.IoDispatcher
-import es.upsa.mimo.gamercollection.data.source.di.MainDispatcher
-import es.upsa.mimo.gamercollection.database.daos.GameDao
+import es.upsa.mimo.gamercollection.data.di.IoDispatcher
+import es.upsa.mimo.gamercollection.data.di.MainDispatcher
+import es.upsa.mimo.gamercollection.data.local.daos.GameDao
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.GameWithSaga
 import es.upsa.mimo.gamercollection.models.RawgGameResponse
 import es.upsa.mimo.gamercollection.models.SagaResponse
-import es.upsa.mimo.gamercollection.network.ApiManager
-import es.upsa.mimo.gamercollection.network.RequestResult
-import es.upsa.mimo.gamercollection.network.interfaces.GameApiService
-import es.upsa.mimo.gamercollection.network.interfaces.RawgGameApiService
+import es.upsa.mimo.gamercollection.data.remote.ApiManager
+import es.upsa.mimo.gamercollection.data.remote.RequestResult
+import es.upsa.mimo.gamercollection.data.remote.interfaces.GameApiService
+import es.upsa.mimo.gamercollection.data.remote.interfaces.RawgGameApiService
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -23,6 +23,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.util.HashMap
 import javax.inject.Inject
 
 class GameRepository @Inject constructor(
@@ -350,7 +351,7 @@ class GameRepository @Inject constructor(
     ) {
         externalScope.launch {
 
-            val params: MutableMap<String, String> = java.util.HashMap()
+            val params: MutableMap<String, String> = HashMap()
             params[ApiManager.KEY_PARAM] = BuildConfig.RAWG_API_KEY
             params[ApiManager.PAGE_PARAM] = page.toString()
             params[ApiManager.PAGE_SIZE_PARAM] = ApiManager.PAGE_SIZE.toString()
@@ -381,7 +382,7 @@ class GameRepository @Inject constructor(
     ) {
         externalScope.launch {
 
-            val params: MutableMap<String, String> = java.util.HashMap()
+            val params: MutableMap<String, String> = HashMap()
             params[ApiManager.KEY_PARAM] = BuildConfig.RAWG_API_KEY
 
             try {

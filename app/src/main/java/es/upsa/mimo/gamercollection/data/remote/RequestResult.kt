@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.network
+package es.upsa.mimo.gamercollection.data.remote
 
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 

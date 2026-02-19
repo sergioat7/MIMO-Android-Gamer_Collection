@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.data.source.di
+package es.upsa.mimo.gamercollection.data.di
 
 import dagger.Module
 import dagger.Provides

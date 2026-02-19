@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.SagaResponse
-import es.upsa.mimo.gamercollection.data.source.SagaRepository
+import es.upsa.mimo.gamercollection.data.SagaRepository
 import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.data.source.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import javax.inject.Inject
 
 @HiltViewModel

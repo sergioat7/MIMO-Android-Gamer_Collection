@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.network.interfaces
+package es.upsa.mimo.gamercollection.data.remote.interfaces
 
 import es.upsa.mimo.gamercollection.models.RawgGameListResponse
 import es.upsa.mimo.gamercollection.models.RawgGameResponse

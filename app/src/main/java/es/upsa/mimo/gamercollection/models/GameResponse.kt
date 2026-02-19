@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import es.upsa.mimo.gamercollection.models.base.BaseModel
 import es.upsa.mimo.gamercollection.extensions.toString
-import es.upsa.mimo.gamercollection.data.source.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import java.util.*
 
 @Entity(tableName = "Game")

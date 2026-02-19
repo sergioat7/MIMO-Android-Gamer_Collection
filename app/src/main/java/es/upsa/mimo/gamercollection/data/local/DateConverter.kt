@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.database
+package es.upsa.mimo.gamercollection.data.local
 
 import androidx.room.TypeConverter
 import java.util.*

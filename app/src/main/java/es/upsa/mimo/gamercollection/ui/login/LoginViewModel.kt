@@ -9,11 +9,11 @@ import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.models.LoginFormState
 import es.upsa.mimo.gamercollection.models.UserData
 import es.upsa.mimo.gamercollection.models.ErrorResponse
-import es.upsa.mimo.gamercollection.data.source.GameRepository
-import es.upsa.mimo.gamercollection.data.source.SagaRepository
-import es.upsa.mimo.gamercollection.data.source.UserRepository
+import es.upsa.mimo.gamercollection.data.GameRepository
+import es.upsa.mimo.gamercollection.data.SagaRepository
+import es.upsa.mimo.gamercollection.data.UserRepository
 import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.data.source.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import javax.inject.Inject
 
 @HiltViewModel

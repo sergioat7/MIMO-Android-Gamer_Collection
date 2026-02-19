@@ -1,12 +1,12 @@
-package es.upsa.mimo.gamercollection.data.source
+package es.upsa.mimo.gamercollection.data
 
-import es.upsa.mimo.gamercollection.data.source.di.IoDispatcher
-import es.upsa.mimo.gamercollection.data.source.di.MainDispatcher
-import es.upsa.mimo.gamercollection.database.daos.SagaDao
+import es.upsa.mimo.gamercollection.data.di.IoDispatcher
+import es.upsa.mimo.gamercollection.data.di.MainDispatcher
+import es.upsa.mimo.gamercollection.data.local.daos.SagaDao
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.models.SagaWithGames
-import es.upsa.mimo.gamercollection.network.interfaces.SagaApiService
+import es.upsa.mimo.gamercollection.data.remote.interfaces.SagaApiService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job

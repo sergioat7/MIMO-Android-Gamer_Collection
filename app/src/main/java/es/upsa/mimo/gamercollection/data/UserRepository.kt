@@ -1,10 +1,11 @@
-package es.upsa.mimo.gamercollection.data.source
+package es.upsa.mimo.gamercollection.data
 
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.data.source.di.MainDispatcher
+import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.data.di.MainDispatcher
 import es.upsa.mimo.gamercollection.models.UserData
 import es.upsa.mimo.gamercollection.models.ErrorResponse
-import es.upsa.mimo.gamercollection.network.interfaces.UserApiService
+import es.upsa.mimo.gamercollection.data.remote.interfaces.UserApiService
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope

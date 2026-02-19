@@ -1,9 +1,9 @@
-package es.upsa.mimo.gamercollection.network.interfaces
+package es.upsa.mimo.gamercollection.data.remote.interfaces
 
 import es.upsa.mimo.gamercollection.models.LoginCredentials
 import es.upsa.mimo.gamercollection.models.NewPassword
 import es.upsa.mimo.gamercollection.models.LoginResponse
-import es.upsa.mimo.gamercollection.network.ApiManager
+import es.upsa.mimo.gamercollection.data.remote.ApiManager
 import retrofit2.Response
 import retrofit2.http.*
 

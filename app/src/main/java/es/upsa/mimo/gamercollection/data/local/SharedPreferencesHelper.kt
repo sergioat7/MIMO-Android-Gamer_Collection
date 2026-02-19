@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.data.source
+package es.upsa.mimo.gamercollection.data.local
 
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
@@ -12,12 +12,12 @@ import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.models.UserData
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Preferences
-import java.util.*
+import java.util.Locale
 
 object SharedPreferencesHelper {
 
     //region Private properties
-    private val appPreferences = GamerCollectionApplication.context.getSharedPreferences(
+    private val appPreferences = GamerCollectionApplication.Companion.context.getSharedPreferences(
         Preferences.PREFERENCES_NAME,
         Context.MODE_PRIVATE
     )
@@ -25,7 +25,7 @@ object SharedPreferencesHelper {
     private val appEncryptedPreferences = EncryptedSharedPreferences.create(
         Preferences.ENCRYPTED_PREFERENCES_NAME,
         MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
-        GamerCollectionApplication.context,
+        GamerCollectionApplication.Companion.context,
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )

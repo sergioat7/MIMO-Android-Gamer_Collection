@@ -13,9 +13,8 @@ import es.upsa.mimo.gamercollection.databinding.FragmentGameSongsBinding
 import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.SongResponse
-import es.upsa.mimo.gamercollection.data.source.GameRepository
-import es.upsa.mimo.gamercollection.data.source.SongRepository
-import es.upsa.mimo.gamercollection.utils.StatusBarStyle
+import es.upsa.mimo.gamercollection.data.GameRepository
+import es.upsa.mimo.gamercollection.data.SongRepository
 import javax.inject.Inject
 
 @AndroidEntryPoint

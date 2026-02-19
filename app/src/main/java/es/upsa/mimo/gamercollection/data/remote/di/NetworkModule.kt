@@ -1,15 +1,15 @@
-package es.upsa.mimo.gamercollection.network.di
+package es.upsa.mimo.gamercollection.data.remote.di
 
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import es.upsa.mimo.gamercollection.network.*
-import es.upsa.mimo.gamercollection.network.interfaces.GameApiService
-import es.upsa.mimo.gamercollection.network.interfaces.RawgGameApiService
-import es.upsa.mimo.gamercollection.network.interfaces.SagaApiService
-import es.upsa.mimo.gamercollection.network.interfaces.SongApiService
-import es.upsa.mimo.gamercollection.network.interfaces.UserApiService
+import es.upsa.mimo.gamercollection.data.remote.ApiManager
+import es.upsa.mimo.gamercollection.data.remote.interfaces.GameApiService
+import es.upsa.mimo.gamercollection.data.remote.interfaces.RawgGameApiService
+import es.upsa.mimo.gamercollection.data.remote.interfaces.SagaApiService
+import es.upsa.mimo.gamercollection.data.remote.interfaces.SongApiService
+import es.upsa.mimo.gamercollection.data.remote.interfaces.UserApiService
 import javax.inject.Singleton
 
 @Module

@@ -16,9 +16,9 @@ import es.upsa.mimo.gamercollection.extensions.setup
 import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.data.source.GameRepository
+import es.upsa.mimo.gamercollection.data.GameRepository
 import es.upsa.mimo.gamercollection.utils.ScrollPosition
-import es.upsa.mimo.gamercollection.data.source.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import javax.inject.Inject
 
 @HiltViewModel

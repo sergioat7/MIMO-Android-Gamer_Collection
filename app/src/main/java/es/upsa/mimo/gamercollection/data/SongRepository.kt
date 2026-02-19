@@ -1,10 +1,10 @@
-package es.upsa.mimo.gamercollection.data.source
+package es.upsa.mimo.gamercollection.data
 
-import es.upsa.mimo.gamercollection.data.source.di.IoDispatcher
-import es.upsa.mimo.gamercollection.database.daos.SongDao
+import es.upsa.mimo.gamercollection.data.di.IoDispatcher
+import es.upsa.mimo.gamercollection.data.local.daos.SongDao
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.SongResponse
-import es.upsa.mimo.gamercollection.network.interfaces.SongApiService
+import es.upsa.mimo.gamercollection.data.remote.interfaces.SongApiService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job

@@ -1,7 +1,7 @@
 package es.upsa.mimo.gamercollection.models
 
 import es.upsa.mimo.gamercollection.extensions.toString
-import es.upsa.mimo.gamercollection.data.source.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import java.util.*
 
 data class FilterModel(

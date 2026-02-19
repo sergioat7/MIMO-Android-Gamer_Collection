@@ -1,20 +1,24 @@
-package es.upsa.mimo.gamercollection.network
+package es.upsa.mimo.gamercollection.data.remote
 
-import com.google.gson.*
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
 import es.upsa.mimo.gamercollection.BuildConfig
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.extensions.toDate
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.data.source.SharedPreferencesHelper
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Type
-import java.util.*
+import java.util.Date
 import java.util.concurrent.TimeUnit
 import kotlin.reflect.KClass
 
@@ -89,7 +93,7 @@ object ApiManager {
         }
     }
 
-    inline fun <reified T : Any> validateResponse(response: retrofit2.Response<T>): RequestResult<T> {
+    inline fun <reified T : Any> validateResponse(response: Response<T>): RequestResult<T> {
 
         val isSuccessful = response.isSuccessful
         val code = response.code()
@@ -142,7 +146,7 @@ object ApiManager {
 
     //region TokenInterceptor
     class TokenInterceptor : Interceptor {
-        override fun intercept(chain: Interceptor.Chain): Response {
+        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
 
             val authRequirement = chain.request().header(AUTHORIZATION_HEADER)
             val original = chain.request()

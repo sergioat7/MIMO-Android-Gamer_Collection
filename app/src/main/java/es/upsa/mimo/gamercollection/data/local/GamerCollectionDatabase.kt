@@ -1,11 +1,11 @@
-package es.upsa.mimo.gamercollection.database
+package es.upsa.mimo.gamercollection.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import es.upsa.mimo.gamercollection.database.daos.GameDao
-import es.upsa.mimo.gamercollection.database.daos.SagaDao
-import es.upsa.mimo.gamercollection.database.daos.SongDao
+import es.upsa.mimo.gamercollection.data.local.daos.GameDao
+import es.upsa.mimo.gamercollection.data.local.daos.SagaDao
+import es.upsa.mimo.gamercollection.data.local.daos.SongDao
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.models.SongResponse
