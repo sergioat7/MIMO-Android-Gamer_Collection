@@ -13,8 +13,8 @@ import es.upsa.mimo.gamercollection.databinding.FragmentGameSongsBinding
 import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.SongResponse
-import es.upsa.mimo.gamercollection.data.GameRepository
-import es.upsa.mimo.gamercollection.data.SongRepository
+import es.upsa.mimo.gamercollection.domain.GameRepository
+import es.upsa.mimo.gamercollection.domain.SongRepository
 import javax.inject.Inject
 
 @AndroidEntryPoint

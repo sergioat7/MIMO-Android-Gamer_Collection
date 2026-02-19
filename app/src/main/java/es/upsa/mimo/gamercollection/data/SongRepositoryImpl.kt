@@ -5,6 +5,7 @@ import es.upsa.mimo.gamercollection.data.local.daos.SongDao
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.SongResponse
 import es.upsa.mimo.gamercollection.data.remote.interfaces.SongApiService
+import es.upsa.mimo.gamercollection.domain.SongRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -13,18 +14,18 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-class SongRepository @Inject constructor(
+class SongRepositoryImpl @Inject constructor(
     private val api: SongApiService,
     private val songDao: SongDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
-) {
+) : SongRepository {
 
     //region Private properties
     private val databaseScope = CoroutineScope(Job() + ioDispatcher)
     //endregion
 
     //region Public methods
-    suspend fun createSong(
+    override suspend fun createSong(
         gameId: Int,
         newSong: SongResponse,
         success: () -> Unit,
@@ -45,7 +46,7 @@ class SongRepository @Inject constructor(
 //        }
     }
 
-    suspend fun deleteSong(
+    override suspend fun deleteSong(
         gameId: Int,
         songId: Int,
         success: () -> Unit,

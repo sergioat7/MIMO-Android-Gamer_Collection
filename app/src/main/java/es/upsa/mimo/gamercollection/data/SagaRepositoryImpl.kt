@@ -7,6 +7,7 @@ import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.models.SagaWithGames
 import es.upsa.mimo.gamercollection.data.remote.interfaces.SagaApiService
+import es.upsa.mimo.gamercollection.domain.SagaRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -15,12 +16,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-class SagaRepository @Inject constructor(
+class SagaRepositoryImpl @Inject constructor(
     private val api: SagaApiService,
     private val sagaDao: SagaDao,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
-) {
+) : SagaRepository {
 
     //region Private properties
     private val externalScope = CoroutineScope(Job() + mainDispatcher)
@@ -28,7 +29,7 @@ class SagaRepository @Inject constructor(
     //endregion
 
     //region Public methods
-    fun loadSagas(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+    override fun loadSagas(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
         success()
 //        externalScope.launch {
 //
@@ -56,7 +57,7 @@ class SagaRepository @Inject constructor(
 //        }
     }
 
-    fun createSaga(
+    override fun createSaga(
         newSaga: SagaResponse,
         success: (SagaResponse?) -> Unit,
         failure: (ErrorResponse) -> Unit
@@ -91,7 +92,7 @@ class SagaRepository @Inject constructor(
 //        }
     }
 
-    fun setSaga(
+    override fun setSaga(
         saga: SagaResponse,
         success: (SagaResponse) -> Unit,
         failure: (ErrorResponse) -> Unit
@@ -115,7 +116,7 @@ class SagaRepository @Inject constructor(
 //        }
     }
 
-    fun deleteSaga(saga: SagaResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+    override fun deleteSaga(saga: SagaResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
         deleteSagaDatabase(saga)
         success()
 //        externalScope.launch {
@@ -135,7 +136,7 @@ class SagaRepository @Inject constructor(
 //        }
     }
 
-    fun getSagasDatabase(): List<SagaResponse> {
+    override fun getSagasDatabase(): List<SagaResponse> {
 
         var sagas: List<SagaWithGames> = arrayListOf()
         runBlocking {
@@ -152,7 +153,7 @@ class SagaRepository @Inject constructor(
         return result
     }
 
-    fun getSagaDatabase(sagaId: Int): SagaResponse? {
+    override fun getSagaDatabase(sagaId: Int): SagaResponse? {
 
         var saga: SagaWithGames? = null
         runBlocking {
@@ -165,7 +166,7 @@ class SagaRepository @Inject constructor(
         return saga?.transform()
     }
 
-    fun insertSagaDatabase(saga: SagaResponse) {
+    override fun insertSagaDatabase(saga: SagaResponse) {
 
         runBlocking {
             val job = databaseScope.launch {
@@ -175,7 +176,7 @@ class SagaRepository @Inject constructor(
         }
     }
 
-    fun resetTable() {
+    override fun resetTable() {
 
         val sagas = getSagasDatabase()
         for (saga in sagas) {

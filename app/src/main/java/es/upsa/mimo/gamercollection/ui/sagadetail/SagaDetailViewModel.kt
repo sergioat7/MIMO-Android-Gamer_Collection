@@ -9,8 +9,8 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.SagaResponse
-import es.upsa.mimo.gamercollection.data.GameRepository
-import es.upsa.mimo.gamercollection.data.SagaRepository
+import es.upsa.mimo.gamercollection.domain.GameRepository
+import es.upsa.mimo.gamercollection.domain.SagaRepository
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import javax.inject.Inject
 

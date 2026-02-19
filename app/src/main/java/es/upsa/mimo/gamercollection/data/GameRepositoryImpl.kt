@@ -16,6 +16,7 @@ import es.upsa.mimo.gamercollection.data.remote.ApiManager
 import es.upsa.mimo.gamercollection.data.remote.RequestResult
 import es.upsa.mimo.gamercollection.data.remote.interfaces.GameApiService
 import es.upsa.mimo.gamercollection.data.remote.interfaces.RawgGameApiService
+import es.upsa.mimo.gamercollection.domain.GameRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -26,13 +27,13 @@ import kotlinx.coroutines.runBlocking
 import java.util.HashMap
 import javax.inject.Inject
 
-class GameRepository @Inject constructor(
+class GameRepositoryImpl @Inject constructor(
     private val api: GameApiService,
     private val apiRawg: RawgGameApiService,
     private val gameDao: GameDao,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
-) {
+) : GameRepository {
 
     //region Private properties
     private val externalScope = CoroutineScope(Job() + mainDispatcher)
@@ -40,7 +41,7 @@ class GameRepository @Inject constructor(
     //endregion
 
     //region Public methods
-    fun loadGames(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+    override fun loadGames(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
         success()
 //        externalScope.launch {
 //
@@ -68,7 +69,7 @@ class GameRepository @Inject constructor(
 //        }
     }
 
-    fun createGame(newGame: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+    override fun createGame(newGame: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
         newGame.id = getNextId()
         insertGameDatabase(newGame)
         success()
@@ -86,7 +87,7 @@ class GameRepository @Inject constructor(
 //        }
     }
 
-    fun setGame(
+    override fun setGame(
         game: GameResponse,
         success: (GameResponse) -> Unit,
         failure: (ErrorResponse) -> Unit
@@ -110,7 +111,7 @@ class GameRepository @Inject constructor(
 //        }
     }
 
-    fun deleteGame(game: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+    override fun deleteGame(game: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
         deleteGameDatabase(game)
         success()
 //        externalScope.launch {
@@ -130,11 +131,11 @@ class GameRepository @Inject constructor(
 //        }
     }
 
-    fun getGamesDatabase(
-        filters: FilterModel? = null,
-        name: String? = null,
-        sortKey: String? = null,
-        ascending: Boolean = true
+    override fun getGamesDatabase(
+        filters: FilterModel?,
+        name: String?,
+        sortKey: String?,
+        ascending: Boolean
     ): List<GameResponse> {
 
         var queryString = "SELECT * FROM Game"
@@ -247,7 +248,7 @@ class GameRepository @Inject constructor(
         return result
     }
 
-    fun getGameDatabase(gameId: Int): GameResponse? {
+    override fun getGameDatabase(gameId: Int): GameResponse? {
 
         var game: GameWithSaga? = null
         runBlocking {
@@ -261,7 +262,7 @@ class GameRepository @Inject constructor(
         return game?.transform()
     }
 
-    fun insertGameDatabase(game: GameResponse) {
+    override fun insertGameDatabase(game: GameResponse) {
 
         runBlocking {
             val job = databaseScope.launch {
@@ -271,7 +272,7 @@ class GameRepository @Inject constructor(
         }
     }
 
-    fun updateGameDatabase(game: GameResponse) {
+    override fun updateGameDatabase(game: GameResponse) {
 
         runBlocking {
             val job = databaseScope.launch {
@@ -281,7 +282,7 @@ class GameRepository @Inject constructor(
         }
     }
 
-    fun removeSagaFromGames(saga: SagaResponse) {
+    override fun removeSagaFromGames(saga: SagaResponse) {
 
         val newSagaGames = saga.games
         val allGames = getGamesDatabase()
@@ -303,7 +304,7 @@ class GameRepository @Inject constructor(
         }
     }
 
-    fun updateSagaGames(saga: SagaResponse) {
+    override fun updateSagaGames(saga: SagaResponse) {
 
         val sagaVar = SagaResponse(saga.id, saga.name, arrayListOf())
         for (newGame in saga.games) {
@@ -313,7 +314,7 @@ class GameRepository @Inject constructor(
         }
     }
 
-    fun updateGameSongs(
+    override fun updateGameSongs(
         game: GameResponse,
         success: (GameResponse) -> Unit,
         failure: (ErrorResponse) -> Unit
@@ -335,7 +336,7 @@ class GameRepository @Inject constructor(
 //        }
     }
 
-    fun resetTable() {
+    override fun resetTable() {
 
         val games = getGamesDatabase()
         for (game in games) {
@@ -343,7 +344,7 @@ class GameRepository @Inject constructor(
         }
     }
 
-    fun getRawgGames(
+    override fun getRawgGames(
         page: Int,
         query: String?,
         success: (List<GameResponse>, Int, Boolean) -> Unit,
@@ -375,7 +376,7 @@ class GameRepository @Inject constructor(
         }
     }
 
-    fun getRawgGame(
+    override fun getRawgGame(
         gameId: Int,
         success: (GameResponse) -> Unit,
         failure: (ErrorResponse) -> Unit

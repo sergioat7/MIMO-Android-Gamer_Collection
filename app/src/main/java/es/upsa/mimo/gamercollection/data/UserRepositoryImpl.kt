@@ -6,6 +6,7 @@ import es.upsa.mimo.gamercollection.data.di.MainDispatcher
 import es.upsa.mimo.gamercollection.models.UserData
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.data.remote.interfaces.UserApiService
+import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -13,17 +14,17 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class UserRepository @Inject constructor(
+class UserRepositoryImpl @Inject constructor(
     private val api: UserApiService,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher
-) {
+) : UserRepository {
 
     //region Private properties
     private val externalScope = CoroutineScope(Job() + mainDispatcher)
     //endregion
 
     //region Public methods
-    fun login(
+    override fun login(
         username: String,
         password: String,
         success: (String) -> Unit,
@@ -60,7 +61,7 @@ class UserRepository @Inject constructor(
 //        }
     }
 
-    fun register(
+    override fun register(
         username: String,
         password: String,
         success: () -> Unit,
@@ -84,7 +85,7 @@ class UserRepository @Inject constructor(
 //        }
     }
 
-    fun logout() {
+    override fun logout() {
         externalScope.launch {
 
             try {
@@ -94,7 +95,7 @@ class UserRepository @Inject constructor(
         }
     }
 
-    fun updatePassword(password: String, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+    override fun updatePassword(password: String, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
         success()
 //        externalScope.launch {
 //
@@ -111,7 +112,7 @@ class UserRepository @Inject constructor(
 //        }
     }
 
-    fun deleteUser(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+    override fun deleteUser(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
         success()
 //        externalScope.launch {
 //

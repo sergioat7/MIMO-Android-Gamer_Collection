@@ -9,10 +9,10 @@ import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.data.GameRepository
-import es.upsa.mimo.gamercollection.data.SagaRepository
+import es.upsa.mimo.gamercollection.domain.GameRepository
+import es.upsa.mimo.gamercollection.domain.SagaRepository
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
-import es.upsa.mimo.gamercollection.data.UserRepository
+import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.GameResponse
