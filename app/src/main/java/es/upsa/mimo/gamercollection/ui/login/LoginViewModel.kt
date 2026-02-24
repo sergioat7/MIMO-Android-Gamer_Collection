@@ -8,12 +8,12 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.models.LoginFormState
 import es.upsa.mimo.gamercollection.models.UserData
-import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.domain.GameRepository
 import es.upsa.mimo.gamercollection.domain.SagaRepository
 import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,7 +26,7 @@ class LoginViewModel @Inject constructor(
     //region Private properties
     private val _loginForm = MutableLiveData<LoginFormState>()
     private val _loginLoading = MutableLiveData<Boolean>()
-    private val _loginError = MutableLiveData<ErrorResponse?>()
+    private val _loginError = MutableLiveData<ErrorModel?>()
     //endregion
 
     //region Public properties
@@ -34,7 +34,7 @@ class LoginViewModel @Inject constructor(
         get() = SharedPreferencesHelper.userData.username
     val loginFormState: LiveData<LoginFormState> = _loginForm
     val loginLoading: LiveData<Boolean> = _loginLoading
-    val loginError: LiveData<ErrorResponse?> = _loginError
+    val loginError: LiveData<ErrorModel?> = _loginError
     //endregion
 
     //region Public methods

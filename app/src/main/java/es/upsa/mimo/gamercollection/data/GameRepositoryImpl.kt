@@ -11,12 +11,16 @@ import es.upsa.mimo.gamercollection.models.FilterModel
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.GameWithSaga
 import es.upsa.mimo.gamercollection.models.RawgGameResponse
-import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.data.remote.ApiManager
 import es.upsa.mimo.gamercollection.data.remote.RequestResult
 import es.upsa.mimo.gamercollection.data.remote.interfaces.GameApiService
 import es.upsa.mimo.gamercollection.data.remote.interfaces.RawgGameApiService
 import es.upsa.mimo.gamercollection.domain.GameRepository
+import es.upsa.mimo.gamercollection.domain.model.ErrorModel
+import es.upsa.mimo.gamercollection.domain.model.Game
+import es.upsa.mimo.gamercollection.domain.model.Saga
+import es.upsa.mimo.gamercollection.domain.toDomain
+import es.upsa.mimo.gamercollection.domain.toRemoteData
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -41,7 +45,7 @@ class GameRepositoryImpl @Inject constructor(
     //endregion
 
     //region Public methods
-    override fun loadGames(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+    override fun loadGames(success: () -> Unit, failure: (ErrorModel) -> Unit) {
         success()
 //        externalScope.launch {
 //
@@ -69,9 +73,9 @@ class GameRepositoryImpl @Inject constructor(
 //        }
     }
 
-    override fun createGame(newGame: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
-        newGame.id = getNextId()
-        insertGameDatabase(newGame)
+    override fun createGame(newGame: Game, success: () -> Unit, failure: (ErrorModel) -> Unit) {
+        val game = newGame.copy(id = getNextId())
+        insertGameDatabase(game)
         success()
 //        externalScope.launch {
 //
@@ -88,9 +92,9 @@ class GameRepositoryImpl @Inject constructor(
     }
 
     override fun setGame(
-        game: GameResponse,
-        success: (GameResponse) -> Unit,
-        failure: (ErrorResponse) -> Unit
+        game: Game,
+        success: (Game) -> Unit,
+        failure: (ErrorModel) -> Unit
     ) {
         updateGameDatabase(game)
         success(game)
@@ -111,7 +115,7 @@ class GameRepositoryImpl @Inject constructor(
 //        }
     }
 
-    override fun deleteGame(game: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+    override fun deleteGame(game: Game, success: () -> Unit, failure: (ErrorModel) -> Unit) {
         deleteGameDatabase(game)
         success()
 //        externalScope.launch {
@@ -136,7 +140,7 @@ class GameRepositoryImpl @Inject constructor(
         name: String?,
         sortKey: String?,
         ascending: Boolean
-    ): List<GameResponse> {
+    ): List<Game> {
 
         var queryString = "SELECT * FROM Game"
         var queryConditions = Constants.EMPTY_VALUE
@@ -241,14 +245,14 @@ class GameRepositoryImpl @Inject constructor(
             }
             games = result.await()
         }
-        val result = ArrayList<GameResponse>()
+        val result = ArrayList<Game>()
         for (game in games) {
-            result.add(game.transform())
+            result.add(game.transform().toDomain())
         }
         return result
     }
 
-    override fun getGameDatabase(gameId: Int): GameResponse? {
+    override fun getGameDatabase(gameId: Int): Game? {
 
         var game: GameWithSaga? = null
         runBlocking {
@@ -259,30 +263,30 @@ class GameRepositoryImpl @Inject constructor(
             }
             game = result.await()
         }
-        return game?.transform()
+        return game?.transform()?.toDomain()
     }
 
-    override fun insertGameDatabase(game: GameResponse) {
+    override fun insertGameDatabase(game: Game) {
 
         runBlocking {
             val job = databaseScope.launch {
-                gameDao.insertGame(game)
+                gameDao.insertGame(game.toRemoteData())
             }
             job.join()
         }
     }
 
-    override fun updateGameDatabase(game: GameResponse) {
+    override fun updateGameDatabase(game: Game) {
 
         runBlocking {
             val job = databaseScope.launch {
-                gameDao.updateGame(game)
+                gameDao.updateGame(game.toRemoteData())
             }
             job.join()
         }
     }
 
-    override fun removeSagaFromGames(saga: SagaResponse) {
+    override fun removeSagaFromGames(saga: Saga) {
 
         val newSagaGames = saga.games
         val allGames = getGamesDatabase()
@@ -291,33 +295,33 @@ class GameRepositoryImpl @Inject constructor(
         for (oldSagaGame in oldSagaGames) {
             if (newSagaGames.firstOrNull { it.id == oldSagaGame.id } == null) {
 
-                oldSagaGame.saga = null
-                updateGameDatabase(oldSagaGame)
+                val game = oldSagaGame.copy(saga = null)
+                updateGameDatabase(game)
             }
         }
 
-        val sagaVar = SagaResponse(saga.id, saga.name, arrayListOf())
+        val sagaVar = saga.copy(games = emptyList())
         for (newSagaGame in newSagaGames) {
 
-            newSagaGame.saga = sagaVar
-            updateGameDatabase(newSagaGame)
+            val game = newSagaGame.copy(saga = sagaVar)
+            updateGameDatabase(game)
         }
     }
 
-    override fun updateSagaGames(saga: SagaResponse) {
+    override fun updateSagaGames(saga: Saga) {
 
-        val sagaVar = SagaResponse(saga.id, saga.name, arrayListOf())
+        val sagaVar = saga.copy(games = emptyList())
         for (newGame in saga.games) {
 
-            newGame.saga = sagaVar
-            updateGameDatabase(newGame)
+            val game = newGame.copy(saga = sagaVar)
+            updateGameDatabase(game)
         }
     }
 
     override fun updateGameSongs(
-        game: GameResponse,
-        success: (GameResponse) -> Unit,
-        failure: (ErrorResponse) -> Unit
+        game: Game,
+        success: (Game) -> Unit,
+        failure: (ErrorModel) -> Unit
     ) {
 //        externalScope.launch {
 //
@@ -347,8 +351,8 @@ class GameRepositoryImpl @Inject constructor(
     override fun getRawgGames(
         page: Int,
         query: String?,
-        success: (List<GameResponse>, Int, Boolean) -> Unit,
-        failure: (ErrorResponse) -> Unit
+        success: (List<Game>, Int, Boolean) -> Unit,
+        failure: (ErrorModel) -> Unit
     ) {
         externalScope.launch {
 
@@ -363,23 +367,23 @@ class GameRepositoryImpl @Inject constructor(
             try {
                 when (val response = ApiManager.validateResponse(apiRawg.getGames(params))) {
                     is RequestResult.JsonSuccess -> {
-                        val games = mapRawgGames(response.body.results)
+                        val games = mapRawgGames(response.body.results).map { it.toDomain() }
                         success(games, response.body.count, response.body.next != null)
                     }
 
-                    is RequestResult.Failure -> failure(response.error)
-                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+                    is RequestResult.Failure -> failure(response.error.toDomain())
+                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server).toDomain())
                 }
             } catch (e: Exception) {
-                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
+                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection).toDomain())
             }
         }
     }
 
     override fun getRawgGame(
         gameId: Int,
-        success: (GameResponse) -> Unit,
-        failure: (ErrorResponse) -> Unit
+        success: (Game) -> Unit,
+        failure: (ErrorModel) -> Unit
     ) {
         externalScope.launch {
 
@@ -388,23 +392,23 @@ class GameRepositoryImpl @Inject constructor(
 
             try {
                 when (val response = ApiManager.validateResponse(apiRawg.getGame(gameId, params))) {
-                    is RequestResult.JsonSuccess -> success(GameResponse(response.body))
-                    is RequestResult.Failure -> failure(response.error)
-                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
+                    is RequestResult.JsonSuccess -> success(GameResponse(response.body).toDomain())
+                    is RequestResult.Failure -> failure(response.error.toDomain())
+                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server).toDomain())
                 }
             } catch (e: Exception) {
-                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
+                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection).toDomain())
             }
         }
     }
     //endregion
 
     //region Private methods
-    private fun deleteGameDatabase(game: GameResponse) {
+    private fun deleteGameDatabase(game: Game) {
 
         runBlocking {
             val job = databaseScope.launch {
-                gameDao.deleteGame(game)
+                gameDao.deleteGame(game.toRemoteData())
             }
             job.join()
         }

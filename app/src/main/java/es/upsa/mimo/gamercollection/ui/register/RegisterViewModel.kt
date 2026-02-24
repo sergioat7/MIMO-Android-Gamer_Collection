@@ -8,10 +8,10 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.AuthData
 import es.upsa.mimo.gamercollection.models.LoginFormState
 import es.upsa.mimo.gamercollection.models.UserData
-import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,13 +22,13 @@ class RegisterViewModel @Inject constructor(
     //region Private properties
     private val _registerForm = MutableLiveData<LoginFormState>()
     private val _registerLoading = MutableLiveData<Boolean>()
-    private val _registerError = MutableLiveData<ErrorResponse?>()
+    private val _registerError = MutableLiveData<ErrorModel?>()
     //endregion
 
     //region Public properties
     val registerFormState: LiveData<LoginFormState> = _registerForm
     val registerLoading: LiveData<Boolean> = _registerLoading
-    val registerError: LiveData<ErrorResponse?> = _registerError
+    val registerError: LiveData<ErrorModel?> = _registerError
     //endregion
 
     //region Public methods

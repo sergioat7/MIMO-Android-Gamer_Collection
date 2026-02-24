@@ -5,8 +5,8 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.ui.modals.loading.PopupLoadingDialogFragment
-import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 
 open class BaseActivity : AppCompatActivity() {
@@ -16,7 +16,7 @@ open class BaseActivity : AppCompatActivity() {
     //endregion
 
     //region Public methods
-    fun manageError(errorResponse: ErrorResponse) {
+    fun manageError(errorResponse: ErrorModel) {
 
         hideLoading()
         val error = StringBuilder()

@@ -14,11 +14,11 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.getPickerParams
 import es.upsa.mimo.gamercollection.extensions.setup
 import es.upsa.mimo.gamercollection.models.FilterModel
-import es.upsa.mimo.gamercollection.models.ErrorResponse
-import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.domain.GameRepository
 import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.domain.model.ErrorModel
+import es.upsa.mimo.gamercollection.domain.model.Game
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,10 +28,10 @@ class GamesViewModel @Inject constructor(
 
     //region Private properties
     private val _gamesLoading = MutableLiveData<Boolean>()
-    private val _gamesError = MutableLiveData<ErrorResponse>()
-    private val _originalGames = MutableLiveData<List<GameResponse>>()
-    private val _games = MutableLiveData<List<GameResponse>>()
-    private val _gamesCount = MutableLiveData<List<GameResponse>>()
+    private val _gamesError = MutableLiveData<ErrorModel>()
+    private val _originalGames = MutableLiveData<List<Game>>()
+    private val _games = MutableLiveData<List<Game>>()
+    private val _gamesCount = MutableLiveData<List<Game>>()
     private val _gameDeleted = MutableLiveData<Int?>()
     private var _state = MutableLiveData<String?>(null)
     private var _filters = MutableLiveData<FilterModel?>(null)
@@ -51,9 +51,9 @@ class GamesViewModel @Inject constructor(
     val swipeRefresh: Boolean
         get() = SharedPreferencesHelper.swipeRefresh
     val gamesLoading: LiveData<Boolean> = _gamesLoading
-    val gamesError: LiveData<ErrorResponse> = _gamesError
-    val games: LiveData<List<GameResponse>> = _games
-    val gamesCount: LiveData<List<GameResponse>> = _gamesCount
+    val gamesError: LiveData<ErrorModel> = _gamesError
+    val games: LiveData<List<Game>> = _games
+    val gamesCount: LiveData<List<Game>> = _gamesCount
     val gameDeleted: LiveData<Int?> = _gameDeleted
     val state: LiveData<String?> = _state
     val filters: LiveData<FilterModel?> = _filters

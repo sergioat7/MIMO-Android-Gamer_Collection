@@ -83,20 +83,4 @@ data class GameResponse(
         null,
         mutableListOf()
     )
-
-    fun releaseDateAsHumanReadable(): String? {
-
-        return releaseDate.toString(
-            SharedPreferencesHelper.dateFormatToShow,
-            SharedPreferencesHelper.language
-        )
-    }
-
-    fun purchaseDateAsHumanReadable(): String? {
-
-        return purchaseDate.toString(
-            SharedPreferencesHelper.dateFormatToShow,
-            SharedPreferencesHelper.language
-        )
-    }
 }

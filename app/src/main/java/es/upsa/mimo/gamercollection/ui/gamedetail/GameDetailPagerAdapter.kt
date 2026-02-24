@@ -3,14 +3,14 @@ package es.upsa.mimo.gamercollection.ui.gamedetail
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import es.upsa.mimo.gamercollection.models.GameResponse
+import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.ui.gamedetail.gamedata.GameDataFragment
 import es.upsa.mimo.gamercollection.ui.gamedetail.gamesongs.GameSongsFragment
 
 class GameDetailPagerAdapter(
     activity: FragmentActivity,
     private val itemsCount: Int,
-    private val currentGame: GameResponse?
+    private val currentGame: Game?
 ) : FragmentStateAdapter(activity) {
 
     //region Private properties
@@ -38,7 +38,7 @@ class GameDetailPagerAdapter(
     //endregion
 
     //region Public methods
-    fun showData(game: GameResponse?) {
+    fun showData(game: Game?) {
         gameDataFragment?.showData(game)
     }
 
@@ -49,13 +49,11 @@ class GameDetailPagerAdapter(
         gameSongsFragment?.setEdition(editable)
     }
 
-    fun getGameData(): GameResponse? {
+    fun getGameData(): Game? {
 
-        val game = gameDataFragment?.getGameData()
-        if (game != null) {
-            val songs = gameSongsFragment?.getSongs() ?: currentGame?.songs
-            game.songs = songs?.toMutableList() ?: mutableListOf()
-        }
+        val game = gameDataFragment?.getGameData()?.copy(
+            songs = gameSongsFragment?.getSongs() ?: currentGame?.songs ?: emptyList()
+        )
         return game
     }
     //endregion

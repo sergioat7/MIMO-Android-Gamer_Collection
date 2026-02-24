@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
 import es.upsa.mimo.gamercollection.databinding.ItemGameBinding
-import es.upsa.mimo.gamercollection.models.GameResponse
+import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.State
 
@@ -15,7 +15,7 @@ class GamesViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     //region Public methods
-    fun bind(game: GameResponse, sagaId: Int?, onItemClickListener: OnItemClickListener) {
+    fun bind(game: Game, sagaId: Int?, onItemClickListener: OnItemClickListener) {
 
         val color = game.state?.let {
             when (it) {

@@ -11,15 +11,15 @@ import es.upsa.mimo.gamercollection.ui.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.DialogNewSongBinding
 import es.upsa.mimo.gamercollection.databinding.FragmentGameSongsBinding
 import es.upsa.mimo.gamercollection.extensions.getValue
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.models.SongResponse
 import es.upsa.mimo.gamercollection.domain.GameRepository
 import es.upsa.mimo.gamercollection.domain.SongRepository
+import es.upsa.mimo.gamercollection.domain.model.Game
+import es.upsa.mimo.gamercollection.domain.model.Song
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class GameSongsFragment(
-    private val game: GameResponse?,
+    private val game: Game?,
     private var enabled: Boolean
 ) : BindingFragment<FragmentGameSongsBinding>(), OnItemClickListener {
 
@@ -64,7 +64,7 @@ class GameSongsFragment(
         binding.editable = editable
     }
 
-    fun getSongs(): List<SongResponse> {
+    fun getSongs(): List<Song> {
         return viewModel.songs.value ?: ArrayList()
     }
     //endregion
@@ -129,7 +129,7 @@ class GameSongsFragment(
                 val url = dialogBinding.textInputLayoutSongUrl.getValue()
 
                 if (name.isNotBlank() || singer.isNotBlank() || url.isNotBlank()) {
-                    val song = SongResponse(
+                    val song = Song(
                         0,
                         name,
                         singer,

@@ -10,7 +10,7 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.ui.MainActivity
 import es.upsa.mimo.gamercollection.ui.base.BindingDialogFragment
 import es.upsa.mimo.gamercollection.databinding.DialogFragmentPopupSyncAppBinding
-import es.upsa.mimo.gamercollection.models.ErrorResponse
+import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 
 @AndroidEntryPoint
 class PopupSyncAppDialogFragment : BindingDialogFragment<DialogFragmentPopupSyncAppBinding>() {
@@ -53,7 +53,7 @@ class PopupSyncAppDialogFragment : BindingDialogFragment<DialogFragmentPopupSync
         }
     }
 
-    private fun manageError(errorResponse: ErrorResponse) {
+    private fun manageError(errorResponse: ErrorModel) {
 
         val error = StringBuilder()
         if (errorResponse.error.isNotEmpty()) {

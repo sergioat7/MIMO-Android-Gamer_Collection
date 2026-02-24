@@ -9,8 +9,8 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.models.base.BaseModel
 import es.upsa.mimo.gamercollection.databinding.ItemGameBinding
 import es.upsa.mimo.gamercollection.databinding.ItemSagaBinding
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.models.SagaResponse
+import es.upsa.mimo.gamercollection.domain.model.Game
+import es.upsa.mimo.gamercollection.domain.model.Saga
 import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.ui.games.GamesViewHolder
@@ -46,8 +46,8 @@ class SagasAdapter(
     override fun getItemViewType(position: Int): Int {
 
         return when (items[position]) {
-            is SagaResponse -> R.layout.item_saga
-            is GameResponse -> R.layout.item_game
+            is Saga -> R.layout.item_saga
+            is Game -> R.layout.item_game
             else -> throw Throwable("Unsupported type")
         }
     }
@@ -60,7 +60,7 @@ class SagasAdapter(
 
         if (holder is SagasViewHolder) {
 
-            val saga = items[position] as SagaResponse
+            val saga = items[position] as Saga
             holder.bind(saga, onItemClickListener)
 
             val rotation =
@@ -92,7 +92,7 @@ class SagasAdapter(
 
         } else if (holder is GamesViewHolder) {
 
-            val game = items[position] as GameResponse
+            val game = items[position] as Game
             holder.bind(game, null, onItemClickListener)
 
             holder.itemView.setOnClickListener {

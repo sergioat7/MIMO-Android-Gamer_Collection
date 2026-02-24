@@ -13,7 +13,7 @@
 
         <variable
             name="saga"
-            type="es.upsa.mimo.gamercollection.models.SagaResponse"
+            type="es.upsa.mimo.gamercollection.domain.model.Saga"
             />
 
         <variable

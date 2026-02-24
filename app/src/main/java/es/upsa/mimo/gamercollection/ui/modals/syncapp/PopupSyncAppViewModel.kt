@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.domain.GameRepository
 import es.upsa.mimo.gamercollection.domain.SagaRepository
+import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,11 +16,11 @@ class PopupSyncAppViewModel @Inject constructor(
 ) : ViewModel() {
 
     //region Private properties
-    private val _popupSyncAppError = MutableLiveData<ErrorResponse?>()
+    private val _popupSyncAppError = MutableLiveData<ErrorModel?>()
     //endregion
 
     //region Public properties
-    val popupSyncAppError: LiveData<ErrorResponse?> = _popupSyncAppError
+    val popupSyncAppError: LiveData<ErrorModel?> = _popupSyncAppError
     //endregion
 
     //region Public methods

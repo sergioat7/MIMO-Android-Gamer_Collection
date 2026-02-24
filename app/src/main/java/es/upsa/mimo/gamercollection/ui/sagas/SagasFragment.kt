@@ -18,8 +18,8 @@ import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
 import es.upsa.mimo.gamercollection.models.base.BaseModel
 import es.upsa.mimo.gamercollection.ui.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentSagasBinding
+import es.upsa.mimo.gamercollection.domain.model.Saga
 import es.upsa.mimo.gamercollection.extensions.hideSoftKeyboard
-import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
@@ -203,7 +203,7 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun showData(sagas: List<SagaResponse>) {
+    private fun showData(sagas: List<Saga>) {
 
         sagasAdapter.resetList()
 

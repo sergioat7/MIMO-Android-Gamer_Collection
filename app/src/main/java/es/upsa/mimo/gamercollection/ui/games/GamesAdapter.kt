@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.databinding.ItemGameBinding
 import es.upsa.mimo.gamercollection.databinding.ItemLoadMoreItemsBinding
-import es.upsa.mimo.gamercollection.models.GameResponse
+import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
 
 class GamesAdapter(
-    private var games: List<GameResponse>,
+    private var games: List<Game>,
     private val sagaId: Int?,
     private var onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
@@ -70,13 +70,13 @@ class GamesAdapter(
 
     //region Public methods
     @SuppressLint("NotifyDataSetChanged")
-    fun setGames(newGames: List<GameResponse>) {
+    fun setGames(newGames: List<Game>) {
 
         this.games = newGames
         notifyDataSetChanged()
     }
 
-    fun addGames(newGames: List<GameResponse>) {
+    fun addGames(newGames: List<Game>) {
 
         val position = games.size
         games = newGames

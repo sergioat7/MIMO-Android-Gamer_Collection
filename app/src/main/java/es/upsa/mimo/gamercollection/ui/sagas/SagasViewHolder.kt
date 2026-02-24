@@ -3,14 +3,14 @@ package es.upsa.mimo.gamercollection.ui.sagas
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
 import es.upsa.mimo.gamercollection.databinding.ItemSagaBinding
+import es.upsa.mimo.gamercollection.domain.model.Saga
 import es.upsa.mimo.gamercollection.extensions.isDarkMode
-import es.upsa.mimo.gamercollection.models.SagaResponse
 
 class SagasViewHolder(val binding: ItemSagaBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     //region Public methods
-    fun bind(saga: SagaResponse, onItemClickListener: OnItemClickListener) {
+    fun bind(saga: Saga, onItemClickListener: OnItemClickListener) {
         with(binding) {
 
             this.saga = saga

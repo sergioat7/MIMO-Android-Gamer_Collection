@@ -17,10 +17,10 @@ import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
 import es.upsa.mimo.gamercollection.ui.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.DialogGamesBinding
 import es.upsa.mimo.gamercollection.databinding.FragmentSagaDetailBinding
+import es.upsa.mimo.gamercollection.domain.model.Game
+import es.upsa.mimo.gamercollection.domain.model.Saga
 import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.extensions.isDarkMode
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 
 @AndroidEntryPoint
@@ -34,7 +34,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     //region Private properties
     private val viewModel: SagaDetailViewModel by viewModels()
     private var menu: Menu? = null
-    private var newGames: MutableList<GameResponse> = mutableListOf()
+    private var newGames: MutableList<Game> = mutableListOf()
     private val goBack = MutableLiveData<Boolean>()
     //endregion
 
@@ -112,12 +112,10 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
         newGames.firstOrNull { it.id == id }?.let {
 
             newGames.remove(it)
-            it.saga = null
         } ?: run {
             selectedGame?.let {
 
-                newGames.add(it)
-                it.saga = viewModel.saga.value
+                newGames.add(it.copy(saga = viewModel.saga.value?.copy(games = emptyList())))
             }
         }
     }
@@ -135,12 +133,13 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
         val dialogBinding = DialogGamesBinding.inflate(layoutInflater)
 
         val orderedGames = viewModel.getOrderedGames(viewModel.games).map { game ->
-            if (newGames.firstOrNull { it.id == game.id } != null) {
-                game.saga = viewModel.saga.value
-            } else {
-                game.saga = null
-            }
-            game
+            game.copy(
+                saga = if (newGames.firstOrNull { it.id == game.id } != null) {
+                    viewModel.saga.value
+                } else {
+                    null
+                }
+            )
         }
         if (orderedGames.isNotEmpty()) {
 
@@ -164,6 +163,8 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
                 dialog.dismiss()
             }
             .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+
+                resetNewGames()
                 dialog.dismiss()
             }
             .show()
@@ -181,7 +182,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
         binding.fragment = this
         binding.isDarkMode = context.isDarkMode()
 
-        newGames = viewModel.saga.value?.games?.toMutableList() ?: mutableListOf()
+        resetNewGames()
     }
 
     private fun setupBindings() {
@@ -224,7 +225,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     //endregion
 
     //region Private methods
-    private fun showData(saga: SagaResponse?) {
+    private fun showData(saga: Saga?) {
 
         saga?.let {
 
@@ -234,7 +235,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     }
 
     @SuppressLint("SetTextI18n")
-    private fun showGames(games: List<GameResponse>) {
+    private fun showGames(games: List<Game>) {
 
         binding.linearLayoutGames.removeAllViews()
 
@@ -264,6 +265,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
 
     private fun cancelEdition() {
 
+        resetNewGames()
         showEditButton(false)
         showData(viewModel.saga.value)
         enableEdition(false)
@@ -277,6 +279,10 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
             it.findItem(R.id.action_save).isVisible = hidden
             it.findItem(R.id.action_cancel).isVisible = hidden
         }
+    }
+
+    private fun resetNewGames() {
+        newGames = viewModel.saga.value?.games?.toMutableList() ?: mutableListOf()
     }
     //endregion
 }

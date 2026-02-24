@@ -13,8 +13,10 @@ import es.upsa.mimo.gamercollection.domain.GameRepository
 import es.upsa.mimo.gamercollection.domain.SagaRepository
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.domain.UserRepository
+import es.upsa.mimo.gamercollection.domain.model.ErrorModel
+import es.upsa.mimo.gamercollection.domain.toDomain
+import es.upsa.mimo.gamercollection.domain.toRemoteData
 import es.upsa.mimo.gamercollection.models.AuthData
-import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.models.UserData
@@ -31,7 +33,7 @@ class SettingsViewModel @Inject constructor(
     //region Private properties
     private val _settingsForm = MutableLiveData<Int?>()
     private val _settingsLoading = MutableLiveData<Boolean>()
-    private val _settingsError = MutableLiveData<ErrorResponse?>()
+    private val _settingsError = MutableLiveData<ErrorModel?>()
     //endregion
 
     //region Public properties
@@ -43,7 +45,7 @@ class SettingsViewModel @Inject constructor(
     var swipeRefresh: Boolean = SharedPreferencesHelper.swipeRefresh
     val settingsForm: LiveData<Int?> = _settingsForm
     val settingsLoading: LiveData<Boolean> = _settingsLoading
-    val settingsError: LiveData<ErrorResponse?> = _settingsError
+    val settingsError: LiveData<ErrorModel?> = _settingsError
     //endregion
 
     //region Public methods
@@ -170,22 +172,22 @@ class SettingsViewModel @Inject constructor(
         val sagas = gson.fromJson<List<SagaResponse?>>(jsonSagas, listType).mapNotNull { it }
 
         for (game in games) {
-            gameRepository.insertGameDatabase(game)
+            gameRepository.insertGameDatabase(game.toDomain())
         }
         for (saga in sagas) {
-            sagaRepository.insertSagaDatabase(saga)
+            sagaRepository.insertSagaDatabase(saga.toDomain())
         }
     }
 
     fun getDataToExport(): String? {
         return try {
 
-            val games = gameRepository.getGamesDatabase().also {
+            val games = gameRepository.getGamesDatabase().map { it.toRemoteData() }.also {
                 it.forEach { game ->
                     game.saga = game.saga?.copy(games = emptyList())
                 }
             }
-            val sagas = sagaRepository.getSagasDatabase().also {
+            val sagas = sagaRepository.getSagasDatabase().map { it.toRemoteData() }.also {
                 it.forEach { saga ->
                     saga.games.forEach { game ->
                         game.saga = game.saga?.copy(games = emptyList())

@@ -7,6 +7,8 @@ import es.upsa.mimo.gamercollection.models.UserData
 import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.data.remote.interfaces.UserApiService
 import es.upsa.mimo.gamercollection.domain.UserRepository
+import es.upsa.mimo.gamercollection.domain.model.ErrorModel
+import es.upsa.mimo.gamercollection.domain.toDomain
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -28,7 +30,7 @@ class UserRepositoryImpl @Inject constructor(
         username: String,
         password: String,
         success: (String) -> Unit,
-        failure: (ErrorResponse) -> Unit
+        failure: (ErrorModel) -> Unit
     ) {
         val userData = SharedPreferencesHelper.userData
         if (username == Constants.GOOGLE_USER_TEST && password == Constants.GOOGLE_PASSWORD_TEST) {
@@ -39,11 +41,11 @@ class UserRepositoryImpl @Inject constructor(
             )
             success("-")
         } else if (userData.username.isEmpty() || userData.username != username) {
-            failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.username_not_exist))
+            failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.username_not_exist).toDomain())
         } else if (userData.username == username && userData.password == password) {
             success("-")
         } else {
-            failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.wrong_password))
+            failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.wrong_password).toDomain())
         }
 //        externalScope.launch {
 //
@@ -65,7 +67,7 @@ class UserRepositoryImpl @Inject constructor(
         username: String,
         password: String,
         success: () -> Unit,
-        failure: (ErrorResponse) -> Unit
+        failure: (ErrorModel) -> Unit
     ) {
         SharedPreferencesHelper.userData = UserData(username, password, false)
         success()
@@ -95,7 +97,7 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun updatePassword(password: String, success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+    override fun updatePassword(password: String, success: () -> Unit, failure: (ErrorModel) -> Unit) {
         success()
 //        externalScope.launch {
 //
@@ -112,7 +114,7 @@ class UserRepositoryImpl @Inject constructor(
 //        }
     }
 
-    override fun deleteUser(success: () -> Unit, failure: (ErrorResponse) -> Unit) {
+    override fun deleteUser(success: () -> Unit, failure: (ErrorModel) -> Unit) {
         success()
 //        externalScope.launch {
 //

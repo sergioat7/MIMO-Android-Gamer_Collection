@@ -17,17 +17,17 @@ import com.google.android.material.textfield.TextInputLayout
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.domain.model.Game
+import es.upsa.mimo.gamercollection.domain.model.Song
 import es.upsa.mimo.gamercollection.ui.games.GamesAdapter
 import es.upsa.mimo.gamercollection.ui.gamedetail.gamesongs.SongsAdapter
 import es.upsa.mimo.gamercollection.ui.customviews.ImageViewWithLoading
 import es.upsa.mimo.gamercollection.ui.customviews.StateButton
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.models.SongResponse
 import es.upsa.mimo.gamercollection.utils.CustomInputType
 import me.zhanghai.android.materialratingbar.MaterialRatingBar
 
 @BindingAdapter("games")
-fun setRecyclerViewGames(recyclerView: RecyclerView?, games: List<GameResponse>?) {
+fun setRecyclerViewGames(recyclerView: RecyclerView?, games: List<Game>?) {
 
     val adapter = recyclerView?.adapter
     if (adapter is GamesAdapter && games != null) {
@@ -36,7 +36,7 @@ fun setRecyclerViewGames(recyclerView: RecyclerView?, games: List<GameResponse>?
 }
 
 @BindingAdapter("newGames")
-fun addRecyclerViewGames(recyclerView: RecyclerView?, newGames: MutableList<GameResponse>?) {
+fun addRecyclerViewGames(recyclerView: RecyclerView?, newGames: MutableList<Game>?) {
 
     val adapter = recyclerView?.adapter
     if (adapter is GamesAdapter && newGames != null) {
@@ -45,7 +45,7 @@ fun addRecyclerViewGames(recyclerView: RecyclerView?, newGames: MutableList<Game
 }
 
 @BindingAdapter("songs")
-fun setRecyclerViewSongs(recyclerView: RecyclerView?, songs: List<SongResponse>?) {
+fun setRecyclerViewSongs(recyclerView: RecyclerView?, songs: List<Song>?) {
 
     val adapter = recyclerView?.adapter
     if (adapter is SongsAdapter && songs != null) {

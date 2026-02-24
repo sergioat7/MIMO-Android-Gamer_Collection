@@ -1,49 +1,49 @@
 package es.upsa.mimo.gamercollection.domain
 
-import es.upsa.mimo.gamercollection.models.ErrorResponse
+import es.upsa.mimo.gamercollection.domain.model.ErrorModel
+import es.upsa.mimo.gamercollection.domain.model.Game
+import es.upsa.mimo.gamercollection.domain.model.Saga
 import es.upsa.mimo.gamercollection.models.FilterModel
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.models.SagaResponse
 
 interface GameRepository {
-    fun loadGames(success: () -> Unit, failure: (ErrorResponse) -> Unit)
-    fun createGame(newGame: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit)
+    fun loadGames(success: () -> Unit, failure: (ErrorModel) -> Unit)
+    fun createGame(newGame: Game, success: () -> Unit, failure: (ErrorModel) -> Unit)
     fun setGame(
-        game: GameResponse,
-        success: (GameResponse) -> Unit,
-        failure: (ErrorResponse) -> Unit
+        game: Game,
+        success: (Game) -> Unit,
+        failure: (ErrorModel) -> Unit
     )
 
-    fun deleteGame(game: GameResponse, success: () -> Unit, failure: (ErrorResponse) -> Unit)
+    fun deleteGame(game: Game, success: () -> Unit, failure: (ErrorModel) -> Unit)
     fun getGamesDatabase(
         filters: FilterModel? = null,
         name: String? = null,
         sortKey: String? = null,
         ascending: Boolean = true
-    ): List<GameResponse>
+    ): List<Game>
 
-    fun getGameDatabase(gameId: Int): GameResponse?
-    fun insertGameDatabase(game: GameResponse)
-    fun updateGameDatabase(game: GameResponse)
-    fun removeSagaFromGames(saga: SagaResponse)
-    fun updateSagaGames(saga: SagaResponse)
+    fun getGameDatabase(gameId: Int): Game?
+    fun insertGameDatabase(game: Game)
+    fun updateGameDatabase(game: Game)
+    fun removeSagaFromGames(saga: Saga)
+    fun updateSagaGames(saga: Saga)
     fun updateGameSongs(
-        game: GameResponse,
-        success: (GameResponse) -> Unit,
-        failure: (ErrorResponse) -> Unit
+        game: Game,
+        success: (Game) -> Unit,
+        failure: (ErrorModel) -> Unit
     )
 
     fun resetTable()
     fun getRawgGames(
         page: Int,
         query: String?,
-        success: (List<GameResponse>, Int, Boolean) -> Unit,
-        failure: (ErrorResponse) -> Unit
+        success: (List<Game>, Int, Boolean) -> Unit,
+        failure: (ErrorModel) -> Unit
     )
 
     fun getRawgGame(
         gameId: Int,
-        success: (GameResponse) -> Unit,
-        failure: (ErrorResponse) -> Unit
+        success: (Game) -> Unit,
+        failure: (ErrorModel) -> Unit
     )
 }

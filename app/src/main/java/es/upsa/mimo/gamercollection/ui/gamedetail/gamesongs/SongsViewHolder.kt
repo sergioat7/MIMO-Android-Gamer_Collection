@@ -3,13 +3,13 @@ package es.upsa.mimo.gamercollection.ui.gamedetail.gamesongs
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
 import es.upsa.mimo.gamercollection.databinding.ItemSongBinding
-import es.upsa.mimo.gamercollection.models.SongResponse
+import es.upsa.mimo.gamercollection.domain.model.Song
 
 class SongsViewHolder(val binding: ItemSongBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     //region Public methods
-    fun bind(song: SongResponse, editable: Boolean, onItemClickListener: OnItemClickListener) {
+    fun bind(song: Song, editable: Boolean, onItemClickListener: OnItemClickListener) {
         with(binding) {
 
             this.song = song

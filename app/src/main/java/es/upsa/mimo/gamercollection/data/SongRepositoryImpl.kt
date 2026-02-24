@@ -2,10 +2,12 @@ package es.upsa.mimo.gamercollection.data
 
 import es.upsa.mimo.gamercollection.data.di.IoDispatcher
 import es.upsa.mimo.gamercollection.data.local.daos.SongDao
-import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.models.SongResponse
 import es.upsa.mimo.gamercollection.data.remote.interfaces.SongApiService
 import es.upsa.mimo.gamercollection.domain.SongRepository
+import es.upsa.mimo.gamercollection.domain.model.ErrorModel
+import es.upsa.mimo.gamercollection.domain.model.Song
+import es.upsa.mimo.gamercollection.domain.toRemoteData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -27,13 +29,13 @@ class SongRepositoryImpl @Inject constructor(
     //region Public methods
     override suspend fun createSong(
         gameId: Int,
-        newSong: SongResponse,
-        success: () -> Unit,
-        failure: (ErrorResponse) -> Unit
+        newSong: Song,
+        success: (Song) -> Unit,
+        failure: (ErrorModel) -> Unit
     ) {
-        newSong.id = getNextId()
-        insertSongDatabase(newSong)
-        success()
+        val song = newSong.copy(id = getNextId())
+        insertSongDatabase(song.toRemoteData())
+        success(song)
 //        try {
 //            when (val response = ApiManager.validateResponse(api.createSong(gameId, newSong))) {
 //
@@ -50,7 +52,7 @@ class SongRepositoryImpl @Inject constructor(
         gameId: Int,
         songId: Int,
         success: () -> Unit,
-        failure: (ErrorResponse) -> Unit
+        failure: (ErrorModel) -> Unit
     ) {
         getSongDatabase(songId)?.let {
             deleteSongDatabase(it)

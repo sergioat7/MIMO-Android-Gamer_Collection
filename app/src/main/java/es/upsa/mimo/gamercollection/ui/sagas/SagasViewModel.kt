@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import es.upsa.mimo.gamercollection.models.ErrorResponse
-import es.upsa.mimo.gamercollection.models.SagaResponse
 import es.upsa.mimo.gamercollection.domain.SagaRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.domain.model.ErrorModel
+import es.upsa.mimo.gamercollection.domain.model.Saga
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,9 +18,9 @@ class SagasViewModel @Inject constructor(
 
     //region Private properties
     private val _sagasLoading = MutableLiveData<Boolean>()
-    private val _sagasError = MutableLiveData<ErrorResponse>()
-    private val _sagas = MutableLiveData<List<SagaResponse>>()
-    private val _originalSagas = MutableLiveData<List<SagaResponse>>()
+    private val _sagasError = MutableLiveData<ErrorModel>()
+    private val _sagas = MutableLiveData<List<Saga>>()
+    private val _originalSagas = MutableLiveData<List<Saga>>()
     private var query: String? = null
     //endregion
 
@@ -28,8 +28,8 @@ class SagasViewModel @Inject constructor(
     val swipeRefresh: Boolean
         get() = SharedPreferencesHelper.swipeRefresh
     val sagasLoading: LiveData<Boolean> = _sagasLoading
-    val sagasError: LiveData<ErrorResponse> = _sagasError
-    val sagas: LiveData<List<SagaResponse>> = _sagas
+    val sagasError: LiveData<ErrorModel> = _sagasError
+    val sagas: LiveData<List<Saga>> = _sagas
     var expandedIds: MutableList<Int> = mutableListOf()
     //endregion
 

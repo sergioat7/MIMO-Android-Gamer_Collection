@@ -30,7 +30,7 @@
         
         <variable
             name="game"
-            type="es.upsa.mimo.gamercollection.models.GameResponse"
+            type="es.upsa.mimo.gamercollection.domain.model.Game"
             />
 
         <variable

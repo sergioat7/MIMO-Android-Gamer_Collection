@@ -3,16 +3,16 @@ package es.upsa.mimo.gamercollection.ui.gamedetail.gamedata
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import es.upsa.mimo.gamercollection.models.ErrorResponse
-import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.domain.model.ErrorModel
+import es.upsa.mimo.gamercollection.domain.model.Game
 import java.util.*
 
-class GameDataViewModel(private val game: GameResponse?) : ViewModel() {
+class GameDataViewModel(private val game: Game?) : ViewModel() {
 
     //region Private properties
     private val _gameDataLoading = MutableLiveData<Boolean>()
-    private val _gameDataError = MutableLiveData<ErrorResponse>()
+    private val _gameDataError = MutableLiveData<ErrorModel>()
     //endregion
 
     //region Public properties
@@ -21,7 +21,7 @@ class GameDataViewModel(private val game: GameResponse?) : ViewModel() {
     val dateFormatToShow: String
         get() = SharedPreferencesHelper.dateFormatToShow
     val gameDataLoading: LiveData<Boolean> = _gameDataLoading
-    val gameDataError: LiveData<ErrorResponse> = _gameDataError
+    val gameDataError: LiveData<ErrorModel> = _gameDataError
     //endregion
 
     //region Public methods
@@ -41,7 +41,7 @@ class GameDataViewModel(private val game: GameResponse?) : ViewModel() {
         videoUrl: String,
         loanedTo: String,
         observations: String
-    ): GameResponse? {
+    ): Game? {
 
         if (pegi == null &&
             distributor.isEmpty() &&
@@ -61,7 +61,7 @@ class GameDataViewModel(private val game: GameResponse?) : ViewModel() {
         ) {
             return null
         } else {
-            return GameResponse(
+            return Game(
                 game?.id ?: 0,
                 null,
                 null,

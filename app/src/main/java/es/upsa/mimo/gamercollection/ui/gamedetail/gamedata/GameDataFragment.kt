@@ -8,15 +8,15 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.interfaces.OnLocationSelected
 import es.upsa.mimo.gamercollection.ui.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentGameDataBinding
+import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.extensions.*
-import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.CustomDropdownType
 import es.upsa.mimo.gamercollection.utils.State
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 
 class GameDataFragment(
-    private var game: GameResponse? = null,
+    private var game: Game? = null,
     private var enabled: Boolean
 ) : BindingFragment<FragmentGameDataBinding>(), OnLocationSelected {
 
@@ -46,7 +46,7 @@ class GameDataFragment(
         binding.textInputLayoutPurchaseLocation.text = locationText
     }
 
-    fun showData(game: GameResponse?) {
+    fun showData(game: Game?) {
 
         binding.dropdownTextInputLayoutPegis.setValue(
             game?.pegi,
@@ -85,7 +85,7 @@ class GameDataFragment(
         binding.editable = editable
     }
 
-    fun getGameData(): GameResponse? {
+    fun getGameData(): Game? {
 
         val pegi = resources.getStringArray(R.array.pegis)
             .firstOrNull { it == binding.dropdownTextInputLayoutPegis.getValue() }

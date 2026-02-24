@@ -24,11 +24,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.extensions.isDarkMode
 import es.upsa.mimo.gamercollection.extensions.setStatusBarStyle
 import es.upsa.mimo.gamercollection.ui.modals.loading.PopupLoadingDialogFragment
 import es.upsa.mimo.gamercollection.ui.modals.syncapp.PopupSyncAppDialogFragment
-import es.upsa.mimo.gamercollection.models.ErrorResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import java.io.Serializable
@@ -153,7 +153,7 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
         loadingFragment = null
     }
 
-    fun manageError(errorResponse: ErrorResponse) {
+    fun manageError(errorResponse: ErrorModel) {
 
         hideLoading()
         val error = StringBuilder()

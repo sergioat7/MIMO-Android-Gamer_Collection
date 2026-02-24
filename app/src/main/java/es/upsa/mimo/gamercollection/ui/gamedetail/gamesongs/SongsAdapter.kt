@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.databinding.ItemSongBinding
-import es.upsa.mimo.gamercollection.models.SongResponse
+import es.upsa.mimo.gamercollection.domain.model.Song
 import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
 
 class SongsAdapter(
-    private var songs: List<SongResponse>,
+    private var songs: List<Song>,
     private var editable: Boolean,
     private var onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<SongsViewHolder?>() {
@@ -36,7 +36,7 @@ class SongsAdapter(
 
     //region Public methods
     @SuppressLint("NotifyDataSetChanged")
-    fun setSongs(newSongs: List<SongResponse>) {
+    fun setSongs(newSongs: List<Song>) {
 
         this.songs = newSongs
         notifyDataSetChanged()

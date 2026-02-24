@@ -29,6 +29,7 @@ import es.upsa.mimo.gamercollection.ui.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.DialogSetImageBinding
 import es.upsa.mimo.gamercollection.databinding.DialogSetRatingBinding
 import es.upsa.mimo.gamercollection.databinding.FragmentGameDetailBinding
+import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.extensions.getImageForPegi
 import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.extensions.getValueWithoutHyphen
@@ -36,7 +37,6 @@ import es.upsa.mimo.gamercollection.extensions.isDarkMode
 import es.upsa.mimo.gamercollection.extensions.setHintStyle
 import es.upsa.mimo.gamercollection.extensions.setStatusBarStyle
 import es.upsa.mimo.gamercollection.extensions.setValue
-import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.CustomDropdownType
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
@@ -54,7 +54,7 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
     private val viewModel: GameDetailViewModel by viewModels()
     private var menu: Menu? = null
     private lateinit var pagerAdapter: GameDetailPagerAdapter
-    private var game: GameResponse? = null
+    private var game: Game? = null
     private val goBack = MutableLiveData<Boolean>()
     //endregion
 
@@ -252,7 +252,7 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
         }
     }
 
-    private fun showData(game: GameResponse?) {
+    private fun showData(game: Game?) {
 
         binding.imageUrl = game?.imageUrl
 
@@ -299,7 +299,7 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
         pagerAdapter.setEdition(editable)
     }
 
-    private fun getGameData(): GameResponse {
+    private fun getGameData(): Game {
 
         val id = args.gameId
         val name = binding.textInputLayoutGameName.getValueWithoutHyphen()
@@ -307,16 +307,14 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
             Constants.PLATFORMS.firstOrNull { it.name == binding.dropdownTextInputLayoutPlatforms.getValue() }?.id
         val score = binding.ratingButton.text.toString().toDouble()
 
-        return pagerAdapter.getGameData()?.let {
+        return pagerAdapter.getGameData()?.copy(
+            name = name,
+            platform = platform,
+            imageUrl = binding.imageUrl,
+            score = score,
+        ) ?: run {
 
-            it.name = name
-            it.platform = platform
-            it.imageUrl = binding.imageUrl
-            it.score = score
-            it
-        } ?: run {
-
-            GameResponse(
+            Game(
                 id,
                 name,
                 platform,

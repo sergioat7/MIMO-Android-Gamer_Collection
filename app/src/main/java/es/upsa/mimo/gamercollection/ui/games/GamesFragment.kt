@@ -34,10 +34,10 @@ import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
 import es.upsa.mimo.gamercollection.ui.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.DialogFragmentPopupFilterBinding
 import es.upsa.mimo.gamercollection.databinding.FragmentGamesBinding
+import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.extensions.*
 import es.upsa.mimo.gamercollection.ui.gamedetail.GameDetailFragment
 import es.upsa.mimo.gamercollection.models.FilterModel
-import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.utils.*
 import java.util.*
 import kotlin.math.max
@@ -239,7 +239,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 viewModel.dateFormatToShow,
                 viewModel.language
             )
-            val gamesToNotify = ArrayList<GameResponse>()
+            val gamesToNotify = ArrayList<Game>()
             for (game in it) {
                 if (game.releaseDate == today)
                     gamesToNotify.add(game)
@@ -484,7 +484,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     }
 
     @SuppressLint("MissingPermission")
-    private fun launchNotification(games: List<GameResponse>) {
+    private fun launchNotification(games: List<Game>) {
 
         val notifications = mutableMapOf<Int, Notification>()
         var gameNames = Constants.EMPTY_VALUE
@@ -568,7 +568,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         }
     }
 
-    private fun setGamesCount(games: List<GameResponse>) {
+    private fun setGamesCount(games: List<Game>) {
 
         val filteredGames = games.mapNotNull { it.state }
         val pendingGamesCount = filteredGames.filter { it == State.PENDING_STATE }.size
