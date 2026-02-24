@@ -1,10 +1,10 @@
 package es.upsa.mimo.gamercollection.utils
 
 import com.google.android.gms.maps.model.LatLng
-import es.upsa.mimo.gamercollection.models.FormatModel
-import es.upsa.mimo.gamercollection.models.GenreModel
-import es.upsa.mimo.gamercollection.models.PlatformModel
-import es.upsa.mimo.gamercollection.models.StateModel
+import es.upsa.mimo.gamercollection.data.remote.model.FormatResponse
+import es.upsa.mimo.gamercollection.data.remote.model.GenreResponse
+import es.upsa.mimo.gamercollection.data.remote.model.PlatformResponse
+import es.upsa.mimo.gamercollection.data.remote.model.StateResponse
 
 object Preferences {
     const val PREFERENCES_NAME = "preferences"
@@ -38,62 +38,62 @@ object Constants {
     const val GOOGLE_PASSWORD_TEST = "d9MqzK3k1&07"
 
     var FORMATS = listOf(
-        FormatModel("DIGITAL", "Digital"),
-        FormatModel("PHYSICAL", "Physical"),
-        FormatModel("OTHER", "Other")
+        FormatResponse("DIGITAL", "Digital"),
+        FormatResponse("PHYSICAL", "Physical"),
+        FormatResponse("OTHER", "Other")
     )
     var GENRES = listOf(
-        GenreModel("ACTION", "Action"),
-        GenreModel("ACTION_ADVENTURE", "Action-Adventure"),
-        GenreModel("ADVENTURE", "Adventure"),
-        GenreModel("ARCADE", "Arcade"),
-        GenreModel("FIGHTING", "Fighting"),
-        GenreModel("HACK_AND_SLASH", "Hack and Slash"),
-        GenreModel("OTHER", "Other"),
-        GenreModel("PLATFORMS", "Platforms"),
-        GenreModel("PUZZLE", "Puzzle"),
-        GenreModel("RACING", "Racing"),
-        GenreModel("ROL", "Rol"),
-        GenreModel("SHOOTER", "Shooter"),
-        GenreModel("SIMULATOR", "Simulator"),
-        GenreModel("SOCIAL", "Social"),
-        GenreModel("SPORTS", "Sports"),
-        GenreModel("STRATEGY", "Strategy"),
-        GenreModel("SURVIVIAL_HORROR", "Survival Horror")
+        GenreResponse("ACTION", "Action"),
+        GenreResponse("ACTION_ADVENTURE", "Action-Adventure"),
+        GenreResponse("ADVENTURE", "Adventure"),
+        GenreResponse("ARCADE", "Arcade"),
+        GenreResponse("FIGHTING", "Fighting"),
+        GenreResponse("HACK_AND_SLASH", "Hack and Slash"),
+        GenreResponse("OTHER", "Other"),
+        GenreResponse("PLATFORMS", "Platforms"),
+        GenreResponse("PUZZLE", "Puzzle"),
+        GenreResponse("RACING", "Racing"),
+        GenreResponse("ROL", "Rol"),
+        GenreResponse("SHOOTER", "Shooter"),
+        GenreResponse("SIMULATOR", "Simulator"),
+        GenreResponse("SOCIAL", "Social"),
+        GenreResponse("SPORTS", "Sports"),
+        GenreResponse("STRATEGY", "Strategy"),
+        GenreResponse("SURVIVIAL_HORROR", "Survival Horror")
     )
     var PLATFORMS = listOf(
-        PlatformModel("PSONE", "PlayStation"),
-        PlatformModel("PS2", "PlayStation 2"),
-        PlatformModel("PS3", "PlayStation 3"),
-        PlatformModel("PS4", "PlayStation 4"),
-        PlatformModel("PS5", "PlayStation 5"),
-        PlatformModel("PSP", "PlayStation Portable"),
-        PlatformModel("PSVITA", "PlayStation Vita"),
-        PlatformModel("XBOX", "Xbox"),
-        PlatformModel("XBOX_360", "Xbox 360"),
-        PlatformModel("XBOX_ONE", "Xbox One"),
-        PlatformModel("XBOX_SERIES_X", "Xbox Series X"),
-        PlatformModel("PC", "PC"),
-        PlatformModel("SEGA", "Sega"),
-        PlatformModel("NES", "NES"),
-        PlatformModel("SUPER_NINTENDO", "Super Nintendo"),
-        PlatformModel("NINTENDO_64", "Nintendo 64"),
-        PlatformModel("GAME_CUBE", "Game Cube"),
-        PlatformModel("GAME_BOY", "Game Boy"),
-        PlatformModel("GBC", "Game Boy Color"),
-        PlatformModel("GBA", "Game Boy Advance"),
-        PlatformModel("GBA_SP", "Game Boy Advance SP"),
-        PlatformModel("NINTENDO_DS", "Nintendo DS"),
-        PlatformModel("NINTENDO_3DS", "Nintendo 3DS"),
-        PlatformModel("WII", "Wii"),
-        PlatformModel("WII_U", "Wii U"),
-        PlatformModel("NINTENDO_SWITCH", "Nintendo Switch"),
-        PlatformModel("OTHER", "Other")
+        PlatformResponse("PSONE", "PlayStation"),
+        PlatformResponse("PS2", "PlayStation 2"),
+        PlatformResponse("PS3", "PlayStation 3"),
+        PlatformResponse("PS4", "PlayStation 4"),
+        PlatformResponse("PS5", "PlayStation 5"),
+        PlatformResponse("PSP", "PlayStation Portable"),
+        PlatformResponse("PSVITA", "PlayStation Vita"),
+        PlatformResponse("XBOX", "Xbox"),
+        PlatformResponse("XBOX_360", "Xbox 360"),
+        PlatformResponse("XBOX_ONE", "Xbox One"),
+        PlatformResponse("XBOX_SERIES_X", "Xbox Series X"),
+        PlatformResponse("PC", "PC"),
+        PlatformResponse("SEGA", "Sega"),
+        PlatformResponse("NES", "NES"),
+        PlatformResponse("SUPER_NINTENDO", "Super Nintendo"),
+        PlatformResponse("NINTENDO_64", "Nintendo 64"),
+        PlatformResponse("GAME_CUBE", "Game Cube"),
+        PlatformResponse("GAME_BOY", "Game Boy"),
+        PlatformResponse("GBC", "Game Boy Color"),
+        PlatformResponse("GBA", "Game Boy Advance"),
+        PlatformResponse("GBA_SP", "Game Boy Advance SP"),
+        PlatformResponse("NINTENDO_DS", "Nintendo DS"),
+        PlatformResponse("NINTENDO_3DS", "Nintendo 3DS"),
+        PlatformResponse("WII", "Wii"),
+        PlatformResponse("WII_U", "Wii U"),
+        PlatformResponse("NINTENDO_SWITCH", "Nintendo Switch"),
+        PlatformResponse("OTHER", "Other")
     )
     var STATES = listOf(
-        StateModel("PENDING", "Pending"),
-        StateModel("IN_PROGRESS", "In Progress"),
-        StateModel("FINISHED", "Finished")
+        StateResponse("PENDING", "Pending"),
+        StateResponse("IN_PROGRESS", "In Progress"),
+        StateResponse("FINISHED", "Finished")
     )
 
     fun isUserNameValid(username: String): Boolean {

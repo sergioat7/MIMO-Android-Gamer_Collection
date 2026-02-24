@@ -9,7 +9,7 @@ import es.upsa.mimo.gamercollection.BuildConfig
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.extensions.toDate
-import es.upsa.mimo.gamercollection.models.ErrorResponse
+import es.upsa.mimo.gamercollection.data.remote.model.ErrorResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

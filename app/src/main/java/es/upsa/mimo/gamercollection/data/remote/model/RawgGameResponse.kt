@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.models
+package es.upsa.mimo.gamercollection.data.remote.model
 
 import com.google.gson.annotations.SerializedName
 import es.upsa.mimo.gamercollection.utils.Constants

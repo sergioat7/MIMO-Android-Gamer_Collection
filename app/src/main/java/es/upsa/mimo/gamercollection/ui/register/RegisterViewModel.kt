@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.models.AuthData
-import es.upsa.mimo.gamercollection.models.LoginFormState
-import es.upsa.mimo.gamercollection.models.UserData
+import es.upsa.mimo.gamercollection.data.local.model.AuthData
+import es.upsa.mimo.gamercollection.ui.login.model.LoginFormState
+import es.upsa.mimo.gamercollection.data.local.model.UserData
 import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper

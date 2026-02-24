@@ -3,7 +3,7 @@ package es.upsa.mimo.gamercollection.domain
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.domain.model.Saga
-import es.upsa.mimo.gamercollection.models.FilterModel
+import es.upsa.mimo.gamercollection.domain.model.FilterModel
 
 interface GameRepository {
     fun loadGames(success: () -> Unit, failure: (ErrorModel) -> Unit)

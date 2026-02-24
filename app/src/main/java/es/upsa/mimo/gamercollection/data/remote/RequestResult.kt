@@ -1,6 +1,6 @@
 package es.upsa.mimo.gamercollection.data.remote
 
-import es.upsa.mimo.gamercollection.models.ErrorResponse
+import es.upsa.mimo.gamercollection.data.remote.model.ErrorResponse
 
 sealed class RequestResult<out T> {
     object Success : RequestResult<Nothing>()

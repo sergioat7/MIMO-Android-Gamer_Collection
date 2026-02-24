@@ -13,7 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.extensions.getPickerParams
 import es.upsa.mimo.gamercollection.extensions.setup
-import es.upsa.mimo.gamercollection.models.FilterModel
+import es.upsa.mimo.gamercollection.domain.model.FilterModel
 import es.upsa.mimo.gamercollection.domain.GameRepository
 import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper

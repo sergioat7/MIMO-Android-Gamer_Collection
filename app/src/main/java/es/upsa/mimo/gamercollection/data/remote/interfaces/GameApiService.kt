@@ -1,7 +1,7 @@
 package es.upsa.mimo.gamercollection.data.remote.interfaces
 
-import es.upsa.mimo.gamercollection.models.GameResponse
 import es.upsa.mimo.gamercollection.data.remote.ApiManager
+import es.upsa.mimo.gamercollection.data.remote.model.GameResponse
 import retrofit2.Response
 import retrofit2.http.*
 

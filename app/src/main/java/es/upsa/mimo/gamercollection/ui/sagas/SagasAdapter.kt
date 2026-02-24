@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.models.base.BaseModel
+import es.upsa.mimo.gamercollection.domain.model.BaseModel
 import es.upsa.mimo.gamercollection.databinding.ItemGameBinding
 import es.upsa.mimo.gamercollection.databinding.ItemSagaBinding
 import es.upsa.mimo.gamercollection.domain.model.Game

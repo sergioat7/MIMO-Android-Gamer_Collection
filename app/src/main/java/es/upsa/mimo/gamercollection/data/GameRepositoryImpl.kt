@@ -6,21 +6,21 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.data.di.IoDispatcher
 import es.upsa.mimo.gamercollection.data.di.MainDispatcher
 import es.upsa.mimo.gamercollection.data.local.daos.GameDao
-import es.upsa.mimo.gamercollection.models.ErrorResponse
-import es.upsa.mimo.gamercollection.models.FilterModel
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.models.GameWithSaga
-import es.upsa.mimo.gamercollection.models.RawgGameResponse
+import es.upsa.mimo.gamercollection.data.remote.model.ErrorResponse
+import es.upsa.mimo.gamercollection.domain.model.FilterModel
+import es.upsa.mimo.gamercollection.data.local.model.GameWithSaga
+import es.upsa.mimo.gamercollection.data.remote.model.RawgGameResponse
 import es.upsa.mimo.gamercollection.data.remote.ApiManager
 import es.upsa.mimo.gamercollection.data.remote.RequestResult
 import es.upsa.mimo.gamercollection.data.remote.interfaces.GameApiService
 import es.upsa.mimo.gamercollection.data.remote.interfaces.RawgGameApiService
+import es.upsa.mimo.gamercollection.data.remote.model.GameResponse
 import es.upsa.mimo.gamercollection.domain.GameRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.domain.model.Saga
 import es.upsa.mimo.gamercollection.domain.toDomain
-import es.upsa.mimo.gamercollection.domain.toRemoteData
+import es.upsa.mimo.gamercollection.domain.toLocalData
 import es.upsa.mimo.gamercollection.utils.Constants
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -270,7 +270,7 @@ class GameRepositoryImpl @Inject constructor(
 
         runBlocking {
             val job = databaseScope.launch {
-                gameDao.insertGame(game.toRemoteData())
+                gameDao.insertGame(game.toLocalData())
             }
             job.join()
         }
@@ -280,7 +280,7 @@ class GameRepositoryImpl @Inject constructor(
 
         runBlocking {
             val job = databaseScope.launch {
-                gameDao.updateGame(game.toRemoteData())
+                gameDao.updateGame(game.toLocalData())
             }
             job.join()
         }
@@ -408,7 +408,7 @@ class GameRepositoryImpl @Inject constructor(
 
         runBlocking {
             val job = databaseScope.launch {
-                gameDao.deleteGame(game.toRemoteData())
+                gameDao.deleteGame(game.toLocalData())
             }
             job.join()
         }

@@ -17,10 +17,10 @@ import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.toDomain
 import es.upsa.mimo.gamercollection.domain.toRemoteData
-import es.upsa.mimo.gamercollection.models.AuthData
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.models.SagaResponse
-import es.upsa.mimo.gamercollection.models.UserData
+import es.upsa.mimo.gamercollection.data.local.model.AuthData
+import es.upsa.mimo.gamercollection.data.local.model.UserData
+import es.upsa.mimo.gamercollection.data.remote.model.GameResponse
+import es.upsa.mimo.gamercollection.data.remote.model.SagaResponse
 import es.upsa.mimo.gamercollection.utils.Constants
 import javax.inject.Inject
 

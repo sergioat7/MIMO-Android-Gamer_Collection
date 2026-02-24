@@ -1,4 +1,4 @@
-package es.upsa.mimo.gamercollection.models
+package es.upsa.mimo.gamercollection.ui.login.model
 
 data class LoginFormState(
     val usernameError: Int? = null,

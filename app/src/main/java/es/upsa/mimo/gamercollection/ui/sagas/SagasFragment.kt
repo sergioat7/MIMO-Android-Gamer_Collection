@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
-import es.upsa.mimo.gamercollection.models.base.BaseModel
+import es.upsa.mimo.gamercollection.domain.model.BaseModel
 import es.upsa.mimo.gamercollection.ui.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentSagasBinding
 import es.upsa.mimo.gamercollection.domain.model.Saga

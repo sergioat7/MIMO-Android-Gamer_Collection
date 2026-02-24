@@ -37,7 +37,7 @@ import es.upsa.mimo.gamercollection.databinding.FragmentGamesBinding
 import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.extensions.*
 import es.upsa.mimo.gamercollection.ui.gamedetail.GameDetailFragment
-import es.upsa.mimo.gamercollection.models.FilterModel
+import es.upsa.mimo.gamercollection.domain.model.FilterModel
 import es.upsa.mimo.gamercollection.utils.*
 import java.util.*
 import kotlin.math.max

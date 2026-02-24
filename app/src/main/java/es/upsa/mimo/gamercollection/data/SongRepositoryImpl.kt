@@ -2,12 +2,12 @@ package es.upsa.mimo.gamercollection.data
 
 import es.upsa.mimo.gamercollection.data.di.IoDispatcher
 import es.upsa.mimo.gamercollection.data.local.daos.SongDao
-import es.upsa.mimo.gamercollection.models.SongResponse
+import es.upsa.mimo.gamercollection.data.local.model.SongEntity
 import es.upsa.mimo.gamercollection.data.remote.interfaces.SongApiService
 import es.upsa.mimo.gamercollection.domain.SongRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Song
-import es.upsa.mimo.gamercollection.domain.toRemoteData
+import es.upsa.mimo.gamercollection.domain.toLocalData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -74,7 +74,7 @@ class SongRepositoryImpl @Inject constructor(
 
         runBlocking {
             val job = databaseScope.launch {
-                songDao.insertSong(song.toRemoteData())
+                songDao.insertSong(song.toLocalData())
             }
             job.join()
         }
@@ -82,9 +82,9 @@ class SongRepositoryImpl @Inject constructor(
     //endregion
 
     //region Private methods
-    private fun getSongsDatabase(): List<SongResponse> {
+    private fun getSongsDatabase(): List<SongEntity> {
 
-        var songs: List<SongResponse> = arrayListOf()
+        var songs: List<SongEntity> = arrayListOf()
         runBlocking {
 
             val result = databaseScope.async {
@@ -95,9 +95,9 @@ class SongRepositoryImpl @Inject constructor(
         return songs
     }
 
-    private fun getSongDatabase(songId: Int): SongResponse? {
+    private fun getSongDatabase(songId: Int): SongEntity? {
 
-        var song: SongResponse? = null
+        var song: SongEntity? = null
         runBlocking {
 
             val result = databaseScope.async {
@@ -108,7 +108,7 @@ class SongRepositoryImpl @Inject constructor(
         return song
     }
 
-    private fun deleteSongDatabase(song: SongResponse) {
+    private fun deleteSongDatabase(song: SongEntity) {
 
         runBlocking {
             val job = databaseScope.launch {

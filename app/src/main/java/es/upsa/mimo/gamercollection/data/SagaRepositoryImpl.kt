@@ -3,13 +3,13 @@ package es.upsa.mimo.gamercollection.data
 import es.upsa.mimo.gamercollection.data.di.IoDispatcher
 import es.upsa.mimo.gamercollection.data.di.MainDispatcher
 import es.upsa.mimo.gamercollection.data.local.daos.SagaDao
-import es.upsa.mimo.gamercollection.models.SagaWithGames
+import es.upsa.mimo.gamercollection.data.local.model.SagaWithGames
 import es.upsa.mimo.gamercollection.data.remote.interfaces.SagaApiService
 import es.upsa.mimo.gamercollection.domain.SagaRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Saga
 import es.upsa.mimo.gamercollection.domain.toDomain
-import es.upsa.mimo.gamercollection.domain.toRemoteData
+import es.upsa.mimo.gamercollection.domain.toLocalData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -172,7 +172,7 @@ class SagaRepositoryImpl @Inject constructor(
 
         runBlocking {
             val job = databaseScope.launch {
-                sagaDao.insertSaga(saga.toRemoteData())
+                sagaDao.insertSaga(saga.toLocalData())
             }
             job.join()
         }
@@ -192,7 +192,7 @@ class SagaRepositoryImpl @Inject constructor(
 
         runBlocking {
             val job = databaseScope.launch {
-                sagaDao.updateSaga(saga.toRemoteData())
+                sagaDao.updateSaga(saga.toLocalData())
             }
             job.join()
         }
@@ -202,7 +202,7 @@ class SagaRepositoryImpl @Inject constructor(
 
         runBlocking {
             val job = databaseScope.launch {
-                sagaDao.deleteSaga(saga.toRemoteData())
+                sagaDao.deleteSaga(saga.toLocalData())
             }
             job.join()
         }

@@ -1,17 +1,9 @@
-package es.upsa.mimo.gamercollection.models
+package es.upsa.mimo.gamercollection.data.remote.model
 
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-import es.upsa.mimo.gamercollection.models.base.BaseModel
-import es.upsa.mimo.gamercollection.extensions.toString
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
-import java.util.*
+import java.util.Date
 
-@Entity(tableName = "Game")
 data class GameResponse(
-    @PrimaryKey
     @SerializedName("id")
     override var id: Int,
     @SerializedName("name")
@@ -52,12 +44,11 @@ data class GameResponse(
     val loanedTo: String?,
     @SerializedName("observations")
     val observations: String?,
-    @Embedded(prefix = "saga_")
     @SerializedName("saga")
     var saga: SagaResponse?,
     @SerializedName("songs")
     var songs: MutableList<SongResponse>
-) : BaseModel<Int> {
+) : BaseResponse<Int> {
 
     constructor(rawgGame: RawgGameResponse) : this(
         rawgGame.id,

@@ -2,7 +2,6 @@ package es.upsa.mimo.gamercollection.domain.model
 
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.extensions.toString
-import es.upsa.mimo.gamercollection.models.base.BaseModel
 import java.util.Date
 
 data class Game(

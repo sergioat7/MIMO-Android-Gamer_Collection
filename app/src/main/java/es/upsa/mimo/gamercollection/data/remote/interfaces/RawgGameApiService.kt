@@ -1,7 +1,7 @@
 package es.upsa.mimo.gamercollection.data.remote.interfaces
 
-import es.upsa.mimo.gamercollection.models.RawgGameListResponse
-import es.upsa.mimo.gamercollection.models.RawgGameResponse
+import es.upsa.mimo.gamercollection.data.remote.model.RawgGameListResponse
+import es.upsa.mimo.gamercollection.data.remote.model.RawgGameResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers

@@ -1,18 +1,18 @@
-package es.upsa.mimo.gamercollection.models
+package es.upsa.mimo.gamercollection.data.local.model
 
 import androidx.room.Embedded
 import androidx.room.Relation
 
 data class GameWithSaga(
-    @Embedded val game: GameResponse,
+    @Embedded val game: GameEntity,
     @Relation(
         parentColumn = "saga_id",
         entityColumn = "id"
     )
-    val saga: SagaResponse?
+    val saga: SagaEntity?
 ) {
-    fun transform(): GameResponse {
-        return GameResponse(
+    fun transform(): GameEntity {
+        return GameEntity(
             game.id,
             game.name,
             game.platform,

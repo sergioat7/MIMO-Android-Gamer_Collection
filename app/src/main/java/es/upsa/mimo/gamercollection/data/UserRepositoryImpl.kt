@@ -3,8 +3,8 @@ package es.upsa.mimo.gamercollection.data
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.data.di.MainDispatcher
-import es.upsa.mimo.gamercollection.models.UserData
-import es.upsa.mimo.gamercollection.models.ErrorResponse
+import es.upsa.mimo.gamercollection.data.local.model.UserData
+import es.upsa.mimo.gamercollection.data.remote.model.ErrorResponse
 import es.upsa.mimo.gamercollection.data.remote.interfaces.UserApiService
 import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel

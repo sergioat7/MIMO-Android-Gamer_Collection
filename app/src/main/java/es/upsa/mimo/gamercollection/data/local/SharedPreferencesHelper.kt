@@ -8,8 +8,8 @@ import es.upsa.mimo.gamercollection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.extensions.setBoolean
 import es.upsa.mimo.gamercollection.extensions.setInt
 import es.upsa.mimo.gamercollection.extensions.setString
-import es.upsa.mimo.gamercollection.models.AuthData
-import es.upsa.mimo.gamercollection.models.UserData
+import es.upsa.mimo.gamercollection.data.local.model.AuthData
+import es.upsa.mimo.gamercollection.data.local.model.UserData
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Preferences
 import java.util.Locale

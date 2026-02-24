@@ -12,7 +12,7 @@
 
         <variable
             name="filter"
-            type="es.upsa.mimo.gamercollection.models.FilterModel"
+            type="es.upsa.mimo.gamercollection.domain.model.FilterModel"
             />
 
     </data>

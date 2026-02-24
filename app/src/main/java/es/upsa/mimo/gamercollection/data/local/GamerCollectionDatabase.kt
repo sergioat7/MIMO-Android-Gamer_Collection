@@ -6,16 +6,16 @@ import androidx.room.TypeConverters
 import es.upsa.mimo.gamercollection.data.local.daos.GameDao
 import es.upsa.mimo.gamercollection.data.local.daos.SagaDao
 import es.upsa.mimo.gamercollection.data.local.daos.SongDao
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.models.SagaResponse
-import es.upsa.mimo.gamercollection.models.SongResponse
-import es.upsa.mimo.gamercollection.models.base.BaseModel
+import es.upsa.mimo.gamercollection.data.local.model.BaseEntity
+import es.upsa.mimo.gamercollection.data.local.model.GameEntity
+import es.upsa.mimo.gamercollection.data.local.model.SagaEntity
+import es.upsa.mimo.gamercollection.data.local.model.SongEntity
 
 @Database(
     entities = [
-        GameResponse::class,
-        SagaResponse::class,
-        SongResponse::class], version = 2
+        GameEntity::class,
+        SagaEntity::class,
+        SongEntity::class], version = 2
 )
 @TypeConverters(ListConverter::class, DateConverter::class)
 abstract class GamerCollectionDatabase : RoomDatabase() {
@@ -28,11 +28,11 @@ abstract class GamerCollectionDatabase : RoomDatabase() {
 
         //region Public methods
         fun <T> getDisabledContent(
-            currentValues: List<BaseModel<T>>,
-            newValues: List<BaseModel<T>>
-        ): List<BaseModel<T>> {
+            currentValues: List<BaseEntity<T>>,
+            newValues: List<BaseEntity<T>>
+        ): List<BaseEntity<T>> {
 
-            val disabledContent = arrayListOf<BaseModel<T>>()
+            val disabledContent = arrayListOf<BaseEntity<T>>()
             for (currentValue in currentValues) {
 
                 if (newValues.firstOrNull { it.id == currentValue.id } == null) {

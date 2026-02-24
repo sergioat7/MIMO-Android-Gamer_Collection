@@ -3,8 +3,8 @@ package es.upsa.mimo.gamercollection.data.local
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import es.upsa.mimo.gamercollection.models.GameResponse
-import es.upsa.mimo.gamercollection.models.SongResponse
+import es.upsa.mimo.gamercollection.data.local.model.GameEntity
+import es.upsa.mimo.gamercollection.data.local.model.SongEntity
 import java.util.*
 
 class ListConverter {
@@ -15,32 +15,32 @@ class ListConverter {
 
     //region Public methods
     @TypeConverter
-    fun stringToSongList(data: String?): List<SongResponse?>? {
+    fun stringToSongList(data: String?): List<SongEntity?>? {
         if (data == null) {
             return Collections.emptyList()
         }
         val listType =
-            object : TypeToken<List<SongResponse?>?>() {}.type
-        return gson.fromJson<List<SongResponse?>>(data, listType)
+            object : TypeToken<List<SongEntity?>?>() {}.type
+        return gson.fromJson<List<SongEntity?>>(data, listType)
     }
 
     @TypeConverter
-    fun songListToString(songs: List<SongResponse?>?): String? {
+    fun songListToString(songs: List<SongEntity?>?): String? {
         return gson.toJson(songs)
     }
 
     @TypeConverter
-    fun stringToGameList(data: String?): List<GameResponse?>? {
+    fun stringToGameList(data: String?): List<GameEntity?>? {
         if (data == null) {
             return Collections.emptyList()
         }
         val listType =
-            object : TypeToken<List<GameResponse?>?>() {}.type
-        return gson.fromJson<List<GameResponse?>>(data, listType)
+            object : TypeToken<List<GameEntity?>?>() {}.type
+        return gson.fromJson<List<GameEntity?>>(data, listType)
     }
 
     @TypeConverter
-    fun gameListToString(games: List<GameResponse?>?): String? {
+    fun gameListToString(games: List<GameEntity?>?): String? {
         return gson.toJson(games)
     }
     //endregion
