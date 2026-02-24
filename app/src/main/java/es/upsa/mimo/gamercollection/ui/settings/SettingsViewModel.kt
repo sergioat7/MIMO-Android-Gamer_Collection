@@ -12,6 +12,7 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.domain.GameRepository
 import es.upsa.mimo.gamercollection.domain.SagaRepository
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.domain.SongRepository
 import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.toDomain
@@ -27,6 +28,7 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     private val gameRepository: GameRepository,
     private val sagaRepository: SagaRepository,
+    private val songRepository: SongRepository,
     private val userRepository: UserRepository
 ) : ViewModel() {
 
@@ -173,6 +175,9 @@ class SettingsViewModel @Inject constructor(
 
         for (game in games) {
             gameRepository.insertGameDatabase(game.toDomain())
+            for (song in game.songs) {
+                songRepository.insertSongDatabase(song.toDomain())
+            }
         }
         for (saga in sagas) {
             sagaRepository.insertSagaDatabase(saga.toDomain())

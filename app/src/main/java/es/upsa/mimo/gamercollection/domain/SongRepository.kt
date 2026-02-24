@@ -17,4 +17,6 @@ interface SongRepository {
         success: () -> Unit,
         failure: (ErrorModel) -> Unit
     )
+
+    fun insertSongDatabase(song: Song)
 }

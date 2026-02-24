@@ -34,7 +34,7 @@ class SongRepositoryImpl @Inject constructor(
         failure: (ErrorModel) -> Unit
     ) {
         val song = newSong.copy(id = getNextId())
-        insertSongDatabase(song.toRemoteData())
+        insertSongDatabase(song)
         success(song)
 //        try {
 //            when (val response = ApiManager.validateResponse(api.createSong(gameId, newSong))) {
@@ -69,6 +69,16 @@ class SongRepositoryImpl @Inject constructor(
 //            failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
 //        }
     }
+
+    override fun insertSongDatabase(song: Song) {
+
+        runBlocking {
+            val job = databaseScope.launch {
+                songDao.insertSong(song.toRemoteData())
+            }
+            job.join()
+        }
+    }
     //endregion
 
     //region Private methods
@@ -96,16 +106,6 @@ class SongRepositoryImpl @Inject constructor(
             song = result.await()
         }
         return song
-    }
-
-    private fun insertSongDatabase(song: SongResponse) {
-
-        runBlocking {
-            val job = databaseScope.launch {
-                songDao.insertSong(song)
-            }
-            job.join()
-        }
     }
 
     private fun deleteSongDatabase(song: SongResponse) {
