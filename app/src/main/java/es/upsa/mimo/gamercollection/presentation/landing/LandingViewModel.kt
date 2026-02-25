@@ -7,14 +7,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.presentation.login.LoginActivity
 import es.upsa.mimo.gamercollection.presentation.MainActivity
 import es.upsa.mimo.gamercollection.domain.GameRepository
-import es.upsa.mimo.gamercollection.domain.SagaRepository
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import javax.inject.Inject
 
 @HiltViewModel
 class LandingViewModel @Inject constructor(
-    private val gameRepository: GameRepository,
-    private val sagaRepository: SagaRepository
+    private val gameRepository: GameRepository
 ) : ViewModel() {
 
     //region Private properties
@@ -47,14 +45,6 @@ class LandingViewModel @Inject constructor(
         } else {
             LoginActivity::class.java
         }
-    }
-    //endregion
-
-    //region Private methods
-    private fun resetDatabase() {
-
-        gameRepository.resetTable()
-        sagaRepository.resetTable()
     }
     //endregion
 }

@@ -52,12 +52,6 @@ class SettingsViewModel @Inject constructor(
 
     //region Public methods
     fun logout() {
-
-//        _settingsLoading.value = true
-//        userRepository.logout()
-//        SharedPreferencesHelper.removePassword()
-//        resetDatabase()
-
         SharedPreferencesHelper.logout()
         _settingsError.value = null
     }
@@ -80,20 +74,15 @@ class SettingsViewModel @Inject constructor(
 
         if (changePassword) {
             _settingsLoading.value = true
-            userRepository.updatePassword(newPassword, {
+            SharedPreferencesHelper.storePassword(newPassword)
+            val userData = SharedPreferencesHelper.userData
+            userRepository.login(userData.username, userData.password, {
 
-                SharedPreferencesHelper.storePassword(newPassword)
-                val userData = SharedPreferencesHelper.userData
-                userRepository.login(userData.username, userData.password, {
-
-                    SharedPreferencesHelper.credentials = AuthData(it)
-                    _settingsLoading.value = false
-                    if (changeLanguage || changeSortParam || changeIsSortDescending) {
-                        _settingsError.value = null
-                    }
-                }, {
-                    _settingsError.value = it
-                })
+                SharedPreferencesHelper.credentials = AuthData(it)
+                _settingsLoading.value = false
+                if (changeLanguage || changeSortParam || changeIsSortDescending) {
+                    _settingsError.value = null
+                }
             }, {
                 _settingsError.value = it
             })
@@ -138,15 +127,9 @@ class SettingsViewModel @Inject constructor(
 
     fun deleteUser() {
 
-        _settingsLoading.value = true
-        userRepository.deleteUser({
-
-            SharedPreferencesHelper.removeUserData()
-            SharedPreferencesHelper.removeCredentials()
-            resetDatabase()
-        }, {
-            _settingsError.value = it
-        })
+        SharedPreferencesHelper.removeUserData()
+        SharedPreferencesHelper.removeCredentials()
+        resetDatabase()
     }
 
     fun profileDataChanged(password: String) {

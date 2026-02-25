@@ -25,10 +25,8 @@ import kotlin.reflect.KClass
 object ApiManager {
 
     //region Static properties
-    const val BASE_ENDPOINT = "https://videogames-collection-services.herokuapp.com/"
     const val ACCEPT_LANGUAGE_HEADER = "Accept-Language"
     const val AUTHORIZATION_HEADER = "Authorization"
-    const val OTHER_VALUE = "OTHER"
     //endregion
 
     //region Public properties

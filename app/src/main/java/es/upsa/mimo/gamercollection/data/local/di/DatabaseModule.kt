@@ -30,10 +30,6 @@ private val MIGRATION_1_2 = object : Migration(1, 2) {
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
 
-    //region Private properties
-    private var instance: GamerCollectionDatabase? = null
-    //endregion
-
     @Singleton
     @Provides
     fun provideGamerCollectionDatabase(@ApplicationContext context: Context): GamerCollectionDatabase {

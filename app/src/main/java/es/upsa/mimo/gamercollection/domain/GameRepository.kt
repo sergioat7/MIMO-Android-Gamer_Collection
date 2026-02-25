@@ -6,7 +6,6 @@ import es.upsa.mimo.gamercollection.domain.model.Saga
 import es.upsa.mimo.gamercollection.domain.model.FilterModel
 
 interface GameRepository {
-    fun loadGames(success: () -> Unit, failure: (ErrorModel) -> Unit)
     fun createGame(newGame: Game, success: () -> Unit, failure: (ErrorModel) -> Unit)
     fun setGame(
         game: Game,
@@ -27,12 +26,6 @@ interface GameRepository {
     fun updateGameDatabase(game: Game)
     fun removeSagaFromGames(saga: Saga)
     fun updateSagaGames(saga: Saga)
-    fun updateGameSongs(
-        game: Game,
-        success: (Game) -> Unit,
-        failure: (ErrorModel) -> Unit
-    )
-
     fun resetTable()
     fun getRawgGames(
         page: Int,

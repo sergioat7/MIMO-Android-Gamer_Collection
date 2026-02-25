@@ -16,10 +16,4 @@ interface UserRepository {
         success: () -> Unit,
         failure: (ErrorModel) -> Unit
     )
-
-    fun logout()
-
-    fun updatePassword(password: String, success: () -> Unit, failure: (ErrorModel) -> Unit)
-
-    fun deleteUser(success: () -> Unit, failure: (ErrorModel) -> Unit)
 }

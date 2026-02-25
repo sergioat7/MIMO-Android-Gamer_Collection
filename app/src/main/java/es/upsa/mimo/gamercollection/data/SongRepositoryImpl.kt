@@ -3,7 +3,6 @@ package es.upsa.mimo.gamercollection.data
 import es.upsa.mimo.gamercollection.data.di.IoDispatcher
 import es.upsa.mimo.gamercollection.data.local.daos.SongDao
 import es.upsa.mimo.gamercollection.data.local.model.SongEntity
-import es.upsa.mimo.gamercollection.data.remote.interfaces.SongApiService
 import es.upsa.mimo.gamercollection.domain.SongRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Song
@@ -17,7 +16,6 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class SongRepositoryImpl @Inject constructor(
-    private val api: SongApiService,
     private val songDao: SongDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : SongRepository {
@@ -36,16 +34,6 @@ class SongRepositoryImpl @Inject constructor(
         val song = newSong.copy(id = getNextId())
         insertSongDatabase(song)
         success(song)
-//        try {
-//            when (val response = ApiManager.validateResponse(api.createSong(gameId, newSong))) {
-//
-//                is RequestResult.Success -> success()
-//                is RequestResult.Failure -> failure(response.error)
-//                else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
-//            }
-//        } catch (e: Exception) {
-//            failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
-//        }
     }
 
     override suspend fun deleteSong(
@@ -58,16 +46,6 @@ class SongRepositoryImpl @Inject constructor(
             deleteSongDatabase(it)
         }
         success()
-//        try {
-//            when (val response = ApiManager.validateResponse(api.deleteSong(gameId, songId))) {
-//
-//                is RequestResult.Success -> success()
-//                is RequestResult.Failure -> failure(response.error)
-//                else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
-//            }
-//        } catch (e: Exception) {
-//            failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
-//        }
     }
 
     override fun insertSongDatabase(song: Song) {

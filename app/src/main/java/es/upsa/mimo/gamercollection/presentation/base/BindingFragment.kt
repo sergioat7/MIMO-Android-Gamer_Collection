@@ -28,10 +28,8 @@ import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.extensions.isDarkMode
 import es.upsa.mimo.gamercollection.extensions.setStatusBarStyle
 import es.upsa.mimo.gamercollection.presentation.modals.loading.PopupLoadingDialogFragment
-import es.upsa.mimo.gamercollection.presentation.modals.syncapp.PopupSyncAppDialogFragment
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
-import java.io.Serializable
 import java.lang.reflect.ParameterizedType
 
 abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
@@ -41,7 +39,6 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
     //endregion
 
     //region Private properties
-    private val SYNC_DIALOG = "syncDialog"
     private var loadingFragment: PopupLoadingDialogFragment? = null
     //endregion
 
@@ -195,22 +192,6 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
         startActivity(intent)
     }
 
-    fun <T> launchActivityWithExtras(
-        activity: Class<T>,
-        params: Map<String, Serializable>,
-        clearStack: Boolean = false
-    ) {
-
-        val intent = Intent(context, activity)
-        for (param in params) {
-            intent.putExtra(param.key, param.value)
-        }
-        if (clearStack) {
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-        startActivity(intent)
-    }
-
     fun setupSearchView(query: String) {
 
         searchView?.let { searchView ->
@@ -265,28 +246,6 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
                     ColorStateList.valueOf(color)
             }
         }
-    }
-
-    fun openSyncPopup() {
-
-        showPopupConfirmationDialog(resources.getString(R.string.sync_confirmation), {
-            showSyncPopup()
-        })
-    }
-    //endregion
-
-    //region Private methods
-    private fun showSyncPopup() {
-
-        val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
-        val prev = activity?.supportFragmentManager?.findFragmentByTag(SYNC_DIALOG)
-        if (prev != null) {
-            ft.remove(prev)
-        }
-        ft.addToBackStack(null)
-        val dialogFragment = PopupSyncAppDialogFragment()
-        dialogFragment.isCancelable = false
-        dialogFragment.show(ft, SYNC_DIALOG)
     }
     //endregion
 }

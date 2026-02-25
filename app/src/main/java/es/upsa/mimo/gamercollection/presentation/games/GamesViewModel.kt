@@ -64,16 +64,9 @@ class GamesViewModel @Inject constructor(
     fun loadGames() {
 
         _gamesLoading.value = true
-        gameRepository.loadGames({
-
-            resetProperties()
-            fetchGames()
-            _gamesLoading.value = false
-        }, {
-
-            _gamesLoading.value = false
-            _gamesError.value = it
-        })
+        resetProperties()
+        fetchGames()
+        _gamesLoading.value = false
     }
 
     fun fetchGames() {

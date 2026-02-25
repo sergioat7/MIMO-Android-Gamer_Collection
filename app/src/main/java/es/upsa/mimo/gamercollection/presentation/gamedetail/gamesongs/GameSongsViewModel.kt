@@ -37,15 +37,11 @@ class GameSongsViewModel constructor(
             _gameSongsLoading.value = true
             viewModelScope.launch {
                 songRepository.createSong(game.id, song, { newSong ->
-//                    gameRepository.updateGameSongs(game.id, {
 
                     val updatedGame = game.copy(songs = game.songs + listOf(newSong))
                     gameRepository.updateGameDatabase(updatedGame)
                     setGame(updatedGame)
                     _gameSongsLoading.value = false
-//                    }, {
-//                        _gameSongsError.value = it
-//                    })
                 }, {
                     _gameSongsError.value = it
                 })
@@ -60,15 +56,11 @@ class GameSongsViewModel constructor(
             _gameSongsLoading.value = true
             viewModelScope.launch {
                 songRepository.deleteSong(game.id, songId, {
-//                    gameRepository.updateGameSongs(game.id, {
 
                     val updatedGame = game.copy(songs = game.songs.filter { it.id != songId })
                     gameRepository.updateGameDatabase(updatedGame)
                     setGame(updatedGame)
                     _gameSongsLoading.value = false
-//                    }, {
-//                        _gameSongsError.value = it
-//                    })
                 }, {
                     _gameSongsError.value = it
                 })

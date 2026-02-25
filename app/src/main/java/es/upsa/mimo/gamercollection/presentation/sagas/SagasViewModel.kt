@@ -37,17 +37,10 @@ class SagasViewModel @Inject constructor(
     fun loadSagas() {
 
         _sagasLoading.value = true
-        sagaRepository.loadSagas({
-
-            expandedIds = mutableListOf()
-            query = null
-            fetchSagas()
-            _sagasLoading.value = false
-        }, {
-
-            _sagasError.value = it
-            _sagasLoading.value = false
-        })
+        expandedIds = mutableListOf()
+        query = null
+        fetchSagas()
+        _sagasLoading.value = false
     }
 
     fun fetchSagas() {

@@ -4,7 +4,6 @@ import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Saga
 
 interface SagaRepository {
-    fun loadSagas(success: () -> Unit, failure: (ErrorModel) -> Unit)
     fun createSaga(
         newSaga: Saga,
         success: (Saga?) -> Unit,

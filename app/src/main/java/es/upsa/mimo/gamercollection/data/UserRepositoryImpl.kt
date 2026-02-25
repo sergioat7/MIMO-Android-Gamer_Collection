@@ -2,29 +2,19 @@ package es.upsa.mimo.gamercollection.data
 
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
-import es.upsa.mimo.gamercollection.data.di.MainDispatcher
 import es.upsa.mimo.gamercollection.data.local.model.UserData
 import es.upsa.mimo.gamercollection.data.remote.model.ErrorResponse
-import es.upsa.mimo.gamercollection.data.remote.interfaces.UserApiService
 import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.toDomain
 import es.upsa.mimo.gamercollection.utils.Constants
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class UserRepositoryImpl @Inject constructor(
-    private val api: UserApiService,
-    @MainDispatcher private val mainDispatcher: CoroutineDispatcher
-) : UserRepository {
+class UserRepositoryImpl @Inject constructor() : UserRepository {
 
     //region Private properties
     private val GOOGLE_USER_TEST = "googleTest"
     private val GOOGLE_PASSWORD_TEST = "d9MqzK3k1&07"
-    private val externalScope = CoroutineScope(Job() + mainDispatcher)
     //endregion
 
     //region Public methods
@@ -49,20 +39,6 @@ class UserRepositoryImpl @Inject constructor(
         } else {
             failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.wrong_password).toDomain())
         }
-//        externalScope.launch {
-//
-//            val body = LoginCredentials(username, password)
-//
-//            try {
-//                when (val response = ApiManager.validateResponse(api.login(body))) {
-//                    is RequestResult.JsonSuccess -> success(response.body.token)
-//                    is RequestResult.Failure -> failure(response.error)
-//                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
-//                }
-//            } catch (e: Exception) {
-//                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
-//            }
-//        }
     }
 
     override fun register(
@@ -73,63 +49,6 @@ class UserRepositoryImpl @Inject constructor(
     ) {
         SharedPreferencesHelper.userData = UserData(username, password, false)
         success()
-//        externalScope.launch {
-//
-//            val body = LoginCredentials(username, password)
-//
-//            try {
-//                when (val response = ApiManager.validateResponse(api.register(body))) {
-//                    is RequestResult.Success -> success()
-//                    is RequestResult.Failure -> failure(response.error)
-//                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
-//                }
-//            } catch (e: Exception) {
-//                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
-//            }
-//        }
-    }
-
-    override fun logout() {
-        externalScope.launch {
-
-            try {
-                api.logout()
-            } catch (e: Exception) {
-            }
-        }
-    }
-
-    override fun updatePassword(password: String, success: () -> Unit, failure: (ErrorModel) -> Unit) {
-        success()
-//        externalScope.launch {
-//
-//            try {
-//                val body = NewPassword(password)
-//                when (val response = ApiManager.validateResponse(api.updatePassword(body))) {
-//                    is RequestResult.Success -> success()
-//                    is RequestResult.Failure -> failure(response.error)
-//                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
-//                }
-//            } catch (e: Exception) {
-//                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
-//            }
-//        }
-    }
-
-    override fun deleteUser(success: () -> Unit, failure: (ErrorModel) -> Unit) {
-        success()
-//        externalScope.launch {
-//
-//            try {
-//                when (val response = ApiManager.validateResponse(api.deleteUser())) {
-//                    is RequestResult.Success -> success()
-//                    is RequestResult.Failure -> failure(response.error)
-//                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
-//                }
-//            } catch (e: Exception) {
-//                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
-//            }
-//        }
     }
     //endregion
 }

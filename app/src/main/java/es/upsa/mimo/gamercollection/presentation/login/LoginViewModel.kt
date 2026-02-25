@@ -8,8 +8,6 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.data.local.model.AuthData
 import es.upsa.mimo.gamercollection.presentation.login.model.LoginFormState
 import es.upsa.mimo.gamercollection.data.local.model.UserData
-import es.upsa.mimo.gamercollection.domain.GameRepository
-import es.upsa.mimo.gamercollection.domain.SagaRepository
 import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
@@ -18,8 +16,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val gameRepository: GameRepository,
-    private val sagaRepository: SagaRepository,
     private val userRepository: UserRepository
 ) : ViewModel() {
 
@@ -74,21 +70,11 @@ class LoginViewModel @Inject constructor(
 
     //region Private methods
     private fun loadContent(userData: UserData) {
+        userData.isLoggedIn = true
+        SharedPreferencesHelper.userData = userData
 
-//        gameRepository.loadGames({
-//            sagaRepository.loadSagas({
-
-                userData.isLoggedIn = true
-                SharedPreferencesHelper.userData = userData
-
-                _loginError.value = null
-                _loginLoading.value = false
-//            }, {
-//                _loginError.value = it
-//            })
-//        }, {
-//            _loginError.value = it
-//        })
+        _loginError.value = null
+        _loginLoading.value = false
     }
     //endregion
 }

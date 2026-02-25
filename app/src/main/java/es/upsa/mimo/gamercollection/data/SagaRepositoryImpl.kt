@@ -1,10 +1,8 @@
 package es.upsa.mimo.gamercollection.data
 
 import es.upsa.mimo.gamercollection.data.di.IoDispatcher
-import es.upsa.mimo.gamercollection.data.di.MainDispatcher
 import es.upsa.mimo.gamercollection.data.local.daos.SagaDao
 import es.upsa.mimo.gamercollection.data.local.model.SagaWithGames
-import es.upsa.mimo.gamercollection.data.remote.interfaces.SagaApiService
 import es.upsa.mimo.gamercollection.domain.SagaRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Saga
@@ -19,46 +17,15 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class SagaRepositoryImpl @Inject constructor(
-    private val api: SagaApiService,
     private val sagaDao: SagaDao,
-    @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : SagaRepository {
 
     //region Private properties
-    private val externalScope = CoroutineScope(Job() + mainDispatcher)
     private val databaseScope = CoroutineScope(Job() + ioDispatcher)
     //endregion
 
     //region Public methods
-    override fun loadSagas(success: () -> Unit, failure: (ErrorModel) -> Unit) {
-        success()
-//        externalScope.launch {
-//
-//            try {
-//                when (val response = ApiManager.validateResponse(api.getSagas())) {
-//                    is RequestResult.JsonSuccess -> {
-//
-//                        val newSagas = response.body
-//                        for (newSaga in newSagas) {
-//                            insertSagaDatabase(newSaga)
-//                        }
-//                        val currentSagas = getSagasDatabase()
-//                        val sagasToRemove = AppDatabase.getDisabledContent(currentSagas, newSagas)
-//                        for (saga in sagasToRemove) {
-//                            deleteSagaDatabase(saga as SagaResponse)
-//                        }
-//                        success()
-//                    }
-//                    is RequestResult.Failure -> failure(response.error)
-//                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
-//                }
-//            } catch (e: Exception) {
-//                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
-//            }
-//        }
-    }
-
     override fun createSaga(
         newSaga: Saga,
         success: (Saga?) -> Unit,
@@ -67,31 +34,6 @@ class SagaRepositoryImpl @Inject constructor(
         val saga = newSaga.copy(id = getNextId())
         insertSagaDatabase(saga)
         success(saga)
-//        externalScope.launch {
-//
-//            try {
-//                when (val response = ApiManager.validateResponse(api.createSaga(newSaga))) {
-//                    is RequestResult.Success -> {
-//                        loadSagas({
-//
-//                            val currentSagas = getSagasDatabase()
-//                            val newSagaCreated = currentSagas.firstOrNull { saga ->
-//                                val game = saga.games.firstOrNull { game ->
-//                                    game.id == newSaga.games.firstOrNull()?.id
-//                                }
-//                                game != null
-//                            }
-//
-//                            success(newSagaCreated)
-//                        }, failure)
-//                    }
-//                    is RequestResult.Failure -> failure(response.error)
-//                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
-//                }
-//            } catch (e: Exception) {
-//                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
-//            }
-//        }
     }
 
     override fun setSaga(
@@ -101,41 +43,11 @@ class SagaRepositoryImpl @Inject constructor(
     ) {
         updateSagaDatabase(saga)
         success(saga)
-//        externalScope.launch {
-//
-//            try {
-//                when (val response = ApiManager.validateResponse(api.setSaga(saga.id, saga))) {
-//                    is RequestResult.JsonSuccess -> {
-//                        updateSagaDatabase(response.body)
-//                        success(response.body)
-//                    }
-//                    is RequestResult.Failure -> failure(response.error)
-//                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
-//                }
-//            } catch (e: Exception) {
-//                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
-//            }
-//        }
     }
 
     override fun deleteSaga(saga: Saga, success: () -> Unit, failure: (ErrorModel) -> Unit) {
         deleteSagaDatabase(saga)
         success()
-//        externalScope.launch {
-//
-//            try {
-//                when (val response = ApiManager.validateResponse(api.deleteSaga(saga.id))) {
-//                    is RequestResult.Success -> {
-//                        deleteSagaDatabase(saga)
-//                        success()
-//                    }
-//                    is RequestResult.Failure -> failure(response.error)
-//                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server))
-//                }
-//            } catch (e: Exception) {
-//                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection))
-//            }
-//        }
     }
 
     override fun getSagasDatabase(): List<Saga> {
