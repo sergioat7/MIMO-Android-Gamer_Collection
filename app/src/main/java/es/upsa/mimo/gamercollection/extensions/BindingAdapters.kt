@@ -19,10 +19,10 @@ import com.squareup.picasso.Picasso
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.domain.model.Song
-import es.upsa.mimo.gamercollection.ui.games.GamesAdapter
-import es.upsa.mimo.gamercollection.ui.gamedetail.gamesongs.SongsAdapter
-import es.upsa.mimo.gamercollection.ui.customviews.ImageViewWithLoading
-import es.upsa.mimo.gamercollection.ui.customviews.StateButton
+import es.upsa.mimo.gamercollection.presentation.games.GamesAdapter
+import es.upsa.mimo.gamercollection.presentation.gamedetail.gamesongs.SongsAdapter
+import es.upsa.mimo.gamercollection.presentation.customviews.ImageViewWithLoading
+import es.upsa.mimo.gamercollection.presentation.customviews.StateButton
 import es.upsa.mimo.gamercollection.utils.CustomInputType
 import me.zhanghai.android.materialratingbar.MaterialRatingBar
 

@@ -11,7 +11,7 @@ import es.upsa.mimo.gamercollection.data.remote.model.FORMATS
 import es.upsa.mimo.gamercollection.data.remote.model.GENRES
 import es.upsa.mimo.gamercollection.data.remote.model.PLATFORMS
 import es.upsa.mimo.gamercollection.data.remote.model.STATES
-import es.upsa.mimo.gamercollection.ui.adapters.MenuAdapter
+import es.upsa.mimo.gamercollection.presentation.adapters.MenuAdapter
 import es.upsa.mimo.gamercollection.databinding.CustomDropdownTextInputLayoutBinding
 import es.upsa.mimo.gamercollection.utils.CustomDropdownType
 
