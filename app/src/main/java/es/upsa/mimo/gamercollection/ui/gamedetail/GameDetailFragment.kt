@@ -25,6 +25,7 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.data.remote.model.PLATFORMS
 import es.upsa.mimo.gamercollection.ui.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.DialogSetImageBinding
 import es.upsa.mimo.gamercollection.databinding.DialogSetRatingBinding
@@ -304,7 +305,7 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
         val id = args.gameId
         val name = binding.textInputLayoutGameName.getValueWithoutHyphen()
         val platform =
-            Constants.PLATFORMS.firstOrNull { it.name == binding.dropdownTextInputLayoutPlatforms.getValue() }?.id
+            PLATFORMS.firstOrNull { it.name == binding.dropdownTextInputLayoutPlatforms.getValue() }?.id
         val score = binding.ratingButton.text.toString().toDouble()
 
         return pagerAdapter.getGameData()?.copy(

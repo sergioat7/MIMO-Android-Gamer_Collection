@@ -4,10 +4,10 @@ import android.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.data.remote.model.PLATFORMS
 import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
 import es.upsa.mimo.gamercollection.databinding.ItemGameBinding
 import es.upsa.mimo.gamercollection.domain.model.Game
-import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.State
 
 class GamesViewHolder(
@@ -46,7 +46,7 @@ class GamesViewHolder(
         with(binding) {
 
             viewState.setBackgroundColor(color)
-            platform = Constants.PLATFORMS.firstOrNull { it.id == game.platform }
+            platform = PLATFORMS.firstOrNull { it.id == game.platform }
             textViewRating.text = game.score.toInt().toString()
             checkBox.isChecked = game.saga?.id == sagaId
             this.game = game

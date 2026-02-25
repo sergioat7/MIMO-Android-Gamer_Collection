@@ -13,8 +13,18 @@ import es.upsa.mimo.gamercollection.data.local.GamerCollectionDatabase
 import es.upsa.mimo.gamercollection.data.local.daos.GameDao
 import es.upsa.mimo.gamercollection.data.local.daos.SagaDao
 import es.upsa.mimo.gamercollection.data.local.daos.SongDao
-import es.upsa.mimo.gamercollection.utils.Constants
 import javax.inject.Singleton
+
+private const val DATABASE_NAME = "GamerCollection"
+
+private val MIGRATION_1_2 = object : Migration(1, 2) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("DROP TABLE Format")
+        db.execSQL("DROP TABLE Genre")
+        db.execSQL("DROP TABLE Platform")
+        db.execSQL("DROP TABLE State")
+    }
+}
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -22,14 +32,6 @@ object DatabaseModule {
 
     //region Private properties
     private var instance: GamerCollectionDatabase? = null
-    private val MIGRATION_1_2 = object : Migration(1, 2) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            database.execSQL("DROP TABLE Format")
-            database.execSQL("DROP TABLE Genre")
-            database.execSQL("DROP TABLE Platform")
-            database.execSQL("DROP TABLE State")
-        }
-    }
     //endregion
 
     @Singleton
@@ -40,7 +42,7 @@ object DatabaseModule {
             .databaseBuilder(
                 context.applicationContext,
                 GamerCollectionDatabase::class.java,
-                Constants.DATABASE_NAME
+                DATABASE_NAME
             )
             .addMigrations(MIGRATION_1_2)
             .build()

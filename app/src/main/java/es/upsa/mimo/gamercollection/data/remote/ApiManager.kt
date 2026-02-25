@@ -26,15 +26,9 @@ object ApiManager {
 
     //region Static properties
     const val BASE_ENDPOINT = "https://videogames-collection-services.herokuapp.com/"
-    const val BASE_ENDPOINT_RAWG = "https://api.rawg.io/api/"
     const val ACCEPT_LANGUAGE_HEADER = "Accept-Language"
     const val AUTHORIZATION_HEADER = "Authorization"
     const val OTHER_VALUE = "OTHER"
-    const val KEY_PARAM = "key"
-    const val PAGE_PARAM = "page"
-    const val PAGE_SIZE_PARAM = "page_size"
-    const val PAGE_SIZE = 20
-    const val SEARCH_PARAM = "search"
     //endregion
 
     //region Public properties

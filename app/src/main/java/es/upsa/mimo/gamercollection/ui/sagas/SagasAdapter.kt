@@ -12,7 +12,6 @@ import es.upsa.mimo.gamercollection.databinding.ItemSagaBinding
 import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.domain.model.Saga
 import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
-import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.ui.games.GamesViewHolder
 
 class SagasAdapter(
@@ -20,6 +19,9 @@ class SagasAdapter(
     private var expandedIds: MutableList<Int>,
     private var onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<ViewHolder?>() {
+
+    private val POINT_UP = 0f
+    private val POINT_DOWN = -180f
 
     //region Lifecycle methods
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -64,22 +66,22 @@ class SagasAdapter(
             holder.bind(saga, onItemClickListener)
 
             val rotation =
-                if (expandedIds.contains(saga.id)) Constants.POINT_DOWN
-                else Constants.POINT_UP
+                if (expandedIds.contains(saga.id)) POINT_DOWN
+                else POINT_UP
             holder.rotateArrow(rotation)
 
             holder.binding.imageViewArrow.setOnClickListener {
                 if (expandedIds.contains(saga.id)) {
 
                     val currentPosition = holder.layoutPosition
-                    holder.rotateArrow(Constants.POINT_UP)
+                    holder.rotateArrow(POINT_UP)
                     expandedIds.remove(saga.id)
                     items.removeAll(saga.games)
                     notifyItemRangeRemoved(currentPosition + 1, saga.games.size)
                 } else {
 
                     val currentPosition = holder.layoutPosition
-                    holder.rotateArrow(Constants.POINT_DOWN)
+                    holder.rotateArrow(POINT_DOWN)
                     expandedIds.add(saga.id)
                     if (currentPosition + 1 < items.size) {
                         items.addAll(currentPosition + 1, saga.games.sortedBy { it.releaseDate })

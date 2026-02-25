@@ -22,6 +22,8 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
 
     //region Private properties
+    private val GOOGLE_USER_TEST = "googleTest"
+    private val GOOGLE_PASSWORD_TEST = "d9MqzK3k1&07"
     private val externalScope = CoroutineScope(Job() + mainDispatcher)
     //endregion
 
@@ -33,10 +35,10 @@ class UserRepositoryImpl @Inject constructor(
         failure: (ErrorModel) -> Unit
     ) {
         val userData = SharedPreferencesHelper.userData
-        if (username == Constants.GOOGLE_USER_TEST && password == Constants.GOOGLE_PASSWORD_TEST) {
+        if (username == GOOGLE_USER_TEST && password == GOOGLE_PASSWORD_TEST) {
             SharedPreferencesHelper.userData = UserData(
-                Constants.GOOGLE_USER_TEST,
-                Constants.GOOGLE_PASSWORD_TEST,
+                GOOGLE_USER_TEST,
+                GOOGLE_PASSWORD_TEST,
                 false
             )
             success("-")

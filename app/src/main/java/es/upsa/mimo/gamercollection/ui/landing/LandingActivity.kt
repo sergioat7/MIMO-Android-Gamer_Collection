@@ -13,12 +13,15 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.data.remote.model.FORMATS
 import es.upsa.mimo.gamercollection.ui.base.BaseActivity
 import es.upsa.mimo.gamercollection.data.remote.model.FormatResponse
+import es.upsa.mimo.gamercollection.data.remote.model.GENRES
 import es.upsa.mimo.gamercollection.data.remote.model.GenreResponse
+import es.upsa.mimo.gamercollection.data.remote.model.PLATFORMS
 import es.upsa.mimo.gamercollection.data.remote.model.PlatformResponse
+import es.upsa.mimo.gamercollection.data.remote.model.STATES
 import es.upsa.mimo.gamercollection.data.remote.model.StateResponse
-import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Notifications
 import org.json.JSONObject
 import java.util.*
@@ -126,7 +129,7 @@ class LandingActivity : BaseActivity() {
                 Log.e("LandingActivity", e.message ?: "")
             }
 
-            Constants.FORMATS = formats
+            FORMATS = formats
         }
     }
 
@@ -143,7 +146,7 @@ class LandingActivity : BaseActivity() {
                 Log.e("LandingActivity", e.message ?: "")
             }
 
-            Constants.GENRES = genres
+            GENRES = genres
         }
     }
 
@@ -161,7 +164,7 @@ class LandingActivity : BaseActivity() {
                 Log.e("LandingActivity", e.message ?: "")
             }
 
-            Constants.PLATFORMS = platforms
+            PLATFORMS = platforms
         }
     }
 
@@ -178,7 +181,7 @@ class LandingActivity : BaseActivity() {
                 Log.e("LandingActivity", e.message ?: "")
             }
 
-            Constants.STATES = states
+            STATES = states
         }
     }
     //endregion

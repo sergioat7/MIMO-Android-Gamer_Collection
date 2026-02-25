@@ -41,6 +41,7 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
     //endregion
 
     //region Private properties
+    private val SYNC_DIALOG = "syncDialog"
     private var loadingFragment: PopupLoadingDialogFragment? = null
     //endregion
 
@@ -278,14 +279,14 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
     private fun showSyncPopup() {
 
         val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
-        val prev = activity?.supportFragmentManager?.findFragmentByTag(Constants.SYNC_DIALOG)
+        val prev = activity?.supportFragmentManager?.findFragmentByTag(SYNC_DIALOG)
         if (prev != null) {
             ft.remove(prev)
         }
         ft.addToBackStack(null)
         val dialogFragment = PopupSyncAppDialogFragment()
         dialogFragment.isCancelable = false
-        dialogFragment.show(ft, Constants.SYNC_DIALOG)
+        dialogFragment.show(ft, SYNC_DIALOG)
     }
     //endregion
 }

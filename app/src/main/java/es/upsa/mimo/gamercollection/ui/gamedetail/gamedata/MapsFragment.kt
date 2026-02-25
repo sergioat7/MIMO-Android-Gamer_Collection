@@ -29,7 +29,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.interfaces.OnLocationSelected
 import es.upsa.mimo.gamercollection.databinding.FragmentMapsBinding
-import es.upsa.mimo.gamercollection.utils.Constants
 import kotlin.math.max
 
 class MapsFragment(
@@ -38,6 +37,7 @@ class MapsFragment(
 ) : DialogFragment(), OnMapReadyCallback {
 
     //region Private properties
+    private val DEFAULT_LOCATION = LatLng(40.4169019, -3.7056721)
     private lateinit var binding: FragmentMapsBinding
     private lateinit var googleMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -73,7 +73,7 @@ class MapsFragment(
         location?.let {
             addMarker(it)
         } ?: run {
-            addMarker(Constants.DEFAULT_LOCATION)
+            addMarker(DEFAULT_LOCATION)
             if (checkPermissions()) {
                 if (isLocationEnabled()) {
                     getUserLocation()

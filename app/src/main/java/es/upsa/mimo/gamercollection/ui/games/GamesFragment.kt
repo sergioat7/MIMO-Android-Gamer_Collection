@@ -30,6 +30,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.data.remote.model.FORMATS
+import es.upsa.mimo.gamercollection.data.remote.model.GENRES
+import es.upsa.mimo.gamercollection.data.remote.model.PLATFORMS
 import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
 import es.upsa.mimo.gamercollection.ui.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.DialogFragmentPopupFilterBinding
@@ -290,15 +293,15 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         val dialogBinding = DialogFragmentPopupFilterBinding.inflate(layoutInflater).apply {
 
             chipGroupPlatforms.removeAllViews()
-            for (platform in Constants.PLATFORMS) {
+            for (platform in PLATFORMS) {
                 chipGroupPlatforms.addChip(layoutInflater, platform.id, platform.name)
             }
             chipGroupGenres.removeAllViews()
-            for (genre in Constants.GENRES) {
+            for (genre in GENRES) {
                 chipGroupGenres.addChip(layoutInflater, genre.id, genre.name)
             }
             chipGroupFormats.removeAllViews()
-            for (format in Constants.FORMATS) {
+            for (format in FORMATS) {
                 chipGroupFormats.addChip(layoutInflater, format.id, format.name)
             }
             for (view in listOf(

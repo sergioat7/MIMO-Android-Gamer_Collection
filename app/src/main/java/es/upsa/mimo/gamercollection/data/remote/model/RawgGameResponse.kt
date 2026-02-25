@@ -1,8 +1,9 @@
 package es.upsa.mimo.gamercollection.data.remote.model
 
 import com.google.gson.annotations.SerializedName
-import es.upsa.mimo.gamercollection.utils.Constants
 import java.util.*
+
+private const val NEXT_VALUE_SEPARATOR = ", "
 
 data class RawgGameResponse(
     val id: Int,
@@ -23,14 +24,14 @@ data class RawgGameResponse(
         developers?.let {
             for (developer in it) {
                 result.append(developer.name)
-                result.append(Constants.NEXT_VALUE_SEPARATOR)
+                result.append(NEXT_VALUE_SEPARATOR)
             }
         }
         return if (result.isNotBlank()) {
             StringBuilder(
                 result.substring(
                     0,
-                    result.length - Constants.NEXT_VALUE_SEPARATOR.length
+                    result.length - NEXT_VALUE_SEPARATOR.length
                 )
             ).toString()
         } else {
@@ -44,14 +45,14 @@ data class RawgGameResponse(
         publishers?.let {
             for (publisher in it) {
                 result.append(publisher.name)
-                result.append(Constants.NEXT_VALUE_SEPARATOR)
+                result.append(NEXT_VALUE_SEPARATOR)
             }
         }
         return if (result.isNotBlank()) {
             StringBuilder(
                 result.substring(
                     0,
-                    result.length - Constants.NEXT_VALUE_SEPARATOR.length
+                    result.length - NEXT_VALUE_SEPARATOR.length
                 )
             ).toString()
         } else {

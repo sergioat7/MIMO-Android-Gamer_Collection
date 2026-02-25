@@ -5,6 +5,8 @@ import android.view.View
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.gms.maps.model.LatLng
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.data.remote.model.FORMATS
+import es.upsa.mimo.gamercollection.data.remote.model.GENRES
 import es.upsa.mimo.gamercollection.interfaces.OnLocationSelected
 import es.upsa.mimo.gamercollection.ui.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentGameDataBinding
@@ -94,9 +96,9 @@ class GameDataFragment(
             viewModel.language
         )
         val format =
-            Constants.FORMATS.firstOrNull { it.name == binding.dropdownTextInputLayoutFormats.getValue() }?.id
+            FORMATS.firstOrNull { it.name == binding.dropdownTextInputLayoutFormats.getValue() }?.id
         val genre =
-            Constants.GENRES.firstOrNull { it.name == binding.dropdownTextInputLayoutGenres.getValue() }?.id
+            GENRES.firstOrNull { it.name == binding.dropdownTextInputLayoutGenres.getValue() }?.id
         val state =
             when {
                 binding.buttonPending.root.isSelected -> State.PENDING_STATE

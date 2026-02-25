@@ -39,6 +39,16 @@ class GameRepositoryImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : GameRepository {
 
+    //region Static properties
+    companion object {
+        private const val KEY_PARAM = "key"
+        private const val PAGE_PARAM = "page"
+        private const val PAGE_SIZE_PARAM = "page_size"
+        private const val PAGE_SIZE = 20
+        private const val SEARCH_PARAM = "search"
+    }
+    //endregion
+
     //region Private properties
     private val externalScope = CoroutineScope(Job() + mainDispatcher)
     private val databaseScope = CoroutineScope(Job() + ioDispatcher)
@@ -366,11 +376,11 @@ class GameRepositoryImpl @Inject constructor(
         externalScope.launch {
 
             val params: MutableMap<String, String> = HashMap()
-            params[ApiManager.KEY_PARAM] = BuildConfig.RAWG_API_KEY
-            params[ApiManager.PAGE_PARAM] = page.toString()
-            params[ApiManager.PAGE_SIZE_PARAM] = ApiManager.PAGE_SIZE.toString()
+            params[KEY_PARAM] = BuildConfig.RAWG_API_KEY
+            params[PAGE_PARAM] = page.toString()
+            params[PAGE_SIZE_PARAM] = PAGE_SIZE.toString()
             query?.let {
-                params[ApiManager.SEARCH_PARAM] = it
+                params[SEARCH_PARAM] = it
             }
 
             try {
@@ -397,7 +407,7 @@ class GameRepositoryImpl @Inject constructor(
         externalScope.launch {
 
             val params: MutableMap<String, String> = HashMap()
-            params[ApiManager.KEY_PARAM] = BuildConfig.RAWG_API_KEY
+            params[KEY_PARAM] = BuildConfig.RAWG_API_KEY
 
             try {
                 when (val response = ApiManager.validateResponse(apiRawg.getGame(gameId, params))) {
