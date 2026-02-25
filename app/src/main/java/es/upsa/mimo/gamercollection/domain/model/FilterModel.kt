@@ -16,10 +16,10 @@ data class FilterModel(
     val maxPurchaseDate: Date?,
     val minPrice: Double,
     val maxPrice: Double,
-    val isGoty: Boolean,
-    val isLoaned: Boolean,
-    val hasSaga: Boolean,
-    val hasSongs: Boolean
+    val isGoty: Boolean?,
+    val isLoaned: Boolean?,
+    val hasSaga: Boolean?,
+    val hasSongs: Boolean?
 ) {
 
     fun minReleaseDateAsHumanReadable(): String? {

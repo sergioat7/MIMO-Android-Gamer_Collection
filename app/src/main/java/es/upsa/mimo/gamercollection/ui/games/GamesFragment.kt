@@ -402,10 +402,26 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 } catch (e: Exception) {
                 }
 
-                val isGoty = dialogBinding.radioButtonGotyYes.isChecked
-                val isLoaned = dialogBinding.radioButtonLoanedYes.isChecked
-                val hasSaga = dialogBinding.radioButtonSagaYes.isChecked
-                val hasSongs = dialogBinding.radioButtonSongsYes.isChecked
+                val isGoty = when {
+                    dialogBinding.radioButtonGotyYes.isChecked -> true
+                    dialogBinding.radioButtonGotyNo.isChecked -> false
+                    else -> null
+                }
+                val isLoaned = when {
+                    dialogBinding.radioButtonLoanedYes.isChecked -> true
+                    dialogBinding.radioButtonLoanedNo.isChecked -> false
+                    else -> null
+                }
+                val hasSaga = when {
+                    dialogBinding.radioButtonSagaYes.isChecked -> true
+                    dialogBinding.radioButtonSagaNo.isChecked -> false
+                    else -> null
+                }
+                val hasSongs = when {
+                    dialogBinding.radioButtonSongsYes.isChecked -> true
+                    dialogBinding.radioButtonSongsNo.isChecked -> false
+                    else -> null
+                }
 
                 val filters = FilterModel(
                     platforms,
@@ -437,10 +453,10 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                     maxPurchaseDate == null &&
                     minPrice == 0.0 &&
                     maxPrice == 0.0 &&
-                    !isGoty &&
-                    !isLoaned &&
-                    !hasSaga &&
-                    !hasSongs
+                    isGoty == null &&
+                    isLoaned == null &&
+                    hasSaga == null &&
+                    hasSongs == null
                 ) {
                     viewModel.applyFilters(null)
                 } else {

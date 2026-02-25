@@ -182,7 +182,13 @@ class GameRepositoryImpl @Inject constructor(
 
             queryConditions += queryPlatforms + queryGenres + queryFormats
 
-            queryConditions += "score >= ${filtersVar.minScore} AND score <= ${filtersVar.maxScore} AND "
+            if (filtersVar.minScore > 0) {
+                queryConditions += "score >= ${filtersVar.minScore} AND "
+            }
+
+            if (filtersVar.maxScore < 10) {
+                queryConditions += "score <= ${filtersVar.maxScore} AND "
+            }
 
             if (filtersVar.minReleaseDate != null) {
                 queryConditions += "releaseDate >= '${filtersVar.minReleaseDate.time}' AND "
@@ -198,25 +204,28 @@ class GameRepositoryImpl @Inject constructor(
                 queryConditions += "purchaseDate <= '${filtersVar.maxPurchaseDate.time}' AND "
             }
 
-            queryConditions += "price >= ${filtersVar.minPrice} AND "
+            if (filtersVar.minPrice > 0) {
+                queryConditions += "price >= ${filtersVar.minPrice} AND "
+            }
+
             if (filtersVar.maxPrice > 0) {
                 queryConditions += "price <= ${filtersVar.maxPrice} AND "
             }
 
-            if (filtersVar.isGoty) {
-                queryConditions += "goty == 1 AND "
+            if (filtersVar.isGoty != null) {
+                queryConditions += "goty == ${if (filtersVar.isGoty) 1 else 0} AND "
             }
 
-            if (filtersVar.isLoaned) {
-                queryConditions += "loanedTo != null AND "
+            if (filtersVar.isLoaned != null) {
+                queryConditions += "${if (filtersVar.isLoaned) "loanedTo is not null" else "loanedTo is null"} AND "
             }
 
-            if (filtersVar.hasSaga) {
-                queryConditions += "saga_id != -1 AND "
+            if (filtersVar.hasSaga != null) {
+                queryConditions += "${if (filtersVar.hasSaga) "saga_id is not null" else "saga_id is null"} AND "
             }
 
-            if (filtersVar.hasSongs) {
-                queryConditions += "songs != '[]' AND "
+            if (filtersVar.hasSongs != null) {
+                queryConditions += "${if (filtersVar.hasSongs) "songs != '[]'" else "songs == '[]'"} AND "
             }
         }
 
