@@ -46,5 +46,9 @@ class LandingViewModel @Inject constructor(
             LoginActivity::class.java
         }
     }
+
+    fun fetchRemoteConfigValues() {
+        gameRepository.fetchRemoteConfigValues(language)
+    }
     //endregion
 }

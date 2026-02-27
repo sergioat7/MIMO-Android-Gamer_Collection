@@ -39,4 +39,5 @@ interface GameRepository {
         success: (Game) -> Unit,
         failure: (ErrorModel) -> Unit
     )
+    fun fetchRemoteConfigValues(language: String)
 }

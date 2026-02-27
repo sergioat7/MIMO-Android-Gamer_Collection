@@ -1,21 +1,35 @@
 package es.upsa.mimo.gamercollection.data
 
 import androidx.sqlite.db.SimpleSQLiteQuery
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import es.upsa.mimo.gamercollection.BuildConfig
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.data.di.IoDispatcher
 import es.upsa.mimo.gamercollection.data.di.MainDispatcher
 import es.upsa.mimo.gamercollection.data.local.daos.GameDao
-import es.upsa.mimo.gamercollection.data.remote.model.ErrorResponse
-import es.upsa.mimo.gamercollection.domain.model.FilterModel
 import es.upsa.mimo.gamercollection.data.local.model.GameWithSaga
-import es.upsa.mimo.gamercollection.data.remote.model.RawgGameResponse
 import es.upsa.mimo.gamercollection.data.remote.ApiManager
 import es.upsa.mimo.gamercollection.data.remote.RequestResult
 import es.upsa.mimo.gamercollection.data.remote.interfaces.RawgGameApiService
+import es.upsa.mimo.gamercollection.data.remote.model.BaseResponse
+import es.upsa.mimo.gamercollection.data.remote.model.ErrorResponse
+import es.upsa.mimo.gamercollection.data.remote.model.FORMATS
+import es.upsa.mimo.gamercollection.data.remote.model.FormatResponse
+import es.upsa.mimo.gamercollection.data.remote.model.GENRES
 import es.upsa.mimo.gamercollection.data.remote.model.GameResponse
+import es.upsa.mimo.gamercollection.data.remote.model.GenreResponse
+import es.upsa.mimo.gamercollection.data.remote.model.PLATFORMS
+import es.upsa.mimo.gamercollection.data.remote.model.PlatformResponse
+import es.upsa.mimo.gamercollection.data.remote.model.RawgGameResponse
+import es.upsa.mimo.gamercollection.data.remote.model.STATES
+import es.upsa.mimo.gamercollection.data.remote.model.StateResponse
 import es.upsa.mimo.gamercollection.domain.GameRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
+import es.upsa.mimo.gamercollection.domain.model.FilterModel
 import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.domain.model.Saga
 import es.upsa.mimo.gamercollection.domain.toDomain
@@ -50,6 +64,13 @@ class GameRepositoryImpl @Inject constructor(
     //region Private properties
     private val externalScope = CoroutineScope(Job() + mainDispatcher)
     private val databaseScope = CoroutineScope(Job() + ioDispatcher)
+    private val remoteConfig = Firebase.remoteConfig.apply {
+        setConfigSettingsAsync(
+            remoteConfigSettings {
+                minimumFetchIntervalInSeconds = 3600
+            }
+        )
+    }
     //endregion
 
     //region Public methods
@@ -326,6 +347,25 @@ class GameRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override fun fetchRemoteConfigValues(language: String) {
+
+        fetchRemoteConfigString("formats") {
+            FORMATS = parseValues<FormatResponse>(it)[language] ?: emptyList()
+        }
+
+        fetchRemoteConfigString("genres") {
+            GENRES = parseValues<GenreResponse>(it)[language] ?: emptyList()
+        }
+
+        fetchRemoteConfigString("platforms") {
+            PLATFORMS = parseValues<PlatformResponse>(it)[language] ?: emptyList()
+        }
+
+        fetchRemoteConfigString("states") {
+            STATES = parseValues<StateResponse>(it)[language] ?: emptyList()
+        }
+    }
     //endregion
 
     //region Private methods
@@ -358,6 +398,28 @@ class GameRepositoryImpl @Inject constructor(
         } else {
             0
         }
+    }
+
+    private fun fetchRemoteConfigString(key: String, onCompletion: (String) -> Unit) {
+        onCompletion(remoteConfig.getString(key))
+
+        remoteConfig.fetchAndActivate().addOnCompleteListener {
+            onCompletion(remoteConfig.getString(key))
+        }
+    }
+
+    private inline fun <reified T : BaseResponse<String>> parseValues(
+        values: String,
+    ): Map<String, List<T>> = if (values.isNotEmpty()) {
+        try {
+            val type = object : TypeToken<Map<String, List<T>>>() {}.type
+            Gson().fromJson(values, type)
+        } catch (e: Exception) {
+            println("GameRepository ${(e.message ?: "")}")
+            emptyMap()
+        }
+    } else {
+        emptyMap()
     }
     //endregion
 }

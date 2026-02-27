@@ -5,25 +5,11 @@ import android.app.NotificationManager
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.data.remote.model.FORMATS
 import es.upsa.mimo.gamercollection.presentation.base.BaseActivity
-import es.upsa.mimo.gamercollection.data.remote.model.FormatResponse
-import es.upsa.mimo.gamercollection.data.remote.model.GENRES
-import es.upsa.mimo.gamercollection.data.remote.model.GenreResponse
-import es.upsa.mimo.gamercollection.data.remote.model.PLATFORMS
-import es.upsa.mimo.gamercollection.data.remote.model.PlatformResponse
-import es.upsa.mimo.gamercollection.data.remote.model.STATES
-import es.upsa.mimo.gamercollection.data.remote.model.StateResponse
 import es.upsa.mimo.gamercollection.utils.Notifications
-import org.json.JSONObject
 import java.util.*
 
 @AndroidEntryPoint
@@ -47,7 +33,7 @@ class LandingActivity : BaseActivity() {
         setupBindings()
 
         configLanguage()
-        fetchRemoteConfigValues()
+        viewModel.fetchRemoteConfigValues()
         createNotificationChannel()
         viewModel.checkTheme()
 
@@ -89,99 +75,6 @@ class LandingActivity : BaseActivity() {
                 NotificationManager::class.java
             )
             notificationManager?.createNotificationChannel(channel)
-        }
-    }
-
-    private fun fetchRemoteConfigValues() {
-
-        val remoteConfig = Firebase.remoteConfig.apply {
-            setConfigSettingsAsync(
-                remoteConfigSettings {
-                    minimumFetchIntervalInSeconds = 3600
-                }
-            )
-        }
-
-        setupFormats(remoteConfig.getString("formats"))
-        setupGenres(remoteConfig.getString("genres"))
-        setupPlatforms(remoteConfig.getString("platforms"))
-        setupStates(remoteConfig.getString("states"))
-
-        remoteConfig.fetchAndActivate().addOnCompleteListener(this) {
-
-            setupFormats(remoteConfig.getString("formats"))
-            setupGenres(remoteConfig.getString("genres"))
-            setupPlatforms(remoteConfig.getString("platforms"))
-            setupStates(remoteConfig.getString("states"))
-        }
-    }
-
-    private fun setupFormats(formatsString: String) {
-
-        if (formatsString.isNotEmpty()) {
-            var formats = listOf<FormatResponse>()
-            try {
-                val languagedFormats =
-                    JSONObject(formatsString).get(viewModel.language).toString()
-                formats =
-                    Gson().fromJson(languagedFormats, Array<FormatResponse>::class.java).asList()
-            } catch (e: Exception) {
-                Log.e("LandingActivity", e.message ?: "")
-            }
-
-            FORMATS = formats
-        }
-    }
-
-    private fun setupGenres(genresString: String) {
-
-        if (genresString.isNotEmpty()) {
-            var genres = listOf<GenreResponse>()
-            try {
-                val languagedGenres =
-                    JSONObject(genresString).get(viewModel.language).toString()
-                genres =
-                    Gson().fromJson(languagedGenres, Array<GenreResponse>::class.java).asList()
-            } catch (e: Exception) {
-                Log.e("LandingActivity", e.message ?: "")
-            }
-
-            GENRES = genres
-        }
-    }
-
-    private fun setupPlatforms(platformsString: String) {
-
-        if (platformsString.isNotEmpty()) {
-            var platforms = listOf<PlatformResponse>()
-            try {
-                val languagedPlatforms =
-                    JSONObject(platformsString).get(viewModel.language).toString()
-                platforms =
-                    Gson().fromJson(languagedPlatforms, Array<PlatformResponse>::class.java)
-                        .asList()
-            } catch (e: Exception) {
-                Log.e("LandingActivity", e.message ?: "")
-            }
-
-            PLATFORMS = platforms
-        }
-    }
-
-    private fun setupStates(statesString: String) {
-
-        if (statesString.isNotEmpty()) {
-            var states = listOf<StateResponse>()
-            try {
-                val languagedStates =
-                    JSONObject(statesString).get(viewModel.language).toString()
-                states =
-                    Gson().fromJson(languagedStates, Array<StateResponse>::class.java).asList()
-            } catch (e: Exception) {
-                Log.e("LandingActivity", e.message ?: "")
-            }
-
-            STATES = states
         }
     }
     //endregion
