@@ -10,8 +10,6 @@ import es.upsa.mimo.gamercollection.data.di.IoDispatcher
 import es.upsa.mimo.gamercollection.data.di.MainDispatcher
 import es.upsa.mimo.gamercollection.data.local.daos.GameDao
 import es.upsa.mimo.gamercollection.data.local.model.GameWithSaga
-import es.upsa.mimo.gamercollection.data.remote.ApiManager
-import es.upsa.mimo.gamercollection.data.remote.RequestResult
 import es.upsa.mimo.gamercollection.data.remote.interfaces.RawgGameApiService
 import es.upsa.mimo.gamercollection.data.remote.model.BaseResponse
 import es.upsa.mimo.gamercollection.data.remote.model.ErrorResponse
@@ -303,17 +301,26 @@ class GameRepositoryImpl @Inject constructor(
             }
 
             try {
-                when (val response = ApiManager.validateResponse(apiRawg.getGames(params))) {
-                    is RequestResult.JsonSuccess -> {
-                        val games = mapRawgGames(response.body.results).map { it.toDomain() }
-                        success(games, response.body.count, response.body.next != null)
-                    }
-
-                    is RequestResult.Failure -> failure(response.error.toDomain())
-                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server).toDomain())
+                val response = apiRawg.getGames(params)
+                val body = response.body()
+                if (response.isSuccessful && body != null) {
+                    val games = mapRawgGames(body.results).map { it.toDomain() }
+                    success(games, body.count, body.next != null)
+                } else {
+                    failure(
+                        ErrorResponse(
+                            error = Constants.EMPTY_VALUE,
+                            errorKey = R.string.error_server,
+                        ).toDomain()
+                    )
                 }
-            } catch (e: Exception) {
-                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection).toDomain())
+            } catch (_: Exception) {
+                failure(
+                    ErrorResponse(
+                        error = Constants.EMPTY_VALUE,
+                        errorKey = R.string.error_server_connection,
+                    ).toDomain()
+                )
             }
         }
     }
@@ -329,13 +336,25 @@ class GameRepositoryImpl @Inject constructor(
             params[KEY_PARAM] = BuildConfig.RAWG_API_KEY
 
             try {
-                when (val response = ApiManager.validateResponse(apiRawg.getGame(gameId, params))) {
-                    is RequestResult.JsonSuccess -> success(GameResponse(response.body).toDomain())
-                    is RequestResult.Failure -> failure(response.error.toDomain())
-                    else -> failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server).toDomain())
+                val response = apiRawg.getGame(gameId, params)
+                val body = response.body()
+                if (response.isSuccessful && body != null) {
+                    success(GameResponse(body).toDomain())
+                } else {
+                    failure(
+                        ErrorResponse(
+                            error = Constants.EMPTY_VALUE,
+                            errorKey = R.string.error_server,
+                        ).toDomain()
+                    )
                 }
-            } catch (e: Exception) {
-                failure(ErrorResponse(Constants.EMPTY_VALUE, R.string.error_server_connection).toDomain())
+            } catch (_: Exception) {
+                failure(
+                    ErrorResponse(
+                        error = Constants.EMPTY_VALUE,
+                        errorKey = R.string.error_server_connection,
+                    ).toDomain()
+                )
             }
         }
     }
