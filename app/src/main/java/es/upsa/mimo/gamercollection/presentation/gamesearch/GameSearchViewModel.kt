@@ -3,12 +3,14 @@ package es.upsa.mimo.gamercollection.presentation.gamesearch
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import es.upsa.mimo.gamercollection.domain.GameRepository
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Game
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,21 +46,23 @@ class GameSearchViewModel @Inject constructor(
 
     //region Public methods
     fun loadGames() {
+        viewModelScope.launch {
 
-        _gamesLoading.value = true
-        gameRepository.getRawgGames(page, query, { newGames, gamesCount, next ->
+            _gamesLoading.value = true
+            gameRepository.getRawgGames(page, query, { newGames, gamesCount, next ->
 
-            _gamesLoading.value = false
-            addGames(newGames, next)
-            if (page == 1) {
+                _gamesLoading.value = false
+                addGames(newGames, next)
+                if (page == 1) {
 
-                _scrollPosition.value = ScrollPosition.TOP
-                _gamesCount.value = gamesCount
-            }
-            page += 1
-        }, {
-            _gamesError.value = it
-        })
+                    _scrollPosition.value = ScrollPosition.TOP
+                    _gamesCount.value = gamesCount
+                }
+                page += 1
+            }, {
+                _gamesError.value = it
+            })
+        }
     }
 
     fun resetPage() {

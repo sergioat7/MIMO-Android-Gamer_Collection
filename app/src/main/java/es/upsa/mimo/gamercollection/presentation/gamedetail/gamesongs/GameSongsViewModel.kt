@@ -36,15 +36,12 @@ class GameSongsViewModel constructor(
 
             _gameSongsLoading.value = true
             viewModelScope.launch {
-                songRepository.createSong(game.id, song, { newSong ->
 
-                    val updatedGame = game.copy(songs = game.songs + listOf(newSong))
-                    gameRepository.updateGameDatabase(updatedGame)
-                    setGame(updatedGame)
-                    _gameSongsLoading.value = false
-                }, {
-                    _gameSongsError.value = it
-                })
+                val newSong = songRepository.createSong(game.id, song)
+                val updatedGame = game.copy(songs = game.songs + listOf(newSong))
+                gameRepository.updateGameDatabase(updatedGame)
+                setGame(updatedGame)
+                _gameSongsLoading.value = false
             }
         }
     }
@@ -55,15 +52,12 @@ class GameSongsViewModel constructor(
 
             _gameSongsLoading.value = true
             viewModelScope.launch {
-                songRepository.deleteSong(game.id, songId, {
 
-                    val updatedGame = game.copy(songs = game.songs.filter { it.id != songId })
-                    gameRepository.updateGameDatabase(updatedGame)
-                    setGame(updatedGame)
-                    _gameSongsLoading.value = false
-                }, {
-                    _gameSongsError.value = it
-                })
+                songRepository.deleteSong(game.id, songId)
+                val updatedGame = game.copy(songs = game.songs.filter { it.id != songId })
+                gameRepository.updateGameDatabase(updatedGame)
+                setGame(updatedGame)
+                _gameSongsLoading.value = false
             }
         }
     }

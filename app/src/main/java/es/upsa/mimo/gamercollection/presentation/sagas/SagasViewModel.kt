@@ -3,12 +3,14 @@ package es.upsa.mimo.gamercollection.presentation.sagas
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.domain.SagaRepository
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Saga
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,16 +46,18 @@ class SagasViewModel @Inject constructor(
     }
 
     fun fetchSagas() {
+        viewModelScope.launch {
 
-        val sagas = sagaRepository.getSagasDatabase().sortedBy { it.name }
-        _originalSagas.value = sagas
-        _sagas.value = sagas
-        if (!query.isNullOrBlank()) {
-            _sagas.value = sagas.filter { saga ->
-                saga.name?.contains(query ?: Constants.EMPTY_VALUE, true) ?: false
-            }
-        } else {
+            val sagas = sagaRepository.getSagasDatabase().sortedBy { it.name }
+            _originalSagas.value = sagas
             _sagas.value = sagas
+            if (!query.isNullOrBlank()) {
+                _sagas.value = sagas.filter { saga ->
+                    saga.name?.contains(query ?: Constants.EMPTY_VALUE, true) ?: false
+                }
+            } else {
+                _sagas.value = sagas
+            }
         }
     }
 

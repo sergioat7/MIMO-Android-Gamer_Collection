@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
@@ -19,9 +20,12 @@ import es.upsa.mimo.gamercollection.domain.toDomain
 import es.upsa.mimo.gamercollection.domain.toRemoteData
 import es.upsa.mimo.gamercollection.data.local.model.AuthData
 import es.upsa.mimo.gamercollection.data.local.model.UserData
+import es.upsa.mimo.gamercollection.data.remote.model.BaseResponse
 import es.upsa.mimo.gamercollection.data.remote.model.GameResponse
 import es.upsa.mimo.gamercollection.data.remote.model.SagaResponse
 import es.upsa.mimo.gamercollection.utils.Constants
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -156,36 +160,41 @@ class SettingsViewModel @Inject constructor(
         listType = object : TypeToken<List<SagaResponse?>?>() {}.type
         val sagas = gson.fromJson<List<SagaResponse?>>(jsonSagas, listType).mapNotNull { it }
 
-        for (game in games) {
-            gameRepository.insertGameDatabase(game.toDomain())
-            for (song in game.songs) {
-                songRepository.insertSongDatabase(song.toDomain())
+        viewModelScope.launch {
+            for (game in games) {
+                gameRepository.insertGameDatabase(game.toDomain())
+                for (song in game.songs) {
+                    songRepository.insertSongDatabase(song.toDomain())
+                }
             }
-        }
-        for (saga in sagas) {
-            sagaRepository.insertSagaDatabase(saga.toDomain())
+            for (saga in sagas) {
+                sagaRepository.insertSagaDatabase(saga.toDomain())
+            }
         }
     }
 
     fun getDataToExport(): String? {
         return try {
 
-            val games = gameRepository.getGamesDatabase().map { it.toRemoteData() }.also {
-                it.forEach { game ->
-                    game.saga = game.saga?.copy(games = emptyList())
-                }
-            }
-            val sagas = sagaRepository.getSagasDatabase().map { it.toRemoteData() }.also {
-                it.forEach { saga ->
-                    saga.games.forEach { game ->
+            var data: Map<String, List<BaseResponse<Int>>> = mapOf()
+            runBlocking {
+                val games = gameRepository.getGamesDatabase().map { it.toRemoteData() }.also {
+                    it.forEach { game ->
                         game.saga = game.saga?.copy(games = emptyList())
                     }
                 }
+                val sagas = sagaRepository.getSagasDatabase().map { it.toRemoteData() }.also {
+                    it.forEach { saga ->
+                        saga.games.forEach { game ->
+                            game.saga = game.saga?.copy(games = emptyList())
+                        }
+                    }
+                }
+                data = mapOf(
+                    "games" to games,
+                    "sagas" to sagas
+                )
             }
-            val data = mapOf(
-                "games" to games,
-                "sagas" to sagas
-            )
             val gson = GsonBuilder()
                 .setDateFormat("MMM dd, yyyy HH:mm:ss")
                 .create()
@@ -198,12 +207,14 @@ class SettingsViewModel @Inject constructor(
 
     //region Private methods
     private fun resetDatabase() {
+        viewModelScope.launch {
 
-        gameRepository.resetTable()
-        sagaRepository.resetTable()
+            gameRepository.resetTable()
+            sagaRepository.resetTable()
 
-        _settingsLoading.value = false
-        _settingsError.value = null
+            _settingsLoading.value = false
+            _settingsError.value = null
+        }
     }
     //endregion
 }

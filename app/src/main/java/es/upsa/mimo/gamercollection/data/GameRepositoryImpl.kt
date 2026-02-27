@@ -6,10 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import es.upsa.mimo.gamercollection.BuildConfig
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.data.di.IoDispatcher
-import es.upsa.mimo.gamercollection.data.di.MainDispatcher
 import es.upsa.mimo.gamercollection.data.local.daos.GameDao
-import es.upsa.mimo.gamercollection.data.local.model.GameWithSaga
 import es.upsa.mimo.gamercollection.data.remote.interfaces.RawgGameApiService
 import es.upsa.mimo.gamercollection.data.remote.model.BaseResponse
 import es.upsa.mimo.gamercollection.data.remote.model.ErrorResponse
@@ -31,20 +28,11 @@ import es.upsa.mimo.gamercollection.domain.model.Saga
 import es.upsa.mimo.gamercollection.domain.toDomain
 import es.upsa.mimo.gamercollection.domain.toLocalData
 import es.upsa.mimo.gamercollection.utils.Constants
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import java.util.HashMap
 import javax.inject.Inject
 
 class GameRepositoryImpl @Inject constructor(
     private val apiRawg: RawgGameApiService,
     private val gameDao: GameDao,
-    @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val remoteConfig: FirebaseRemoteConfig,
 ) : GameRepository {
 
@@ -58,33 +46,23 @@ class GameRepositoryImpl @Inject constructor(
     }
     //endregion
 
-    //region Private properties
-    private val externalScope = CoroutineScope(Job() + mainDispatcher)
-    private val databaseScope = CoroutineScope(Job() + ioDispatcher)
-    //endregion
-
     //region Public methods
-    override fun createGame(newGame: Game, success: () -> Unit, failure: (ErrorModel) -> Unit) {
+    override suspend fun createGame(newGame: Game) {
         val game = newGame.copy(id = getNextId())
-        insertGameDatabase(game)
-        success()
+        gameDao.insertGame(game.toLocalData())
     }
 
-    override fun setGame(
-        game: Game,
-        success: (Game) -> Unit,
-        failure: (ErrorModel) -> Unit
-    ) {
-        updateGameDatabase(game)
-        success(game)
+    override suspend fun setGame(game: Game): Game {
+        return game.also {
+            gameDao.updateGame(it.toLocalData())
+        }
     }
 
-    override fun deleteGame(game: Game, success: () -> Unit, failure: (ErrorModel) -> Unit) {
-        deleteGameDatabase(game)
-        success()
+    override suspend fun deleteGame(game: Game) {
+        gameDao.deleteGame(game.toLocalData())
     }
 
-    override fun getGamesDatabase(
+    override suspend fun getGamesDatabase(
         filters: FilterModel?,
         name: String?,
         sortKey: String?,
@@ -195,66 +173,38 @@ class GameRepositoryImpl @Inject constructor(
         queryString += "name ASC"
 
         val query = SimpleSQLiteQuery(queryString)
-
-        var games: List<GameWithSaga> = arrayListOf()
-        runBlocking {
-            val result = databaseScope.async {
-                gameDao.getGames(query)
-            }
-            games = result.await()
-        }
-        val result = ArrayList<Game>()
-        for (game in games) {
-            result.add(game.transform().toDomain())
-        }
-        return result
+        return gameDao.getGames(query).map { it.transform().toDomain() }
     }
 
-    override fun getGameDatabase(gameId: Int): Game? {
-
-        var game: GameWithSaga? = null
-        runBlocking {
-            val result = databaseScope.async {
-                gameDao
-                    .getGames(SimpleSQLiteQuery("SELECT * FROM Game WHERE id == '${gameId}'"))
-                    .firstOrNull()
-            }
-            game = result.await()
-        }
-        return game?.transform()?.toDomain()
+    override suspend fun getGameDatabase(gameId: Int): Game? {
+        return gameDao
+            .getGames(SimpleSQLiteQuery("SELECT * FROM Game WHERE id == '${gameId}'"))
+            .firstOrNull()
+            ?.transform()
+            ?.toDomain()
     }
 
-    override fun insertGameDatabase(game: Game) {
-
-        runBlocking {
-            val job = databaseScope.launch {
-                gameDao.insertGame(game.toLocalData())
-            }
-            job.join()
-        }
+    override suspend fun insertGameDatabase(game: Game) {
+        gameDao.insertGame(game.toLocalData())
     }
 
-    override fun updateGameDatabase(game: Game) {
-
-        runBlocking {
-            val job = databaseScope.launch {
-                gameDao.updateGame(game.toLocalData())
-            }
-            job.join()
-        }
+    override suspend fun updateGameDatabase(game: Game) {
+        gameDao.updateGame(game.toLocalData())
     }
 
-    override fun removeSagaFromGames(saga: Saga) {
+    override suspend fun removeSagaFromGames(saga: Saga) {
 
         val newSagaGames = saga.games
-        val allGames = getGamesDatabase()
-        val oldSagaGames = allGames.filter { it.saga?.id == saga.id }
+        val oldSagaGames = gameDao
+            .getGames(SimpleSQLiteQuery("SELECT * FROM Game"))
+            .filter { it.saga?.id == saga.id }
+            .map { it.transform() }
 
         for (oldSagaGame in oldSagaGames) {
             if (newSagaGames.firstOrNull { it.id == oldSagaGame.id } == null) {
 
                 val game = oldSagaGame.copy(saga = null)
-                updateGameDatabase(game)
+                gameDao.updateGame(game)
             }
         }
 
@@ -262,100 +212,94 @@ class GameRepositoryImpl @Inject constructor(
         for (newSagaGame in newSagaGames) {
 
             val game = newSagaGame.copy(saga = sagaVar)
-            updateGameDatabase(game)
+            gameDao.updateGame(game.toLocalData())
         }
     }
 
-    override fun updateSagaGames(saga: Saga) {
+    override suspend fun updateSagaGames(saga: Saga) {
 
         val sagaVar = saga.copy(games = emptyList())
         for (newGame in saga.games) {
 
             val game = newGame.copy(saga = sagaVar)
-            updateGameDatabase(game)
+            gameDao.updateGame(game.toLocalData())
         }
     }
 
-    override fun resetTable() {
+    override suspend fun resetTable() {
 
-        val games = getGamesDatabase()
+        val games = gameDao.getGames(SimpleSQLiteQuery("SELECT * FROM Game")).map { it.transform() }
         for (game in games) {
-            deleteGameDatabase(game)
+            gameDao.deleteGame(game)
         }
     }
 
-    override fun getRawgGames(
+    override suspend fun getRawgGames(
         page: Int,
         query: String?,
         success: (List<Game>, Int, Boolean) -> Unit,
         failure: (ErrorModel) -> Unit
     ) {
-        externalScope.launch {
+        val params: MutableMap<String, String> = HashMap()
+        params[KEY_PARAM] = BuildConfig.RAWG_API_KEY
+        params[PAGE_PARAM] = page.toString()
+        params[PAGE_SIZE_PARAM] = PAGE_SIZE.toString()
+        query?.let {
+            params[SEARCH_PARAM] = it
+        }
 
-            val params: MutableMap<String, String> = HashMap()
-            params[KEY_PARAM] = BuildConfig.RAWG_API_KEY
-            params[PAGE_PARAM] = page.toString()
-            params[PAGE_SIZE_PARAM] = PAGE_SIZE.toString()
-            query?.let {
-                params[SEARCH_PARAM] = it
-            }
-
-            try {
-                val response = apiRawg.getGames(params)
-                val body = response.body()
-                if (response.isSuccessful && body != null) {
-                    val games = mapRawgGames(body.results).map { it.toDomain() }
-                    success(games, body.count, body.next != null)
-                } else {
-                    failure(
-                        ErrorResponse(
-                            error = Constants.EMPTY_VALUE,
-                            errorKey = R.string.error_server,
-                        ).toDomain()
-                    )
-                }
-            } catch (_: Exception) {
+        try {
+            val response = apiRawg.getGames(params)
+            val body = response.body()
+            if (response.isSuccessful && body != null) {
+                val games = mapRawgGames(body.results).map { it.toDomain() }
+                success(games, body.count, body.next != null)
+            } else {
                 failure(
                     ErrorResponse(
                         error = Constants.EMPTY_VALUE,
-                        errorKey = R.string.error_server_connection,
+                        errorKey = R.string.error_server,
                     ).toDomain()
                 )
             }
+        } catch (_: Exception) {
+            failure(
+                ErrorResponse(
+                    error = Constants.EMPTY_VALUE,
+                    errorKey = R.string.error_server_connection,
+                ).toDomain()
+            )
         }
     }
 
-    override fun getRawgGame(
+    override suspend fun getRawgGame(
         gameId: Int,
         success: (Game) -> Unit,
         failure: (ErrorModel) -> Unit
     ) {
-        externalScope.launch {
+        val params: MutableMap<String, String> = HashMap()
+        params[KEY_PARAM] = BuildConfig.RAWG_API_KEY
 
-            val params: MutableMap<String, String> = HashMap()
-            params[KEY_PARAM] = BuildConfig.RAWG_API_KEY
-
-            try {
-                val response = apiRawg.getGame(gameId, params)
-                val body = response.body()
-                if (response.isSuccessful && body != null) {
-                    success(GameResponse(body).toDomain())
-                } else {
-                    failure(
-                        ErrorResponse(
-                            error = Constants.EMPTY_VALUE,
-                            errorKey = R.string.error_server,
-                        ).toDomain()
-                    )
-                }
-            } catch (_: Exception) {
+        try {
+            val response = apiRawg.getGame(gameId, params)
+            val body = response.body()
+            if (response.isSuccessful && body != null) {
+                success(GameResponse(body).toDomain())
+            } else {
                 failure(
                     ErrorResponse(
                         error = Constants.EMPTY_VALUE,
-                        errorKey = R.string.error_server_connection,
+                        errorKey = R.string.error_server,
                     ).toDomain()
                 )
             }
+        } catch (_: Exception) {
+            failure(
+                ErrorResponse(
+                    error = Constants.EMPTY_VALUE,
+                    errorKey = R.string.error_server_connection,
+                ).toDomain()
+            )
         }
     }
 
@@ -380,16 +324,6 @@ class GameRepositoryImpl @Inject constructor(
     //endregion
 
     //region Private methods
-    private fun deleteGameDatabase(game: Game) {
-
-        runBlocking {
-            val job = databaseScope.launch {
-                gameDao.deleteGame(game.toLocalData())
-            }
-            job.join()
-        }
-    }
-
     private fun mapRawgGames(rawgGames: List<RawgGameResponse>?): List<GameResponse> {
 
         val games = mutableListOf<GameResponse>()
@@ -401,11 +335,11 @@ class GameRepositoryImpl @Inject constructor(
         return games
     }
 
-    private fun getNextId(): Int {
+    private suspend fun getNextId(): Int {
 
-        val games = getGamesDatabase()
+        val games = gameDao.getGames(SimpleSQLiteQuery("SELECT * FROM Game"))
         return if (games.isNotEmpty()) {
-            games.maxOf { it.id } + 1
+            games.maxOf { it.game.id } + 1
         } else {
             0
         }

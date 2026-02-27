@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.domain.GameRepository
@@ -12,6 +13,7 @@ import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.domain.model.Saga
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,8 +32,7 @@ class SagaDetailViewModel @Inject constructor(
     //endregion
 
     //region Public properties
-    val games: List<Game>
-        get() = gameRepository.getGamesDatabase()
+    lateinit var games: List<Game>
     val sagaDetailLoading: LiveData<Boolean> = _sagaDetailLoading
     val sagaDetailSuccessMessage: LiveData<Int> = _sagaDetailSuccessMessage
     val sagaDetailError: LiveData<ErrorModel?> = _sagaDetailError
@@ -40,14 +41,18 @@ class SagaDetailViewModel @Inject constructor(
 
     //region Lifecycle methods
     init {
+        viewModelScope.launch {
 
-        if (sagaId >= 0) {
+            if (sagaId >= 0) {
 
-            _sagaDetailLoading.value = true
-            _saga.value = sagaRepository.getSagaDatabase(sagaId)
-            _sagaDetailLoading.value = false
-        } else {
-            _saga.value = null
+                _sagaDetailLoading.value = true
+                _saga.value = sagaRepository.getSagaDatabase(sagaId)
+                _sagaDetailLoading.value = false
+            } else {
+                _saga.value = null
+            }
+
+            games = gameRepository.getGamesDatabase()
         }
     }
     //endregion
@@ -76,53 +81,43 @@ class SagaDetailViewModel @Inject constructor(
     }
 
     fun deleteSaga() {
+        viewModelScope.launch {
 
-        _saga.value?.let { saga ->
+            _saga.value?.let { saga ->
 
-            _sagaDetailLoading.value = true
-            sagaRepository.deleteSaga(saga, {
-
+                _sagaDetailLoading.value = true
+                sagaRepository.deleteSaga(saga)
                 _sagaDetailLoading.value = false
                 _sagaDetailSuccessMessage.value = R.string.saga_removed
-            }, {
-                _sagaDetailError.value = it
-            })
-        } ?: run {
-            _sagaDetailError.value = null
+            } ?: run {
+                _sagaDetailError.value = null
+            }
         }
     }
     //endregion
 
     //region Private methods
     private fun createSaga(saga: Saga) {
+        viewModelScope.launch {
 
-        _sagaDetailLoading.value = true
-        sagaRepository.createSaga(saga, { newSagaCreated ->
-
-            newSagaCreated?.let {
-                gameRepository.updateSagaGames(it)
-            }
-
+            _sagaDetailLoading.value = true
+            val newSagaCreated = sagaRepository.createSaga(saga)
+            gameRepository.updateSagaGames(newSagaCreated)
             _sagaDetailLoading.value = false
             _sagaDetailSuccessMessage.value = R.string.saga_created
-        }, {
-            _sagaDetailError.value = it
-        })
+        }
     }
 
     private fun setSaga(saga: Saga) {
+        viewModelScope.launch {
 
-        _sagaDetailLoading.value = true
-        sagaRepository.setSaga(saga, {
-
+            _sagaDetailLoading.value = true
+            sagaRepository.setSaga(saga)
             gameRepository.removeSagaFromGames(saga)
             gameRepository.updateSagaGames(saga)
-
-            _saga.value = it
+            _saga.value = saga
             _sagaDetailLoading.value = false
-        }, {
-            _sagaDetailError.value = it
-        })
+        }
     }
     //endregion
 }

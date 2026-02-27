@@ -13,7 +13,7 @@ interface SongDao {
     suspend fun deleteSong(song: SongEntity)
 
     @Query("SELECT * FROM Song WHERE id == :songId")
-    suspend fun getSong(songId: Int): SongEntity
+    suspend fun getSong(songId: Int): SongEntity?
 
     @Query("SELECT * FROM Song")
     suspend fun getSongs(): List<SongEntity>

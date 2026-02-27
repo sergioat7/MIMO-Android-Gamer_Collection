@@ -8,6 +8,7 @@ import android.widget.NumberPicker
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
@@ -19,6 +20,7 @@ import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Game
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -70,26 +72,29 @@ class GamesViewModel @Inject constructor(
     }
 
     fun fetchGames() {
+        viewModelScope.launch {
 
-        val games = gameRepository.getGamesDatabase(
-            _filters.value,
-            query,
-            sortParam,
-            isSortOrderAscending
-        )
-        _originalGames.value = games
+            val games = gameRepository.getGamesDatabase(
+                _filters.value,
+                query,
+                sortParam,
+                isSortOrderAscending
+            )
+            _originalGames.value = games
 
-        if (!_state.value.isNullOrBlank()) {
-            _games.value = _originalGames.value?.filter { game ->
-                game.state == _state.value
-            } ?: listOf()
-        } else {
-            _games.value = games
+            if (!_state.value.isNullOrBlank()) {
+                _games.value = _originalGames.value?.filter { game ->
+                    game.state == _state.value
+                } ?: listOf()
+            } else {
+                _games.value = games
+            }
+
+            _gamesCount.value = games
+
+            _scrollPosition.value = ScrollPosition.TOP
         }
 
-        _gamesCount.value = games
-
-        _scrollPosition.value = ScrollPosition.TOP
     }
 
     fun sortGames(context: Context, resources: Resources) {
@@ -141,22 +146,19 @@ class GamesViewModel @Inject constructor(
     }
 
     fun deleteGame(position: Int) {
-        _games.value?.get(position)?.let { game ->
+        viewModelScope.launch {
 
-            _gamesLoading.value = true
-            gameRepository.deleteGame(game, {
+            _games.value?.get(position)?.let { game ->
 
+                _gamesLoading.value = true
+                gameRepository.deleteGame(game)
                 _games.value?.first { it.id == game.id }?.let { removed ->
                     _games.value = _games.value?.minus(removed)
                 }
                 _gameDeleted.value = position
                 _gameDeleted.value = null
                 _gamesLoading.value = false
-            }, {
-
-                _gamesLoading.value = false
-                _gameDeleted.value = null
-            })
+            }
         }
     }
 

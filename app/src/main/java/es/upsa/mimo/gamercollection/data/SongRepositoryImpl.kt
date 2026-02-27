@@ -1,104 +1,37 @@
 package es.upsa.mimo.gamercollection.data
 
-import es.upsa.mimo.gamercollection.data.di.IoDispatcher
 import es.upsa.mimo.gamercollection.data.local.daos.SongDao
-import es.upsa.mimo.gamercollection.data.local.model.SongEntity
 import es.upsa.mimo.gamercollection.domain.SongRepository
-import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Song
 import es.upsa.mimo.gamercollection.domain.toLocalData
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class SongRepositoryImpl @Inject constructor(
     private val songDao: SongDao,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : SongRepository {
 
-    //region Private properties
-    private val databaseScope = CoroutineScope(Job() + ioDispatcher)
-    //endregion
-
     //region Public methods
-    override suspend fun createSong(
-        gameId: Int,
-        newSong: Song,
-        success: (Song) -> Unit,
-        failure: (ErrorModel) -> Unit
-    ) {
-        val song = newSong.copy(id = getNextId())
-        insertSongDatabase(song)
-        success(song)
+    override suspend fun createSong(gameId: Int, newSong: Song): Song {
+        return newSong.copy(id = getNextId()).also {
+            songDao.insertSong(it.toLocalData())
+        }
     }
 
-    override suspend fun deleteSong(
-        gameId: Int,
-        songId: Int,
-        success: () -> Unit,
-        failure: (ErrorModel) -> Unit
-    ) {
-        getSongDatabase(songId)?.let {
-            deleteSongDatabase(it)
+    override suspend fun deleteSong(gameId: Int, songId: Int) {
+        songDao.getSong(songId)?.let {
+            songDao.deleteSong(it)
         }
-        success()
     }
 
-    override fun insertSongDatabase(song: Song) {
-
-        runBlocking {
-            val job = databaseScope.launch {
-                songDao.insertSong(song.toLocalData())
-            }
-            job.join()
-        }
+    override suspend fun insertSongDatabase(song: Song) {
+        songDao.insertSong(song.toLocalData())
     }
     //endregion
 
     //region Private methods
-    private fun getSongsDatabase(): List<SongEntity> {
+    private suspend fun getNextId(): Int {
 
-        var songs: List<SongEntity> = arrayListOf()
-        runBlocking {
-
-            val result = databaseScope.async {
-                songDao.getSongs()
-            }
-            songs = result.await()
-        }
-        return songs
-    }
-
-    private fun getSongDatabase(songId: Int): SongEntity? {
-
-        var song: SongEntity? = null
-        runBlocking {
-
-            val result = databaseScope.async {
-                songDao.getSong(songId)
-            }
-            song = result.await()
-        }
-        return song
-    }
-
-    private fun deleteSongDatabase(song: SongEntity) {
-
-        runBlocking {
-            val job = databaseScope.launch {
-                songDao.deleteSong(song)
-            }
-            job.join()
-        }
-    }
-
-    private fun getNextId(): Int {
-
-        val songs = getSongsDatabase()
+        val songs = songDao.getSongs()
         return if (songs.isNotEmpty()) {
             songs.maxOf { it.id } + 1
         } else {
