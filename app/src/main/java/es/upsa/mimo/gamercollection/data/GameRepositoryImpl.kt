@@ -1,9 +1,7 @@
 package es.upsa.mimo.gamercollection.data
 
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import es.upsa.mimo.gamercollection.BuildConfig
@@ -48,7 +46,8 @@ class GameRepositoryImpl @Inject constructor(
     private val apiRawg: RawgGameApiService,
     private val gameDao: GameDao,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val remoteConfig: FirebaseRemoteConfig,
 ) : GameRepository {
 
     //region Static properties
@@ -64,13 +63,6 @@ class GameRepositoryImpl @Inject constructor(
     //region Private properties
     private val externalScope = CoroutineScope(Job() + mainDispatcher)
     private val databaseScope = CoroutineScope(Job() + ioDispatcher)
-    private val remoteConfig = Firebase.remoteConfig.apply {
-        setConfigSettingsAsync(
-            remoteConfigSettings {
-                minimumFetchIntervalInSeconds = 3600
-            }
-        )
-    }
     //endregion
 
     //region Public methods
