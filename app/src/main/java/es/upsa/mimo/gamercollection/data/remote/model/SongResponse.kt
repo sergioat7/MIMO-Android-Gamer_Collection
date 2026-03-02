@@ -1,14 +1,18 @@
 package es.upsa.mimo.gamercollection.data.remote.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Required
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class SongResponse(
-    @SerializedName("id")
+    @SerialName("id")
+    @Required
     var id: Int,
-    @SerializedName("name")
-    val name: String?,
-    @SerializedName("singer")
-    val singer: String?,
-    @SerializedName("url")
-    val url: String?,
+    @SerialName("name")
+    val name: String? = null,
+    @SerialName("singer")
+    val singer: String? = null,
+    @SerialName("url")
+    val url: String? = null,
 )

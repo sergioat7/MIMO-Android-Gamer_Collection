@@ -135,7 +135,7 @@ fun Game.toRemoteData(): GameResponse = GameResponse(
     loanedTo = loanedTo,
     observations = observations,
     saga = saga?.toRemoteData(),
-    songs = songs.map { it.toRemoteData() }.toMutableList(),
+    songs = songs.map { it.toRemoteData() },
 )
 
 fun Saga.toLocalData(): SagaEntity = SagaEntity(
