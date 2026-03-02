@@ -11,8 +11,8 @@ import es.upsa.mimo.gamercollection.data.remote.model.FORMATS
 import es.upsa.mimo.gamercollection.data.remote.model.GENRES
 import es.upsa.mimo.gamercollection.data.remote.model.PLATFORMS
 import es.upsa.mimo.gamercollection.data.remote.model.STATES
-import es.upsa.mimo.gamercollection.presentation.adapters.MenuAdapter
 import es.upsa.mimo.gamercollection.databinding.CustomDropdownTextInputLayoutBinding
+import es.upsa.mimo.gamercollection.presentation.adapters.MenuAdapter
 import es.upsa.mimo.gamercollection.utils.CustomDropdownType
 
 fun CustomDropdownTextInputLayoutBinding.setHintStyle(id: Int) {
@@ -21,30 +21,53 @@ fun CustomDropdownTextInputLayoutBinding.setHintStyle(id: Int) {
     }
 }
 
-fun CustomDropdownTextInputLayoutBinding.getPosition(): Int {
-    return (materialAutoCompleteTextView.adapter as MenuAdapter).values.indexOf(
-        materialAutoCompleteTextView.text.toString()
+fun CustomDropdownTextInputLayoutBinding.getPosition(): Int =
+    (materialAutoCompleteTextView.adapter as MenuAdapter).values.indexOf(
+        materialAutoCompleteTextView.text.toString(),
     )
-}
 
-fun CustomDropdownTextInputLayoutBinding.getValue(): String {
-    return materialAutoCompleteTextView.text.toString().trimStart().trimEnd()
-}
+fun CustomDropdownTextInputLayoutBinding.getValue(): String = materialAutoCompleteTextView.text
+    .toString()
+    .trimStart()
+    .trimEnd()
 
 fun CustomDropdownTextInputLayoutBinding.setValue(currentKey: String?, type: CustomDropdownType) {
-
     val values = when (type) {
-        CustomDropdownType.FORMAT -> FORMATS.map { it.name }
-        CustomDropdownType.GENRE -> GENRES.map { it.name }
-        CustomDropdownType.PEGI -> root.context.resources.getStringArray(R.array.pegis).toList()
-        CustomDropdownType.PLATFORM -> PLATFORMS.map { it.name }
-        CustomDropdownType.STATE -> STATES.map { it.name }
-        CustomDropdownType.SORT_PARAM -> root.context.resources.getStringArray(R.array.sort_param_values)
-            .toList()
-        CustomDropdownType.SORT_ORDER -> root.context.resources.getStringArray(R.array.sort_order_values)
-            .toList()
-        CustomDropdownType.APP_THEME -> root.context.resources.getStringArray(R.array.app_theme_values)
-            .toList()
+        CustomDropdownType.FORMAT -> {
+            FORMATS.map { it.name }
+        }
+        CustomDropdownType.GENRE -> {
+            GENRES.map { it.name }
+        }
+        CustomDropdownType.PEGI -> {
+            root.context.resources
+                .getStringArray(R.array.pegis)
+                .toList()
+        }
+        CustomDropdownType.PLATFORM -> {
+            PLATFORMS.map { it.name }
+        }
+        CustomDropdownType.STATE -> {
+            STATES.map { it.name }
+        }
+        CustomDropdownType.SORT_PARAM -> {
+            root.context.resources
+                .getStringArray(
+                    R.array.sort_param_values,
+                ).toList()
+        }
+        CustomDropdownType.SORT_ORDER -> {
+            root.context.resources
+                .getStringArray(
+                    R.array.sort_order_values,
+                ).toList()
+        }
+        CustomDropdownType.APP_THEME -> {
+            root.context.resources
+                .getStringArray(
+                    R.array.app_theme_values,
+                ).toList()
+        }
     }
 
     if (materialAutoCompleteTextView.adapter == null) {
@@ -53,17 +76,41 @@ fun CustomDropdownTextInputLayoutBinding.setValue(currentKey: String?, type: Cus
 
     currentKey?.let { key ->
         val keys = when (type) {
-            CustomDropdownType.FORMAT -> FORMATS.map { it.id }
-            CustomDropdownType.GENRE -> GENRES.map { it.id }
-            CustomDropdownType.PEGI -> root.context.resources.getStringArray(R.array.pegis).toList()
-            CustomDropdownType.PLATFORM -> PLATFORMS.map { it.id }
-            CustomDropdownType.STATE -> STATES.map { it.id }
-            CustomDropdownType.SORT_PARAM -> root.context.resources.getStringArray(R.array.sort_param_keys)
-                .toList()
-            CustomDropdownType.SORT_ORDER -> root.context.resources.getStringArray(R.array.sort_order_keys)
-                .toList()
-            CustomDropdownType.APP_THEME -> root.context.resources.getStringArray(R.array.app_theme_values)
-                .toList()
+            CustomDropdownType.FORMAT -> {
+                FORMATS.map { it.id }
+            }
+            CustomDropdownType.GENRE -> {
+                GENRES.map { it.id }
+            }
+            CustomDropdownType.PEGI -> {
+                root.context.resources
+                    .getStringArray(R.array.pegis)
+                    .toList()
+            }
+            CustomDropdownType.PLATFORM -> {
+                PLATFORMS.map { it.id }
+            }
+            CustomDropdownType.STATE -> {
+                STATES.map { it.id }
+            }
+            CustomDropdownType.SORT_PARAM -> {
+                root.context.resources
+                    .getStringArray(
+                        R.array.sort_param_keys,
+                    ).toList()
+            }
+            CustomDropdownType.SORT_ORDER -> {
+                root.context.resources
+                    .getStringArray(
+                        R.array.sort_order_keys,
+                    ).toList()
+            }
+            CustomDropdownType.APP_THEME -> {
+                root.context.resources
+                    .getStringArray(
+                        R.array.app_theme_values,
+                    ).toList()
+            }
         }
         values.getOrNull(keys.indexOf(key))?.let { value ->
             materialAutoCompleteTextView.setText(value, false)

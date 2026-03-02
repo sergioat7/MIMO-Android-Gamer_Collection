@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.domain.model.BaseModel
 import es.upsa.mimo.gamercollection.databinding.ItemGameBinding
 import es.upsa.mimo.gamercollection.databinding.ItemSagaBinding
+import es.upsa.mimo.gamercollection.domain.model.BaseModel
 import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.domain.model.Saga
 import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
@@ -17,69 +17,61 @@ import es.upsa.mimo.gamercollection.presentation.games.GamesViewHolder
 class SagasAdapter(
     private var items: MutableList<BaseModel<Int>>,
     private var expandedIds: MutableList<Int>,
-    private var onItemClickListener: OnItemClickListener
+    private var onItemClickListener: OnItemClickListener,
 ) : RecyclerView.Adapter<ViewHolder?>() {
 
     private val POINT_UP = 0f
     private val POINT_DOWN = -180f
 
     //region Lifecycle methods
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
-        return when (viewType) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        when (viewType) {
             R.layout.item_saga -> SagasViewHolder(
                 ItemSagaBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
-                    false
-                )
+                    false,
+                ),
             )
             R.layout.item_game -> GamesViewHolder(
                 ItemGameBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
-                    false
-                )
+                    false,
+                ),
             )
             else -> throw Throwable("Unsupported type")
         }
+
+    override fun getItemViewType(position: Int): Int = when (items[position]) {
+        is Saga -> R.layout.item_saga
+        is Game -> R.layout.item_game
+        else -> throw Throwable("Unsupported type")
     }
 
-    override fun getItemViewType(position: Int): Int {
-
-        return when (items[position]) {
-            is Saga -> R.layout.item_saga
-            is Game -> R.layout.item_game
-            else -> throw Throwable("Unsupported type")
-        }
-    }
-
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         if (holder is SagasViewHolder) {
-
             val saga = items[position] as Saga
             holder.bind(saga, onItemClickListener)
 
             val rotation =
-                if (expandedIds.contains(saga.id)) POINT_DOWN
-                else POINT_UP
+                if (expandedIds.contains(saga.id)) {
+                    POINT_DOWN
+                } else {
+                    POINT_UP
+                }
             holder.rotateArrow(rotation)
 
             holder.binding.imageViewArrow.setOnClickListener {
                 if (expandedIds.contains(saga.id)) {
-
                     val currentPosition = holder.layoutPosition
                     holder.rotateArrow(POINT_UP)
                     expandedIds.remove(saga.id)
                     items.removeAll(saga.games)
                     notifyItemRangeRemoved(currentPosition + 1, saga.games.size)
                 } else {
-
                     val currentPosition = holder.layoutPosition
                     holder.rotateArrow(POINT_DOWN)
                     expandedIds.add(saga.id)
@@ -91,9 +83,7 @@ class SagasAdapter(
                     notifyItemRangeInserted(currentPosition + 1, saga.games.size)
                 }
             }
-
         } else if (holder is GamesViewHolder) {
-
             val game = items[position] as Game
             holder.bind(game, null, onItemClickListener)
 
@@ -110,9 +100,7 @@ class SagasAdapter(
         this.items = newItems
     }
 
-    fun getExpandedIds(): MutableList<Int> {
-        return this.expandedIds
-    }
+    fun getExpandedIds(): MutableList<Int> = this.expandedIds
 
     fun setExpandedIds(newExpandedIds: MutableList<Int>) {
         this.expandedIds = newExpandedIds
@@ -120,7 +108,6 @@ class SagasAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun resetList() {
-
         this.items = mutableListOf()
         notifyDataSetChanged()
     }

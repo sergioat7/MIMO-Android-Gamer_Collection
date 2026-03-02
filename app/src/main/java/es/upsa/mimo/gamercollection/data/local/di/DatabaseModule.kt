@@ -32,17 +32,15 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideGamerCollectionDatabase(@ApplicationContext context: Context): GamerCollectionDatabase {
-
-        return Room
-            .databaseBuilder(
-                context.applicationContext,
-                GamerCollectionDatabase::class.java,
-                DATABASE_NAME
-            )
-            .addMigrations(MIGRATION_1_2)
-            .build()
-    }
+    fun provideGamerCollectionDatabase(
+        @ApplicationContext context: Context,
+    ): GamerCollectionDatabase = Room
+        .databaseBuilder(
+            context.applicationContext,
+            GamerCollectionDatabase::class.java,
+            DATABASE_NAME,
+        ).addMigrations(MIGRATION_1_2)
+        .build()
 
     @Singleton
     @Provides

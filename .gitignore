@@ -1,4 +1,11 @@
-GamerCollection/.idea/
-GamerCollection/app/schemas/
-.gradle/
 .idea/
+app/schemas/
+.gradle/
+build
+*.iml
+/local.properties
+.DS_Store
+/captures
+.externalNativeBuild
+.cxx
+/.kotlin

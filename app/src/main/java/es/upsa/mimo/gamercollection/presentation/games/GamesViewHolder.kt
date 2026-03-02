@@ -5,46 +5,46 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.data.remote.model.PLATFORMS
-import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
 import es.upsa.mimo.gamercollection.databinding.ItemGameBinding
 import es.upsa.mimo.gamercollection.domain.model.Game
+import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
 import es.upsa.mimo.gamercollection.utils.State
 
 class GamesViewHolder(
-    val binding: ItemGameBinding
+    val binding: ItemGameBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     //region Public methods
     fun bind(game: Game, sagaId: Int?, onItemClickListener: OnItemClickListener) {
-
         val color = game.state?.let {
             when (it) {
-                State.PENDING_STATE ->
+                State.PENDING_STATE -> {
                     ContextCompat.getColor(
                         binding.root.context,
-                        R.color.colorPending
+                        R.color.colorPending,
                     )
-
-                State.IN_PROGRESS_STATE ->
+                }
+                State.IN_PROGRESS_STATE -> {
                     ContextCompat.getColor(
                         binding.root.context,
-                        R.color.colorInProgress
+                        R.color.colorInProgress,
                     )
-
-                State.FINISHED_STATE ->
+                }
+                State.FINISHED_STATE -> {
                     ContextCompat.getColor(
                         binding.root.context,
-                        R.color.colorFinished
+                        R.color.colorFinished,
                     )
-
-                else -> Color.TRANSPARENT
+                }
+                else -> {
+                    Color.TRANSPARENT
+                }
             }
         } ?: run {
             Color.TRANSPARENT
         }
 
         with(binding) {
-
             viewState.setBackgroundColor(color)
             platform = PLATFORMS.firstOrNull { it.id == game.platform }
             textViewRating.text = game.score.toInt().toString()

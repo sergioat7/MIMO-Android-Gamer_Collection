@@ -11,11 +11,10 @@ class SongRepositoryImpl @Inject constructor(
 ) : SongRepository {
 
     //region Public methods
-    override suspend fun createSong(gameId: Int, newSong: Song): Song {
-        return newSong.copy(id = getNextId()).also {
+    override suspend fun createSong(gameId: Int, newSong: Song): Song =
+        newSong.copy(id = getNextId()).also {
             songDao.insertSong(it.toLocalData())
         }
-    }
 
     override suspend fun deleteSong(gameId: Int, songId: Int) {
         songDao.getSong(songId)?.let {
@@ -30,7 +29,6 @@ class SongRepositoryImpl @Inject constructor(
 
     //region Private methods
     private suspend fun getNextId(): Int {
-
         val songs = songDao.getSongs()
         return if (songs.isNotEmpty()) {
             songs.maxOf { it.id } + 1

@@ -10,30 +10,30 @@ import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.domain.GameRepository
-import es.upsa.mimo.gamercollection.domain.SagaRepository
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
-import es.upsa.mimo.gamercollection.domain.SongRepository
-import es.upsa.mimo.gamercollection.domain.UserRepository
-import es.upsa.mimo.gamercollection.domain.model.ErrorModel
-import es.upsa.mimo.gamercollection.domain.toDomain
-import es.upsa.mimo.gamercollection.domain.toRemoteData
 import es.upsa.mimo.gamercollection.data.local.model.AuthData
 import es.upsa.mimo.gamercollection.data.local.model.UserData
 import es.upsa.mimo.gamercollection.data.remote.model.BaseResponse
 import es.upsa.mimo.gamercollection.data.remote.model.GameResponse
 import es.upsa.mimo.gamercollection.data.remote.model.SagaResponse
+import es.upsa.mimo.gamercollection.domain.GameRepository
+import es.upsa.mimo.gamercollection.domain.SagaRepository
+import es.upsa.mimo.gamercollection.domain.SongRepository
+import es.upsa.mimo.gamercollection.domain.UserRepository
+import es.upsa.mimo.gamercollection.domain.model.ErrorModel
+import es.upsa.mimo.gamercollection.domain.toDomain
+import es.upsa.mimo.gamercollection.domain.toRemoteData
 import es.upsa.mimo.gamercollection.utils.Constants
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val gameRepository: GameRepository,
     private val sagaRepository: SagaRepository,
     private val songRepository: SongRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     //region Private properties
@@ -66,9 +66,8 @@ class SettingsViewModel @Inject constructor(
         newSortParam: String,
         newIsSortOrderAscending: Boolean,
         newSwipeRefresh: Boolean,
-        themeMode: Int
+        themeMode: Int,
     ) {
-
         val changePassword = newPassword != userData.password
         val changeLanguage = newLanguage != language
         val changeSortParam = newSortParam != sortParam
@@ -81,7 +80,6 @@ class SettingsViewModel @Inject constructor(
             SharedPreferencesHelper.storePassword(newPassword)
             val userData = SharedPreferencesHelper.userData
             userRepository.login(userData.username, userData.password, {
-
                 SharedPreferencesHelper.credentials = AuthData(it)
                 _settingsLoading.value = false
                 if (changeLanguage || changeSortParam || changeIsSortDescending) {
@@ -97,30 +95,28 @@ class SettingsViewModel @Inject constructor(
         }
 
         if (changeSortParam) {
-
             SharedPreferencesHelper.sortParam = newSortParam
             sortParam = newSortParam
         }
 
         if (changeIsSortDescending) {
-
             SharedPreferencesHelper.isSortOrderAscending = newIsSortOrderAscending
             isSortOrderAscending = newIsSortOrderAscending
         }
 
         if (changeSwipeRefresh) {
-
             SharedPreferencesHelper.swipeRefresh = newSwipeRefresh
             swipeRefresh = newSwipeRefresh
         }
 
         if (changeThemeMode) {
-
             SharedPreferencesHelper.themeMode = themeMode
             when (themeMode) {
                 1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                else -> AppCompatDelegate.setDefaultNightMode(
+                    AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
+                )
             }
         }
 
@@ -130,14 +126,12 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun deleteUser() {
-
         SharedPreferencesHelper.removeUserData()
         SharedPreferencesHelper.removeCredentials()
         resetDatabase()
     }
 
     fun profileDataChanged(password: String) {
-
         var passwordError: Int? = null
         if (!Constants.isPasswordValid(password)) {
             passwordError = R.string.invalid_password
@@ -146,7 +140,6 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun importData(jsonData: String) {
-
         val json = JsonParser.parseString(jsonData)
         val jsonGames = json.asJsonObject["games"].toString()
         val jsonSagas = json.asJsonObject["sagas"].toString()
@@ -173,42 +166,38 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun getDataToExport(): String? {
-        return try {
-
-            var data: Map<String, List<BaseResponse<Int>>> = mapOf()
-            runBlocking {
-                val games = gameRepository.getGamesDatabase().map { it.toRemoteData() }.also {
-                    it.forEach { game ->
+    fun getDataToExport(): String? = try {
+        var data: Map<String, List<BaseResponse<Int>>> = mapOf()
+        runBlocking {
+            val games = gameRepository.getGamesDatabase().map { it.toRemoteData() }.also {
+                it.forEach { game ->
+                    game.saga = game.saga?.copy(games = emptyList())
+                }
+            }
+            val sagas = sagaRepository.getSagasDatabase().map { it.toRemoteData() }.also {
+                it.forEach { saga ->
+                    saga.games.forEach { game ->
                         game.saga = game.saga?.copy(games = emptyList())
                     }
                 }
-                val sagas = sagaRepository.getSagasDatabase().map { it.toRemoteData() }.also {
-                    it.forEach { saga ->
-                        saga.games.forEach { game ->
-                            game.saga = game.saga?.copy(games = emptyList())
-                        }
-                    }
-                }
-                data = mapOf(
-                    "games" to games,
-                    "sagas" to sagas
-                )
             }
-            val gson = GsonBuilder()
-                .setDateFormat("MMM dd, yyyy HH:mm:ss")
-                .create()
-            gson.toJson(data)
-        } catch (_: Exception) {
-            null
+            data = mapOf(
+                "games" to games,
+                "sagas" to sagas,
+            )
         }
+        val gson = GsonBuilder()
+            .setDateFormat("MMM dd, yyyy HH:mm:ss")
+            .create()
+        gson.toJson(data)
+    } catch (_: Exception) {
+        null
     }
     //endregion
 
     //region Private methods
     private fun resetDatabase() {
         viewModelScope.launch {
-
             gameRepository.resetTable()
             sagaRepository.resetTable()
 

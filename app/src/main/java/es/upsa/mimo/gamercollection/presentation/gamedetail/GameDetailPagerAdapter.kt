@@ -10,7 +10,7 @@ import es.upsa.mimo.gamercollection.presentation.gamedetail.gamesongs.GameSongsF
 class GameDetailPagerAdapter(
     activity: FragmentActivity,
     private val itemsCount: Int,
-    private val currentGame: Game?
+    private val currentGame: Game?,
 ) : FragmentStateAdapter(activity) {
 
     //region Private properties
@@ -20,12 +20,9 @@ class GameDetailPagerAdapter(
     //endregion
 
     //region Lifecycle methods
-    override fun getItemCount(): Int {
-        return itemsCount
-    }
+    override fun getItemCount(): Int = itemsCount
 
     override fun createFragment(position: Int): Fragment {
-
         val fragment = if (position == 0) {
             gameDataFragment = GameDataFragment(currentGame, enabled)
             gameDataFragment
@@ -43,16 +40,14 @@ class GameDetailPagerAdapter(
     }
 
     fun setEdition(editable: Boolean) {
-
         enabled = editable
         gameDataFragment?.setEdition(editable)
         gameSongsFragment?.setEdition(editable)
     }
 
     fun getGameData(): Game? {
-
         val game = gameDataFragment?.getGameData()?.copy(
-            songs = gameSongsFragment?.getSongs() ?: currentGame?.songs ?: emptyList()
+            songs = gameSongsFragment?.getSongs() ?: currentGame?.songs ?: emptyList(),
         )
         return game
     }

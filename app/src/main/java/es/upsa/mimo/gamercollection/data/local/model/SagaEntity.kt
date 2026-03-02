@@ -8,5 +8,5 @@ data class SagaEntity(
     @PrimaryKey
     override var id: Int,
     val name: String?,
-    val games: List<GameEntity>
+    val games: List<GameEntity>,
 ) : BaseEntity<Int>

@@ -18,6 +18,6 @@ interface RawgGameApiService {
     @GET("games/{gameId}")
     suspend fun getGame(
         @Path(value = "gameId") gameId: Int,
-        @QueryMap queryParams: Map<String, String>
+        @QueryMap queryParams: Map<String, String>,
     ): Response<RawgGameResponse>
 }

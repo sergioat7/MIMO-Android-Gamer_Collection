@@ -52,10 +52,8 @@ class GameRepositoryImpl @Inject constructor(
         gameDao.insertGame(game.toLocalData())
     }
 
-    override suspend fun setGame(game: Game): Game {
-        return game.also {
-            gameDao.updateGame(it.toLocalData())
-        }
+    override suspend fun setGame(game: Game): Game = game.also {
+        gameDao.updateGame(it.toLocalData())
     }
 
     override suspend fun deleteGame(game: Game) {
@@ -66,9 +64,8 @@ class GameRepositoryImpl @Inject constructor(
         filters: FilterModel?,
         name: String?,
         sortKey: String?,
-        ascending: Boolean
+        ascending: Boolean,
     ): List<Game> {
-
         var queryString = "SELECT * FROM Game"
         var queryConditions = Constants.EMPTY_VALUE
 
@@ -81,7 +78,7 @@ class GameRepositoryImpl @Inject constructor(
             if (platforms.isNotEmpty()) {
                 queryPlatforms += "("
                 for (platform in platforms) {
-                    queryPlatforms += "platform == '${platform}' OR "
+                    queryPlatforms += "platform == '$platform' OR "
                 }
                 queryPlatforms = queryPlatforms.dropLast(4) + ") AND "
             }
@@ -91,7 +88,7 @@ class GameRepositoryImpl @Inject constructor(
             if (genres.isNotEmpty()) {
                 queryGenres += "("
                 for (genre in genres) {
-                    queryGenres += "genre == '${genre}' OR "
+                    queryGenres += "genre == '$genre' OR "
                 }
                 queryGenres = queryGenres.dropLast(4) + ") AND "
             }
@@ -101,7 +98,7 @@ class GameRepositoryImpl @Inject constructor(
             if (formats.isNotEmpty()) {
                 queryFormats += "("
                 for (format in formats) {
-                    queryFormats += "format == '${format}' OR "
+                    queryFormats += "format == '$format' OR "
                 }
 
                 queryFormats = queryFormats.dropLast(4) + ") AND "
@@ -144,15 +141,33 @@ class GameRepositoryImpl @Inject constructor(
             }
 
             if (filtersVar.isLoaned != null) {
-                queryConditions += "${if (filtersVar.isLoaned) "loanedTo is not null" else "loanedTo is null"} AND "
+                queryConditions += "${
+                    if (filtersVar.isLoaned) {
+                        "loanedTo is not null"
+                    } else {
+                        "loanedTo is null"
+                    }
+                } AND "
             }
 
             if (filtersVar.hasSaga != null) {
-                queryConditions += "${if (filtersVar.hasSaga) "saga_id is not null" else "saga_id is null"} AND "
+                queryConditions += "${
+                    if (filtersVar.hasSaga) {
+                        "saga_id is not null"
+                    } else {
+                        "saga_id is null"
+                    }
+                } AND "
             }
 
             if (filtersVar.hasSongs != null) {
-                queryConditions += "${if (filtersVar.hasSongs) "songs != '[]'" else "songs == '[]'"} AND "
+                queryConditions += "${
+                    if (filtersVar.hasSongs) {
+                        "songs != '[]'"
+                    } else {
+                        "songs == '[]'"
+                    }
+                } AND "
             }
         }
 
@@ -176,13 +191,11 @@ class GameRepositoryImpl @Inject constructor(
         return gameDao.getGames(query).map { it.transform().toDomain() }
     }
 
-    override suspend fun getGameDatabase(gameId: Int): Game? {
-        return gameDao
-            .getGames(SimpleSQLiteQuery("SELECT * FROM Game WHERE id == '${gameId}'"))
-            .firstOrNull()
-            ?.transform()
-            ?.toDomain()
-    }
+    override suspend fun getGameDatabase(gameId: Int): Game? = gameDao
+        .getGames(SimpleSQLiteQuery("SELECT * FROM Game WHERE id == '$gameId'"))
+        .firstOrNull()
+        ?.transform()
+        ?.toDomain()
 
     override suspend fun insertGameDatabase(game: Game) {
         gameDao.insertGame(game.toLocalData())
@@ -193,7 +206,6 @@ class GameRepositoryImpl @Inject constructor(
     }
 
     override suspend fun removeSagaFromGames(saga: Saga) {
-
         val newSagaGames = saga.games
         val oldSagaGames = gameDao
             .getGames(SimpleSQLiteQuery("SELECT * FROM Game"))
@@ -202,7 +214,6 @@ class GameRepositoryImpl @Inject constructor(
 
         for (oldSagaGame in oldSagaGames) {
             if (newSagaGames.firstOrNull { it.id == oldSagaGame.id } == null) {
-
                 val game = oldSagaGame.copy(saga = null)
                 gameDao.updateGame(game)
             }
@@ -210,24 +221,20 @@ class GameRepositoryImpl @Inject constructor(
 
         val sagaVar = saga.copy(games = emptyList())
         for (newSagaGame in newSagaGames) {
-
             val game = newSagaGame.copy(saga = sagaVar)
             gameDao.updateGame(game.toLocalData())
         }
     }
 
     override suspend fun updateSagaGames(saga: Saga) {
-
         val sagaVar = saga.copy(games = emptyList())
         for (newGame in saga.games) {
-
             val game = newGame.copy(saga = sagaVar)
             gameDao.updateGame(game.toLocalData())
         }
     }
 
     override suspend fun resetTable() {
-
         val games = gameDao.getGames(SimpleSQLiteQuery("SELECT * FROM Game")).map { it.transform() }
         for (game in games) {
             gameDao.deleteGame(game)
@@ -238,7 +245,7 @@ class GameRepositoryImpl @Inject constructor(
         page: Int,
         query: String?,
         success: (List<Game>, Int, Boolean) -> Unit,
-        failure: (ErrorModel) -> Unit
+        failure: (ErrorModel) -> Unit,
     ) {
         val params: MutableMap<String, String> = HashMap()
         params[KEY_PARAM] = BuildConfig.RAWG_API_KEY
@@ -259,7 +266,7 @@ class GameRepositoryImpl @Inject constructor(
                     ErrorResponse(
                         error = Constants.EMPTY_VALUE,
                         errorKey = R.string.error_server,
-                    ).toDomain()
+                    ).toDomain(),
                 )
             }
         } catch (_: Exception) {
@@ -267,7 +274,7 @@ class GameRepositoryImpl @Inject constructor(
                 ErrorResponse(
                     error = Constants.EMPTY_VALUE,
                     errorKey = R.string.error_server_connection,
-                ).toDomain()
+                ).toDomain(),
             )
         }
     }
@@ -275,7 +282,7 @@ class GameRepositoryImpl @Inject constructor(
     override suspend fun getRawgGame(
         gameId: Int,
         success: (Game) -> Unit,
-        failure: (ErrorModel) -> Unit
+        failure: (ErrorModel) -> Unit,
     ) {
         val params: MutableMap<String, String> = HashMap()
         params[KEY_PARAM] = BuildConfig.RAWG_API_KEY
@@ -290,7 +297,7 @@ class GameRepositoryImpl @Inject constructor(
                     ErrorResponse(
                         error = Constants.EMPTY_VALUE,
                         errorKey = R.string.error_server,
-                    ).toDomain()
+                    ).toDomain(),
                 )
             }
         } catch (_: Exception) {
@@ -298,13 +305,12 @@ class GameRepositoryImpl @Inject constructor(
                 ErrorResponse(
                     error = Constants.EMPTY_VALUE,
                     errorKey = R.string.error_server_connection,
-                ).toDomain()
+                ).toDomain(),
             )
         }
     }
 
     override fun fetchRemoteConfigValues(language: String) {
-
         fetchRemoteConfigString("formats") {
             FORMATS = parseValues<FormatResponse>(it)[language] ?: emptyList()
         }
@@ -325,7 +331,6 @@ class GameRepositoryImpl @Inject constructor(
 
     //region Private methods
     private fun mapRawgGames(rawgGames: List<RawgGameResponse>?): List<GameResponse> {
-
         val games = mutableListOf<GameResponse>()
         rawgGames?.let {
             for (rawgGame in it) {
@@ -336,7 +341,6 @@ class GameRepositoryImpl @Inject constructor(
     }
 
     private suspend fun getNextId(): Int {
-
         val games = gameDao.getGames(SimpleSQLiteQuery("SELECT * FROM Game"))
         return if (games.isNotEmpty()) {
             games.maxOf { it.game.id } + 1

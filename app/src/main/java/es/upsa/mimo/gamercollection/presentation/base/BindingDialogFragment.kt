@@ -26,14 +26,15 @@ abstract class BindingDialogFragment<Binding : ViewDataBinding> : DialogFragment
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         val bindingType =
-            (this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments
+            (this.javaClass.genericSuperclass as ParameterizedType)
+                .actualTypeArguments
                 .firstOrNull {
                     (it as? Class<*>)?.let { clazz ->
                         ViewDataBinding::class.java.isAssignableFrom(
-                            clazz
+                            clazz,
                         )
                     } == true
                 }
@@ -42,7 +43,7 @@ abstract class BindingDialogFragment<Binding : ViewDataBinding> : DialogFragment
             "inflate",
             LayoutInflater::class.java,
             ViewGroup::class.java,
-            Boolean::class.javaPrimitiveType
+            Boolean::class.javaPrimitiveType,
         )
         @Suppress("UNCHECKED_CAST")
         binding = inflateMethod.invoke(null, inflater, container, false) as Binding

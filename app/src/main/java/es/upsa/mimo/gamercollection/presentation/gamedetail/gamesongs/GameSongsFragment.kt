@@ -6,21 +6,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
-import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.DialogNewSongBinding
 import es.upsa.mimo.gamercollection.databinding.FragmentGameSongsBinding
-import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.domain.GameRepository
 import es.upsa.mimo.gamercollection.domain.SongRepository
 import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.domain.model.Song
+import es.upsa.mimo.gamercollection.extensions.getValue
+import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
+import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class GameSongsFragment(
     private val game: Game?,
-    private var enabled: Boolean
+    private var enabled: Boolean,
 ) : BindingFragment<FragmentGameSongsBinding>(), OnItemClickListener {
 
     //region Public properties
@@ -64,9 +64,7 @@ class GameSongsFragment(
         binding.editable = editable
     }
 
-    fun getSongs(): List<Song> {
-        return viewModel.songs.value ?: ArrayList()
-    }
+    fun getSongs(): List<Song> = viewModel.songs.value ?: ArrayList()
     //endregion
 
     //region Protected methods
@@ -77,13 +75,12 @@ class GameSongsFragment(
         setupBindings()
 
         with(binding) {
-
             recyclerViewSongs.apply {
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = SongsAdapter(
                     listOf(),
                     enabled,
-                    this@GameSongsFragment
+                    this@GameSongsFragment,
                 )
             }
 
@@ -100,7 +97,6 @@ class GameSongsFragment(
 
     //region Private methods
     private fun setupBindings() {
-
         viewModel.gameSongsLoading.observe(viewLifecycleOwner) { isLoading ->
 
             if (isLoading) {
@@ -116,7 +112,6 @@ class GameSongsFragment(
     }
 
     private fun showNewSongPopup() {
-
         val dialogBinding = DialogNewSongBinding.inflate(layoutInflater)
 
         MaterialAlertDialogBuilder(requireContext())
@@ -133,16 +128,14 @@ class GameSongsFragment(
                         0,
                         name,
                         singer,
-                        url
+                        url,
                     )
                     viewModel.createSong(song)
                 }
                 dialog.dismiss()
-            }
-            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+            }.setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
-            }
-            .show()
+            }.show()
     }
     //endregion
 }

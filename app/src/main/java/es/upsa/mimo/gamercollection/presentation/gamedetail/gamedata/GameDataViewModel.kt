@@ -40,9 +40,8 @@ class GameDataViewModel(private val game: Game?) : ViewModel() {
         price: Double,
         videoUrl: String,
         loanedTo: String,
-        observations: String
+        observations: String,
     ): Game? {
-
         if (pegi == null &&
             distributor.isEmpty() &&
             developer.isEmpty() &&
@@ -83,7 +82,7 @@ class GameDataViewModel(private val game: Game?) : ViewModel() {
                 loanedTo,
                 observations,
                 game?.saga,
-                ArrayList()
+                ArrayList(),
             )
         }
     }

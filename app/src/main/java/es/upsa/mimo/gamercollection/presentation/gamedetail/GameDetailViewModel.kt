@@ -10,14 +10,14 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.domain.GameRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Game
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
 
 @HiltViewModel
 class GameDetailViewModel @Inject constructor(
     state: SavedStateHandle,
-    private val gameRepository: GameRepository
+    private val gameRepository: GameRepository,
 ) : ViewModel() {
 
     //region Private properties
@@ -60,14 +60,12 @@ class GameDetailViewModel @Inject constructor(
                 _game.value = null
             }
         }
-
     }
     //endregion
 
     //region Public methods
     fun createGame(game: Game) {
         viewModelScope.launch {
-
             _gameDetailLoading.value = true
             gameRepository.createGame(game)
             _gameDetailLoading.value = false
@@ -77,17 +75,14 @@ class GameDetailViewModel @Inject constructor(
 
     fun setGame(game: Game) {
         viewModelScope.launch {
-
             _gameDetailLoading.value = true
             _game.value = gameRepository.setGame(game)
             _gameDetailLoading.value = false
         }
-
     }
 
     fun deleteGame() {
         viewModelScope.launch {
-
             _game.value?.let { game ->
 
                 _gameDetailLoading.value = true

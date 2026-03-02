@@ -5,24 +5,24 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import es.upsa.mimo.gamercollection.domain.SagaRepository
-import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.domain.SagaRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Saga
-import kotlinx.coroutines.launch
+import es.upsa.mimo.gamercollection.utils.Constants
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SagasViewModel @Inject constructor(
-    private val sagaRepository: SagaRepository
+    private val sagaRepository: SagaRepository,
 ) : ViewModel() {
 
     //region Private properties
     private val _sagasLoading = MutableLiveData<Boolean>()
     private val _sagasError = MutableLiveData<ErrorModel>()
     private val _sagas = MutableLiveData<List<Saga>>()
-    private val _originalSagas = MutableLiveData<List<Saga>>()
+    private val originalSagas = MutableLiveData<List<Saga>>()
     private var query: String? = null
     //endregion
 
@@ -37,7 +37,6 @@ class SagasViewModel @Inject constructor(
 
     //region Public methods
     fun loadSagas() {
-
         _sagasLoading.value = true
         expandedIds = mutableListOf()
         query = null
@@ -47,9 +46,8 @@ class SagasViewModel @Inject constructor(
 
     fun fetchSagas() {
         viewModelScope.launch {
-
             val sagas = sagaRepository.getSagasDatabase().sortedBy { it.name }
-            _originalSagas.value = sagas
+            originalSagas.value = sagas
             _sagas.value = sagas
             if (!query.isNullOrBlank()) {
                 _sagas.value = sagas.filter { saga ->
@@ -62,10 +60,9 @@ class SagasViewModel @Inject constructor(
     }
 
     fun searchSagas(query: String) {
-
         expandedIds = mutableListOf()
         this.query = query
-        _sagas.value = _originalSagas.value?.filter { saga ->
+        _sagas.value = originalSagas.value?.filter { saga ->
             saga.name?.contains(query, true) ?: false
         } ?: listOf()
     }

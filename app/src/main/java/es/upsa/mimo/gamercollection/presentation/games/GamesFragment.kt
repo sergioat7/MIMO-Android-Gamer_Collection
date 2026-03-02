@@ -12,7 +12,10 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.os.Build
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.SearchView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -33,16 +36,25 @@ import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.data.remote.model.FORMATS
 import es.upsa.mimo.gamercollection.data.remote.model.GENRES
 import es.upsa.mimo.gamercollection.data.remote.model.PLATFORMS
-import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
-import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.DialogFragmentPopupFilterBinding
 import es.upsa.mimo.gamercollection.databinding.FragmentGamesBinding
-import es.upsa.mimo.gamercollection.domain.model.Game
-import es.upsa.mimo.gamercollection.extensions.*
-import es.upsa.mimo.gamercollection.presentation.gamedetail.GameDetailFragment
 import es.upsa.mimo.gamercollection.domain.model.FilterModel
-import es.upsa.mimo.gamercollection.utils.*
-import java.util.*
+import es.upsa.mimo.gamercollection.domain.model.Game
+import es.upsa.mimo.gamercollection.extensions.addChip
+import es.upsa.mimo.gamercollection.extensions.getValue
+import es.upsa.mimo.gamercollection.extensions.hideSoftKeyboard
+import es.upsa.mimo.gamercollection.extensions.showDatePicker
+import es.upsa.mimo.gamercollection.extensions.toDate
+import es.upsa.mimo.gamercollection.extensions.toString
+import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
+import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
+import es.upsa.mimo.gamercollection.presentation.gamedetail.GameDetailFragment
+import es.upsa.mimo.gamercollection.utils.Constants
+import es.upsa.mimo.gamercollection.utils.Notifications
+import es.upsa.mimo.gamercollection.utils.ScrollPosition
+import es.upsa.mimo.gamercollection.utils.State
+import es.upsa.mimo.gamercollection.utils.StatusBarStyle
+import java.util.Date
 import kotlin.math.max
 
 @AndroidEntryPoint
@@ -99,16 +111,12 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         when (item.itemId) {
             R.id.action_filter, R.id.action_filter_fill -> {
-
                 filter()
                 return true
             }
-
             R.id.action_sort -> {
-
                 viewModel.sortGames(requireContext(), resources)
                 return true
             }
@@ -119,7 +127,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
     //region Interface methods
     override fun onItemClick(id: Int) {
-
         val action = GamesFragmentDirections.actionGamesFragmentToGameDetailFragment(id)
         findNavController().navigate(action)
     }
@@ -133,7 +140,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
     //region Public methods
     fun buttonClicked(it: View) {
-
         val newState = when (it) {
             binding.buttonPending.root -> if (it.isSelected) null else State.PENDING_STATE
             binding.buttonInProgress.root -> if (it.isSelected) null else State.IN_PROGRESS_STATE
@@ -144,7 +150,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     }
 
     fun goToStartEndList(view: View) {
-
         when (view) {
             binding.floatingActionButtonStartList -> viewModel.setPosition(ScrollPosition.TOP)
             binding.floatingActionButtonEndList -> viewModel.setPosition(ScrollPosition.END)
@@ -157,7 +162,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         super.initializeUi()
 
         notificationPermissionLauncher = registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
+            ActivityResultContracts.RequestPermission(),
         ) { /*no-op*/ }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             notificationPermissionLauncher.launch(POST_NOTIFICATIONS)
@@ -166,7 +171,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         setupBindings()
 
         with(binding) {
-
             swipeRefreshLayout.apply {
                 isEnabled = this@GamesFragment.viewModel.swipeRefresh
                 setColorSchemeResources(R.color.colorPrimary)
@@ -180,7 +184,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             gamesAdapter = GamesAdapter(
                 this@GamesFragment.viewModel.games.value ?: listOf(),
                 null,
-                this@GamesFragment
+                this@GamesFragment,
             )
             recyclerViewGames.apply {
                 layoutManager = LinearLayoutManager(requireContext())
@@ -191,9 +195,17 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                         super.onScrollStateChanged(recyclerView, newState)
 
                         val position =
-                            if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                            if (!recyclerView.canScrollVertically(
+                                    -1,
+                                ) &&
+                                newState == RecyclerView.SCROLL_STATE_IDLE
+                            ) {
                                 ScrollPosition.TOP
-                            } else if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                            } else if (!recyclerView.canScrollVertically(
+                                    1,
+                                ) &&
+                                newState == RecyclerView.SCROLL_STATE_IDLE
+                            ) {
                                 ScrollPosition.END
                             } else {
                                 ScrollPosition.MIDDLE
@@ -213,7 +225,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
     //region Private methods
     private fun setupBindings() {
-
         viewModel.gamesLoading.observe(viewLifecycleOwner) { isLoading ->
 
             enableStateButtons(!isLoading)
@@ -229,18 +240,19 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         }
 
         viewModel.games.observe(viewLifecycleOwner) {
-
-            val today = Date().toString(
-                viewModel.dateFormatToShow,
-                viewModel.language
-            ).toDate(
-                viewModel.dateFormatToShow,
-                viewModel.language
-            )
+            val today = Date()
+                .toString(
+                    viewModel.dateFormatToShow,
+                    viewModel.language,
+                ).toDate(
+                    viewModel.dateFormatToShow,
+                    viewModel.language,
+                )
             val gamesToNotify = ArrayList<Game>()
             for (game in it) {
-                if (game.releaseDate == today)
+                if (game.releaseDate == today) {
                     gamesToNotify.add(game)
+                }
             }
 
             if (gamesToNotify.isNotEmpty() && hasNotificationPermission()) {
@@ -259,7 +271,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         }
 
         viewModel.state.observe(viewLifecycleOwner) {
-
             binding.apply {
                 buttonPending.root.isSelected = it == State.PENDING_STATE
                 buttonInProgress.root.isSelected = it == State.IN_PROGRESS_STATE
@@ -275,18 +286,17 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
         viewModel.scrollPosition.observe(viewLifecycleOwner) {
             when (it) {
-
                 ScrollPosition.TOP -> binding.recyclerViewGames.scrollToPosition(0)
-                ScrollPosition.END -> binding.recyclerViewGames.scrollToPosition(gamesAdapter.itemCount - 1)
+                ScrollPosition.END -> binding.recyclerViewGames.scrollToPosition(
+                    gamesAdapter.itemCount - 1,
+                )
                 else -> Unit
             }
         }
     }
 
     private fun filter() {
-
         val dialogBinding = DialogFragmentPopupFilterBinding.inflate(layoutInflater).apply {
-
             chipGroupPlatforms.removeAllViews()
             for (platform in PLATFORMS) {
                 chipGroupPlatforms.addChip(layoutInflater, platform.id, platform.name)
@@ -303,11 +313,11 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 textInputLayoutReleaseDateMin,
                 textInputLayoutReleaseDateMax,
                 textInputLayoutPurchaseDateMin,
-                textInputLayoutPurchaseDateMax
+                textInputLayoutPurchaseDateMax,
             )) {
                 view.showDatePicker(
                     requireActivity(),
-                    SharedPreferencesHelper.filterDateFormat
+                    SharedPreferencesHelper.filterDateFormat,
                 )
             }
             filter = viewModel.filters.value
@@ -341,29 +351,35 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
                 val platforms: ArrayList<String> = arrayListOf()
                 for (childId in dialogBinding.chipGroupPlatforms.checkedChipIds) {
-                    dialogBinding.chipGroupPlatforms.children.find { child ->
-                        child.id == childId
-                    }?.tag?.let { tag ->
-                        platforms.add("$tag")
-                    }
+                    dialogBinding.chipGroupPlatforms.children
+                        .find { child ->
+                            child.id == childId
+                        }?.tag
+                        ?.let { tag ->
+                            platforms.add("$tag")
+                        }
                 }
 
                 val genres: ArrayList<String> = arrayListOf()
                 for (childId in dialogBinding.chipGroupGenres.checkedChipIds) {
-                    dialogBinding.chipGroupGenres.children.find { child ->
-                        child.id == childId
-                    }?.tag?.let { tag ->
-                        genres.add("$tag")
-                    }
+                    dialogBinding.chipGroupGenres.children
+                        .find { child ->
+                            child.id == childId
+                        }?.tag
+                        ?.let { tag ->
+                            genres.add("$tag")
+                        }
                 }
 
                 val formats: ArrayList<String> = arrayListOf()
                 for (childId in dialogBinding.chipGroupFormats.checkedChipIds) {
-                    dialogBinding.chipGroupFormats.children.find { child ->
-                        child.id == childId
-                    }?.tag?.let { tag ->
-                        formats.add("$tag")
-                    }
+                    dialogBinding.chipGroupFormats.children
+                        .find { child ->
+                            child.id == childId
+                        }?.tag
+                        ?.let { tag ->
+                            formats.add("$tag")
+                        }
                 }
 
                 val minScore = (dialogBinding.ratingBarMin.rating * 2).toDouble()
@@ -371,22 +387,22 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
                 val minReleaseDate = dialogBinding.textInputLayoutReleaseDateMin.getValue().toDate(
                     viewModel.filterDateFormat,
-                    viewModel.language
+                    viewModel.language,
                 )
                 val maxReleaseDate = dialogBinding.textInputLayoutReleaseDateMax.getValue().toDate(
                     viewModel.filterDateFormat,
-                    viewModel.language
+                    viewModel.language,
                 )
 
                 val minPurchaseDate =
                     dialogBinding.textInputLayoutPurchaseDateMin.getValue().toDate(
                         viewModel.filterDateFormat,
-                        viewModel.language
+                        viewModel.language,
                     )
                 val maxPurchaseDate =
                     dialogBinding.textInputLayoutPurchaseDateMax.getValue().toDate(
                         viewModel.filterDateFormat,
-                        viewModel.language
+                        viewModel.language,
                     )
 
                 var minPrice = 0.0
@@ -436,7 +452,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                     isGoty,
                     isLoaned,
                     hasSaga,
-                    hasSongs
+                    hasSongs,
                 )
 
                 if (
@@ -461,11 +477,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                     viewModel.applyFilters(filters)
                 }
                 dialog.dismiss()
-            }
-            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+            }.setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
-            }
-            .setNeutralButton(resources.getString(R.string.reset)) { _, _ -> }
+            }.setNeutralButton(resources.getString(R.string.reset)) { _, _ -> }
             .create()
         dialog.show()
 
@@ -474,7 +488,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
          */
         dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener {
             dialogBinding.apply {
-
                 for (child in chipGroupPlatforms.children) {
                     (child as Chip).isChecked = false
                 }
@@ -489,21 +502,18 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         }
     }
 
-    private fun hasNotificationPermission(): Boolean {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+    private fun hasNotificationPermission(): Boolean =
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
             ContextCompat.checkSelfPermission(
                 requireContext(),
-                POST_NOTIFICATIONS
+                POST_NOTIFICATIONS,
             ) != PackageManager.PERMISSION_GRANTED
-    }
 
     @SuppressLint("MissingPermission")
     private fun launchNotification(games: List<Game>) {
-
         val notifications = mutableMapOf<Int, Notification>()
         var gameNames = Constants.EMPTY_VALUE
         for (game in games) {
-
             val intent = Intent(requireContext(), GameDetailFragment::class.java).apply {
                 putExtra("gameId", game.id)
             }
@@ -511,31 +521,29 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 requireContext(),
                 game.id,
                 intent,
-                PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+                PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE,
             )
 
             if (!viewModel.isNotificationLaunched(game.id)) {
-
                 notifications[game.id] =
-                    NotificationCompat.Builder(requireContext(), Notifications.CHANNEL_ID)
+                    NotificationCompat
+                        .Builder(requireContext(), Notifications.CHANNEL_ID)
                         .setSmallIcon(R.drawable.app_icon)
                         .setContentTitle(
                             resources.getString(
                                 R.string.notification_title,
-                                game.name
-                            )
-                        )
-                        .setContentText(
+                                game.name,
+                            ),
+                        ).setContentText(
                             resources.getString(
                                 R.string.notification_description,
                                 Date().toString(
                                     viewModel.dateFormatToShow,
-                                    viewModel.language
+                                    viewModel.language,
                                 ),
-                                game.name
-                            )
-                        )
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                game.name,
+                            ),
+                        ).setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
                         .setCategory(NotificationCompat.CATEGORY_REMINDER)
@@ -547,34 +555,32 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         gameNames = gameNames.dropLast(2)
 
         val summaryNotification =
-            NotificationCompat.Builder(requireContext(), Notifications.CHANNEL_ID)
+            NotificationCompat
+                .Builder(requireContext(), Notifications.CHANNEL_ID)
                 .setContentTitle(
                     resources.getQuantityString(
                         R.plurals.summary_notifications_title,
                         games.size,
-                        games.size
-                    )
-                )
-                .setContentText(gameNames)
+                        games.size,
+                    ),
+                ).setContentText(gameNames)
                 .setSmallIcon(R.drawable.app_icon)
                 .setStyle(
-                    NotificationCompat.InboxStyle()
+                    NotificationCompat
+                        .InboxStyle()
                         .setBigContentTitle(
                             resources.getQuantityString(
                                 R.plurals.summary_notifications_title,
                                 games.size,
-                                games.size
-                            )
-                        )
-                        .setSummaryText(gameNames)
-                )
-                .setGroup(Notifications.CHANNEL_GROUP)
+                                games.size,
+                            ),
+                        ).setSummaryText(gameNames),
+                ).setGroup(Notifications.CHANNEL_GROUP)
                 .setGroupSummary(true)
                 .build()
 
         with(NotificationManagerCompat.from(requireContext())) {
             for (notification in notifications) {
-
                 notify(notification.key, notification.value)
                 viewModel.setNotificationLaunched(notification.key, true)
             }
@@ -583,7 +589,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     }
 
     private fun setGamesCount(games: List<Game>) {
-
         val filteredGames = games.mapNotNull { it.state }
         val pendingGamesCount = filteredGames.filter { it == State.PENDING_STATE }.size
         val inProgressGamesCount = filteredGames.filter { it == State.IN_PROGRESS_STATE }.size
@@ -598,7 +603,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
     private fun enableStateButtons(enable: Boolean) {
         with(binding) {
-
             swipeRefreshLayout.isRefreshing = !enable
             buttonPending.root.isEnabled = enable
             buttonInProgress.root.isEnabled = enable
@@ -607,7 +611,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
     }
 
     private fun setupSearchView(menu: Menu) {
-
         val menuItem = menu.findItem(R.id.action_search)
         searchView = menuItem.actionView as SearchView
         searchView?.let { searchView ->
@@ -616,13 +619,11 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
                 override fun onQueryTextChange(newText: String): Boolean {
-
                     viewModel.searchGames(newText)
                     return true
                 }
 
                 override fun onQueryTextSubmit(query: String): Boolean {
-
                     menuItem.collapseActionView()
                     requireActivity().hideSoftKeyboard()
                     return true
@@ -631,7 +632,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         }
         menuItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem): Boolean {
-
                 menu.let {
                     it.findItem(R.id.action_filter).isVisible = false
                     it.findItem(R.id.action_filter_fill).isVisible = false
@@ -641,7 +641,6 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-
                 menu.let {
                     it.findItem(R.id.action_filter).isVisible = viewModel.filters.value == null
                     it.findItem(R.id.action_filter_fill).isVisible =
@@ -662,20 +661,21 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
         override fun onMove(
             recyclerView: RecyclerView,
             viewHolder: RecyclerView.ViewHolder,
-            target: RecyclerView.ViewHolder
+            target: RecyclerView.ViewHolder,
         ) = false
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
             val position = viewHolder.adapterPosition
             if (direction == ItemTouchHelper.LEFT) {
-                showPopupConfirmationDialog(resources.getString(R.string.game_detail_delete_confirmation),
+                showPopupConfirmationDialog(
+                    resources.getString(R.string.game_detail_delete_confirmation),
                     {
                         viewModel.deleteGame(position)
                     },
                     {
                         gamesAdapter.notifyItemChanged(position)
-                    })
+                    },
+                )
             }
         }
 
@@ -686,12 +686,10 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             dX: Float,
             dY: Float,
             actionState: Int,
-            isCurrentlyActive: Boolean
+            isCurrentlyActive: Boolean,
         ) {
-
             var x = dX
             if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-
                 val itemView = viewHolder.itemView
                 val context = recyclerView.context
 
@@ -700,13 +698,13 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 val maxX = itemView.width.toFloat() * 0.6F
 
                 when {
-                    dX < 0 -> {// Swiping to the left
+                    dX < 0 -> { // Swiping to the left
                         paint.color = ContextCompat.getColor(context, R.color.colorPending)
                         val background = RectF(
                             itemView.right.toFloat() + dX,
                             itemView.top.toFloat(),
                             itemView.right.toFloat(),
-                            itemView.bottom.toFloat()
+                            itemView.bottom.toFloat(),
                         )
                         c.drawRect(background, paint)
 
@@ -716,13 +714,12 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                             itemView.right - 2 * width,
                             itemView.top + width,
                             itemView.right - width,
-                            itemView.bottom - width
+                            itemView.bottom - width,
                         )
                         icon?.draw(c)
                         x = max(dX, -maxX)
                     }
-
-                    else -> {// view is unSwiped
+                    else -> { // view is unSwiped
                         val background = RectF(0F, 0F, 0F, 0F)
                         c.drawRect(background, paint)
                     }

@@ -22,14 +22,14 @@ class UserRepositoryImpl @Inject constructor() : UserRepository {
         username: String,
         password: String,
         success: (String) -> Unit,
-        failure: (ErrorModel) -> Unit
+        failure: (ErrorModel) -> Unit,
     ) {
         val userData = SharedPreferencesHelper.userData
         if (username == GOOGLE_USER_TEST && password == GOOGLE_PASSWORD_TEST) {
             SharedPreferencesHelper.userData = UserData(
                 GOOGLE_USER_TEST,
                 GOOGLE_PASSWORD_TEST,
-                false
+                false,
             )
             success("-")
         } else if (userData.username.isEmpty() || userData.username != username) {
@@ -45,7 +45,7 @@ class UserRepositoryImpl @Inject constructor() : UserRepository {
         username: String,
         password: String,
         success: () -> Unit,
-        failure: (ErrorModel) -> Unit
+        failure: (ErrorModel) -> Unit,
     ) {
         SharedPreferencesHelper.userData = UserData(username, password, false)
         success()

@@ -59,57 +59,52 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
     }
 
     @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        return when (item.itemId) {
-            R.id.action_import -> {
-                showPopupConfirmationDialog(
-                    resources.getString(R.string.import_confirmation),
-                    acceptHandler = {
-
-                        val intent = Intent(Intent.ACTION_GET_CONTENT)
-                        intent.type = "*/*"
-                        openFileLauncher.launch(intent)
-                    })
-                true
-            }
-
-            R.id.action_export -> {
-                showPopupConfirmationDialog(
-                    resources.getString(R.string.export_confirmation),
-                    acceptHandler = {
-
-                        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-                            addCategory(Intent.CATEGORY_OPENABLE)
-                            type = "text/txt"
-                            putExtra(Intent.EXTRA_TITLE, "gamercollection_database_backup.txt")
-                        }
-                        newFileLauncher.launch(intent)
-                    })
-                true
-            }
-
-            R.id.action_delete -> {
-
-                showPopupConfirmationDialog(
-                    resources.getString(R.string.profile_delete_confirmation),
-                    {
-                        viewModel.deleteUser()
-                    })
-                true
-            }
-
-            R.id.action_logout -> {
-
-                showPopupConfirmationDialog(
-                    resources.getString(R.string.profile_logout_confirmation),
-                    {
-                        viewModel.logout()
-                    })
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.action_import -> {
+            showPopupConfirmationDialog(
+                resources.getString(R.string.import_confirmation),
+                acceptHandler = {
+                    val intent = Intent(Intent.ACTION_GET_CONTENT)
+                    intent.type = "*/*"
+                    openFileLauncher.launch(intent)
+                },
+            )
+            true
+        }
+        R.id.action_export -> {
+            showPopupConfirmationDialog(
+                resources.getString(R.string.export_confirmation),
+                acceptHandler = {
+                    val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                        addCategory(Intent.CATEGORY_OPENABLE)
+                        type = "text/txt"
+                        putExtra(Intent.EXTRA_TITLE, "gamercollection_database_backup.txt")
+                    }
+                    newFileLauncher.launch(intent)
+                },
+            )
+            true
+        }
+        R.id.action_delete -> {
+            showPopupConfirmationDialog(
+                resources.getString(R.string.profile_delete_confirmation),
+                {
+                    viewModel.deleteUser()
+                },
+            )
+            true
+        }
+        R.id.action_logout -> {
+            showPopupConfirmationDialog(
+                resources.getString(R.string.profile_logout_confirmation),
+                {
+                    viewModel.logout()
+                },
+            )
+            true
+        }
+        else -> {
+            super.onOptionsItemSelected(item)
         }
     }
 
@@ -126,12 +121,16 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
     //region Public methods
     fun save() {
         with(binding) {
-
             val language =
-                if (radioButtonEn.isChecked) Preferences.ENGLISH_LANGUAGE_KEY
-                else Preferences.SPANISH_LANGUAGE_KEY
+                if (radioButtonEn.isChecked) {
+                    Preferences.ENGLISH_LANGUAGE_KEY
+                } else {
+                    Preferences.SPANISH_LANGUAGE_KEY
+                }
             val sortParam =
-                resources.getStringArray(R.array.sort_param_keys)[dropdownTextInputLayoutSortParams.getPosition()]
+                resources.getStringArray(
+                    R.array.sort_param_keys,
+                )[dropdownTextInputLayoutSortParams.getPosition()]
             val isSortAscending = dropdownTextInputLayoutSortOrders.getPosition() == 0
             val themeMode = dropdownTextInputLayoutAppTheme.getPosition()
             this.textInputLayoutPassword.textInputEditText.clearFocus()
@@ -141,7 +140,7 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
                 sortParam,
                 isSortAscending,
                 binding.switchSwipeRefresh.isChecked,
-                themeMode
+                themeMode,
             )
         }
     }
@@ -181,9 +180,9 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
 
                         val message = viewModel.getDataToExport()?.let { data ->
                             context?.contentResolver?.openOutputStream(uri)?.use { outputStream ->
-                                    outputStream.write(data.toByteArray())
-                                    outputStream.close()
-                                }
+                                outputStream.write(data.toByteArray())
+                                outputStream.close()
+                            }
                             resources.getString(R.string.file_created)
                         } ?: resources.getString(R.string.error_database)
                         showPopupDialog(message)
@@ -204,9 +203,7 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
 
     //region Protected methods
     private fun setupBindings() {
-
         viewModel.settingsForm.observe(viewLifecycleOwner) {
-
             binding.textInputLayoutPassword.setError("")
             val passwordError = it ?: return@observe
             binding.textInputLayoutPassword.setError(getString(passwordError))
@@ -224,43 +221,37 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
         viewModel.settingsError.observe(viewLifecycleOwner) { error ->
 
             if (error == null) {
-
                 launchActivity(LandingActivity::class.java, true)
                 activity?.finish()
             } else {
-
                 hideLoading()
                 manageError(error)
             }
         }
     }
 
-    private fun getThemeMode(): Int {
-
-        return when (AppCompatDelegate.getDefaultNightMode()) {
-            AppCompatDelegate.MODE_NIGHT_NO -> 1
-            AppCompatDelegate.MODE_NIGHT_YES -> 2
-            else -> 0
-        }
+    private fun getThemeMode(): Int = when (AppCompatDelegate.getDefaultNightMode()) {
+        AppCompatDelegate.MODE_NIGHT_NO -> 1
+        AppCompatDelegate.MODE_NIGHT_YES -> 2
+        else -> 0
     }
 
     private fun setupDropdowns() {
-
         binding.dropdownTextInputLayoutSortParams.setValue(
             viewModel.sortParam,
-            CustomDropdownType.SORT_PARAM
+            CustomDropdownType.SORT_PARAM,
         )
 
         val sortOrderKeys = resources.getStringArray(R.array.sort_order_keys).toList()
         binding.dropdownTextInputLayoutSortOrders.setValue(
             if (viewModel.isSortOrderAscending) sortOrderKeys[0] else sortOrderKeys[1],
-            CustomDropdownType.SORT_ORDER
+            CustomDropdownType.SORT_ORDER,
         )
 
         val appThemes = resources.getStringArray(R.array.app_theme_values).toList()
         binding.dropdownTextInputLayoutAppTheme.setValue(
             appThemes[getThemeMode()],
-            CustomDropdownType.APP_THEME
+            CustomDropdownType.APP_THEME,
         )
     }
     //endregion

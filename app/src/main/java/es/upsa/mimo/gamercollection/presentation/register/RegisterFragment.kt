@@ -8,13 +8,13 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.presentation.MainActivity
-import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentRegisterBinding
 import es.upsa.mimo.gamercollection.extensions.doAfterTextChanged
 import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.extensions.setEndIconOnClickListener
 import es.upsa.mimo.gamercollection.extensions.setError
+import es.upsa.mimo.gamercollection.presentation.MainActivity
+import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 
 @AndroidEntryPoint
@@ -52,13 +52,12 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
 
     //region Public methods
     fun register() {
-
         binding.textInputLayoutUsername.textInputEditText.clearFocus()
         binding.textInputLayoutPassword.textInputEditText.clearFocus()
         binding.textInputLayoutConfirmPassword.textInputEditText.clearFocus()
         viewModel.register(
             binding.textInputLayoutUsername.getValue(),
-            binding.textInputLayoutPassword.getValue()
+            binding.textInputLayoutPassword.getValue(),
         )
     }
     //endregion
@@ -86,9 +85,7 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
 
     //region Private methods
     private fun setupBindings() {
-
         viewModel.registerFormState.observe(viewLifecycleOwner) {
-
             val registerState = it ?: return@observe
 
             with(binding) {
@@ -100,7 +97,6 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
                     textInputLayoutUsername.setError(getString(registerState.usernameError))
                 }
                 if (registerState.passwordError != null) {
-
                     textInputLayoutPassword.setError(getString(registerState.passwordError))
                     textInputLayoutConfirmPassword.setError(getString(registerState.passwordError))
                 }
@@ -121,7 +117,6 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
             if (error == null) {
                 launchActivity(MainActivity::class.java)
             } else {
-
                 hideLoading()
                 manageError(error)
             }
@@ -129,11 +124,10 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
     }
 
     private fun registerDataChanged() {
-
         viewModel.registerDataChanged(
             binding.textInputLayoutUsername.getValue(),
             binding.textInputLayoutPassword.getValue(),
-            binding.textInputLayoutConfirmPassword.getValue()
+            binding.textInputLayoutConfirmPassword.getValue(),
         )
     }
     //endregion

@@ -13,9 +13,8 @@ import java.util.*
 fun String?.toDate(
     format: String? = null,
     language: String? = null,
-    timeZone: TimeZone? = null
+    timeZone: TimeZone? = null,
 ): Date? {
-
     val dateFormat = format ?: Constants.DATE_FORMAT
     val locale = language?.let {
         Locale.forLanguageTag(it)
@@ -26,11 +25,9 @@ fun String?.toDate(
     simpleDateFormat.timeZone = timeZone ?: TimeZone.getDefault()
 
     this?.let {
-
         return try {
             simpleDateFormat.parse(it)
         } catch (e: Exception) {
-
             Log.e("StringExtensions", e.message ?: "")
             null
         }
@@ -40,6 +37,4 @@ fun String?.toDate(
     }
 }
 
-fun String?.isNotBlank(): Boolean {
-    return !this.isNullOrBlank()
-}
+fun String?.isNotBlank(): Boolean = !this.isNullOrBlank()

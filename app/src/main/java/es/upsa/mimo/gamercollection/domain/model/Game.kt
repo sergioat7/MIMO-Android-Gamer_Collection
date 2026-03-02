@@ -26,22 +26,16 @@ data class Game(
     val loanedTo: String?,
     val observations: String?,
     val saga: Saga?,
-    val songs: List<Song>
+    val songs: List<Song>,
 ) : BaseModel<Int> {
 
-    fun releaseDateAsHumanReadable(): String? {
+    fun releaseDateAsHumanReadable(): String? = releaseDate.toString(
+        SharedPreferencesHelper.dateFormatToShow,
+        SharedPreferencesHelper.language,
+    )
 
-        return releaseDate.toString(
-            SharedPreferencesHelper.dateFormatToShow,
-            SharedPreferencesHelper.language
-        )
-    }
-
-    fun purchaseDateAsHumanReadable(): String? {
-
-        return purchaseDate.toString(
-            SharedPreferencesHelper.dateFormatToShow,
-            SharedPreferencesHelper.language
-        )
-    }
+    fun purchaseDateAsHumanReadable(): String? = purchaseDate.toString(
+        SharedPreferencesHelper.dateFormatToShow,
+        SharedPreferencesHelper.language,
+    )
 }

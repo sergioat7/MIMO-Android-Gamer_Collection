@@ -1,7 +1,7 @@
 package es.upsa.mimo.gamercollection.domain.model
 
-import es.upsa.mimo.gamercollection.extensions.toString
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.extensions.toString
 import java.util.*
 
 data class FilterModel(
@@ -19,38 +19,26 @@ data class FilterModel(
     val isGoty: Boolean?,
     val isLoaned: Boolean?,
     val hasSaga: Boolean?,
-    val hasSongs: Boolean?
+    val hasSongs: Boolean?,
 ) {
 
-    fun minReleaseDateAsHumanReadable(): String? {
+    fun minReleaseDateAsHumanReadable(): String? = minReleaseDate.toString(
+        SharedPreferencesHelper.filterDateFormat,
+        SharedPreferencesHelper.language,
+    )
 
-        return minReleaseDate.toString(
-            SharedPreferencesHelper.filterDateFormat,
-            SharedPreferencesHelper.language
-        )
-    }
+    fun maxReleaseDateAsHumanReadable(): String? = maxReleaseDate.toString(
+        SharedPreferencesHelper.filterDateFormat,
+        SharedPreferencesHelper.language,
+    )
 
-    fun maxReleaseDateAsHumanReadable(): String? {
+    fun minPurchaseDateAsHumanReadable(): String? = minPurchaseDate.toString(
+        SharedPreferencesHelper.filterDateFormat,
+        SharedPreferencesHelper.language,
+    )
 
-        return maxReleaseDate.toString(
-            SharedPreferencesHelper.filterDateFormat,
-            SharedPreferencesHelper.language
-        )
-    }
-
-    fun minPurchaseDateAsHumanReadable(): String? {
-
-        return minPurchaseDate.toString(
-            SharedPreferencesHelper.filterDateFormat,
-            SharedPreferencesHelper.language
-        )
-    }
-
-    fun maxPurchaseDateAsHumanReadable(): String? {
-
-        return maxPurchaseDate.toString(
-            SharedPreferencesHelper.filterDateFormat,
-            SharedPreferencesHelper.language
-        )
-    }
+    fun maxPurchaseDateAsHumanReadable(): String? = maxPurchaseDate.toString(
+        SharedPreferencesHelper.filterDateFormat,
+        SharedPreferencesHelper.language,
+    )
 }

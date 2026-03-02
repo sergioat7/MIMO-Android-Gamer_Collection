@@ -24,22 +24,17 @@ fun Activity.hideSoftKeyboard() {
     } ?: return
 }
 
-fun Context?.isDarkMode(): Boolean {
-    return this?.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+fun Context?.isDarkMode(): Boolean = this?.resources?.configuration?.uiMode?.and(
+    Configuration.UI_MODE_NIGHT_MASK,
+) == Configuration.UI_MODE_NIGHT_YES
+
+fun Context.getImageForPegi(pegi: String?): Drawable? = when (pegi) {
+    "+3" -> ContextCompat.getDrawable(this, R.drawable.pegi_3)
+    "+7" -> ContextCompat.getDrawable(this, R.drawable.pegi_7)
+    "+12" -> ContextCompat.getDrawable(this, R.drawable.pegi_12)
+    "+16" -> ContextCompat.getDrawable(this, R.drawable.pegi_16)
+    "+18" -> ContextCompat.getDrawable(this, R.drawable.pegi_18)
+    else -> null
 }
 
-fun Context.getImageForPegi(pegi: String?): Drawable? {
-    return when (pegi) {
-
-        "+3" -> ContextCompat.getDrawable(this, R.drawable.pegi_3)
-        "+7" -> ContextCompat.getDrawable(this, R.drawable.pegi_7)
-        "+12" -> ContextCompat.getDrawable(this, R.drawable.pegi_12)
-        "+16" -> ContextCompat.getDrawable(this, R.drawable.pegi_16)
-        "+18" -> ContextCompat.getDrawable(this, R.drawable.pegi_18)
-        else -> null
-    }
-}
-
-fun Context.getCustomFont(fontId: Int): Typeface? {
-    return ResourcesCompat.getFont(this, fontId)
-}
+fun Context.getCustomFont(fontId: Int): Typeface? = ResourcesCompat.getFont(this, fontId)

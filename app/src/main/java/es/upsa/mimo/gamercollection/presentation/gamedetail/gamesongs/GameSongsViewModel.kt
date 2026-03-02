@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class GameSongsViewModel constructor(
     private var game: Game?,
     private val gameRepository: GameRepository,
-    private val songRepository: SongRepository
+    private val songRepository: SongRepository,
 ) : ViewModel() {
 
     //region Private properties
@@ -31,12 +31,10 @@ class GameSongsViewModel constructor(
 
     //region Public methods
     fun createSong(song: Song) {
-
         game?.let { game ->
 
             _gameSongsLoading.value = true
             viewModelScope.launch {
-
                 val newSong = songRepository.createSong(game.id, song)
                 val updatedGame = game.copy(songs = game.songs + listOf(newSong))
                 gameRepository.updateGameDatabase(updatedGame)
@@ -47,12 +45,10 @@ class GameSongsViewModel constructor(
     }
 
     fun deleteSong(songId: Int) {
-
         game?.let { game ->
 
             _gameSongsLoading.value = true
             viewModelScope.launch {
-
                 songRepository.deleteSong(game.id, songId)
                 val updatedGame = game.copy(songs = game.songs.filter { it.id != songId })
                 gameRepository.updateGameDatabase(updatedGame)
@@ -65,7 +61,6 @@ class GameSongsViewModel constructor(
 
     //region Private methods
     private fun setGame(game: Game?) {
-
         this.game = game
         _songs.value = game?.songs ?: ArrayList()
     }

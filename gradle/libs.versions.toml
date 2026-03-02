@@ -20,6 +20,7 @@ hilt = "2.56.2"
 junit = "4.13.2"
 kotlin = "2.2.0"
 kotlinx-coroutines-android="1.10.2"
+ktlint = "1.5.0"
 legacy-support-v4 = "1.0.0"
 lifecycle = "2.9.1"
 material = "1.12.0"
@@ -33,6 +34,7 @@ picasso = "2.8"
 retrofit = "3.0.0"
 room = "2.7.2"
 security = "1.0.0"
+spotless-version = "8.2.1"
 
 [libraries]
 
@@ -107,6 +109,7 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless-version" }
 
 [bundles]
 firebase = [

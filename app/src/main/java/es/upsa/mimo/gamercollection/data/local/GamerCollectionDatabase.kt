@@ -14,7 +14,9 @@ import es.upsa.mimo.gamercollection.data.local.model.SongEntity
     entities = [
         GameEntity::class,
         SagaEntity::class,
-        SongEntity::class], version = 2
+        SongEntity::class,
+    ],
+    version = 2,
 )
 @TypeConverters(ListConverter::class, DateConverter::class)
 abstract class GamerCollectionDatabase : RoomDatabase() {

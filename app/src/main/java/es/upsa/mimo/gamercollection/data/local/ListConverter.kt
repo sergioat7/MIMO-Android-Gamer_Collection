@@ -25,9 +25,7 @@ class ListConverter {
     }
 
     @TypeConverter
-    fun songListToString(songs: List<SongEntity?>?): String? {
-        return gson.toJson(songs)
-    }
+    fun songListToString(songs: List<SongEntity?>?): String? = gson.toJson(songs)
 
     @TypeConverter
     fun stringToGameList(data: String?): List<GameEntity?>? {
@@ -40,8 +38,6 @@ class ListConverter {
     }
 
     @TypeConverter
-    fun gameListToString(games: List<GameEntity?>?): String? {
-        return gson.toJson(games)
-    }
+    fun gameListToString(games: List<GameEntity?>?): String? = gson.toJson(games)
     //endregion
 }
