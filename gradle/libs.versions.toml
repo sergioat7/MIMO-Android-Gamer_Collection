@@ -33,6 +33,7 @@ picasso = "2.8"
 retrofit = "3.0.0"
 room = "2.7.2"
 security = "1.0.0"
+spotless-version = "8.2.1"
 
 [libraries]
 
@@ -107,6 +108,7 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless-version" }
 
 [bundles]
 firebase = [
