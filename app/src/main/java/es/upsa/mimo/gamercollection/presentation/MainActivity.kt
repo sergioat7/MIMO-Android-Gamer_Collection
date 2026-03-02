@@ -7,9 +7,9 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.presentation.base.BaseActivity
 import es.upsa.mimo.gamercollection.databinding.ActivityMainBinding
 import es.upsa.mimo.gamercollection.extensions.setupWithNavController
+import es.upsa.mimo.gamercollection.presentation.base.BaseActivity
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
@@ -41,22 +41,17 @@ class MainActivity : BaseActivity() {
         setupBottomNavigationBar()
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        return currentNavController?.value?.navigateUp() ?: false
-    }
+    override fun onSupportNavigateUp(): Boolean = currentNavController?.value?.navigateUp() ?: false
     //endregion
 
     //region Private methods
-    /**
-     * Called on first creation and when restoring state.
-     */
     private fun setupBottomNavigationBar() {
         val bottomNavigationView = binding.navView
         val navGraphIds = listOf(
             R.navigation.nav_graph_games,
             R.navigation.nav_graph_search,
             R.navigation.nav_graph_sagas,
-            R.navigation.nav_graph_settings
+            R.navigation.nav_graph_settings,
         )
 
         // Setup the bottom navigation view with a list of navigation graphs
@@ -64,7 +59,7 @@ class MainActivity : BaseActivity() {
             navGraphIds = navGraphIds,
             fragmentManager = supportFragmentManager,
             containerId = R.id.nav_host_fragment,
-            intent = intent
+            intent = intent,
         )
         currentNavController = controller
     }

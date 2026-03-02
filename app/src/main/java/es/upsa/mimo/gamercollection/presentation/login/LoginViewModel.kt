@@ -5,22 +5,22 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.data.local.model.AuthData
-import es.upsa.mimo.gamercollection.presentation.login.model.LoginFormState
 import es.upsa.mimo.gamercollection.data.local.model.UserData
 import es.upsa.mimo.gamercollection.domain.UserRepository
-import es.upsa.mimo.gamercollection.utils.Constants
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
+import es.upsa.mimo.gamercollection.presentation.login.model.LoginFormState
+import es.upsa.mimo.gamercollection.utils.Constants
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     //region Private properties
-    private val _loginForm = MutableLiveData<LoginFormState>()
+    private val _loginFormState = MutableLiveData<LoginFormState>()
     private val _loginLoading = MutableLiveData<Boolean>()
     private val _loginError = MutableLiveData<ErrorModel?>()
     //endregion
@@ -28,14 +28,13 @@ class LoginViewModel @Inject constructor(
     //region Public properties
     val username: String
         get() = SharedPreferencesHelper.userData.username
-    val loginFormState: LiveData<LoginFormState> = _loginForm
+    val loginFormState: LiveData<LoginFormState> = _loginFormState
     val loginLoading: LiveData<Boolean> = _loginLoading
     val loginError: LiveData<ErrorModel?> = _loginError
     //endregion
 
     //region Public methods
     fun login(username: String, password: String) {
-
         _loginLoading.value = true
         userRepository.login(username, password, { token ->
 
@@ -51,7 +50,6 @@ class LoginViewModel @Inject constructor(
     }
 
     fun loginDataChanged(username: String, password: String) {
-
         var usernameError: Int? = null
         var passwordError: Int? = null
         var isDataValid = true
@@ -64,7 +62,7 @@ class LoginViewModel @Inject constructor(
             passwordError = R.string.invalid_password_old
             isDataValid = false
         }
-        _loginForm.value = LoginFormState(usernameError, passwordError, isDataValid)
+        _loginFormState.value = LoginFormState(usernameError, passwordError, isDataValid)
     }
     //endregion
 

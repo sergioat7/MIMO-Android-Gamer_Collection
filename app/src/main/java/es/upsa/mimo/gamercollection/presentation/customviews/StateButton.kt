@@ -9,7 +9,9 @@ import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.databinding.StateButtonBinding
 
 class StateButton @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0,
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     //region Public properties
@@ -17,7 +19,7 @@ class StateButton @JvmOverloads constructor(
         LayoutInflater.from(context),
         R.layout.state_button,
         this,
-        true
+        true,
     )
     //endregion
 }

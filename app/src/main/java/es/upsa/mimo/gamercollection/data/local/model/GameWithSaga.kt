@@ -7,34 +7,32 @@ data class GameWithSaga(
     @Embedded val game: GameEntity,
     @Relation(
         parentColumn = "saga_id",
-        entityColumn = "id"
+        entityColumn = "id",
     )
-    val saga: SagaEntity?
+    val saga: SagaEntity?,
 ) {
-    fun transform(): GameEntity {
-        return GameEntity(
-            game.id,
-            game.name,
-            game.platform,
-            game.score,
-            game.pegi,
-            game.distributor,
-            game.developer,
-            game.players,
-            game.releaseDate,
-            game.goty,
-            game.format,
-            game.genre,
-            game.state,
-            game.purchaseDate,
-            game.purchaseLocation,
-            game.price,
-            game.imageUrl,
-            game.videoUrl,
-            game.loanedTo,
-            game.observations,
-            saga,
-            game.songs
-        )
-    }
+    fun transform(): GameEntity = GameEntity(
+        game.id,
+        game.name,
+        game.platform,
+        game.score,
+        game.pegi,
+        game.distributor,
+        game.developer,
+        game.players,
+        game.releaseDate,
+        game.goty,
+        game.format,
+        game.genre,
+        game.state,
+        game.purchaseDate,
+        game.purchaseLocation,
+        game.price,
+        game.imageUrl,
+        game.videoUrl,
+        game.loanedTo,
+        game.observations,
+        saga,
+        game.songs,
+    )
 }

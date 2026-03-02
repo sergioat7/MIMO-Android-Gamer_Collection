@@ -30,5 +30,5 @@ data class GameEntity(
     val observations: String?,
     @Embedded(prefix = "saga_")
     var saga: SagaEntity?,
-    var songs: MutableList<SongEntity>
+    var songs: MutableList<SongEntity>,
 ) : BaseEntity<Int>

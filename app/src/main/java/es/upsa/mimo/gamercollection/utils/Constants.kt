@@ -23,13 +23,9 @@ object Constants {
     const val EMPTY_VALUE = ""
     const val NO_VALUE = "-"
 
-    fun isUserNameValid(username: String): Boolean {
-        return username.isNotBlank()
-    }
+    fun isUserNameValid(username: String): Boolean = username.isNotBlank()
 
-    fun isPasswordValid(password: String): Boolean {
-        return password.length > 5
-    }
+    fun isPasswordValid(password: String): Boolean = password.length > 5
 }
 
 object State {
@@ -44,12 +40,14 @@ object Notifications {
 }
 
 enum class ScrollPosition {
-    TOP, MIDDLE, END
+    TOP,
+    MIDDLE,
+    END,
 }
 
 enum class StatusBarStyle {
     PRIMARY,
-    SECONDARY
+    SECONDARY,
 }
 
 enum class CustomInputType {
@@ -59,7 +57,7 @@ enum class CustomInputType {
     PASSWORD,
     URL,
     DATE,
-    NONE
+    NONE,
 }
 
 enum class CustomDropdownType {
@@ -70,5 +68,5 @@ enum class CustomDropdownType {
     STATE,
     SORT_PARAM,
     SORT_ORDER,
-    APP_THEME
+    APP_THEME,
 }

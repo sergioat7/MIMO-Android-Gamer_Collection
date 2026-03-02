@@ -7,20 +7,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.domain.GameRepository
 import es.upsa.mimo.gamercollection.domain.SagaRepository
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.domain.model.Saga
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SagaDetailViewModel @Inject constructor(
     state: SavedStateHandle,
     private val gameRepository: GameRepository,
-    private val sagaRepository: SagaRepository
+    private val sagaRepository: SagaRepository,
 ) : ViewModel() {
 
     //region Private properties
@@ -58,20 +58,16 @@ class SagaDetailViewModel @Inject constructor(
     //endregion
 
     //region Public methods
-    fun getOrderedGames(games: List<Game>): List<Game> {
-
-        return when (SharedPreferencesHelper.sortParam) {
-            "platform" -> games.sortedBy { it.platform }
-            "releaseDate" -> games.sortedBy { it.releaseDate }
-            "purchaseDate" -> games.sortedBy { it.purchaseDate }
-            "price" -> games.sortedBy { it.price }
-            "score" -> games.sortedBy { it.score }
-            else -> games.sortedBy { it.name }
-        }
+    fun getOrderedGames(games: List<Game>): List<Game> = when (SharedPreferencesHelper.sortParam) {
+        "platform" -> games.sortedBy { it.platform }
+        "releaseDate" -> games.sortedBy { it.releaseDate }
+        "purchaseDate" -> games.sortedBy { it.purchaseDate }
+        "price" -> games.sortedBy { it.price }
+        "score" -> games.sortedBy { it.score }
+        else -> games.sortedBy { it.name }
     }
 
     fun saveSaga(name: String, games: List<Game>) {
-
         val newSaga = Saga(sagaId, name, games)
         if (_saga.value != null) {
             setSaga(newSaga)
@@ -82,7 +78,6 @@ class SagaDetailViewModel @Inject constructor(
 
     fun deleteSaga() {
         viewModelScope.launch {
-
             _saga.value?.let { saga ->
 
                 _sagaDetailLoading.value = true
@@ -99,7 +94,6 @@ class SagaDetailViewModel @Inject constructor(
     //region Private methods
     private fun createSaga(saga: Saga) {
         viewModelScope.launch {
-
             _sagaDetailLoading.value = true
             val newSagaCreated = sagaRepository.createSaga(saga)
             gameRepository.updateSagaGames(newSagaCreated)
@@ -110,7 +104,6 @@ class SagaDetailViewModel @Inject constructor(
 
     private fun setSaga(saga: Saga) {
         viewModelScope.launch {
-
             _sagaDetailLoading.value = true
             sagaRepository.setSaga(saga)
             gameRepository.removeSagaFromGames(saga)

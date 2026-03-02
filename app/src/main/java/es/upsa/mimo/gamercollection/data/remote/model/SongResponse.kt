@@ -10,5 +10,5 @@ data class SongResponse(
     @SerializedName("singer")
     val singer: String?,
     @SerializedName("url")
-    val url: String?
+    val url: String?,
 )

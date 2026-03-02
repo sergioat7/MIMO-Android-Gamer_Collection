@@ -13,48 +13,39 @@ import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
 class GamesAdapter(
     private var games: List<Game>,
     private val sagaId: Int?,
-    private var onItemClickListener: OnItemClickListener
+    private var onItemClickListener: OnItemClickListener,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
 
     //region Lifecycle methods
-    override fun getItemViewType(position: Int): Int {
-
-        return if (games[position].id >= 0) {
-            R.layout.item_game
-        } else {
-            R.layout.item_load_more_items
-        }
+    override fun getItemViewType(position: Int): Int = if (games[position].id >= 0) {
+        R.layout.item_game
+    } else {
+        R.layout.item_load_more_items
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-
-        return if (viewType == R.layout.item_game) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        if (viewType == R.layout.item_game) {
             GamesViewHolder(
                 ItemGameBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
-                    false
-                )
+                    false,
+                ),
             )
         } else {
             LoadMoreItemsViewHolder(
                 ItemLoadMoreItemsBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
-                    false
-                )
+                    false,
+                ),
             )
         }
-    }
 
-    override fun getItemCount(): Int {
-        return games.size
-    }
+    override fun getItemCount(): Int = games.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         if (holder is GamesViewHolder) {
-
             val game = games[position]
             holder.bind(game, sagaId, onItemClickListener)
 
@@ -71,13 +62,11 @@ class GamesAdapter(
     //region Public methods
     @SuppressLint("NotifyDataSetChanged")
     fun setGames(newGames: List<Game>) {
-
         this.games = newGames
         notifyDataSetChanged()
     }
 
     fun addGames(newGames: List<Game>) {
-
         val position = games.size
         games = newGames
         notifyItemInserted(position)
@@ -85,7 +74,6 @@ class GamesAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun resetList() {
-
         games = ArrayList()
         notifyDataSetChanged()
     }

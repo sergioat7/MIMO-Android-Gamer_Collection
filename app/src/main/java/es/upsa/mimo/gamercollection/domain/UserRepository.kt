@@ -7,13 +7,13 @@ interface UserRepository {
         username: String,
         password: String,
         success: (String) -> Unit,
-        failure: (ErrorModel) -> Unit
+        failure: (ErrorModel) -> Unit,
     )
 
     fun register(
         username: String,
         password: String,
         success: () -> Unit,
-        failure: (ErrorModel) -> Unit
+        failure: (ErrorModel) -> Unit,
     )
 }

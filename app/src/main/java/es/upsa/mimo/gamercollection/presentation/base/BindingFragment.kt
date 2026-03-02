@@ -54,16 +54,16 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
-
         setHasOptionsMenu(hasOptionsMenu)
         val bindingType =
-            (this.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments
+            (this.javaClass.genericSuperclass as ParameterizedType)
+                .actualTypeArguments
                 .firstOrNull {
                     (it as? Class<*>)?.let { clazz ->
                         ViewDataBinding::class.java.isAssignableFrom(
-                            clazz
+                            clazz,
                         )
                     } == true
                 }
@@ -72,7 +72,7 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
             "inflate",
             LayoutInflater::class.java,
             ViewGroup::class.java,
-            Boolean::class.javaPrimitiveType
+            Boolean::class.javaPrimitiveType,
         )
         @Suppress("UNCHECKED_CAST")
         binding = inflateMethod.invoke(null, inflater, container, false) as Binding
@@ -87,11 +87,12 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
                 StatusBarStyle.PRIMARY -> {
                     it.window.setStatusBarStyle(!it.isDarkMode())
                 }
-
                 StatusBarStyle.SECONDARY -> {
                     it.window.setStatusBarStyle(it.isDarkMode())
                 }
-                null -> Unit
+                null -> {
+                    Unit
+                }
             }
         }
     }
@@ -99,7 +100,6 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
 
     //region Protected methods
     protected open fun initializeUi() {
-
         toolbar?.let {
             ViewCompat.setOnApplyWindowInsetsListener(it) { view, windowInsets ->
                 val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -116,7 +116,6 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
 
     //region Public methods
     fun showPopupDialog(message: String, goBack: MutableLiveData<Boolean>? = null) {
-
         MaterialAlertDialogBuilder(requireContext())
             .setMessage(message)
             .setCancelable(false)
@@ -126,12 +125,10 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
                 goBack?.let {
                     it.value = true
                 }
-            }
-            .show()
+            }.show()
     }
 
     fun showLoading() {
-
         val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
         val prev = activity?.supportFragmentManager?.findFragmentByTag(Constants.LOADING_DIALOG)
         if (prev != null) {
@@ -146,13 +143,11 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
     }
 
     fun hideLoading() {
-
         loadingFragment?.dismiss()
         loadingFragment = null
     }
 
     fun manageError(errorResponse: ErrorModel) {
-
         hideLoading()
         val error = StringBuilder()
         if (errorResponse.error.isNotEmpty()) {
@@ -166,25 +161,21 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
     fun showPopupConfirmationDialog(
         message: String,
         acceptHandler: () -> Unit,
-        cancelHandler: (() -> Unit)? = null
+        cancelHandler: (() -> Unit)? = null,
     ) {
-
         MaterialAlertDialogBuilder(requireContext())
             .setMessage(message)
             .setCancelable(false)
             .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
                 acceptHandler()
                 dialog.dismiss()
-            }
-            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+            }.setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
                 cancelHandler?.invoke()
                 dialog.dismiss()
-            }
-            .show()
+            }.show()
     }
 
     fun <T> launchActivity(activity: Class<T>, clearStack: Boolean = false) {
-
         val intent = Intent(context, activity)
         if (clearStack) {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -193,12 +184,13 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
     }
 
     fun setupSearchView(query: String) {
-
         searchView?.let { searchView ->
 
             val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager?
             if (searchManager != null) {
-                searchView.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
+                searchView.setSearchableInfo(
+                    searchManager.getSearchableInfo(activity?.componentName),
+                )
             }
 
             searchView.isIconified = false
@@ -212,7 +204,7 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
             val searchIconId = searchView.context.resources.getIdentifier(
                 "android:id/search_mag_icon",
                 null,
-                null
+                null,
             )
             searchView.findViewById<AppCompatImageView>(searchIconId)?.imageTintList =
                 ColorStateList.valueOf(color)
@@ -220,19 +212,17 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
             val searchPlateId = searchView.context.resources.getIdentifier(
                 "android:id/search_plate",
                 null,
-                null
+                null,
             )
             val searchPlate = searchView.findViewById<View>(searchPlateId)
             if (searchPlate != null) {
-
                 val searchTextId = searchPlate.context.resources.getIdentifier(
                     "android:id/search_src_text",
                     null,
-                    null
+                    null,
                 )
                 val searchText = searchPlate.findViewById<TextView>(searchTextId)
                 if (searchText != null) {
-
                     searchText.setTextColor(color)
                     searchText.setHintTextColor(color)
                 }
@@ -240,7 +230,7 @@ abstract class BindingFragment<Binding : ViewDataBinding> : Fragment() {
                 val searchCloseId = searchPlate.context.resources.getIdentifier(
                     "android:id/search_close_btn",
                     null,
-                    null
+                    null,
                 )
                 searchPlate.findViewById<AppCompatImageView>(searchCloseId)?.imageTintList =
                     ColorStateList.valueOf(color)

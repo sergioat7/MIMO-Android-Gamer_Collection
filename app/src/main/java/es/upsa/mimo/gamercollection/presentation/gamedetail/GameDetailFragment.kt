@@ -26,7 +26,6 @@ import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.data.remote.model.PLATFORMS
-import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.DialogSetImageBinding
 import es.upsa.mimo.gamercollection.databinding.DialogSetRatingBinding
 import es.upsa.mimo.gamercollection.databinding.FragmentGameDetailBinding
@@ -38,6 +37,7 @@ import es.upsa.mimo.gamercollection.extensions.isDarkMode
 import es.upsa.mimo.gamercollection.extensions.setHintStyle
 import es.upsa.mimo.gamercollection.extensions.setStatusBarStyle
 import es.upsa.mimo.gamercollection.extensions.setValue
+import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.CustomDropdownType
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
@@ -77,7 +77,6 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
             if (args.isRawgGame) R.menu.rawg_game_toolbar_menu else R.menu.game_toolbar_menu
         inflater.inflate(menuRes, menu)
         if (!args.isRawgGame) {
-
             menu.findItem(R.id.action_edit).isVisible = game != null
             menu.findItem(R.id.action_remove).isVisible = game != null
             menu.findItem(R.id.action_save).isVisible = game == null
@@ -87,30 +86,27 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
 
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         when (item.itemId) {
-            R.id.action_edit -> setEdition(true)
+            R.id.action_edit -> {
+                setEdition(true)
+            }
             R.id.action_remove -> {
-
-                showPopupConfirmationDialog(resources.getString(R.string.game_detail_delete_confirmation),
+                showPopupConfirmationDialog(
+                    resources.getString(R.string.game_detail_delete_confirmation),
                     {
                         viewModel.deleteGame()
-                    })
+                    },
+                )
             }
-
             R.id.action_save -> {
-
                 if (args.isRawgGame || game == null) {
                     viewModel.createGame(getGameData())
                 } else {
-
                     viewModel.setGame(getGameData())
                     setEdition(false)
                 }
             }
-
             R.id.action_cancel -> {
-
                 showData(game)
                 setEdition(false)
             }
@@ -134,7 +130,6 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
 
     //region Public methods
     fun setImage() {
-
         val dialogBinding = DialogSetImageBinding.inflate(layoutInflater)
 
         MaterialAlertDialogBuilder(requireActivity())
@@ -148,17 +143,16 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
                     binding.imageUrl = url
                 }
                 dialog.dismiss()
-            }
-            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+            }.setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
-            }
-            .show()
+            }.show()
     }
 
     fun setRating() {
-
         val dialogBinding = DialogSetRatingBinding.inflate(layoutInflater)
-        dialogBinding.rating = binding.ratingButton.text.toString().toDouble() / 2
+        dialogBinding.rating = binding.ratingButton.text
+            .toString()
+            .toDouble() / 2
 
         val dialog = MaterialAlertDialogBuilder(requireActivity())
             .setView(dialogBinding.root)
@@ -167,11 +161,9 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
 
                 binding.ratingButton.text = (dialogBinding.ratingBar.rating * 2).toString()
                 dialog.dismiss()
-            }
-            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+            }.setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
-            }
-            .setNeutralButton(resources.getString(R.string.reset)) { _, _ -> }
+            }.setNeutralButton(resources.getString(R.string.reset)) { _, _ -> }
             .create()
         dialog.show()
 
@@ -179,7 +171,9 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
         This is needed to avoid the auto dismiss
          */
         dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener {
-            dialogBinding.rating = binding.ratingButton.text.toString().toDouble() / 2
+            dialogBinding.rating = binding.ratingButton.text
+                .toString()
+                .toDouble() / 2
         }
     }
     //endregion
@@ -199,18 +193,26 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
         pagerAdapter = GameDetailPagerAdapter(
             requireActivity(),
             2,
-            viewModel.game.value
+            viewModel.game.value,
         )
         binding.viewPagerGame.adapter = pagerAdapter
         TabLayoutMediator(binding.tabLayout, binding.viewPagerGame) { tab, position ->
             tab.text =
-                if (position == 0) resources.getString(R.string.game_detail_title) else resources.getString(
-                    R.string.game_detail_songs_title
-                )
+                if (position == 0) {
+                    resources.getString(R.string.game_detail_title)
+                } else {
+                    resources.getString(
+                        R.string.game_detail_songs_title,
+                    )
+                }
         }.attach()
 
-        binding.textInputLayoutGameName.setHintStyle(R.style.Widget_GamerCollection_TextView_Title_Header)
-        binding.dropdownTextInputLayoutPlatforms.setHintStyle(R.style.Widget_GamerCollection_TextView_Title_Header)
+        binding.textInputLayoutGameName.setHintStyle(
+            R.style.Widget_GamerCollection_TextView_Title_Header,
+        )
+        binding.dropdownTextInputLayoutPlatforms.setHintStyle(
+            R.style.Widget_GamerCollection_TextView_Title_Header,
+        )
 
         binding.activity = this
         binding.isDarkMode = context?.isDarkMode()
@@ -219,7 +221,6 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
 
     //region Private methods
     private fun setupBindings() {
-
         viewModel.gameDetailLoading.observe(viewLifecycleOwner) { isLoading ->
 
             if (isLoading) {
@@ -230,7 +231,6 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
         }
 
         viewModel.gameDetailSuccessMessage.observe(viewLifecycleOwner) {
-
             val message = resources.getString(it)
             showPopupDialog(message, goBack)
         }
@@ -242,7 +242,6 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
         }
 
         viewModel.game.observe(viewLifecycleOwner) {
-
             game = it
             showData(it)
             makeFieldsEditable(args.isRawgGame || it == null)
@@ -254,28 +253,30 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
     }
 
     private fun showData(game: Game?) {
-
         binding.imageUrl = game?.imageUrl
 
         val image = binding.imageUrl ?: Constants.NO_VALUE
         Picasso
             .get()
             .load(image)
-            .into(binding.imageViewBlurred, object : Callback {
+            .into(
+                binding.imageViewBlurred,
+                object : Callback {
 
-                override fun onSuccess() {
-                    binding.imageViewBlurred.setBlur(5)
-                }
+                    override fun onSuccess() {
+                        binding.imageViewBlurred.setBlur(5)
+                    }
 
-                override fun onError(e: Exception?) {
-                }
-            })
+                    override fun onError(e: Exception?) {
+                    }
+                },
+            )
 
         binding.imagePegi = requireContext().getImageForPegi(game?.pegi)
 
         binding.dropdownTextInputLayoutPlatforms.setValue(
             game?.platform,
-            CustomDropdownType.PLATFORM
+            CustomDropdownType.PLATFORM,
         )
 
         binding.game = game
@@ -283,7 +284,6 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
     }
 
     private fun setEdition(editable: Boolean) {
-
         menu?.let {
             it.findItem(R.id.action_edit).isVisible = !editable
             it.findItem(R.id.action_remove).isVisible = !editable
@@ -295,18 +295,20 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
     }
 
     private fun makeFieldsEditable(editable: Boolean) {
-
         binding.editable = editable
         pagerAdapter.setEdition(editable)
     }
 
     private fun getGameData(): Game {
-
         val id = args.gameId
         val name = binding.textInputLayoutGameName.getValueWithoutHyphen()
         val platform =
-            PLATFORMS.firstOrNull { it.name == binding.dropdownTextInputLayoutPlatforms.getValue() }?.id
-        val score = binding.ratingButton.text.toString().toDouble()
+            PLATFORMS
+                .firstOrNull { it.name == binding.dropdownTextInputLayoutPlatforms.getValue() }
+                ?.id
+        val score = binding.ratingButton.text
+            .toString()
+            .toDouble()
 
         return pagerAdapter.getGameData()?.copy(
             name = name,
@@ -314,7 +316,6 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
             imageUrl = binding.imageUrl,
             score = score,
         ) ?: run {
-
             Game(
                 id,
                 name,
@@ -337,7 +338,7 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
                 null,
                 null,
                 null,
-                ArrayList()
+                ArrayList(),
             )
         }
     }

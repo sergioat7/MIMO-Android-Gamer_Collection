@@ -7,18 +7,25 @@ import com.google.android.gms.maps.model.LatLng
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.data.remote.model.FORMATS
 import es.upsa.mimo.gamercollection.data.remote.model.GENRES
-import es.upsa.mimo.gamercollection.interfaces.OnLocationSelected
-import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentGameDataBinding
 import es.upsa.mimo.gamercollection.domain.model.Game
-import es.upsa.mimo.gamercollection.extensions.*
+import es.upsa.mimo.gamercollection.extensions.getValue
+import es.upsa.mimo.gamercollection.extensions.getValueWithoutHyphen
+import es.upsa.mimo.gamercollection.extensions.setEndIconOnClickListener
+import es.upsa.mimo.gamercollection.extensions.setHintStyle
+import es.upsa.mimo.gamercollection.extensions.setOnClickListener
+import es.upsa.mimo.gamercollection.extensions.setValue
+import es.upsa.mimo.gamercollection.extensions.showDatePicker
+import es.upsa.mimo.gamercollection.extensions.toDate
+import es.upsa.mimo.gamercollection.interfaces.OnLocationSelected
+import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.CustomDropdownType
 import es.upsa.mimo.gamercollection.utils.State
 
 class GameDataFragment(
     private var game: Game? = null,
-    private var enabled: Boolean
+    private var enabled: Boolean,
 ) : BindingFragment<FragmentGameDataBinding>(), OnLocationSelected {
 
     //region Protected properties
@@ -39,7 +46,6 @@ class GameDataFragment(
 
     //region Public methods
     override fun setLocation(location: LatLng?) {
-
         var locationText = Constants.EMPTY_VALUE
         location?.let {
             locationText = "${it.latitude},${it.longitude}"
@@ -48,10 +54,9 @@ class GameDataFragment(
     }
 
     fun showData(game: Game?) {
-
         binding.dropdownTextInputLayoutPegis.setValue(
             game?.pegi,
-            CustomDropdownType.PEGI
+            CustomDropdownType.PEGI,
         )
 
         game?.state?.let {
@@ -64,19 +69,18 @@ class GameDataFragment(
 
         binding.dropdownTextInputLayoutGenres.setValue(
             game?.genre,
-            CustomDropdownType.GENRE
+            CustomDropdownType.GENRE,
         )
 
         binding.dropdownTextInputLayoutFormats.setValue(
             game?.format,
-            CustomDropdownType.FORMAT
+            CustomDropdownType.FORMAT,
         )
 
         binding.game = game
     }
 
     fun setEdition(editable: Boolean) {
-
         enabled = editable
 
         binding.buttonPending.root.isEnabled = editable
@@ -87,12 +91,12 @@ class GameDataFragment(
     }
 
     fun getGameData(): Game? {
-
-        val pegi = resources.getStringArray(R.array.pegis)
+        val pegi = resources
+            .getStringArray(R.array.pegis)
             .firstOrNull { it == binding.dropdownTextInputLayoutPegis.getValue() }
         val releaseDate = binding.textInputLayoutReleaseDate.getValueWithoutHyphen().toDate(
             viewModel.dateFormatToShow,
-            viewModel.language
+            viewModel.language,
         )
         val format =
             FORMATS.firstOrNull { it.name == binding.dropdownTextInputLayoutFormats.getValue() }?.id
@@ -107,7 +111,7 @@ class GameDataFragment(
             }
         val purchaseDate = binding.textInputLayoutPurchaseDate.getValueWithoutHyphen().toDate(
             viewModel.dateFormatToShow,
-            viewModel.language
+            viewModel.language,
         )
         val price = try {
             binding.textInputLayoutPrice.getValueWithoutHyphen().toDouble()
@@ -130,12 +134,11 @@ class GameDataFragment(
             price,
             binding.textInputLayoutVideoUrl.getValueWithoutHyphen(),
             binding.textInputLayoutLoaned.getValueWithoutHyphen(),
-            binding.textInputLayoutObservations.getValueWithoutHyphen()
+            binding.textInputLayoutObservations.getValueWithoutHyphen(),
         )
     }
 
     fun buttonClicked(it: View) {
-
         binding.buttonPending.root.isSelected =
             if (it == binding.buttonPending.root) !it.isSelected else false
         binding.buttonInProgress.root.isSelected =
@@ -152,10 +155,15 @@ class GameDataFragment(
         setupBindings()
 
         with(binding) {
-
-            dropdownTextInputLayoutPegis.setHintStyle(R.style.Widget_GamerCollection_TextView_Title_Header)
-            dropdownTextInputLayoutFormats.setHintStyle(R.style.Widget_GamerCollection_TextView_Title_Header)
-            dropdownTextInputLayoutGenres.setHintStyle(R.style.Widget_GamerCollection_TextView_Title_Header)
+            dropdownTextInputLayoutPegis.setHintStyle(
+                R.style.Widget_GamerCollection_TextView_Title_Header,
+            )
+            dropdownTextInputLayoutFormats.setHintStyle(
+                R.style.Widget_GamerCollection_TextView_Title_Header,
+            )
+            dropdownTextInputLayoutGenres.setHintStyle(
+                R.style.Widget_GamerCollection_TextView_Title_Header,
+            )
 
             for (view in listOf(
                 textInputLayoutReleaseDate,
@@ -168,7 +176,7 @@ class GameDataFragment(
                 textInputLayoutLoaned,
                 textInputLayoutVideoUrl,
                 textInputLayoutObservations,
-                textInputLayoutSaga
+                textInputLayoutSaga,
             )) {
                 view.setHintStyle(R.style.Widget_GamerCollection_TextView_Title_Header)
                 view.setEndIconOnClickListener {
@@ -177,11 +185,17 @@ class GameDataFragment(
             }
 
             textInputLayoutReleaseDate.setOnClickListener {
-                textInputLayoutReleaseDate.showDatePicker(requireActivity(), viewModel.dateFormatToShow)
+                textInputLayoutReleaseDate.showDatePicker(
+                    requireActivity(),
+                    viewModel.dateFormatToShow,
+                )
             }
 
             textInputLayoutPurchaseDate.setOnClickListener {
-                textInputLayoutPurchaseDate.showDatePicker(requireActivity(), viewModel.dateFormatToShow)
+                textInputLayoutPurchaseDate.showDatePicker(
+                    requireActivity(),
+                    viewModel.dateFormatToShow,
+                )
             }
 
             textInputLayoutPurchaseLocation.setOnClickListener {
@@ -197,7 +211,6 @@ class GameDataFragment(
 
     //region Private methods
     private fun setupBindings() {
-
         viewModel.gameDataLoading.observe(viewLifecycleOwner) { isLoading ->
 
             if (isLoading) {
@@ -218,7 +231,6 @@ class GameDataFragment(
     }
 
     private fun showMap() {
-
         val ft: FragmentTransaction = activity?.supportFragmentManager?.beginTransaction() ?: return
         val prev = activity?.supportFragmentManager?.findFragmentByTag("mapDialog")
         if (prev != null) {

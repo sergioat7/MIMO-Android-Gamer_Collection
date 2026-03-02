@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.presentation.games.GamesAdapter
-import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
-import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentGameSearchBinding
 import es.upsa.mimo.gamercollection.extensions.hideSoftKeyboard
+import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
+import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
+import es.upsa.mimo.gamercollection.presentation.games.GamesAdapter
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
@@ -65,7 +65,6 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
 
     //region Interface methods
     override fun onItemClick(id: Int) {
-
         val action = GameSearchFragmentDirections.actionSearchFragmentToGameDetailFragment(id, true)
         findNavController().navigate(action)
     }
@@ -74,7 +73,6 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
     }
 
     override fun onLoadMoreItemsClick() {
-
         viewModel.loadGames()
         scrollPosition.set(ScrollPosition.MIDDLE)
     }
@@ -82,17 +80,13 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
 
     //region Public methods
     fun goToStartEndList(view: View) {
-
         with(binding) {
             when (view) {
                 floatingActionButtonStartList -> {
-
                     recyclerViewGames.scrollToPosition(0)
                     scrollPosition.set(ScrollPosition.TOP)
                 }
-
                 floatingActionButtonEndList -> {
-
                     val position: Int = gamesAdapter.itemCount - 1
                     recyclerViewGames.scrollToPosition(position)
                     scrollPosition.set(ScrollPosition.END)
@@ -109,13 +103,11 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
         setupBindings()
 
         with(binding) {
-
             swipeRefreshLayout.apply {
                 isEnabled = this@GameSearchFragment.viewModel.swipeRefresh
                 setColorSchemeResources(R.color.colorPrimary)
                 setProgressBackgroundColorSchemeResource(R.color.colorSecondary)
                 setOnRefreshListener {
-
                     this@GameSearchFragment.viewModel.query = null
                     reset()
                 }
@@ -124,7 +116,7 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
             gamesAdapter = GamesAdapter(
                 this@GameSearchFragment.viewModel.games.value ?: listOf(),
                 null,
-                this@GameSearchFragment
+                this@GameSearchFragment,
             )
             recyclerViewGames.apply {
                 layoutManager = LinearLayoutManager(requireContext())
@@ -135,13 +127,21 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
                         super.onScrollStateChanged(recyclerView, newState)
 
                         scrollPosition.set(
-                            if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                            if (!recyclerView.canScrollVertically(
+                                    -1,
+                                ) &&
+                                newState == RecyclerView.SCROLL_STATE_IDLE
+                            ) {
                                 ScrollPosition.TOP
-                            } else if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                            } else if (!recyclerView.canScrollVertically(
+                                    1,
+                                ) &&
+                                newState == RecyclerView.SCROLL_STATE_IDLE
+                            ) {
                                 ScrollPosition.END
                             } else {
                                 ScrollPosition.MIDDLE
-                            }
+                            },
                         )
                     }
                 })
@@ -159,7 +159,6 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
 
     //region Protected methods
     private fun setupBindings() {
-
         viewModel.gamesLoading.observe(viewLifecycleOwner) { isLoading ->
 
             if (isLoading) {
@@ -179,14 +178,12 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
     }
 
     private fun reset() {
-
         gamesAdapter.resetList()
         viewModel.resetPage()
         viewModel.loadGames()
     }
 
     private fun setupSearchView(menu: Menu) {
-
         val menuItem = menu.findItem(R.id.action_search_rawg)
         searchView = menuItem.actionView as SearchView
         searchView?.let { searchView ->
@@ -194,12 +191,9 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
             searchView.queryHint = resources.getString(R.string.search_games)
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
-                override fun onQueryTextChange(newText: String): Boolean {
-                    return true
-                }
+                override fun onQueryTextChange(newText: String): Boolean = true
 
                 override fun onQueryTextSubmit(query: String): Boolean {
-
                     searchGames(query)
                     menuItem.collapseActionView()
                     return true
@@ -210,7 +204,6 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
     }
 
     private fun searchGames(query: String) {
-
         viewModel.query = query
         reset()
         requireActivity().hideSoftKeyboard()

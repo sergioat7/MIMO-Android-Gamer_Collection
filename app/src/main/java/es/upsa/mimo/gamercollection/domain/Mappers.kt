@@ -3,14 +3,14 @@ package es.upsa.mimo.gamercollection.domain
 import es.upsa.mimo.gamercollection.data.local.model.GameEntity
 import es.upsa.mimo.gamercollection.data.local.model.SagaEntity
 import es.upsa.mimo.gamercollection.data.local.model.SongEntity
-import es.upsa.mimo.gamercollection.domain.model.ErrorModel
-import es.upsa.mimo.gamercollection.domain.model.Game
-import es.upsa.mimo.gamercollection.domain.model.Saga
-import es.upsa.mimo.gamercollection.domain.model.Song
 import es.upsa.mimo.gamercollection.data.remote.model.ErrorResponse
 import es.upsa.mimo.gamercollection.data.remote.model.GameResponse
 import es.upsa.mimo.gamercollection.data.remote.model.SagaResponse
 import es.upsa.mimo.gamercollection.data.remote.model.SongResponse
+import es.upsa.mimo.gamercollection.domain.model.ErrorModel
+import es.upsa.mimo.gamercollection.domain.model.Game
+import es.upsa.mimo.gamercollection.domain.model.Saga
+import es.upsa.mimo.gamercollection.domain.model.Song
 
 fun GameEntity.toDomain(): Game = Game(
     id = id,
@@ -166,5 +166,5 @@ fun Song.toRemoteData(): SongResponse = SongResponse(
 
 fun ErrorResponse.toDomain(): ErrorModel = ErrorModel(
     error = error,
-    errorKey = errorKey
+    errorKey = errorKey,
 )

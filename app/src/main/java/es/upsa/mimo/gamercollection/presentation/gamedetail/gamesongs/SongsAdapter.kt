@@ -11,23 +11,20 @@ import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
 class SongsAdapter(
     private var songs: List<Song>,
     private var editable: Boolean,
-    private var onItemClickListener: OnItemClickListener
+    private var onItemClickListener: OnItemClickListener,
 ) : RecyclerView.Adapter<SongsViewHolder?>() {
 
     //region Lifecycle methods
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongsViewHolder {
-        return SongsViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongsViewHolder =
+        SongsViewHolder(
             ItemSongBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
-                false
-            )
+                false,
+            ),
         )
-    }
 
-    override fun getItemCount(): Int {
-        return songs.size
-    }
+    override fun getItemCount(): Int = songs.size
 
     override fun onBindViewHolder(holder: SongsViewHolder, position: Int) {
         holder.bind(songs[position], editable, onItemClickListener)
@@ -37,14 +34,12 @@ class SongsAdapter(
     //region Public methods
     @SuppressLint("NotifyDataSetChanged")
     fun setSongs(newSongs: List<Song>) {
-
         this.songs = newSongs
         notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
     fun setEditable(editable: Boolean) {
-
         this.editable = editable
         notifyDataSetChanged()
     }

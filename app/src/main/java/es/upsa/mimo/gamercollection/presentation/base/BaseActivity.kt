@@ -17,7 +17,6 @@ open class BaseActivity : AppCompatActivity() {
 
     //region Public methods
     fun manageError(errorResponse: ErrorModel) {
-
         hideLoading()
         val error = StringBuilder()
         if (errorResponse.error.isNotEmpty()) {
@@ -29,7 +28,6 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     fun showPopupDialog(message: String, goBack: MutableLiveData<Boolean>? = null) {
-
         MaterialAlertDialogBuilder(this)
             .setMessage(message)
             .setCancelable(false)
@@ -39,12 +37,10 @@ open class BaseActivity : AppCompatActivity() {
                 goBack?.let {
                     it.value = true
                 }
-            }
-            .show()
+            }.show()
     }
 
     fun showLoading() {
-
         val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
         val prev = supportFragmentManager.findFragmentByTag(Constants.LOADING_DIALOG)
         if (prev != null) {
@@ -59,36 +55,30 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     fun hideLoading() {
-
         loadingFragment?.dismiss()
         loadingFragment = null
     }
 
     fun showPopupConfirmationDialog(message: String, acceptHandler: () -> Unit) {
-
         MaterialAlertDialogBuilder(this)
             .setMessage(message)
             .setCancelable(false)
             .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
                 acceptHandler()
                 dialog.dismiss()
-            }
-            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+            }.setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
-            }
-            .show()
+            }.show()
     }
 
     fun showPopupActionDialog(message: String, acceptHandler: () -> Unit) {
-
         MaterialAlertDialogBuilder(this)
             .setMessage(message)
             .setCancelable(false)
             .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
                 acceptHandler()
                 dialog.dismiss()
-            }
-            .show()
+            }.show()
     }
     //endregion
 }

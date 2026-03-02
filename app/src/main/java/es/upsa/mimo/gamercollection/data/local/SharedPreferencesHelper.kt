@@ -5,11 +5,11 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import com.google.gson.Gson
 import es.upsa.mimo.gamercollection.GamerCollectionApplication
+import es.upsa.mimo.gamercollection.data.local.model.AuthData
+import es.upsa.mimo.gamercollection.data.local.model.UserData
 import es.upsa.mimo.gamercollection.extensions.setBoolean
 import es.upsa.mimo.gamercollection.extensions.setInt
 import es.upsa.mimo.gamercollection.extensions.setString
-import es.upsa.mimo.gamercollection.data.local.model.AuthData
-import es.upsa.mimo.gamercollection.data.local.model.UserData
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Preferences
 import java.util.Locale
@@ -19,7 +19,7 @@ object SharedPreferencesHelper {
     //region Private properties
     private val appPreferences = GamerCollectionApplication.context.getSharedPreferences(
         Preferences.PREFERENCES_NAME,
-        Context.MODE_PRIVATE
+        Context.MODE_PRIVATE,
     )
     private val editor = appPreferences.edit()
     private val appEncryptedPreferences = EncryptedSharedPreferences.create(
@@ -27,7 +27,7 @@ object SharedPreferencesHelper {
         MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
         GamerCollectionApplication.Companion.context,
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
     )
     private val encryptedEditor = appEncryptedPreferences.edit()
     private val gson = Gson()
@@ -44,7 +44,8 @@ object SharedPreferencesHelper {
         set(value) = editor.setString(Preferences.LANGUAGE_PREFERENCES_NAME, value)
     var credentials: AuthData
         get() {
-            return appEncryptedPreferences.getString(Preferences.AUTH_DATA_PREFERENCES_NAME, null)
+            return appEncryptedPreferences
+                .getString(Preferences.AUTH_DATA_PREFERENCES_NAME, null)
                 ?.let {
                     gson.fromJson(it, AuthData::class.java)
                 } ?: run {
@@ -53,11 +54,12 @@ object SharedPreferencesHelper {
         }
         set(value) = encryptedEditor.setString(
             Preferences.AUTH_DATA_PREFERENCES_NAME,
-            gson.toJson(value)
+            gson.toJson(value),
         )
     var userData: UserData
         get() {
-            return appEncryptedPreferences.getString(Preferences.USER_DATA_PREFERENCES_NAME, null)
+            return appEncryptedPreferences
+                .getString(Preferences.USER_DATA_PREFERENCES_NAME, null)
                 ?.let {
                     gson.fromJson(it, UserData::class.java)
                 } ?: run {
@@ -66,7 +68,7 @@ object SharedPreferencesHelper {
         }
         set(value) = encryptedEditor.setString(
             Preferences.USER_DATA_PREFERENCES_NAME,
-            gson.toJson(value)
+            gson.toJson(value),
         )
     val isLoggedIn: Boolean
         get() = userData.isLoggedIn && credentials.token.isNotEmpty()
@@ -119,12 +121,10 @@ object SharedPreferencesHelper {
         encryptedEditor.remove(Preferences.USER_DATA_PREFERENCES_NAME)?.apply()
     }
 
-    fun notificationLaunched(gameId: Int): Boolean {
-        return appPreferences.getBoolean(
-            "${Preferences.GAME_NOTIFICATION_PREFERENCES_NAME}${gameId}",
-            false
-        )
-    }
+    fun notificationLaunched(gameId: Int): Boolean = appPreferences.getBoolean(
+        "${Preferences.GAME_NOTIFICATION_PREFERENCES_NAME}$gameId",
+        false,
+    )
 
     fun setNotificationLaunched(gameId: Int, value: Boolean) {
         editor.setBoolean("${Preferences.GAME_NOTIFICATION_PREFERENCES_NAME}$gameId", value)

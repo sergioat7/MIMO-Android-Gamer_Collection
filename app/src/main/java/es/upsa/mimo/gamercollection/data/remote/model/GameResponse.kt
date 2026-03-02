@@ -47,7 +47,7 @@ data class GameResponse(
     @SerializedName("saga")
     var saga: SagaResponse?,
     @SerializedName("songs")
-    var songs: MutableList<SongResponse>
+    var songs: MutableList<SongResponse>,
 ) : BaseResponse<Int> {
 
     constructor(rawgGame: RawgGameResponse) : this(
@@ -72,6 +72,6 @@ data class GameResponse(
         null,
         null,
         null,
-        mutableListOf()
+        mutableListOf(),
     )
 }

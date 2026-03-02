@@ -7,13 +7,13 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import es.upsa.mimo.gamercollection.presentation.MainActivity
-import es.upsa.mimo.gamercollection.presentation.register.RegisterActivity
-import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentLoginBinding
 import es.upsa.mimo.gamercollection.extensions.doAfterTextChanged
 import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.extensions.setError
+import es.upsa.mimo.gamercollection.presentation.MainActivity
+import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
+import es.upsa.mimo.gamercollection.presentation.register.RegisterActivity
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 
 @AndroidEntryPoint
@@ -52,12 +52,11 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
     }
 
     fun login() {
-
         binding.textInputLayoutUsername.textInputEditText.clearFocus()
         binding.textInputLayoutPassword.textInputEditText.clearFocus()
         viewModel.login(
             binding.textInputLayoutUsername.getValue(),
-            binding.textInputLayoutPassword.getValue()
+            binding.textInputLayoutPassword.getValue(),
         )
     }
     //endregion
@@ -82,9 +81,7 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
 
     //region Private methods
     private fun setupBindings() {
-
         viewModel.loginFormState.observe(viewLifecycleOwner) {
-
             binding.textInputLayoutUsername.setError("")
             binding.textInputLayoutPassword.setError("")
             val loginState = it ?: return@observe
@@ -111,7 +108,6 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
             if (error == null) {
                 launchActivity(MainActivity::class.java, true)
             } else {
-
                 hideLoading()
                 manageError(error)
             }
@@ -119,10 +115,9 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
     }
 
     private fun loginDataChanged() {
-
         viewModel.loginDataChanged(
             binding.textInputLayoutUsername.getValue(),
-            binding.textInputLayoutPassword.getValue()
+            binding.textInputLayoutPassword.getValue(),
         )
     }
     //endregion

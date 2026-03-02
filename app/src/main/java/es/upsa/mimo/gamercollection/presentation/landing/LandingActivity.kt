@@ -16,7 +16,7 @@ import java.util.*
 class LandingActivity : BaseActivity() {
 
     //region Private properties
-     private val viewModel: LandingViewModel by viewModels()
+    private val viewModel: LandingViewModel by viewModels()
     //endregion
 
     //region Lifecycle methods
@@ -29,7 +29,6 @@ class LandingActivity : BaseActivity() {
 
     //region Private methods
     private fun initializeUI() {
-
         setupBindings()
 
         configLanguage()
@@ -47,7 +46,6 @@ class LandingActivity : BaseActivity() {
     }
 
     private fun setupBindings() {
-
         viewModel.landingClassToStart.observe(this) { cls: Class<*>? ->
 
             val intent = Intent(this, cls)
@@ -57,14 +55,12 @@ class LandingActivity : BaseActivity() {
     }
 
     private fun configLanguage() {
-
         val conf = resources.configuration
         conf.setLocale(Locale(viewModel.language))
         resources.updateConfiguration(conf, resources.displayMetrics)
     }
 
     private fun createNotificationChannel() {
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = getString(R.string.channel_name)
             val description = getString(R.string.channel_description)
@@ -72,7 +68,7 @@ class LandingActivity : BaseActivity() {
             val channel = NotificationChannel(Notifications.CHANNEL_ID, name, importance)
             channel.description = description
             val notificationManager = getSystemService(
-                NotificationManager::class.java
+                NotificationManager::class.java,
             )
             notificationManager?.createNotificationChannel(channel)
         }

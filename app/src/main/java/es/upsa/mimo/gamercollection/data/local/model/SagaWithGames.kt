@@ -8,15 +8,13 @@ data class SagaWithGames(
     val saga: SagaEntity,
     @Relation(
         parentColumn = "id",
-        entityColumn = "saga_id"
+        entityColumn = "saga_id",
     )
-    val games: List<GameEntity>
+    val games: List<GameEntity>,
 ) {
-    fun transform(): SagaEntity {
-        return SagaEntity(
-            saga.id,
-            saga.name,
-            games
-        )
-    }
+    fun transform(): SagaEntity = SagaEntity(
+        saga.id,
+        saga.name,
+        games,
+    )
 }

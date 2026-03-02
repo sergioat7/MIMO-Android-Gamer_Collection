@@ -14,12 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
-import es.upsa.mimo.gamercollection.domain.model.BaseModel
-import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.FragmentSagasBinding
+import es.upsa.mimo.gamercollection.domain.model.BaseModel
 import es.upsa.mimo.gamercollection.domain.model.Saga
 import es.upsa.mimo.gamercollection.extensions.hideSoftKeyboard
+import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
+import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
@@ -67,10 +67,8 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
 
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         when (item.itemId) {
             R.id.action_add -> {
-
                 val action = SagasFragmentDirections.actionSagasFragmentToSagaDetailFragment(-1)
                 findNavController().navigate(action)
                 return true
@@ -82,13 +80,11 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
 
     //region Interface methods
     override fun onItemClick(id: Int) {
-
         val action = SagasFragmentDirections.actionSagasFragmentToSagaDetailFragment(id)
         findNavController().navigate(action)
     }
 
     override fun onSubItemClick(id: Int) {
-
         val action = SagasFragmentDirections.actionSagasFragmentToGameDetailFragment(id)
         findNavController().navigate(action)
     }
@@ -99,17 +95,13 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
 
     //region Public methods
     fun goToStartEndList(view: View) {
-
         with(binding) {
             when (view) {
                 floatingActionButtonStartList -> {
-
                     recyclerViewSagas.scrollToPosition(0)
                     scrollPosition.set(ScrollPosition.TOP)
                 }
-
                 floatingActionButtonEndList -> {
-
                     val position: Int = sagasAdapter.itemCount - 1
                     recyclerViewSagas.scrollToPosition(position)
                     scrollPosition.set(ScrollPosition.END)
@@ -126,7 +118,6 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
         setupBindings()
 
         with(binding) {
-
             swipeRefreshLayout.apply {
                 isEnabled = this@SagasFragment.viewModel.swipeRefresh
                 setColorSchemeResources(R.color.colorFinished)
@@ -137,9 +128,11 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
             }
 
             sagasAdapter = SagasAdapter(
-                this@SagasFragment.viewModel.sagas.value?.toMutableList() ?: mutableListOf(),
-                mutableListOf(),
                 this@SagasFragment
+                    .viewModel.sagas.value
+                    ?.toMutableList() ?: mutableListOf(),
+                mutableListOf(),
+                this@SagasFragment,
             )
             recyclerViewSagas.apply {
                 layoutManager = LinearLayoutManager(requireContext())
@@ -150,13 +143,21 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
                         super.onScrollStateChanged(recyclerView, newState)
 
                         scrollPosition.set(
-                            if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                            if (!recyclerView.canScrollVertically(
+                                    -1,
+                                ) &&
+                                newState == RecyclerView.SCROLL_STATE_IDLE
+                            ) {
                                 ScrollPosition.TOP
-                            } else if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                            } else if (!recyclerView.canScrollVertically(
+                                    1,
+                                ) &&
+                                newState == RecyclerView.SCROLL_STATE_IDLE
+                            ) {
                                 ScrollPosition.END
                             } else {
                                 ScrollPosition.MIDDLE
-                            }
+                            },
                         )
                     }
                 })
@@ -174,13 +175,11 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
 
     //region Private methods
     private fun setupBindings() {
-
         viewModel.sagasLoading.observe(viewLifecycleOwner) { isLoading ->
 
             if (isLoading) {
                 showLoading()
             } else {
-
                 binding.swipeRefreshLayout.isRefreshing = false
                 hideLoading()
             }
@@ -199,12 +198,10 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
 
     @SuppressLint("NotifyDataSetChanged")
     private fun showData(sagas: List<Saga>) {
-
         sagasAdapter.resetList()
 
         val items = mutableListOf<BaseModel<Int>>()
         for (saga in sagas) {
-
             items.add(saga)
             if (viewModel.expandedIds.contains(saga.id)) {
                 items.addAll(saga.games.sortedBy { it.releaseDate })
@@ -216,7 +213,6 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
     }
 
     private fun setupSearchView(menu: Menu) {
-
         val menuItem = menu.findItem(R.id.action_search_sagas)
         searchView = menuItem.actionView as SearchView
         searchView?.let { searchView ->
@@ -225,13 +221,11 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
                 override fun onQueryTextChange(newText: String): Boolean {
-
                     viewModel.searchSagas(newText)
                     return true
                 }
 
                 override fun onQueryTextSubmit(query: String): Boolean {
-
                     menuItem.collapseActionView()
                     requireActivity().hideSoftKeyboard()
                     return true
@@ -240,17 +234,14 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
         }
         menuItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem): Boolean {
-
                 menu.findItem(R.id.action_add).isVisible = false
                 return true
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-
                 menu.findItem(R.id.action_add).isVisible = true
                 return true
             }
-
         })
         setupSearchView(Constants.EMPTY_VALUE)
     }

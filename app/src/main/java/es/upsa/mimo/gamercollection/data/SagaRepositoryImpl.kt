@@ -12,10 +12,8 @@ class SagaRepositoryImpl @Inject constructor(
 ) : SagaRepository {
 
     //region Public methods
-    override suspend fun createSaga(newSaga: Saga): Saga {
-        return newSaga.copy(id = getNextId()).also {
-            sagaDao.insertSaga(it.toLocalData())
-        }
+    override suspend fun createSaga(newSaga: Saga): Saga = newSaga.copy(id = getNextId()).also {
+        sagaDao.insertSaga(it.toLocalData())
     }
 
     override suspend fun setSaga(saga: Saga) {
@@ -26,20 +24,18 @@ class SagaRepositoryImpl @Inject constructor(
         sagaDao.deleteSaga(saga.toLocalData())
     }
 
-    override suspend fun getSagasDatabase(): List<Saga> {
-        return sagaDao.getSagas().map { it.transform().toDomain() }
+    override suspend fun getSagasDatabase(): List<Saga> = sagaDao.getSagas().map {
+        it.transform().toDomain()
     }
 
-    override suspend fun getSagaDatabase(sagaId: Int): Saga? {
-        return sagaDao.getSaga(sagaId)?.transform()?.toDomain()
-    }
+    override suspend fun getSagaDatabase(sagaId: Int): Saga? =
+        sagaDao.getSaga(sagaId)?.transform()?.toDomain()
 
     override suspend fun insertSagaDatabase(saga: Saga) {
         sagaDao.insertSaga(saga.toLocalData())
     }
 
     override suspend fun resetTable() {
-
         val sagas = sagaDao.getSagas().map { it.transform() }
         for (saga in sagas) {
             sagaDao.deleteSaga(saga)
@@ -49,7 +45,6 @@ class SagaRepositoryImpl @Inject constructor(
 
     //region Private methods
     private suspend fun getNextId(): Int {
-
         val sagas = sagaDao.getSagas()
         return if (sagas.isNotEmpty()) {
             sagas.maxOf { it.saga.id } + 1

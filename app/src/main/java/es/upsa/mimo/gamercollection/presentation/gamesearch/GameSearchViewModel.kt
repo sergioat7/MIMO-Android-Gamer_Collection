@@ -5,17 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import es.upsa.mimo.gamercollection.utils.ScrollPosition
-import es.upsa.mimo.gamercollection.domain.GameRepository
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.domain.GameRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Game
-import kotlinx.coroutines.launch
+import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class GameSearchViewModel @Inject constructor(
-    private val gameRepository: GameRepository
+    private val gameRepository: GameRepository,
 ) : ViewModel() {
 
     //region Private properties
@@ -47,14 +47,12 @@ class GameSearchViewModel @Inject constructor(
     //region Public methods
     fun loadGames() {
         viewModelScope.launch {
-
             _gamesLoading.value = true
             gameRepository.getRawgGames(page, query, { newGames, gamesCount, next ->
 
                 _gamesLoading.value = false
                 addGames(newGames, next)
                 if (page == 1) {
-
                     _scrollPosition.value = ScrollPosition.TOP
                     _gamesCount.value = gamesCount
                 }
@@ -66,7 +64,6 @@ class GameSearchViewModel @Inject constructor(
     }
 
     fun resetPage() {
-
         page = 1
         _games.value = mutableListOf()
     }
@@ -74,7 +71,6 @@ class GameSearchViewModel @Inject constructor(
 
     //region Private methods
     private fun addGames(newGames: List<Game>, next: Boolean) {
-
         val currentGames = _games.value ?: mutableListOf()
         if (currentGames.isNotEmpty()) {
             currentGames.removeAt(currentGames.lastIndex)
@@ -104,8 +100,8 @@ class GameSearchViewModel @Inject constructor(
                     null,
                     null,
                     null,
-                    mutableListOf()
-                )
+                    mutableListOf(),
+                ),
             )
         }
         _games.value = currentGames

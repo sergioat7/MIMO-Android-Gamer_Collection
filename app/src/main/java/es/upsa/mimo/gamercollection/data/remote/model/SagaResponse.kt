@@ -8,5 +8,5 @@ data class SagaResponse(
     @SerializedName("name")
     val name: String?,
     @SerializedName("games")
-    val games: List<GameResponse>
+    val games: List<GameResponse>,
 ) : BaseResponse<Int>

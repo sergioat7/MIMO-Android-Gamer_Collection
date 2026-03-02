@@ -2,7 +2,10 @@ package es.upsa.mimo.gamercollection.presentation.sagadetail
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.viewModels
@@ -12,15 +15,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.presentation.games.GamesAdapter
-import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
-import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.databinding.DialogGamesBinding
 import es.upsa.mimo.gamercollection.databinding.FragmentSagaDetailBinding
 import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.domain.model.Saga
 import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.extensions.isDarkMode
+import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
+import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
+import es.upsa.mimo.gamercollection.presentation.games.GamesAdapter
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 
 @AndroidEntryPoint
@@ -61,32 +64,25 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
 
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         when (item.itemId) {
             R.id.action_edit -> {
-
                 editSaga()
                 return true
             }
-
             R.id.action_remove -> {
-
                 showPopupConfirmationDialog(
                     resources.getString(R.string.saga_detail_delete_confirmation),
                     {
                         viewModel.deleteSaga()
-                    })
+                    },
+                )
                 return true
             }
-
             R.id.action_save -> {
-
                 viewModel.saveSaga(binding.textInputLayoutSagaName.getValue(), newGames)
                 return true
             }
-
             R.id.action_cancel -> {
-
                 cancelEdition()
                 return true
             }
@@ -107,14 +103,11 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
 
     //region Interface methods
     override fun onItemClick(id: Int) {
-
         val selectedGame = viewModel.games.firstOrNull { it.id == id }
         newGames.firstOrNull { it.id == id }?.let {
-
             newGames.remove(it)
         } ?: run {
             selectedGame?.let {
-
                 newGames.add(it.copy(saga = viewModel.saga.value?.copy(games = emptyList())))
             }
         }
@@ -129,7 +122,6 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
 
     //region Public methods
     fun addGame() {
-
         val dialogBinding = DialogGamesBinding.inflate(layoutInflater)
 
         val orderedGames = viewModel.getOrderedGames(viewModel.games).map { game ->
@@ -138,15 +130,14 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
                     viewModel.saga.value
                 } else {
                     null
-                }
+                },
             )
         }
         if (orderedGames.isNotEmpty()) {
-
             dialogBinding.recyclerViewGames.adapter = GamesAdapter(
                 orderedGames,
                 viewModel.saga.value?.id ?: 0,
-                this
+                this,
             )
         }
         dialogBinding.recyclerViewGames.visibility =
@@ -161,13 +152,11 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
 
                 showGames(newGames)
                 dialog.dismiss()
-            }
-            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+            }.setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
 
                 resetNewGames()
                 dialog.dismiss()
-            }
-            .show()
+            }.show()
     }
     //endregion
 
@@ -186,20 +175,17 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     }
 
     private fun setupBindings() {
-
         viewModel.sagaDetailLoading.observe(viewLifecycleOwner) { isLoading ->
 
             if (isLoading) {
                 showLoading()
             } else {
-
                 hideLoading()
                 cancelEdition()
             }
         }
 
         viewModel.sagaDetailSuccessMessage.observe(viewLifecycleOwner) {
-
             val message = resources.getString(it)
             showPopupDialog(message, goBack)
         }
@@ -226,9 +212,7 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
 
     //region Private methods
     private fun showData(saga: Saga?) {
-
         saga?.let {
-
             binding.sagaName = it.name
             showGames(it.games)
         }
@@ -236,16 +220,15 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
 
     @SuppressLint("SetTextI18n")
     private fun showGames(games: List<Game>) {
-
         binding.linearLayoutGames.removeAllViews()
 
         val layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
         )
         layoutParams.setMargins(0, 15, 0, 15)
 
         for (game in games.sortedBy { it.releaseDate }) {
-
             val tvGame = TextView(requireContext())
             tvGame.setTextAppearance(R.style.Widget_GamerCollection_TextView_Description_SagaGame)
             tvGame.text = "- ${game.name}"
@@ -258,13 +241,11 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     }
 
     private fun editSaga() {
-
         showEditButton(true)
         enableEdition(true)
     }
 
     private fun cancelEdition() {
-
         resetNewGames()
         showEditButton(false)
         showData(viewModel.saga.value)
@@ -272,7 +253,6 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     }
 
     private fun showEditButton(hidden: Boolean) {
-
         menu?.let {
             it.findItem(R.id.action_edit).isVisible = !hidden
             it.findItem(R.id.action_remove).isVisible = !hidden
@@ -282,7 +262,9 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     }
 
     private fun resetNewGames() {
-        newGames = viewModel.saga.value?.games?.toMutableList() ?: mutableListOf()
+        newGames = viewModel.saga.value
+            ?.games
+            ?.toMutableList() ?: mutableListOf()
     }
     //endregion
 }
