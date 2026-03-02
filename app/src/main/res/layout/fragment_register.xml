@@ -13,12 +13,12 @@
 
         <variable
             name="fragment"
-            type="es.upsa.mimo.gamercollection.ui.register.RegisterFragment"
+            type="es.upsa.mimo.gamercollection.presentation.register.RegisterFragment"
             />
 
         <variable
             name="viewModel"
-            type="es.upsa.mimo.gamercollection.ui.register.RegisterViewModel"
+            type="es.upsa.mimo.gamercollection.presentation.register.RegisterViewModel"
             />
 
     </data>
@@ -26,7 +26,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.register.RegisterFragment"
+        tools:context=".presentation.register.RegisterFragment"
         >
 
         <ImageView

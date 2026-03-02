@@ -13,7 +13,7 @@
 
         <variable
             name="song"
-            type="es.upsa.mimo.gamercollection.models.SongResponse"
+            type="es.upsa.mimo.gamercollection.domain.model.Song"
             />
 
         <variable

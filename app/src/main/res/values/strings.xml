@@ -12,6 +12,7 @@
     <string name="empty_list">The list is empty</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="any">Any</string>
     <string name="loading">Loading…</string>
 
     <string name="new_version_changes">Due to problems with the servers, from now on the app will work just in local mode. Every game you add will be saved just in the app, so if you uninstall it, you will lose all the saved information. Games you already had saved will still be available as long as you do not uninstall the app.</string>
@@ -23,7 +24,8 @@
     <string name="login_not_account">Don\'t have an account yet?</string>
     <string name="login_register">Register here!</string>
     <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must have more than 3 characters</string>
+    <string name="invalid_password_old">Password must have more than 3 characters</string>
+    <string name="invalid_password">Password must have at least 6 characters</string>
     <string name="username_info">This username is only needed for identification purposes and to be able to separate your games from another user\'s ones.\n\nHowever, due to any personal information is stored, if you forget your password you won\'t be able to retrieve it.\n\nIf this happens, contact the app\'s developer, you can find his email in the Google Play Store app\'s card.</string>
     <string name="username_not_exist">Username does not exist</string>
     <string name="wrong_password">Password is wrong</string>
@@ -142,10 +144,6 @@
     <string name="error_file_data">There is an error with the data format. Please, be sure data is in the correct format.</string>
     <string name="profile_logout_confirmation">Are you sure you want to exit?</string>
     <string name="profile_delete_confirmation">Are you sure you want to delete your user? You will lose all your stored information about the videogames</string>
-
-    // Synchronization
-    <string name="sync_title">Synchronizing…</string>
-    <string name="sync_confirmation">Are you sure you want to sync the app? This process could take a while</string>
 
     // Modal filter
     <string name="modal_filter_platform">Platform</string>

@@ -12,7 +12,7 @@
 
         <variable
             name="filter"
-            type="es.upsa.mimo.gamercollection.models.FilterModel"
+            type="es.upsa.mimo.gamercollection.domain.model.FilterModel"
             />
 
     </data>
@@ -342,11 +342,21 @@
                     >
 
                     <RadioButton
+                        android:id="@+id/radio_button_goty_any"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="@{filter.goty == null}"
+                        android:text="@string/any"
+                        style="@style/Widget.GamerCollection.RadioButton"
+                        />
+
+                    <RadioButton
                         android:id="@+id/radio_button_goty_no"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="@{!filter.goty}"
+                        android:layout_weight="4"
+                        android:checked="@{filter.goty != null &amp;&amp; filter.goty == false}"
                         android:text="@string/no"
                         style="@style/Widget.GamerCollection.RadioButton"
                         />
@@ -355,8 +365,8 @@
                         android:id="@+id/radio_button_goty_yes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="@{filter.goty}"
+                        android:layout_weight="4"
+                        android:checked="@{filter.goty != null &amp;&amp; filter.goty == true}"
                         android:text="@string/yes"
                         style="@style/Widget.GamerCollection.RadioButton"
                         />
@@ -385,11 +395,21 @@
                     >
 
                     <RadioButton
+                        android:id="@+id/radio_button_loaned_any"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="@{filter.loaned == null}"
+                        android:text="@string/any"
+                        style="@style/Widget.GamerCollection.RadioButton"
+                        />
+
+                    <RadioButton
                         android:id="@+id/radio_button_loaned_no"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="@{!filter.loaned}"
+                        android:layout_weight="4"
+                        android:checked="@{filter.loaned != null &amp;&amp; filter.loaned == false}"
                         android:text="@string/no"
                         style="@style/Widget.GamerCollection.RadioButton"
                         />
@@ -398,8 +418,8 @@
                         android:id="@+id/radio_button_loaned_yes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="@{filter.loaned}"
+                        android:layout_weight="4"
+                        android:checked="@{filter.loaned != null &amp;&amp; filter.loaned == true}"
                         android:text="@string/yes"
                         style="@style/Widget.GamerCollection.RadioButton"
                         />
@@ -428,11 +448,21 @@
                     >
 
                     <RadioButton
+                        android:id="@+id/radio_button_saga_any"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="@{filter.hasSaga == null}"
+                        android:text="@string/any"
+                        style="@style/Widget.GamerCollection.RadioButton"
+                        />
+
+                    <RadioButton
                         android:id="@+id/radio_button_saga_no"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="@{!filter.hasSaga}"
+                        android:layout_weight="4"
+                        android:checked="@{filter.hasSaga != null &amp;&amp; filter.hasSaga == false}"
                         android:text="@string/no"
                         style="@style/Widget.GamerCollection.RadioButton"
                         />
@@ -441,8 +471,8 @@
                         android:id="@+id/radio_button_saga_yes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="@{filter.hasSaga}"
+                        android:layout_weight="4"
+                        android:checked="@{filter.hasSaga != null &amp;&amp; filter.hasSaga == true}"
                         android:text="@string/yes"
                         style="@style/Widget.GamerCollection.RadioButton"
                         />
@@ -473,11 +503,21 @@
                     >
 
                     <RadioButton
+                        android:id="@+id/radio_button_songs_any"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="@{filter.hasSongs == null}"
+                        android:text="@string/any"
+                        style="@style/Widget.GamerCollection.RadioButton"
+                        />
+
+                    <RadioButton
                         android:id="@+id/radio_button_songs_no"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="@{!filter.hasSongs}"
+                        android:layout_weight="4"
+                        android:checked="@{filter.hasSongs != null &amp;&amp; filter.hasSongs == false}"
                         android:text="@string/no"
                         style="@style/Widget.GamerCollection.RadioButton"
                         />
@@ -486,8 +526,8 @@
                         android:id="@+id/radio_button_songs_yes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="@{filter.hasSongs}"
+                        android:layout_weight="4"
+                        android:checked="@{filter.hasSongs != null &amp;&amp; filter.hasSongs == true}"
                         android:text="@string/yes"
                         style="@style/Widget.GamerCollection.RadioButton"
                         />
