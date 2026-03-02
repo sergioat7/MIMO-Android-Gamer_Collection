@@ -50,6 +50,9 @@ jobs:
       - name: Run unit tests
         run: ./gradlew testDebugUnitTest
 
+      - name: Run spotless validation
+        run: ./gradlew spotlessApply
+
       - name: Build with Gradle
         run: ./gradlew build
 
