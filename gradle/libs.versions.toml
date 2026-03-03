@@ -15,11 +15,11 @@ espresso-core = "3.6.1"
 firebase-bom = "33.16.0"
 fragment-ktx = "1.8.8"
 google-services = "4.4.3"
-gson = "2.13.1"
 hilt = "2.56.2"
 junit = "4.13.2"
 kotlin = "2.2.0"
 kotlinx-coroutines-android="1.10.2"
+kotlinx-serialization="1.9.0"
 ktlint = "1.5.0"
 legacy-support-v4 = "1.0.0"
 lifecycle = "2.9.1"
@@ -32,6 +32,7 @@ play-services-location = "21.3.0"
 play-services-maps = "19.2.0"
 picasso = "2.8"
 retrofit = "3.0.0"
+retrofit-kotlinx-converter = "1.0.0"
 room = "2.7.2"
 security = "1.0.0"
 spotless-version = "8.2.1"
@@ -56,15 +57,13 @@ firebase-config = { module = "com.google.firebase:firebase-config-ktx" }
 #Blur image view
 blurImageView = { group = "com.github.jgabrielfreitas", name = "BlurImageView", version.ref = "blur-image-view" }
 
-#Gson
-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
-
 #Hilt
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 
 #Kotlin
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinx-coroutines-android" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
 #LiveData
 lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
@@ -87,7 +86,7 @@ picasso = { group = "com.squareup.picasso", name = "picasso", version.ref = "pic
 #Retrofit
 okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp3" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+retrofit-kotlinx-serialization-converter = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofit-kotlinx-converter" }
 
 #Room
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
@@ -109,6 +108,7 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless-version" }
 
 [bundles]
@@ -120,5 +120,5 @@ firebase = [
 retrofit = [
     "okhttp3-logging-interceptor",
     "retrofit",
-    "retrofit-converter-gson",
+    "retrofit-kotlinx-serialization-converter",
 ]

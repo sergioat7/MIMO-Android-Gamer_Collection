@@ -5,15 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonParser
-import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.data.local.model.AuthData
 import es.upsa.mimo.gamercollection.data.local.model.UserData
-import es.upsa.mimo.gamercollection.data.remote.model.BaseResponse
+import es.upsa.mimo.gamercollection.data.remote.model.ExportData
 import es.upsa.mimo.gamercollection.data.remote.model.GameResponse
 import es.upsa.mimo.gamercollection.data.remote.model.SagaResponse
 import es.upsa.mimo.gamercollection.domain.GameRepository
@@ -27,6 +24,8 @@ import es.upsa.mimo.gamercollection.utils.Constants
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
@@ -140,18 +139,12 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun importData(jsonData: String) {
-        val json = JsonParser.parseString(jsonData)
-        val jsonGames = json.asJsonObject["games"].toString()
-        val jsonSagas = json.asJsonObject["sagas"].toString()
+        val json = Json.parseToJsonElement(jsonData)
+        val jsonGames = json.jsonObject["games"].toString()
+        val jsonSagas = json.jsonObject["sagas"].toString()
 
-        val gson = GsonBuilder()
-            .setDateFormat("MMM dd, yyyy HH:mm:ss")
-            .create()
-        var listType = object : TypeToken<List<GameResponse?>?>() {}.type
-
-        val games = gson.fromJson<List<GameResponse?>>(jsonGames, listType).mapNotNull { it }
-        listType = object : TypeToken<List<SagaResponse?>?>() {}.type
-        val sagas = gson.fromJson<List<SagaResponse?>>(jsonSagas, listType).mapNotNull { it }
+        val games = Json.decodeFromString<List<GameResponse?>>(jsonGames).mapNotNull { it }
+        val sagas = Json.decodeFromString<List<SagaResponse?>>(jsonSagas).mapNotNull { it }
 
         viewModelScope.launch {
             for (game in games) {
@@ -167,7 +160,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun getDataToExport(): String? = try {
-        var data: Map<String, List<BaseResponse<Int>>> = mapOf()
+        lateinit var data: ExportData
         runBlocking {
             val games = gameRepository.getGamesDatabase().map { it.toRemoteData() }.also {
                 it.forEach { game ->
@@ -181,15 +174,9 @@ class SettingsViewModel @Inject constructor(
                     }
                 }
             }
-            data = mapOf(
-                "games" to games,
-                "sagas" to sagas,
-            )
+            data = ExportData(games, sagas)
         }
-        val gson = GsonBuilder()
-            .setDateFormat("MMM dd, yyyy HH:mm:ss")
-            .create()
-        gson.toJson(data)
+        Json.encodeToString(data)
     } catch (_: Exception) {
         null
     }

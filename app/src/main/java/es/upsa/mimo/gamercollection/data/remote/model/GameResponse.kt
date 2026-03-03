@@ -1,53 +1,59 @@
 package es.upsa.mimo.gamercollection.data.remote.model
 
-import com.google.gson.annotations.SerializedName
 import java.util.Date
+import kotlinx.serialization.Required
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class GameResponse(
-    @SerializedName("id")
+    @SerialName("id")
+    @Required
     override var id: Int,
-    @SerializedName("name")
-    var name: String?,
-    @SerializedName("platform")
-    var platform: String?,
-    @SerializedName("score")
+    @SerialName("name")
+    var name: String? = null,
+    @SerialName("platform")
+    var platform: String? = null,
+    @SerialName("score")
     var score: Double,
-    @SerializedName("pegi")
-    val pegi: String?,
-    @SerializedName("distributor")
-    val distributor: String?,
-    @SerializedName("developer")
-    val developer: String?,
-    @SerializedName("players")
-    val players: String?,
-    @SerializedName("releaseDate")
-    val releaseDate: Date?,
-    @SerializedName("goty")
+    @SerialName("pegi")
+    val pegi: String? = null,
+    @SerialName("distributor")
+    val distributor: String? = null,
+    @SerialName("developer")
+    val developer: String? = null,
+    @SerialName("players")
+    val players: String? = null,
+    @SerialName("releaseDate")
+    @Serializable(with = DateSerializer::class)
+    val releaseDate: Date? = null,
+    @SerialName("goty")
     val goty: Boolean,
-    @SerializedName("format")
-    val format: String?,
-    @SerializedName("genre")
-    val genre: String?,
-    @SerializedName("state")
-    val state: String?,
-    @SerializedName("purchaseDate")
-    val purchaseDate: Date?,
-    @SerializedName("purchaseLocation")
-    val purchaseLocation: String?,
-    @SerializedName("price")
+    @SerialName("format")
+    val format: String? = null,
+    @SerialName("genre")
+    val genre: String? = null,
+    @SerialName("state")
+    val state: String? = null,
+    @SerialName("purchaseDate")
+    @Serializable(with = DateSerializer::class)
+    val purchaseDate: Date? = null,
+    @SerialName("purchaseLocation")
+    val purchaseLocation: String? = null,
+    @SerialName("price")
     val price: Double,
-    @SerializedName("imageUrl")
-    var imageUrl: String?,
-    @SerializedName("videoUrl")
-    val videoUrl: String?,
-    @SerializedName("loanedTo")
-    val loanedTo: String?,
-    @SerializedName("observations")
-    val observations: String?,
-    @SerializedName("saga")
-    var saga: SagaResponse?,
-    @SerializedName("songs")
-    var songs: MutableList<SongResponse>,
+    @SerialName("imageUrl")
+    var imageUrl: String? = null,
+    @SerialName("videoUrl")
+    val videoUrl: String? = null,
+    @SerialName("loanedTo")
+    val loanedTo: String? = null,
+    @SerialName("observations")
+    val observations: String? = null,
+    @SerialName("saga")
+    var saga: SagaResponse? = null,
+    @SerialName("songs")
+    var songs: List<SongResponse> = emptyList(),
 ) : BaseResponse<Int> {
 
     constructor(rawgGame: RawgGameResponse) : this(

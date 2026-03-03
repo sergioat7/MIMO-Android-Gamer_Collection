@@ -2,8 +2,6 @@ package es.upsa.mimo.gamercollection.data
 
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import es.upsa.mimo.gamercollection.BuildConfig
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.data.local.daos.GameDao
@@ -29,6 +27,8 @@ import es.upsa.mimo.gamercollection.domain.toDomain
 import es.upsa.mimo.gamercollection.domain.toLocalData
 import es.upsa.mimo.gamercollection.utils.Constants
 import javax.inject.Inject
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
 
 class GameRepositoryImpl @Inject constructor(
     private val apiRawg: RawgGameApiService,
@@ -361,8 +361,13 @@ class GameRepositoryImpl @Inject constructor(
         values: String,
     ): Map<String, List<T>> = if (values.isNotEmpty()) {
         try {
-            val type = object : TypeToken<Map<String, List<T>>>() {}.type
-            Gson().fromJson(values, type)
+            val valuesJson = Json
+                .parseToJsonElement(values)
+                .jsonObject
+                .toString()
+            Json
+                .decodeFromString<Map<String, List<T>>>(valuesJson)
+                .mapValues { it.value }
         } catch (e: Exception) {
             println("GameRepository ${(e.message ?: "")}")
             emptyMap()

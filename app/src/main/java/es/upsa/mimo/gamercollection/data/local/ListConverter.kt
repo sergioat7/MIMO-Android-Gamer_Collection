@@ -1,43 +1,25 @@
 package es.upsa.mimo.gamercollection.data.local
 
 import androidx.room.TypeConverter
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import es.upsa.mimo.gamercollection.data.local.model.GameEntity
 import es.upsa.mimo.gamercollection.data.local.model.SongEntity
-import java.util.*
+import kotlinx.serialization.json.Json
 
 class ListConverter {
 
-    //region Private properties
-    private val gson = Gson()
-    //endregion
-
-    //region Public methods
     @TypeConverter
-    fun stringToSongList(data: String?): List<SongEntity?>? {
-        if (data == null) {
-            return Collections.emptyList()
-        }
-        val listType =
-            object : TypeToken<List<SongEntity?>?>() {}.type
-        return gson.fromJson<List<SongEntity?>>(data, listType)
-    }
+    fun stringToSongList(data: String?): List<SongEntity?> =
+        data?.let { Json.decodeFromString<List<SongEntity?>>(it) } ?: emptyList()
 
     @TypeConverter
-    fun songListToString(songs: List<SongEntity?>?): String? = gson.toJson(songs)
+    fun songListToString(songs: List<SongEntity?>?): String? =
+        songs?.let { Json.encodeToString(it) }
 
     @TypeConverter
-    fun stringToGameList(data: String?): List<GameEntity?>? {
-        if (data == null) {
-            return Collections.emptyList()
-        }
-        val listType =
-            object : TypeToken<List<GameEntity?>?>() {}.type
-        return gson.fromJson<List<GameEntity?>>(data, listType)
-    }
+    fun stringToGameList(data: String?): List<GameEntity?> =
+        data?.let { Json.decodeFromString<List<GameEntity?>>(it) } ?: emptyList()
 
     @TypeConverter
-    fun gameListToString(games: List<GameEntity?>?): String? = gson.toJson(games)
-    //endregion
+    fun gameListToString(games: List<GameEntity?>?): String? =
+        games?.let { Json.encodeToString(it) }
 }

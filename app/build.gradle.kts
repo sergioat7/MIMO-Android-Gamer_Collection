@@ -4,6 +4,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
     id("kotlin-kapt")
     alias(libs.plugins.google.services)
     id("com.google.firebase.crashlytics")
@@ -112,9 +113,6 @@ dependencies {
     implementation(libs.play.services.location)
     implementation(libs.play.services.maps)
 
-    //Gson
-    implementation(libs.gson)
-
     //Retrofit
     implementation(libs.bundles.retrofit)
 
@@ -145,6 +143,9 @@ dependencies {
     //Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+
+    //Kotlinx serialization
+    implementation(libs.kotlinx.serialization.json)
 
     //Test
     testImplementation(libs.junit)

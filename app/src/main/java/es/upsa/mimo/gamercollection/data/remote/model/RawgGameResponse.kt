@@ -1,21 +1,30 @@
 package es.upsa.mimo.gamercollection.data.remote.model
 
-import com.google.gson.annotations.SerializedName
-import java.util.*
+import java.util.Date
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 private const val NEXT_VALUE_SEPARATOR = ", "
 
+@Serializable
 data class RawgGameResponse(
-    val id: Int,
-    val name: String?,
-    val released: Date?,
-    @SerializedName("background_image")
-    val backgroundImage: String?,
-    val rating: Double,
-    val developers: List<RawgDeveloperResponse>?,
-    val publishers: List<RawgPublisherResponse>?,
-    @SerializedName("esrb_rating")
-    val esrbRating: RawgEsrbResponse?,
+    @SerialName("id")
+    val id: Int = 0,
+    @SerialName("name")
+    val name: String? = null,
+    @SerialName("released")
+    @Serializable(with = DateSerializer::class)
+    val released: Date? = null,
+    @SerialName("background_image")
+    val backgroundImage: String? = null,
+    @SerialName("rating")
+    val rating: Double = 0.0,
+    @SerialName("developers")
+    val developers: List<RawgDeveloperResponse>? = null,
+    @SerialName("publishers")
+    val publishers: List<RawgPublisherResponse>? = null,
+    @SerialName("esrb_rating")
+    val esrbRating: RawgEsrbResponse? = null,
 ) {
 
     fun getDevelopersAsString(): String? {
