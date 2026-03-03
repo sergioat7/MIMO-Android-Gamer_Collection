@@ -3,7 +3,6 @@ package es.upsa.mimo.gamercollection.data.local
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
-import com.google.gson.Gson
 import es.upsa.mimo.gamercollection.GamerCollectionApplication
 import es.upsa.mimo.gamercollection.data.local.model.AuthData
 import es.upsa.mimo.gamercollection.data.local.model.UserData
@@ -13,6 +12,7 @@ import es.upsa.mimo.gamercollection.extensions.setString
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.Preferences
 import java.util.Locale
+import kotlinx.serialization.json.Json
 
 object SharedPreferencesHelper {
 
@@ -25,12 +25,11 @@ object SharedPreferencesHelper {
     private val appEncryptedPreferences = EncryptedSharedPreferences.create(
         Preferences.ENCRYPTED_PREFERENCES_NAME,
         MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
-        GamerCollectionApplication.Companion.context,
+        GamerCollectionApplication.context,
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
     )
     private val encryptedEditor = appEncryptedPreferences.edit()
-    private val gson = Gson()
     //endregion
 
     //region Public properties
@@ -46,29 +45,23 @@ object SharedPreferencesHelper {
         get() {
             return appEncryptedPreferences
                 .getString(Preferences.AUTH_DATA_PREFERENCES_NAME, null)
-                ?.let {
-                    gson.fromJson(it, AuthData::class.java)
-                } ?: run {
-                AuthData(Constants.EMPTY_VALUE)
-            }
+                ?.let { Json.decodeFromString<AuthData>(it) }
+                ?: run { AuthData(Constants.EMPTY_VALUE) }
         }
         set(value) = encryptedEditor.setString(
             Preferences.AUTH_DATA_PREFERENCES_NAME,
-            gson.toJson(value),
+            Json.encodeToString(value),
         )
     var userData: UserData
         get() {
             return appEncryptedPreferences
                 .getString(Preferences.USER_DATA_PREFERENCES_NAME, null)
-                ?.let {
-                    gson.fromJson(it, UserData::class.java)
-                } ?: run {
-                UserData(Constants.EMPTY_VALUE, Constants.EMPTY_VALUE, false)
-            }
+                ?.let { Json.decodeFromString<UserData>(it) }
+                ?: run { UserData(Constants.EMPTY_VALUE, Constants.EMPTY_VALUE, false) }
         }
         set(value) = encryptedEditor.setString(
             Preferences.USER_DATA_PREFERENCES_NAME,
-            gson.toJson(value),
+            Json.encodeToString(value),
         )
     val isLoggedIn: Boolean
         get() = userData.isLoggedIn && credentials.token.isNotEmpty()
