@@ -7,6 +7,7 @@ sdk-target = "36"
 agp = "8.11.0"
 androidx-test-ext-junit = "1.2.1"
 app-compat = "1.7.1"
+app-update = "2.1.0"
 blur-image-view = "1.0.1"
 constraint-layout = "2.2.1"
 core-ktx = "1.16.0"
@@ -47,6 +48,9 @@ fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref
 legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacy-support-v4" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 multidex = { group = "androidx.multidex", name = "multidex", version.ref = "multidex" }
+
+#App update
+app-update-ktx = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "app-update" }
 
 #Firebase
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }

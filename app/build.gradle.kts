@@ -101,6 +101,9 @@ dependencies {
     implementation(libs.legacy.support.v4)
     implementation(libs.multidex)
 
+    //App update
+    implementation(libs.app.update.ktx)
+
     //MVVM & LiveData
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
