@@ -27,37 +27,45 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun providesJson(): Json = Json { ignoreUnknownKeys = true }
-
-    @Singleton
-    @Provides
-    fun providesRetrofit(json: Json): Retrofit {
-        val logInterceptor = HttpLoggingInterceptor()
-        logInterceptor.level =
+    fun providesHttpLoggingInterceptor(): HttpLoggingInterceptor {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level =
             if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor.Level.HEADERS
             } else {
                 HttpLoggingInterceptor.Level.NONE
             }
-
-        val clientBuilder =
-            OkHttpClient
-                .Builder()
-                .addInterceptor(logInterceptor)
-                .connectTimeout(15, TimeUnit.SECONDS)
-                .readTimeout(15, TimeUnit.SECONDS)
-                .writeTimeout(15, TimeUnit.SECONDS)
-
-        val retrofit =
-            Retrofit
-                .Builder()
-                .baseUrl(BASE_ENDPOINT_RAWG)
-                .client(clientBuilder.build())
-                .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-                .build()
-
-        return retrofit
+        return interceptor
     }
+
+    @Singleton
+    @Provides
+    fun providesClientBuilder(logInterceptor: HttpLoggingInterceptor): OkHttpClient.Builder =
+        OkHttpClient
+            .Builder()
+            .addInterceptor(logInterceptor)
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(15, TimeUnit.SECONDS)
+            .writeTimeout(15, TimeUnit.SECONDS)
+
+    @Singleton
+    @Provides
+    fun providesConverterFactory(): retrofit2.Converter.Factory {
+        val json = Json { ignoreUnknownKeys = true }
+        return json.asConverterFactory("application/json".toMediaType())
+    }
+
+    @Singleton
+    @Provides
+    fun providesRetrofit(
+        clientBuilder: OkHttpClient.Builder,
+        converterFactory: retrofit2.Converter.Factory,
+    ): Retrofit = Retrofit
+        .Builder()
+        .baseUrl(BASE_ENDPOINT_RAWG)
+        .client(clientBuilder.build())
+        .addConverterFactory(converterFactory)
+        .build()
 
     @Singleton
     @Provides

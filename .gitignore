@@ -9,3 +9,5 @@ build
 .externalNativeBuild
 .cxx
 /.kotlin
+/app/gamercollection-keystore.jks
+/app/release/*
