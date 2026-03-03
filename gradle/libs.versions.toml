@@ -33,6 +33,7 @@ play-services-location = "21.3.0"
 play-services-maps = "19.2.0"
 picasso = "2.8"
 retrofit = "3.0.0"
+retrofit-kotlinx-converter = "1.0.0"
 room = "2.7.2"
 security = "1.0.0"
 spotless-version = "8.2.1"
@@ -89,7 +90,7 @@ picasso = { group = "com.squareup.picasso", name = "picasso", version.ref = "pic
 #Retrofit
 okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp3" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+retrofit-kotlinx-serialization-converter = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofit-kotlinx-converter" }
 
 #Room
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
@@ -123,5 +124,5 @@ firebase = [
 retrofit = [
     "okhttp3-logging-interceptor",
     "retrofit",
-    "retrofit-converter-gson",
+    "retrofit-kotlinx-serialization-converter",
 ]

@@ -4,27 +4,20 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import es.upsa.mimo.gamercollection.BuildConfig
 import es.upsa.mimo.gamercollection.data.remote.interfaces.RawgGameApiService
-import es.upsa.mimo.gamercollection.extensions.toDate
-import es.upsa.mimo.gamercollection.utils.Constants
-import java.lang.reflect.Type
-import java.util.Date
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 private const val BASE_ENDPOINT_RAWG = "https://api.rawg.io/api/"
 
@@ -34,19 +27,11 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun providesGson(): Gson = GsonBuilder()
-        .registerTypeAdapter(
-            Date::class.java,
-            JsonDeserializer<Date> { json: JsonElement, _: Type?, _: JsonDeserializationContext? ->
-                json.asString.toDate()
-            },
-        ).setDateFormat(Constants.DATE_FORMAT)
-        .serializeNulls()
-        .create()
+    fun providesJson(): Json = Json { ignoreUnknownKeys = true }
 
     @Singleton
     @Provides
-    fun providesRetrofit(gson: Gson): Retrofit {
+    fun providesRetrofit(json: Json): Retrofit {
         val logInterceptor = HttpLoggingInterceptor()
         logInterceptor.level =
             if (BuildConfig.DEBUG) {
@@ -68,7 +53,7 @@ object NetworkModule {
                 .Builder()
                 .baseUrl(BASE_ENDPOINT_RAWG)
                 .client(clientBuilder.build())
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
                 .build()
 
         return retrofit

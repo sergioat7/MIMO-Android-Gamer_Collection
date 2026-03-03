@@ -1,8 +1,16 @@
 package es.upsa.mimo.gamercollection.data.remote.model
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class RawgGameListResponse(
-    val count: Int,
-    val next: String?,
-    val previous: String?,
-    val results: List<RawgGameResponse>,
+    @SerialName("count")
+    val count: Int = 0,
+    @SerialName("next")
+    val next: String? = null,
+    @SerialName("previous")
+    val previous: String? = null,
+    @SerialName("results")
+    val results: List<RawgGameResponse> = emptyList(),
 )
