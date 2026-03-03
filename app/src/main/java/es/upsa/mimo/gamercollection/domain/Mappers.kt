@@ -110,7 +110,7 @@ fun Game.toLocalData(): GameEntity = GameEntity(
     loanedTo = loanedTo,
     observations = observations,
     saga = saga?.toLocalData(),
-    songs = songs.map { it.toLocalData() }.toMutableList(),
+    songs = songs.map { it.toLocalData() },
 )
 
 fun Game.toRemoteData(): GameResponse = GameResponse(
