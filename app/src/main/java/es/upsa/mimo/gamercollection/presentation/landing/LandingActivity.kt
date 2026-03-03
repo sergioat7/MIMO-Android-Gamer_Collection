@@ -6,14 +6,22 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.viewModels
+import com.google.android.play.core.install.model.InstallStatus
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.presentation.base.BaseActivity
+import es.upsa.mimo.gamercollection.utils.InAppUpdateService
 import es.upsa.mimo.gamercollection.utils.Notifications
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LandingActivity : BaseActivity() {
+
+    //region Public properties
+    @Inject
+    lateinit var inAppUpdateService: InAppUpdateService
+    //endregion
 
     //region Private properties
     private val viewModel: LandingViewModel by viewModels()
@@ -24,6 +32,12 @@ class LandingActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         initializeUI()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        inAppUpdateService.onDestroy()
     }
     //endregion
 
@@ -36,12 +50,41 @@ class LandingActivity : BaseActivity() {
         createNotificationChannel()
         viewModel.checkTheme()
 
-        if (!viewModel.newChangesPopupShown) {
-            showPopupActionDialog(getString(R.string.new_version_changes), acceptHandler = {
-                viewModel.checkIsLoggedIn()
-            })
-        } else {
-            viewModel.checkIsLoggedIn()
+        inAppUpdateService.checkVersion()
+        inAppUpdateService.installStatus.observe(this) {
+            when (it) {
+                InstallStatus.DOWNLOADING,
+                InstallStatus.DOWNLOADED,
+                InstallStatus.INSTALLED,
+                InstallStatus.CANCELED,
+                -> {
+                    if (it == InstallStatus.CANCELED &&
+                        inAppUpdateService.isImmediateUpdate()
+                    ) {
+                        finish()
+                    } else {
+                        if (!viewModel.newChangesPopupShown) {
+                            showPopupActionDialog(
+                                getString(
+                                    R.string.new_version_changes,
+                                ),
+                                acceptHandler = {
+                                    viewModel.checkIsLoggedIn()
+                                },
+                            )
+                        } else {
+                            viewModel.checkIsLoggedIn()
+                        }
+                        inAppUpdateService.onDestroy()
+                    }
+                }
+                InstallStatus.FAILED -> {
+                    inAppUpdateService.checkVersion()
+                }
+                else -> {
+                    Unit
+                }
+            }
         }
     }
 
