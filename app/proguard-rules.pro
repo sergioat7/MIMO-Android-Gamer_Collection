@@ -32,24 +32,7 @@
 
 -keep public class * extends java.lang.Exception    # Optional: Keep custom exceptions
 
-##---------------------Begin: proguard configuration for Gson ------------------------
-
-#-keepattributes Signature
-
--keep class es.upsa.mimo.gamercollection.models.** { <fields>; }
-
--keep class es.upsa.mimo.gamercollection.network.interfaces.** { <fields>; }
-
-#-keep class * extends com.google.gson.TypeAdapter
-#-keep class * implements com.google.gson.TypeAdapterFactory
-#-keep class * implements com.google.gson.JsonSerializer
-#-keep class * implements com.google.gson.JsonDeserializer
-
--keepclassmembers,allowobfuscation class * {
-    @com.google.gson.annotations.SerializedName <fields>;
-}
-
-##---------------------End: proguard configuration for Gson --------------------------
+-keep class es.upsa.mimo.gamercollection.data.remote.interfaces.** { <fields>; }
 
 ##---------------------Begin: proguard configuration for BindingFragment -------------
 

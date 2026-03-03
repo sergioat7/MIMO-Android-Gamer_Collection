@@ -15,7 +15,6 @@ espresso-core = "3.6.1"
 firebase-bom = "33.16.0"
 fragment-ktx = "1.8.8"
 google-services = "4.4.3"
-gson = "2.13.1"
 hilt = "2.56.2"
 junit = "4.13.2"
 kotlin = "2.2.0"
@@ -57,9 +56,6 @@ firebase-config = { module = "com.google.firebase:firebase-config-ktx" }
 
 #Blur image view
 blurImageView = { group = "com.github.jgabrielfreitas", name = "BlurImageView", version.ref = "blur-image-view" }
-
-#Gson
-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 
 #Hilt
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }

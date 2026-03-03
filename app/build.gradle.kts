@@ -113,9 +113,6 @@ dependencies {
     implementation(libs.play.services.location)
     implementation(libs.play.services.maps)
 
-    //Gson
-    implementation(libs.gson)
-
     //Retrofit
     implementation(libs.bundles.retrofit)
 
