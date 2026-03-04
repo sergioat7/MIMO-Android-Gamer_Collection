@@ -5,14 +5,23 @@ import androidx.activity.enableEdgeToEdge
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.install.model.InstallStatus
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.databinding.ActivityMainBinding
 import es.upsa.mimo.gamercollection.extensions.setupWithNavController
 import es.upsa.mimo.gamercollection.presentation.base.BaseActivity
+import es.upsa.mimo.gamercollection.utils.InAppUpdateService
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
+
+    //region Public properties
+    @Inject
+    lateinit var inAppUpdateService: InAppUpdateService
+    //endregion
 
     //region Private properties
     private lateinit var binding: ActivityMainBinding
@@ -31,6 +40,26 @@ class MainActivity : BaseActivity() {
         if (savedInstanceState == null) {
             setupBottomNavigationBar()
         } // Else, need to wait for onRestoreInstanceState
+
+        inAppUpdateService.installStatus.observe(this) {
+            if (it == InstallStatus.DOWNLOADED) {
+                inAppUpdateService.onResume()
+            } else if (it == InstallStatus.DOWNLOADED + InstallStatus.INSTALLED) {
+                flexibleUpdateDownloadCompleted()
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        inAppUpdateService.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        inAppUpdateService.onDestroy()
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -62,6 +91,22 @@ class MainActivity : BaseActivity() {
             intent = intent,
         )
         currentNavController = controller
+    }
+
+    private fun flexibleUpdateDownloadCompleted() {
+        Snackbar
+            .make(
+                findViewById(android.R.id.content),
+                getString(R.string.message_app_update_downloaded),
+                Snackbar.LENGTH_INDEFINITE,
+            ).apply {
+                setAction(
+                    getString(R.string.restart),
+                ) { inAppUpdateService.completeUpdate() }
+                setBackgroundTint(getColor(R.color.colorPrimary))
+                setActionTextColor(getColor(R.color.colorSecondary))
+                show()
+            }
     }
     //endregion
 }
