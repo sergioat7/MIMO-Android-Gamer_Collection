@@ -16,4 +16,5 @@ interface UserRepository {
         success: () -> Unit,
         failure: (ErrorModel) -> Unit,
     )
+    suspend fun isThereMandatoryUpdate(): Boolean
 }

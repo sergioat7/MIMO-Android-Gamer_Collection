@@ -15,6 +15,7 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.installStatus
+import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.domain.di.IoDispatcher
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 
 class InAppUpdateService @Inject constructor(
     activity: FragmentActivity,
+    private val userRepository: UserRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) {
 
@@ -67,7 +69,7 @@ class InAppUpdateService @Inject constructor(
                 _installStatus.value = InstallStatus.DOWNLOADED
             } else if (isUpdateAvailable(info)) {
                 CoroutineScope(ioDispatcher).launch {
-                    val isThereMandatoryUpdate = false
+                    val isThereMandatoryUpdate = userRepository.isThereMandatoryUpdate()
                     if (isThereMandatoryUpdate) {
                         startUpdate(info, AppUpdateType.IMMEDIATE)
                     } else {
