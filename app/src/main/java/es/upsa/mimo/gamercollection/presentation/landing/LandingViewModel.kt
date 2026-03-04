@@ -1,7 +1,6 @@
 package es.upsa.mimo.gamercollection.presentation.landing
 
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
@@ -9,6 +8,8 @@ import es.upsa.mimo.gamercollection.domain.GameRepository
 import es.upsa.mimo.gamercollection.presentation.MainActivity
 import es.upsa.mimo.gamercollection.presentation.login.LoginActivity
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @HiltViewModel
 class LandingViewModel @Inject constructor(
@@ -16,7 +17,7 @@ class LandingViewModel @Inject constructor(
 ) : ViewModel() {
 
     //region Private properties
-    private val _landingClassToStart = MutableLiveData<Class<*>>()
+    private val _landingClassToStart = MutableStateFlow<Class<*>?>(null)
     //endregion
 
     //region Public properties
@@ -24,7 +25,7 @@ class LandingViewModel @Inject constructor(
         get() = SharedPreferencesHelper.language
     val newChangesPopupShown: Boolean
         get() = SharedPreferencesHelper.newChangesPopupShown
-    val landingClassToStart = _landingClassToStart
+    val landingClassToStart: StateFlow<Class<*>?> = _landingClassToStart
     //endregion
 
     //region Public methods

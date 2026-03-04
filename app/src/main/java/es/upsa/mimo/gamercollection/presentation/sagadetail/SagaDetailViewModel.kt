@@ -1,7 +1,5 @@
 package es.upsa.mimo.gamercollection.presentation.sagadetail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,6 +12,8 @@ import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.domain.model.Saga
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -25,18 +25,18 @@ class SagaDetailViewModel @Inject constructor(
 
     //region Private properties
     private var sagaId: Int = state["sagaId"] ?: 0
-    private val _sagaDetailLoading = MutableLiveData<Boolean>()
-    private val _sagaDetailSuccessMessage = MutableLiveData<Int>()
-    private val _sagaDetailError = MutableLiveData<ErrorModel?>()
-    private val _saga = MutableLiveData<Saga?>()
+    private val _sagaDetailLoading = MutableStateFlow<Boolean?>(null)
+    private val _sagaDetailSuccessMessage = MutableStateFlow<Int?>(null)
+    private val _sagaDetailError = MutableStateFlow<ErrorModel?>(null)
+    private val _saga = MutableStateFlow<Saga?>(null)
     //endregion
 
     //region Public properties
     lateinit var games: List<Game>
-    val sagaDetailLoading: LiveData<Boolean> = _sagaDetailLoading
-    val sagaDetailSuccessMessage: LiveData<Int> = _sagaDetailSuccessMessage
-    val sagaDetailError: LiveData<ErrorModel?> = _sagaDetailError
-    val saga: LiveData<Saga?> = _saga
+    val sagaDetailLoading: StateFlow<Boolean?> = _sagaDetailLoading
+    val sagaDetailSuccessMessage: StateFlow<Int?> = _sagaDetailSuccessMessage
+    val sagaDetailError: StateFlow<ErrorModel?> = _sagaDetailError
+    val saga: StateFlow<Saga?> = _saga
     //endregion
 
     //region Lifecycle methods

@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -25,6 +26,8 @@ import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
 import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.presentation.games.GamesAdapter
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemClickListener {
@@ -175,33 +178,41 @@ class SagaDetailFragment : BindingFragment<FragmentSagaDetailBinding>(), OnItemC
     }
 
     private fun setupBindings() {
-        viewModel.sagaDetailLoading.observe(viewLifecycleOwner) { isLoading ->
+        lifecycleScope.launch {
+            viewModel.sagaDetailLoading.filterNotNull().collect { isLoading ->
 
-            if (isLoading) {
-                showLoading()
-            } else {
+                if (isLoading) {
+                    showLoading()
+                } else {
+                    hideLoading()
+                    cancelEdition()
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.sagaDetailSuccessMessage.filterNotNull().collect {
+                val message = resources.getString(it)
+                showPopupDialog(message, goBack)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.sagaDetailError.collect { error ->
+
                 hideLoading()
-                cancelEdition()
+                error?.let {
+                    manageError(it)
+                }
             }
         }
 
-        viewModel.sagaDetailSuccessMessage.observe(viewLifecycleOwner) {
-            val message = resources.getString(it)
-            showPopupDialog(message, goBack)
-        }
+        lifecycleScope.launch {
+            viewModel.saga.collect { saga ->
 
-        viewModel.sagaDetailError.observe(viewLifecycleOwner) { error ->
-
-            hideLoading()
-            error?.let {
-                manageError(it)
+                showData(saga)
+                enableEdition(saga == null)
             }
-        }
-
-        viewModel.saga.observe(viewLifecycleOwner) { saga ->
-
-            showData(saga)
-            enableEdition(saga == null)
         }
 
         goBack.observe(viewLifecycleOwner) {

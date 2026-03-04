@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.SearchView
 import androidx.databinding.ObservableField
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,8 @@ import es.upsa.mimo.gamercollection.presentation.games.GamesAdapter
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemClickListener {
@@ -114,9 +117,9 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
             }
 
             gamesAdapter = GamesAdapter(
-                this@GameSearchFragment.viewModel.games.value ?: listOf(),
-                null,
-                this@GameSearchFragment,
+                games = emptyList(),
+                sagaId = null,
+                onItemClickListener = this@GameSearchFragment,
             )
             recyclerViewGames.apply {
                 layoutManager = LinearLayoutManager(requireContext())
@@ -159,21 +162,27 @@ class GameSearchFragment : BindingFragment<FragmentGameSearchBinding>(), OnItemC
 
     //region Protected methods
     private fun setupBindings() {
-        viewModel.gamesLoading.observe(viewLifecycleOwner) { isLoading ->
+        lifecycleScope.launch {
+            viewModel.gamesLoading.filterNotNull().collect { isLoading ->
 
-            if (isLoading) {
-                showLoading()
-            } else {
-                hideLoading()
+                if (isLoading) {
+                    showLoading()
+                } else {
+                    hideLoading()
+                }
             }
         }
 
-        viewModel.gamesError.observe(viewLifecycleOwner) { error ->
-            manageError(error)
+        lifecycleScope.launch {
+            viewModel.gamesError.filterNotNull().collect { error ->
+                manageError(error)
+            }
         }
 
-        viewModel.scrollPosition.observe(viewLifecycleOwner) {
-            scrollPosition.set(it)
+        lifecycleScope.launch {
+            viewModel.scrollPosition.collect {
+                scrollPosition.set(it)
+            }
         }
     }
 

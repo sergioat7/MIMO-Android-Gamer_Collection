@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -41,6 +42,8 @@ import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.CustomDropdownType
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
@@ -221,24 +224,30 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
 
     //region Private methods
     private fun setupBindings() {
-        viewModel.gameDetailLoading.observe(viewLifecycleOwner) { isLoading ->
+        lifecycleScope.launch {
+            viewModel.gameDetailLoading.filterNotNull().collect { isLoading ->
 
-            if (isLoading) {
-                showLoading()
-            } else {
-                hideLoading()
+                if (isLoading) {
+                    showLoading()
+                } else {
+                    hideLoading()
+                }
             }
         }
 
-        viewModel.gameDetailSuccessMessage.observe(viewLifecycleOwner) {
-            val message = resources.getString(it)
-            showPopupDialog(message, goBack)
+        lifecycleScope.launch {
+            viewModel.gameDetailSuccessMessage.filterNotNull().collect {
+                val message = resources.getString(it)
+                showPopupDialog(message, goBack)
+            }
         }
 
-        viewModel.gameDetailError.observe(viewLifecycleOwner) { error ->
+        lifecycleScope.launch {
+            viewModel.gameDetailError.filterNotNull().collect { error ->
 
-            hideLoading()
-            manageError(error)
+                hideLoading()
+                manageError(error)
+            }
         }
 
         viewModel.game.observe(viewLifecycleOwner) {

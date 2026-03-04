@@ -1,18 +1,18 @@
 package es.upsa.mimo.gamercollection.presentation.gamedetail.gamedata
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Game
-import java.util.*
+import java.util.Date
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class GameDataViewModel(private val game: Game?) : ViewModel() {
 
     //region Private properties
-    private val _gameDataLoading = MutableLiveData<Boolean>()
-    private val _gameDataError = MutableLiveData<ErrorModel>()
+    private val _gameDataLoading = MutableStateFlow<Boolean?>(null)
+    private val _gameDataError = MutableStateFlow<ErrorModel?>(null)
     //endregion
 
     //region Public properties
@@ -20,8 +20,8 @@ class GameDataViewModel(private val game: Game?) : ViewModel() {
         get() = SharedPreferencesHelper.language
     val dateFormatToShow: String
         get() = SharedPreferencesHelper.dateFormatToShow
-    val gameDataLoading: LiveData<Boolean> = _gameDataLoading
-    val gameDataError: LiveData<ErrorModel> = _gameDataError
+    val gameDataLoading: StateFlow<Boolean?> = _gameDataLoading
+    val gameDataError: StateFlow<ErrorModel?> = _gameDataError
     //endregion
 
     //region Public methods

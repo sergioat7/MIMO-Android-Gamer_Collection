@@ -11,6 +11,8 @@ import es.upsa.mimo.gamercollection.domain.GameRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Game
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -23,16 +25,16 @@ class GameDetailViewModel @Inject constructor(
     //region Private properties
     private var gameId: Int = state["gameId"] ?: -1
     private var isRawgGame: Boolean = state["isRawgGame"] ?: false
-    private val _gameDetailLoading = MutableLiveData<Boolean>()
-    private val _gameDetailSuccessMessage = MutableLiveData<Int>()
-    private val _gameDetailError = MutableLiveData<ErrorModel>()
+    private val _gameDetailLoading = MutableStateFlow<Boolean?>(null)
+    private val _gameDetailSuccessMessage = MutableStateFlow<Int?>(null)
+    private val _gameDetailError = MutableStateFlow<ErrorModel?>(null)
     private val _game = MutableLiveData<Game?>()
     //endregion
 
     //region Public properties
-    val gameDetailLoading: LiveData<Boolean> = _gameDetailLoading
-    val gameDetailSuccessMessage: LiveData<Int> = _gameDetailSuccessMessage
-    val gameDetailError: LiveData<ErrorModel> = _gameDetailError
+    val gameDetailLoading: StateFlow<Boolean?> = _gameDetailLoading
+    val gameDetailSuccessMessage: StateFlow<Int?> = _gameDetailSuccessMessage
+    val gameDetailError: StateFlow<ErrorModel?> = _gameDetailError
     val game: LiveData<Game?> = _game
     //endregion
 

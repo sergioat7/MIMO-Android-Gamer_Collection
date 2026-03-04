@@ -1,8 +1,6 @@
 package es.upsa.mimo.gamercollection.presentation.settings
 
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,6 +20,8 @@ import es.upsa.mimo.gamercollection.domain.toDomain
 import es.upsa.mimo.gamercollection.domain.toRemoteData
 import es.upsa.mimo.gamercollection.utils.Constants
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
@@ -36,9 +36,10 @@ class SettingsViewModel @Inject constructor(
 ) : ViewModel() {
 
     //region Private properties
-    private val _settingsForm = MutableLiveData<Int?>()
-    private val _settingsLoading = MutableLiveData<Boolean>()
-    private val _settingsError = MutableLiveData<ErrorModel?>()
+    private val _settingsForm = MutableStateFlow<Int?>(null)
+    private val _settingsLoading = MutableStateFlow<Boolean?>(null)
+    private val _settingsError = MutableStateFlow<ErrorModel?>(null)
+    private val _logOut = MutableStateFlow<Boolean?>(null)
     //endregion
 
     //region Public properties
@@ -48,15 +49,16 @@ class SettingsViewModel @Inject constructor(
     var sortParam: String = SharedPreferencesHelper.sortParam
     var isSortOrderAscending: Boolean = SharedPreferencesHelper.isSortOrderAscending
     var swipeRefresh: Boolean = SharedPreferencesHelper.swipeRefresh
-    val settingsForm: LiveData<Int?> = _settingsForm
-    val settingsLoading: LiveData<Boolean> = _settingsLoading
-    val settingsError: LiveData<ErrorModel?> = _settingsError
+    val settingsForm: StateFlow<Int?> = _settingsForm
+    val settingsLoading: StateFlow<Boolean?> = _settingsLoading
+    val settingsError: StateFlow<ErrorModel?> = _settingsError
+    val logOut: StateFlow<Boolean?> = _logOut
     //endregion
 
     //region Public methods
     fun logout() {
         SharedPreferencesHelper.logout()
-        _settingsError.value = null
+        _logOut.value = true
     }
 
     fun save(
@@ -76,13 +78,14 @@ class SettingsViewModel @Inject constructor(
 
         if (changePassword) {
             _settingsLoading.value = true
+            _settingsError.value = null
             SharedPreferencesHelper.storePassword(newPassword)
             val userData = SharedPreferencesHelper.userData
             userRepository.login(userData.username, userData.password, {
                 SharedPreferencesHelper.credentials = AuthData(it)
                 _settingsLoading.value = false
                 if (changeLanguage || changeSortParam || changeIsSortDescending) {
-                    _settingsError.value = null
+                    _logOut.value = true
                 }
             }, {
                 _settingsError.value = it
@@ -120,7 +123,7 @@ class SettingsViewModel @Inject constructor(
         }
 
         if (!changePassword && (changeLanguage || changeSortParam || changeIsSortDescending)) {
-            _settingsError.value = null
+            _logOut.value = true
         }
     }
 
@@ -189,7 +192,7 @@ class SettingsViewModel @Inject constructor(
             sagaRepository.resetTable()
 
             _settingsLoading.value = false
-            _settingsError.value = null
+            _logOut.value = true
         }
     }
     //endregion

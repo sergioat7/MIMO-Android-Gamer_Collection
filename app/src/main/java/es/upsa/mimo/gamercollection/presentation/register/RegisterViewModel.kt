@@ -1,7 +1,5 @@
 package es.upsa.mimo.gamercollection.presentation.register
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
@@ -13,6 +11,8 @@ import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.presentation.login.model.LoginFormState
 import es.upsa.mimo.gamercollection.utils.Constants
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
@@ -20,20 +20,23 @@ class RegisterViewModel @Inject constructor(
 ) : ViewModel() {
 
     //region Private properties
-    private val _registerFormState = MutableLiveData<LoginFormState>()
-    private val _registerLoading = MutableLiveData<Boolean>()
-    private val _registerError = MutableLiveData<ErrorModel?>()
+    private val _registerFormState = MutableStateFlow<LoginFormState?>(null)
+    private val _registerLoading = MutableStateFlow<Boolean?>(null)
+    private val _registerError = MutableStateFlow<ErrorModel?>(null)
+    private val _registerSuccess = MutableStateFlow<Boolean?>(null)
     //endregion
 
     //region Public properties
-    val registerFormState: LiveData<LoginFormState> = _registerFormState
-    val registerLoading: LiveData<Boolean> = _registerLoading
-    val registerError: LiveData<ErrorModel?> = _registerError
+    val registerFormState: StateFlow<LoginFormState?> = _registerFormState
+    val registerLoading: StateFlow<Boolean?> = _registerLoading
+    val registerError: StateFlow<ErrorModel?> = _registerError
+    val registerSuccess: StateFlow<Boolean?> = _registerSuccess
     //endregion
 
     //region Public methods
     fun register(username: String, password: String) {
         _registerLoading.value = true
+        _registerError.value = null
         userRepository.register(username, password, {
             userRepository.login(username, password, { token ->
 
@@ -44,7 +47,7 @@ class RegisterViewModel @Inject constructor(
                 }
 
                 _registerLoading.value = false
-                _registerError.value = null
+                _registerSuccess.value = true
             }, {
                 _registerError.value = it
             })

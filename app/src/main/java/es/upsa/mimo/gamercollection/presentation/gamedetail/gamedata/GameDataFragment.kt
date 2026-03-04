@@ -3,6 +3,7 @@ package es.upsa.mimo.gamercollection.presentation.gamedetail.gamedata
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.model.LatLng
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.data.remote.model.FORMATS
@@ -22,6 +23,8 @@ import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.CustomDropdownType
 import es.upsa.mimo.gamercollection.utils.State
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 class GameDataFragment(
     private var game: Game? = null,
@@ -211,20 +214,19 @@ class GameDataFragment(
 
     //region Private methods
     private fun setupBindings() {
-        viewModel.gameDataLoading.observe(viewLifecycleOwner) { isLoading ->
+        lifecycleScope.launch {
+            viewModel.gameDataLoading.filterNotNull().collect { isLoading ->
 
-            if (isLoading) {
-                showLoading()
-            } else {
-                hideLoading()
+                if (isLoading) {
+                    showLoading()
+                } else {
+                    hideLoading()
+                }
             }
         }
 
-        viewModel.gameDataError.observe(viewLifecycleOwner) { error ->
-
-            if (error == null) {
-                activity?.finish()
-            } else {
+        lifecycleScope.launch {
+            viewModel.gameDataError.filterNotNull().collect { error ->
                 manageError(error)
             }
         }
