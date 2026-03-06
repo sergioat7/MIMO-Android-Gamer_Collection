@@ -3,13 +3,13 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     id("kotlin-kapt")
-    alias(libs.plugins.google.services)
-    id("com.google.firebase.crashlytics")
-    id("androidx.navigation.safeargs.kotlin")
-    alias(libs.plugins.hilt)
+    alias(libs.plugins.navigation.safeargs)
 }
 
 val keystorePropertiesFile: File = rootProject.file("keystore.properties")
