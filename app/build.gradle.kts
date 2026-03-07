@@ -8,7 +8,8 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
-    id("kotlin-kapt")
+    id("kotlin-kapt") // MAINTAINED FOR DATA BINDING
+    alias(libs.plugins.ksp)
     alias(libs.plugins.navigation.safeargs)
 }
 
@@ -130,7 +131,7 @@ dependencies {
 
     //Room
     implementation(libs.room.runtime)
-    kapt(libs.room.compiler)
+    ksp(libs.room.compiler)
     implementation(libs.room.ktx)
 
     //Coroutines
@@ -145,7 +146,7 @@ dependencies {
 
     //Hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
 
     //Kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
