@@ -17,6 +17,7 @@ import kotlinx.coroutines.tasks.await
 class UserRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val remoteConfig: FirebaseRemoteConfig,
+    private val preferences: SharedPreferencesHelper,
 ) : UserRepository {
 
     //region Private properties
@@ -31,9 +32,9 @@ class UserRepositoryImpl @Inject constructor(
         success: (String) -> Unit,
         failure: (ErrorModel) -> Unit,
     ) {
-        val userData = SharedPreferencesHelper.userData
+        val userData = preferences.userData
         if (username == GOOGLE_USER_TEST && password == GOOGLE_PASSWORD_TEST) {
-            SharedPreferencesHelper.userData = UserData(
+            preferences.userData = UserData(
                 GOOGLE_USER_TEST,
                 GOOGLE_PASSWORD_TEST,
                 false,
@@ -54,7 +55,7 @@ class UserRepositoryImpl @Inject constructor(
         success: () -> Unit,
         failure: (ErrorModel) -> Unit,
     ) {
-        SharedPreferencesHelper.userData = UserData(username, password, false)
+        preferences.userData = UserData(username, password, false)
         success()
     }
 

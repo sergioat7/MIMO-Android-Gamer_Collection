@@ -21,6 +21,7 @@ class SagaDetailViewModel @Inject constructor(
     state: SavedStateHandle,
     private val gameRepository: GameRepository,
     private val sagaRepository: SagaRepository,
+    private val preferences: SharedPreferencesHelper,
 ) : ViewModel() {
 
     //region Private properties
@@ -58,7 +59,7 @@ class SagaDetailViewModel @Inject constructor(
     //endregion
 
     //region Public methods
-    fun getOrderedGames(games: List<Game>): List<Game> = when (SharedPreferencesHelper.sortParam) {
+    fun getOrderedGames(games: List<Game>): List<Game> = when (preferences.sortParam) {
         "platform" -> games.sortedBy { it.platform }
         "releaseDate" -> games.sortedBy { it.releaseDate }
         "purchaseDate" -> games.sortedBy { it.purchaseDate }

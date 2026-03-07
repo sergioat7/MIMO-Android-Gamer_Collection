@@ -33,6 +33,7 @@ class SettingsViewModel @Inject constructor(
     private val sagaRepository: SagaRepository,
     private val songRepository: SongRepository,
     private val userRepository: UserRepository,
+    private val preferences: SharedPreferencesHelper,
 ) : ViewModel() {
 
     //region Private properties
@@ -44,11 +45,11 @@ class SettingsViewModel @Inject constructor(
 
     //region Public properties
     val userData: UserData
-        get() = SharedPreferencesHelper.userData
-    val language: String = SharedPreferencesHelper.language
-    var sortParam: String = SharedPreferencesHelper.sortParam
-    var isSortOrderAscending: Boolean = SharedPreferencesHelper.isSortOrderAscending
-    var swipeRefresh: Boolean = SharedPreferencesHelper.swipeRefresh
+        get() = preferences.userData
+    val language: String = preferences.language
+    var sortParam: String = preferences.sortParam
+    var isSortOrderAscending: Boolean = preferences.isSortOrderAscending
+    var swipeRefresh: Boolean = preferences.swipeRefresh
     val settingsForm: StateFlow<Int?> = _settingsForm
     val settingsLoading: StateFlow<Boolean?> = _settingsLoading
     val settingsError: StateFlow<ErrorModel?> = _settingsError
@@ -57,7 +58,7 @@ class SettingsViewModel @Inject constructor(
 
     //region Public methods
     fun logout() {
-        SharedPreferencesHelper.logout()
+        preferences.logout()
         _logOut.value = true
     }
 
@@ -74,15 +75,15 @@ class SettingsViewModel @Inject constructor(
         val changeSortParam = newSortParam != sortParam
         val changeIsSortDescending = newIsSortOrderAscending != isSortOrderAscending
         val changeSwipeRefresh = newSwipeRefresh != swipeRefresh
-        val changeThemeMode = themeMode != SharedPreferencesHelper.themeMode
+        val changeThemeMode = themeMode != preferences.themeMode
 
         if (changePassword) {
             _settingsLoading.value = true
             _settingsError.value = null
-            SharedPreferencesHelper.storePassword(newPassword)
-            val userData = SharedPreferencesHelper.userData
+            preferences.storePassword(newPassword)
+            val userData = preferences.userData
             userRepository.login(userData.username, userData.password, {
-                SharedPreferencesHelper.credentials = AuthData(it)
+                preferences.credentials = AuthData(it)
                 _settingsLoading.value = false
                 if (changeLanguage || changeSortParam || changeIsSortDescending) {
                     _logOut.value = true
@@ -93,26 +94,26 @@ class SettingsViewModel @Inject constructor(
         }
 
         if (changeLanguage) {
-            SharedPreferencesHelper.language = newLanguage
+            preferences.language = newLanguage
         }
 
         if (changeSortParam) {
-            SharedPreferencesHelper.sortParam = newSortParam
+            preferences.sortParam = newSortParam
             sortParam = newSortParam
         }
 
         if (changeIsSortDescending) {
-            SharedPreferencesHelper.isSortOrderAscending = newIsSortOrderAscending
+            preferences.isSortOrderAscending = newIsSortOrderAscending
             isSortOrderAscending = newIsSortOrderAscending
         }
 
         if (changeSwipeRefresh) {
-            SharedPreferencesHelper.swipeRefresh = newSwipeRefresh
+            preferences.swipeRefresh = newSwipeRefresh
             swipeRefresh = newSwipeRefresh
         }
 
         if (changeThemeMode) {
-            SharedPreferencesHelper.themeMode = themeMode
+            preferences.themeMode = themeMode
             when (themeMode) {
                 1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -128,8 +129,8 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun deleteUser() {
-        SharedPreferencesHelper.removeUserData()
-        SharedPreferencesHelper.removeCredentials()
+        preferences.removeUserData()
+        preferences.removeCredentials()
         resetDatabase()
     }
 

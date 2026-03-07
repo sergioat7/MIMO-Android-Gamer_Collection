@@ -33,7 +33,6 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.data.remote.model.FORMATS
 import es.upsa.mimo.gamercollection.data.remote.model.GENRES
 import es.upsa.mimo.gamercollection.data.remote.model.PLATFORMS
@@ -334,7 +333,7 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             )) {
                 view.showDatePicker(
                     requireActivity(),
-                    SharedPreferencesHelper.filterDateFormat,
+                    viewModel.filterDateFormat,
                 )
             }
             filter = viewModel.filters.value

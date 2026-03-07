@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class SagasViewModel @Inject constructor(
     private val sagaRepository: SagaRepository,
+    private val preferences: SharedPreferencesHelper,
 ) : ViewModel() {
 
     //region Private properties
@@ -28,7 +29,7 @@ class SagasViewModel @Inject constructor(
 
     //region Public properties
     val swipeRefresh: Boolean
-        get() = SharedPreferencesHelper.swipeRefresh
+        get() = preferences.swipeRefresh
     val sagasLoading: StateFlow<Boolean?> = _sagasLoading
     val sagasError: StateFlow<ErrorModel?> = _sagasError
     val sagas: StateFlow<List<Saga>> = _sagas

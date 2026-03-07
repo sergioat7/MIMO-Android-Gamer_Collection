@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class GameSearchViewModel @Inject constructor(
     private val gameRepository: GameRepository,
+    private val preferences: SharedPreferencesHelper,
 ) : ViewModel() {
 
     //region Private properties
@@ -30,7 +31,7 @@ class GameSearchViewModel @Inject constructor(
     //region Public properties
     var query: String? = null
     val swipeRefresh: Boolean
-        get() = SharedPreferencesHelper.swipeRefresh
+        get() = preferences.swipeRefresh
     val gamesLoading: StateFlow<Boolean?> = _gamesLoading
     val gamesError: StateFlow<ErrorModel?> = _gamesError
     val games: StateFlow<List<Game>> = _games

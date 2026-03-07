@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository,
+    private val preferences: SharedPreferencesHelper,
 ) : ViewModel() {
 
     //region Private properties
@@ -28,7 +29,7 @@ class LoginViewModel @Inject constructor(
 
     //region Public properties
     val username: String
-        get() = SharedPreferencesHelper.userData.username
+        get() = preferences.userData.username
     val loginFormState: StateFlow<LoginFormState?> = _loginFormState
     val loginLoading: StateFlow<Boolean?> = _loginLoading
     val loginError: StateFlow<ErrorModel?> = _loginError
@@ -42,7 +43,7 @@ class LoginViewModel @Inject constructor(
         userRepository.login(username, password, { token ->
 
             val userData = UserData(username, password, false)
-            SharedPreferencesHelper.run {
+            preferences.run {
                 this.userData = userData
                 this.credentials = AuthData(token)
             }
@@ -72,7 +73,7 @@ class LoginViewModel @Inject constructor(
     //region Private methods
     private fun loadContent(userData: UserData) {
         userData.isLoggedIn = true
-        SharedPreferencesHelper.userData = userData
+        preferences.userData = userData
 
         _loginSuccess.value = true
         _loginLoading.value = false

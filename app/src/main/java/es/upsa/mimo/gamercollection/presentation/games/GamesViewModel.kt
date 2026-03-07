@@ -26,6 +26,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class GamesViewModel @Inject constructor(
     private val gameRepository: GameRepository,
+    private val preferences: SharedPreferencesHelper,
 ) : ViewModel() {
 
     //region Private properties
@@ -38,20 +39,20 @@ class GamesViewModel @Inject constructor(
     private var _filters = MutableStateFlow<FilterModel?>(null)
     private var _scrollPosition = MutableStateFlow(ScrollPosition.TOP)
     private val originalGames = MutableStateFlow<List<Game>>(emptyList())
-    private var sortParam: String = SharedPreferencesHelper.sortParam
-    private var isSortOrderAscending = SharedPreferencesHelper.isSortOrderAscending
+    private var sortParam: String = preferences.sortParam
+    private var isSortOrderAscending = preferences.isSortOrderAscending
     private var query: String? = null
     //endregion
 
     //region Public properties
     val language: String
-        get() = SharedPreferencesHelper.language
+        get() = preferences.language
     val dateFormatToShow: String
-        get() = SharedPreferencesHelper.dateFormatToShow
+        get() = preferences.dateFormatToShow
     val filterDateFormat: String
-        get() = SharedPreferencesHelper.filterDateFormat
+        get() = preferences.filterDateFormat
     val swipeRefresh: Boolean
-        get() = SharedPreferencesHelper.swipeRefresh
+        get() = preferences.swipeRefresh
     val gamesLoading: StateFlow<Boolean?> = _gamesLoading
     val gamesError: StateFlow<ErrorModel?> = _gamesError
     val games: StateFlow<List<Game>> = _games
@@ -129,11 +130,10 @@ class GamesViewModel @Inject constructor(
             }.show()
     }
 
-    fun isNotificationLaunched(gameId: Int): Boolean =
-        SharedPreferencesHelper.notificationLaunched(gameId)
+    fun isNotificationLaunched(gameId: Int): Boolean = preferences.notificationLaunched(gameId)
 
     fun setNotificationLaunched(gameId: Int, value: Boolean) {
-        SharedPreferencesHelper.setNotificationLaunched(gameId, value)
+        preferences.setNotificationLaunched(gameId, value)
     }
 
     fun deleteGame(position: Int) {
@@ -180,7 +180,7 @@ class GamesViewModel @Inject constructor(
     private fun resetProperties() {
         _state.value = null
         _filters.value = null
-        sortParam = SharedPreferencesHelper.sortParam
+        sortParam = preferences.sortParam
         isSortOrderAscending = true
         query = null
     }

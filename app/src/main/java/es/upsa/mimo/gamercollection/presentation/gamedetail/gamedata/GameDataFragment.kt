@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.model.LatLng
 import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.data.remote.model.FORMATS
 import es.upsa.mimo.gamercollection.data.remote.model.GENRES
 import es.upsa.mimo.gamercollection.databinding.FragmentGameDataBinding
@@ -37,7 +38,7 @@ class GameDataFragment(
     //endregion
 
     //region Private properties
-    private val viewModel = GameDataViewModel(game)
+    private val viewModel = GameDataViewModel(game, SharedPreferencesHelper)
     //endregion
 
     //region Lifecycle methods

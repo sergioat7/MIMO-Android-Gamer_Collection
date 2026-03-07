@@ -8,7 +8,10 @@ import java.util.Date
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class GameDataViewModel(private val game: Game?) : ViewModel() {
+class GameDataViewModel(
+    private val game: Game?,
+    private val preferences: SharedPreferencesHelper,
+) : ViewModel() {
 
     //region Private properties
     private val _gameDataLoading = MutableStateFlow<Boolean?>(null)
@@ -17,9 +20,9 @@ class GameDataViewModel(private val game: Game?) : ViewModel() {
 
     //region Public properties
     val language: String
-        get() = SharedPreferencesHelper.language
+        get() = preferences.language
     val dateFormatToShow: String
-        get() = SharedPreferencesHelper.dateFormatToShow
+        get() = preferences.dateFormatToShow
     val gameDataLoading: StateFlow<Boolean?> = _gameDataLoading
     val gameDataError: StateFlow<ErrorModel?> = _gameDataError
     //endregion
