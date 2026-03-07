@@ -1,6 +1,5 @@
 package es.upsa.mimo.gamercollection.domain.model
 
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.extensions.toString
 import java.util.*
 
@@ -22,23 +21,15 @@ data class FilterModel(
     val hasSongs: Boolean?,
 ) {
 
-    fun minReleaseDateAsHumanReadable(): String? = minReleaseDate.toString(
-        SharedPreferencesHelper.filterDateFormat,
-        SharedPreferencesHelper.language,
-    )
+    fun minReleaseDateAsHumanReadable(dateFormat: String, language: String): String? =
+        minReleaseDate.toString(dateFormat, language)
 
-    fun maxReleaseDateAsHumanReadable(): String? = maxReleaseDate.toString(
-        SharedPreferencesHelper.filterDateFormat,
-        SharedPreferencesHelper.language,
-    )
+    fun maxReleaseDateAsHumanReadable(dateFormat: String, language: String): String? =
+        maxReleaseDate.toString(dateFormat, language)
 
-    fun minPurchaseDateAsHumanReadable(): String? = minPurchaseDate.toString(
-        SharedPreferencesHelper.filterDateFormat,
-        SharedPreferencesHelper.language,
-    )
+    fun minPurchaseDateAsHumanReadable(dateFormat: String, language: String): String? =
+        minPurchaseDate.toString(dateFormat, language)
 
-    fun maxPurchaseDateAsHumanReadable(): String? = maxPurchaseDate.toString(
-        SharedPreferencesHelper.filterDateFormat,
-        SharedPreferencesHelper.language,
-    )
+    fun maxPurchaseDateAsHumanReadable(dateFormat: String, language: String): String? =
+        maxPurchaseDate.toString(dateFormat, language)
 }

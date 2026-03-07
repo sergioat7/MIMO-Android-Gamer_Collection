@@ -10,8 +10,8 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.domain.GameRepository
+import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.FilterModel
 import es.upsa.mimo.gamercollection.domain.model.Game
@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class GamesViewModel @Inject constructor(
     private val gameRepository: GameRepository,
-    private val preferences: SharedPreferencesHelper,
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     //region Private properties
@@ -39,20 +39,20 @@ class GamesViewModel @Inject constructor(
     private var _filters = MutableStateFlow<FilterModel?>(null)
     private var _scrollPosition = MutableStateFlow(ScrollPosition.TOP)
     private val originalGames = MutableStateFlow<List<Game>>(emptyList())
-    private var sortParam: String = preferences.sortParam
-    private var isSortOrderAscending = preferences.isSortOrderAscending
+    private var sortParam: String = userRepository.sortParam
+    private var isSortOrderAscending = userRepository.isSortOrderAscending
     private var query: String? = null
     //endregion
 
     //region Public properties
     val language: String
-        get() = preferences.language
+        get() = userRepository.language
     val dateFormatToShow: String
-        get() = preferences.dateFormatToShow
+        get() = userRepository.dateFormatToShow
     val filterDateFormat: String
-        get() = preferences.filterDateFormat
+        get() = userRepository.filterDateFormat
     val swipeRefresh: Boolean
-        get() = preferences.swipeRefresh
+        get() = userRepository.swipeRefresh
     val gamesLoading: StateFlow<Boolean?> = _gamesLoading
     val gamesError: StateFlow<ErrorModel?> = _gamesError
     val games: StateFlow<List<Game>> = _games
@@ -130,10 +130,10 @@ class GamesViewModel @Inject constructor(
             }.show()
     }
 
-    fun isNotificationLaunched(gameId: Int): Boolean = preferences.notificationLaunched(gameId)
+    fun isNotificationLaunched(gameId: Int): Boolean = userRepository.isNotificationLaunched(gameId)
 
     fun setNotificationLaunched(gameId: Int, value: Boolean) {
-        preferences.setNotificationLaunched(gameId, value)
+        userRepository.setNotificationLaunched(gameId, value)
     }
 
     fun deleteGame(position: Int) {
@@ -180,7 +180,7 @@ class GamesViewModel @Inject constructor(
     private fun resetProperties() {
         _state.value = null
         _filters.value = null
-        sortParam = preferences.sortParam
+        sortParam = userRepository.sortParam
         isSortOrderAscending = true
         query = null
     }

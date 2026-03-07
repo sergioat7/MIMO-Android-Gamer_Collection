@@ -334,9 +334,12 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
                 view.showDatePicker(
                     requireActivity(),
                     viewModel.filterDateFormat,
+                    viewModel.language,
                 )
             }
             filter = viewModel.filters.value
+            dateFormat = viewModel.filterDateFormat
+            language = viewModel.language
         }
         viewModel.filters.value?.let { filters ->
 

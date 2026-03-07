@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.domain.GameRepository
 import es.upsa.mimo.gamercollection.domain.SagaRepository
+import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.domain.model.Saga
@@ -21,7 +21,7 @@ class SagaDetailViewModel @Inject constructor(
     state: SavedStateHandle,
     private val gameRepository: GameRepository,
     private val sagaRepository: SagaRepository,
-    private val preferences: SharedPreferencesHelper,
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     //region Private properties
@@ -59,7 +59,7 @@ class SagaDetailViewModel @Inject constructor(
     //endregion
 
     //region Public methods
-    fun getOrderedGames(games: List<Game>): List<Game> = when (preferences.sortParam) {
+    fun getOrderedGames(games: List<Game>): List<Game> = when (userRepository.sortParam) {
         "platform" -> games.sortedBy { it.platform }
         "releaseDate" -> games.sortedBy { it.releaseDate }
         "purchaseDate" -> games.sortedBy { it.purchaseDate }

@@ -3,7 +3,6 @@ package es.upsa.mimo.gamercollection.presentation.login
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.data.local.model.AuthData
 import es.upsa.mimo.gamercollection.data.local.model.UserData
 import es.upsa.mimo.gamercollection.domain.UserRepository
@@ -17,7 +16,6 @@ import kotlinx.coroutines.flow.StateFlow
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    private val preferences: SharedPreferencesHelper,
 ) : ViewModel() {
 
     //region Private properties
@@ -29,7 +27,7 @@ class LoginViewModel @Inject constructor(
 
     //region Public properties
     val username: String
-        get() = preferences.userData.username
+        get() = userRepository.username
     val loginFormState: StateFlow<LoginFormState?> = _loginFormState
     val loginLoading: StateFlow<Boolean?> = _loginLoading
     val loginError: StateFlow<ErrorModel?> = _loginError
@@ -43,9 +41,9 @@ class LoginViewModel @Inject constructor(
         userRepository.login(username, password, { token ->
 
             val userData = UserData(username, password, false)
-            preferences.run {
-                this.userData = userData
-                this.credentials = AuthData(token)
+            userRepository.run {
+                storeUserData(userData)
+                storeCredentials(AuthData(token))
             }
             loadContent(userData)
         }, {
@@ -73,7 +71,7 @@ class LoginViewModel @Inject constructor(
     //region Private methods
     private fun loadContent(userData: UserData) {
         userData.isLoggedIn = true
-        preferences.userData = userData
+        userRepository.storeUserData(userData)
 
         _loginSuccess.value = true
         _loginLoading.value = false

@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.data.local.model.AuthData
 import es.upsa.mimo.gamercollection.data.local.model.UserData
 import es.upsa.mimo.gamercollection.data.remote.model.ExportData
@@ -33,7 +32,6 @@ class SettingsViewModel @Inject constructor(
     private val sagaRepository: SagaRepository,
     private val songRepository: SongRepository,
     private val userRepository: UserRepository,
-    private val preferences: SharedPreferencesHelper,
 ) : ViewModel() {
 
     //region Private properties
@@ -45,11 +43,11 @@ class SettingsViewModel @Inject constructor(
 
     //region Public properties
     val userData: UserData
-        get() = preferences.userData
-    val language: String = preferences.language
-    var sortParam: String = preferences.sortParam
-    var isSortOrderAscending: Boolean = preferences.isSortOrderAscending
-    var swipeRefresh: Boolean = preferences.swipeRefresh
+        get() = userRepository.userData
+    val language: String = userRepository.language
+    var sortParam: String = userRepository.sortParam
+    var isSortOrderAscending: Boolean = userRepository.isSortOrderAscending
+    var swipeRefresh: Boolean = userRepository.swipeRefresh
     val settingsForm: StateFlow<Int?> = _settingsForm
     val settingsLoading: StateFlow<Boolean?> = _settingsLoading
     val settingsError: StateFlow<ErrorModel?> = _settingsError
@@ -58,7 +56,7 @@ class SettingsViewModel @Inject constructor(
 
     //region Public methods
     fun logout() {
-        preferences.logout()
+        userRepository.logout()
         _logOut.value = true
     }
 
@@ -75,15 +73,15 @@ class SettingsViewModel @Inject constructor(
         val changeSortParam = newSortParam != sortParam
         val changeIsSortDescending = newIsSortOrderAscending != isSortOrderAscending
         val changeSwipeRefresh = newSwipeRefresh != swipeRefresh
-        val changeThemeMode = themeMode != preferences.themeMode
+        val changeThemeMode = themeMode != userRepository.themeMode
 
         if (changePassword) {
             _settingsLoading.value = true
             _settingsError.value = null
-            preferences.storePassword(newPassword)
-            val userData = preferences.userData
+            userRepository.storePassword(newPassword)
+            val userData = userRepository.userData
             userRepository.login(userData.username, userData.password, {
-                preferences.credentials = AuthData(it)
+                userRepository.storeCredentials(AuthData(it))
                 _settingsLoading.value = false
                 if (changeLanguage || changeSortParam || changeIsSortDescending) {
                     _logOut.value = true
@@ -94,26 +92,26 @@ class SettingsViewModel @Inject constructor(
         }
 
         if (changeLanguage) {
-            preferences.language = newLanguage
+            userRepository.storeLanguage(newLanguage)
         }
 
         if (changeSortParam) {
-            preferences.sortParam = newSortParam
+            userRepository.storeSortParam(newSortParam)
             sortParam = newSortParam
         }
 
         if (changeIsSortDescending) {
-            preferences.isSortOrderAscending = newIsSortOrderAscending
+            userRepository.storeIsSortOrderAscending(newIsSortOrderAscending)
             isSortOrderAscending = newIsSortOrderAscending
         }
 
         if (changeSwipeRefresh) {
-            preferences.swipeRefresh = newSwipeRefresh
+            userRepository.storeSwipeRefresh(newSwipeRefresh)
             swipeRefresh = newSwipeRefresh
         }
 
         if (changeThemeMode) {
-            preferences.themeMode = themeMode
+            userRepository.storeThemeMode(themeMode)
             when (themeMode) {
                 1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -129,8 +127,8 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun deleteUser() {
-        preferences.removeUserData()
-        preferences.removeCredentials()
+        userRepository.removeUserData()
+        userRepository.removeCredentials()
         resetDatabase()
     }
 

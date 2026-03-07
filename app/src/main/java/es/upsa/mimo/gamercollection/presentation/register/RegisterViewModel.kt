@@ -3,7 +3,6 @@ package es.upsa.mimo.gamercollection.presentation.register
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.data.local.model.AuthData
 import es.upsa.mimo.gamercollection.data.local.model.UserData
 import es.upsa.mimo.gamercollection.domain.UserRepository
@@ -17,7 +16,6 @@ import kotlinx.coroutines.flow.StateFlow
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    private val preferences: SharedPreferencesHelper,
 ) : ViewModel() {
 
     //region Private properties
@@ -42,9 +40,9 @@ class RegisterViewModel @Inject constructor(
             userRepository.login(username, password, { token ->
 
                 val userData = UserData(username, password, true)
-                preferences.run {
-                    this.userData = userData
-                    this.credentials = AuthData(token)
+                userRepository.run {
+                    storeUserData(userData)
+                    storeCredentials(AuthData(token))
                 }
 
                 _registerLoading.value = false

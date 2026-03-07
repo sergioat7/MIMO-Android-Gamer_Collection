@@ -15,6 +15,16 @@
             type="es.upsa.mimo.gamercollection.domain.model.FilterModel"
             />
 
+        <variable
+            name="dateFormat"
+            type="String"
+            />
+
+        <variable
+            name="language"
+            type="String"
+            />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -220,7 +230,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/text_input_layout_release_date_max"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_release_date_title"
-                    app:text='@{filter.minReleaseDateAsHumanReadable()}'
+                    app:text='@{filter.minReleaseDateAsHumanReadable(dateFormat, language)}'
                     />
 
                 <include
@@ -235,7 +245,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/text_input_layout_release_date_min"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_release_date_title"
-                    app:text='@{filter.maxReleaseDateAsHumanReadable()}'
+                    app:text='@{filter.maxReleaseDateAsHumanReadable(dateFormat, language)}'
                     />
 
                 <TextView
@@ -261,7 +271,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/text_input_layout_purchase_date_max"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_purchase_date_title"
-                    app:text='@{filter.minPurchaseDateAsHumanReadable()}'
+                    app:text='@{filter.minPurchaseDateAsHumanReadable(dateFormat, language)}'
                     />
 
                 <include
@@ -276,7 +286,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/text_input_layout_purchase_date_min"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_purchase_date_title"
-                    app:text='@{filter.maxPurchaseDateAsHumanReadable()}'
+                    app:text='@{filter.maxPurchaseDateAsHumanReadable(dateFormat, language)}'
                     />
 
                 <TextView

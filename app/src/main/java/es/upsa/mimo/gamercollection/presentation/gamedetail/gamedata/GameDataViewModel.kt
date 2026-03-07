@@ -1,7 +1,7 @@
 package es.upsa.mimo.gamercollection.presentation.gamedetail.gamedata
 
 import androidx.lifecycle.ViewModel
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
+import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Game
 import java.util.Date
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 class GameDataViewModel(
     private val game: Game?,
-    private val preferences: SharedPreferencesHelper,
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     //region Private properties
@@ -20,9 +20,9 @@ class GameDataViewModel(
 
     //region Public properties
     val language: String
-        get() = preferences.language
+        get() = userRepository.language
     val dateFormatToShow: String
-        get() = preferences.dateFormatToShow
+        get() = userRepository.dateFormatToShow
     val gameDataLoading: StateFlow<Boolean?> = _gameDataLoading
     val gameDataError: StateFlow<ErrorModel?> = _gameDataError
     //endregion

@@ -3,8 +3,8 @@ package es.upsa.mimo.gamercollection.presentation.sagas
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.domain.SagaRepository
+import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Saga
 import es.upsa.mimo.gamercollection.utils.Constants
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class SagasViewModel @Inject constructor(
     private val sagaRepository: SagaRepository,
-    private val preferences: SharedPreferencesHelper,
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     //region Private properties
@@ -29,7 +29,7 @@ class SagasViewModel @Inject constructor(
 
     //region Public properties
     val swipeRefresh: Boolean
-        get() = preferences.swipeRefresh
+        get() = userRepository.swipeRefresh
     val sagasLoading: StateFlow<Boolean?> = _sagasLoading
     val sagasError: StateFlow<ErrorModel?> = _sagasError
     val sagas: StateFlow<List<Saga>> = _sagas

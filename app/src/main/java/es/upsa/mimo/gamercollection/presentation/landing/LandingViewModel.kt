@@ -3,8 +3,8 @@ package es.upsa.mimo.gamercollection.presentation.landing
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.domain.GameRepository
+import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.presentation.MainActivity
 import es.upsa.mimo.gamercollection.presentation.login.LoginActivity
 import javax.inject.Inject
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 @HiltViewModel
 class LandingViewModel @Inject constructor(
     private val gameRepository: GameRepository,
-    private val preferences: SharedPreferencesHelper,
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     //region Private properties
@@ -23,15 +23,15 @@ class LandingViewModel @Inject constructor(
 
     //region Public properties
     val language: String
-        get() = preferences.language
+        get() = userRepository.language
     val newChangesPopupShown: Boolean
-        get() = preferences.newChangesPopupShown
+        get() = userRepository.newChangesPopupShown
     val landingClassToStart: StateFlow<Class<*>?> = _landingClassToStart
     //endregion
 
     //region Public methods
     fun checkTheme() {
-        when (preferences.themeMode) {
+        when (userRepository.themeMode) {
             1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             else -> AppCompatDelegate.setDefaultNightMode(
@@ -41,8 +41,8 @@ class LandingViewModel @Inject constructor(
     }
 
     fun checkIsLoggedIn() {
-        preferences.newChangesPopupShown = true
-        _landingClassToStart.value = if (preferences.isLoggedIn) {
+        userRepository.storeNewChangesPopupShown(true)
+        _landingClassToStart.value = if (userRepository.isLoggedIn) {
             MainActivity::class.java
         } else {
             LoginActivity::class.java

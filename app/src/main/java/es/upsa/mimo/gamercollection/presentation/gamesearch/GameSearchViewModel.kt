@@ -3,8 +3,8 @@ package es.upsa.mimo.gamercollection.presentation.gamesearch
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.domain.GameRepository
+import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.utils.ScrollPosition
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class GameSearchViewModel @Inject constructor(
     private val gameRepository: GameRepository,
-    private val preferences: SharedPreferencesHelper,
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     //region Private properties
@@ -31,7 +31,7 @@ class GameSearchViewModel @Inject constructor(
     //region Public properties
     var query: String? = null
     val swipeRefresh: Boolean
-        get() = preferences.swipeRefresh
+        get() = userRepository.swipeRefresh
     val gamesLoading: StateFlow<Boolean?> = _gamesLoading
     val gamesError: StateFlow<ErrorModel?> = _gamesError
     val games: StateFlow<List<Game>> = _games
