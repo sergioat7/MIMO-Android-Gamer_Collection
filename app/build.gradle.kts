@@ -6,9 +6,8 @@ plugins {
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.google.services)
     alias(libs.plugins.hilt)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kapt) // MAINTAINED FOR DATA BINDING
     alias(libs.plugins.kotlin.serialization)
-    id("kotlin-kapt") // MAINTAINED FOR DATA BINDING
     alias(libs.plugins.ksp)
     alias(libs.plugins.navigation.safeargs)
 }
@@ -81,10 +80,8 @@ android {
         sourceCompatibility = JavaVersion.toVersion(libs.versions.jdk.get())
         targetCompatibility = JavaVersion.toVersion(libs.versions.jdk.get())
     }
-    kotlinOptions {
-        jvmTarget = libs.versions.jdk.get()
-    }
 
+    //noinspection WrongGradleMethod
     kapt {
         correctErrorTypes = true
     }
