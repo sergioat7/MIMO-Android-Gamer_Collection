@@ -3,11 +3,13 @@ package es.upsa.mimo.gamercollection.presentation.gamedetail.gamedata
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.model.LatLng
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.data.remote.model.FORMATS
 import es.upsa.mimo.gamercollection.data.remote.model.GENRES
 import es.upsa.mimo.gamercollection.databinding.FragmentGameDataBinding
+import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.extensions.getValueWithoutHyphen
@@ -22,8 +24,11 @@ import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.CustomDropdownType
 import es.upsa.mimo.gamercollection.utils.State
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 class GameDataFragment(
+    userRepository: UserRepository,
     private var game: Game? = null,
     private var enabled: Boolean,
 ) : BindingFragment<FragmentGameDataBinding>(), OnLocationSelected {
@@ -34,7 +39,7 @@ class GameDataFragment(
     //endregion
 
     //region Private properties
-    private val viewModel = GameDataViewModel(game)
+    private val viewModel = GameDataViewModel(game, userRepository)
     //endregion
 
     //region Lifecycle methods
@@ -78,6 +83,8 @@ class GameDataFragment(
         )
 
         binding.game = game
+        binding.dateFormat = viewModel.dateFormatToShow
+        binding.language = viewModel.language
     }
 
     fun setEdition(editable: Boolean) {
@@ -188,6 +195,7 @@ class GameDataFragment(
                 textInputLayoutReleaseDate.showDatePicker(
                     requireActivity(),
                     viewModel.dateFormatToShow,
+                    viewModel.language,
                 )
             }
 
@@ -195,6 +203,7 @@ class GameDataFragment(
                 textInputLayoutPurchaseDate.showDatePicker(
                     requireActivity(),
                     viewModel.dateFormatToShow,
+                    viewModel.language,
                 )
             }
 
@@ -211,20 +220,19 @@ class GameDataFragment(
 
     //region Private methods
     private fun setupBindings() {
-        viewModel.gameDataLoading.observe(viewLifecycleOwner) { isLoading ->
+        lifecycleScope.launch {
+            viewModel.gameDataLoading.filterNotNull().collect { isLoading ->
 
-            if (isLoading) {
-                showLoading()
-            } else {
-                hideLoading()
+                if (isLoading) {
+                    showLoading()
+                } else {
+                    hideLoading()
+                }
             }
         }
 
-        viewModel.gameDataError.observe(viewLifecycleOwner) { error ->
-
-            if (error == null) {
-                activity?.finish()
-            } else {
+        lifecycleScope.launch {
+            viewModel.gameDataError.filterNotNull().collect { error ->
                 manageError(error)
             }
         }

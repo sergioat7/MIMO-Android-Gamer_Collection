@@ -3,12 +3,14 @@ package es.upsa.mimo.gamercollection.presentation.gamedetail
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.presentation.gamedetail.gamedata.GameDataFragment
 import es.upsa.mimo.gamercollection.presentation.gamedetail.gamesongs.GameSongsFragment
 
 class GameDetailPagerAdapter(
     activity: FragmentActivity,
+    private val userRepository: UserRepository,
     private val itemsCount: Int,
     private val currentGame: Game?,
 ) : FragmentStateAdapter(activity) {
@@ -24,7 +26,7 @@ class GameDetailPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
         val fragment = if (position == 0) {
-            gameDataFragment = GameDataFragment(currentGame, enabled)
+            gameDataFragment = GameDataFragment(userRepository, currentGame, enabled)
             gameDataFragment
         } else {
             gameSongsFragment = GameSongsFragment(currentGame, enabled)

@@ -15,7 +15,6 @@ import androidx.fragment.app.FragmentActivity
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.databinding.CustomTextInputLayoutBinding
 import java.util.*
 
@@ -62,17 +61,18 @@ fun CustomTextInputLayoutBinding.setHintStyle(id: Int) {
 
 fun CustomTextInputLayoutBinding.showDatePicker(
     activity: FragmentActivity,
-    dateFormat: String? = null,
+    dateFormat: String,
+    language: String,
 ) {
     this.textInputEditText.setOnFocusChangeListener { _, hasFocus ->
         if (hasFocus) {
-            val datePicker = getPicker(this.textInputEditText, activity, dateFormat)
+            val datePicker = getPicker(this.textInputEditText, activity, dateFormat, language)
             datePicker.show(activity.supportFragmentManager, "")
         }
     }
     this.textInputEditText.setOnClickListener {
         val datePicker =
-            getPicker(this.textInputEditText, this.textInputEditText.context, dateFormat)
+            getPicker(this.textInputEditText, this.textInputEditText.context, dateFormat, language)
         datePicker.show(activity.supportFragmentManager, "")
     }
 }
@@ -81,14 +81,15 @@ fun CustomTextInputLayoutBinding.showDatePicker(
 private fun getPicker(
     editText: TextInputEditText,
     context: Context,
-    dateFormat: String? = SharedPreferencesHelper.dateFormatToShow,
+    dateFormat: String,
+    language: String,
 ): MaterialDatePicker<Long> {
     val currentDateInMillis = editText.text
         .toString()
         .toDate(
-            SharedPreferencesHelper.dateFormatToShow,
-            SharedPreferencesHelper.language,
-            TimeZone.getTimeZone("UTC"),
+            format = dateFormat,
+            language = language,
+            timeZone = TimeZone.getTimeZone("UTC"),
         )?.time ?: MaterialDatePicker.todayInUtcMilliseconds()
 
     return MaterialDatePicker.Builder
@@ -101,11 +102,7 @@ private fun getPicker(
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = it
 
-                val dateString = calendar.time.toString(
-                    dateFormat,
-                    SharedPreferencesHelper.language,
-                )
-
+                val dateString = calendar.time.toString(dateFormat, language)
                 editText.setText(dateString)
             }
         }

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.play.core.install.model.InstallStatus
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
@@ -14,6 +15,8 @@ import es.upsa.mimo.gamercollection.utils.InAppUpdateService
 import es.upsa.mimo.gamercollection.utils.Notifications
 import java.util.*
 import javax.inject.Inject
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LandingActivity : BaseActivity() {
@@ -51,49 +54,53 @@ class LandingActivity : BaseActivity() {
         viewModel.checkTheme()
 
         inAppUpdateService.checkVersion()
-        inAppUpdateService.installStatus.observe(this) {
-            when (it) {
-                InstallStatus.DOWNLOADING,
-                InstallStatus.DOWNLOADED,
-                InstallStatus.INSTALLED,
-                InstallStatus.CANCELED,
-                -> {
-                    if (it == InstallStatus.CANCELED &&
-                        inAppUpdateService.isImmediateUpdate()
-                    ) {
-                        finish()
-                    } else {
-                        if (!viewModel.newChangesPopupShown) {
-                            showPopupActionDialog(
-                                getString(
-                                    R.string.new_version_changes,
-                                ),
-                                acceptHandler = {
-                                    viewModel.checkIsLoggedIn()
-                                },
-                            )
+        lifecycleScope.launch {
+            inAppUpdateService.installStatus.collect {
+                when (it) {
+                    InstallStatus.DOWNLOADING,
+                    InstallStatus.DOWNLOADED,
+                    InstallStatus.INSTALLED,
+                    InstallStatus.CANCELED,
+                    -> {
+                        if (it == InstallStatus.CANCELED &&
+                            inAppUpdateService.isImmediateUpdate()
+                        ) {
+                            finish()
                         } else {
-                            viewModel.checkIsLoggedIn()
+                            if (!viewModel.newChangesPopupShown) {
+                                showPopupActionDialog(
+                                    getString(
+                                        R.string.new_version_changes,
+                                    ),
+                                    acceptHandler = {
+                                        viewModel.checkIsLoggedIn()
+                                    },
+                                )
+                            } else {
+                                viewModel.checkIsLoggedIn()
+                            }
+                            inAppUpdateService.onDestroy()
                         }
-                        inAppUpdateService.onDestroy()
                     }
-                }
-                InstallStatus.FAILED -> {
-                    inAppUpdateService.checkVersion()
-                }
-                else -> {
-                    Unit
+                    InstallStatus.FAILED -> {
+                        inAppUpdateService.checkVersion()
+                    }
+                    else -> {
+                        Unit
+                    }
                 }
             }
         }
     }
 
     private fun setupBindings() {
-        viewModel.landingClassToStart.observe(this) { cls: Class<*>? ->
+        lifecycleScope.launch {
+            viewModel.landingClassToStart.filterNotNull().collect { cls: Class<*> ->
 
-            val intent = Intent(this, cls)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
+                val intent = Intent(this@LandingActivity, cls)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+            }
         }
     }
 

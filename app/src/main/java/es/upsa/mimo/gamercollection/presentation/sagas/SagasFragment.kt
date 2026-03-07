@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.SearchView
 import androidx.databinding.ObservableField
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,8 @@ import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListener {
@@ -115,8 +118,6 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
     override fun initializeUi() {
         super.initializeUi()
 
-        setupBindings()
-
         with(binding) {
             swipeRefreshLayout.apply {
                 isEnabled = this@SagasFragment.viewModel.swipeRefresh
@@ -128,11 +129,9 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
             }
 
             sagasAdapter = SagasAdapter(
-                this@SagasFragment
-                    .viewModel.sagas.value
-                    ?.toMutableList() ?: mutableListOf(),
-                mutableListOf(),
-                this@SagasFragment,
+                items = mutableListOf(),
+                expandedIds = mutableListOf(),
+                onItemClickListener = this@SagasFragment,
             )
             recyclerViewSagas.apply {
                 layoutManager = LinearLayoutManager(requireContext())
@@ -170,29 +169,37 @@ class SagasFragment : BindingFragment<FragmentSagasBinding>(), OnItemClickListen
         }
 
         scrollPosition.set(ScrollPosition.TOP)
+
+        setupBindings()
     }
     //endregion
 
     //region Private methods
     private fun setupBindings() {
-        viewModel.sagasLoading.observe(viewLifecycleOwner) { isLoading ->
+        lifecycleScope.launch {
+            viewModel.sagasLoading.filterNotNull().collect { isLoading ->
 
-            if (isLoading) {
-                showLoading()
-            } else {
-                binding.swipeRefreshLayout.isRefreshing = false
-                hideLoading()
+                if (isLoading) {
+                    showLoading()
+                } else {
+                    binding.swipeRefreshLayout.isRefreshing = false
+                    hideLoading()
+                }
             }
         }
 
-        viewModel.sagasError.observe(viewLifecycleOwner) { error ->
+        lifecycleScope.launch {
+            viewModel.sagasError.filterNotNull().collect { error ->
 
-            hideLoading()
-            manageError(error)
+                hideLoading()
+                manageError(error)
+            }
         }
 
-        viewModel.sagas.observe(viewLifecycleOwner) {
-            showData(it)
+        lifecycleScope.launch {
+            viewModel.sagas.collect {
+                showData(it)
+            }
         }
     }
 

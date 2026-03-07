@@ -1,6 +1,5 @@
 package es.upsa.mimo.gamercollection.domain.model
 
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.extensions.toString
 import java.util.Date
 
@@ -29,13 +28,9 @@ data class Game(
     val songs: List<Song>,
 ) : BaseModel<Int> {
 
-    fun releaseDateAsHumanReadable(): String? = releaseDate.toString(
-        SharedPreferencesHelper.dateFormatToShow,
-        SharedPreferencesHelper.language,
-    )
+    fun releaseDateAsHumanReadable(dateFormat: String, language: String): String? =
+        releaseDate.toString(dateFormat, language)
 
-    fun purchaseDateAsHumanReadable(): String? = purchaseDate.toString(
-        SharedPreferencesHelper.dateFormatToShow,
-        SharedPreferencesHelper.language,
-    )
+    fun purchaseDateAsHumanReadable(dateFormat: String, language: String): String? =
+        purchaseDate.toString(dateFormat, language)
 }

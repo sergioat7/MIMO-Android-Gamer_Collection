@@ -38,6 +38,16 @@
             type="Boolean"
             />
 
+        <variable
+            name="dateFormat"
+            type="String"
+            />
+
+        <variable
+            name="language"
+            type="String"
+            />
+
     </data>
 
     <FrameLayout
@@ -251,7 +261,7 @@
                             app:inputHintText="@{@string/game_detail_select_date}"
                             app:inputType="@{CustomInputType.DATE}"
                             app:labelHintText="@{@string/game_detail_release_date}"
-                            app:text='@{game.releaseDateAsHumanReadable() ?? editable ? null : Constants.NO_VALUE}'
+                            app:text='@{game.releaseDateAsHumanReadable(dateFormat, language) ?? editable ? null : Constants.NO_VALUE}'
                             />
 
                         <include
@@ -321,7 +331,7 @@
                             app:inputHintText="@{@string/game_detail_select_date}"
                             app:inputType="@{CustomInputType.DATE}"
                             app:labelHintText="@{@string/game_detail_purchase_date}"
-                            app:text='@{game.purchaseDateAsHumanReadable() ?? editable ? null : Constants.NO_VALUE}'
+                            app:text='@{game.purchaseDateAsHumanReadable(dateFormat, language) ?? editable ? null : Constants.NO_VALUE}'
                             />
 
                         <include

@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.databinding.FragmentSettingsBinding
@@ -28,6 +29,8 @@ import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
@@ -203,29 +206,43 @@ class SettingsFragment : BindingFragment<FragmentSettingsBinding>() {
 
     //region Protected methods
     private fun setupBindings() {
-        viewModel.settingsForm.observe(viewLifecycleOwner) {
-            binding.textInputLayoutPassword.setError("")
-            val passwordError = it ?: return@observe
-            binding.textInputLayoutPassword.setError(getString(passwordError))
-        }
+        lifecycleScope.launch {
+            viewModel.settingsForm.collect { passwordError ->
 
-        viewModel.settingsLoading.observe(viewLifecycleOwner) { isLoading ->
-
-            if (isLoading) {
-                showLoading()
-            } else {
-                hideLoading()
+                if (passwordError != null) {
+                    binding.textInputLayoutPassword.setError(getString(passwordError))
+                } else {
+                    binding.textInputLayoutPassword.setError("")
+                }
             }
         }
 
-        viewModel.settingsError.observe(viewLifecycleOwner) { error ->
+        lifecycleScope.launch {
+            viewModel.settingsLoading.filterNotNull().collect { isLoading ->
 
-            if (error == null) {
-                launchActivity(LandingActivity::class.java, true)
-                activity?.finish()
-            } else {
+                if (isLoading) {
+                    showLoading()
+                } else {
+                    hideLoading()
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.settingsError.filterNotNull().collect { error ->
+
                 hideLoading()
                 manageError(error)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.logOut.filterNotNull().collect { logout ->
+
+                if (logout) {
+                    launchActivity(LandingActivity::class.java, true)
+                    activity?.finish()
+                }
             }
         }
     }

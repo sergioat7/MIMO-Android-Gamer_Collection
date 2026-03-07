@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -29,6 +30,7 @@ import es.upsa.mimo.gamercollection.data.remote.model.PLATFORMS
 import es.upsa.mimo.gamercollection.databinding.DialogSetImageBinding
 import es.upsa.mimo.gamercollection.databinding.DialogSetRatingBinding
 import es.upsa.mimo.gamercollection.databinding.FragmentGameDetailBinding
+import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.extensions.getImageForPegi
 import es.upsa.mimo.gamercollection.extensions.getValue
@@ -41,9 +43,15 @@ import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.utils.Constants
 import es.upsa.mimo.gamercollection.utils.CustomDropdownType
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
+import javax.inject.Inject
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
+
+    @Inject
+    lateinit var userRepository: UserRepository
 
     //region Protected properties
     override val statusBarStyle = StatusBarStyle.SECONDARY
@@ -191,9 +199,10 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
         setupBindings()
 
         pagerAdapter = GameDetailPagerAdapter(
-            requireActivity(),
-            2,
-            viewModel.game.value,
+            activity = requireActivity(),
+            userRepository = userRepository,
+            itemsCount = 2,
+            currentGame = viewModel.game.value,
         )
         binding.viewPagerGame.adapter = pagerAdapter
         TabLayoutMediator(binding.tabLayout, binding.viewPagerGame) { tab, position ->
@@ -221,24 +230,30 @@ class GameDetailFragment : BindingFragment<FragmentGameDetailBinding>() {
 
     //region Private methods
     private fun setupBindings() {
-        viewModel.gameDetailLoading.observe(viewLifecycleOwner) { isLoading ->
+        lifecycleScope.launch {
+            viewModel.gameDetailLoading.filterNotNull().collect { isLoading ->
 
-            if (isLoading) {
-                showLoading()
-            } else {
-                hideLoading()
+                if (isLoading) {
+                    showLoading()
+                } else {
+                    hideLoading()
+                }
             }
         }
 
-        viewModel.gameDetailSuccessMessage.observe(viewLifecycleOwner) {
-            val message = resources.getString(it)
-            showPopupDialog(message, goBack)
+        lifecycleScope.launch {
+            viewModel.gameDetailSuccessMessage.filterNotNull().collect {
+                val message = resources.getString(it)
+                showPopupDialog(message, goBack)
+            }
         }
 
-        viewModel.gameDetailError.observe(viewLifecycleOwner) { error ->
+        lifecycleScope.launch {
+            viewModel.gameDetailError.filterNotNull().collect { error ->
 
-            hideLoading()
-            manageError(error)
+                hideLoading()
+                manageError(error)
+            }
         }
 
         viewModel.game.observe(viewLifecycleOwner) {

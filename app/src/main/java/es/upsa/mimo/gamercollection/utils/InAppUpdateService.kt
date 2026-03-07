@@ -5,8 +5,6 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
@@ -20,6 +18,8 @@ import es.upsa.mimo.gamercollection.domain.di.IoDispatcher
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class InAppUpdateService @Inject constructor(
@@ -32,12 +32,12 @@ class InAppUpdateService @Inject constructor(
     private val appUpdateManager = AppUpdateManagerFactory.create(activity)
     private val listener: InstallStateUpdatedListener
     private var appUpdateType = AppUpdateType.FLEXIBLE
-    private val _installStatus = MutableLiveData(InstallStatus.UNKNOWN)
+    private val _installStatus = MutableStateFlow(InstallStatus.UNKNOWN)
     private val inAppUpdateLauncher: ActivityResultLauncher<IntentSenderRequest>
     //endregion
 
     //region Public properties
-    val installStatus: LiveData<Int> = _installStatus
+    val installStatus: StateFlow<Int> = _installStatus
     //endregion
 
     //region Lifecycle methods

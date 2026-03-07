@@ -2,6 +2,7 @@ package es.upsa.mimo.gamercollection.presentation.gamedetail.gamesongs
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,6 +17,8 @@ import es.upsa.mimo.gamercollection.extensions.getValue
 import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
 import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import javax.inject.Inject
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GameSongsFragment(
@@ -64,7 +67,7 @@ class GameSongsFragment(
         binding.editable = editable
     }
 
-    fun getSongs(): List<Song> = viewModel.songs.value ?: ArrayList()
+    fun getSongs(): List<Song> = viewModel.songs.value
     //endregion
 
     //region Protected methods
@@ -97,17 +100,21 @@ class GameSongsFragment(
 
     //region Private methods
     private fun setupBindings() {
-        viewModel.gameSongsLoading.observe(viewLifecycleOwner) { isLoading ->
+        lifecycleScope.launch {
+            viewModel.gameSongsLoading.filterNotNull().collect { isLoading ->
 
-            if (isLoading) {
-                showLoading()
-            } else {
-                hideLoading()
+                if (isLoading) {
+                    showLoading()
+                } else {
+                    hideLoading()
+                }
             }
         }
 
-        viewModel.gameSongsError.observe(viewLifecycleOwner) { error ->
-            manageError(error)
+        lifecycleScope.launch {
+            viewModel.gameSongsError.filterNotNull().collect { error ->
+                manageError(error)
+            }
         }
     }
 

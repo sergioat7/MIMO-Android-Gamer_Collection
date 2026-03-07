@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.install.model.InstallStatus
@@ -14,6 +15,7 @@ import es.upsa.mimo.gamercollection.extensions.setupWithNavController
 import es.upsa.mimo.gamercollection.presentation.base.BaseActivity
 import es.upsa.mimo.gamercollection.utils.InAppUpdateService
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
@@ -41,11 +43,13 @@ class MainActivity : BaseActivity() {
             setupBottomNavigationBar()
         } // Else, need to wait for onRestoreInstanceState
 
-        inAppUpdateService.installStatus.observe(this) {
-            if (it == InstallStatus.DOWNLOADED) {
-                inAppUpdateService.onResume()
-            } else if (it == InstallStatus.DOWNLOADED + InstallStatus.INSTALLED) {
-                flexibleUpdateDownloadCompleted()
+        lifecycleScope.launch {
+            inAppUpdateService.installStatus.collect {
+                if (it == InstallStatus.DOWNLOADED) {
+                    inAppUpdateService.onResume()
+                } else if (it == InstallStatus.DOWNLOADED + InstallStatus.INSTALLED) {
+                    flexibleUpdateDownloadCompleted()
+                }
             }
         }
     }

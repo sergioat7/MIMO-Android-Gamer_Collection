@@ -35,7 +35,7 @@ fun setRecyclerViewGames(recyclerView: RecyclerView?, games: List<Game>?) {
 }
 
 @BindingAdapter("newGames")
-fun addRecyclerViewGames(recyclerView: RecyclerView?, newGames: MutableList<Game>?) {
+fun addRecyclerViewGames(recyclerView: RecyclerView?, newGames: List<Game>?) {
     val adapter = recyclerView?.adapter
     if (adapter is GamesAdapter && newGames != null) {
         adapter.addGames(newGames)

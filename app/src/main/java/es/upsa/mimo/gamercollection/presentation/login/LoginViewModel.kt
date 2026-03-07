@@ -1,11 +1,8 @@
 package es.upsa.mimo.gamercollection.presentation.login
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.data.local.model.AuthData
 import es.upsa.mimo.gamercollection.data.local.model.UserData
 import es.upsa.mimo.gamercollection.domain.UserRepository
@@ -13,6 +10,8 @@ import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.presentation.login.model.LoginFormState
 import es.upsa.mimo.gamercollection.utils.Constants
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -20,28 +19,31 @@ class LoginViewModel @Inject constructor(
 ) : ViewModel() {
 
     //region Private properties
-    private val _loginFormState = MutableLiveData<LoginFormState>()
-    private val _loginLoading = MutableLiveData<Boolean>()
-    private val _loginError = MutableLiveData<ErrorModel?>()
+    private val _loginFormState = MutableStateFlow<LoginFormState?>(null)
+    private val _loginLoading = MutableStateFlow<Boolean?>(null)
+    private val _loginError = MutableStateFlow<ErrorModel?>(null)
+    private val _loginSuccess = MutableStateFlow<Boolean?>(null)
     //endregion
 
     //region Public properties
     val username: String
-        get() = SharedPreferencesHelper.userData.username
-    val loginFormState: LiveData<LoginFormState> = _loginFormState
-    val loginLoading: LiveData<Boolean> = _loginLoading
-    val loginError: LiveData<ErrorModel?> = _loginError
+        get() = userRepository.username
+    val loginFormState: StateFlow<LoginFormState?> = _loginFormState
+    val loginLoading: StateFlow<Boolean?> = _loginLoading
+    val loginError: StateFlow<ErrorModel?> = _loginError
+    val loginSuccess: StateFlow<Boolean?> = _loginSuccess
     //endregion
 
     //region Public methods
     fun login(username: String, password: String) {
         _loginLoading.value = true
+        _loginError.value = null
         userRepository.login(username, password, { token ->
 
             val userData = UserData(username, password, false)
-            SharedPreferencesHelper.run {
-                this.userData = userData
-                this.credentials = AuthData(token)
+            userRepository.run {
+                storeUserData(userData)
+                storeCredentials(AuthData(token))
             }
             loadContent(userData)
         }, {
@@ -69,9 +71,9 @@ class LoginViewModel @Inject constructor(
     //region Private methods
     private fun loadContent(userData: UserData) {
         userData.isLoggedIn = true
-        SharedPreferencesHelper.userData = userData
+        userRepository.storeUserData(userData)
 
-        _loginError.value = null
+        _loginSuccess.value = true
         _loginLoading.value = false
     }
     //endregion

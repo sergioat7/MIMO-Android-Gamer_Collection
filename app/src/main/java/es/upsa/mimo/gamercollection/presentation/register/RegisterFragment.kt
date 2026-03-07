@@ -6,6 +6,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.databinding.FragmentRegisterBinding
@@ -16,6 +17,8 @@ import es.upsa.mimo.gamercollection.extensions.setError
 import es.upsa.mimo.gamercollection.presentation.MainActivity
 import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
@@ -85,40 +88,52 @@ class RegisterFragment : BindingFragment<FragmentRegisterBinding>() {
 
     //region Private methods
     private fun setupBindings() {
-        viewModel.registerFormState.observe(viewLifecycleOwner) {
-            val registerState = it ?: return@observe
+        lifecycleScope.launch {
+            viewModel.registerFormState.filterNotNull().collect { registerState ->
 
-            with(binding) {
-                textInputLayoutUsername.setError("")
-                textInputLayoutPassword.setError("")
-                textInputLayoutConfirmPassword.setError("")
+                with(binding) {
+                    textInputLayoutUsername.setError("")
+                    textInputLayoutPassword.setError("")
+                    textInputLayoutConfirmPassword.setError("")
 
-                if (registerState.usernameError != null) {
-                    textInputLayoutUsername.setError(getString(registerState.usernameError))
-                }
-                if (registerState.passwordError != null) {
-                    textInputLayoutPassword.setError(getString(registerState.passwordError))
-                    textInputLayoutConfirmPassword.setError(getString(registerState.passwordError))
+                    if (registerState.usernameError != null) {
+                        textInputLayoutUsername.setError(getString(registerState.usernameError))
+                    }
+                    if (registerState.passwordError != null) {
+                        textInputLayoutPassword.setError(getString(registerState.passwordError))
+                        textInputLayoutConfirmPassword.setError(
+                            getString(registerState.passwordError),
+                        )
+                    }
                 }
             }
         }
 
-        viewModel.registerLoading.observe(viewLifecycleOwner) { isLoading ->
+        lifecycleScope.launch {
+            viewModel.registerLoading.filterNotNull().collect { isLoading ->
 
-            if (isLoading) {
-                showLoading()
-            } else {
-                hideLoading()
+                if (isLoading) {
+                    showLoading()
+                } else {
+                    hideLoading()
+                }
             }
         }
 
-        viewModel.registerError.observe(viewLifecycleOwner) { error ->
+        lifecycleScope.launch {
+            viewModel.registerError.filterNotNull().collect { error ->
 
-            if (error == null) {
-                launchActivity(MainActivity::class.java)
-            } else {
                 hideLoading()
                 manageError(error)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.registerSuccess.filterNotNull().collect { success ->
+
+                if (success) {
+                    launchActivity(MainActivity::class.java)
+                }
             }
         }
     }

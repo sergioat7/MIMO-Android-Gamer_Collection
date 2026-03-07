@@ -3,13 +3,13 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.serialization)
-    id("kotlin-kapt")
+    alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.google.services)
-    id("com.google.firebase.crashlytics")
-    id("androidx.navigation.safeargs.kotlin")
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kapt) // MAINTAINED FOR DATA BINDING
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.navigation.safeargs)
 }
 
 val keystorePropertiesFile: File = rootProject.file("keystore.properties")
@@ -80,10 +80,8 @@ android {
         sourceCompatibility = JavaVersion.toVersion(libs.versions.jdk.get())
         targetCompatibility = JavaVersion.toVersion(libs.versions.jdk.get())
     }
-    kotlinOptions {
-        jvmTarget = libs.versions.jdk.get()
-    }
 
+    //noinspection WrongGradleMethod
     kapt {
         correctErrorTypes = true
     }
@@ -130,7 +128,7 @@ dependencies {
 
     //Room
     implementation(libs.room.runtime)
-    kapt(libs.room.compiler)
+    ksp(libs.room.compiler)
     implementation(libs.room.ktx)
 
     //Coroutines
@@ -145,7 +143,7 @@ dependencies {
 
     //Hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
 
     //Kotlinx serialization
     implementation(libs.kotlinx.serialization.json)

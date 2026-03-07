@@ -1,41 +1,42 @@
 package es.upsa.mimo.gamercollection.presentation.gamesearch
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.domain.GameRepository
+import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.Game
 import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class GameSearchViewModel @Inject constructor(
     private val gameRepository: GameRepository,
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     //region Private properties
     private var page: Int = 1
-    private val _gamesLoading = MutableLiveData<Boolean>()
-    private val _gamesError = MutableLiveData<ErrorModel>()
-    private val _games = MutableLiveData<MutableList<Game>>()
-    private val _gamesCount = MutableLiveData(0)
-    private val _scrollPosition = MutableLiveData(ScrollPosition.TOP)
+    private val _gamesLoading = MutableStateFlow<Boolean?>(null)
+    private val _gamesError = MutableStateFlow<ErrorModel?>(null)
+    private val _games = MutableStateFlow<List<Game>>(emptyList())
+    private val _gamesCount = MutableStateFlow(0)
+    private val _scrollPosition = MutableStateFlow(ScrollPosition.TOP)
     //endregion
 
     //region Public properties
     var query: String? = null
     val swipeRefresh: Boolean
-        get() = SharedPreferencesHelper.swipeRefresh
-    val gamesLoading: LiveData<Boolean> = _gamesLoading
-    val gamesError: LiveData<ErrorModel> = _gamesError
-    val games: LiveData<MutableList<Game>> = _games
-    val gamesCount: LiveData<Int> = _gamesCount
-    val scrollPosition: LiveData<ScrollPosition> = _scrollPosition
+        get() = userRepository.swipeRefresh
+    val gamesLoading: StateFlow<Boolean?> = _gamesLoading
+    val gamesError: StateFlow<ErrorModel?> = _gamesError
+    val games: StateFlow<List<Game>> = _games
+    val gamesCount: StateFlow<Int> = _gamesCount
+    val scrollPosition: StateFlow<ScrollPosition> = _scrollPosition
     //endregion
 
     //region Lifecycle methods
@@ -48,6 +49,7 @@ class GameSearchViewModel @Inject constructor(
     fun loadGames() {
         viewModelScope.launch {
             _gamesLoading.value = true
+            _gamesError.value = null
             gameRepository.getRawgGames(page, query, { newGames, gamesCount, next ->
 
                 _gamesLoading.value = false
@@ -65,13 +67,13 @@ class GameSearchViewModel @Inject constructor(
 
     fun resetPage() {
         page = 1
-        _games.value = mutableListOf()
+        _games.value = emptyList()
     }
     //endregion
 
     //region Private methods
     private fun addGames(newGames: List<Game>, next: Boolean) {
-        val currentGames = _games.value ?: mutableListOf()
+        val currentGames = _games.value.toMutableList()
         if (currentGames.isNotEmpty()) {
             currentGames.removeAt(currentGames.lastIndex)
         }

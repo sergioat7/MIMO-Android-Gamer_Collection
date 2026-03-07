@@ -6,6 +6,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.databinding.FragmentLoginBinding
 import es.upsa.mimo.gamercollection.extensions.doAfterTextChanged
@@ -15,6 +16,8 @@ import es.upsa.mimo.gamercollection.presentation.MainActivity
 import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
 import es.upsa.mimo.gamercollection.presentation.register.RegisterActivity
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginFragment : BindingFragment<FragmentLoginBinding>() {
@@ -81,35 +84,46 @@ class LoginFragment : BindingFragment<FragmentLoginBinding>() {
 
     //region Private methods
     private fun setupBindings() {
-        viewModel.loginFormState.observe(viewLifecycleOwner) {
-            binding.textInputLayoutUsername.setError("")
-            binding.textInputLayoutPassword.setError("")
-            val loginState = it ?: return@observe
+        lifecycleScope.launch {
+            viewModel.loginFormState.filterNotNull().collect { loginState ->
 
-            if (loginState.usernameError != null) {
-                binding.textInputLayoutUsername.setError(getString(loginState.usernameError))
-            }
-            if (loginState.passwordError != null) {
-                binding.textInputLayoutPassword.setError(getString(loginState.passwordError))
-            }
-        }
+                binding.textInputLayoutUsername.setError("")
+                binding.textInputLayoutPassword.setError("")
 
-        viewModel.loginLoading.observe(viewLifecycleOwner) { isLoading ->
-
-            if (isLoading) {
-                showLoading()
-            } else {
-                hideLoading()
+                if (loginState.usernameError != null) {
+                    binding.textInputLayoutUsername.setError(getString(loginState.usernameError))
+                }
+                if (loginState.passwordError != null) {
+                    binding.textInputLayoutPassword.setError(getString(loginState.passwordError))
+                }
             }
         }
 
-        viewModel.loginError.observe(viewLifecycleOwner) { error ->
+        lifecycleScope.launch {
+            viewModel.loginLoading.filterNotNull().collect { isLoading ->
 
-            if (error == null) {
-                launchActivity(MainActivity::class.java, true)
-            } else {
+                if (isLoading) {
+                    showLoading()
+                } else {
+                    hideLoading()
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.loginError.filterNotNull().collect { error ->
+
                 hideLoading()
                 manageError(error)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.loginSuccess.filterNotNull().collect { success ->
+
+                if (success) {
+                    launchActivity(MainActivity::class.java, true)
+                }
             }
         }
     }

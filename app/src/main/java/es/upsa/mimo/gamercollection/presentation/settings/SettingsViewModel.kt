@@ -1,13 +1,10 @@
 package es.upsa.mimo.gamercollection.presentation.settings
 
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.data.local.model.AuthData
 import es.upsa.mimo.gamercollection.data.local.model.UserData
 import es.upsa.mimo.gamercollection.data.remote.model.ExportData
@@ -22,6 +19,8 @@ import es.upsa.mimo.gamercollection.domain.toDomain
 import es.upsa.mimo.gamercollection.domain.toRemoteData
 import es.upsa.mimo.gamercollection.utils.Constants
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
@@ -36,27 +35,29 @@ class SettingsViewModel @Inject constructor(
 ) : ViewModel() {
 
     //region Private properties
-    private val _settingsForm = MutableLiveData<Int?>()
-    private val _settingsLoading = MutableLiveData<Boolean>()
-    private val _settingsError = MutableLiveData<ErrorModel?>()
+    private val _settingsForm = MutableStateFlow<Int?>(null)
+    private val _settingsLoading = MutableStateFlow<Boolean?>(null)
+    private val _settingsError = MutableStateFlow<ErrorModel?>(null)
+    private val _logOut = MutableStateFlow<Boolean?>(null)
     //endregion
 
     //region Public properties
     val userData: UserData
-        get() = SharedPreferencesHelper.userData
-    val language: String = SharedPreferencesHelper.language
-    var sortParam: String = SharedPreferencesHelper.sortParam
-    var isSortOrderAscending: Boolean = SharedPreferencesHelper.isSortOrderAscending
-    var swipeRefresh: Boolean = SharedPreferencesHelper.swipeRefresh
-    val settingsForm: LiveData<Int?> = _settingsForm
-    val settingsLoading: LiveData<Boolean> = _settingsLoading
-    val settingsError: LiveData<ErrorModel?> = _settingsError
+        get() = userRepository.userData
+    val language: String = userRepository.language
+    var sortParam: String = userRepository.sortParam
+    var isSortOrderAscending: Boolean = userRepository.isSortOrderAscending
+    var swipeRefresh: Boolean = userRepository.swipeRefresh
+    val settingsForm: StateFlow<Int?> = _settingsForm
+    val settingsLoading: StateFlow<Boolean?> = _settingsLoading
+    val settingsError: StateFlow<ErrorModel?> = _settingsError
+    val logOut: StateFlow<Boolean?> = _logOut
     //endregion
 
     //region Public methods
     fun logout() {
-        SharedPreferencesHelper.logout()
-        _settingsError.value = null
+        userRepository.logout()
+        _logOut.value = true
     }
 
     fun save(
@@ -72,17 +73,18 @@ class SettingsViewModel @Inject constructor(
         val changeSortParam = newSortParam != sortParam
         val changeIsSortDescending = newIsSortOrderAscending != isSortOrderAscending
         val changeSwipeRefresh = newSwipeRefresh != swipeRefresh
-        val changeThemeMode = themeMode != SharedPreferencesHelper.themeMode
+        val changeThemeMode = themeMode != userRepository.themeMode
 
         if (changePassword) {
             _settingsLoading.value = true
-            SharedPreferencesHelper.storePassword(newPassword)
-            val userData = SharedPreferencesHelper.userData
+            _settingsError.value = null
+            userRepository.storePassword(newPassword)
+            val userData = userRepository.userData
             userRepository.login(userData.username, userData.password, {
-                SharedPreferencesHelper.credentials = AuthData(it)
+                userRepository.storeCredentials(AuthData(it))
                 _settingsLoading.value = false
                 if (changeLanguage || changeSortParam || changeIsSortDescending) {
-                    _settingsError.value = null
+                    _logOut.value = true
                 }
             }, {
                 _settingsError.value = it
@@ -90,26 +92,26 @@ class SettingsViewModel @Inject constructor(
         }
 
         if (changeLanguage) {
-            SharedPreferencesHelper.language = newLanguage
+            userRepository.storeLanguage(newLanguage)
         }
 
         if (changeSortParam) {
-            SharedPreferencesHelper.sortParam = newSortParam
+            userRepository.storeSortParam(newSortParam)
             sortParam = newSortParam
         }
 
         if (changeIsSortDescending) {
-            SharedPreferencesHelper.isSortOrderAscending = newIsSortOrderAscending
+            userRepository.storeIsSortOrderAscending(newIsSortOrderAscending)
             isSortOrderAscending = newIsSortOrderAscending
         }
 
         if (changeSwipeRefresh) {
-            SharedPreferencesHelper.swipeRefresh = newSwipeRefresh
+            userRepository.storeSwipeRefresh(newSwipeRefresh)
             swipeRefresh = newSwipeRefresh
         }
 
         if (changeThemeMode) {
-            SharedPreferencesHelper.themeMode = themeMode
+            userRepository.storeThemeMode(themeMode)
             when (themeMode) {
                 1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -120,13 +122,13 @@ class SettingsViewModel @Inject constructor(
         }
 
         if (!changePassword && (changeLanguage || changeSortParam || changeIsSortDescending)) {
-            _settingsError.value = null
+            _logOut.value = true
         }
     }
 
     fun deleteUser() {
-        SharedPreferencesHelper.removeUserData()
-        SharedPreferencesHelper.removeCredentials()
+        userRepository.removeUserData()
+        userRepository.removeCredentials()
         resetDatabase()
     }
 
@@ -189,7 +191,7 @@ class SettingsViewModel @Inject constructor(
             sagaRepository.resetTable()
 
             _settingsLoading.value = false
-            _settingsError.value = null
+            _logOut.value = true
         }
     }
     //endregion

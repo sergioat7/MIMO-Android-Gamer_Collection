@@ -5,15 +5,13 @@ import android.content.res.Resources
 import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.NumberPicker
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.domain.GameRepository
+import es.upsa.mimo.gamercollection.domain.UserRepository
 import es.upsa.mimo.gamercollection.domain.model.ErrorModel
 import es.upsa.mimo.gamercollection.domain.model.FilterModel
 import es.upsa.mimo.gamercollection.domain.model.Game
@@ -21,45 +19,48 @@ import es.upsa.mimo.gamercollection.extensions.getPickerParams
 import es.upsa.mimo.gamercollection.extensions.setup
 import es.upsa.mimo.gamercollection.utils.ScrollPosition
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class GamesViewModel @Inject constructor(
     private val gameRepository: GameRepository,
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     //region Private properties
-    private val _gamesLoading = MutableLiveData<Boolean>()
-    private val _gamesError = MutableLiveData<ErrorModel>()
-    private val originalGames = MutableLiveData<List<Game>>()
-    private val _games = MutableLiveData<List<Game>>()
-    private val _gamesCount = MutableLiveData<List<Game>>()
-    private val _gameDeleted = MutableLiveData<Int?>()
-    private var _state = MutableLiveData<String?>(null)
-    private var _filters = MutableLiveData<FilterModel?>(null)
-    private var _scrollPosition = MutableLiveData(ScrollPosition.TOP)
-    private var sortParam: String = SharedPreferencesHelper.sortParam
-    private var isSortOrderAscending = SharedPreferencesHelper.isSortOrderAscending
+    private val _gamesLoading = MutableStateFlow<Boolean?>(null)
+    private val _gamesError = MutableStateFlow<ErrorModel?>(null)
+    private val _games = MutableStateFlow<List<Game>>(emptyList())
+    private val _gamesCount = MutableStateFlow<List<Game>>(emptyList())
+    private val _gameDeleted = MutableStateFlow<Int?>(null)
+    private var _state = MutableStateFlow<String?>(null)
+    private var _filters = MutableStateFlow<FilterModel?>(null)
+    private var _scrollPosition = MutableStateFlow(ScrollPosition.TOP)
+    private val originalGames = MutableStateFlow<List<Game>>(emptyList())
+    private var sortParam: String = userRepository.sortParam
+    private var isSortOrderAscending = userRepository.isSortOrderAscending
     private var query: String? = null
     //endregion
 
     //region Public properties
     val language: String
-        get() = SharedPreferencesHelper.language
+        get() = userRepository.language
     val dateFormatToShow: String
-        get() = SharedPreferencesHelper.dateFormatToShow
+        get() = userRepository.dateFormatToShow
     val filterDateFormat: String
-        get() = SharedPreferencesHelper.filterDateFormat
+        get() = userRepository.filterDateFormat
     val swipeRefresh: Boolean
-        get() = SharedPreferencesHelper.swipeRefresh
-    val gamesLoading: LiveData<Boolean> = _gamesLoading
-    val gamesError: LiveData<ErrorModel> = _gamesError
-    val games: LiveData<List<Game>> = _games
-    val gamesCount: LiveData<List<Game>> = _gamesCount
-    val gameDeleted: LiveData<Int?> = _gameDeleted
-    val state: LiveData<String?> = _state
-    val filters: LiveData<FilterModel?> = _filters
-    val scrollPosition: LiveData<ScrollPosition> = _scrollPosition
+        get() = userRepository.swipeRefresh
+    val gamesLoading: StateFlow<Boolean?> = _gamesLoading
+    val gamesError: StateFlow<ErrorModel?> = _gamesError
+    val games: StateFlow<List<Game>> = _games
+    val gamesCount: StateFlow<List<Game>> = _gamesCount
+    val gameDeleted: StateFlow<Int?> = _gameDeleted
+    val state: StateFlow<String?> = _state
+    val filters: StateFlow<FilterModel?> = _filters
+    val scrollPosition: StateFlow<ScrollPosition> = _scrollPosition
     //endregion
 
     //region Public methods
@@ -81,9 +82,7 @@ class GamesViewModel @Inject constructor(
             originalGames.value = games
 
             if (!_state.value.isNullOrBlank()) {
-                _games.value = originalGames.value?.filter { game ->
-                    game.state == _state.value
-                } ?: listOf()
+                _games.value = games.filter { it.state == _state.value }
             } else {
                 _games.value = games
             }
@@ -131,26 +130,25 @@ class GamesViewModel @Inject constructor(
             }.show()
     }
 
-    fun isNotificationLaunched(gameId: Int): Boolean =
-        SharedPreferencesHelper.notificationLaunched(gameId)
+    fun isNotificationLaunched(gameId: Int): Boolean = userRepository.isNotificationLaunched(gameId)
 
     fun setNotificationLaunched(gameId: Int, value: Boolean) {
-        SharedPreferencesHelper.setNotificationLaunched(gameId, value)
+        userRepository.setNotificationLaunched(gameId, value)
     }
 
     fun deleteGame(position: Int) {
         viewModelScope.launch {
-            _games.value?.get(position)?.let { game ->
+            if (_games.value.isEmpty()) return@launch
 
-                _gamesLoading.value = true
-                gameRepository.deleteGame(game)
-                _games.value?.first { it.id == game.id }?.let { removed ->
-                    _games.value = _games.value?.minus(removed)
-                }
-                _gameDeleted.value = position
-                _gameDeleted.value = null
-                _gamesLoading.value = false
+            _gamesLoading.value = true
+            val game = _games.value[position]
+            gameRepository.deleteGame(game)
+            _games.value.firstOrNull { it.id == game.id }?.let {
+                _games.value = _games.value.minus(it)
             }
+            _gameDeleted.value = position
+            _gameDeleted.value = null
+            _gamesLoading.value = false
         }
     }
 
@@ -162,9 +160,7 @@ class GamesViewModel @Inject constructor(
     fun setState(newState: String?) {
         _state.value = newState
         if (!newState.isNullOrBlank()) {
-            _games.value = originalGames.value?.filter { game ->
-                game.state == newState
-            } ?: listOf()
+            _games.value = originalGames.value.filter { it.state == newState }
         } else {
             _games.value = originalGames.value
         }
@@ -184,7 +180,7 @@ class GamesViewModel @Inject constructor(
     private fun resetProperties() {
         _state.value = null
         _filters.value = null
-        sortParam = SharedPreferencesHelper.sortParam
+        sortParam = userRepository.sortParam
         isSortOrderAscending = true
         query = null
     }

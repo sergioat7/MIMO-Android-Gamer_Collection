@@ -24,6 +24,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,7 +33,6 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import es.upsa.mimo.gamercollection.R
-import es.upsa.mimo.gamercollection.data.local.SharedPreferencesHelper
 import es.upsa.mimo.gamercollection.data.remote.model.FORMATS
 import es.upsa.mimo.gamercollection.data.remote.model.GENRES
 import es.upsa.mimo.gamercollection.data.remote.model.PLATFORMS
@@ -56,6 +56,8 @@ import es.upsa.mimo.gamercollection.utils.State
 import es.upsa.mimo.gamercollection.utils.StatusBarStyle
 import java.util.Date
 import kotlin.math.max
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListener {
@@ -182,9 +184,9 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             }
 
             gamesAdapter = GamesAdapter(
-                this@GamesFragment.viewModel.games.value ?: listOf(),
-                null,
-                this@GamesFragment,
+                games = this@GamesFragment.viewModel.games.value,
+                sagaId = null,
+                onItemClickListener = this@GamesFragment,
             )
             recyclerViewGames.apply {
                 layoutManager = LinearLayoutManager(requireContext())
@@ -225,72 +227,86 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
 
     //region Private methods
     private fun setupBindings() {
-        viewModel.gamesLoading.observe(viewLifecycleOwner) { isLoading ->
+        lifecycleScope.launch {
+            viewModel.gamesLoading.filterNotNull().collect { isLoading ->
 
-            enableStateButtons(!isLoading)
-            if (isLoading) {
-                showLoading()
-            } else {
-                hideLoading()
-            }
-        }
-
-        viewModel.gamesError.observe(viewLifecycleOwner) { error ->
-            manageError(error)
-        }
-
-        viewModel.games.observe(viewLifecycleOwner) {
-            val today = Date()
-                .toString(
-                    viewModel.dateFormatToShow,
-                    viewModel.language,
-                ).toDate(
-                    viewModel.dateFormatToShow,
-                    viewModel.language,
-                )
-            val gamesToNotify = ArrayList<Game>()
-            for (game in it) {
-                if (game.releaseDate == today) {
-                    gamesToNotify.add(game)
+                enableStateButtons(!isLoading)
+                if (isLoading) {
+                    showLoading()
+                } else {
+                    hideLoading()
                 }
             }
+        }
 
-            if (gamesToNotify.isNotEmpty() && hasNotificationPermission()) {
-                launchNotification(gamesToNotify)
+        lifecycleScope.launch {
+            viewModel.gamesError.filterNotNull().collect { error ->
+                manageError(error)
             }
         }
 
-        viewModel.gamesCount.observe(viewLifecycleOwner) {
-            setGamesCount(it)
+        lifecycleScope.launch {
+            viewModel.games.collect {
+                val today = Date()
+                    .toString(
+                        viewModel.dateFormatToShow,
+                        viewModel.language,
+                    ).toDate(
+                        viewModel.dateFormatToShow,
+                        viewModel.language,
+                    )
+                val gamesToNotify = ArrayList<Game>()
+                for (game in it) {
+                    if (game.releaseDate == today) {
+                        gamesToNotify.add(game)
+                    }
+                }
+
+                if (gamesToNotify.isNotEmpty() && hasNotificationPermission()) {
+                    launchNotification(gamesToNotify)
+                }
+            }
         }
 
-        viewModel.gameDeleted.observe(viewLifecycleOwner) { position ->
-            position?.let {
+        lifecycleScope.launch {
+            viewModel.gamesCount.collect {
+                setGamesCount(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.gameDeleted.filterNotNull().collect { position ->
                 gamesAdapter.notifyItemRemoved(position)
             }
         }
 
-        viewModel.state.observe(viewLifecycleOwner) {
-            binding.apply {
-                buttonPending.root.isSelected = it == State.PENDING_STATE
-                buttonInProgress.root.isSelected = it == State.IN_PROGRESS_STATE
-                buttonFinished.root.isSelected = it == State.FINISHED_STATE
+        lifecycleScope.launch {
+            viewModel.state.collect {
+                binding.apply {
+                    buttonPending.root.isSelected = it == State.PENDING_STATE
+                    buttonInProgress.root.isSelected = it == State.IN_PROGRESS_STATE
+                    buttonFinished.root.isSelected = it == State.FINISHED_STATE
+                }
             }
         }
 
-        viewModel.filters.observe(viewLifecycleOwner) { filters ->
+        lifecycleScope.launch {
+            viewModel.filters.collect { filters ->
 
-            menu?.findItem(R.id.action_filter)?.isVisible = filters == null
-            menu?.findItem(R.id.action_filter_fill)?.isVisible = filters != null
+                menu?.findItem(R.id.action_filter)?.isVisible = filters == null
+                menu?.findItem(R.id.action_filter_fill)?.isVisible = filters != null
+            }
         }
 
-        viewModel.scrollPosition.observe(viewLifecycleOwner) {
-            when (it) {
-                ScrollPosition.TOP -> binding.recyclerViewGames.scrollToPosition(0)
-                ScrollPosition.END -> binding.recyclerViewGames.scrollToPosition(
-                    gamesAdapter.itemCount - 1,
-                )
-                else -> Unit
+        lifecycleScope.launch {
+            viewModel.scrollPosition.collect {
+                when (it) {
+                    ScrollPosition.TOP -> binding.recyclerViewGames.scrollToPosition(0)
+                    ScrollPosition.END -> binding.recyclerViewGames.scrollToPosition(
+                        gamesAdapter.itemCount - 1,
+                    )
+                    else -> Unit
+                }
             }
         }
     }
@@ -317,10 +333,13 @@ class GamesFragment : BindingFragment<FragmentGamesBinding>(), OnItemClickListen
             )) {
                 view.showDatePicker(
                     requireActivity(),
-                    SharedPreferencesHelper.filterDateFormat,
+                    viewModel.filterDateFormat,
+                    viewModel.language,
                 )
             }
             filter = viewModel.filters.value
+            dateFormat = viewModel.filterDateFormat
+            language = viewModel.language
         }
         viewModel.filters.value?.let { filters ->
 
