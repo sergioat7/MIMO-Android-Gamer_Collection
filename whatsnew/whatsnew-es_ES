@@ -1,1 +1,5 @@
-- Se ha solucionado un error al importar y exportar los datos
+- Se ha añadido la opción de saber si hay una actualización de la aplicación al entrar.
+- Al añadir un juego, éste se añadirá por defecto como pendiente en lugar de terminado.
+- Se han actualizado los requisitos a la hora de cambiar de contraseña para hacerla más segura.
+- Se ha mejorado el filtro.
+- Se han hecho diversos cambios internos para mejorar el funcionamiento de la aplicación.

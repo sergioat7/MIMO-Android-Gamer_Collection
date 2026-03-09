@@ -16,11 +16,9 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
 import es.upsa.mimo.gamercollection.R
 import es.upsa.mimo.gamercollection.databinding.CustomTextInputLayoutBinding
-import es.upsa.mimo.gamercollection.data.source.SharedPreferencesHelper
 import java.util.*
 
 fun CustomTextInputLayoutBinding.setError(text: String?) {
-
     if (textInputLayout.error != text) {
         textInputLayout.error = text
         textInputLayout.errorIconDrawable = null
@@ -29,25 +27,30 @@ fun CustomTextInputLayoutBinding.setError(text: String?) {
 }
 
 inline fun CustomTextInputLayoutBinding.doAfterTextChanged(
-    crossinline action: (text: Editable?) -> Unit
+    crossinline action: (text: Editable?) -> Unit,
 ): TextWatcher = textInputEditText.doAfterTextChanged(action)
 
 fun CustomTextInputLayoutBinding.setOnClickListener(onClickListener: View.OnClickListener) {
     textInputEditText.setOnClickListener(onClickListener)
 }
 
-fun CustomTextInputLayoutBinding.setEndIconOnClickListener(endIconOnClickListener: View.OnClickListener) {
+fun CustomTextInputLayoutBinding.setEndIconOnClickListener(
+    endIconOnClickListener: View.OnClickListener,
+) {
     textInputLayout.setEndIconOnClickListener(endIconOnClickListener)
 }
 
-fun CustomTextInputLayoutBinding.getValue(): String {
-    return this.textInputEditText.text.toString().trimStart().trimEnd()
-}
+fun CustomTextInputLayoutBinding.getValue(): String = this.textInputEditText.text
+    .toString()
+    .trimStart()
+    .trimEnd()
 
 fun CustomTextInputLayoutBinding.getValueWithoutHyphen(): String {
-
-    val result = this.textInputEditText.text.toString().trimStart().trimEnd()
-    return if(result.equals("-")) "" else result
+    val result = this.textInputEditText.text
+        .toString()
+        .trimStart()
+        .trimEnd()
+    return if (result.equals("-")) "" else result
 }
 
 fun CustomTextInputLayoutBinding.setHintStyle(id: Int) {
@@ -56,46 +59,50 @@ fun CustomTextInputLayoutBinding.setHintStyle(id: Int) {
     }
 }
 
-fun CustomTextInputLayoutBinding.showDatePicker(activity: FragmentActivity, dateFormat: String? = null) {
-
+fun CustomTextInputLayoutBinding.showDatePicker(
+    activity: FragmentActivity,
+    dateFormat: String,
+    language: String,
+) {
     this.textInputEditText.setOnFocusChangeListener { _, hasFocus ->
         if (hasFocus) {
-            val datePicker = getPicker(this.textInputEditText, activity, dateFormat)
+            val datePicker = getPicker(this.textInputEditText, activity, dateFormat, language)
             datePicker.show(activity.supportFragmentManager, "")
         }
     }
     this.textInputEditText.setOnClickListener {
-        val datePicker = getPicker(this.textInputEditText, this.textInputEditText.context, dateFormat)
+        val datePicker =
+            getPicker(this.textInputEditText, this.textInputEditText.context, dateFormat, language)
         datePicker.show(activity.supportFragmentManager, "")
     }
 }
 
 //region Private functions
-private fun getPicker(editText: TextInputEditText,
-                      context: Context,
-                      dateFormat: String? = SharedPreferencesHelper.dateFormatToShow): MaterialDatePicker<Long> {
-
-    val currentDateInMillis = editText.text.toString().toDate(
-        SharedPreferencesHelper.dateFormatToShow,
-        SharedPreferencesHelper.language,
-        TimeZone.getTimeZone("UTC")
-    )?.time ?: MaterialDatePicker.todayInUtcMilliseconds()
+private fun getPicker(
+    editText: TextInputEditText,
+    context: Context,
+    dateFormat: String,
+    language: String,
+): MaterialDatePicker<Long> {
+    val currentDateInMillis = editText.text
+        .toString()
+        .toDate(
+            format = dateFormat,
+            language = language,
+            timeZone = TimeZone.getTimeZone("UTC"),
+        )?.time ?: MaterialDatePicker.todayInUtcMilliseconds()
 
     return MaterialDatePicker.Builder
         .datePicker()
         .setTitleText(context.resources.getString(R.string.game_detail_select_date))
         .setSelection(currentDateInMillis)
-        .build().apply {
+        .build()
+        .apply {
             addOnPositiveButtonClickListener {
-
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = it
 
-                val dateString = calendar.time.toString(
-                    dateFormat,
-                    SharedPreferencesHelper.language
-                )
-
+                val dateString = calendar.time.toString(dateFormat, language)
                 editText.setText(dateString)
             }
         }

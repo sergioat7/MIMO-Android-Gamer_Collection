@@ -1,0 +1,148 @@
+package es.upsa.mimo.gamercollection.presentation.gamedetail.gamesongs
+
+import android.os.Bundle
+import android.view.View
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
+import es.upsa.mimo.gamercollection.R
+import es.upsa.mimo.gamercollection.databinding.DialogNewSongBinding
+import es.upsa.mimo.gamercollection.databinding.FragmentGameSongsBinding
+import es.upsa.mimo.gamercollection.domain.GameRepository
+import es.upsa.mimo.gamercollection.domain.SongRepository
+import es.upsa.mimo.gamercollection.domain.model.Game
+import es.upsa.mimo.gamercollection.domain.model.Song
+import es.upsa.mimo.gamercollection.extensions.getValue
+import es.upsa.mimo.gamercollection.interfaces.OnItemClickListener
+import es.upsa.mimo.gamercollection.presentation.base.BindingFragment
+import javax.inject.Inject
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
+
+@AndroidEntryPoint
+class GameSongsFragment(
+    private val game: Game?,
+    private var enabled: Boolean,
+) : BindingFragment<FragmentGameSongsBinding>(), OnItemClickListener {
+
+    //region Public properties
+    @Inject
+    lateinit var gameRepository: GameRepository
+
+    @Inject
+    lateinit var songRepository: SongRepository
+    //endregion
+
+    //region Protected properties
+    override val statusBarStyle = null
+    override val hasOptionsMenu = false
+    //endregion
+
+    //region Private properties
+    private lateinit var viewModel: GameSongsViewModel
+    //endregion
+
+    //region Lifecycle methods
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initializeUi()
+    }
+    //endregion
+
+    //region Interface methods
+    override fun onItemClick(id: Int) {
+        viewModel.deleteSong(id)
+    }
+
+    override fun onSubItemClick(id: Int) {
+    }
+
+    override fun onLoadMoreItemsClick() {
+    }
+    //endregion
+
+    //region Public methods
+    fun setEdition(editable: Boolean) {
+        binding.editable = editable
+    }
+
+    fun getSongs(): List<Song> = viewModel.songs.value
+    //endregion
+
+    //region Protected methods
+    override fun initializeUi() {
+        super.initializeUi()
+
+        viewModel = GameSongsViewModel(game, gameRepository, songRepository)
+        setupBindings()
+
+        with(binding) {
+            recyclerViewSongs.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = SongsAdapter(
+                    listOf(),
+                    enabled,
+                    this@GameSongsFragment,
+                )
+            }
+
+            buttonAddSong.setOnClickListener {
+                showNewSongPopup()
+            }
+
+            viewModel = this@GameSongsFragment.viewModel
+            lifecycleOwner = this@GameSongsFragment
+            editable = enabled
+        }
+    }
+    //endregion
+
+    //region Private methods
+    private fun setupBindings() {
+        lifecycleScope.launch {
+            viewModel.gameSongsLoading.filterNotNull().collect { isLoading ->
+
+                if (isLoading) {
+                    showLoading()
+                } else {
+                    hideLoading()
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.gameSongsError.filterNotNull().collect { error ->
+                manageError(error)
+            }
+        }
+    }
+
+    private fun showNewSongPopup() {
+        val dialogBinding = DialogNewSongBinding.inflate(layoutInflater)
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, _ ->
+
+                val name = dialogBinding.textInputLayoutSongName.getValue()
+                val singer = dialogBinding.textInputLayoutSongSinger.getValue()
+                val url = dialogBinding.textInputLayoutSongUrl.getValue()
+
+                if (name.isNotBlank() || singer.isNotBlank() || url.isNotBlank()) {
+                    val song = Song(
+                        0,
+                        name,
+                        singer,
+                        url,
+                    )
+                    viewModel.createSong(song)
+                }
+                dialog.dismiss()
+            }.setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }.show()
+    }
+    //endregion
+}

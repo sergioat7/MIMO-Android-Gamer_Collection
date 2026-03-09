@@ -12,7 +12,17 @@
 
         <variable
             name="filter"
-            type="es.upsa.mimo.gamercollection.models.FilterModel"
+            type="es.upsa.mimo.gamercollection.domain.model.FilterModel"
+            />
+
+        <variable
+            name="dateFormat"
+            type="String"
+            />
+
+        <variable
+            name="language"
+            type="String"
             />
 
     </data>
@@ -220,7 +230,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/text_input_layout_release_date_max"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_release_date_title"
-                    app:text='@{filter.minReleaseDateAsHumanReadable()}'
+                    app:text='@{filter.minReleaseDateAsHumanReadable(dateFormat, language)}'
                     />
 
                 <include
@@ -235,7 +245,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/text_input_layout_release_date_min"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_release_date_title"
-                    app:text='@{filter.maxReleaseDateAsHumanReadable()}'
+                    app:text='@{filter.maxReleaseDateAsHumanReadable(dateFormat, language)}'
                     />
 
                 <TextView
@@ -261,7 +271,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/text_input_layout_purchase_date_max"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_purchase_date_title"
-                    app:text='@{filter.minPurchaseDateAsHumanReadable()}'
+                    app:text='@{filter.minPurchaseDateAsHumanReadable(dateFormat, language)}'
                     />
 
                 <include
@@ -276,7 +286,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/text_input_layout_purchase_date_min"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_purchase_date_title"
-                    app:text='@{filter.maxPurchaseDateAsHumanReadable()}'
+                    app:text='@{filter.maxPurchaseDateAsHumanReadable(dateFormat, language)}'
                     />
 
                 <TextView
@@ -342,11 +352,21 @@
                     >
 
                     <RadioButton
+                        android:id="@+id/radio_button_goty_any"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="@{filter.goty == null}"
+                        android:text="@string/any"
+                        style="@style/Widget.GamerCollection.RadioButton"
+                        />
+
+                    <RadioButton
                         android:id="@+id/radio_button_goty_no"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="@{!filter.goty}"
+                        android:layout_weight="4"
+                        android:checked="@{filter.goty != null &amp;&amp; filter.goty == false}"
                         android:text="@string/no"
                         style="@style/Widget.GamerCollection.RadioButton"
                         />
@@ -355,8 +375,8 @@
                         android:id="@+id/radio_button_goty_yes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="@{filter.goty}"
+                        android:layout_weight="4"
+                        android:checked="@{filter.goty != null &amp;&amp; filter.goty == true}"
                         android:text="@string/yes"
                         style="@style/Widget.GamerCollection.RadioButton"
                         />
@@ -385,11 +405,21 @@
                     >
 
                     <RadioButton
+                        android:id="@+id/radio_button_loaned_any"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="@{filter.loaned == null}"
+                        android:text="@string/any"
+                        style="@style/Widget.GamerCollection.RadioButton"
+                        />
+
+                    <RadioButton
                         android:id="@+id/radio_button_loaned_no"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="@{!filter.loaned}"
+                        android:layout_weight="4"
+                        android:checked="@{filter.loaned != null &amp;&amp; filter.loaned == false}"
                         android:text="@string/no"
                         style="@style/Widget.GamerCollection.RadioButton"
                         />
@@ -398,8 +428,8 @@
                         android:id="@+id/radio_button_loaned_yes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="@{filter.loaned}"
+                        android:layout_weight="4"
+                        android:checked="@{filter.loaned != null &amp;&amp; filter.loaned == true}"
                         android:text="@string/yes"
                         style="@style/Widget.GamerCollection.RadioButton"
                         />
@@ -428,11 +458,21 @@
                     >
 
                     <RadioButton
+                        android:id="@+id/radio_button_saga_any"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="@{filter.hasSaga == null}"
+                        android:text="@string/any"
+                        style="@style/Widget.GamerCollection.RadioButton"
+                        />
+
+                    <RadioButton
                         android:id="@+id/radio_button_saga_no"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="@{!filter.hasSaga}"
+                        android:layout_weight="4"
+                        android:checked="@{filter.hasSaga != null &amp;&amp; filter.hasSaga == false}"
                         android:text="@string/no"
                         style="@style/Widget.GamerCollection.RadioButton"
                         />
@@ -441,8 +481,8 @@
                         android:id="@+id/radio_button_saga_yes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="@{filter.hasSaga}"
+                        android:layout_weight="4"
+                        android:checked="@{filter.hasSaga != null &amp;&amp; filter.hasSaga == true}"
                         android:text="@string/yes"
                         style="@style/Widget.GamerCollection.RadioButton"
                         />
@@ -473,11 +513,21 @@
                     >
 
                     <RadioButton
+                        android:id="@+id/radio_button_songs_any"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:checked="@{filter.hasSongs == null}"
+                        android:text="@string/any"
+                        style="@style/Widget.GamerCollection.RadioButton"
+                        />
+
+                    <RadioButton
                         android:id="@+id/radio_button_songs_no"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="@{!filter.hasSongs}"
+                        android:layout_weight="4"
+                        android:checked="@{filter.hasSongs != null &amp;&amp; filter.hasSongs == false}"
                         android:text="@string/no"
                         style="@style/Widget.GamerCollection.RadioButton"
                         />
@@ -486,8 +536,8 @@
                         android:id="@+id/radio_button_songs_yes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="@{filter.hasSongs}"
+                        android:layout_weight="4"
+                        android:checked="@{filter.hasSongs != null &amp;&amp; filter.hasSongs == true}"
                         android:text="@string/yes"
                         style="@style/Widget.GamerCollection.RadioButton"
                         />

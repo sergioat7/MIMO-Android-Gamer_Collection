@@ -3,12 +3,13 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    id("kotlin-kapt")
+    alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.google.services)
-    id("com.google.firebase.crashlytics")
-    id("androidx.navigation.safeargs.kotlin")
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kapt) // MAINTAINED FOR DATA BINDING
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.navigation.safeargs)
 }
 
 val keystorePropertiesFile: File = rootProject.file("keystore.properties")
@@ -19,7 +20,7 @@ val appName = "es.upsa.mimo.gamercollection"
 
 val versionMajor = 2
 val versionMinor = 4
-val versionPatch = 5
+val versionPatch = 6
 val versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 android {
@@ -79,10 +80,8 @@ android {
         sourceCompatibility = JavaVersion.toVersion(libs.versions.jdk.get())
         targetCompatibility = JavaVersion.toVersion(libs.versions.jdk.get())
     }
-    kotlinOptions {
-        jvmTarget = libs.versions.jdk.get()
-    }
 
+    //noinspection WrongGradleMethod
     kapt {
         correctErrorTypes = true
     }
@@ -100,6 +99,9 @@ dependencies {
     implementation(libs.legacy.support.v4)
     implementation(libs.multidex)
 
+    //App update
+    implementation(libs.app.update.ktx)
+
     //MVVM & LiveData
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
@@ -111,9 +113,6 @@ dependencies {
     //Google Play Services
     implementation(libs.play.services.location)
     implementation(libs.play.services.maps)
-
-    //Gson
-    implementation(libs.gson)
 
     //Retrofit
     implementation(libs.bundles.retrofit)
@@ -129,7 +128,7 @@ dependencies {
 
     //Room
     implementation(libs.room.runtime)
-    kapt(libs.room.compiler)
+    ksp(libs.room.compiler)
     implementation(libs.room.ktx)
 
     //Coroutines
@@ -144,7 +143,10 @@ dependencies {
 
     //Hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
+
+    //Kotlinx serialization
+    implementation(libs.kotlinx.serialization.json)
 
     //Test
     testImplementation(libs.junit)

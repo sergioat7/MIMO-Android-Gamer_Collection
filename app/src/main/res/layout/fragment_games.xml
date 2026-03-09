@@ -13,12 +13,12 @@
 
         <variable
             name="fragment"
-            type="es.upsa.mimo.gamercollection.ui.games.GamesFragment"
+            type="es.upsa.mimo.gamercollection.presentation.games.GamesFragment"
             />
 
         <variable
             name="viewModel"
-            type="es.upsa.mimo.gamercollection.ui.games.GamesViewModel"
+            type="es.upsa.mimo.gamercollection.presentation.games.GamesViewModel"
             />
 
     </data>
@@ -29,7 +29,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.games.GamesFragment"
+        tools:context=".presentation.games.GamesFragment"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout

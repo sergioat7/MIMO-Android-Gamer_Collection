@@ -11,11 +11,13 @@ import com.google.android.material.chip.ChipGroup
 import es.upsa.mimo.gamercollection.R
 
 fun ChipGroup.addChip(inflater: LayoutInflater, id: String, text: String?) {
-    (inflater.inflate(
-        R.layout.content_chip,
-        this,
-        false
-    ) as Chip).also { chip ->
+    (
+        inflater.inflate(
+            R.layout.content_chip,
+            this,
+            false,
+        ) as Chip
+        ).also { chip ->
         chip.tag = id
         chip.text = text
         this.addView(chip)

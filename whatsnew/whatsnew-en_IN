@@ -1,1 +1,5 @@
-- A bug has been fixed with import/export data
+- An option to know if there's an app update has been added.
+- New games are added as pending by default, instead of finished.
+- Password requirements have been updated to change the password more securely.
+- Filter has been improved.
+- Several internal changes have been made to improve app work.

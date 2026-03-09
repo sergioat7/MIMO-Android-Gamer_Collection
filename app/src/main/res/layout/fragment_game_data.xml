@@ -25,12 +25,12 @@
 
         <variable
             name="fragment"
-            type="es.upsa.mimo.gamercollection.ui.gamedetail.gamedata.GameDataFragment"
+            type="es.upsa.mimo.gamercollection.presentation.gamedetail.gamedata.GameDataFragment"
             />
 
         <variable
             name="game"
-            type="es.upsa.mimo.gamercollection.models.GameResponse"
+            type="es.upsa.mimo.gamercollection.domain.model.Game"
             />
 
         <variable
@@ -38,12 +38,22 @@
             type="Boolean"
             />
 
+        <variable
+            name="dateFormat"
+            type="String"
+            />
+
+        <variable
+            name="language"
+            type="String"
+            />
+
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.gamedetail.gamedata.GameDataFragment"
+        tools:context=".presentation.gamedetail.gamedata.GameDataFragment"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -251,7 +261,7 @@
                             app:inputHintText="@{@string/game_detail_select_date}"
                             app:inputType="@{CustomInputType.DATE}"
                             app:labelHintText="@{@string/game_detail_release_date}"
-                            app:text='@{game.releaseDateAsHumanReadable() ?? editable ? null : Constants.NO_VALUE}'
+                            app:text='@{game.releaseDateAsHumanReadable(dateFormat, language) ?? editable ? null : Constants.NO_VALUE}'
                             />
 
                         <include
@@ -321,7 +331,7 @@
                             app:inputHintText="@{@string/game_detail_select_date}"
                             app:inputType="@{CustomInputType.DATE}"
                             app:labelHintText="@{@string/game_detail_purchase_date}"
-                            app:text='@{game.purchaseDateAsHumanReadable() ?? editable ? null : Constants.NO_VALUE}'
+                            app:text='@{game.purchaseDateAsHumanReadable(dateFormat, language) ?? editable ? null : Constants.NO_VALUE}'
                             />
 
                         <include
