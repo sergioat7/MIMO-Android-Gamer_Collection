@@ -8,18 +8,13 @@ Finally, you can also store information about songs associated to a videogame, l
 
 All this information is stored associated to a user profile. To be able to use the app you must register entering a username, which has to be unique, and a password. This information is stored in a database to be able to associated each videogame to a username.
 
-![1](https://user-images.githubusercontent.com/23210811/146773767-03b4d41b-bb4a-4da0-973e-4b8b7aa24563.jpg)
-
-![2](https://user-images.githubusercontent.com/23210811/146773827-74ddf6be-3693-44a4-8c12-9b52a2e3ea80.jpg)
-
-![3](https://user-images.githubusercontent.com/23210811/146773861-f789682e-bbfa-4eaa-a12c-c409d07689cc.jpg)
-
-![4](https://user-images.githubusercontent.com/23210811/146773887-4a6bc426-5400-46bf-9cc4-15c3359d964d.jpg)
-
-![5](https://user-images.githubusercontent.com/23210811/146773919-e2600227-295c-4900-83cb-cbf7fb41de33.jpg)
-
-![6](https://user-images.githubusercontent.com/23210811/146773942-3daeb25d-e064-467c-b492-59936f3703b9.jpg)
-
-![7](https://user-images.githubusercontent.com/23210811/146773965-a52c28e6-caad-4bad-8152-56afb4042b45.jpg)
-
-![8](https://user-images.githubusercontent.com/23210811/146773989-a6695176-345e-4187-843d-380711b69502.jpg)
+## Stack & Technologies
+- **Language**: Kotlin & Coroutines.
+- **Architecture**: Clean Architecture & MVVM (Model-View-ViewModel).
+- **Dependency Injection**: Hilt.
+- **Database**: Room for local persistence.
+- **Networking**: Retrofit for remote API integration (RAWG API).
+- **UI/UX**: DataBinding, ViewBinding, Jetpack Navigation Component, Picasso (Image loading), Material Design.
+- **Firebase**: Analytics, Crashlytics, and Remote Config.
+- **Security**: Security Crypto (Encrypted Shared Preferences).
+- **Other**: Google Play Services (Maps & Location), In-app updates, Kotlinx Serialization.
